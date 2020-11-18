@@ -55,12 +55,15 @@ describe('tree-select component', () => {
     let testComponent: NzTestTreeSelectBasicComponent;
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
+    let trigger: HTMLElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      trigger = treeSelect.query(By.css('.ant-select-selector')).nativeElement;
+
       treeSelectComponent = treeSelect.componentInstance;
       fixture.detectChanges();
       flush();
@@ -92,15 +95,15 @@ describe('tree-select component', () => {
       expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
     });
     it('should click toggle open', () => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
     });
     it('should close when the outside clicks', () => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       dispatchFakeEvent(document.body, 'click');
@@ -115,19 +118,19 @@ describe('tree-select component', () => {
       expect(treeSelect.nativeElement.classList).not.toContain('ant-select-enabled');
       expect(treeSelect.nativeElement.classList).toContain('ant-select-disabled');
       expect(treeSelectComponent.nzOpen).toBe(false);
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       tick();
       expect(treeSelectComponent.nzOpen).toBe(false);
       treeSelectComponent.openDropdown();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       tick();
     }));
     it('should dropdownMatchSelectWidth work', () => {
       testComponent.dropdownMatchSelectWidth = true;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
@@ -136,7 +139,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       testComponent.dropdownMatchSelectWidth = false;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(overlayPane.style.minWidth).toBe('250px');
@@ -169,7 +172,7 @@ describe('tree-select component', () => {
       expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
     }));
     it('should dropdown style work', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       flush();
@@ -177,7 +180,7 @@ describe('tree-select component', () => {
       expect(targetElement.style.height).toBe('120px');
     }));
     it('should dropdown classname work', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       flush();
@@ -186,7 +189,7 @@ describe('tree-select component', () => {
       expect(targetElement.classList).toContain('class2');
     }));
     it('should click option close dropdown', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
@@ -201,7 +204,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       testComponent.showSearch = true;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelect.nativeElement.querySelector('nz-select-search')).toBeTruthy();
       testComponent.showSearch = false;
@@ -216,7 +219,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       testComponent.showSearch = true;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
@@ -231,7 +234,7 @@ describe('tree-select component', () => {
     it('should clean search value when reopen', fakeAsync(() => {
       testComponent.showSearch = true;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       treeSelectComponent.inputValue = 'invalid_value';
       fixture.detectChanges();
@@ -239,11 +242,11 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
 
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -270,7 +273,7 @@ describe('tree-select component', () => {
     }));
 
     it('should set selectable', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       let node = overlayContainerElement.querySelector('.ant-select-tree-node-content-wrapper')!;
@@ -279,7 +282,7 @@ describe('tree-select component', () => {
       flush();
       expect(treeSelectComponent.nzOpen).toBe(false);
       testComponent.nodes[0].selectable = false;
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       node = overlayContainerElement.querySelector('nz-tree-node')!;
@@ -295,12 +298,14 @@ describe('tree-select component', () => {
     let testComponent: NzTestTreeSelectCheckableComponent;
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
+    let trigger: HTMLElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      trigger = treeSelect.query(By.css('.ant-select-selector')).nativeElement;
       treeSelectComponent = treeSelect.componentInstance;
       fixture.detectChanges();
       flush();
@@ -310,7 +315,7 @@ describe('tree-select component', () => {
     }));
 
     it('should is multiple', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(treeSelectComponent.isMultiple).toBe(true);
@@ -318,7 +323,7 @@ describe('tree-select component', () => {
     }));
 
     it('should update input width', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -379,7 +384,7 @@ describe('tree-select component', () => {
     }));
 
     it('should remove checked when press backs', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -400,7 +405,7 @@ describe('tree-select component', () => {
     }));
 
     it('should click option not close dropdown', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
@@ -430,7 +435,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       testComponent.showSearch = true;
       fixture.detectChanges();
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
@@ -492,12 +497,15 @@ describe('tree-select component', () => {
     let testComponent: NzTestTreeSelectCheckableComponent;
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
+    let trigger: HTMLElement;
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      trigger = treeSelect.query(By.css('.ant-select-selector')).nativeElement;
+
       treeSelectComponent = treeSelect.componentInstance;
       fixture.detectChanges();
       flush();
@@ -508,7 +516,7 @@ describe('tree-select component', () => {
 
     it('should keep expand state', () => {
       testComponent.expandKeys = [];
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzExpandedKeys.length === 0).toBe(true);
       expect(treeSelectComponent.nzOpen).toBe(true);
@@ -520,10 +528,10 @@ describe('tree-select component', () => {
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(treeSelectComponent.nzOpen).toBe(true);
@@ -535,12 +543,14 @@ describe('tree-select component', () => {
   describe('customized icon', () => {
     let fixture: ComponentFixture<NzTestTreeSelectCustomizedIconComponent>;
     let treeSelect: DebugElement;
+    let trigger: HTMLElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCustomizedIconComponent);
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+      trigger = treeSelect.query(By.css('.ant-select-selector')).nativeElement;
     });
     it('should display', fakeAsync(() => {
-      treeSelect.nativeElement.click();
+      trigger.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();

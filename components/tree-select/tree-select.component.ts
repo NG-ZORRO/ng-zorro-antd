@@ -64,12 +64,13 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      nzIgnoreOriginWthOutsideClick
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="closeDropDown()"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
     >
@@ -121,7 +122,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       </div>
     </ng-template>
 
-    <div cdkOverlayOrigin class="ant-select-selector">
+    <div cdkOverlayOrigin class="ant-select-selector" (click)="trigger()">
       <ng-container *ngIf="isMultiple">
         <nz-select-item
           *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
@@ -201,8 +202,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     '[class.ant-select-show-search]': '!isMultiple',
     '[class.ant-select-multiple]': 'isMultiple',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-open]': 'nzOpen',
-    '(click)': 'trigger()'
+    '[class.ant-select-open]': 'nzOpen'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -515,12 +515,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.removeSelected(node, false);
     });
     this.nzCleared.emit();
-  }
-
-  onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.closeDropDown();
-    }
   }
 
   setSearchValues($event: NzFormatEmitEvent): void {

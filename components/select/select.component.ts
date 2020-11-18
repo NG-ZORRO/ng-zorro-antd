@@ -107,6 +107,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      nzIgnoreOriginWthOutsideClick
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
@@ -114,7 +115,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
       [cdkConnectedOverlayOpen]="nzOpen"
       (overlayKeydown)="onOverlayKeyDown($event)"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="setOpenState(false)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
     >
@@ -459,12 +460,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   onClearSelection(): void {
     this.updateListOfValue([]);
-  }
-
-  onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.setOpenState(false);
-    }
   }
 
   focus(): void {

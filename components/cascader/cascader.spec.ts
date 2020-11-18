@@ -195,6 +195,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
+      console.log(testComponent.cascader.menuVisible);
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
 
