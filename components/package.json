@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "10.1.1",
+  "version": "10.1.2",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
