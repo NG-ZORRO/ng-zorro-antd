@@ -30,7 +30,9 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
@@ -45,7 +47,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         #inputElement
         type="text"
         [size]="inputSize"
-        [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+        [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
         (focus)="onFocus(true)"
@@ -87,7 +89,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [nzDisabledHours]="nzDisabledHours"
               [nzDisabledMinutes]="nzDisabledMinutes"
               [nzDisabledSeconds]="nzDisabledSeconds"
-              [nzPlaceHolder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+              [nzPlaceHolder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
               [nzHideDisabledOptions]="nzHideDisabledOptions"
               [nzUse12Hours]="nzUse12Hours"
               [nzDefaultOpenValue]="nzDefaultOpenValue"
@@ -132,6 +134,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   preValue: Date | null = null;
   origin!: CdkOverlayOrigin;
   inputSize?: number;
+  i18nPlaceHolder$: Observable<string | undefined | null> = of(undefined);
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
@@ -271,6 +274,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   constructor(
     public nzConfigService: NzConfigService,
+    protected i18n: NzI18nService,
     private element: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
@@ -281,6 +285,11 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ngOnInit(): void {
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.origin = new CdkOverlayOrigin(this.element);
+
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
+      map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder),
+      startWith(this.i18n.getLocaleData(`TimePicker.lang.placeholder`))
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
