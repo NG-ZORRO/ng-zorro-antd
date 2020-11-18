@@ -67,13 +67,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      nzIgnoreOriginWthOutsideClick
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayOffsetY]="-2"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="setCurrentValueAndClose()"
     >
       <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
@@ -216,12 +217,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   onClickClearBtn(event: MouseEvent): void {
     event.stopPropagation();
     this.emitValue(null);
-  }
-
-  onClickOutside(event: MouseEvent): void {
-    if (!this.element.nativeElement.contains(event.target)) {
-      this.setCurrentValueAndClose();
-    }
   }
 
   onFocus(value: boolean): void {

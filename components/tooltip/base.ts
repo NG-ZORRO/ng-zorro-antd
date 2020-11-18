@@ -421,12 +421,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     this.cdr.markForCheck();
   }
 
-  onClickOutside(event: MouseEvent): void {
-    if (!this.origin.elementRef.nativeElement.contains(event.target)) {
-      this.hide();
-    }
-  }
-
   /**
    * Hide the component while the content is empty.
    */

@@ -118,8 +118,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       nzConnectedOverlay
+      nzIgnoreOriginWthOutsideClick
       [cdkConnectedOverlayOrigin]="origin"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="hide()"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"

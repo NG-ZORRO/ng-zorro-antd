@@ -9,6 +9,7 @@ import {
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
+  OverlayContainer,
   OverlayRef,
   PositionStrategy
 } from '@angular/cdk/overlay';
@@ -79,6 +80,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   constructor(
     private elementRef: ElementRef,
     private overlay: Overlay,
+    private overlayContainer: OverlayContainer,
     private viewContainerRef: ViewContainerRef,
     @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny
@@ -216,7 +218,13 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private subscribeOverlayOutsideClick(): Subscription {
     return this.overlayRef!.outsidePointerEvents()
-      .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target)))
+      .pipe(
+        filter(
+          (e: MouseEvent) =>
+            !this.elementRef.nativeElement.contains(e.target) &&
+            !this.overlayContainer.getContainerElement().contains(e.target as HTMLElement)
+        )
+      )
       .subscribe(() => {
         this.closePanel();
       });

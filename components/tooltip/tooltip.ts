@@ -80,11 +80,12 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       nzConnectedOverlay
+      nzIgnoreOriginWthOutsideClick
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayPush]="true"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="hide()"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
     >

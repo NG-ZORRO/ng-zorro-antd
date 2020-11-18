@@ -9,6 +9,7 @@ import {
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
+  OverlayContainer,
   OverlayRef,
   PositionStrategy
 } from '@angular/cdk/overlay';
@@ -129,6 +130,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
     @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
+    private overlayContainer: OverlayContainer,
     private viewContainerRef: ViewContainerRef,
     private nzMentionService: NzMentionService
   ) {}
@@ -329,7 +331,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
-      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !this.overlayRef?.overlayElement.contains(clickTarget)) {
+      const inOverlayContainer = this.overlayContainer.getContainerElement().contains(clickTarget);
+      const inOverlayElement = this.overlayRef?.overlayElement.contains(clickTarget);
+      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !inOverlayContainer && !inOverlayElement) {
         this.closeDropdown();
       }
     });

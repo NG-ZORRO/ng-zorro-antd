@@ -5,9 +5,10 @@
 
 import { NgModule } from '@angular/core';
 import { NzConnectedOverlayDirective } from './nz-connected-overlay';
+import { NzOutsideClickDirective } from './nz-outsite-click';
 
 @NgModule({
-  declarations: [NzConnectedOverlayDirective],
-  exports: [NzConnectedOverlayDirective]
+  declarations: [NzConnectedOverlayDirective, NzOutsideClickDirective],
+  exports: [NzConnectedOverlayDirective, NzOutsideClickDirective]
 })
 export class NzOverlayModule {}

@@ -135,7 +135,7 @@ import { PREFIX_CLASS } from './util';
       (positionChange)="onPositionChange($event)"
       (detach)="onOverlayDetach()"
       (overlayKeydown)="onOverlayKeydown($event)"
-      (overlayOutsideClick)="onClickOutside($event)"
+      (nzOutsideClick)="onClickOutside($event)"
     >
       <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
         <div
