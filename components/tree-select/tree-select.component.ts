@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BACKSPACE } from '@angular/cdk/keycodes';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
@@ -150,14 +151,14 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       </ng-container>
 
       <nz-select-search
-        *ngIf="nzShowSearch"
+        [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"
         (valueChange)="setInputValue($event)"
         [value]="inputValue"
         [mirrorSync]="isMultiple"
         [disabled]="nzDisabled"
-        [showInput]="nzOpen"
+        [focusTrigger]="nzOpen"
       ></nz-select-search>
 
       <nz-select-placeholder
@@ -192,9 +193,9 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     }
   ],
   host: {
+    '[class.ant-select]': 'true',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-sm]': 'nzSize==="small"',
-    '[class.ant-select-enabled]': '!nzDisabled',
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
@@ -202,7 +203,9 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     '[class.ant-select-multiple]': 'isMultiple',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
-    '(click)': 'trigger()'
+    '[class.ant-select-focused]': 'nzOpen || focused',
+    '(click)': 'trigger()',
+    '(keydown)': 'onKeydown($event)'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -281,9 +284,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isComposing = false;
   isDestroy = true;
   isNotFound = false;
+  focused = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   selectionChangeSubscription!: Subscription;
+  focusChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -305,6 +310,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
@@ -315,12 +321,25 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
+    this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+      if (!focusOrigin) {
+        this.focused = false;
+        this.cdr.markForCheck();
+        Promise.resolve().then(() => {
+          this.onTouched();
+        });
+      } else {
+        this.focused = true;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
     this.selectionChangeSubscription.unsubscribe();
+    this.focusChangeSubscription.unsubscribe();
   }
 
   isComposingChange(isComposing: boolean): void {
@@ -369,14 +388,31 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.onTouched = fn;
   }
 
+  onKeydown(event: KeyboardEvent): void {
+    if (this.nzDisabled) {
+      return;
+    }
+    switch (event.keyCode) {
+      case ESCAPE:
+        /**
+         * Skip the ESCAPE processing, it will be handled in {@link onOverlayKeyDown}.
+         */
+        break;
+      case TAB:
+        this.closeDropDown();
+        break;
+      default:
+        if (!this.nzOpen) {
+          this.openDropdown();
+        }
+    }
+  }
+
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
       this.closeDropDown();
     } else {
       this.openDropdown();
-      if (this.nzShowSearch || this.isMultiple) {
-        this.focusOnInput();
-      }
     }
   }
 
@@ -385,6 +421,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzOpen = true;
       this.nzOpenChange.emit(this.nzOpen);
       this.updateCdkConnectedOverlayStatus();
+      if (this.nzShowSearch || this.isMultiple) {
+        this.focusOnInput();
+      }
     }
   }
 
