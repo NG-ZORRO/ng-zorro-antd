@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { buildGraph } from '@nx-component/hierarchy-graph';
 import { ZoomTransform } from 'd3-zoom';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { forkJoin, Observable, Subject, Subscription } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
@@ -141,6 +141,10 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   }
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
+  static ngAcceptInputType_nzShowMinimap: BooleanInput;
+  static ngAcceptInputType_nzAutoSize: BooleanInput;
+  static ngAcceptInputType_nzShowArrow: BooleanInput;
+
   @ViewChildren(NzGraphNodeDirective) graphNodes!: QueryList<NzGraphNodeDirective>;
   @ViewChild(NzGraphSvgContainerComponent) svgContainerComponent!: NzGraphSvgContainerComponent;
   @ViewChild(NzGraphMinimapComponent) minimap: NzGraphMinimapComponent | undefined;
