@@ -427,6 +427,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
     if (visible) {
       this.cascaderService.syncOptions();
+      this.scrollToActivatedOptions();
     }
 
     this.menuVisible = visible;
@@ -748,5 +749,17 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private setLocale(): void {
     this.locale = this.i18nService.getLocaleData('global');
     this.cdr.markForCheck();
+  }
+
+  private scrollToActivatedOptions(): void {
+    // scroll only until option menu view is ready
+    Promise.resolve().then(() => {
+      this.cascaderItems
+        .toArray()
+        .filter(e => e.activated)
+        .forEach(e => {
+          e.nativeElement?.scrollIntoView({ block: 'start', inline: 'nearest' });
+        });
+    });
   }
 }
