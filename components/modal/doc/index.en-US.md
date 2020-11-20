@@ -157,7 +157,7 @@ The above configuration items can also be changed in real-time to trigger the bu
 
 ### [nzModalFooter]
 
-Another way to customize the footer button.
+Customize the footer.
 
 ```html
 <div *nzModalFooter>

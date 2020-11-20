@@ -157,7 +157,7 @@ nzFooter: [{
 
 ### [nzModalFooter]
 
-另一种自定义页脚按钮的方式。
+自定义页脚。
 
 ```html
 <div *nzModalFooter>

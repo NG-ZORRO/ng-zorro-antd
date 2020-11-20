@@ -9,6 +9,7 @@ export * from './modal-ref';
 export * from './modal-config';
 export * from './modal.component';
 export * from './modal-footer.directive';
+export * from './modal-content.directive';
 export * from './modal.module';
 export * from './modal-confirm-container.component';
 export * from './modal-container.component';
