@@ -1,0 +1,125 @@
+---
+category: Components
+subtitle: 流程图
+type: 数据展示
+title: Hierarchy Graph
+cols: 1
+experimental: true
+---
+
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
+<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
+</blockquote>
+
+
+## 何时使用
+
+需要在网页上渲染 GRAPH 图时使用。
+
+### 引入模块
+
+> 目前组件依赖 d3-drag d3-zoom d3-selection d3-transition d3-shape 用于绘制相关属性（可能会在之后的版本中逐步替换）
+
+```ts
+import { NzGraphModule } from 'ng-zorro-antd/graph';
+```
+
+### 引入样式
+
+```less
+@import "node_modules/ng-zorro-antd/graph/style/entry.less";
+```
+
+
+## API
+
+安装依赖：
+
+```sh
+npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
+```
+
+### nz-graph
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzGraphData]` | 数据源 | `NzGraphData(data: NzGraphDataDef?)` | `` |
+| `[nzRankDirection]` | 图方向 | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
+| `[nzAutoSize]` | 是否根据节点内容自适应高度(默认等高) | `boolean` | `false` |
+
+#### 组件方法
+
+| 名称 | 描述 |
+| --- | --- |
+| `autoFit()` | 居中图并自适应缩放 |
+
+#### NzGraphData
+
+| 属性/方法 | 说明 | 类型 |
+| --- | --- | --- |
+| `setData` | 设置数据源 | `(data: NzGraphDataDef) => void` |
+| `toggle` | 收起/展开 group 节点 | `(nodeName: string) => void` |
+| `expand` | 展开 group 节点 | `(nodeName: string) => void` |
+| `expandAll` | 展开全部 group 节点 | `(nodeName: string) => void` |
+| `collapse` | 收起全部 group 节点 | `(nodeName: string) => void` |
+| `isExpand` | 获取 group 节点展开状态 | `(nodeName: string) => boolean` |
+| `expansionModel` | 展开节点存储对象 | `SelectionModel<string>` |
+
+#### NzGraphDataDef
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `nodes` | 节点 | `Array<{ id: number\|string; label?: string; width?: number; height?: number; [key: string]: any; }>` | `[]` |
+| `edges` | 线 | `Array<{ v: number\|string; w: number\|string; [key: string]: any; }>` | `[]` |
+| `compound` | 分组 | `{ [parent: string]: string[]; }` | `null` |
+
+#### NzGraphNode
+
+| 属性 | 说明 | 类型 |
+| --- | --- | --- |
+| `id` | id | `number\|string` |
+| `label?` | 节点内容 | `string` |
+| `name` | 节点名称 | `number\|string` |
+| `type` | 节点类型(组: 0, 节点: 1) | `number` |
+| `parentNodeName` | 父节点名称 | `string` |
+| `coreBox` | 布局高宽 | `{ width: number;  height: number; }` |
+| `x` | x偏移 | `number` |
+| `y` | y偏移 | `number` |
+| `width` | 宽度 | `number` |
+| `height` | 高度 | `number` |
+| `[key: string]`| 用户输入 | `any` |
+
+
+#### NzGraphEdge
+
+| 属性 | 说明 | 类型 |
+| --- | --- |
+| `id` | id | `string` |
+| `v` | 起始节点 | `number\|string` |
+| `w` | 目标节点 | `number\|string` |
+| `label?` | 线内容 | `string` |
+| `points` | points | `Array<{ x: number; y: number; }>` |
+| `adjoiningEdge` | adjoiningEdge | `{ v: string; w: string; points: points>; } \| null` |
+
+#### NzGraphGroupNode
+
+| 属性 | 类型 |
+| --- | --- |
+| `expanded` | `boolean` |
+| `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
+| `edges` | `NzGraphEdge[]` |
+
+### nzGraphNode
+自定义建议渲染模板
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphNode="let node">
+    <span>{{ node.name }} - {{ node.label }}</span>
+  </ng-container>
+</nz-graph>
+```
+
+## 说明
+- [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): graph 布局计算库
+- [SelectionModel](https://github.com/angular/components/blob/master/src/cdk/collections/selection-model.ts)
