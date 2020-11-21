@@ -6,7 +6,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nzCustomGraphNode]',
-  exportAs: 'nzCustomGraphNode'
+  selector: '[nzGraphNode]',
+  exportAs: 'nzGraphNode'
 })
 export class NzCustomGraphNodeDirective {}

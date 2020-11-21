@@ -107,12 +107,12 @@ npm install @nx-component/hierarchy-graph && npm install d3
 | `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
 | `edges` | `NzGraphEdge[]` |
 
-### nzCustomGraphNode
+### nzGraphNode
 自定义建议渲染模板
 
 ```html
 <nz-graph [nzGraphData]="data">
-  <ng-container *nzCustomGraphNode="let node">
+  <ng-container *nzGraphNode="let node">
     <span>{{ node.name }} - {{ node.label }}</span>
   </ng-container>
 </nz-graph>

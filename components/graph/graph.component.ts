@@ -160,7 +160,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
    * Data source can be an observable of NzGraphData, or a NzGraphData to render.
    */
   @Input() nzGraphData!: NzGraphData;
-  @Input() nzGraphNodeTemplate: TemplateRef<{ $implicit: NzGraphNode | NzGraphGroupNode; group: boolean }> | null = null;
   @Input() nzRankDirection: NzRankDirection = 'LR';
   @Input() nzGraphLayoutSettings?: NzGraphLayoutSetting;
   @Input() @InputBoolean() nzShowMinimap = false;

@@ -14,17 +14,12 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
     <nz-graph [nzGraphData]="dataSource" [nzAutoSize]="true" [nzRankDirection]="rankDirection">
-      <ng-container *nzCustomGraphNode="let node">
+      <ng-container *nzGraphNode="let node">
         <div class="custom-node">
           <div class="header">{{ node.label || node.name }}</div>
         </div>
       </ng-container>
     </nz-graph>
-    <ng-template #nzGraphNodeTemplate let-node let-group="group">
-      <div class="custom-node">
-        <div class="header">{{ node.name }}</div>
-      </div>
-    </ng-template>
   `,
   styles: [
     `
