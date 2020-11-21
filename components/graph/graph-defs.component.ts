@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
   selector: 'svg:defs[nz-graph-defs]',
   template: `
     <svg:marker
-      class="ant-graph-edge-marker"
+      class="nz-graph-edge-marker"
       id="edge-end-arrow"
       viewBox="1 0 20 20"
       refX="9"

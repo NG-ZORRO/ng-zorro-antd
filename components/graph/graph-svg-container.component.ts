@@ -42,14 +42,14 @@ export interface RelativePositionInfo {
   exportAs: 'nzGraphSvgContainer',
   template: `
     <svg #container width="100%" height="100%">
-      <rect width="100%" height="100%" fill="transparent" class="ant-graph-background"></rect>
-      <g #zoom [attr.transform]="transformStyle" class="ant-graph-zoom">
+      <rect width="100%" height="100%" fill="transparent" class="nz-graph-background"></rect>
+      <g #zoom [attr.transform]="transformStyle" class="nz-graph-zoom">
         <ng-content></ng-content>
       </g>
     </svg>
   `,
   host: {
-    '[class.ant-graph-svg-container]': 'true'
+    '[class.nz-graph-svg-container]': 'true'
   }
 })
 export class NzGraphSvgContainerComponent implements OnInit, OnDestroy {

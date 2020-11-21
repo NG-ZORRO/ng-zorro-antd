@@ -9,7 +9,7 @@
 @graph-node-background-color: @primary-1;
 @graph-node-border-color: tint(@primary-color, 50%);
 
-@graph-prefix-cls: ~'@{ant-prefix}-graph';
+@graph-prefix-cls: ~'nz-graph';
 
 .@{graph-prefix-cls} {
   display: block;
@@ -17,12 +17,6 @@
   height: 100%;
   width: 100%;
   background-color: @component-background;
-
-  &-svg-container > svg {
-    .ant-graph-bridge-node {
-      display: none;
-    }
-  }
 
   &-background {
     cursor: default;
@@ -66,8 +60,8 @@
     height: 100%;
     text-align: left;
     word-break: break-all;
-    background: @graph-node-background-color;
-    border: @graph-stroke-width-base solid @graph-node-border-color;
+    background-color: @graph-node-background-color;
+    border: @graph-stroke-width-sm solid @graph-node-border-color;
     transition: background-color 0.2s ease;
     color: @text-color;
     &:hover {
@@ -98,6 +92,12 @@
       height: calc(100% - 40px);
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+  }
+
+  &-custom-node {
+    .nz-graph-node-rect {
+      fill: transparent;
     }
   }
 

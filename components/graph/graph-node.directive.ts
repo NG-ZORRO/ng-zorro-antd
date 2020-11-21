@@ -19,9 +19,9 @@ interface Info {
   selector: 'svg:g[nz-graph-node]',
   host: {
     '[id]': 'node.id || node.name',
-    '[class.ant-graph-node-expanded]': 'node.expanded',
-    '[class.ant-graph-group-node]': 'node.type===0',
-    '[class.ant-graph-base-node]': 'node.type===1'
+    '[class.nz-graph-node-expanded]': 'node.expanded',
+    '[class.nz-graph-group-node]': 'node.type===0',
+    '[class.nz-graph-base-node]': 'node.type===1'
   }
 })
 export class NzGraphNodeDirective implements AfterViewInit {
@@ -51,7 +51,7 @@ export class NzGraphNodeDirective implements AfterViewInit {
     if (isFirstChange) {
       animationFactory = this.builder.build([
         style({ transform: `translate(${cur.x}px, ${cur.y}px)` }),
-        query('.ant-graph-node-rect', [
+        query('.nz-graph-node-rect', [
           style({
             width: `${cur.width}px`,
             height: `${cur.height}px`
@@ -61,14 +61,14 @@ export class NzGraphNodeDirective implements AfterViewInit {
     } else {
       animationFactory = this.builder.build([
         style({ transform: `translate(${pre!.x}px, ${pre!.y}px)` }),
-        query('.ant-graph-node-rect', [
+        query('.nz-graph-node-rect', [
           style({
             width: `${pre!.width}px`,
             height: `${pre!.height}px`
           })
         ]),
         group([
-          query('.ant-graph-node-rect', [
+          query('.nz-graph-node-rect', [
             animate(
               '200ms ease-out',
               style({

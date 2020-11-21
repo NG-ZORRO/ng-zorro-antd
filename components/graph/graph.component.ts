@@ -77,30 +77,31 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     <ng-template #groupTemplate let-renderInfo="renderInfo" let-type="type">
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderInfo) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderInfo)">
-          <svg:g class="ant-graph-edges">
-            <svg:g class="ant-graph-edge" *ngFor="let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun">
+          <svg:g class="nz-graph-edges">
+            <svg:g class="nz-graph-edge" *ngFor="let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun">
               <svg:path
-                class="ant-graph-edge-line"
+                class="nz-graph-edge-line"
                 nz-graph-edge
                 [attr.marker-end]="nzShowArrow ? 'url(#edge-end-arrow)' : null"
                 [edge]="edge"
               ></svg:path>
-              <svg:text class="ant-graph-edge-text" text-anchor="middle" dy="20" *ngIf="edge.label">
+              <svg:text class="nz-graph-edge-text" text-anchor="middle" dy="20" *ngIf="edge.label">
                 <textPath [attr.href]="'#' + edge.v + '--' + edge.w" startOffset="50%">{{ edge.label }}</textPath>
               </svg:text>
             </svg:g>
           </svg:g>
 
-          <svg:g class="ant-graph-nodes">
+          <svg:g class="nz-graph-nodes">
             <svg:g
-              class="ant-graph-node"
+              class="nz-graph-node"
+              [class.nz-graph-custom-node]="!!customNodeTemplate"
               [style.display]="node.type === 2 ? 'none' : null"
               *ngFor="let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun"
             >
               <svg:g nz-graph-node [node]="node" (nodeClick)="clickNode($event)">
-                <svg:rect class="ant-graph-node-rect"></svg:rect>
+                <svg:rect class="nz-graph-node-rect"></svg:rect>
                 <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
-                  <xhtml:div class="ant-graph-node-wrapper">
+                  <xhtml:div class="nz-graph-node-wrapper">
                     <ng-container
                       *ngIf="customNodeTemplate"
                       [ngTemplateOutlet]="customNodeTemplate"
@@ -136,8 +137,8 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     </ng-template>
   `,
   host: {
-    '[class.ant-graph]': 'true',
-    '[class.ant-graph-auto-fit]': 'nzAutoSize'
+    '[class.nz-graph]': 'true',
+    '[class.nz-graph-auto-fit]': 'nzAutoSize'
   }
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
@@ -401,7 +402,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       .subscribe(() => {
         const dataSource: NzGraphDataDef = this.dataSource!.dataSource;
         this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach((nodeEle: HTMLElement) => {
-          const contentEle = nodeEle.querySelector('.ant-graph-node-wrapper');
+          const contentEle = nodeEle.querySelector('.nz-graph-node-wrapper');
           if (contentEle) {
             const height = contentEle.getBoundingClientRect().height;
             const width = contentEle.getBoundingClientRect().width;

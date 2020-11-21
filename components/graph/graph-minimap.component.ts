@@ -34,7 +34,7 @@ import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
     <canvas class="buffer"></canvas>
   `,
   host: {
-    '[class.ant-graph-minimap]': 'true'
+    '[class.nz-graph-minimap]': 'true'
   }
 })
 export class NzGraphMinimapComponent implements OnInit, OnDestroy {

@@ -11,7 +11,7 @@ import { NzGraphEdge } from './interface';
 @Directive({
   selector: 'svg:path[nz-graph-edge]',
   host: {
-    '[class.ant-graph-edge-line]': 'true',
+    '[class.nz-graph-edge-line]': 'true',
     '[id]': 'id'
   }
 })

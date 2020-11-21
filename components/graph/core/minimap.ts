@@ -52,7 +52,6 @@ export class Minimap {
       const minimapOffset = this.minimapOffset();
       const width = Number(viewpointElement.attr('width'));
       const height = Number(viewpointElement.attr('height'));
-      // @ts-ignore
       const clickCoords = pointer(event, minimapSvgElement.node() as NzSafeAny);
       this.viewpointCoord.x = clickCoords[0] - width / 2 - minimapOffset.x;
       this.viewpointCoord.y = clickCoords[1] - height / 2 - minimapOffset.y;
@@ -60,8 +59,7 @@ export class Minimap {
     };
     this.viewpointCoord = { x: 0, y: 0 };
     const dragEvent = drag().subject(Object).on('drag', handleEvent);
-    // @ts-ignore
-    viewpointElement.datum(this.viewpointCoord as NzSafeAny).call(dragEvent);
+    viewpointElement.datum(this.viewpointCoord as NzSafeAny).call(dragEvent as NzSafeAny);
 
     // Make the minimap clickable.
     minimapSvgElement.on('click', event => {

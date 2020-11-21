@@ -23,10 +23,6 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
   `,
   styles: [
     `
-      :host ::ng-deep .ant-graph-node-rect {
-        fill: transparent;
-      }
-
       nz-radio-group {
         float: right;
       }
@@ -40,7 +36,8 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
       }
 
       .custom-node {
-        height: 100px;
+        height: 100%;
+        min-height: 100px;
         display: block;
       }
     `
