@@ -53,9 +53,11 @@ export class NzCascaderOptionComponent {
   @Input() columnIndex!: number;
 
   @Input() expandIcon: string | TemplateRef<void> = 'right';
+  readonly nativeElement: HTMLElement;
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+    this.nativeElement = elementRef.nativeElement;
   }
 
   get optionLabel(): string {
