@@ -13,7 +13,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
       <label nz-radio-button nzValue="TB">TB</label>
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
-    <nz-graph [nzGraphData]="dataSource" [nzAutoSize]="true" [nzRankDirection]="rankDirection">
+    <nz-graph [nzGraphData]="graphData" [nzAutoSize]="true" [nzRankDirection]="rankDirection">
       <ng-container *nzGraphNode="let node">
         <div class="custom-node">
           <div class="header">{{ node.label || node.name }}</div>
@@ -208,29 +208,29 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
     }
   };
   rankDirection: NzRankDirection = 'TB';
-  dataSource = new NzGraphData(this.testDef);
+  graphData = new NzGraphData(this.testDef);
 
   constructor() {}
 
   ngOnInit(): void {}
 
   expand(name: string): void {
-    this.dataSource.expand(name);
+    this.graphData.expand(name);
   }
 
   collapse(name: string): void {
-    this.dataSource.collapse(name);
+    this.graphData.collapse(name);
   }
 
   expandAll(): void {
-    this.dataSource.expandAll();
+    this.graphData.expandAll();
   }
 
   collapseAll(): void {
-    this.dataSource.collapseAll();
+    this.graphData.collapseAll();
   }
 
   layout(): void {
-    this.nzGraphComponent.autoLayout();
+    this.nzGraphComponent.autoFit();
   }
 }

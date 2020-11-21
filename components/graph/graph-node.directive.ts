@@ -4,7 +4,7 @@
  */
 
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
-import { AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NzGraphGroupNode, NzGraphNode } from './interface';
 
@@ -21,14 +21,14 @@ interface Info {
     '[id]': 'node.id || node.name',
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
-    '[class.nz-graph-base-node]': 'node.type===1'
+    '[class.nz-graph-base-node]': 'node.type===1',
+    '(click)': 'onTriggerClick($event)'
   }
 })
 export class NzGraphNodeDirective implements AfterViewInit {
   @Input() node!: NzGraphNode | NzGraphGroupNode;
   @Output() readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
 
-  @HostListener('click', ['$event'])
   onTriggerClick(event: MouseEvent): void {
     event.preventDefault();
     this.nodeClick.emit(this.node);

@@ -10,11 +10,8 @@ import { NzGraphDataDef } from '../interface';
 import { NzGraphBaseSource } from './base-graph-source';
 
 export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
-  _data = new BehaviorSubject<NzGraphDataDef>({} as NzGraphDataDef);
+  private _data = new BehaviorSubject<NzGraphDataDef>({} as NzGraphDataDef);
   dataSource!: NzGraphDataDef;
-  /**
-   * Implement base interface
-   */
   /** A selection model with multi-selection to track expansion status. */
   expansionModel: SelectionModel<string> = new SelectionModel<string>(true);
 
@@ -46,17 +43,16 @@ export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
   expandAll(): void {
     this.expansionModel.select(...Object.keys(this._data.value.compound || {}));
   }
-  /**
-   * Implement End
-   */
 
   setData(data: NzGraphDataDef): void {
+    this.expansionModel?.clear();
     this.dataSource = data;
     this._data.next(data);
   }
 
   constructor(source?: NzGraphDataDef) {
     if (source) {
+      this.expansionModel?.clear();
       this.dataSource = source;
       this._data.next(source);
     }

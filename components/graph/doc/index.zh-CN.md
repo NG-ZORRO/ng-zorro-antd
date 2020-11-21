@@ -1,6 +1,6 @@
 ---
 category: Components
-subtitle: 层次图
+subtitle: 流程图
 type: 数据展示
 title: Hierarchy Graph
 cols: 1
@@ -19,6 +19,8 @@ experimental: true
 
 ### 引入模块
 
+> 目前组件依赖 d3-drag d3-zoom d3-selection d3-transition d3-shape 用于绘制相关属性（可能会在之后的版本中逐步替换）
+
 ```ts
 import { NzGraphModule } from 'ng-zorro-antd/graph';
 ```
@@ -35,7 +37,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 安装依赖：
 
 ```sh
-npm install @nx-component/hierarchy-graph && npm install d3
+npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 ```
 
 ### nz-graph
@@ -49,7 +51,7 @@ npm install @nx-component/hierarchy-graph && npm install d3
 
 | 名称 | 描述 |
 | --- | --- |
-| `autoLayout()` | 居中图并自适应缩放 |
+| `autoFit()` | 居中图并自适应缩放 |
 
 #### NzGraphData
 

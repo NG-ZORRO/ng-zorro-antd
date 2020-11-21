@@ -17,6 +17,8 @@ When you want to use graph in Angular.
 
 ### Import Module
 
+> Now, the graph depends on d3-drag d3-zoom d3-selection d3-transition d3-shape (may be removed in next major version)
+
 ```ts
 import { NzGraphModule } from 'ng-zorro-antd/graph';
 ```
@@ -32,7 +34,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 Dependencies:
 
 ```sh
-npm install @nx-component/hierarchy-graph && npm install d3
+npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 ```
 
 ### nz-graph
@@ -47,7 +49,7 @@ npm install @nx-component/hierarchy-graph && npm install d3
 
 | Method | Description |
 | --- | --- |
-| `autoLayout()` | Move graph to center |
+| `autoFit()` | Move graph to center |
 
 #### NzGraphData
 

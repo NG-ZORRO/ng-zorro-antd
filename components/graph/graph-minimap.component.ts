@@ -3,10 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ZoomBehavior, ZoomTransform } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Subscription } from 'rxjs';
 import { Minimap } from './core/minimap';
 import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
 
@@ -37,16 +36,11 @@ import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
     '[class.nz-graph-minimap]': 'true'
   }
 })
-export class NzGraphMinimapComponent implements OnInit, OnDestroy {
+export class NzGraphMinimapComponent implements OnInit {
   minimap?: Minimap;
-  zoomInit$ = new Subscription();
   constructor(private elementRef: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.zoomInit$.unsubscribe();
-  }
 
   init(svgEle: SVGSVGElement, zoomEle: SVGGElement, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
     this.minimap = new Minimap(

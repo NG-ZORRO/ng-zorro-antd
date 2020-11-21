@@ -61,7 +61,6 @@ export class NzGraphSvgContainerComponent implements OnInit, OnDestroy {
 
   @Output() readonly zoomEvent: EventEmitter<number> = new EventEmitter();
   @Output() readonly transformEvent: EventEmitter<NzZoomTransform> = new EventEmitter();
-  @Output() readonly nzZoomInit = new EventEmitter<void>();
   transform: NzZoomTransform = { x: 0, y: 0, k: 1 };
   transformStyle = '';
   svgSelect!: Selection<NzSafeAny, NzSafeAny, NzSafeAny, NzSafeAny>;
@@ -91,7 +90,6 @@ export class NzGraphSvgContainerComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       });
     this.svgSelect.call(this.zoomController, zoomIdentity.translate(0, 0).scale(this.zoom));
-    this.nzZoomInit.emit();
   }
 
   unbind(): void {

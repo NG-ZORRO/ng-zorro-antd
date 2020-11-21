@@ -30,7 +30,7 @@ import { ZoomTransform } from 'd3-zoom';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { forkJoin, Observable, Subject, Subscription } from 'rxjs';
-import { take, takeUntil, tap } from 'rxjs/operators';
+import { finalize, take, takeUntil, tap } from 'rxjs/operators';
 import { NzCustomGraphNodeDirective } from './custom-graph-node.directive';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphMinimapComponent } from './graph-minimap.component';
@@ -204,9 +204,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   }
 
   ngOnInit(): void {
-    if (!this.nzGraphData) {
-      throw Error(`Could not find a graph data source for the graph.`);
-    }
     if (this.dataSource !== this.nzGraphData) {
       this._switchDataSource(this.nzGraphData);
     }
@@ -226,17 +223,19 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
     if ((nzAutoFit && !nzAutoFit.firstChange) || (nzRankDirection && !nzRankDirection.firstChange)) {
       // Render graph
-      this.renderGraph(this.dataSource!.dataSource, {
-        rankDirection: this.nzRankDirection,
-        expanded: this.dataSource!.expansionModel.selected || []
-      });
+      if (this.dataSource!.dataSource) {
+        this.renderGraph(this.dataSource!.dataSource, {
+          rankDirection: this.nzRankDirection,
+          expanded: this.dataSource!.expansionModel.selected || []
+        });
+      }
     }
 
     this.cdr.markForCheck();
   }
 
   ngAfterViewInit(): void {
-    this.autoLayout();
+    this.autoFit();
     this.cdr.detectChanges();
     this.drawMinimap(true);
   }
@@ -283,7 +282,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   /**
    * Move graph to center
    */
-  autoLayout(): void {
+  autoFit(): void {
     if (this.renderInfo) {
       this.svgContainerComponent?.fit(0);
     }
@@ -365,7 +364,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     this.ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.makeNodesAnimation().subscribe();
     });
-    this.cdr.detectChanges();
   }
 
   private buildGraphInfo(data: NzGraphDataDef, options: NzGraphOption): NzGraphGroupNode {
@@ -400,7 +398,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       .asObservable()
       .pipe(take(1))
       .subscribe(() => {
-        const dataSource: NzGraphDataDef = this.dataSource!.dataSource;
+        const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
         this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach((nodeEle: HTMLElement) => {
           const contentEle = nodeEle.querySelector('.nz-graph-node-wrapper');
           if (contentEle) {
@@ -433,6 +431,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return forkJoin(...this.graphNodes.map(node => node.makeAnimation())).pipe(
       tap(() => {
         this.drawMinimap();
+      }),
+      finalize(() => {
+        this.cdr.detectChanges();
       })
     );
   }

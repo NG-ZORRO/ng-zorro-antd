@@ -207,9 +207,7 @@ export class Minimap {
    * Handles changes in zooming/panning. Should be called from the main svg
    * to notify that a zoom/pan was performed and this minimap will update it's
    * viewpoint rectangle.
-   *
-   * @param translate The translate vector, or none to use the last used one.
-   * @param scale The scaling factor, or none to use the last used one.
+   * @param transform
    */
   zoom(transform?: ZoomTransform): void {
     if (this.scaleMinimap == null) {
