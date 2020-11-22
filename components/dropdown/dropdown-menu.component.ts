@@ -12,6 +12,7 @@ import {
   ElementRef,
   Host,
   OnDestroy,
+  OnInit,
   Optional,
   Renderer2,
   TemplateRef,
@@ -61,7 +62,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy {
+export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
   mouseState$ = new BehaviorSubject<boolean>(false);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
@@ -69,7 +70,7 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy {
   nzOverlayStyle: IndexableObject = {};
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   setMouseState(visible: boolean): void {
@@ -87,15 +88,16 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy {
     private renderer: Renderer2,
     public viewContainerRef: ViewContainerRef,
     public nzMenuService: MenuService,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+  ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngAfterContentInit(): void {

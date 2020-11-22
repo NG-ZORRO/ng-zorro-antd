@@ -12,7 +12,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -34,17 +34,18 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
     <ng-content></ng-content>
   `
 })
-export class NzButtonGroupComponent implements OnDestroy {
+export class NzButtonGroupComponent implements OnDestroy, OnInit {
   @Input() nzSize: NzButtonGroupSize = 'default';
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
-  constructor(directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  constructor(@Optional() private directionality: Directionality) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

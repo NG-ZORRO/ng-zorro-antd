@@ -13,6 +13,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -61,7 +62,7 @@ import { PaginationItemRenderContext } from './pagination.types';
     </ng-template>
   `
 })
-export class NzPaginationSimpleComponent implements OnChanges, OnDestroy {
+export class NzPaginationSimpleComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() disabled = false;
@@ -74,24 +75,25 @@ export class NzPaginationSimpleComponent implements OnChanges, OnDestroy {
   isFirstIndex = false;
   isLastIndex = false;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   constructor(
-    cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.updateRtlStyle();
-      cdr.detectChanges();
-    });
-    this.dir = directionality.value;
-    this.updateRtlStyle();
-
     renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+  }
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.updateRtlStyle();
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+    this.updateRtlStyle();
   }
 
   private updateRtlStyle(): void {

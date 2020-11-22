@@ -17,6 +17,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   ViewChild,
@@ -105,7 +106,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   isFocused = false;
   disabledUp = false;
   disabledDown = false;
-  dir: Direction;
+  dir: Direction = 'ltr';
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @Output() readonly nzBlur = new EventEmitter();
@@ -375,13 +376,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -394,6 +390,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         this.isFocused = true;
         this.nzFocus.emit();
       }
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

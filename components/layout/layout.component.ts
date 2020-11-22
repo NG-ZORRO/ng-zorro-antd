@@ -12,7 +12,16 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, ContentChildren, OnDestroy, QueryList, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzSiderComponent } from './sider.component';
@@ -32,16 +41,17 @@ import { NzSiderComponent } from './sider.component';
     '[class.ant-layout-rtl]': `dir === 'rtl'`
   }
 })
-export class NzLayoutComponent implements OnDestroy {
+export class NzLayoutComponent implements OnDestroy, OnInit {
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  constructor(@Optional() private directionality: Directionality) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

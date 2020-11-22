@@ -60,7 +60,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
-  dir: Direction;
+  dir: Direction = 'ltr';
   @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
@@ -124,7 +124,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
     @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
@@ -137,11 +137,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
         this.updateRouterActive();
       });
     }
-
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
   }
 
   ngOnInit(): void {
@@ -151,6 +146,11 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngAfterContentInit(): void {

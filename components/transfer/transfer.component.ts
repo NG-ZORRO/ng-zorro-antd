@@ -13,6 +13,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -124,7 +125,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   leftFilter = '';
   rightFilter = '';
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   // #region fields
 
@@ -248,13 +249,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.cdr.detectChanges();
-    });
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
 
   private markForCheckAllList(): void {
     if (!this.lists) {
@@ -290,6 +285,12 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
   }
 

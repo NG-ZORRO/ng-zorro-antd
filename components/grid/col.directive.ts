@@ -50,7 +50,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   private classMap: { [key: string]: boolean } = {};
   private destroy$ = new Subject();
   hostFlexStyle: string | null = null;
-  dir: Direction;
+  dir: Direction = 'ltr';
   @Input() nzFlex: string | number | null = null;
   @Input() nzSpan: string | number | null = null;
   @Input() nzOrder: string | number | null = null;
@@ -128,18 +128,18 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     private elementRef: ElementRef,
     @Optional() @Host() public nzRowDirective: NzRowDirective,
     public renderer: Renderer2,
-    @Optional() directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change.subscribe(() => {
-      this.dir = directionality.value;
-      this.setHostClassMap();
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.setHostClassMap();
     this.setHostFlexStyle();
+
+    this.dir = this.directionality.value;
+    this.directionality.change.subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.setHostClassMap();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

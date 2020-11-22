@@ -126,7 +126,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   isRange: boolean = false; // Indicate whether the value is a range value
   focused: boolean = false;
   extraFooter?: TemplateRef<NzSafeAny> | string;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
@@ -188,15 +188,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-    this.dir = directionality.value;
-  }
+  ) {}
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user
@@ -230,6 +224,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     });
 
     this.setModeAndFormat();
+
+    this.directionality.change?.pipe(takeUntil(this.destroyed$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

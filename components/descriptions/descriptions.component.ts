@@ -13,6 +13,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -143,7 +145,7 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     '[class.ant-descriptions-rtl]': 'dir === "rtl"'
   }
 })
-export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
+export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzColon: BooleanInput;
@@ -159,7 +161,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
   private destroy$ = new Subject<void>();
@@ -168,11 +170,12 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
-    directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+    @Optional() private directionality: Directionality
+  ) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

@@ -12,6 +12,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   TemplateRef,
   ViewChild,
@@ -66,7 +67,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
   locale!: NzUploadI18nInterface;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   // #region fields
 
@@ -172,14 +173,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.setClassMap();
-      this.cdr.detectChanges();
-    });
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
 
   // #region upload
 
@@ -334,6 +328,13 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.i18n$ = this.i18n.localeChange.subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.setClassMap();
+      this.cdr.detectChanges();
     });
   }
 

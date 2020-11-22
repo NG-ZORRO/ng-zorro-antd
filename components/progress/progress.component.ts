@@ -199,7 +199,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   pathString?: string;
   icon!: string;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   trackByFn = (index: number) => `${index}`;
 
@@ -223,14 +223,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private inferredStatus: NzProgressStatusType = 'normal';
   private destroy$ = new Subject<void>();
 
-  constructor(cdr: ChangeDetectorRef, public nzConfigService: NzConfigService, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
@@ -290,6 +287,13 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         this.setStrokeColor();
         this.getCirclePaths();
       });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

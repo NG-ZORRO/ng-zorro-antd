@@ -17,6 +17,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -150,7 +151,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   handles: NzSliderHandler[] = []; // Handles' offset
   marksArray: NzExtendedMark[] | null = null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private dragStart$?: Observable<number>;
   private dragMove$?: Observable<number>;
@@ -164,14 +165,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     private sliderService: NzSliderService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.cdr.detectChanges();
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.handles = generateHandlers(this.nzRange ? 2 : 1);
@@ -182,6 +177,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
     }
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

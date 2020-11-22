@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Inject, Input, NgZone, OnDestroy, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, Input, NgZone, OnDestroy, OnInit, Optional } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -20,11 +20,11 @@ import { NzTabPositionMode } from './interfaces';
     '[class.ant-tabs-ink-bar-animated]': '_animated'
   }
 })
-export class NzTabsInkBarDirective implements OnDestroy {
+export class NzTabsInkBarDirective implements OnDestroy, OnInit {
   @Input() position: NzTabPositionMode = 'horizontal';
   @Input() animated = true;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private readonly destroy$ = new Subject();
 
   get _animated(): boolean {
@@ -34,12 +34,13 @@ export class NzTabsInkBarDirective implements OnDestroy {
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private ngZone: NgZone,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) public animationMode?: string
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  ) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

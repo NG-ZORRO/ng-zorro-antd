@@ -19,6 +19,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   QueryList,
@@ -95,7 +96,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     '[class.ant-carousel-rtl]': `dir ==='rtl'`
   }
 })
-export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzEnableSwipe: BooleanInput;
   static ngAcceptInputType_nzDots: BooleanInput;
@@ -144,7 +145,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
   transitionInProgress: number | null = null;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
@@ -160,17 +161,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
-    directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
 
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
-
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  }
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
       this.switchStrategy();
     });
   }

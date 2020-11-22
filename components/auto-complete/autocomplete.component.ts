@@ -16,6 +16,7 @@ import {
   Input,
   NgZone,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   QueryList,
@@ -82,7 +83,7 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
   `,
   animations: [slideMotion]
 })
-export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit {
   static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
   static ngAcceptInputType_nzBackfill: BooleanInput;
 
@@ -99,7 +100,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   showPanel: boolean = true;
   isOpen: boolean = false;
   activeItem!: NzAutocompleteOptionComponent;
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   /**
@@ -152,15 +153,16 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      changeDetectorRef.detectChanges();
+  ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.changeDetectorRef.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngAfterContentInit(): void {

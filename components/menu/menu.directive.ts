@@ -92,7 +92,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   @Input() @InputBoolean() nzSelectable = !this.isMenuInsideDropDown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
   actualMode: NzMenuModeType = 'vertical';
-  dir: Direction;
+  dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
   private destroy$ = new Subject();
@@ -119,15 +119,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     private nzMenuService: MenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     private cdr: ChangeDetectorRef,
-    directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.nzMenuService.setMode(this.actualMode);
-      this.cdr.markForCheck();
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     combineLatest([this.inlineCollapsed$, this.mode$])
@@ -142,6 +135,13 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
       if (this.nzSelectable && !menu.nzMatchRouter) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
       }
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.nzMenuService.setMode(this.actualMode);
+      this.cdr.markForCheck();
     });
   }
 

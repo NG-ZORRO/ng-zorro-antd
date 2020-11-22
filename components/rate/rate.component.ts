@@ -104,7 +104,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   classMap: NgClassType = {};
   starArray: number[] = [];
   starStyleArray: NgClassType[] = [];
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private readonly destroy$ = new Subject<void>();
   private hasHalf = false;
@@ -130,15 +130,8 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;
@@ -166,6 +159,13 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

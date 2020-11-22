@@ -12,6 +12,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Renderer2,
   SimpleChanges,
@@ -67,7 +68,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
 })
-export class NzBadgeComponent implements OnChanges, OnDestroy {
+export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowZero: BooleanInput;
   static ngAcceptInputType_nzShowDot: BooleanInput;
@@ -75,7 +76,7 @@ export class NzBadgeComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzStandalone: BooleanInput;
   showSup = false;
   presetColor: string | null = null;
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
@@ -95,14 +96,15 @@ export class NzBadgeComponent implements OnChanges, OnDestroy {
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+    @Optional() private directionality: Directionality
+  ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
       this.prepareBadgeForRtl();
       this.cdr.detectChanges();
     });
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
     this.prepareBadgeForRtl();
   }
 

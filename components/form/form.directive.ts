@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
@@ -35,7 +35,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   destroy$ = new Subject();
   private inputChanges$ = new Subject<SimpleChanges>();
 
@@ -50,13 +50,13 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     public nzConfigService: NzConfigService,
     elementRef: ElementRef,
     private renderer: Renderer2,
-    directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-form');
 
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

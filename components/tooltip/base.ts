@@ -15,6 +15,7 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Renderer2,
   SimpleChanges,
@@ -300,7 +301,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class NzTooltipBaseComponent implements OnDestroy {
+export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
 
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
@@ -352,7 +353,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin!: CdkOverlayOrigin;
   preferredPlacement = 'top';
-  public dir: Direction;
+  public dir: Direction = 'ltr';
 
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
@@ -361,13 +362,18 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(public cdr: ChangeDetectorRef, @Optional() directionality: Directionality, public noAnimation?: NzNoAnimationDirective) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+  constructor(
+    public cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality,
+    public noAnimation?: NzNoAnimationDirective
+  ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {
