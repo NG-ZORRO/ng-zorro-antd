@@ -99,8 +99,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
               *ngFor="let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun"
             >
               <svg:g nz-graph-node [node]="node" (nodeClick)="clickNode($event)">
-                <svg:rect class="nz-graph-node-rect"></svg:rect>
-                <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+                <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
                   <xhtml:div class="nz-graph-node-wrapper">
                     <ng-container
                       *ngIf="customGraphNodeTemplate"
