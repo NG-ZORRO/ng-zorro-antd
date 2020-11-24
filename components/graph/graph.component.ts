@@ -94,20 +94,19 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
           <svg:g class="nz-graph-nodes">
             <svg:g
               class="nz-graph-node"
-              [class.nz-graph-custom-node]="!!customNodeTemplate"
+              [class.nz-graph-custom-node]="!!customGraphNodeTemplate"
               [style.display]="node.type === 2 ? 'none' : null"
               *ngFor="let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun"
             >
               <svg:g nz-graph-node [node]="node" (nodeClick)="clickNode($event)">
-                <svg:rect class="nz-graph-node-rect"></svg:rect>
-                <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+                <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
                   <xhtml:div class="nz-graph-node-wrapper">
                     <ng-container
-                      *ngIf="customNodeTemplate"
-                      [ngTemplateOutlet]="customNodeTemplate"
-                      [ngTemplateOutletContext]="{ $implicit: node, group: node.type === 0 }"
+                      *ngIf="customGraphNodeTemplate"
+                      [ngTemplateOutlet]="customGraphNodeTemplate"
+                      [ngTemplateOutletContext]="{ $implicit: node }"
                     ></ng-container>
-                    <div class="node-content" *ngIf="!customNodeTemplate">
+                    <div class="node-content" *ngIf="!customGraphNodeTemplate">
                       <div class="title">
                         {{ node.name }}
                         <i
@@ -150,12 +149,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   @ViewChild(NzGraphSvgContainerComponent) svgContainerComponent!: NzGraphSvgContainerComponent;
   @ViewChild(NzGraphMinimapComponent) minimap: NzGraphMinimapComponent | undefined;
 
-  @ContentChild(NzCustomGraphNodeDirective, { static: false, read: TemplateRef })
-  set customNode(value: TemplateRef<{ $implicit: NzGraphNode | NzGraphGroupNode }>) {
-    if (value) {
-      this.customNodeTemplate = value;
-    }
-  }
+  @ContentChild(NzCustomGraphNodeDirective, { static: true, read: TemplateRef }) customGraphNodeTemplate?: TemplateRef<{
+    $implicit: NzGraphNode | NzGraphGroupNode;
+  }>;
   /**
    * Provides a stream containing the latest data array to render.
    * Data source can be an observable of NzGraphData, or a NzGraphData to render.
@@ -177,7 +173,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
   mapOfNodeAttr: { [key: string]: NzGraphNodeDef } = {};
   mapOfEdgeAttr: { [key: string]: NzGraphEdgeDef } = {};
-  customNodeTemplate: TemplateRef<{ $implicit: NzGraphGroupNode | NzGraphNode }> | null = null;
 
   public readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();
   private dataSource?: NzGraphData;
@@ -199,9 +194,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return `translate(0, ${node.labelHeight})`;
   };
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private elementRef: ElementRef) {
-    this.cdr.detach();
-  }
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     if (this.dataSource !== this.nzGraphData) {
@@ -236,7 +229,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   ngAfterViewInit(): void {
     this.autoFit();
-    this.cdr.detectChanges();
     this.drawMinimap(true);
   }
 
@@ -396,7 +388,12 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   private resizeNodes(renderInfo: NzGraphGroupNode, options: NzGraphOption): void {
     this.ngZone.onStable
       .asObservable()
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.cdr.detectChanges();
+        })
+      )
       .subscribe(() => {
         const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
         this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach((nodeEle: HTMLElement) => {

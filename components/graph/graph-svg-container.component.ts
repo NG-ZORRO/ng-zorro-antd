@@ -41,7 +41,7 @@ export interface RelativePositionInfo {
   selector: 'nz-graph-svg-container',
   exportAs: 'nzGraphSvgContainer',
   template: `
-    <svg #container width="100%" height="100%">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" #container width="100%" height="100%">
       <rect width="100%" height="100%" fill="transparent" class="nz-graph-background"></rect>
       <g #zoom [attr.transform]="transformStyle" class="nz-graph-zoom">
         <ng-content></ng-content>
