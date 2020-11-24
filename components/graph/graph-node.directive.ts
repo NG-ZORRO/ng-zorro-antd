@@ -70,14 +70,14 @@ export class NzGraphNodeDirective implements AfterViewInit {
         group([
           query('.nz-graph-node-rect', [
             animate(
-              '200ms ease-out',
+              '150ms ease-out',
               style({
                 width: `${cur.width}px`,
                 height: `${cur.height}px`
               })
             )
           ]),
-          animate('200ms ease-out', style({ transform: `translate(${cur.x}px, ${cur.y}px)` }))
+          animate('150ms ease-out', style({ transform: `translate(${cur.x}px, ${cur.y}px)` }))
         ])
       ]);
     }
