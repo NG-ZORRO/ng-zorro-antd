@@ -80,10 +80,7 @@ import { NzTableData } from '../table.types';
         ></table>
       </div>
     </div>
-  `,
-  host: {
-    '[class.ant-table-container]': 'true'
-  }
+  `
 })
 export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() data: NzTableData[] = [];
@@ -130,7 +127,16 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
     }
   }
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone, private platform: Platform, private resizeService: NzResizeService) {}
+  constructor(
+    private renderer: Renderer2,
+    private ngZone: NgZone,
+    private platform: Platform,
+    private resizeService: NzResizeService,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-container');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;

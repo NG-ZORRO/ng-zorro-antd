@@ -136,7 +136,6 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     </ng-template>
   `,
   host: {
-    '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-fit]': 'nzAutoSize'
   }
 })
@@ -194,7 +193,10 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return `translate(0, ${node.labelHeight})`;
   };
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private elementRef: ElementRef) {}
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('nz-graph');
+  }
 
   ngOnInit(): void {
     if (this.dataSource !== this.nzGraphData) {

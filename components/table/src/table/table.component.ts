@@ -115,10 +115,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-  `,
-  host: {
-    '[class.ant-table-wrapper]': 'true'
-  }
+  `
 })
 export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -203,6 +200,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzTableStyleService: NzTableStyleService,
     private nzTableDataService: NzTableDataService
   ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-wrapper');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

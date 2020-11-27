@@ -25,11 +25,10 @@ import { NzMenuModeType } from './menu.types';
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template> `,
+  template: `
+    <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
+  `,
   host: {
-    '[class.ant-menu]': 'true',
-    '[class.ant-menu-inline]': 'true',
-    '[class.ant-menu-sub]': 'true',
     '[@collapseMotion]': 'expandState'
   }
 })
@@ -47,7 +46,10 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
       this.expandState = 'collapsed';
     }
   }
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-menu', 'ant-menu-inline', 'ant-menu-sub');
+  }
   ngOnInit(): void {
     this.calcMotionState();
   }

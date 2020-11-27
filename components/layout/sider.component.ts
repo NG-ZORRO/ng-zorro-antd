@@ -10,6 +10,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -52,7 +53,6 @@ import { takeUntil } from 'rxjs/operators';
     ></div>
   `,
   host: {
-    '[class.ant-layout-sider]': 'true',
     '[class.ant-layout-sider-zero-width]': `nzCollapsed && nzCollapsedWidth === 0`,
     '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
     '[class.ant-layout-sider-dark]': `nzTheme === 'dark'`,
@@ -106,7 +106,15 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
     }
   }
 
-  constructor(private platform: Platform, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    private platform: Platform,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-layout-sider');
+  }
 
   ngOnInit(): void {
     this.updateStyleMap();

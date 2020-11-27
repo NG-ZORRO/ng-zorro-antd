@@ -7,6 +7,7 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -86,7 +87,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
   host: {
-    '[class.ant-select-selector]': 'true',
     '(keydown)': 'onHostKeydown($event)'
   }
 })
@@ -201,7 +201,10 @@ export class NzSelectTopControlComponent implements OnChanges {
     this.animationEnd.next();
   }
 
-  constructor(@Host() @Optional() public noAnimation?: NzNoAnimationDirective) {}
+  constructor(private elementRef: ElementRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selector');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;

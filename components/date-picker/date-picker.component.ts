@@ -91,7 +91,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     </div>
   `,
   host: {
-    '[class.ant-picker]': `true`,
     '[class.ant-picker-range]': `isRange`,
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
@@ -182,7 +181,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-picker');
+  }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user

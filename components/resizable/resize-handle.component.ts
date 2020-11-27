@@ -3,7 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,10 +28,11 @@ export class NzResizeHandleMouseDownEvent {
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.nz-resizable-handle]': 'true',
     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
     '[class.nz-resizable-handle-right]': `nzDirection === 'right'`,
     '[class.nz-resizable-handle-bottom]': `nzDirection === 'bottom'`,
@@ -42,7 +53,10 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
   entered = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private nzResizableService: NzResizableService, private cdr: ChangeDetectorRef) {}
+  constructor(private nzResizableService: NzResizableService, private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('nz-resizable-handle');
+  }
 
   ngOnInit(): void {
     this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
