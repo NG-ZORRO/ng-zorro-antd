@@ -15,8 +15,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-
       (nzContextMenu)="nzClick($event)"
       (nzCheckBoxChange)="nzCheck($event)"
       (nzExpandChange)="nzCheck($event)"
-    >
-    </nz-tree>
+    ></nz-tree>
   `
 })
 export class NzDemoTreeBasicComponent implements AfterViewInit {

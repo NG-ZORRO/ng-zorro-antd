@@ -10,7 +10,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, of } from 'rxjs';
-import { NzTreeNodeComponent } from './tree-node.component';
+import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 
 import { NzTreeComponent } from './tree.component';
 import { NzTreeModule } from './tree.module';
@@ -18,7 +18,7 @@ import Spy = jasmine.Spy;
 
 const prepareTest = (componentInstance?: NzSafeAny): ComponentBed<NzSafeAny> => {
   return createComponentBed(componentInstance, {
-    declarations: [NzTreeNodeComponent],
+    declarations: [NzTreeNodeBuiltinComponent],
     providers: [],
     imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule]
   });
@@ -37,7 +37,7 @@ describe('tree', () => {
     describe('basic tree under default value', () => {
       it('basic initial data', () => {
         const { nativeElement } = testBed;
-        const shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        const shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         const enableCheckbox = nativeElement.querySelectorAll('.ant-tree-checkbox');
         expect(shownNodes.length).toEqual(3);
         expect(enableCheckbox.length).toEqual(3);
@@ -45,7 +45,7 @@ describe('tree', () => {
 
       it('should initialize properly', () => {
         const { nativeElement } = testBed;
-        const shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        const shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         const enableCheckbox = nativeElement.querySelectorAll('.ant-tree-checkbox');
         expect(shownNodes.length).toEqual(3);
         expect(enableCheckbox.length).toEqual(3);
@@ -55,7 +55,7 @@ describe('tree', () => {
         const { component, fixture, nativeElement } = testBed;
         component.defaultExpandedKeys = ['0-1'];
         fixture.detectChanges();
-        const shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        const shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(4);
         tick(300);
         fixture.detectChanges();
@@ -67,7 +67,7 @@ describe('tree', () => {
         const { component, fixture, nativeElement } = testBed;
         component.expandAll = true;
         fixture.detectChanges();
-        const shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        const shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(7);
         tick(300);
         fixture.detectChanges();
@@ -181,7 +181,7 @@ describe('tree', () => {
         tick();
         fixture.detectChanges();
         // 0-1 0-2 hidden, others are not shown because not expanded
-        const hiddenNodes = nativeElement.querySelectorAll('nz-tree-node[style*="display: none;"]');
+        const hiddenNodes = nativeElement.querySelectorAll('nz-tree-node[builtin][style*="display: none;"]');
         expect(hiddenNodes.length).toEqual(2);
       }));
     });
@@ -379,7 +379,7 @@ describe('tree', () => {
         dispatchMouseEvent(dragNode, 'dragstart');
         fixture.detectChanges();
         expect(dragStartSpy).toHaveBeenCalledTimes(1);
-        let shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        let shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(3);
 
         //  ============ dragenter ==============
@@ -407,7 +407,7 @@ describe('tree', () => {
         fixture.detectChanges();
 
         // dragenter expands 0-1/0-1
-        shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(7);
       }));
 
@@ -437,7 +437,7 @@ describe('tree', () => {
         //  ============ dragstart ==============
         dispatchMouseEvent(dragNode, 'dragstart');
         fixture.detectChanges();
-        let shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        let shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(3);
 
         //  ============ dragenter ==============
@@ -448,7 +448,7 @@ describe('tree', () => {
         // =========== dragover with different position ===========
         // drag-over-gap-top
         dispatchMouseEvent(passedNode, 'dragover', 300, 340);
-        elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2)') as HTMLElement;
+        elementNode = nativeElement.querySelector('nz-tree-node[builtin]:nth-child(2)') as HTMLElement;
         expect(elementNode.classList).toContain('drag-over-gap-top');
 
         // drag-over
@@ -458,14 +458,14 @@ describe('tree', () => {
 
         // drag-over-gap-bottom
         dispatchMouseEvent(passedNode, 'dragover', 300, 570);
-        elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2)') as HTMLElement;
+        elementNode = nativeElement.querySelector('nz-tree-node[builtin]:nth-child(2)') as HTMLElement;
         expect(elementNode.classList).toContain('drag-over-gap-bottom');
 
         // ======= enter check, expand passing nodes ========
         expect(dragEnterSpy).toHaveBeenCalledTimes(1);
         expect(dragOverSpy).toHaveBeenCalledTimes(3);
         fixture.detectChanges();
-        shownNodes = nativeElement.querySelectorAll('nz-tree-node');
+        shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
         expect(shownNodes.length).toEqual(4);
       }));
 
@@ -584,8 +584,7 @@ describe('tree', () => {
       (nzContextMenu)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzCheckBoxChange)="nzEvent($event)"
-    >
-    </nz-tree>
+    ></nz-tree>
     <ng-template #expandedIconTpl let-node>
       <i nz-icon nzType="smile" class="ant-tree-switcher-icon"></i>
     </ng-template>
@@ -664,8 +663,7 @@ export class NzTestTreeBasicControlledComponent {
       (nzOnDragOver)="onDragOver()"
       (nzOnDrop)="onDrop()"
       (nzOnDragEnd)="onDragEnd()"
-    >
-    </nz-tree>
+    ></nz-tree>
   `
 })
 export class NzTestTreeDraggableComponent {
@@ -729,8 +727,7 @@ export class NzTestTreeDraggableComponent {
       [nzExpandAll]="expandAll"
       [nzAsyncData]="asyncData"
       [nzHideUnMatched]="hideUnMatched"
-    >
-    </nz-tree>
+    ></nz-tree>
   `
 })
 export class NzTestTreeBasicSearchComponent {
