@@ -62,14 +62,16 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <!-- Horizontal & NOT Bordered -->
                 <ng-container *ngIf="!nzBordered">
                   <td class="ant-descriptions-item" [colSpan]="item.span">
-                    <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
-                      <ng-container *nzStringTemplateOutlet="item.title">
-                        {{ item.title }}
-                      </ng-container>
-                    </span>
-                    <span class="ant-descriptions-item-content">
-                      <ng-template [ngTemplateOutlet]="item.content"></ng-template>
-                    </span>
+                    <div class="ant-descriptions-item-container">
+                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
+                        <ng-container *nzStringTemplateOutlet="item.title">
+                          {{ item.title }}
+                        </ng-container>
+                      </span>
+                      <span class="ant-descriptions-item-content">
+                        <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                      </span>
+                    </div>
                   </td>
                 </ng-container>
                 <!-- Horizontal & Bordered -->
