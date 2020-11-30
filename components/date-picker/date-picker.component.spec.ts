@@ -881,6 +881,25 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(22);
     }));
+
+    // #6070
+    it('should reset after inputing invalid value and close panel', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = getPickerInput(fixture.debugElement);
+
+      // Wrong inputing support
+      typeInElement('wrong', input);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(document.body, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(input.value).toBe('');
+    }));
   }); // /specified date picker testing
 
   function getPreBtn(): HTMLElement {
