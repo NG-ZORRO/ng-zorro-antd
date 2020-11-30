@@ -39,9 +39,6 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
     />
     <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
   `,
-  host: {
-    '[class.ant-select-selection-search]': 'true'
-  },
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
@@ -91,7 +88,10 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selection-search');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;

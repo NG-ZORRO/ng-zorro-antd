@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -24,7 +24,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-collapse]': 'true',
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
@@ -43,7 +42,10 @@ export class NzCollapseComponent implements OnDestroy {
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-collapse');
+
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

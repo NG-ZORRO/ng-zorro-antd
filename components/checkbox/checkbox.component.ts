@@ -61,7 +61,6 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
     }
   ],
   host: {
-    '[class.ant-checkbox-wrapper]': 'true',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '(click)': 'hostClick($event)'
   }
@@ -130,7 +129,10 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-checkbox-wrapper');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {

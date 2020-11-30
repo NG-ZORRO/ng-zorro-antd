@@ -11,7 +11,6 @@ import { NzGraphEdge } from './interface';
 @Directive({
   selector: 'svg:path[nz-graph-edge]',
   host: {
-    '[class.nz-graph-edge-line]': 'true',
     '[id]': 'id'
   }
 })
@@ -29,6 +28,9 @@ export class NzGraphEdgeDirective implements OnInit, OnChanges {
     .curve(curveBasis);
 
   constructor(private elementRef: ElementRef<SVGPathElement>, private ngZone: NgZone) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('nz-graph-edge-line');
+
     this.el = this.elementRef.nativeElement;
   }
 

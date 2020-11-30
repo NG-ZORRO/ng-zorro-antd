@@ -33,10 +33,7 @@ const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSI
 
 @Directive({
   selector: '[nz-dropdown]',
-  exportAs: 'nzDropdown',
-  host: {
-    '[class.ant-dropdown-trigger]': 'true'
-  }
+  exportAs: 'nzDropdown'
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   static ngAcceptInputType_nzBackdrop: BooleanInput;
@@ -83,7 +80,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     private renderer: Renderer2,
     private viewContainerRef: ViewContainerRef,
     private platform: Platform
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-dropdown-trigger');
+  }
 
   ngOnInit(): void {}
 

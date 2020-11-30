@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -62,7 +62,6 @@ const ExceptionStatus = ['404', '500', '403'];
     </ng-template>
   `,
   host: {
-    '[class.ant-result]': 'true',
     '[class.ant-result-success]': `nzStatus === 'success'`,
     '[class.ant-result-error]': `nzStatus === 'error'`,
     '[class.ant-result-info]': `nzStatus === 'info'`,
@@ -79,7 +78,10 @@ export class NzResultComponent implements OnChanges {
   icon?: string | TemplateRef<void>;
   isException = false;
 
-  constructor() {}
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-result');
+  }
 
   ngOnChanges(): void {
     this.setStatusIcon();

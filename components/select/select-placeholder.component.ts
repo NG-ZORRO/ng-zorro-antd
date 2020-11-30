@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -14,11 +14,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     <ng-container *nzStringTemplateOutlet="placeholder">
       {{ placeholder }}
     </ng-container>
-  `,
-  host: {
-    '[class.ant-select-selection-placeholder]': 'true'
-  }
+  `
 })
 export class NzSelectPlaceholderComponent {
   @Input() placeholder: TemplateRef<NzSafeAny> | string | null = null;
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selection-placeholder');
+  }
 }

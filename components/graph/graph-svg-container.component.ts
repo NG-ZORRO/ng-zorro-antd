@@ -47,10 +47,7 @@ export interface RelativePositionInfo {
         <ng-content></ng-content>
       </g>
     </svg>
-  `,
-  host: {
-    '[class.nz-graph-svg-container]': 'true'
-  }
+  `
 })
 export class NzGraphSvgContainerComponent implements OnInit, OnDestroy {
   @ViewChild('container', { static: true }) containerElement!: ElementRef<SVGSVGElement>;
@@ -66,7 +63,10 @@ export class NzGraphSvgContainerComponent implements OnInit, OnDestroy {
   svgSelect!: Selection<NzSafeAny, NzSafeAny, NzSafeAny, NzSafeAny>;
   zoomController!: ZoomBehavior<NzSafeAny, NzSafeAny>;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('nz-graph-svg-container');
+  }
 
   ngOnInit(): void {
     this.bind();

@@ -39,10 +39,7 @@ export interface NzCheckBoxOptionInterface {
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi: true
     }
-  ],
-  host: {
-    '[class.ant-checkbox-group]': 'true'
-  }
+  ]
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -61,7 +58,10 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     this.onChange(this.options);
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {}
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-checkbox-group');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {

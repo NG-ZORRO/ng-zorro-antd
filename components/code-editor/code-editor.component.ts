@@ -49,9 +49,6 @@ declare const monaco: NzSafeAny;
       <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
     </div>
   `,
-  host: {
-    '[class.ant-code-editor]': 'true'
-  },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -93,6 +90,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private platform: Platform
   ) {
     this.el = elementRef.nativeElement;
+    this.el.classList.add('ant-code-editor');
   }
 
   /**

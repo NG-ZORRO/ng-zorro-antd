@@ -18,7 +18,6 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
   selector: '[nz-row],nz-row,nz-form-item',
   exportAs: 'nzRow',
   host: {
-    '[class.ant-row]': `true`,
     '[class.ant-row-top]': `nzAlign === 'top'`,
     '[class.ant-row-middle]': `nzAlign === 'middle'`,
     '[class.ant-row-bottom]': `nzAlign === 'bottom'`,
@@ -80,7 +79,10 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public ngZone: NgZone,
     public platform: Platform,
     private breakpointService: NzBreakpointService
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-row');
+  }
 
   ngOnInit(): void {
     this.setGutterStyle();

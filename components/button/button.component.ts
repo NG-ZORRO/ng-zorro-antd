@@ -43,7 +43,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-btn]': `true`,
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -113,6 +112,8 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private renderer: Renderer2,
     public nzConfigService: NzConfigService
   ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-btn');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

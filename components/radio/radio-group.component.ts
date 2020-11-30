@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   forwardRef,
   Input,
   OnChanges,
@@ -27,7 +28,9 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -39,7 +42,6 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     }
   ],
   host: {
-    '[class.ant-radio-group]': `true`,
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`
@@ -57,7 +59,10 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
 
-  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService) {}
+  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-radio-group');
+  }
 
   ngOnInit(): void {
     this.nzRadioService.selected$.subscribe(value => {

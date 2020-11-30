@@ -83,7 +83,6 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    '[class.ant-input-number]': 'true',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -366,7 +365,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-input-number');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {

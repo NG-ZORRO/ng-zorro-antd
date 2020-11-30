@@ -31,14 +31,14 @@ import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
     <canvas class="viewport"></canvas>
     <!-- Additional canvas to use as buffer to avoid flickering between updates -->
     <canvas class="buffer"></canvas>
-  `,
-  host: {
-    '[class.nz-graph-minimap]': 'true'
-  }
+  `
 })
 export class NzGraphMinimapComponent implements OnInit {
   minimap?: Minimap;
-  constructor(private elementRef: ElementRef<HTMLElement>) {}
+  constructor(private elementRef: ElementRef<HTMLElement>) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('nz-graph-minimap');
+  }
 
   ngOnInit(): void {}
 

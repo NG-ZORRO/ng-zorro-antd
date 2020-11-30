@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -46,7 +55,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     </ng-container>
   `,
   host: {
-    '[class.ant-badge]': 'true',
     '[class.ant-badge-status]': 'nzStatus',
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
@@ -72,7 +80,10 @@ export class NzBadgeComponent implements OnChanges {
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
 
-  constructor(public nzConfigService: NzConfigService) {}
+  constructor(public nzConfigService: NzConfigService, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-badge');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor, nzShowDot, nzDot, nzCount, nzShowZero } = changes;

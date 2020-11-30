@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -79,7 +80,6 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ant-list]': 'true',
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
     '[class.ant-list-sm]': 'nzSize === "small"',
@@ -121,7 +121,10 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor() {}
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-list');
+  }
 
   getSomethingAfterLastItem(): boolean {
     return !!(
