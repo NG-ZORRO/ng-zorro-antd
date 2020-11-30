@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       [nzFooter]="footerTpl"
       (nzOnClose)="close()"
     >
-      <form nz-form>
+      <form nz-form *nzDrawerContent>
         <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
@@ -80,14 +80,14 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-
-        <ng-template #footerTpl>
-          <div style="float: right">
-            <button nz-button style="margin-right: 8px;" (click)="close()">Cancel</button>
-            <button nz-button nzType="primary" (click)="close()">Submit</button>
-          </div>
-        </ng-template>
       </form>
+
+      <ng-template #footerTpl>
+        <div style="float: right">
+          <button nz-button style="margin-right: 8px;" (click)="close()">Cancel</button>
+          <button nz-button nzType="primary" (click)="close()">Submit</button>
+        </div>
+      </ng-template>
     </nz-drawer>
   `
 })

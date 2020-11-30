@@ -22,37 +22,37 @@ import { Component } from '@angular/core';
       </ng-template>
     </nz-list>
     <nz-drawer [nzVisible]="visible" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="close()">
-      <p class="title" style=" margin-bottom: 24px;">User Profile</p>
-      <nz-descriptions [nzColumn]="2" nzTitle="Personal">
-        <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">Lily</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Account" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="City" [nzSpan]="1">HangZhou</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Country" [nzSpan]="1">China🇨🇳</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Birthday" [nzSpan]="1">February 2,1900</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Website" [nzSpan]="1"> - </nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Message" [nzSpan]="2">
-          Make things as simple as possible but no simpler.
-        </nz-descriptions-item>
-      </nz-descriptions>
-      <nz-divider></nz-divider>
-      <nz-descriptions [nzColumn]="2" nzTitle="Company">
-        <nz-descriptions-item nzTitle="Position" [nzSpan]="1">Programmer</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Responsibilities" [nzSpan]="1">Coding</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Department" [nzSpan]="1">AFX</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Supervisor" [nzSpan]="1">Lin</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Skills" [nzSpan]="2">
-          C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer
-          architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc.
-        </nz-descriptions-item>
-      </nz-descriptions>
-      <nz-divider></nz-divider>
-      <nz-descriptions [nzColumn]="2" nzTitle="Contacts">
-        <nz-descriptions-item nzTitle="Email" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">+86 181 0000 0000</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Github" [nzSpan]="2">
-          <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank">github.com/NG-ZORRO/ng-zorro-antd</a>
-        </nz-descriptions-item>
-      </nz-descriptions>
+      <ng-container *nzDrawerContent>
+        <p class="title" style=" margin-bottom: 24px;">User Profile</p>
+        <nz-descriptions [nzColumn]="2" nzTitle="Personal">
+          <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">Lily</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Account" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="City" [nzSpan]="1">HangZhou</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Country" [nzSpan]="1">China🇨🇳</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Birthday" [nzSpan]="1">February 2,1900</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Website" [nzSpan]="1">-</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Message" [nzSpan]="2">Make things as simple as possible but no simpler.</nz-descriptions-item>
+        </nz-descriptions>
+        <nz-divider></nz-divider>
+        <nz-descriptions [nzColumn]="2" nzTitle="Company">
+          <nz-descriptions-item nzTitle="Position" [nzSpan]="1">Programmer</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Responsibilities" [nzSpan]="1">Coding</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Department" [nzSpan]="1">AFX</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Supervisor" [nzSpan]="1">Lin</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Skills" [nzSpan]="2">
+            C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer
+            architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc.
+          </nz-descriptions-item>
+        </nz-descriptions>
+        <nz-divider></nz-divider>
+        <nz-descriptions [nzColumn]="2" nzTitle="Contacts">
+          <nz-descriptions-item nzTitle="Email" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">+86 181 0000 0000</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Github" [nzSpan]="2">
+            <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank">github.com/NG-ZORRO/ng-zorro-antd</a>
+          </nz-descriptions-item>
+        </nz-descriptions>
+      </ng-container>
     </nz-drawer>
   `,
   styles: [
