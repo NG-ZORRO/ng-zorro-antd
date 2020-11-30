@@ -1368,6 +1368,24 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Zhejiang');
     }));
 
+    it('should clear input value when searching cancel', fakeAsync(() => {
+      testComponent.values = ['zhengjiang', 'hangzhou', 'xihu'];
+      testComponent.nzShowSearch = true;
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      testComponent.cascader.inputValue = 'o';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.inputValue).toBe('');
+      expect(testComponent.values).toEqual(['zhengjiang', 'hangzhou', 'xihu']);
+    }));
+
     it('should support nzLabelProperty', fakeAsync(() => {
       testComponent.nzShowSearch = true;
       testComponent.nzLabelProperty = 'l';
