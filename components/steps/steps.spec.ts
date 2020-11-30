@@ -396,6 +396,24 @@ describe('steps', () => {
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
     }));
+
+    it('should enable and disable work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      innerSteps[1].componentInstance.disable();
+      fixture.detectChanges();
+      spyOn(testComponent, 'onIndexChange');
+      innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
+      fixture.detectChanges();
+      expect(testComponent.onIndexChange).not.toHaveBeenCalled();
+      innerSteps[1].componentInstance.enable();
+      fixture.detectChanges();
+      innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
+      fixture.detectChanges();
+      expect(testComponent.onIndexChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
+    }));
   });
 
   describe('navigation', () => {
