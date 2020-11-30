@@ -5,10 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-      <p>Content one</p>
-      <p>Content two</p>
-      <p>Content three</p>
-      <p>Content three</p>
+      <ng-container *nzModalContent>
+        <p>Content one</p>
+        <p>Content two</p>
+        <p>Content three</p>
+      </ng-container>
     </nz-modal>
   `
 })
