@@ -124,8 +124,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isDisableCheckbox?: boolean;
   @Input() isSelectable?: boolean;
   @Input() canHide?: boolean;
-  @Input() isStart?: boolean[];
-  @Input() isEnd?: boolean[];
+  @Input() isStart: boolean[] = [];
+  @Input() isEnd: boolean[] = [];
   @Input() nzTreeNode!: NzTreeNode;
   @Input() @InputBoolean() nzShowLine?: boolean;
   @Input() @InputBoolean() nzShowExpand?: boolean;
