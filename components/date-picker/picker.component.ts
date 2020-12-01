@@ -280,8 +280,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.format && changes.format.currentValue) {
+    if (changes.format?.currentValue !== changes.format?.previousValue) {
       this.inputSize = Math.max(10, this.format.length) + 2;
+      this.updateInputValue();
     }
   }
 
