@@ -821,8 +821,19 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzMode', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-12-01');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择日期');
+
       fixtureInstance.nzMode = 'month';
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择月份');
+      expect(getPickerInput(fixture.debugElement).value).toEqual('2020-12');
+
       openPickerByClickTrigger();
       expect(overlayContainerElement.querySelector('.ant-picker-month-panel')).toBeDefined();
     }));

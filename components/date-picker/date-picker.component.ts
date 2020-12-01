@@ -126,6 +126,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
   private isCustomPlaceHolder: boolean = false;
+  private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
 
   // --- Common API
@@ -231,6 +232,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.isCustomPlaceHolder = true;
     }
 
+    if (changes.nzFormat?.currentValue) {
+      this.isCustomFormat = true;
+    }
+
     if (changes.nzLocale) {
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
@@ -245,6 +250,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     }
 
     if (changes.nzMode) {
+      this.setDefaultPlaceHolder();
       this.setModeAndFormat();
     }
   }
@@ -276,7 +282,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.panelMode = this.isRange ? [this.nzMode, this.nzMode] : this.nzMode;
 
     // Default format when it's empty
-    if (!this.nzFormat) {
+    if (!this.isCustomFormat) {
       this.nzFormat = inputFormats[this.nzMode as NzDateMode]!;
     }
   }
