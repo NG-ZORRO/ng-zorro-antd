@@ -9,6 +9,14 @@
 .@{tree-prefix-cls} {
   &-rtl {
     direction: rtl;
+    .@{tree-prefix-cls}-node-content-wrapper[draggable='true'] {
+      .@{tree-prefix-cls}-drop-indicator {
+        &::after {
+          right: -6px;
+          left: unset;
+        }
+      }
+    }
   }
 
   // ===================== TreeNode =====================
@@ -23,16 +31,10 @@
     &_close {
       .@{tree-prefix-cls}-switcher-icon {
         svg {
-          .@{tree-prefix-cls}-rtl& {
+          .@{tree-prefix-cls}-rtl & {
             transform: rotate(90deg);
           }
         }
-      }
-    }
-
-    &-loading-icon {
-      .@{tree-prefix-cls}-rtl& {
-        transform: scaleY(-1);
       }
     }
   }
