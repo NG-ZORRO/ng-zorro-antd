@@ -55,3 +55,4 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 | `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
 | `[nzSubtitle]` | 子标题 | `string \| TemplateRef<void>` | - |
 | `[nzDisabled]` | 禁用点击 | `boolean` | `false` |
+| `[nzPercentage]` | 当前状态为 `process` 的步骤所显示的进度条进度（只对基本类型的 `nz-steps` 生效） | `number` | - |

@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzProgressFormatter } from 'ng-zorro-antd/progress';
 
 import { Subject } from 'rxjs';
 
@@ -34,6 +35,15 @@ import { Subject } from 'rxjs';
       <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
       <div class="ant-steps-item-icon">
         <ng-template [ngIf]="!showProcessDot">
+          <div *ngIf="showProgress" class="ant-steps-progress-icon">
+            <nz-progress
+              [nzPercent]="nzPercentage"
+              nzType="circle"
+              [nzWidth]="40"
+              [nzFormat]="nullProcessFormat"
+              [nzStrokeWidth]="4"
+            ></nz-progress>
+          </div>
           <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"><i nz-icon nzType="check"></i></span>
           <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
           <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
@@ -95,6 +105,7 @@ export class NzStepComponent implements OnDestroy {
   @Input() nzSubtitle?: string | TemplateRef<void>;
   @Input() nzDescription?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() nzPercentage: number | null = null;
 
   @Input()
   get nzStatus(): string {
@@ -133,6 +144,18 @@ export class NzStepComponent implements OnDestroy {
   showProcessDot = false;
   clickable = false;
   click$ = new Subject<number>();
+
+  readonly nullProcessFormat: NzProgressFormatter = () => null;
+
+  get showProgress(): boolean {
+    return (
+      this.nzPercentage !== null &&
+      !this.nzIcon &&
+      this.nzStatus === 'process' &&
+      this.nzPercentage >= 0 &&
+      this.nzPercentage <= 100
+    );
+  }
 
   get currentIndex(): number {
     return this._currentIndex;
