@@ -6,10 +6,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule } from '@angular/forms';
 
 export const moduleList = [
   FormsModule,
+  NzFormModule,
   NzInputModule,
   NzSelectModule,
   NzCascaderModule,
