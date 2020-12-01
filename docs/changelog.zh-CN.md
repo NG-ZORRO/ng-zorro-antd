@@ -14,6 +14,38 @@ timeline: true
 
 ---
 
+
+## 10.2.0
+`2020-12-01`
+
+### Bug Fixes
+
+* **cascader:** 修复取消搜索时没有恢复值的问题 ([#6088](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6088)) ([22ddc60](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22ddc60))
+* **cascader:** 修复没有滚动到选中选项的问题 ([#6082](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6082)) ([b42b51f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b42b51f)), closes [#6037](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6037)
+* **date-picker:** 修复错误输入在关闭时没有清除的问题 ([#6079](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6079)) ([edffdee](https://github.com/NG-ZORRO/ng-zorro-antd/commit/edffdee)), closes [#6070](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6070)
+* **date-picker:** 修复切换 `nzMode` 的问题 ([#6125](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6125)) ([220a590](https://github.com/NG-ZORRO/ng-zorro-antd/commit/220a590)), closes [#6052](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6052)
+* **descriptions:** 修复 DOM 结构 ([#6112](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6112)) ([5e42d71](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5e42d71))
+* **tree:** 修复缩进连接线的样式问题 ([#6123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6123)) ([2f8edbc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f8edbc))
+* **tree-select:** 修复选择器不能被聚焦的问题([#6073](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6073)) ([032bd01](https://github.com/NG-ZORRO/ng-zorro-antd/commit/032bd01)), closes [#6063](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6063)
+* **upload:** 修复 button 触发 submit 的问题 ([#6096](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6096)) ([123982f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/123982f)), closes [#6095](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6095)
+
+
+### Features
+
+* **drawer:** 添加 `nzDrawerContent` 指令 ([#6085](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6085)) ([6fc0683](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6fc0683))
+* **drawer:** `nzVisible` 支持双向绑定 ([#6013](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6013)) ([caab8be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/caab8be)), closes [#5999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5999)
+* **input:** textarea 支持输入计数 ([#6104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6104)) ([601ab50](https://github.com/NG-ZORRO/ng-zorro-antd/commit/601ab50)), closes [#5907](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5907)
+* **modal:** 添加 `nzModalContent` 指令 ([#6081](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6081)) ([6594414](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6594414))
+* **pagination:** 添加全局配置支持 ([#6043](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6043)) ([3c55b7c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3c55b7c)), closes [#6042](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6042)
+* **steps:** 添加 `enable` 和 `disable` 方法 ([#6101](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6101)) ([b87e72d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b87e72d)), closes [#5579](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5579)
+
+_Deprecated_
+
+- modal
+  * `<ng-content></ng-content>` 用法已经被弃用, 将会在 12.0.0 版本中移除。 请使用 `<ng-template nzModalContent></ng-template>` 代替声明 modal 的内容。
+- drawer
+  * `<ng-content></ng-content>` 用法已经被弃用, 将会在 12.0.0 版本中移除。 请使用 `<ng-template nzDrawerContent></ng-template>` 代替声明 drawer 的内容。
+
 ## 10.1.2
 
 `2020-11-16`
