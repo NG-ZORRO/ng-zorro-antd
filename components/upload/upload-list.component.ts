@@ -18,7 +18,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
 import { NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
@@ -33,7 +33,6 @@ interface UploadListFile extends NzUploadFile {
   isImageUrl?: boolean;
   isUploading?: boolean;
   iconType?: UploadListIconType;
-  listItemNameCls?: NgClassType;
   showDownload?: boolean;
 }
 
@@ -186,14 +185,6 @@ export class NzUploadListComponent implements OnChanges {
       });
   }
 
-  private listItemNameCls(file: NzUploadFile): NgClassType {
-    const count = [this.showDownload(file), this.icons.showRemoveIcon].filter(x => x).length;
-    return {
-      [`ant-upload-list-item-name`]: true,
-      [`ant-upload-list-item-name-icon-count-${count}`]: true
-    };
-  }
-
   private showDownload(file: NzUploadFile): boolean {
     return !!(this.icons.showDownloadIcon && file.status === 'done');
   }
@@ -205,7 +196,6 @@ export class NzUploadListComponent implements OnChanges {
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
       file.isImageUrl = this.previewIsImage ? this.previewIsImage(file) : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
-      file.listItemNameCls = this.listItemNameCls(file);
       file.showDownload = this.showDownload(file);
     });
   }
