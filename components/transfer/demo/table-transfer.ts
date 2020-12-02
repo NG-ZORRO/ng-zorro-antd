@@ -67,7 +67,8 @@ export class NzDemoTransferTableTransferComponent implements OnInit {
         title: `content${i + 1}`,
         description: `description of content${i + 1}`,
         disabled: i % 4 === 0,
-        tag: ['cat', 'dog', 'bird'][i % 3]
+        tag: ['cat', 'dog', 'bird'][i % 3],
+        checked: false
       });
     }
 
