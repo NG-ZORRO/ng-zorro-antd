@@ -37,12 +37,16 @@ import {
   PaperClipOutline,
   QuestionCircleOutline,
   RightOutline,
+  RotateLeftOutline,
+  RotateRightOutline,
   SearchOutline,
   StarFill,
   SwapRightOutline,
   UploadOutline,
   UpOutline,
-  VerticalAlignTopOutline
+  VerticalAlignTopOutline,
+  ZoomInOutline,
+  ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
 
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
@@ -78,11 +82,15 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   PaperClipOutline,
   QuestionCircleOutline,
   RightOutline,
+  RotateRightOutline,
+  RotateLeftOutline,
   StarFill,
   SearchOutline,
   StarFill,
   UploadOutline,
   VerticalAlignTopOutline,
   UpOutline,
-  SwapRightOutline
+  SwapRightOutline,
+  ZoomInOutline,
+  ZoomOutOutline
 ];

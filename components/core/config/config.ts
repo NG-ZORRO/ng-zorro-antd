@@ -48,6 +48,7 @@ export interface NzConfig {
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
   global?: GlobalConfig;
+  image?: ImageConfig;
 }
 
 export interface SelectConfig {
@@ -98,7 +99,9 @@ export interface CodeEditorConfig {
   useStaticLoading?: boolean;
 
   onLoad?(): void;
+
   onFirstEditorInit?(): void;
+
   onInit?(): void;
 }
 
@@ -280,6 +283,10 @@ export interface TypographyConfig {
   nzCopyIcons: [NzTSType, NzTSType];
   nzEditTooltip?: null | NzTSType;
   nzEditIcon: NzTSType;
+}
+
+export interface ImageConfig {
+  nzFallback?: string;
 }
 
 export interface GlobalConfig {
