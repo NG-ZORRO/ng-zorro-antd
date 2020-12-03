@@ -302,6 +302,7 @@ describe('auto-complete', () => {
 
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
+      flush();
 
       expect(input.value).not.toBe('Burns Bay Road');
 

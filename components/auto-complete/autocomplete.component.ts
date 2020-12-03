@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AnimationEvent } from '@angular/animations';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -58,7 +59,8 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [@slideMotion]="'enter'"
+        @slideMotion
+        (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="noAnimation?.nzNoAnimation"
       >
         <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
@@ -102,6 +104,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   activeItem!: NzAutocompleteOptionComponent;
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
+  animationStateChange = new EventEmitter<AnimationEvent>();
 
   /**
    * Options accessor, its source may be content or dataSource
@@ -163,6 +166,10 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     });
 
     this.dir = this.directionality.value;
+  }
+
+  onAnimationEvent(event: AnimationEvent): void {
+    this.animationStateChange.emit(event);
   }
 
   ngAfterContentInit(): void {
