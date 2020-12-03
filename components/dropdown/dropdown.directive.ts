@@ -155,8 +155,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
                 this.overlayRef.outsidePointerEvents().pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
                 this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
               )
-                .pipe(mapTo(false), takeUntil(this.destroy$))
-                .subscribe(this.overlayClose$);
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                  this.overlayClose$.next(false);
+                });
             } else {
               /** update overlay config **/
               const overlayConfig = this.overlayRef.getConfig();
@@ -176,6 +178,15 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
             }
           }
         });
+
+      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+        if (event.toState === 'void') {
+          if (this.overlayRef) {
+            this.overlayRef.dispose();
+          }
+          this.overlayRef = null;
+        }
+      });
     }
   }
 
