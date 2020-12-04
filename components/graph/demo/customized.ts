@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from 'ng-zorro-antd/graph';
+import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, NzRankDirection } from 'ng-zorro-antd/graph';
 
 @Component({
   selector: 'nz-demo-graph-customized',
@@ -13,9 +13,17 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
       <label nz-radio-button nzValue="TB">TB</label>
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
-    <nz-graph [nzGraphData]="graphData" [nzAutoSize]="true" [nzRankDirection]="rankDirection">
-      <ng-container *nzGraphNode="let node">
-        <div class="custom-node">
+    <!--    nz-graph-zoom-->
+
+    <nz-graph
+      nz-graph-zoom
+      [nzGraphData]="graphData"
+      [nzAutoSize]="true"
+      [nzRankDirection]="rankDirection"
+      (nzGraphInitialized)="graphInitialized($event)"
+    >
+      <ng-container *nzGraphNode="let node; let element = element">
+        <div class="custom-node" (click)="click(element)">
           <div class="header">{{ node.label || node.name }}</div>
         </div>
       </ng-container>
@@ -37,7 +45,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
 
       .custom-node {
         height: 100%;
-        min-height: 100px;
+        min-height: 80px;
         display: block;
       }
     `
@@ -45,7 +53,9 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
 })
 export class NzDemoGraphCustomizedComponent implements OnInit {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;
+  @ViewChild(NzGraphZoomDirective, { static: true }) zoomController!: NzGraphZoomDirective;
 
+  zoom = 0.5;
   testDef: NzGraphDataDef = {
     nodes: [
       {
@@ -231,6 +241,14 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   }
 
   layout(): void {
-    this.nzGraphComponent.autoFit();
+    this.zoomController?.fitCenter();
+  }
+
+  click(e: SVGGElement): void {
+    this.zoomController?.focus(e);
+  }
+
+  graphInitialized(_ele: NzGraphComponent): void {
+    this.zoomController?.fitCenter();
   }
 }

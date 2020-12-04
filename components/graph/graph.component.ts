@@ -26,16 +26,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { buildGraph } from '@nx-component/hierarchy-graph';
-import { ZoomTransform } from 'd3-zoom';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { forkJoin, Observable, Subject, Subscription } from 'rxjs';
-import { finalize, take, takeUntil, tap } from 'rxjs/operators';
+import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { finalize, skip, take, takeUntil, tap } from 'rxjs/operators';
+import { calculateTransform, flattenNodes } from './core/utils';
 import { NzCustomGraphNodeDirective } from './custom-graph-node.directive';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphMinimapComponent } from './graph-minimap.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
-import { NzGraphSvgContainerComponent, NzZoomTransform } from './graph-svg-container.component';
 import {
   NzGraphDataDef,
   NzGraphEdge,
@@ -50,7 +49,6 @@ import {
   nzTypeDefinition,
   NZ_GRAPH_LAYOUT_SETTING
 } from './interface';
-import { flattenNodes } from './utils';
 
 /** Checks whether an object is a data source. */
 export function isDataSource(value: NzSafeAny): value is NzGraphData {
@@ -67,16 +65,21 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   exportAs: 'nzGraph',
   template: `
     <ng-content></ng-content>
-    <nz-graph-svg-container (transformEvent)="triggerTransform($event)">
+    <svg width="100%" height="100%">
       <svg:defs nz-graph-defs></svg:defs>
-      <ng-container [ngTemplateOutlet]="groupTemplate" [ngTemplateOutletContext]="{ renderInfo: renderInfo, type: 'root' }"></ng-container>
-    </nz-graph-svg-container>
+      <g [attr.transform]="transformStyle">
+        <ng-container
+          [ngTemplateOutlet]="groupTemplate"
+          [ngTemplateOutletContext]="{ renderInfo: renderInfo, type: 'root' }"
+        ></ng-container>
+      </g>
+    </svg>
 
     <nz-graph-minimap *ngIf="nzShowMinimap"></nz-graph-minimap>
 
     <ng-template #groupTemplate let-renderInfo="renderInfo" let-type="type">
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderInfo) : null">
-        <svg:g class="core" [attr.transform]="coreTransform(renderInfo)">
+        <svg:g class="core">
           <svg:g class="nz-graph-edges">
             <svg:g class="nz-graph-edge" *ngFor="let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun">
               <svg:path
@@ -93,6 +96,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
 
           <svg:g class="nz-graph-nodes">
             <svg:g
+              #graphNode
               class="nz-graph-node"
               [class.nz-graph-custom-node]="!!customGraphNodeTemplate"
               [style.display]="node.type === 2 ? 'none' : null"
@@ -104,7 +108,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                     <ng-container
                       *ngIf="customGraphNodeTemplate"
                       [ngTemplateOutlet]="customGraphNodeTemplate"
-                      [ngTemplateOutletContext]="{ $implicit: node }"
+                      [ngTemplateOutletContext]="{ $implicit: node, element: graphNode }"
                     ></ng-container>
                     <div class="node-content" *ngIf="!customGraphNodeTemplate">
                       <div class="title">
@@ -145,11 +149,11 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   static ngAcceptInputType_nzShowArrow: BooleanInput;
 
   @ViewChildren(NzGraphNodeDirective) graphNodes!: QueryList<NzGraphNodeDirective>;
-  @ViewChild(NzGraphSvgContainerComponent) svgContainerComponent!: NzGraphSvgContainerComponent;
   @ViewChild(NzGraphMinimapComponent) minimap: NzGraphMinimapComponent | undefined;
 
   @ContentChild(NzCustomGraphNodeDirective, { static: true, read: TemplateRef }) customGraphNodeTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
+    element: SVGGElement;
   }>;
   /**
    * Provides a stream containing the latest data array to render.
@@ -161,14 +165,13 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   @Input() @InputBoolean() nzShowMinimap = false;
   @Input() @InputBoolean() nzShowArrow = false;
 
-  @Input() nzZoom = 1;
   @Input() @InputBoolean() nzAutoSize = false;
 
-  @Output() readonly nzGraphInitialized = new EventEmitter<void>();
-  @Output() readonly nzZoomInit = new EventEmitter<void>();
-  @Output() readonly nzTransformEvent = new EventEmitter<NzZoomTransform>();
+  @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzNodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
 
+  transformStyle = '';
+  graphRenderedSubject$ = new ReplaySubject<void>(1);
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
   mapOfNodeAttr: { [key: string]: NzGraphNodeDef } = {};
   mapOfEdgeAttr: { [key: string]: NzGraphEdgeDef } = {};
@@ -189,10 +192,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return `translate(${x}, ${y})`;
   };
 
-  coreTransform = (node: NzGraphGroupNode) => {
-    return `translate(0, ${node.labelHeight})`;
-  };
-
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private elementRef: ElementRef) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('nz-graph');
@@ -202,6 +201,11 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     if (this.dataSource !== this.nzGraphData) {
       this._switchDataSource(this.nzGraphData);
     }
+
+    this.graphRenderedSubject$.pipe(skip(this.nzAutoSize ? 1 : 0), take(1), takeUntil(this.destroy$)).subscribe(() => {
+      this.fitCenter();
+      this.nzGraphInitialized.emit(this);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -230,7 +234,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   }
 
   ngAfterViewInit(): void {
-    this.autoFit();
     this.drawMinimap(true);
   }
 
@@ -255,31 +258,10 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   }
 
   /**
-   * Transform event
-   */
-  triggerTransform($event: { x: number; y: number; k: number }): void {
-    this.nzZoom = $event.k;
-    if (this.minimap) {
-      this.minimap.zoom($event as ZoomTransform);
-    }
-    this.nzTransformEvent.emit($event);
-    this.cdr.markForCheck();
-  }
-
-  /**
    * Emit event
    */
   clickNode(node: NzGraphNode | NzGraphGroupNode): void {
     this.nzNodeClick.emit(node);
-  }
-
-  /**
-   * Move graph to center
-   */
-  autoFit(): void {
-    if (this.renderInfo) {
-      this.svgContainerComponent?.fit(0);
-    }
   }
 
   /**
@@ -304,6 +286,18 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       this.resizeNodes(renderInfo, options);
     }
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Move graph to center and scale automatically
+   */
+  fitCenter(): void {
+    const { x, y, k } = calculateTransform(
+      this.elementRef.nativeElement.querySelector('svg'),
+      this.elementRef.nativeElement.querySelector('svg > g')
+    )!;
+    this.transformStyle = `translate(${x}, ${y})scale(${k})`;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -356,7 +350,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       this.renderInfo = renderInfo;
     }
     this.ngZone.onStable.pipe(take(1)).subscribe(() => {
-      this.makeNodesAnimation().subscribe();
+      this.makeNodesAnimation().subscribe(() => {
+        this.graphRenderedSubject$.next();
+      });
     });
   }
 
@@ -398,19 +394,19 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       )
       .subscribe(() => {
         const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
+        const scale = this.getScale();
         this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach((nodeEle: HTMLElement) => {
           const contentEle = nodeEle.querySelector('.nz-graph-node-wrapper');
           if (contentEle) {
-            const height = contentEle.getBoundingClientRect().height;
-            const width = contentEle.getBoundingClientRect().width;
+            const { width, height } = contentEle.getBoundingClientRect();
             // Element id type is string
             const targetNode = flattenNodes(renderInfo).find(n => `${n.name}` === nodeEle.id);
             const nodeName = targetNode && targetNode.name;
             const node = dataSource.nodes.find(n => n.id === nodeName);
 
             if (node) {
-              node.height = height / this.nzZoom;
-              node.width = width / this.nzZoom;
+              node.height = height / scale;
+              node.width = width / scale;
             }
           }
         });
@@ -451,13 +447,24 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       return;
     }
     if (forceRerender) {
-      this.minimap?.init(
-        this.svgContainerComponent.containerElement.nativeElement,
-        this.svgContainerComponent.zoomElement.nativeElement,
-        this.svgContainerComponent.zoomController
-      );
+      // this.minimap?.init(
+      //   this.svgContainerComponent.containerElement.nativeElement,
+      //   this.svgContainerComponent.zoomElement.nativeElement,
+      //   this.svgContainerComponent.zoomController
+      // );
     } else {
       this.minimap?.update();
     }
+  }
+
+  private getScale(): number {
+    const transform = (this.elementRef.nativeElement.querySelector('svg > g') as SVGGElement)?.getAttribute('transform') || '';
+    // Get current scale
+    const regex = /scale\(([0-9\.]+)\)/g;
+    const match = regex.exec(transform);
+    if (match && match[1]) {
+      return parseFloat(match[1]);
+    }
+    return 1;
   }
 }

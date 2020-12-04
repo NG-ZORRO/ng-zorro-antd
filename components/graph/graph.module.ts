@@ -12,17 +12,18 @@ import { NzGraphDefsComponent } from './graph-defs.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphMinimapComponent } from './graph-minimap.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
-import { NzGraphSvgContainerComponent } from './graph-svg-container.component';
+import { NzGraphZoomDirective } from './graph-zoom.directive';
 import { NzGraphComponent } from './graph.component';
 
 const COMPONENTS = [
   NzGraphComponent,
-  NzGraphSvgContainerComponent,
   NzGraphEdgeDirective,
   NzGraphNodeDirective,
   NzGraphMinimapComponent,
   NzGraphDefsComponent,
-  NzCustomGraphNodeDirective
+  NzCustomGraphNodeDirective,
+  // Refactor
+  NzGraphZoomDirective
 ];
 
 @NgModule({
