@@ -95,7 +95,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     </nz-spin>
     <ng-template #paginationTemplate>
       <nz-pagination
-        *ngIf="nzShowPagination && data.length"
+        *ngIf="nzShowPagination && showPagination && data.length"
         class="ant-table-pagination ant-table-pagination-right"
         [nzShowSizeChanger]="nzShowSizeChanger"
         [nzPageSizeOptions]="nzPageSizeOptions"
@@ -177,6 +177,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   listOfManualColWidth: Array<string | null> = [];
   hasFixLeft = false;
   hasFixRight = false;
+  showPagination = true;
   private destroy$ = new Subject<void>();
   private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
@@ -294,9 +295,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);
     }
     if (nzScroll) {
-      this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
-      this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
-      this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
+      this.setScrollOnChanges();
     }
     if (nzWidthConfig) {
       this.nzTableStyleService.setTableWidthConfig(this.nzWidthConfig);
@@ -310,6 +309,9 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     if (nzNoResult) {
       this.nzTableStyleService.setNoResult(this.nzNoResult);
     }
+
+    this.showPagination =
+      (this.nzHideOnSinglePage && this.nzData.length > this.nzPageSize) || (this.nzData.length > 0 && !this.nzHideOnSinglePage);
   }
 
   ngAfterViewInit(): void {
@@ -332,5 +334,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setScrollOnChanges(): void {
+    this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
+    this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
+    this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
   }
 }

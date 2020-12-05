@@ -205,7 +205,7 @@ describe('nz-table', () => {
       testComponent.hideOnSinglePage = true;
       testComponent.dataSet = [{}];
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
+      expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
     });
     it('#18n', () => {
       testComponent.dataSet = [];
