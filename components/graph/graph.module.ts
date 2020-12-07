@@ -9,6 +9,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzGraphDefsComponent } from './graph-defs.component';
+import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphMinimapComponent } from './graph-minimap.component';
 import { NzGraphNodeComponent } from './graph-node.component';
@@ -18,13 +19,14 @@ import { NzGraphComponent } from './graph.component';
 
 const COMPONENTS = [
   NzGraphComponent,
-  NzGraphEdgeDirective,
   NzGraphMinimapComponent,
   NzGraphDefsComponent,
   NzGraphNodeDirective,
   // Refactor
   NzGraphZoomDirective,
-  NzGraphNodeComponent
+  NzGraphNodeComponent,
+  NzGraphEdgeComponent,
+  NzGraphEdgeDirective
 ];
 
 @NgModule({

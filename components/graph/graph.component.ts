@@ -35,6 +35,7 @@ import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs
 import { finalize, skip, take, takeUntil } from 'rxjs/operators';
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
+import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
 import {
@@ -80,12 +81,9 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     <ng-template #groupTemplate let-renderNode="renderNode" let-type="type">
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="nz-graph-edges">
-          <svg:g class="nz-graph-edge" *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
-            <path class="nz-graph-edge-line" nz-graph-edge [attr.marker-end]="'url(#edge-end-arrow)'" [edge]="edge"></path>
-            <svg:text class="nz-graph-edge-text" text-anchor="middle" dy="20" *ngIf="edge.label">
-              <textPath [attr.href]="'#' + edge.v + '--' + edge.w" startOffset="50%">{{ edge.label }}</textPath>
-            </svg:text>
-          </svg:g>
+          <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
+            <g class="nz-graph-edge" nz-g-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
+          </ng-container>
         </svg:g>
 
         <svg:g class="nz-graph-nodes">
@@ -95,7 +93,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
               class="nz-graph-node"
               nz-graph-node
               [node]="node"
-              [customGraphNodeTemplate]="customGraphNodeTemplate"
+              [customTemplate]="customGraphNodeTemplate"
               (nodeClick)="clickNode($event)"
             ></g>
 
@@ -122,6 +120,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   @ContentChild(NzGraphNodeDirective, { static: true, read: TemplateRef }) customGraphNodeTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
     element: SVGGElement;
+  }>;
+  @ContentChild(NzGraphEdgeDirective, { static: true, read: TemplateRef }) customGraphEdgeTemplate?: TemplateRef<{
+    $implicit: NzGraphEdge;
   }>;
   /**
    * Provides a stream containing the latest data array to render.

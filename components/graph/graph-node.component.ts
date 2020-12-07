@@ -6,8 +6,8 @@
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2, TemplateRef } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzGraphGroupNode, NzGraphNode } from 'ng-zorro-antd/graph/interface';
 import { Observable, Subject } from 'rxjs';
+import { NzGraphGroupNode, NzGraphNode } from './interface';
 
 interface Info {
   x: number;
@@ -23,11 +23,11 @@ interface Info {
       <foreignObject class="nz-graph-node-rect" x="0" y="0">
         <xhtml:div class="nz-graph-node-wrapper">
           <ng-container
-            *ngIf="customGraphNodeTemplate"
-            [ngTemplateOutlet]="customGraphNodeTemplate"
+            *ngIf="customTemplate"
+            [ngTemplateOutlet]="customTemplate"
             [ngTemplateOutletContext]="{ $implicit: node, element: nodeEle }"
           ></ng-container>
-          <div class="node-content" *ngIf="!customGraphNodeTemplate">
+          <div class="node-content" *ngIf="!customTemplate">
             <div class="title">
               {{ node.name }}
               <i class="action-icon" *ngIf="node.type === 0" nz-icon [nzType]="node.expanded ? 'minus' : 'plus'" nzTheme="outline"></i>
@@ -50,7 +50,7 @@ interface Info {
 export class NzGraphNodeComponent {
   @Input() node!: NzGraphNode | NzGraphGroupNode;
   @Input() @InputBoolean() noAnimation?: boolean;
-  @Input() customGraphNodeTemplate?: TemplateRef<{
+  @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
     element: SVGGElement;
   }>;
