@@ -19,6 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -26,7 +27,13 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+/**
+ * @deprecated `danger` not supported, use `nzDanger` instead
+ * @breaking-change 12.0.0
+ */
+type NzLegacyButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+
+export type NzButtonType = NzLegacyButtonType;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -123,9 +130,13 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading } = changes;
+    const { nzLoading, nzType } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
+    }
+
+    if (nzType) {
+      warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
     }
   }
 

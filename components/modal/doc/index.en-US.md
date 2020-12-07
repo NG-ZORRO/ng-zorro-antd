@@ -46,7 +46,8 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzCloseOnNavigation    | Whether to close the modal when the navigation history changes | `boolean` | `true` | ✅ |
 | nzMaskStyle       | Style for modal's mask element. | `object` | - |
 | nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
-| nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
+| nzOkType          | Button type of the OK button. <i>Consistent with the `nzType` of the `nz-button`.</i> | `string` | `primary` |
+| nzOkDanger        | Danger status of the OK button. <i>Consistent with the `nzDanger` of the `nz-button`.</i> | `boolean` | `false` |
 | nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
 | nzCloseIcon       | Custom close icon | `string\|TemplateRef<void>` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
@@ -136,6 +137,7 @@ The button configuration items are as follows (along with the button component):
 nzFooter: [{
   label: string; // Button text
   type?: string; // Types
+  danger?: boolean; // Whether danger
   shape?: string; // Shape
   ghost?: boolean; // Whether ghost
   size?: string; // Size
