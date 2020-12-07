@@ -13,8 +13,6 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       <label nz-radio-button nzValue="TB">TB</label>
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
-    <!--    nz-graph-zoom-->
-
     <nz-graph
       nz-graph-zoom
       [nzGraphData]="graphData"

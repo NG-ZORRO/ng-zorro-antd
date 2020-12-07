@@ -2,5 +2,6 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
-export const moduleList = [ NzGraphModule, NzButtonModule, NzIconModule, NzRadioModule ];
+export const moduleList = [ NzGraphModule, NzButtonModule, NzIconModule, NzRadioModule, NzNoAnimationModule ];

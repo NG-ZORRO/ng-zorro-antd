@@ -8,8 +8,8 @@ export * from './data-source/base-graph-source';
 export * from './data-source/graph-data-source';
 export * from './graph.module';
 export * from './graph.component';
-export * from './graph-node.directive';
 export * from './graph-edge.directive';
-export * from './custom-graph-node.directive';
+export * from './graph-node.directive';
 // Refactor
 export * from './graph-zoom.directive';
+export * from './graph-node.component';
