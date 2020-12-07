@@ -14,7 +14,7 @@ export class NzTableDataService implements OnDestroy {
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
-  private listOfData$ = new BehaviorSubject<NzTableData[]>([]);
+  private listOfData$ = new BehaviorSubject<ReadonlyArray<NzTableData>>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());
   listOfCalcOperator$ = new BehaviorSubject<
@@ -118,7 +118,7 @@ export class NzTableDataService implements OnDestroy {
   updatePageIndex(index: number): void {
     this.pageIndex$.next(index);
   }
-  updateListOfData(list: NzTableData[]): void {
+  updateListOfData(list: ReadonlyArray<NzTableData>): void {
     this.listOfData$.next(list);
   }
   constructor() {}

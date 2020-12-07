@@ -38,11 +38,11 @@ interface Setting {
     <div class="components-table-demo-control-bar">
       <form nz-form nzLayout="inline" [formGroup]="settingForm!">
         <nz-form-item *ngFor="let switch of listOfSwitch">
-          <nz-form-label> {{ switch.name }} </nz-form-label>
+          <nz-form-label>{{ switch.name }}</nz-form-label>
           <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item *ngFor="let radio of listOfRadio">
-          <nz-form-label> {{ radio.name }} </nz-form-label>
+          <nz-form-label>{{ radio.name }}</nz-form-label>
           <nz-form-control>
             <nz-radio-group [formControlName]="radio.formControlName">
               <label *ngFor="let o of radio.listOfOption" nz-radio-button [nzValue]="o.value">{{ o.label }}</label>
@@ -100,7 +100,7 @@ interface Setting {
             </td>
           </tr>
           <tr *ngIf="settingValue.expandable" [nzExpand]="data.expand">
-            <span> {{ data.description }}</span>
+            <span>{{ data.description }}</span>
           </tr>
         </ng-container>
       </tbody>
@@ -117,8 +117,8 @@ interface Setting {
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   settingForm?: FormGroup;
-  listOfData: ItemData[] = [];
-  displayData: ItemData[] = [];
+  listOfData: ReadonlyArray<ItemData> = [];
+  displayData: ReadonlyArray<ItemData> = [];
   allChecked = false;
   indeterminate = false;
   fixedColumn = false;
@@ -178,7 +178,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     }
   ];
 
-  currentPageDataChange($event: ItemData[]): void {
+  currentPageDataChange($event: ReadonlyArray<ItemData>): void {
     this.displayData = $event;
     this.refreshStatus();
   }
@@ -200,7 +200,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     this.refreshStatus();
   }
 
-  generateData(): ItemData[] {
+  generateData(): ReadonlyArray<ItemData> {
     const data = [];
     for (let i = 1; i <= 100; i++) {
       data.push({

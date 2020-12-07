@@ -60,8 +60,8 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   ];
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: ItemData[] = [];
-  listOfData: ItemData[] = [];
+  listOfCurrentPageData: ReadonlyArray<ItemData> = [];
+  listOfData: ReadonlyArray<ItemData> = [];
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -82,7 +82,7 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: ItemData[]): void {
+  onCurrentPageDataChange($event: ReadonlyArray<ItemData>): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
