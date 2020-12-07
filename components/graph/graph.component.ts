@@ -82,7 +82,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="nz-graph-edges">
           <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
-            <g class="nz-graph-edge" nz-g-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
+            <g class="nz-graph-edge" nz-graph-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
           </ng-container>
         </svg:g>
 
@@ -95,6 +95,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
               [node]="node"
               [customTemplate]="customGraphNodeTemplate"
               (nodeClick)="clickNode($event)"
+              (toggleClick)="toggleNode($event)"
             ></g>
 
             <ng-container
@@ -108,7 +109,8 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     </ng-template>
   `,
   host: {
-    '[class.nz-graph-auto-fit]': 'nzAutoSize'
+    '[class.nz-graph]': 'true',
+    '[class.nz-graph-auto-size]': 'nzAutoSize'
   }
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
@@ -164,10 +166,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     private ngZone: NgZone,
     private elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-graph');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.graphRenderedSubject$.pipe(skip(this.nzAutoSize ? 1 : 0), take(1), takeUntil(this.destroy$)).subscribe(() => {
@@ -234,13 +233,13 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   /**
    * Refactor
    */
-  toggleNode(node: string, expanded: boolean): void {
-    if (expanded) {
+  toggleNode(node: NzGraphNode | NzGraphGroupNode): void {
+    if (node.expanded) {
       // collapse it
-      this.nzGraphData.collapse(node);
+      this.nzGraphData.collapse(node.name);
     } else {
       // expand it
-      this.nzGraphData.expand(node);
+      this.nzGraphData.expand(node.name);
     }
   }
 

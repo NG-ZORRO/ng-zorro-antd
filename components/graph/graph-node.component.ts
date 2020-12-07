@@ -30,7 +30,14 @@ interface Info {
           <div class="node-content" *ngIf="!customTemplate">
             <div class="title">
               {{ node.name }}
-              <i class="action-icon" *ngIf="node.type === 0" nz-icon [nzType]="node.expanded ? 'minus' : 'plus'" nzTheme="outline"></i>
+              <i
+                class="action-icon"
+                *ngIf="node.type === 0"
+                nz-icon
+                [nzType]="node.expanded ? 'minus' : 'plus'"
+                nzTheme="outline"
+                (click)="triggerToggle($event)"
+              ></i>
             </div>
             <div class="label" *ngIf="!node.expanded">{{ node.label }}</div>
           </div>
@@ -44,7 +51,7 @@ interface Info {
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1',
-    '(click)': 'onTriggerClick($event)'
+    '(click)': 'triggerClick($event)'
   }
 })
 export class NzGraphNodeComponent {
@@ -56,10 +63,16 @@ export class NzGraphNodeComponent {
   }>;
 
   @Output() readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
+  @Output() readonly toggleClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
 
-  onTriggerClick(event: MouseEvent): void {
+  triggerClick(event: MouseEvent): void {
     event.preventDefault();
     this.nodeClick.emit(this.node);
+  }
+
+  triggerToggle(event: MouseEvent): void {
+    event.preventDefault();
+    this.toggleClick.emit(this.node);
   }
 
   animationInfo: Info | null = null;

@@ -20,7 +20,7 @@ import { take } from 'rxjs/operators';
 import { NzGraphEdge } from './interface';
 
 @Component({
-  selector: '[nz-g-edge]',
+  selector: '[nz-graph-edge]',
   template: `
     <ng-container *ngIf="customTemplate" [ngTemplateOutlet]="customTemplate" [ngTemplateOutletContext]="{ $implicit: edge }"></ng-container>
     <svg:g *ngIf="!customTemplate">
