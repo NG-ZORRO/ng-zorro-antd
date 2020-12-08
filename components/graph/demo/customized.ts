@@ -14,6 +14,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
     <nz-graph
+      nzNoAnimation
       nz-graph-zoom
       [nzGraphData]="graphData"
       [nzAutoSize]="true"
@@ -52,7 +53,6 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
 export class NzDemoGraphCustomizedComponent implements OnInit {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;
   @ViewChild(NzGraphZoomDirective, { static: true }) zoomController!: NzGraphZoomDirective;
-
   zoom = 0.5;
   testDef: NzGraphDataDef = {
     nodes: [

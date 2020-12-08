@@ -22,7 +22,6 @@ const COMPONENTS = [
   NzGraphMinimapComponent,
   NzGraphDefsComponent,
   NzGraphNodeDirective,
-  // Refactor
   NzGraphZoomDirective,
   NzGraphNodeComponent,
   NzGraphEdgeComponent,

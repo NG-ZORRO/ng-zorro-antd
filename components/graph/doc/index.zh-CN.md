@@ -53,7 +53,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 
 | 名称 | 描述 |
 | --- | --- |
-| `fitCenter()` | 居中图并自适应缩放 |
+| `fitCenter()` | 居中图并自适应缩放（如使用缩放功能请使用 `nz-graph-zoom`） |
 
 ### [nz-graph-zoom]
 
@@ -63,6 +63,8 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `[nzMinZoom]` | 最小缩放 | `number` | `0.1` |
 | `[nzMaxZoom]` | 最大缩放 | `number` | `10` |
 | `(nzTransformEvent)` | 缩放事件 | `() => NzZoomTransform` | `` |
+| `(fitCenter)` | 居中图并自适应缩放 | `() => void` | `void` |
+| `(focus)` | 居中单个节点 | `(e: SVGGElement, duration: number) => void` | `void` |
 
 #### NzGraphData
 
@@ -120,13 +122,26 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
 | `edges` | `NzGraphEdge[]` |
 
-### nzGraphNode
-自定义建议渲染模板
+### [nzGraphNode]
+自定义节点渲染模板
 
 ```html
 <nz-graph [nzGraphData]="data">
   <ng-container *nzGraphNode="let node">
     <span>{{ node.name }} - {{ node.label }}</span>
+  </ng-container>
+</nz-graph>
+```
+
+### [nzGraphEdge]
+自定义边渲染模板
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphEdge="let edge">
+    <svg:g>
+      <path></path>
+    </svg:g>
   </ng-container>
 </nz-graph>
 ```

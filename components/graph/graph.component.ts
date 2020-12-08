@@ -136,6 +136,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   @Input() @InputBoolean() nzAutoSize = false;
 
   @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
+  @Output() readonly nzGraphRendered = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzNodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
 
   requestId: number = -1;
@@ -230,9 +231,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     this.nzNodeClick.emit(node);
   }
 
-  /**
-   * Refactor
-   */
   toggleNode(node: NzGraphNode | NzGraphGroupNode): void {
     if (node.expanded) {
       // collapse it
@@ -273,6 +271,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
           // Update element
           this.cdr.markForCheck();
           this.graphRenderedSubject$.next();
+          this.nzGraphRendered.emit(this);
         });
 
         if (needResize) {

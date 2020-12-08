@@ -51,7 +51,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 
 | Method | Description |
 | --- | --- |
-| `fitCenter()` | Move graph to center |
+| `fitCenter()` | Move graph to center(use `nz-graph-zoom` instead if zooming is enabled) |
 
 ### [nz-graph-zoom]
 
@@ -61,6 +61,8 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `[nzMinZoom]` | Minimum zoom scale | `number` | `0.1` |
 | `[nzMaxZoom]` | Maximum zoom scale | `number` | `10` |
 | `(nzTransformEvent)` | Event of zooming | `() => NzZoomTransform` | `` |
+| `(fitCenter)` | Move graph to center | `() => void` | `void` |
+| `(focus)` | Move target node to center | `(e: SVGGElement, duration: number) => void` | `void` |
 
 #### NzGraphData
 
@@ -119,13 +121,26 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
 | `edges` | `NzGraphEdge[]` |
 
-### nzGraphNode
+### [nzGraphNode]
 Customize the graph node template
 
 ```html
 <nz-graph [nzGraphData]="data">
   <ng-container *nzGraphNode="let node">
     <span>{{ node.name }} - {{ node.label }}</span>
+  </ng-container>
+</nz-graph>
+```
+
+### [nzGraphEdge]
+Customize the graph edge template
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphEdge="let edge">
+    <svg:g>
+      <path></path>
+    </svg:g>
   </ng-container>
 </nz-graph>
 ```

@@ -20,7 +20,7 @@ interface Info {
   selector: '[nz-graph-node]',
   template: `
     <svg:g #nodeEle>
-      <foreignObject class="nz-graph-node-rect" x="0" y="0">
+      <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
         <xhtml:div class="nz-graph-node-wrapper">
           <ng-container
             *ngIf="customTemplate"
@@ -141,8 +141,6 @@ export class NzGraphNodeComponent {
     const cur = this.getAnimationInfo();
     // Need this for canvas for now.
     this.renderer2.setAttribute(this.el.nativeElement, 'transform', `translate(${cur.x}, ${cur.y})`);
-    this.renderer2.setAttribute(this.el.nativeElement.querySelector('.nz-graph-node-rect'), 'width', `${cur.width}px`);
-    this.renderer2.setAttribute(this.el.nativeElement.querySelector('.nz-graph-node-rect'), 'height', `${cur.height}px`);
   }
 
   getAnimationInfo(): Info {
