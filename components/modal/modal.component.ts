@@ -55,6 +55,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   static ngAcceptInputType_nzCancelLoading: BooleanInput;
   static ngAcceptInputType_nzKeyboard: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
+  static ngAcceptInputType_nzOkDanger: BooleanInput;
 
   @Input() @InputBoolean() nzMask?: boolean;
   @Input() @InputBoolean() nzMaskClosable?: boolean;
@@ -87,6 +88,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzOkText?: string | null;
   @Input() nzCancelText?: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
+  @Input() @InputBoolean() nzOkDanger: boolean = false;
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
   @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';

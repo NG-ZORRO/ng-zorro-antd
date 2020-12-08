@@ -46,7 +46,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzCloseOnNavigation    | 导航历史变化时是否关闭模态框 | `boolean` | `true` | ✅ |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
 | nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
-| nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
+| nzOkType          | 确认按钮类型。<i>与 `nz-button` 的 `nzType` 类型值一致</i> | `string` | `primary` |
+| nzOkDanger        | 确认按钮是否为危险按钮。<i>与 `nz-button` 的 `nzDanger` 值保持一致</i> | `boolean` | `false` |
 | nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |
 | nzCloseIcon       | 自定义关闭图标 | `string\|TemplateRef<void>` | - |
@@ -136,6 +137,7 @@ constructor(modal: NzModalService) {
 nzFooter: [{
   label: string; // 按钮文本
   type?: string; // 类型
+  danger?: boolean; // 是否danger
   shape?: string; // 形状
   ghost?: boolean; // 是否ghost
   size?: string; // 大小
