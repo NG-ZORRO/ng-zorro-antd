@@ -48,12 +48,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
       <ng-container *ngIf="nzShowIcon">
         <i nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></i>
       </ng-container>
-      <span class="ant-alert-message" *ngIf="nzMessage">
-        <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
-      </span>
-      <span class="ant-alert-description" *ngIf="nzDescription">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
-      </span>
+      <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
+        <span class="ant-alert-message" *ngIf="nzMessage">
+          <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
+        </span>
+        <span class="ant-alert-description" *ngIf="nzDescription">
+          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+        </span>
+      </div>
       <button type="button" tabindex="0" *ngIf="nzCloseable || nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">
         <ng-template #closeDefaultTemplate>
           <i nz-icon nzType="close"></i>
