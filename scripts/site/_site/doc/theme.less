@@ -255,6 +255,8 @@
 // Radio
 @radio-size: 16px;
 @radio-top: 0px;
+@radio-border-width: 1px;
+@radio-dot-size: @radio-size - 8px;
 @radio-dot-color: @primary-color;
 @radio-dot-disabled-color: fade(@black, 20%);
 @radio-solid-checked-color: @component-background;
@@ -270,11 +272,13 @@
 @radio-wrapper-margin-right: 8px;
 
 // Media queries breakpoints
-// Extra small screen / phone
+// @screen-xs and @screen-xs-min is not used in Grid
+// smallest break point is @screen-md
 @screen-xs: 480px;
 @screen-xs-min: @screen-xs;
+// 👆 Extra small screen / phone
 
-// Small screen / tablet
+// 👇 Small screen / tablet
 @screen-sm: 576px;
 @screen-sm-min: @screen-sm;
 
@@ -605,8 +609,7 @@
 @table-filter-btns-bg: inherit;
 @table-filter-dropdown-bg: @component-background;
 @table-expand-icon-bg: @component-background;
-@table-selection-column-width: 60px;
-@table-selection-extra-right: 0;
+@table-selection-column-width: 32px;
 // Sticky
 @table-sticky-scroll-bar-bg: fade(#000, 35%);
 @table-sticky-scroll-bar-radius: 4px;
@@ -628,6 +631,8 @@
 @picker-border-color: @border-color-split;
 @picker-date-hover-range-border-color: lighten(@primary-color, 20%);
 @picker-date-hover-range-color: @picker-basic-cell-hover-with-range-color;
+@picker-time-panel-column-width: 56px;
+@picker-time-panel-column-height: 224px;
 @picker-time-panel-cell-height: 28px;
 @picker-panel-cell-height: 24px;
 @picker-panel-cell-width: 36px;
@@ -851,7 +856,7 @@
 
 // Skeleton
 // ---
-@skeleton-color: #f2f2f2;
+@skeleton-color: rgba(190, 190, 190, 0.2);
 @skeleton-to-color: shade(@skeleton-color, 5%);
 @skeleton-paragraph-margin-top: 28px;
 @skeleton-paragraph-li-margin-top: @margin-md;
@@ -899,11 +904,9 @@
 @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
 @alert-with-description-padding-vertical: @padding-md - 1px;
 @alert-with-description-padding: @alert-with-description-padding-vertical 15px
-@alert-with-description-no-icon-padding-vertical @alert-with-description-icon-size * 2 +
-  @alert-with-description-padding-vertical;
+@alert-with-description-no-icon-padding-vertical @alert-with-description-icon-size;
 @alert-icon-top: 8px + @font-size-base * @line-height-base / 2 - @font-size-base / 2;
 @alert-with-description-icon-size: 24px;
-@alert-with-description-icon-top: @alert-with-description-padding-vertical;
 
 // List
 // ---
@@ -923,7 +926,7 @@
 // ---
 @statistic-title-font-size: @font-size-base;
 @statistic-content-font-size: 24px;
-@statistic-unit-font-size: 16px;
+@statistic-unit-font-size: 24px;
 @statistic-font-family: @font-family;
 
 // Drawer
@@ -999,4 +1002,4 @@
 @image-color: #fff;
 @image-preview-operation-size: 18px;
 @image-preview-operation-color: @text-color-dark;
-@image-preview-operation-disabled-color: fade(@image-preview-operation-color, 45%);
+@image-preview-operation-disabled-color: fade(@image-preview-operation-color, 25%);
