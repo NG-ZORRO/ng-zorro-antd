@@ -827,6 +827,11 @@ describe('NzDatePickerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-picker-footer')).toBeDefined();
 
       fixtureInstance.nzShowTime = true;
+
+      fixtureInstance.nzShowNow = false;
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeNull();
+
       fixtureInstance.nzShowNow = true;
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeDefined();
@@ -1085,6 +1090,7 @@ describe('date-fns testing', () => {
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
         [nzShowToday]="nzShowToday"
+        [nzShowNow]="nzShowNow"
         [nzMode]="nzMode"
         (nzOnPanelChange)="nzOnPanelChange($event)"
         (nzOnCalendarChange)="nzOnCalendarChange($event)"
