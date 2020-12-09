@@ -51,7 +51,7 @@ import { PREFIX_CLASS } from './util';
       </a>
       <ul *ngIf="hasTimePicker || rangeQuickSelector" class="{{ prefixCls }}-ranges">
         <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
-        <li *ngIf="hasTimePicker && !isRange && showNow" class="{{ prefixCls }}-now">
+        <li *ngIf="showNow" class="{{ prefixCls }}-now">
           <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
             {{ locale.now }}
           </a>

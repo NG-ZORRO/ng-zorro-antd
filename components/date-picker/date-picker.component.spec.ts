@@ -7,6 +7,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
 
 import { enUS } from 'date-fns/locale';
@@ -820,6 +821,31 @@ describe('NzDatePickerComponent', () => {
       expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
     }));
 
+    it('should support nzShowNow', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(overlayContainerElement.querySelector('.ant-picker-footer')).toBeDefined();
+
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzShowNow = true;
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeDefined();
+
+      // Click now button
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-now-btn'), 'click');
+      fixture.detectChanges();
+
+      // Click ok button
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(isEqual(new Date(), result)).toBeTruthy();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
+    }));
+
     it('should support nzMode', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2020-12-01');
       fixture.detectChanges();
@@ -1113,6 +1139,7 @@ class NzTestDatePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
+  nzShowNow = false;
   nzMode: string = 'date';
   nzSuffixIcon!: string;
   nzBorderless = false;

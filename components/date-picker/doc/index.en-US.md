@@ -72,6 +72,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzShowToday]` | whether to show 'Today' button | `boolean` | `true` |
+| `[nzShowNow]` | whether to show 'Now' button on panel when `nzShowTime` is set | `boolean` | `true` |
 | `(nzOnOk)` | callback when click ok button | `EventEmitter<Date>` | - |
 
 ### nz-range-picker
