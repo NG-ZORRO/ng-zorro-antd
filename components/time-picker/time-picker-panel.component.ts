@@ -122,7 +122,8 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-column-2]': `enabledColumns === 2 && !nzInDatePicker`,
     '[class.ant-picker-time-panel-column-3]': `enabledColumns === 3 && !nzInDatePicker`,
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
-    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
+    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`,
+    '(mousedown)': 'onMousedown($event)'
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })
@@ -565,5 +566,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
+  }
+
+  /**
+   * Prevent input losing focus when click panel
+   * @param event
+   */
+  onMousedown(event: MouseEvent): void {
+    event.preventDefault();
   }
 }
