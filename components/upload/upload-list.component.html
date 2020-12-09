@@ -1,7 +1,4 @@
-<div
-  *ngFor="let file of list"
-  [class.ant-upload-list-picture-card-container]="listType === 'picture-card'"
->
+<div *ngFor="let file of list" class="ant-upload-list-{{ listType }}-container">
   <div
     class="ant-upload-list-item ant-upload-list-item-{{
       file.status
@@ -39,12 +36,12 @@
             [attr.alt]="file.name"
           />
         </a>
-        <span *ngSwitchDefault class="ant-upload-text-icon">
+        <div *ngSwitchDefault class="ant-upload-text-icon">
           <ng-template
             [ngTemplateOutlet]="iconNode"
             [ngTemplateOutletContext]="{ $implicit: file }"
           ></ng-template>
-        </span>
+        </div>
       </ng-container>
       <ng-template #noImageThumbTpl>
         <ng-template
@@ -73,31 +70,41 @@
         <i nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></i>
       </ng-template>
     </ng-template>
+    <ng-template #removeIcon>
+      <button
+        *ngIf="icons.showRemoveIcon"
+        type="button"
+        nz-button
+        nzType="text"
+        nzSize="small"
+        (click)="handleRemove(file, $event)"
+        [attr.title]="locale.removeFile"
+        class="ant-upload-list-item-card-actions-btn"
+      >
+        <i nz-icon nzType="delete"></i>
+      </button>
+    </ng-template>
+    <ng-template #downloadIcon>
+      <button
+        *ngIf="file.showDownload"
+        type="button"
+        nz-button
+        nzType="text"
+        nzSize="small"
+        (click)="handleDownload(file)"
+        [attr.title]="locale.downloadFile"
+        class="ant-upload-list-item-card-actions-btn"
+      >
+        <i nz-icon nzType="download"></i>
+      </button>
+    </ng-template>
     <ng-template #downloadOrDelete>
       <span
         *ngIf="listType !== 'picture-card'"
         class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}"
       >
-        <button
-          type="button"
-          nz-button
-          nzType="text"
-          nzSize="small"
-          *ngIf="file.showDownload"
-          title="{{ locale.downloadFile }}"
-        >
-          <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-        </button>
-        <button
-          type="button"
-          nz-button
-          nzType="text"
-          nzSize="small"
-          *ngIf="icons.showRemoveIcon"
-          title="{{ locale.removeFile }}"
-        >
-          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
-        </button>
+        <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+        <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
       </span>
     </ng-template>
     <ng-template #preview>
@@ -105,7 +112,7 @@
         *ngIf="file.url"
         target="_blank"
         rel="noopener noreferrer"
-        [ngClass]="file.listItemNameCls!"
+        class="ant-upload-list-item-name"
         [attr.title]="file.name"
         [href]="file.url"
         [attr.download]="file.linkProps && file.linkProps.download"
@@ -115,7 +122,7 @@
       </a>
       <span
         *ngIf="!file.url"
-        [ngClass]="file.listItemNameCls!"
+        class="ant-upload-list-item-name"
         [attr.title]="file.name"
         (click)="handlePreview(file, $event)"
       >
@@ -123,26 +130,8 @@
       </span>
       <ng-template [ngTemplateOutlet]="downloadOrDelete"></ng-template>
     </ng-template>
-    <ng-template #removeIcon>
-      <i
-        *ngIf="icons.showRemoveIcon"
-        (click)="handleRemove(file, $event)"
-        nz-icon
-        nzType="delete"
-        title="{{ locale.removeFile }}"
-      ></i>
-    </ng-template>
-    <ng-template #downloadIcon>
-      <i
-        *ngIf="file.showDownload"
-        (click)="handleDownload(file)"
-        nz-icon
-        nzType="download"
-        title="{{ locale.downloadFile }}"
-      ></i>
-    </ng-template>
     <div class="ant-upload-list-item-info">
-      <span>
+      <span class="ant-upload-span">
         <ng-template [ngTemplateOutlet]="icon"></ng-template>
         <ng-template [ngTemplateOutlet]="preview"></ng-template>
       </span>
@@ -156,13 +145,15 @@
         [href]="file.url || file.thumbUrl"
         target="_blank"
         rel="noopener noreferrer"
-        title="{{ locale.previewFile }}"
+        [attr.title]="locale.previewFile"
         [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
         (click)="handlePreview(file, $event)"
       >
         <i nz-icon nzType="eye"></i>
       </a>
-      <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+      <ng-container *ngIf="file.status === 'done'">
+        <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+      </ng-container>
       <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
     </span>
     <div *ngIf="file.isUploading" class="ant-upload-list-item-progress">
