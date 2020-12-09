@@ -222,8 +222,8 @@ describe('upload', () => {
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
-        const removeFileText = (pageObject.getByCss('.anticon-delete').nativeElement as HTMLElement).title;
-        expect(removeFileText).toBe(en_US.Upload.removeFile);
+        const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete').nativeElement as HTMLElement;
+        expect(removeFileText.parentElement!.title).toBe(en_US.Upload.removeFile);
       });
     });
 
