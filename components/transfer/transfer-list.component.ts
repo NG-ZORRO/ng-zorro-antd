@@ -24,25 +24,23 @@ import { TransferDirection, TransferItem } from './interface';
   template: `
     <ng-template #defaultRenderList>
       <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
-        <div class="LazyLoad" *ngFor="let item of dataSource">
-          <li
-            *ngIf="!item.hide"
-            (click)="onItemSelect(item)"
-            class="ant-transfer-list-content-item"
-            [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+        <li
+          *ngFor="let item of validData"
+          (click)="onItemSelect(item)"
+          class="ant-transfer-list-content-item"
+          [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+        >
+          <label
+            nz-checkbox
+            [nzChecked]="item.checked"
+            (nzCheckedChange)="onItemSelect(item)"
+            (click)="$event.stopPropagation()"
+            [nzDisabled]="disabled || item.disabled"
           >
-            <label
-              nz-checkbox
-              [nzChecked]="item.checked"
-              (nzCheckedChange)="onItemSelect(item)"
-              (click)="$event.stopPropagation()"
-              [nzDisabled]="disabled || item.disabled"
-            >
-              <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-              <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
-            </label>
-          </li>
-        </div>
+            <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
+            <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+          </label>
+        </li>
       </ul>
       <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
         <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
@@ -59,7 +57,7 @@ import { TransferDirection, TransferItem } from './interface';
       ></label>
       <span class="ant-transfer-list-header-selected">
         <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}
+          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
         <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
@@ -84,7 +82,7 @@ import { TransferDirection, TransferItem } from './interface';
             *ngTemplateOutlet="
               renderList;
               context: {
-                $implicit: dataSource,
+                $implicit: validData,
                 direction: direction,
                 disabled: disabled,
                 onItemSelectAll: onItemSelectAll,
@@ -140,6 +138,10 @@ export class NzTransferListComponent {
     shownCount: 0
   };
 
+  get validData(): TransferItem[] {
+    return this.dataSource.filter(w => !w.hide);
+  }
+
   onItemSelect = (item: TransferItem) => {
     if (this.disabled || item.disabled) {
       return;
@@ -163,7 +165,7 @@ export class NzTransferListComponent {
   private updateCheckStatus(): void {
     const validCount = this.dataSource.filter(w => !w.disabled).length;
     this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
-    this.stat.shownCount = this.dataSource.filter(w => !w.hide).length;
+    this.stat.shownCount = this.validData.length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
   }
@@ -177,7 +179,7 @@ export class NzTransferListComponent {
     this.dataSource.forEach(item => {
       item.hide = value.length > 0 && !this.matchFilter(value, item);
     });
-    this.stat.shownCount = this.dataSource.filter(w => !w.hide).length;
+    this.stat.shownCount = this.validData.length;
     this.filterChange.emit({ direction: this.direction, value });
   }
 
