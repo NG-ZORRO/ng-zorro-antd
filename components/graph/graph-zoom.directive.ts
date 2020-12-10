@@ -78,12 +78,13 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
     this.reScale(duration);
   }
 
-  focus(node: SVGGElement, duration: number = 0): void {
+  focus(id: NzSafeAny, duration: number = 0): void {
     // Make sure this node is under SVG container
-    if (!node || !this.svgElement.contains(node)) {
+    if (!this.svgElement.getElementById(`${id}`)) {
       return;
     }
 
+    const node = this.svgElement.getElementById(`${id}`) as SVGGElement;
     const svgRect = this.svgElement.getBoundingClientRect();
     const position = this.getRelativePositionInfo(node);
     const svgTransform = zoomTransform(this.svgElement);

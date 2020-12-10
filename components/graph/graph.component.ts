@@ -80,30 +80,32 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
 
     <ng-template #groupTemplate let-renderNode="renderNode" let-type="type">
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
-        <svg:g class="nz-graph-edges">
-          <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
-            <g class="nz-graph-edge" nz-graph-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
-          </ng-container>
-        </svg:g>
+        <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
+          <svg:g class="nz-graph-edges">
+            <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
+              <g class="nz-graph-edge" nz-graph-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
+            </ng-container>
+          </svg:g>
 
-        <svg:g class="nz-graph-nodes">
-          <ng-container *ngFor="let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun">
-            <g
-              *ngIf="node.type !== 2"
-              class="nz-graph-node"
-              nz-graph-node
-              [node]="node"
-              [customTemplate]="customGraphNodeTemplate"
-              (nodeClick)="clickNode($event)"
-              (toggleClick)="toggleNode($event)"
-            ></g>
+          <svg:g class="nz-graph-nodes">
+            <ng-container *ngFor="let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun">
+              <g
+                *ngIf="node.type !== 2"
+                class="nz-graph-node"
+                nz-graph-node
+                [node]="node"
+                [customTemplate]="customGraphNodeTemplate"
+                (nodeClick)="clickNode($event)"
+                (toggleClick)="toggleNode($event)"
+              ></g>
 
-            <ng-container
-              *ngIf="node.expanded"
-              [ngTemplateOutlet]="groupTemplate"
-              [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
-            ></ng-container>
-          </ng-container>
+              <ng-container
+                *ngIf="node.expanded"
+                [ngTemplateOutlet]="groupTemplate"
+                [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
+              ></ng-container>
+            </ng-container>
+          </svg:g>
         </svg:g>
       </svg:g>
     </ng-template>
@@ -121,7 +123,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   @ContentChild(NzGraphNodeDirective, { static: true, read: TemplateRef }) customGraphNodeTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
-    element: SVGGElement;
   }>;
   @ContentChild(NzGraphEdgeDirective, { static: true, read: TemplateRef }) customGraphEdgeTemplate?: TemplateRef<{
     $implicit: NzGraphEdge;
@@ -160,6 +161,10 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     const x = node.x - node.coreBox.width / 2.0;
     const y = node.y - node.height / 2.0 + node.paddingTop / 2.0;
     return `translate(${x}, ${y})`;
+  };
+
+  coreTransform = (node: NzGraphGroupNode) => {
+    return `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
   };
 
   constructor(

@@ -19,13 +19,13 @@ interface Info {
 @Component({
   selector: '[nz-graph-node]',
   template: `
-    <svg:g #nodeEle>
+    <svg:g>
       <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
         <xhtml:div class="nz-graph-node-wrapper">
           <ng-container
             *ngIf="customTemplate"
             [ngTemplateOutlet]="customTemplate"
-            [ngTemplateOutletContext]="{ $implicit: node, element: nodeEle }"
+            [ngTemplateOutletContext]="{ $implicit: node }"
           ></ng-container>
           <div class="node-content" *ngIf="!customTemplate">
             <div class="title">
@@ -47,7 +47,7 @@ interface Info {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[id]': 'node.id || node.name',
+    '[id]': 'node.id',
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1',
@@ -59,7 +59,6 @@ export class NzGraphNodeComponent {
   @Input() @InputBoolean() noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
-    element: SVGGElement;
   }>;
 
   @Output() readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();

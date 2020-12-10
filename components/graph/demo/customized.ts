@@ -21,8 +21,8 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       [nzRankDirection]="rankDirection"
       (nzGraphInitialized)="graphInitialized($event)"
     >
-      <ng-container *nzGraphNode="let node; let element = element">
-        <div class="custom-node" (click)="click(element)">
+      <ng-container *nzGraphNode="let node">
+        <div class="custom-node" (click)="click(node.id)">
           <div class="header">{{ node.label || node.name }}</div>
         </div>
       </ng-container>
@@ -242,7 +242,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
     this.zoomController?.fitCenter();
   }
 
-  click(e: SVGGElement): void {
+  click(e: string | number): void {
     this.zoomController?.focus(e);
   }
 
