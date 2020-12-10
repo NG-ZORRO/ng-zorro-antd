@@ -5,7 +5,6 @@
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -117,15 +116,6 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   triggerCancel(): Promise<void> {
     return this.trigger(NzTriggerAction.CANCEL);
-  }
-
-  /**
-   * Open the modal.
-   * @deprecated Opened when create, this method is useless.
-   * @breaking-change 11.0.0
-   */
-  open(): void {
-    warnDeprecation('open of NzModalRef is not support, will be removed in 11.0.0');
   }
 
   close(result?: R): void {

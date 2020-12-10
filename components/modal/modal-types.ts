@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -52,14 +51,6 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
   nzCloseOnNavigation?: boolean;
   nzViewContainerRef?: ViewContainerRef;
-
-  /**
-   * Reset the container element.
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
-
   // Template use only
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
