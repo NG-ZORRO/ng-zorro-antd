@@ -16,13 +16,11 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
-  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -33,7 +31,7 @@ import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
@@ -151,7 +149,7 @@ let nextId = 0;
     '[class.ant-tabs-large]': `nzSize === 'large'`
   }
 })
-export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit, OnChanges {
+export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzHideAdd: BooleanInput;
@@ -160,11 +158,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   static ngAcceptInputType_nzLinkRouter: BooleanInput;
   static ngAcceptInputType_nzLinkExact: BooleanInput;
   static ngAcceptInputType_nzSelectedIndex: NumberInput;
-  /**
-   * @deprecated
-   * @breaking-change 11.0.0
-   */
-  static ngAcceptInputType_nzShowPagination: NumberInput;
 
   @Input()
   get nzSelectedIndex(): number | null {
@@ -193,22 +186,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Output() readonly nzTabListScroll = new EventEmitter<NzTabScrollEvent>();
   @Output() readonly nzClose = new EventEmitter<{ index: number }>();
   @Output() readonly nzAdd = new EventEmitter<void>();
-
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Input() @InputBoolean() nzShowPagination = true;
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Output() readonly nzOnNextClick = new EventEmitter<void>();
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
 
   get position(): NzTabPositionMode {
     return ['top', 'bottom'].indexOf(this.nzTabPosition) === -1 ? 'vertical' : 'horizontal';
@@ -263,13 +240,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngOnInit(): void {
-    if (this.nzOnNextClick.observers.length) {
-      warnDeprecation(`(nzOnNextClick) of nz-tabset is not support, will be removed in 11.0.0`);
-    }
-    if (this.nzOnPrevClick.observers.length) {
-      warnDeprecation(`(nzOnPrevClick) of nz-tabset is not support, will be removed in 11.0.0`);
-    }
-
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -492,12 +462,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
     return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzShowPagination')) {
-      warnDeprecation(`[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0`);
-    }
   }
 
   private getTabContentMarginValue(): number {

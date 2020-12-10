@@ -14,6 +14,9 @@ import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { ModalTemplateRule } from './upgrade-rules/checks/modal-template-rule';
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
 import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
+import { TabsInputRule } from './upgrade-rules/checks/tabs-input-rule';
+import { TabsOutputRule } from './upgrade-rules/checks/tabs-output-rule';
+import { TabsTemplateRule } from './upgrade-rules/checks/tabs-template-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 const migrations: NullableDevkitMigration[] = [
@@ -27,6 +30,9 @@ const migrations: NullableDevkitMigration[] = [
   DateFnsCompatibleRule,
   FormTemplateRule,
   GridTemplateRule,
+  TabsInputRule,
+  TabsOutputRule,
+  TabsTemplateRule,
   TableTemplateRule,
   ModalTemplateRule,
   SecondaryEntryPointsRule,
