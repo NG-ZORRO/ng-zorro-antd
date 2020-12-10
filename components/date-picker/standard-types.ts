@@ -9,7 +9,6 @@ export type DisabledDateFn = (d: Date) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
-// TODO: 'time' will be deprecated in 11.0.0
 export type NzDateMode = 'decade' | 'year' | 'month' | 'week' | 'date' | 'time';
 
 export type RangePartType = 'left' | 'right';
