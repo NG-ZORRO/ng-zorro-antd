@@ -966,7 +966,7 @@ describe('NzDatePickerComponent', () => {
   describe('ngModel value accesors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
-    it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
+    it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11-11');
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done

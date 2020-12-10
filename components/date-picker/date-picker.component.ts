@@ -143,10 +143,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
-  /**
-   * @deprecated use method `open` or `close` instead.
-   * @breaking-change 11.0.0
-   */
   @Input() @InputBoolean() nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
@@ -259,10 +255,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
     if (changes.nzRenderExtraFooter) {
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
-    }
-
-    if (changes.nzOpen) {
-      warnDeprecation(`'nzOpen' in DatePicker is going to be removed in 11.0.0. Please use open() or close() method instead.`);
     }
 
     if (changes.nzMode) {
