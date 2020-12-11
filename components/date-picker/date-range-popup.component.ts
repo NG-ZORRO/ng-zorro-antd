@@ -127,7 +127,10 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
       </li>
     </ng-template>
-  `
+  `,
+  host: {
+    '(mousedown)': 'onMousedown($event)'
+  }
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
@@ -200,6 +203,14 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   init(): void {
     this.checkedPartArr = [false, false];
     this.updateActiveDate();
+  }
+
+  /**
+   * Prevent input losing focus when click panel
+   * @param event
+   */
+  onMousedown(event: MouseEvent): void {
+    event.preventDefault();
   }
 
   onClickOk(): void {
