@@ -14,6 +14,40 @@ timeline: true
 
 ---
 
+## 10.2.1
+
+`2020-12-11`
+
+### Bug Fixes
+
+* **cascader:** restore its value after cancel search ([#6088](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6088)) ([22ddc60](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22ddc60))
+* **cascader:** scroll active options into view ([#6082](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6082)) ([b42b51f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b42b51f)), closes [#6037](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6037)
+* **date-picker:** clear wrong date input after closing panel ([#6079](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6079)) ([edffdee](https://github.com/NG-ZORRO/ng-zorro-antd/commit/edffdee)), closes [#6070](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6070)
+* **date-picker:** display error in dynamic switching `nzMode` ([#6125](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6125)) ([220a590](https://github.com/NG-ZORRO/ng-zorro-antd/commit/220a590)), closes [#6052](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6052)
+* **date-picker:** panel not update when changing to week ([#6126](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6126)) ([a096ade](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a096ade))
+* **date-picker,time-picker:** prevent losing input focus ([#6171](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6171)) ([a055905](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a055905)), closes [#6170](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6170)
+* **description:** fix label colon not working ([#6155](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6155)) ([47065f6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/47065f6)), closes [#6151](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6151)
+* **description:** fix DOM structure ([#6112](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6112)) ([5e42d71](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5e42d71))
+* **mention:** scroll to focus when arrow up or down ([#6137](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6137)) ([13f2281](https://github.com/NG-ZORRO/ng-zorro-antd/commit/13f2281)), closes [#5995](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5995)
+* **modal:** add nzOkDanger to avoid old button style ([#6157](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6157)) ([f22024e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f22024e)), closes [#6111](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6111)
+* **select:** activate first item or first selected item ([#6148](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6148)) ([a456c93](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a456c93)), closes [#6041](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6041)
+* **table:** showPagination in ngIf when nzHideOnSinglePage ([#6133](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6133)) ([fbe13c2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fbe13c2)), closes [#6080](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6080)
+* **tabs:** keyboard events in extra areas trigger navigation ([#6173](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6173)) ([375366f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/375366f)), closes [#6139](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6139)
+* **transfer:** fix only filtered data in `nzRenderList` ([#6169](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6169)) ([17d43fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/17d43fb)), closes [#5641](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5641)
+* **tree:** fix indent line styles ([#6123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6123)) ([2f8edbc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f8edbc))
+* **tree-select:** selector cannot focus ([#6073](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6073)) ([032bd01](https://github.com/NG-ZORRO/ng-zorro-antd/commit/032bd01)), closes [#6063](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6063)
+* **upload:** fix prevent trigger submit when click list button ([#6096](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6096)) ([123982f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/123982f)), closes [#6095](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6095)
+
+
+### Features
+
+* **drawer:** add `nzDrawerContent` directive ([#6085](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6085)) ([6fc0683](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6fc0683))
+* **drawer:** support `nzVisible` two-way binding ([#6013](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6013)) ([caab8be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/caab8be)), closes [#5999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5999)
+* **input:** textarea supports character count ([#6104](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6104)) ([601ab50](https://github.com/NG-ZORRO/ng-zorro-antd/commit/601ab50)), closes [#5907](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5907)
+* **modal:** add `nzModalContent` directive ([#6081](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6081)) ([6594414](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6594414))
+* **pagination:** support global config ([#6043](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6043)) ([3c55b7c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3c55b7c)), closes [#6042](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6042)
+* **steps:** supports enable and disable ([#6101](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6101)) ([b87e72d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b87e72d)), closes [#5579](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5579)
+
 ## 10.2.0
 `2020-12-01`
 
