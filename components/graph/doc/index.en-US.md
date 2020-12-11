@@ -35,7 +35,8 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 Dependencies:
 
 ```sh
-npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
+npm install @nx-component/hierarchy-graph
+npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
 ### nz-graph
@@ -50,7 +51,18 @@ npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 
 | Method | Description |
 | --- | --- |
-| `autoFit()` | Move graph to center |
+| `fitCenter()` | Move graph to center(use `nz-graph-zoom` instead if zooming is enabled) |
+
+### [nz-graph-zoom]
+
+| Parameter | Description | Type | Default |
+| --- | --- | --- | --- |
+| `[(nzZoom)]` | Default zoom scale | `number` | `1` |
+| `[nzMinZoom]` | Minimum zoom scale | `number` | `0.1` |
+| `[nzMaxZoom]` | Maximum zoom scale | `number` | `10` |
+| `(nzTransformEvent)` | Event of zooming | `() => NzZoomTransform` | `` |
+| `(fitCenter)` | Move graph to center | `() => void` | `void` |
+| `(focus)` | Move target node to center | `(e: SVGGElement, duration: number) => void` | `void` |
 
 #### NzGraphData
 
@@ -109,7 +121,7 @@ npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 | `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
 | `edges` | `NzGraphEdge[]` |
 
-### nzGraphNode
+### [nzGraphNode]
 Customize the graph node template
 
 ```html
@@ -119,6 +131,34 @@ Customize the graph node template
   </ng-container>
 </nz-graph>
 ```
+
+### [nzGraphEdge]
+Customize the graph edge template
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphEdge="let edge">
+    <svg:g>
+      <path></path>
+    </svg:g>
+  </ng-container>
+</nz-graph>
+```
+
+### Styling
+
+The Component styles only contain the necessary positional properties and simple styles, you can customize the style by overriding the following class.
+
+- `.nz-graph` `nz-graph` The `nz-graph` component namespace
+- `.nz-graph-nodes` The class name of container covered all nodes
+  * `.nz-graph-node` The class name of `nz-graph-node`
+  * `.nz-graph-node-expanded` The class name of expanded node
+  * `.nz-graph-group-node` The class name of group node
+  * `.nz-graph-base-node` The class name of leaf(OP) node
+- `.nz-graph-edges` The class name of container covered edges in the target node
+  * `.nz-graph-edge` The class name of edge
+    * `path.nz-graph-edge-line` The class name of svg:path element
+    * `.nz-graph-edge-text` The class name of svg:text element
 
 ## More
 - [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): Auto-layout graph library

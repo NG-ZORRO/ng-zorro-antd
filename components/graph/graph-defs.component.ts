@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
       class="nz-graph-edge-marker"
       id="edge-end-arrow"
       viewBox="1 0 20 20"
-      refX="9"
+      refX="8"
       refY="3.5"
       markerWidth="10"
       markerHeight="10"

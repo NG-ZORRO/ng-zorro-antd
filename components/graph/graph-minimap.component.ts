@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { ZoomBehavior, ZoomTransform } from 'd3-zoom';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
+import { ZoomBehavior } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Minimap } from './core/minimap';
-import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
+import { NzZoomTransform, NZ_GRAPH_LAYOUT_SETTING } from './interface';
 
 @Component({
   selector: 'nz-graph-minimap',
@@ -31,29 +31,25 @@ import { NZ_GRAPH_LAYOUT_SETTING } from './interface';
     <canvas class="viewport"></canvas>
     <!-- Additional canvas to use as buffer to avoid flickering between updates -->
     <canvas class="buffer"></canvas>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.nz-graph-minimap]': 'true'
+  }
 })
 export class NzGraphMinimapComponent implements OnInit {
   minimap?: Minimap;
-  constructor(private elementRef: ElementRef<HTMLElement>) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-graph-minimap');
-  }
+  constructor(private elementRef: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {}
 
-  init(svgEle: SVGSVGElement, zoomEle: SVGGElement, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
-    this.minimap = new Minimap(
-      svgEle,
-      zoomEle,
-      zoomBehavior,
-      this.elementRef.nativeElement,
-      NZ_GRAPH_LAYOUT_SETTING.minimap.size,
-      NZ_GRAPH_LAYOUT_SETTING.subscene.meta.labelHeight
-    );
+  init(containerEle: ElementRef, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
+    const svgEle = containerEle.nativeElement.querySelector('svg');
+    const zoomEle = containerEle.nativeElement.querySelector('svg > g');
+    this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, NZ_GRAPH_LAYOUT_SETTING.minimap.size, 0);
   }
 
-  zoom(transform: ZoomTransform): void {
+  zoom(transform: NzZoomTransform): void {
     if (this.minimap) {
       this.minimap.zoom(transform);
     }

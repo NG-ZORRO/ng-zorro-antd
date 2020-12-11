@@ -185,3 +185,16 @@ export const NZ_GRAPH_LAYOUT_SETTING: NzLayoutSetting = {
     size: 150
   }
 };
+
+// Zoom interface
+
+export interface NzZoomTransform {
+  x: number;
+  y: number;
+  k: number;
+}
+
+export interface RelativePositionInfo {
+  topLeft: { x: number; y: number };
+  bottomRight: { x: number; y: number };
+}

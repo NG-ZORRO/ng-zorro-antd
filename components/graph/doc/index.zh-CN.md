@@ -38,7 +38,8 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 安装依赖：
 
 ```sh
-npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
+npm install @nx-component/hierarchy-graph
+npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
 ### nz-graph
@@ -52,7 +53,18 @@ npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 
 | 名称 | 描述 |
 | --- | --- |
-| `autoFit()` | 居中图并自适应缩放 |
+| `fitCenter()` | 居中图并自适应缩放（如使用缩放功能请使用 `nz-graph-zoom`） |
+
+### [nz-graph-zoom]
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[(nzZoom)]` | 缩放比例 | `number` | `1` |
+| `[nzMinZoom]` | 最小缩放 | `number` | `0.1` |
+| `[nzMaxZoom]` | 最大缩放 | `number` | `10` |
+| `(nzTransformEvent)` | 缩放事件 | `() => NzZoomTransform` | `` |
+| `(fitCenter)` | 居中图并自适应缩放 | `() => void` | `void` |
+| `(focus)` | 居中单个节点 | `(e: SVGGElement, duration: number) => void` | `void` |
 
 #### NzGraphData
 
@@ -110,8 +122,8 @@ npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
 | `nodes` | `Array<NzGraphNode\|NzGraphGroupNode>` |
 | `edges` | `NzGraphEdge[]` |
 
-### nzGraphNode
-自定义建议渲染模板
+### [nzGraphNode]
+自定义节点渲染模板
 
 ```html
 <nz-graph [nzGraphData]="data">
@@ -120,6 +132,34 @@ npm install @nx-component/hierarchy-graph && npm install d3-* @types/d3
   </ng-container>
 </nz-graph>
 ```
+
+### [nzGraphEdge]
+自定义边渲染模板
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphEdge="let edge">
+    <svg:g>
+      <path></path>
+    </svg:g>
+  </ng-container>
+</nz-graph>
+```
+
+### 样式
+
+组件样式包含了必要的属性和简单的样式，你可以通过覆写下列类名自定义样式。
+
+- `.nz-graph` `nz-graph` 组件命名空间
+- `.nz-graph-nodes` 节点
+  * `.nz-graph-node` 单个节点
+  * `.nz-graph-node-expanded` 展开节点
+  * `.nz-graph-group-node` 组节点
+  * `.nz-graph-base-node` 叶子节点
+- `.nz-graph-edges` 连接线
+  * `.nz-graph-edge` 单条线
+    * `path.nz-graph-edge-line` 线 path 元素
+    * `.nz-graph-edge-text` 线文本元素
 
 ## 说明
 - [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): graph 布局计算库
