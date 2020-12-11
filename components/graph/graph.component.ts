@@ -96,7 +96,6 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                 [node]="node"
                 [customTemplate]="customGraphNodeTemplate"
                 (nodeClick)="clickNode($event)"
-                (toggleClick)="toggleNode($event)"
               ></g>
 
               <ng-container
@@ -236,16 +235,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     this.nzNodeClick.emit(node);
   }
 
-  toggleNode(node: NzGraphNode | NzGraphGroupNode): void {
-    if (node.expanded) {
-      // collapse it
-      this.nzGraphData.collapse(node.name);
-    } else {
-      // expand it
-      this.nzGraphData.expand(node.name);
-    }
-  }
-
   /**
    * Move graph to center and scale automatically
    */
@@ -317,15 +306,29 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return new Promise(resolve => {
       this.ngZone.onStable.pipe(take(1)).subscribe(() => {
         const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
-        const scale = this.getScale();
+        let scale = this.getScale();
 
         this.listOfNodeElement.forEach(nodeEle => {
-          const contentEle = nodeEle.nativeElement.querySelector('.nz-graph-node-wrapper');
+          const contentEle = nodeEle.nativeElement;
           if (contentEle) {
-            const { width, height } = contentEle.getBoundingClientRect();
+            let width: number;
+            let height: number;
+            // Check if foreignObject is set
+            const clientRect = contentEle.querySelector('foreignObject > :first-child')?.getBoundingClientRect();
+            if (clientRect) {
+              width = clientRect.width;
+              height = clientRect.height;
+            } else {
+              const bBoxRect = contentEle.getBBox();
+              width = bBoxRect.width;
+              height = bBoxRect.height;
+              // getBBox will return actual value
+              scale = 1;
+            }
             // Element id type is string
-            const node = dataSource.nodes.find(n => n.id === nodeEle.nativeElement.id);
-            if (node) {
+            const node = dataSource.nodes.find(n => `${n.id}` === nodeEle.nativeElement.id);
+
+            if (node && width && height) {
               node.height = height / scale;
               node.width = width / scale;
             }

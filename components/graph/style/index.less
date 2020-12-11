@@ -21,47 +21,11 @@
     .@{graph-prefix-cls}-node {
       &-rect {
         fill: transparent;
-        stroke: none;
-      }
+        stroke: @graph-stroke-color;
+        stroke-width: @graph-stroke-width-base;
 
-      &-wrapper {
-        display: block;
-        cursor: default;
-        font-size: @font-size-sm;
-        width: 100%;
-        height: 100%;
-        text-align: left;
-        word-break: break-all;
-        border: @graph-stroke-width-base @border-style-base @graph-stroke-color;
-        color: @text-color;
         &:hover {
-          border-color: @graph-focused-color;
-        }
-
-        .node-content {
-          height: 100%;
-          padding: @padding-xs @padding-md;
-
-          .title {
-            word-break: keep-all;
-            white-space: nowrap;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: @height-sm;
-
-            .action-icon {
-              position: absolute;
-              right: @padding-md;
-              cursor: pointer;
-            }
-          }
-
-          .label {
-            height: calc(100% - 40px);
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
+          stroke: @graph-focused-color;
         }
       }
     }
@@ -72,7 +36,7 @@
       path {
         fill: none;
         stroke: @graph-stroke-color;
-        stroke-linecap: round;
+        stroke-linecap: butt;
         stroke-width: @graph-stroke-width-base;
 
         &:hover {
@@ -90,16 +54,6 @@
   &-edge-marker {
     color: @graph-stroke-color;
     fill: @graph-stroke-color;
-  }
-
-  &&-auto-size {
-    .@{graph-prefix-cls}-node-wrapper {
-      height: fit-content;
-    }
-
-    .@{graph-prefix-cls}-group-node .@{graph-prefix-cls}-node-wrapper {
-      height: 100%;
-    }
   }
 
   &-minimap {

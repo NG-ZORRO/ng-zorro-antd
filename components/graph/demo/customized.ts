@@ -22,9 +22,14 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       (nzGraphInitialized)="graphInitialized($event)"
     >
       <ng-container *nzGraphNode="let node">
-        <div class="custom-node" (click)="click(node.id)">
-          <div class="header">{{ node.label || node.name }}</div>
-        </div>
+        <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+          <!-- Make sure 'foreignObject > :first-child' is existing when nzAutoSize is set with true -->
+          <div [class.custom-node]="node.type === 1" (click)="focusNode(node.id || node.name)">
+            <div class="title">
+              {{ node.name }}
+            </div>
+          </div>
+        </foreignObject>
       </ng-container>
     </nz-graph>
   `,
@@ -42,9 +47,13 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
         height: 400px;
       }
 
+      foreignObject {
+        border: 1px solid #8cc8ff;
+      }
+
       .custom-node {
         height: 100%;
-        min-height: 80px;
+        height: 80px;
         display: block;
       }
     `
@@ -242,7 +251,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
     this.zoomController?.fitCenter();
   }
 
-  click(e: string | number): void {
+  focusNode(e: string | number): void {
     this.zoomController?.focus(e);
   }
 

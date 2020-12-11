@@ -15,39 +15,24 @@ interface Info {
   width: number;
   height: number;
 }
-
 @Component({
   selector: '[nz-graph-node]',
   template: `
-    <svg:g>
-      <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
-        <xhtml:div class="nz-graph-node-wrapper">
-          <ng-container
-            *ngIf="customTemplate"
-            [ngTemplateOutlet]="customTemplate"
-            [ngTemplateOutletContext]="{ $implicit: node }"
-          ></ng-container>
-          <div class="node-content" *ngIf="!customTemplate">
-            <div class="title">
-              {{ node.name }}
-              <i
-                class="action-icon"
-                *ngIf="node.type === 0"
-                nz-icon
-                [nzType]="node.expanded ? 'minus' : 'plus'"
-                nzTheme="outline"
-                (click)="triggerToggle($event)"
-              ></i>
-            </div>
-            <div class="label" *ngIf="!node.expanded">{{ node.label }}</div>
-          </div>
-        </xhtml:div>
-      </foreignObject>
+    <svg:g [attr.width]="node.width" [attr.height]="node.height">
+      <ng-container
+        *ngIf="customTemplate"
+        [ngTemplateOutlet]="customTemplate"
+        [ngTemplateOutletContext]="{ $implicit: node }"
+      ></ng-container>
+      <ng-container *ngIf="!customTemplate">
+        <svg:rect class="nz-graph-node-rect" [attr.width]="node.width" [attr.height]="node.height"></svg:rect>
+        <svg:text x="10" y="20">{{ node.id || node.name }}</svg:text>
+      </ng-container>
     </svg:g>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[id]': 'node.id',
+    '[id]': 'node.id || node.name',
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1',
@@ -62,16 +47,10 @@ export class NzGraphNodeComponent {
   }>;
 
   @Output() readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
-  @Output() readonly toggleClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
 
   triggerClick(event: MouseEvent): void {
     event.preventDefault();
     this.nodeClick.emit(this.node);
-  }
-
-  triggerToggle(event: MouseEvent): void {
-    event.preventDefault();
-    this.toggleClick.emit(this.node);
   }
 
   animationInfo: Info | null = null;
@@ -92,7 +71,7 @@ export class NzGraphNodeComponent {
     if (this.initialState) {
       animationFactory = this.builder.build([
         style({ transform: `translate(${cur.x}px, ${cur.y}px)` }),
-        query('.nz-graph-node-rect', [
+        query('g', [
           style({
             width: `${cur.width}px`,
             height: `${cur.height}px`
@@ -103,14 +82,14 @@ export class NzGraphNodeComponent {
     } else {
       animationFactory = this.builder.build([
         style({ transform: `translate(${pre!.x}px, ${pre!.y}px)` }),
-        query('.nz-graph-node-rect', [
+        query('g', [
           style({
             width: `${pre!.width}px`,
             height: `${pre!.height}px`
           })
         ]),
         group([
-          query('.nz-graph-node-rect', [
+          query('g', [
             animate(
               '150ms ease-out',
               style({
