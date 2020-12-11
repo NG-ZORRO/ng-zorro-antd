@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { darkPaletteLess } = require('../build/dark-vars');
 const { compactPaletteLess } = require('../build/compact-vars');
+const { aliyunPaletteLess } = require('../build/aliyun-vars');
 const themePath = path.join(__dirname, '../../site/doc/styles.less');
 const colorPalettePath = path.join(__dirname, '../../components/style/color/colorPalette.less');
 const themeContent = `
@@ -30,7 +31,8 @@ function generateTheme(vars, fileName) {
 
 function generateAllTheme() {
   return generateTheme(compactPaletteLess, 'compact.css')
-    .then(() => generateTheme(darkPaletteLess, 'dark.css'));
+    .then(() => generateTheme(darkPaletteLess, 'dark.css'))
+    .then(() => generateTheme(aliyunPaletteLess, 'aliyun.css'));
 }
 
 if (require.main === module) {

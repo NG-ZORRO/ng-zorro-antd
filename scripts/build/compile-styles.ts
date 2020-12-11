@@ -60,6 +60,7 @@ export async function compile(): Promise<void | void[]> {
   await fs.writeFile(`${targetPath}/components.less`, await fs.readFile(`${sourcePath}/components.less`));
   await fs.writeFile(`${targetPath}/ng-zorro-antd.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.less`));
   await fs.writeFile(`${targetPath}/ng-zorro-antd.dark.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.dark.less`));
+  await fs.writeFile(`${targetPath}/ng-zorro-antd.aliyun.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.aliyun.less`));
   await fs.writeFile(`${targetPath}/ng-zorro-antd.compact.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.compact.less`));
 
   // Compile concentrated less file to CSS file.
@@ -76,6 +77,11 @@ export async function compile(): Promise<void | void[]> {
   const compactLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.compact.less')}";`;
   promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.css'), false));
   promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.min.css'), true));
+
+  // Compile the aliyun theme less file to CSS file.
+  const aliyunLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.aliyun.less')}";`;
+  promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.css'), false));
+  promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.min.css'), true));
 
   // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
