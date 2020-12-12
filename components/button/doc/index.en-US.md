@@ -48,6 +48,7 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 | `[nzType]` | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | option to fit button width to its parent width | `boolean` | `false` |
 | `[nzDanger]` | set the danger status of button | boolean | `false` |  |
+| `[loadingText]` | set the loading text | string | `undefined` |  |
 
 
 ### nz-button-group
