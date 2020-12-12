@@ -2,9 +2,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzProgressComponent } from './progress.component';
-import { NzProgressModule } from './progress.module';
-import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './typings';
+import { NzProgressComponent } from '../progress.component';
+import { NzProgressModule } from '../progress.module';
+import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from '../typings';
 
 describe('progress', () => {
   beforeEach(fakeAsync(() => {
@@ -14,6 +14,7 @@ describe('progress', () => {
         NzTestProgressLineComponent,
         NzTestProgressDashBoardComponent,
         NzTestProgressCircleComponent,
+        NzTestProgressCircleSuccessLegacyComponent,
         NzTestProgressCircleSuccessComponent
       ]
     });
@@ -374,6 +375,22 @@ describe('progress', () => {
   });
 
   describe('progress circle with successPercent', () => {
+    let fixture: ComponentFixture<NzTestProgressCircleSuccessLegacyComponent>;
+    let progress: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestProgressCircleSuccessLegacyComponent);
+      fixture.detectChanges();
+      progress = fixture.debugElement.query(By.directive(NzProgressComponent));
+    });
+
+    it('should success percent work', () => {
+      fixture.detectChanges();
+      expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe('rgb(135, 208, 104)');
+    });
+  });
+
+  describe('progress circle with success', () => {
     let fixture: ComponentFixture<NzTestProgressCircleSuccessComponent>;
     let progress: DebugElement;
 
@@ -385,7 +402,7 @@ describe('progress', () => {
 
     it('should success percent work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe('rgb(135, 208, 104)');
+      expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe('red');
     });
   });
 });
@@ -469,4 +486,14 @@ export class NzTestProgressCircleComponent {
     <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
   `
 })
-export class NzTestProgressCircleSuccessComponent {}
+/**
+ * @deprecated remove in v11 @wendellhu95
+ */
+class NzTestProgressCircleSuccessLegacyComponent {}
+
+@Component({
+  template: `
+    <nz-progress nzType="circle" [nzPercent]="75" [nzSuccess]="{ percent: 60, strokeColor: 'red' }"></nz-progress>
+  `
+})
+class NzTestProgressCircleSuccessComponent {}

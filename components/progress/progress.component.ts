@@ -5,6 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -20,6 +21,7 @@ import {
   NzProgressStepItem,
   NzProgressStrokeColorType,
   NzProgressStrokeLinecapType,
+  NzProgressSuccessData,
   NzProgressTypeType
 } from './typings';
 import { handleCircleGradient, handleLinearGradient } from './utils';
@@ -81,9 +83,9 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
                 [style.height.px]="strokeWidth"
               ></div>
               <div
-                *ngIf="nzSuccessPercent || nzSuccessPercent === 0"
+                *ngIf="successPercent || successPercent === 0"
                 class="ant-progress-success-bg"
-                [style.width.%]="nzSuccessPercent"
+                [style.width.%]="successPercent"
                 [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
                 [style.height.px]="strokeWidth"
               ></div>
@@ -152,6 +154,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
   @Input() @InputNumber() nzSuccessPercent?: number;
+  @Input() nzSuccess?: NzProgressSuccessData;
   @Input() @InputNumber() nzPercent: number = 0;
   @Input() @WithConfig() @InputNumber() nzStrokeWidth?: number = undefined;
   @Input() @WithConfig() @InputNumber() nzGapDegree?: number = undefined;
@@ -185,6 +188,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   trailPathStyle: NgStyleInterface | null = null;
   pathString?: string;
   icon!: string;
+
+  successPercent?: number;
 
   trackByFn = (index: number) => `${index}`;
 
@@ -221,41 +226,36 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       nzStatus,
       nzPercent,
       nzSuccessPercent,
-      nzStrokeWidth
+      nzStrokeWidth,
+      nzSuccess
     } = changes;
+
+    if (nzSuccessPercent) {
+      warnDeprecation('nzSuccessPercent would be removed in v11. Please use `nzSuccess` instead.');
+    }
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
     }
 
-    if (nzPercent || nzSuccessPercent) {
-      const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
-      if (fillAll) {
-        if ((isNotNil(this.nzSuccessPercent) && this.nzSuccessPercent! >= 100) || this.nzSuccessPercent === undefined) {
-          this.inferredStatus = 'success';
-        }
-      } else {
-        this.inferredStatus = this.cachedStatus;
-      }
+    if (nzPercent || nzSuccessPercent || nzSuccess) {
+      this.updateStatus();
     }
 
-    if (nzStatus || nzPercent || nzSuccessPercent || nzStrokeColor) {
+    if (nzStatus || nzPercent || nzSuccessPercent || nzSuccess || nzStrokeColor) {
       this.updateIcon();
     }
 
-    if (nzStrokeColor) {
-      this.setStrokeColor();
+    if (nzStrokeColor || nzSuccess) {
+      this.updateStrokeColor();
     }
 
     if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor || nzStrokeColor) {
-      this.getCirclePaths();
+      this.updateCirclePaths();
     }
 
     if (nzPercent || nzSteps || nzStrokeWidth) {
-      this.isSteps = this.nzSteps > 0;
-      if (this.isSteps) {
-        this.getSteps();
-      }
+      this.updateSteps();
     }
   }
 
@@ -265,8 +265,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateIcon();
-        this.setStrokeColor();
-        this.getCirclePaths();
+        this.updateStrokeColor();
+        this.updateCirclePaths();
       });
   }
 
@@ -280,40 +280,56 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     this.icon = ret ? ret + (this.isCircleStyle ? '-o' : '-circle-fill') : '';
   }
 
+  private updateStatus(): void {
+    const successPercent = (this.successPercent = this.nzSuccess?.percent ?? this.nzSuccessPercent);
+    const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
+
+    if (fillAll) {
+      if ((isNotNil(successPercent) && successPercent! >= 100) || typeof successPercent === 'undefined') {
+        this.inferredStatus = 'success';
+      }
+    } else {
+      this.inferredStatus = this.cachedStatus;
+    }
+  }
+
   /**
    * Calculate step render configs.
    */
-  private getSteps(): void {
-    const current = Math.floor(this.nzSteps * (this.nzPercent / 100));
-    const stepWidth = this.nzSize === 'small' ? 2 : 14;
+  private updateSteps(): void {
+    this.isSteps = this.nzSteps > 0;
+    if (this.isSteps) {
+      const current = Math.floor(this.nzSteps * (this.nzPercent / 100));
+      const stepWidth = this.nzSize === 'small' ? 2 : 14;
 
-    const steps = [];
+      const steps = [];
 
-    for (let i = 0; i < this.nzSteps; i++) {
-      let color;
-      if (i <= current - 1) {
-        color = this.nzStrokeColor;
+      for (let i = 0; i < this.nzSteps; i++) {
+        let color;
+        if (i <= current - 1) {
+          color = this.nzStrokeColor;
+        }
+        const stepStyle = {
+          backgroundColor: `${color}`,
+          width: `${stepWidth}px`,
+          height: `${this.strokeWidth}px`
+        };
+        steps.push(stepStyle);
       }
-      const stepStyle = {
-        backgroundColor: `${color}`,
-        width: `${stepWidth}px`,
-        height: `${this.strokeWidth}px`
-      };
-      steps.push(stepStyle);
-    }
 
-    this.steps = steps;
+      this.steps = steps;
+    }
   }
 
   /**
    * Calculate paths when the type is circle or dashboard.
    */
-  private getCirclePaths(): void {
+  private updateCirclePaths(): void {
     if (!this.isCircleStyle) {
       return;
     }
 
-    const values = isNotNil(this.nzSuccessPercent) ? [this.nzSuccessPercent!, this.nzPercent] : [this.nzPercent];
+    const values = isNotNil(this.successPercent) ? [this.successPercent!, this.nzPercent] : [this.nzPercent];
 
     // Calculate shared styles.
     const radius = 50 - this.strokeWidth / 2;
@@ -356,6 +372,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
 
+    const getSuccessStrokeColor = (): string => {
+      return this.nzSuccess?.strokeColor ?? statusColorMap.get('success')!;
+    };
+
     // Calculate styles for each path.
     this.progressCirclePath = values
       .map((value, index) => {
@@ -363,7 +383,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         return {
           stroke: this.isGradient && !isSuccessPercent ? `url(#gradient-${this.gradientId})` : null,
           strokePathStyle: {
-            stroke: !this.isGradient ? (isSuccessPercent ? statusColorMap.get('success') : (this.nzStrokeColor as string)) : null,
+            stroke: !this.isGradient ? (isSuccessPercent ? getSuccessStrokeColor() : (this.nzStrokeColor as string)) : null,
             transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
             strokeDasharray: `${((value || 0) / 100) * (len - gapDegree)}px ${len}px`,
             strokeDashoffset: `-${gapDegree / 2}px`
@@ -373,7 +393,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       .reverse();
   }
 
-  private setStrokeColor(): void {
+  private updateStrokeColor(): void {
     const color = this.nzStrokeColor;
     const isGradient = (this.isGradient = !!color && typeof color !== 'string');
     if (isGradient && !this.isCircleStyle) {

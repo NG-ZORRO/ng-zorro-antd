@@ -39,3 +39,8 @@ export interface NzProgressStepItem {
   width: string;
   height: string;
 }
+
+export interface NzProgressSuccessData {
+  percent: number;
+  strokeColor?: string;
+}
