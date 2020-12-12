@@ -1,0 +1,30 @@
+@import './index';
+
+// affix
+@input-number-affix-margin: 4px;
+
+.@{ant-prefix}-input {
+  &-affix-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    > .@{ant-prefix}-input-number {
+      padding: 0;
+      border: none;
+      outline: none;
+      width: 100%;
+
+      &-focused {
+        box-shadow: none;
+      }
+    }
+  }
+
+  &-prefix {
+    margin-right: @input-number-affix-margin;
+  }
+
+  &-suffix {
+    margin-left: @input-number-affix-margin;
+  }
+}
