@@ -79,6 +79,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [offset]="track.offset!"
         [length]="track.length!"
         [reverse]="nzReverse"
+        [dir]="dir"
       ></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
@@ -98,6 +99,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
         [tooltipPlacement]="nzTooltipPlacement"
+        [dir]="dir"
       ></nz-slider-handle>
       <nz-slider-marks
         *ngIf="marksArray"
@@ -182,6 +184,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
+      this.updateTrackAndHandles();
+      this.onValueChange(this.getValue(true));
     });
   }
 
@@ -238,7 +242,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     e.preventDefault();
 
-    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
+    let step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
+    step = this.dir === 'rtl' ? step * -1 : step;
     const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
   }
@@ -343,7 +348,17 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private getLogicalValue(value: number): number {
-    return this.nzReverse ? this.nzMax - value + this.nzMin : value;
+    if (this.nzReverse) {
+      if (!this.nzVertical && this.dir === 'rtl') {
+        return value;
+      }
+      return this.nzMax - value + this.nzMin;
+    }
+    if (!this.nzVertical && this.dir === 'rtl') {
+      return this.nzMax - value + this.nzMin;
+    }
+
+    return value;
   }
 
   private onDragEnd(): void {

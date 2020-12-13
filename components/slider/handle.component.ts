@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -58,6 +59,7 @@ export class NzSliderHandleComponent implements OnChanges {
   @Input() tooltipPlacement?: string;
   @Input() tooltipFormatter?: null | ((value: number) => string);
   @Input() @InputBoolean() active = false;
+  @Input() dir: Direction = 'ltr';
 
   tooltipTitle?: string;
   style: NgStyleInterface = {};
@@ -65,9 +67,9 @@ export class NzSliderHandleComponent implements OnChanges {
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { offset, value, active, tooltipVisible, reverse } = changes;
+    const { offset, value, active, tooltipVisible, reverse, dir } = changes;
 
-    if (offset || reverse) {
+    if (offset || reverse || dir) {
       this.updateStyle();
     }
 
@@ -142,12 +144,22 @@ export class NzSliderHandleComponent implements OnChanges {
           transform: reverse ? null : `translateY(+50%)`
         }
       : {
-          [reverse ? 'right' : 'left']: `${offset}%`,
-          [reverse ? 'left' : 'right']: 'auto',
-          transform: `translateX(${reverse ? '+' : '-'}50%)`
+          ...this.getHorizontalStylePosition(),
+          transform: `translateX(${reverse ? (this.dir === 'rtl' ? '-' : '+') : this.dir === 'rtl' ? '+' : '-'}50%)`
         };
 
     this.style = positionStyle;
     this.cdr.markForCheck();
+  }
+
+  private getHorizontalStylePosition(): { left: string; right: string } {
+    let left = this.reverse ? 'auto' : `${this.offset}%`;
+    let right = this.reverse ? `${this.offset}%` : 'auto';
+    if (this.dir === 'rtl') {
+      const tmp = left;
+      left = right;
+      right = tmp;
+    }
+    return { left, right };
   }
 }
