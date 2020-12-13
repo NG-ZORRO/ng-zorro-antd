@@ -78,7 +78,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
-  ) {}
+  ) {
+    this.dir = this.directionality.value;
+  }
 
   ngOnInit(): void {
     this.registerScrollEvent();
