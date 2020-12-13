@@ -325,16 +325,16 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // #endregion
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Upload');
-      this.detectChangesList();
-    });
-
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.setClassMap();
       this.cdr.detectChanges();
+    });
+
+    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Upload');
+      this.detectChangesList();
     });
   }
 
