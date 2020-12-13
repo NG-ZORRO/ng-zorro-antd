@@ -69,7 +69,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -95,7 +95,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -245,7 +245,6 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
@@ -365,7 +364,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
@@ -437,6 +436,12 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzSuffixIcon = 'clock-circle';
       fixture.detectChanges();
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
+    }));
+
+    it('should support nzBorderless', fakeAsync(() => {
+      fixtureInstance.nzBorderless = true;
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
   });
 
@@ -779,7 +784,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -1033,6 +1038,7 @@ describe('date-fns testing', () => {
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
         [nzSuffixIcon]="nzSuffixIcon"
+        [nzBorderless]="nzBorderless"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1082,6 +1088,7 @@ class NzTestDatePickerComponent {
   nzShowToday = false;
   nzMode: string = 'date';
   nzSuffixIcon!: string;
+  nzBorderless = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}

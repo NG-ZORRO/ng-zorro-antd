@@ -20,6 +20,15 @@ function easeInOutCubic(t: number, b: number, c: number, d: number): number {
   }
 }
 
+export interface NzScrollToOptions {
+  /** Scroll container, default as window */
+  easing?: EasyingFn;
+  /** Scroll end callback */
+  callback?(): void;
+  /** Animation duration, default as 450 */
+  duration?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -65,41 +74,55 @@ export class NzScrollService {
 
   /** Get the position of the scoll bar of `el`. */
   // TODO: remove '| Window' as the fallback already happens here
-  getScroll(el?: Element | Window, top: boolean = true): number {
-    const target = el ? el : window;
-    const prop = top ? 'pageYOffset' : 'pageXOffset';
-    const method = top ? 'scrollTop' : 'scrollLeft';
-    const isWindow = target === window;
-    // @ts-ignore
-    let ret = isWindow ? target[prop] : target[method];
-    if (isWindow && typeof ret !== 'number') {
-      ret = this.doc.documentElement![method];
+  getScroll(target?: Element | HTMLElement | Window | Document | null, top: boolean = true): number {
+    if (typeof window === 'undefined') {
+      return 0;
     }
-    return ret;
+    const method = top ? 'scrollTop' : 'scrollLeft';
+    let result = 0;
+    if (this.isWindow(target)) {
+      result = (target as Window)[top ? 'pageYOffset' : 'pageXOffset'];
+    } else if (target instanceof Document) {
+      result = target.documentElement[method];
+    } else if (target) {
+      result = (target as HTMLElement)[method];
+    }
+    if (target && !this.isWindow(target) && typeof result !== 'number') {
+      result = ((target as HTMLElement).ownerDocument || (target as Document)).documentElement[method];
+    }
+    return result;
+  }
+
+  isWindow(obj: NzSafeAny): boolean {
+    return obj !== null && obj !== undefined && obj === obj.window;
   }
 
   /**
    * Scroll `el` to some position with animation.
    *
    * @param containerEl container, `window` by default
-   * @param targetTopValue Scroll to `top`, 0 by default
-   * @param easing Transition curve, `easeInOutCubic` by default
-   * @param callback callback invoked when transition is done
+   * @param y Scroll to `top`, 0 by default
    */
-  scrollTo(containerEl: Element | Window, targetTopValue: number = 0, easing?: EasyingFn, callback?: () => void): void {
+  scrollTo(containerEl?: Element | HTMLElement | Window | Document | null, y: number = 0, options: NzScrollToOptions = {}): void {
     const target = containerEl ? containerEl : window;
     const scrollTop = this.getScroll(target);
     const startTime = Date.now();
+    const { easing, callback, duration = 450 } = options;
     const frameFunc = () => {
       const timestamp = Date.now();
       const time = timestamp - startTime;
-      this.setScrollTop(target, (easing || easeInOutCubic)(time, scrollTop, targetTopValue, 450));
-      if (time < 450) {
-        reqAnimFrame(frameFunc);
+      const nextScrollTop = (easing || easeInOutCubic)(time > duration ? duration : time, scrollTop, y, duration);
+      if (this.isWindow(target)) {
+        (target as Window).scrollTo(window.pageXOffset, nextScrollTop);
+      } else if (target instanceof HTMLDocument || target.constructor.name === 'HTMLDocument') {
+        (target as HTMLDocument).documentElement.scrollTop = nextScrollTop;
       } else {
-        if (callback) {
-          callback();
-        }
+        (target as HTMLElement).scrollTop = nextScrollTop;
+      }
+      if (time < duration) {
+        reqAnimFrame(frameFunc);
+      } else if (typeof callback === 'function') {
+        callback();
       }
     };
     reqAnimFrame(frameFunc);

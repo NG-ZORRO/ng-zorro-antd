@@ -56,7 +56,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -127,7 +127,6 @@ describe('NzMonthPickerComponent', () => {
         tick(500);
         fixture.detectChanges();
         expect(getPickerContainer()).not.toBeNull();
-        expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
 
         fixtureInstance.nzOpen = false;
         fixture.detectChanges();
@@ -206,7 +205,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);

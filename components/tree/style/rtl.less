@@ -19,7 +19,7 @@
   }
 
   // >>> Switcher
-  & &-switcher {
+  &-switcher {
     &_close {
       .@{tree-prefix-cls}-switcher-icon {
         svg {
@@ -27,6 +27,12 @@
             transform: rotate(90deg);
           }
         }
+      }
+    }
+
+    &-loading-icon {
+      .@{tree-prefix-cls}-rtl& {
+        transform: scaleY(-1);
       }
     }
   }

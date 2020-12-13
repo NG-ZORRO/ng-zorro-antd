@@ -192,7 +192,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     merge(this.nzResizeObserver.observe(this.navWarpRef), this.nzResizeObserver.observe(this.navListRef))
       .pipe(takeUntil(this.destroy$), auditTime(16, RESIZE_SCHEDULER))
       .subscribe(() => {
-        this.updateScrollListPosition();
+        realign();
       });
     merge(dirChange, resize, this.items.changes)
       .pipe(takeUntil(this.destroy$))

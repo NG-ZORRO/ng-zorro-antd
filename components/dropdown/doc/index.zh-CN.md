@@ -28,7 +28,6 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 | `[nzTrigger]` | 触发下拉的行为 | `'click' \| 'hover'` | `'hover'` |
 | `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
 | `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
-| `[nzBackdrop]` | 是否在 `nzTrigger` 为 `click`时增加背景蒙版 | `boolean` | `true` |
 | `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |
 | `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |

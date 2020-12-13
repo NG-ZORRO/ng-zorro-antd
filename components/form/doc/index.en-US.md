@@ -54,9 +54,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | Property | Description | Type | Default Value | Global Config |
 | -------- | ----------- | ---- | ------------- | ------------- |
 | `[nzLayout]`| Form layout | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
-| `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
 | `[nzAutoTips]`| Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>` | `{}` | ✅ |
 | `[nzDisableAutoTips]`| Set default props `[nzDisableAutoTip]` value of `nz-form-control` | `boolean` | `false` | ✅ |
+| `[nzNoColon]`| Set default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
+| `[nzTooltipIcon]`| Set default props `[nzTooltipIcon]` value of `nz-form-label` | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅ |
 
 ### nz-form-item
 
@@ -75,6 +76,8 @@ The label of the form item, optional.
 | `[nzRequired]`| add required style to current item | `boolean` | `false` |
 | `[nzNoColon]`| whether to not display `:` after label text. | `boolean` | `false` |
 | `[nzFor]`| The `for` property of `label` | `string` | - |
+| `[nzTooltipTitle]`| Set tooltip info | `string \| TemplateRef<void>` | - |
+| `[nzTooltipIcon]`| Set icon of tooltip info | `string \| NzFormTooltipIcon` | - |
 
 ### nz-form-control
 > Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.

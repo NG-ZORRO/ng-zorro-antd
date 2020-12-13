@@ -93,7 +93,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (animationEnd)="updateCdkConnectedOverlayPositions()"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
-      (openChange)="setOpenState($event)"
     ></nz-select-top-control>
     <nz-select-clear
       *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
@@ -105,21 +104,20 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
-      (click)="setOpenState(!nzOpen)"
     ></nz-select-arrow>
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="true"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
-      (backdropClick)="setOpenState(false)"
+      [cdkConnectedOverlayOpen]="nzOpen"
+      (overlayKeydown)="onOverlayKeyDown($event)"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="nzOpen"
     >
       <nz-option-container
         [ngStyle]="nzDropdownStyle"
@@ -158,7 +156,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
-    '[class.ant-select-rtl]': `dir === 'rtl'`
+    '[class.ant-select-rtl]': `dir === 'rtl'`,
+    '(click)': 'onHostClick()'
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
@@ -236,8 +235,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private value: NzSafeAny | NzSafeAny[];
   private destroy$ = new Subject();
   private _nzShowArrow: boolean | undefined;
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+  onChange: OnChangeType = () => { };
+  onTouched: OnTouchedType = () => { };
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   triggerWidth: number | null = null;
   listOfContainerItem: NzSelectItemInterface[] = [];
@@ -282,6 +281,14 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     const listOfSelectedValue = this.listOfValue.filter(v => !this.compareWith(v, item.nzValue));
     this.updateListOfValue(listOfSelectedValue);
     this.clearInput();
+  }
+
+  onHostClick(): void {
+    if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
+      return;
+    }
+
+    this.setOpenState(!this.nzOpen);
   }
 
   updateListOfContainerItem(): void {
@@ -372,6 +379,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.clearInput();
   }
 
+  onOverlayKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode === ESCAPE) {
+      this.setOpenState(false);
+    }
+  }
+
   onKeyDown(e: KeyboardEvent): void {
     if (this.nzDisabled) {
       return;
@@ -415,7 +428,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.setOpenState(false);
         break;
       case ESCAPE:
-        this.setOpenState(false);
+        /**
+         * Skip the ESCAPE processing, it will be handled in {@link onOverlayKeyDown}.
+         */
         break;
       default:
         if (!this.nzOpen) {
@@ -447,6 +462,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   onClearSelection(): void {
     this.updateListOfValue([]);
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.setOpenState(false);
+    }
   }
 
   focus(): void {
@@ -481,7 +502,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) { }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/

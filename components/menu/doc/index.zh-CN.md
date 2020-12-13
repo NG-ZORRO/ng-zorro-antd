@@ -54,6 +54,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzSelected]` | 是否被选中 | `boolean` | `false` |
 | `[nzMatchRouter]` | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected` | `boolean` | `false` |
 | `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
+| `[nzDanger]` | 展示错误状态样式  | `boolean` | `false` |
 
 ### [nz-submenu]
 

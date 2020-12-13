@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
         <li nz-menu-item>1st menu item</li>
         <li nz-menu-item>2nd menu item</li>
         <li nz-menu-item>3rd menu item</li>
+        <li nz-menu-item nzDanger>4th danger item</li>
       </ul>
     </nz-dropdown-menu>
   `

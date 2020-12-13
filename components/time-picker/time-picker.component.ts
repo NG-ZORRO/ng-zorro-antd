@@ -64,7 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </span>
-      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
+      <span *ngIf="nzAllowEmpty && !nzDisabled && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
       </span>
     </div>
@@ -72,14 +72,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayOffsetY]="-2"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
-      (backdropClick)="setCurrentValueAndClose()"
+      (overlayOutsideClick)="onClickOutside($event)"
     >
       <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
@@ -225,6 +224,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   onClickClearBtn(event: MouseEvent): void {
     event.stopPropagation();
     this.emitValue(null);
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.element.nativeElement.contains(event.target)) {
+      this.setCurrentValueAndClose();
+    }
   }
 
   onFocus(value: boolean): void {

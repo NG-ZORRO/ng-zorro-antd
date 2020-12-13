@@ -1,6 +1,7 @@
-import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -22,12 +23,19 @@ describe('select', () => {
     let component: TestSelectTemplateDefaultComponent;
     let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
     let selectElement!: HTMLElement;
+    let overlayContainerElement: HTMLElement;
+
     beforeEach(() => {
       testBed = createComponentBed(TestSelectTemplateDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
     });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
     it('should classname correct', () => {
       expect(selectElement.classList).toContain('ant-select');
       expect(selectElement.classList).toContain('ant-select-single');
@@ -115,6 +123,18 @@ describe('select', () => {
       fixture.detectChanges();
       expect(component.openChange).toHaveBeenCalledTimes(2);
       expect(component.openChange).toHaveBeenCalledWith(true);
+    });
+    it('should click input not close in searching mode', () => {
+      component.nzShowSearch = true;
+      fixture.detectChanges();
+      const topSelectElement = selectElement.querySelector('.ant-select-selector')!;
+      dispatchFakeEvent(topSelectElement, 'click');
+      fixture.detectChanges();
+      expect(component.openChange).toHaveBeenCalledTimes(1);
+      expect(component.openChange).toHaveBeenCalledWith(true);
+      dispatchFakeEvent(topSelectElement, 'click');
+      fixture.detectChanges();
+      expect(component.openChange).toHaveBeenCalledTimes(1);
     });
     it('should nzCustomTemplate works', fakeAsync(() => {
       component.listOfOption = [{ nzValue: 'value', nzLabel: 'label' }];
@@ -243,6 +263,22 @@ describe('select', () => {
       expect(selectElement.classList).toContain('ant-select-disabled');
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
+
+    it('should close dropdown when ESC keydown', fakeAsync(() => {
+      component.nzOpen = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(component.nzOpen).toBe(false);
+    }));
+
     it('should keydown up arrow and down arrow', fakeAsync(() => {
       const flushChanges = () => {
         fixture.detectChanges();
@@ -384,7 +420,7 @@ describe('select', () => {
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
-      ['disabled', undefined, null].forEach((value) => {
+      ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
@@ -633,7 +669,7 @@ describe('select', () => {
       expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 2 ...');
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
-      expect(listOfItem[2].textContent).toBe(' and 2 more selected ');
+      expect(listOfItem[2].textContent).toBe('and 2 more selected');
     }));
   });
   describe('default reactive mode', () => {
@@ -1113,7 +1149,7 @@ describe('select', () => {
       expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 2 ...');
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
-      expect(listOfItem[2].textContent).toBe(' and 2 more selected ');
+      expect(listOfItem[2].textContent).toBe('and 2 more selected');
     }));
   });
 });
@@ -1263,7 +1299,7 @@ export class TestSelectTemplateMultipleComponent {
         [nzHide]="o.nzHide"
       ></nz-option>
     </nz-select>
-    <ng-template #tagTemplate let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+    <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `
 })
 export class TestSelectTemplateTagsComponent {
@@ -1360,8 +1396,7 @@ export class TestSelectReactiveDefaultComponent {
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
-    >
-    </nz-select>
+    ></nz-select>
     <ng-template #iconTemplate>icon</ng-template>
   `
 })
@@ -1391,9 +1426,8 @@ export class TestSelectReactiveMultipleComponent {
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
-    >
-    </nz-select>
-    <ng-template #tagTemplate let-selectedList> and {{ selectedList.length }} more selected </ng-template>
+    ></nz-select>
+    <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `
 })
 export class TestSelectReactiveTagsComponent {

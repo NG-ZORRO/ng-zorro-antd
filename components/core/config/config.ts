@@ -6,8 +6,9 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
+import { ThemeType } from '@ant-design/icons-angular';
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -34,6 +35,7 @@ export interface NzConfig {
   modal?: ModalConfig;
   notification?: NotificationConfig;
   pageHeader?: PageHeaderConfig;
+  pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
   space?: SpaceConfig;
@@ -66,6 +68,7 @@ export interface AlertConfig {
 export interface AvatarConfig {
   nzShape?: NzShapeSCType;
   nzSize?: NzSizeLDSType | number;
+  nzGap?: number;
 }
 
 export interface AnchorConfig {
@@ -154,6 +157,7 @@ export interface EmptyConfig {
 export interface FormConfig {
   nzNoColon?: boolean;
   nzAutoTips?: Record<string, Record<string, string>>;
+  nzTooltipIcon?: string | { type: string; theme: ThemeType };
 }
 
 export interface IconConfig {
@@ -183,6 +187,14 @@ export interface NotificationConfig extends MessageConfig {
 
 export interface PageHeaderConfig {
   nzGhost: boolean;
+}
+
+export interface PaginationConfig {
+  nzSize?: 'default' | 'small';
+  nzPageSizeOptions?: number[];
+  nzShowSizeChanger?: boolean;
+  nzShowQuickJumper?: boolean;
+  nzSimple?: boolean;
 }
 
 export interface ProgressConfig {
@@ -264,6 +276,10 @@ export interface TreeSelectConfig {
 
 export interface TypographyConfig {
   nzEllipsisRows?: number;
+  nzCopyTooltips?: [NzTSType, NzTSType] | null;
+  nzCopyIcons: [NzTSType, NzTSType];
+  nzEditTooltip?: null | NzTSType;
+  nzEditIcon: NzTSType;
 }
 
 export interface GlobalConfig {

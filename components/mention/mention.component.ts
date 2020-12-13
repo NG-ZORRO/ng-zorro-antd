@@ -13,8 +13,8 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-
 import { DOCUMENT } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,8 +36,8 @@ import {
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
-
 import { fromEvent, merge, Subscription } from 'rxjs';
+
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -119,7 +119,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   private overlayRef: OverlayRef | null = null;
   private portal?: TemplatePortal<void>;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
-  private overlayBackdropClickSubscription!: Subscription;
+  private overlayOutsideClickSubscription!: Subscription;
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -159,7 +159,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   closeDropdown(): void {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
-      this.overlayBackdropClickSubscription.unsubscribe();
+      this.overlayOutsideClickSubscription.unsubscribe();
       this.isOpen = false;
       this.cdr.markForCheck();
     }
@@ -323,18 +323,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
     this.positionStrategy.apply();
   }
 
-  private subscribeOverlayBackdropClick(): Subscription {
+  private subscribeOverlayOutsideClick(): Subscription {
     return merge<MouseEvent | TouchEvent>(
-      fromEvent<MouseEvent>(this.ngDocument, 'click'),
+      this.overlayRef!.outsidePointerEvents(),
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
-      if (
-        this.isOpen &&
-        clickTarget !== this.trigger.el.nativeElement &&
-        !!this.overlayRef &&
-        !this.overlayRef.overlayElement.contains(clickTarget)
-      ) {
+      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !this.overlayRef?.overlayElement.contains(clickTarget)) {
         this.closeDropdown();
       }
     });
@@ -347,7 +342,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
     }
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
-      this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
+      this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
     }
     this.updatePositions();
   }

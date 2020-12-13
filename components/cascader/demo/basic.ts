@@ -85,9 +85,7 @@ const otherOptions = [
   template: `
     <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
     &nbsp;
-    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">
-      Change Options
-    </a>
+    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">Change Options</a>
   `,
   styles: [
     `

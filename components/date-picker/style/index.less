@@ -209,6 +209,10 @@
       .@{picker-prefix-cls}-clear {
         right: @input-padding-horizontal-sm;
       }
+      
+      .@{picker-prefix-cls}-active-bar {
+        margin-left: @input-padding-horizontal-sm;
+      }
     }
   }
 
@@ -236,6 +240,30 @@
         display: block;
         transform: rotate(135deg);
       }
+    }
+
+    &.slide-up-enter.slide-up-enter-active&-placement-topLeft,
+    &.slide-up-enter.slide-up-enter-active&-placement-topRight,
+    &.slide-up-appear.slide-up-appear-active&-placement-topLeft,
+    &.slide-up-appear.slide-up-appear-active&-placement-topRight {
+      animation-name: antSlideDownIn;
+    }
+
+    &.slide-up-enter.slide-up-enter-active&-placement-bottomLeft,
+    &.slide-up-enter.slide-up-enter-active&-placement-bottomRight,
+    &.slide-up-appear.slide-up-appear-active&-placement-bottomLeft,
+    &.slide-up-appear.slide-up-appear-active&-placement-bottomRight {
+      animation-name: antSlideUpIn;
+    }
+
+    &.slide-up-leave.slide-up-leave-active&-placement-topLeft,
+    &.slide-up-leave.slide-up-leave-active&-placement-topRight {
+      animation-name: antSlideDownOut;
+    }
+
+    &.slide-up-leave.slide-up-leave-active&-placement-bottomLeft,
+    &.slide-up-leave.slide-up-leave-active&-placement-bottomRight {
+      animation-name: antSlideUpOut;
     }
   }
 

@@ -57,20 +57,28 @@ describe('NzDrawerComponent', () => {
     });
 
     it('should open work', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.open();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
       expect(component.drawerComponent.nzVisible).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
     });
 
     it('should close work', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.open();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       component.close();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
       expect(component.drawerComponent.nzVisible).toBe(false);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(3);
+      expect(component.triggerVisible).toHaveBeenCalledWith(false);
     });
 
     it('should block scroll', fakeAsync(() => {
@@ -94,14 +102,44 @@ describe('NzDrawerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close')).toBe(null);
     });
 
+    it('should open work', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.drawerComponent.nzVisible).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
+    });
+
+    it('should close work', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
+      component.close();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
+      expect(component.drawerComponent.nzVisible).toBe(false);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(3);
+      expect(component.triggerVisible).toHaveBeenCalledWith(false);
+    });
+
     it('should closable', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.closable = true;
       component.open();
       fixture.detectChanges();
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
       (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(3);
+      expect(component.triggerVisible).toHaveBeenCalledWith(false);
     });
 
     it('should set close icon work', () => {
@@ -123,44 +161,62 @@ describe('NzDrawerComponent', () => {
     });
 
     it('should not close when click mask', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.maskClosable = false;
       component.open();
       fixture.detectChanges();
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
       (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
     });
 
     it('should be closed when ESC keydown', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.open();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(3);
+      expect(component.triggerVisible).toHaveBeenCalledWith(false);
     });
 
     it('should disabled ESC keydown', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.open();
       component.drawerComponent.nzKeyboard = false;
       fixture.detectChanges();
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
       dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
       component.close();
       fixture.detectChanges();
     });
 
     it('should close when click mask', () => {
+      expect(component.triggerVisible).toHaveBeenCalledTimes(1);
       component.maskClosable = true;
       component.open();
       fixture.detectChanges();
+      expect(component.triggerVisible).toHaveBeenCalledTimes(2);
+      expect(component.triggerVisible).toHaveBeenCalledWith(true);
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
       (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
+      expect(component.triggerVisible).toHaveBeenCalledTimes(3);
+      expect(component.triggerVisible).toHaveBeenCalledWith(false);
     });
 
     it('should not show mask', () => {
@@ -583,6 +639,7 @@ describe('NzDrawerService', () => {
       [nzOffsetX]="offsetX"
       [nzOffsetY]="offsetY"
       (nzOnClose)="close()"
+      (nzVisibleChange)="triggerVisible($event)"
     >
       <p>Some contents...</p>
       <p>Some contents...</p>
@@ -605,6 +662,8 @@ class NzTestDrawerComponent {
   closeIcon?: TemplateRef<void> | string;
   offsetX = 0;
   offsetY = 0;
+  triggerVisible = jasmine.createSpy('visibleChange');
+
   @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<void>;
   @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
   @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
@@ -635,7 +694,7 @@ class NzTestDrawerWithServiceComponent {
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef?: NzDrawerRef;
 
-  constructor(private drawerService: NzDrawerService) {}
+  constructor(private drawerService: NzDrawerService) { }
 
   openTemplate(): void {
     this.templateDrawerRef = this.drawerService.create({
@@ -659,7 +718,7 @@ class NzTestDrawerWithServiceComponent {
 export class NzDrawerCustomComponent {
   @Input() value: any; // tslint:disable-line:no-any
 
-  constructor(private drawerRef: NzDrawerRef) {}
+  constructor(private drawerRef: NzDrawerRef) { }
 
   close(): void {
     this.drawerRef.close(this.value);

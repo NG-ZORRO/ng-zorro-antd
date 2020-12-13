@@ -21,11 +21,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { Directionality } from '@angular/cdk/bidi';
-import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger } from './base';
+import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from './base';
 
 @Directive({
   selector: '[nz-tooltip]',
@@ -38,13 +39,14 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipTitle') title?: NzTSType | null;
   @Input('nz-tooltip') directiveTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzTooltipPlacement') placement?: string = 'top';
+  @Input('nzTooltipPlacement') placement?: string | string[] = 'top';
   @Input('nzTooltipOrigin') origin?: ElementRef<HTMLElement>;
   @Input('nzTooltipVisible') visible?: boolean;
   @Input('nzTooltipMouseEnterDelay') mouseEnterDelay?: number;
   @Input('nzTooltipMouseLeaveDelay') mouseLeaveDelay?: number;
   @Input('nzTooltipOverlayClassName') overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') overlayStyle?: NgStyleInterface;
+  @Input() nzTooltipColor?: string;
 
   // tslint:disable-next-line:no-output-rename
   @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
@@ -59,6 +61,12 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
     super(elementRef, hostView, resolver, renderer, noAnimation);
+  }
+
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      nzTooltipColor: ['nzColor', () => this.nzTooltipColor]
+    };
   }
 }
 
@@ -75,10 +83,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="_visible"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayPush]="true"
-      (backdropClick)="hide()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
     >
@@ -93,9 +100,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       >
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow">
-            <span class="ant-tooltip-arrow-content"></span>
+            <span class="ant-tooltip-arrow-content" [ngStyle]="_contentStyleMap"></span>
           </div>
-          <div class="ant-tooltip-inner">
+          <div class="ant-tooltip-inner" [ngStyle]="_contentStyleMap">
             <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
           </div>
         </div>
@@ -105,7 +112,11 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
-  @Input() nzTitle: NzTSType | null = null;
+  nzTitle: NzTSType | null = null;
+
+  nzColor?: string | NzPresetColor;
+
+  _contentStyleMap: NgStyleInterface = {};
 
   constructor(
     cdr: ChangeDetectorRef,
@@ -117,5 +128,19 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
 
   protected isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle);
+  }
+
+  updateStyles(): void {
+    const isColorPreset = this.nzColor && isPresetColor(this.nzColor);
+
+    this._classMap = {
+      [this.nzOverlayClassName]: true,
+      [`${this._prefix}-placement-${this.preferredPlacement}`]: true,
+      [`${this._prefix}-${this.nzColor}`]: isColorPreset
+    };
+
+    this._contentStyleMap = {
+      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null
+    };
   }
 }

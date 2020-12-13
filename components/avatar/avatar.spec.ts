@@ -5,6 +5,7 @@ import { createFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzAvatarGroupComponent } from './avatar-group.component';
 import { NzAvatarComponent } from './avatar.component';
 import { NzAvatarModule } from './avatar.module';
 
@@ -21,7 +22,23 @@ function getType(dl: DebugElement): string {
   }
   return el.innerText.trim().length === 0 ? '' : 'text';
 }
+describe('avatar group', () => {
+  let fixture: ComponentFixture<TestAvatarGroupComponent>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzAvatarModule],
+      declarations: [TestAvatarGroupComponent]
+    }).compileComponents();
+    fixture = TestBed.createComponent(TestAvatarGroupComponent);
+    fixture.detectChanges();
+  });
 
+  it('should avatar group work', () => {
+    fixture.detectChanges();
+    const avatarGroup = fixture.debugElement.query(By.directive(NzAvatarGroupComponent));
+    expect(avatarGroup.nativeElement.classList).toContain('ant-avatar-group');
+  });
+});
 describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
@@ -112,16 +129,61 @@ describe('avatar', () => {
       context.nzText = 'a';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!)![2];
+      const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBe(1);
     }));
-    it('should be autoset font-size', fakeAsync(() => {
+    it('should be auto set font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!)![2];
+      const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBeLessThan(1);
     }));
+
+    describe('nzGap', () => {
+      let firstScale: number;
+      let avatarText: HTMLElement;
+      beforeEach(fakeAsync(() => {
+        context.nzGap = 4;
+        context.nzText = 'Username';
+        fixture.detectChanges();
+        tick();
+        avatarText = dl.nativeElement.querySelector('.ant-avatar-string')!;
+        firstScale = getScaleFromCSSTransform(avatarText.style.transform);
+      }));
+
+      it('should be set gap', fakeAsync(() => {
+        context.nzGap = 8;
+        fixture.detectChanges();
+        tick();
+
+        let scale = getScaleFromCSSTransform(avatarText.style.transform);
+        expect(scale).toBeLessThan(firstScale);
+
+        context.nzGap = 2;
+        fixture.detectChanges();
+        tick();
+
+        scale = getScaleFromCSSTransform(avatarText.style.transform);
+        expect(scale).toBeGreaterThan(firstScale);
+      }));
+
+      it('Should be set to default when the limit is exceeded', fakeAsync(() => {
+        context.nzGap = 1000;
+        fixture.detectChanges();
+        tick();
+
+        let scale = getScaleFromCSSTransform(avatarText.style.transform);
+        expect(scale).toEqual(firstScale);
+
+        context.nzGap = -1000;
+        fixture.detectChanges();
+        tick();
+
+        scale = getScaleFromCSSTransform(avatarText.style.transform);
+        expect(scale).toEqual(1);
+      }));
+    });
   });
 
   describe('#nzShape', () => {
@@ -200,6 +262,10 @@ describe('avatar', () => {
   });
 });
 
+function getScaleFromCSSTransform(transform: string): number {
+  return +/(\w+)\(([^)]*)\)/g.exec(transform)![2];
+}
+
 @Component({
   template: `
     <nz-avatar
@@ -208,6 +274,7 @@ describe('avatar', () => {
       [nzSize]="nzSize"
       [nzIcon]="nzIcon"
       [nzText]="nzText"
+      [nzGap]="nzGap"
       [nzSrc]="nzSrc"
       [nzSrcSet]="nzSrcSet"
       [nzAlt]="nzAlt"
@@ -219,9 +286,17 @@ class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
   nzShape = 'square';
   nzSize: string | number = 'large';
+  nzGap = 4;
   nzIcon: string | null = 'user';
   nzText: string | null = 'A';
   nzSrc: string | null = imageBase64;
   nzSrcSet?: string;
   nzAlt?: string;
 }
+
+@Component({
+  template: `
+    <nz-avatar-group></nz-avatar-group>
+  `
+})
+class TestAvatarGroupComponent {}

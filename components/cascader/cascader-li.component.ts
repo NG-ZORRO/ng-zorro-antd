@@ -33,7 +33,15 @@ import { Directionality, Direction } from '@angular/cdk/bidi';
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
     <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i nz-icon [nzType]="option.loading ? 'loading' : getArrowByDirection()"></i>
+      
+    <i nz-icon [nzType]="option.loading ? 'loading' : getArrowByDirection()"></i>
+      
+    <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
+      <ng-template #icon>
+        <ng-container *nzStringTemplateOutlet="expandIcon">
+          <i nz-icon [nzType]="$any(expandIcon)"></i>
+        </ng-container>
+      </ng-template>
     </span>
   `,
   host: {
@@ -50,18 +58,28 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
+  @Input() expandIcon: string | TemplateRef<void> = '';
+
   dir: Direction = 'ltr';
+  readonly nativeElement: HTMLElement;
 
   constructor(
     private cdr: ChangeDetectorRef,
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    @Optional() private directionality: Directionality
-  ) {
+    elementRef: ElementRef, renderer: Renderer2,
+    @Optional() private directionality: Directionality) {
+
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+    this.nativeElement = elementRef.nativeElement;
+
+    this.dir = this.directionality.value;
+    if (!this.expandIcon && this.dir === 'rtl') {
+      this.expandIcon = 'right'
+    } else if (!this.expandIcon) {
+      this.expandIcon = 'left';
+    }
+
   }
   ngOnInit(): void {
-    this.dir = this.directionality.value;
     this.directionality.change.subscribe((direction: Direction) => {
       this.dir = direction;
     });
@@ -73,11 +91,5 @@ export class NzCascaderOptionComponent implements OnInit {
 
   markForCheck(): void {
     this.cdr.markForCheck();
-  }
-  getArrowByDirection(): string {
-    if (this.dir === 'rtl') {
-      return 'left';
-    }
-    return 'right';
   }
 }

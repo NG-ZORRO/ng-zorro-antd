@@ -43,7 +43,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   title?: NzTSType | null;
   content?: NzTSType | null;
   trigger?: NzTooltipTrigger;
-  placement?: string;
+  placement?: string | string[];
   origin?: ElementRef<HTMLElement>;
   visible?: boolean;
   mouseEnterDelay?: number;
@@ -72,8 +72,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.trigger !== 'undefined' ? this.trigger : 'hover';
   }
 
-  protected get _placement(): string {
-    return this.placement || 'top';
+  protected get _placement(): string[] {
+    const p = this.placement;
+    return Array.isArray(p) && p.length > 0 ? p : typeof p === 'string' && p ? [p] : ['top'];
   }
 
   protected get _visible(): boolean {
@@ -117,7 +118,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
     protected noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { specificTrigger } = changes;
@@ -331,7 +332,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   set nzTrigger(value: NzTooltipTrigger) {
     this._trigger = value;
-    this._hasBackdrop = this._trigger === 'click';
   }
 
   get nzTrigger(): NzTooltipTrigger {
@@ -340,24 +340,23 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string) {
-    if (value !== this.preferredPlacement) {
-      this.preferredPlacement = value;
-      this._positions = [POSITION_MAP[this.nzPlacement], ...DEFAULT_TOOLTIP_POSITIONS];
-    }
+  set nzPlacement(value: string[]) {
+    const preferredPosition = value.map(placement => POSITION_MAP[placement]);
+    this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
 
-  get nzPlacement(): string {
-    return this.preferredPlacement;
-  }
+  preferredPlacement: string = 'top';
 
   origin!: CdkOverlayOrigin;
-  preferredPlacement = 'top';
+
   public dir: Direction = 'ltr';
 
   _classMap: NgClassInterface = {};
+
   _hasBackdrop = false;
-  _prefix = 'ant-tooltip-placement';
+
+  _prefix = 'ant-tooltip';
+
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
   private destroy$ = new Subject<void>();
@@ -366,7 +365,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     public cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -410,7 +409,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   updateByDirective(): void {
-    this.setClassMap();
+    this.updateStyles();
     this.cdr.detectChanges();
 
     Promise.resolve().then(() => {
@@ -430,20 +429,28 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.preferredPlacement = getPlacementName(position)!;
-    this.setClassMap();
+    this.updateStyles();
+
+    // We have to trigger immediate change detection or the element would blink.
     this.cdr.detectChanges();
   }
 
-  setClassMap(): void {
+  updateStyles(): void {
     this._classMap = {
       [this.nzOverlayClassName]: true,
-      [`${this._prefix}-${this.preferredPlacement}`]: true
+      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
     };
   }
 
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+      this.hide();
+    }
   }
 
   /**

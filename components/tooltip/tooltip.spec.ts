@@ -49,10 +49,6 @@ describe('nz-tooltip', () => {
     fixture.detectChanges();
   }
 
-  function getTooltipBackdropElement(): HTMLElement {
-    return overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
-  }
-
   beforeEach(() => {
     fixture = testBed.fixture;
     component = testBed.component;
@@ -129,7 +125,7 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
+      dispatchMouseEvent(document.body, 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
@@ -251,7 +247,7 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
+      dispatchMouseEvent(document.body, 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
 
@@ -268,6 +264,25 @@ describe('nz-tooltip', () => {
 
       // here we just making sure the preferred position is the first in the position array
       expect(tooltipComponent._positions.length).toBe(5);
+    }));
+
+    it('should background work', fakeAsync(() => {
+      const triggerElement = component.titleTemplate.nativeElement;
+      component.color = 'pink';
+
+      fixture.detectChanges();
+
+      dispatchMouseEvent(triggerElement, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain('ant-tooltip-pink');
+
+      component.color = '#f50';
+      fixture.detectChanges();
+
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor).toBe(
+        'rgb(255, 85, 0)'
+      );
     }));
   });
 
@@ -318,7 +333,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger">Click</a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">Click</a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
@@ -364,6 +379,7 @@ export class NzTooltipTestComponent {
   class = 'testClass';
   mouseEnterDelay = 0.15;
   mouseLeaveDelay = 0.1;
+  color?: string;
   onVisibleChange(): void {
     this.visibilityTogglingCount += 1;
   }

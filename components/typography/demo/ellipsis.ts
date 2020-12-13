@@ -3,7 +3,17 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-typography-ellipsis',
   template: `
-    <p nz-typography nzEllipsis nzEllipsisRows="3">
+    <p
+      nz-typography
+      nzEllipsis
+      nzCopyable
+      nzContent="Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
+      Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design"
+    ></p>
+    <br />
+    <p nz-typography nzEllipsis>
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
       applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
       Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background

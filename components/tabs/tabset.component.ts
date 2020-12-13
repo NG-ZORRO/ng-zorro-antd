@@ -82,6 +82,8 @@ let nextId = 0;
     >
       <div
         class="ant-tabs-tab"
+        [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
+        [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
         (click)="clickNavItem(tab, i)"
@@ -90,7 +92,6 @@ let nextId = 0;
       >
         <div
           role="tab"
-          [style.margin-right.px]="nzTabBarGutter"
           [attr.tabIndex]="getTabIndex(tab, i)"
           [attr.aria-disabled]="tab.nzDisabled"
           [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"

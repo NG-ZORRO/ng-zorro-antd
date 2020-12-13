@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
-  ) {}
+  ) { }
 
   navigateToPage(url: string): void {
     if (url) {
@@ -181,7 +181,11 @@ export class AppComponent implements OnInit {
 
         if (currentDemoComponent) {
           const path = currentDemoComponent.path.replace(/\/(en|zh)/, '');
-          this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+          if (this.language === 'en') {
+            this.updateMateTitle(`${currentDemoComponent.label} | NG-ZORRO`);
+          } else {
+            this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+          }
           this.updateDocMetaAndLocale(currentDemoComponent.description, `${currentDemoComponent.label}, ${currentDemoComponent.zh}`, path);
         }
 
@@ -192,7 +196,7 @@ export class AppComponent implements OnInit {
             if (this.language === 'en') {
               this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
             } else {
-              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语音和 Angular 组件库`);
+              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`)
             }
           } else {
             this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
@@ -212,12 +216,13 @@ export class AppComponent implements OnInit {
             } else {
               this.updateMateTitle('组件(Components) | NG-ZORRO');
               this.updateDocMetaAndLocale(
-                'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践.',
+                'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践。',
                 'overview, 预览',
                 'components/overview'
               );
             }
           } else {
+            this.updateMateTitle(`NG-ZORRO - Angular UI component library`)
             this.updateDocMetaAndLocale();
           }
         }

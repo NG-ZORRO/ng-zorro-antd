@@ -88,18 +88,20 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
           class="ant-cascader-picker-clear"
           (click)="clearSelection($event)"
         ></i>
-        <i
-          *ngIf="nzShowArrow && !isLoading"
-          nz-icon
-          nzType="down"
-          class="ant-cascader-picker-arrow"
-          [class.ant-cascader-picker-arrow-expand]="menuVisible"
-        ></i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon">
+          <i
+            *ngIf="nzShowArrow && !isLoading"
+            nz-icon
+            [nzType]="$any(nzSuffixIcon)"
+            class="ant-cascader-picker-arrow"
+            [class.ant-cascader-picker-arrow-expand]="menuVisible"
+          ></i>
+        </ng-container>
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
-          [class.ant-cascader-show-search]="!!nzShowSearch"
-          [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue"
+          [class.ant-cascader-picker-show-search]="!!nzShowSearch"
+          [class.ant-cascader-picker-focused]="!!nzShowSearch && isFocused && !inputValue"
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
@@ -112,13 +114,12 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
-      (backdropClick)="closeMenu()"
-      (detach)="closeMenu()"
       [cdkConnectedOverlayOpen]="menuVisible"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="closeMenu()"
     >
       <div
         #menu
@@ -153,6 +154,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
             <li
               nz-cascader-option
               *ngFor="let option of options"
+              [expandIcon]="nzExpandIcon"
               [columnIndex]="i"
               [nzLabelProperty]="nzLabelProperty"
               [optionTemplate]="nzOptionRender"
@@ -225,6 +227,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
+  // TODO: RTL
+  @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
+  @Input() nzExpandIcon: string | TemplateRef<void> = 'right';
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -314,9 +319,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   constructor(
     public cascaderService: NzCascaderService,
-    private i18nService: NzI18nService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
+    private i18nService: NzI18nService,
     elementRef: ElementRef,
     renderer: Renderer2,
     @Optional() private directionality: Directionality,
@@ -352,7 +357,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
         this.nzSelectionChange.emit([]);
       } else {
         const { option, index } = data;
-        const shouldClose = option.isLeaf;
+        const shouldClose = option.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover');
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
@@ -432,6 +437,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
     if (visible) {
       this.cascaderService.syncOptions();
+      this.scrollToActivatedOptions();
     }
 
     this.menuVisible = visible;
@@ -597,6 +603,12 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
   }
 
+  onClickOutside(event: MouseEvent): void {
+    if (!this.el.contains(event.target as Node)) {
+      this.closeMenu();
+    }
+  }
+
   private isActionTrigger(action: 'click' | 'hover'): boolean {
     return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
   }
@@ -747,5 +759,17 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private setLocale(): void {
     this.locale = this.i18nService.getLocaleData('global');
     this.cdr.markForCheck();
+  }
+
+  private scrollToActivatedOptions(): void {
+    // scroll only until option menu view is ready
+    Promise.resolve().then(() => {
+      this.cascaderItems
+        .toArray()
+        .filter(e => e.activated)
+        .forEach(e => {
+          e.nativeElement?.scrollIntoView({ block: 'start', inline: 'nearest' });
+        });
+    });
   }
 }

@@ -1,10 +1,11 @@
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 export const moduleList = [
   NzListModule,
@@ -13,5 +14,6 @@ export const moduleList = [
   NzPaginationModule,
   NzButtonModule,
   NzTypographyModule,
-  NzGridModule
+  NzGridModule,
+  NzMessageModule
 ];

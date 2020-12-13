@@ -2,8 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
@@ -14,6 +16,11 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
+
+export const DefaultTooltipIcon = {
+  type: 'question-circle',
+  theme: 'outline'
+} as const;
 
 @Directive({
   selector: '[nz-form]',
@@ -34,6 +41,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
+  @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
 
   dir: Direction = 'ltr';
   destroy$ = new Subject();

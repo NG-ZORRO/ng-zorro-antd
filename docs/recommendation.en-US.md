@@ -29,7 +29,7 @@ Dev Kit |[Angular CLI](https://cli.angular.io/) | Angular CLI
 Dev Kit |[Angular Builders](https://github.com/just-jeb/angular-builders) | Angular build facade extensions
 Dev Kit |[ngx-planet](https://github.com/worktile/ngx-planet) | Micro Frontend library for Angular
 Dev Kit|[Angular Universal](https://universal.angular.io/) | Server Render
-State Management|[Akita](https://netbasal.gitbook.io/akita/) | Akita state management
+State Management|[Akita](https://datorama.github.io/akita/) | Akita state management
 State Management|[ngxs](https://ngxs.io/) | NGXS state management
 State Management|[ngrx](https://ngrx.io/) | NGRX state management
 

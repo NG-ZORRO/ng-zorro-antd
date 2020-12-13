@@ -41,9 +41,11 @@ import { NzSubmenuService } from './submenu.service';
   host: {
     '[class.ant-dropdown-menu-item]': `isMenuInsideDropDown`,
     '[class.ant-dropdown-menu-item-selected]': `isMenuInsideDropDown && nzSelected`,
+    '[class.ant-dropdown-menu-item-danger]': `isMenuInsideDropDown && nzDanger`,
     '[class.ant-dropdown-menu-item-disabled]': `isMenuInsideDropDown && nzDisabled`,
     '[class.ant-menu-item]': `!isMenuInsideDropDown`,
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
+    '[class.ant-menu-item-danger]': `!isMenuInsideDropDown && nzDanger`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
     '[style.paddingLeft.px]': `dir === 'rtl' ? 0 : nzPaddingLeft || inlinePaddingLeft`,
     '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : 0`,
@@ -53,6 +55,7 @@ import { NzSubmenuService } from './submenu.service';
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzSelected: BooleanInput;
+  static ngAcceptInputType_nzDanger: BooleanInput;
   static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
   static ngAcceptInputType_nzMatchRouter: BooleanInput;
 
@@ -64,6 +67,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
+  @Input() @InputBoolean() nzDanger = false;
   @Input() @InputBoolean() nzMatchRouterExact = false;
   @Input() @InputBoolean() nzMatchRouter = false;
   @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;

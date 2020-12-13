@@ -38,7 +38,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `addIcon()` | 用于静态引入图标，可传入多个值（或者用数组解构赋值） | `IconDefinition` |
 | `addIconLiteral()` | 用于静态引入用户自定义图标 | `string`, `string (SVG)` |
 | `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
-| `changeAssetypescriptSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
+| `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
 
 ### SVG 图标
 

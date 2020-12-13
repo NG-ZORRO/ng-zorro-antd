@@ -32,6 +32,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    '[attr.title]': 'label',
     '[class.ant-select-item]': 'true',
     '[class.ant-select-item-option]': 'true',
     '[class.ant-select-item-option-grouped]': 'grouped',
