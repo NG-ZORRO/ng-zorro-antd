@@ -13,7 +13,14 @@ textarea.nz-textarea-autosize-measuring {
     input + .@{ant-prefix}-input-group-addon {
       .@{search-rtl-cls}& {
         .@{search-prefix}-button.@{ant-prefix}-btn-icon-only {
-          .square(@height-base);
+          .square(@btn-height-base);
+
+          &.@{ant-prefix}-btn-sm{
+            .square(@btn-height-sm);
+          }
+          &.@{ant-prefix}-btn-lg{
+            .square(@btn-height-lg);
+          }
         }
       }
     }
