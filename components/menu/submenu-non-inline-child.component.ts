@@ -47,6 +47,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
   host: {
     '[class.ant-menu-submenu]': 'true',
     '[class.ant-menu-submenu-popup]': 'true',
+    '[class.ant-menu-submenu-rtl]': 'dir ==="rtl"',
     '[class.ant-menu-light]': "theme === 'light'",
     '[class.ant-menu-dark]': "theme === 'dark'",
     '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
