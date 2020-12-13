@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,6 +13,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -69,7 +71,8 @@ import { PaginationItemRenderContext } from './pagination.types';
     '[class.ant-pagination]': 'true',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
-    '[class.mini]': `!nzSimple && size === 'small'`
+    '[class.mini]': `!nzSimple && size === 'small'`,
+    '[class.ant-pagination-rtl]': `dir === 'rtl'`
   }
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
@@ -102,6 +105,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   showPagination = true;
   locale!: NzPaginationI18nInterface;
   size: 'default' | 'small' = 'default';
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private total$ = new ReplaySubject<number>(1);
@@ -145,7 +149,12 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return Math.ceil(total / pageSize);
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -166,6 +175,13 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
           this.cdr.markForCheck();
         }
       });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {
