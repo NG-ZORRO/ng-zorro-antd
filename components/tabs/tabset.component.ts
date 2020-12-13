@@ -120,7 +120,8 @@ let nextId = 0;
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left.%]="tabPaneAnimated && dir === 'rtl' ? ((nzSelectedIndex || 0) + 1) * 100 : -(nzSelectedIndex || 0) * 100"
+        [style.margin-left]="getTabContentMarginLeft()"
+        [style.margin-right]="getTabContentMarginRight()"
       >
         <div
           nz-tab-body
@@ -496,5 +497,26 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     if (changes.hasOwnProperty('nzShowPagination')) {
       warnDeprecation(`[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0`);
     }
+  }
+
+  private getTabContentMarginValue(): number {
+    return -(this.nzSelectedIndex || 0) * 100;
+  }
+
+  getTabContentMarginLeft(): string {
+    if (this.tabPaneAnimated) {
+      if (this.dir !== 'rtl') {
+        return this.getTabContentMarginValue() + '%';
+      }
+    }
+    return '';
+  }
+  getTabContentMarginRight(): string {
+    if (this.tabPaneAnimated) {
+      if (this.dir === 'rtl') {
+        return this.getTabContentMarginValue() + '%';
+      }
+    }
+    return '';
   }
 }
