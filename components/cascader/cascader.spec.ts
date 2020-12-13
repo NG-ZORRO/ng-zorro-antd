@@ -50,7 +50,7 @@ describe('cascader', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
+        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
         declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
       }).compileComponents();
 
@@ -60,6 +60,11 @@ describe('cascader', () => {
       })();
     })
   );
+
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+    currentOverlayContainer.ngOnDestroy();
+    overlayContainer.ngOnDestroy();
+  }));
 
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
@@ -73,26 +78,6 @@ describe('cascader', () => {
     function getInputEl(): HTMLElement {
       return cascader.nativeElement.querySelector('input')!;
     }
-
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
-          declarations: [NzDemoCascaderDefaultComponent],
-          providers: []
-        }).compileComponents();
-
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-          overlayContainer = oc;
-          overlayContainerElement = oc.getContainerElement();
-        })();
-      })
-    );
-
-    afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-      currentOverlayContainer.ngOnDestroy();
-      overlayContainer.ngOnDestroy();
-    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
@@ -1740,7 +1725,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-menu-rtl');
     }));
 
-    it('should item arrow display correct direction', () => {
+    it('should item arrow display correct direction', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzOptions = options3;
       testComponent.cascader.setMenuVisible(true);
@@ -1748,9 +1733,13 @@ describe('cascader', () => {
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl1.click();
       fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       const itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
-    });
+    }));
   });
 });
 
@@ -2051,7 +2040,7 @@ export class NzDemoCascaderDefaultComponent {
     this.cascader.clearSelection();
   }
 
-  onSelect(_d: { option: NzCascaderOption; index: number }): void { }
+  onSelect(_d: { option: NzCascaderOption; index: number }): void {}
 }
 
 @Component({
@@ -2114,7 +2103,7 @@ export class NzDemoCascaderLoadDataComponent {
     });
   };
 
-  public addCallTimes(): void { }
+  public addCallTimes(): void {}
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');

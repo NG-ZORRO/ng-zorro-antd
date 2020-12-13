@@ -229,7 +229,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
-  @Input() nzExpandIcon: string | TemplateRef<void> = 'right';
+  @Input() nzExpandIcon: string | TemplateRef<void> = '';
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -387,6 +387,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = this.directionality.value;
+      srv.$redraw.next();
     });
   }
 
