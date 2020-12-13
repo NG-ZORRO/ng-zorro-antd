@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,6 +12,8 @@ import {
   ContentChildren,
   Input,
   OnDestroy,
+  OnInit,
+  Optional,
   QueryList,
   TemplateRef,
   ViewEncapsulation
@@ -70,10 +73,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-small]': 'nzSize === "small"',
     '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
     '[class.ant-card-type-inner]': 'nzType === "inner"',
-    '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent'
+    '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
+    '[class.ant-card-rtl]': `dir === 'rtl'`
   }
 })
-export class NzCardComponent implements OnDestroy {
+export class NzCardComponent implements OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
@@ -93,15 +97,26 @@ export class NzCardComponent implements OnDestroy {
   @Input() nzExtra?: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent, { static: false }) listOfNzCardTabComponent?: NzCardTabComponent;
   @ContentChildren(NzCardGridDirective) listOfNzCardGridDirective!: QueryList<NzCardGridDirective>;
+  dir: Direction = 'ltr';
+
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+  }
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -16,6 +17,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -37,7 +39,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   template: `
-    <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
+    <div class="ant-back-top" [ngClass]="{ 'ant-back-top-rtl': dir === 'rtl' }" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
           <div class="ant-back-top-icon">
@@ -60,6 +62,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
+  dir: Direction = 'ltr';
 
   @Input() nzTemplate?: TemplateRef<void>;
   @Input() @WithConfig() @InputNumber() nzVisibilityHeight: number = 400;
@@ -72,11 +75,20 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     private scrollSrv: NzScrollService,
     private platform: Platform,
     private cd: ChangeDetectorRef,
-    private zone: NgZone
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
     this.registerScrollEvent();
+
+    this.directionality.change?.pipe(takeUntil(this.scrollListenerDestroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   clickBackTop(): void {
