@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,
@@ -15,14 +15,17 @@ import {
 @Directive({
   selector: 'nz-skeleton-element',
   host: {
-    '[class.ant-skeleton]': 'true',
-    '[class.ant-skeleton-element]': 'true',
     '[class.ant-skeleton-active]': 'nzActive'
   }
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-skeleton', 'ant-skeleton-element');
+  }
 }
 
 @Component({

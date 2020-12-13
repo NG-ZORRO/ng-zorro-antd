@@ -39,7 +39,6 @@ import { takeUntil } from 'rxjs/operators';
   host: {
     '[style.background-color]': `isPresetColor ? '' : nzColor`,
     '[class]': `isPresetColor ? ('ant-tag-' + nzColor) : ''`,
-    '[class.ant-tag]': `true`,
     '[class.ant-tag-has-color]': `nzColor && !isPresetColor`,
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
@@ -77,7 +76,10 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     @Optional() private directionality: Directionality
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-tag');
+  }
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

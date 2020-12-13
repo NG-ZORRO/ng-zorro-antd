@@ -15,6 +15,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
             <li nz-menu-item (click)="onThemeChange('default')">{{language === 'zh' ? '默认主题' : 'Default' }}</li>
             <li nz-menu-item (click)="onThemeChange('dark')">{{language === 'zh' ? '暗黑主题' : 'Dark Theme' }}</li>
             <li nz-menu-item (click)="onThemeChange('compact')">{{language === 'zh' ? '紧凑主题' : 'Compact Theme' }}</li>
+            <li nz-menu-item (click)="onThemeChange('aliyun')">{{language === 'zh' ? '阿里云主题' : 'Aliyun Theme' }}</li>
           </ul>
         </nz-dropdown-menu>
       </div>

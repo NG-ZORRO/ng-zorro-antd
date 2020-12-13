@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -20,7 +20,6 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     </span>
   `,
   host: {
-    '[class.ant-divider]': 'true',
     '[class.ant-divider-horizontal]': `nzType === 'horizontal'`,
     '[class.ant-divider-vertical]': `nzType === 'vertical'`,
     '[class.ant-divider-with-text]': `nzText`,
@@ -40,4 +39,9 @@ export class NzDividerComponent {
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
   @Input() @InputBoolean() nzDashed = false;
   @Input() @InputBoolean() nzPlain = false;
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-divider');
+  }
 }

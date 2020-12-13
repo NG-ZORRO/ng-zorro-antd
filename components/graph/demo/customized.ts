@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from 'ng-zorro-antd/graph';
+import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, NzRankDirection } from 'ng-zorro-antd/graph';
 
 @Component({
   selector: 'nz-demo-graph-customized',
@@ -13,11 +13,23 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
       <label nz-radio-button nzValue="TB">TB</label>
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
-    <nz-graph [nzGraphData]="graphData" [nzAutoSize]="true" [nzRankDirection]="rankDirection">
+    <nz-graph
+      nzNoAnimation
+      nz-graph-zoom
+      [nzGraphData]="graphData"
+      [nzAutoSize]="true"
+      [nzRankDirection]="rankDirection"
+      (nzGraphInitialized)="graphInitialized($event)"
+    >
       <ng-container *nzGraphNode="let node">
-        <div class="custom-node">
-          <div class="header">{{ node.label || node.name }}</div>
-        </div>
+        <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+          <!-- Make sure 'foreignObject > :first-child' is existing when nzAutoSize is set with true -->
+          <div [class.custom-node]="node.type === 1" (click)="focusNode(node.id || node.name)">
+            <div class="title">
+              {{ node.name }}
+            </div>
+          </div>
+        </foreignObject>
       </ng-container>
     </nz-graph>
   `,
@@ -35,9 +47,13 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
         height: 400px;
       }
 
+      foreignObject {
+        border: 1px solid #8cc8ff;
+      }
+
       .custom-node {
         height: 100%;
-        min-height: 100px;
+        height: 80px;
         display: block;
       }
     `
@@ -45,7 +61,8 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection } from '
 })
 export class NzDemoGraphCustomizedComponent implements OnInit {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;
-
+  @ViewChild(NzGraphZoomDirective, { static: true }) zoomController!: NzGraphZoomDirective;
+  zoom = 0.5;
   testDef: NzGraphDataDef = {
     nodes: [
       {
@@ -231,6 +248,14 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   }
 
   layout(): void {
-    this.nzGraphComponent.autoFit();
+    this.zoomController?.fitCenter();
+  }
+
+  focusNode(e: string | number): void {
+    this.zoomController?.focus(e);
+  }
+
+  graphInitialized(_ele: NzGraphComponent): void {
+    this.zoomController?.fitCenter();
   }
 }

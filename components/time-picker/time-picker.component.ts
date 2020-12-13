@@ -109,7 +109,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     </ng-template>
   `,
   host: {
-    '[class.ant-picker]': `true`,
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
@@ -284,8 +283,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private cdr: ChangeDetectorRef,
     private dateHelper: DateHelperService,
     private platform: Platform,
+    private elementRef: ElementRef,
     @Optional() private directionality: Directionality
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-picker');
+  }
 
   ngOnInit(): void {
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;

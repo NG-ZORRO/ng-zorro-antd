@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -83,7 +84,6 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ant-list]': 'true',
     '[class.ant-list-rtl]': `dir === 'rtl'`,
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
@@ -127,7 +127,10 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, 
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-list');
+  }
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

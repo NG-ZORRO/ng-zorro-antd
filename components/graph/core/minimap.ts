@@ -7,6 +7,7 @@ import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzZoomTransform } from '../interface';
 
 const FRAC_VIEWPOINT_AREA = 0.8;
 
@@ -19,7 +20,7 @@ export class Minimap {
   private viewpoint: SVGRectElement;
   private scaleMinimap!: number;
   private scaleMain!: number;
-  private maxWandH: number;
+  private maxWidth: number;
   private translate!: [number, number];
   private viewpointCoord: { x: number; y: number };
   private minimapSize!: { width: number; height: number };
@@ -34,14 +35,14 @@ export class Minimap {
     zoomG: SVGGElement,
     mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>,
     minimap: HTMLElement,
-    maxWandH: number,
+    maxWidth: number,
     labelPadding: number
   ) {
     this.svg = svg;
     this.labelPadding = labelPadding;
     this.zoomG = zoomG;
     this.mainZoom = mainZoom;
-    this.maxWandH = maxWandH;
+    this.maxWidth = maxWidth;
     const minimapElement = select(minimap);
     const minimapSvgElement = minimapElement.select('svg');
     const viewpointElement = minimapSvgElement.select('rect');
@@ -154,7 +155,7 @@ export class Minimap {
     // the aspect ratio have also changed. Thus, we need to update the scale
     // factor of the minimap. The scale factor is determined such that both
     // the width and height of the minimap are <= maximum specified w/h.
-    this.scaleMinimap = this.maxWandH / Math.max(sceneSize.width, sceneSize.height);
+    this.scaleMinimap = this.maxWidth / Math.max(sceneSize.width, sceneSize.height);
     this.minimapSize = {
       width: sceneSize.width * this.scaleMinimap,
       height: sceneSize.height * this.scaleMinimap
@@ -209,7 +210,7 @@ export class Minimap {
    * viewpoint rectangle.
    * @param transform
    */
-  zoom(transform?: ZoomTransform): void {
+  zoom(transform?: ZoomTransform | NzZoomTransform): void {
     if (this.scaleMinimap == null) {
       // Scene is not ready yet.
       return;

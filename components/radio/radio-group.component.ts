@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   forwardRef,
   Input,
   OnChanges,
@@ -44,7 +45,6 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     }
   ],
   host: {
-    '[class.ant-radio-group]': `true`,
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
@@ -56,8 +56,8 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject();
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+  onChange: OnChangeType = () => { };
+  onTouched: OnTouchedType = () => { };
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -65,7 +65,13 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   dir: Direction = 'ltr';
 
-  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private nzRadioService: NzRadioService,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality) {// TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-radio-group');
+  }
 
   ngOnInit(): void {
     this.nzRadioService.selected$.subscribe(value => {

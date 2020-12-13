@@ -39,9 +39,6 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     <br />
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
-    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" [nzZIndex]="1001" nzTitle="Non-service html modal">
-      This is a non-service html modal
-    </nz-modal>
   `,
   styles: [
     `
@@ -53,7 +50,6 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 })
 export class NzDemoModalServiceComponent {
   tplModalButtonLoading = false;
-  htmlModalVisible = false;
   disabled = false;
 
   constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
@@ -169,8 +165,6 @@ export class NzDemoModalServiceComponent {
         nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${pos++ * 300}px` }
       })
     );
-
-    this.htmlModalVisible = true;
 
     this.modal.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
 

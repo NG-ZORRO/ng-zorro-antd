@@ -94,7 +94,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     </div>
   `,
   host: {
-    '[class.ant-picker]': `true`,
     '[class.ant-picker-range]': `isRange`,
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
@@ -132,6 +131,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
   private isCustomPlaceHolder: boolean = false;
+  private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
 
   // --- Common API
@@ -188,7 +188,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     protected dateHelper: DateHelperService,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) { }
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-picker');
+  }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user
@@ -241,6 +244,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.isCustomPlaceHolder = true;
     }
 
+    if (changes.nzFormat?.currentValue) {
+      this.isCustomFormat = true;
+    }
+
     if (changes.nzLocale) {
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
@@ -255,6 +262,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     }
 
     if (changes.nzMode) {
+      this.setDefaultPlaceHolder();
       this.setModeAndFormat();
     }
   }
@@ -286,7 +294,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.panelMode = this.isRange ? [this.nzMode, this.nzMode] : this.nzMode;
 
     // Default format when it's empty
-    if (!this.nzFormat) {
+    if (!this.isCustomFormat) {
       this.nzFormat = inputFormats[this.nzMode as NzDateMode]!;
     }
   }

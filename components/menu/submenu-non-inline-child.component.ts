@@ -7,6 +7,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -45,14 +46,12 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     </div>
   `,
   host: {
-    '[class.ant-menu-submenu]': 'true',
-    '[class.ant-menu-submenu-popup]': 'true',
-    '[class.ant-menu-submenu-rtl]': 'dir ==="rtl"',
     '[class.ant-menu-light]': "theme === 'light'",
     '[class.ant-menu-dark]': "theme === 'dark'",
     '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
     '[class.ant-menu-submenu-placement-right]': "mode === 'vertical' && position === 'right'",
     '[class.ant-menu-submenu-placement-left]': "mode === 'vertical' && position === 'left'",
+    '[class.ant-menu-submenu-rtl]': 'dir ==="rtl"',
     '[@slideMotion]': 'expandState',
     '[@zoomBigMotion]': 'expandState',
     '(mouseenter)': 'setMouseState(true)',
@@ -69,6 +68,12 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() nzDisabled = false;
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
+
+  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-menu-submenu', 'ant-menu-submenu-popup');
+  }
+
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {
       this.subMenuMouseState.next(state);
@@ -77,8 +82,6 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   expandState = 'collapsed';
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
-
-  constructor(@Optional() private directionality: Directionality) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

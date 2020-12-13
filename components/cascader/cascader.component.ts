@@ -441,6 +441,10 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.scrollToActivatedOptions();
     }
 
+    if (!visible) {
+      this.inputValue = '';
+    }
+
     this.menuVisible = visible;
     this.nzVisibleChange.emit(visible);
     this.cdr.detectChanges();

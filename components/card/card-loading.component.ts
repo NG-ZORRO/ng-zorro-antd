@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-card-loading',
@@ -19,10 +19,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class.ant-card-loading-content]': 'true'
-  }
+  encapsulation: ViewEncapsulation.None
 })
 export class NzCardLoadingComponent {
   listOfLoading: string[][] = [
@@ -33,5 +30,8 @@ export class NzCardLoadingComponent {
     ['ant-col-4', 'ant-col-3', 'ant-col-16'],
     ['ant-col-8', 'ant-col-6', 'ant-col-8']
   ];
-  constructor() {}
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-card-loading-content');
+  }
 }

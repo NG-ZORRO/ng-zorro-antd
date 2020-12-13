@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
       nzTitle="Cookbook"
       (nzOnClose)="close()"
     >
-      <form nz-form>
+      <form *nzDrawerContent nz-form>
         <div nz-row>
           <div nz-col nzSpan="24">
             <nz-form-item>
@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
         </div>
       </form>
       <nz-drawer [nzClosable]="false" [nzVisible]="childrenVisible" nzTitle="Food" (nzOnClose)="closeChildren()">
-        <nz-list [nzDataSource]="vegetables" [nzRenderItem]="item">
+        <nz-list *nzDrawerContent [nzDataSource]="vegetables" [nzRenderItem]="item">
           <ng-template #item let-item>
             <nz-list-item [nzContent]="item"></nz-list-item>
           </ng-template>

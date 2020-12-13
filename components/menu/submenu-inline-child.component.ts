@@ -34,9 +34,6 @@ import { NzMenuModeType } from './menu.types';
     <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
   `,
   host: {
-    '[class.ant-menu]': 'true',
-    '[class.ant-menu-inline]': 'true',
-    '[class.ant-menu-sub]': 'true',
     '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
   }
@@ -51,7 +48,7 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private directionality: Directionality) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private directionality: Directionality) { }
 
   calcMotionState(): void {
     if (this.nzOpen) {

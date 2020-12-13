@@ -128,6 +128,7 @@ We have some official themes, try them out and give us some feedback!
 
 - 🌑 Dark Theme (supported in 9+)
 - 📦 Compact Theme (supported in 9+)
+- ☁️ Aliyun Theme (supported in 11+)
 
 ### Method 1
 

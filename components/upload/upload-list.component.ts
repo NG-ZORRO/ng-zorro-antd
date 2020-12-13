@@ -11,6 +11,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
   Input,
   NgZone,
@@ -18,7 +19,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
 import { NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
@@ -33,7 +34,6 @@ interface UploadListFile extends NzUploadFile {
   isImageUrl?: boolean;
   isUploading?: boolean;
   iconType?: UploadListIconType;
-  listItemNameCls?: NgClassType;
   showDownload?: boolean;
 }
 
@@ -48,7 +48,6 @@ interface UploadListFile extends NzUploadFile {
     ])
   ],
   host: {
-    '[class.ant-upload-list]': `true`,
     '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
     '[class.ant-upload-list-text]': `listType === 'text'`,
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
@@ -158,7 +157,7 @@ export class NzUploadListComponent implements OnChanges {
 
           try {
             ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-          } catch {}
+          } catch { }
           const dataURL = canvas.toDataURL();
           this.doc.body.removeChild(canvas);
 
@@ -189,14 +188,6 @@ export class NzUploadListComponent implements OnChanges {
       });
   }
 
-  private listItemNameCls(file: NzUploadFile): NgClassType {
-    const count = [this.showDownload(file), this.icons.showRemoveIcon].filter(x => x).length;
-    return {
-      [`ant-upload-list-item-name`]: true,
-      [`ant-upload-list-item-name-icon-count-${count}`]: true
-    };
-  }
-
   private showDownload(file: NzUploadFile): boolean {
     return !!(this.icons.showDownloadIcon && file.status === 'done');
   }
@@ -208,7 +199,6 @@ export class NzUploadListComponent implements OnChanges {
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
       file.isImageUrl = this.previewIsImage ? this.previewIsImage(file) : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
-      file.listItemNameCls = this.listItemNameCls(file);
       file.showDownload = this.showDownload(file);
     });
   }
@@ -244,8 +234,12 @@ export class NzUploadListComponent implements OnChanges {
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private doc: NzSafeAny,
     private ngZone: NgZone,
-    private platform: Platform
-  ) {}
+    private platform: Platform,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-upload-list');
+  }
 
   detectChanges(): void {
     this.fixData();

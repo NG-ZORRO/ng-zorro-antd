@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
@@ -45,8 +46,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
       (modeChange)="onModeChange($event)"
       (yearChange)="onYearSelect($event)"
       (monthChange)="onMonthSelect($event)"
-    >
-    </nz-calendar-header>
+    ></nz-calendar-header>
 
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
@@ -81,7 +81,6 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     </ng-template>
   `,
   host: {
-    '[class.ant-picker-calendar]': 'true',
     '[class.ant-picker-calendar-full]': 'nzFullscreen',
     '[class.ant-picker-calendar-mini]': '!nzFullscreen'
   },
@@ -135,7 +134,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-picker-calendar');
+  }
 
   onModeChange(mode: NzCalendarMode): void {
     this.nzModeChange.emit(mode);

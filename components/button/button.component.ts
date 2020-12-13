@@ -22,6 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -29,7 +30,13 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+/**
+ * @deprecated `danger` not supported, use `nzDanger` instead
+ * @breaking-change 12.0.0
+ */
+type NzLegacyButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+
+export type NzButtonType = NzLegacyButtonType;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -46,7 +53,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-btn]': `true`,
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -119,6 +125,8 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     public nzConfigService: NzConfigService,
     @Optional() private directionality: Directionality
   ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-btn');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -137,9 +145,13 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading } = changes;
+    const { nzLoading, nzType } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
+    }
+
+    if (nzType) {
+      warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
     }
   }
 

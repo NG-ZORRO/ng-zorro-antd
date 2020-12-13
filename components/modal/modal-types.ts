@@ -35,6 +35,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzWidth?: number | string = 520;
   nzCloseIcon?: string | TemplateRef<void> = 'close';
   nzOkType?: NzButtonType = 'primary';
+  nzOkDanger?: boolean = false;
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
@@ -70,6 +71,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
 export interface ModalButtonOptions<T = NzSafeAny> {
   label: string;
   type?: NzButtonType;
+  danger?: boolean;
   shape?: NzButtonShape;
   ghost?: boolean;
   size?: NzButtonSize;

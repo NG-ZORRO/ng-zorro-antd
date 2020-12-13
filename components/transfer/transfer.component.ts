@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -104,7 +105,6 @@ import { NzTransferListComponent } from './transfer-list.component';
     ></nz-transfer-list>
   `,
   host: {
-    '[class.ant-transfer]': `true`,
     '[class.ant-transfer-rtl]': `dir === 'rtl'`,
     '[class.ant-transfer-disabled]': `nzDisabled`,
     '[class.ant-transfer-customize-list]': `nzRenderList`
@@ -249,7 +249,14 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-transfer');
+  }
 
   private markForCheckAllList(): void {
     if (!this.lists) {

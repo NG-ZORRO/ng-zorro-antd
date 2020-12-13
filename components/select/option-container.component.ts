@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -70,10 +71,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
       </cdk-virtual-scroll-viewport>
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
-  `,
-  host: {
-    '[class.ant-select-dropdown]': 'true'
-  }
+  `
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
@@ -91,6 +89,11 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-dropdown');
+  }
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);

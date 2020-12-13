@@ -3,25 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-/**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  OnDestroy,
-  OnInit,
-  Optional,
-  QueryList,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChildren, ElementRef, OnDestroy, OnInit, Optional, QueryList, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzSiderComponent } from './sider.component';
@@ -36,9 +19,8 @@ import { NzSiderComponent } from './sider.component';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0',
-    '[class.ant-layout]': 'true',
-    '[class.ant-layout-rtl]': `dir === 'rtl'`
+    '[class.ant-layout-rtl]': `dir === 'rtl'`,
+    '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
   }
 })
 export class NzLayoutComponent implements OnDestroy, OnInit {
@@ -47,7 +29,10 @@ export class NzLayoutComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-layout');
+  }
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

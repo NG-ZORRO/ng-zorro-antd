@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -71,7 +72,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     ></nz-pagination-default>
   `,
   host: {
-    '[class.ant-pagination]': 'true',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.mini]': `!nzSimple && size === 'small'`,
@@ -159,8 +159,12 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
     protected nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
-  ) { }
+    @Optional() private directionality: Directionality,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-pagination');
+  }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

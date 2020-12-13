@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -76,7 +77,6 @@ const ExceptionStatus = ['404', '500', '403'];
     </ng-template>
   `,
   host: {
-    '[class.ant-result]': 'true',
     '[class.ant-result-success]': `nzStatus === 'success'`,
     '[class.ant-result-error]': `nzStatus === 'error'`,
     '[class.ant-result-info]': `nzStatus === 'info'`,
@@ -97,7 +97,13 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-result');
+  }
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -126,7 +132,7 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-      ? undefined
-      : IconMap[this.nzStatus as NzResultIconType];
+        ? undefined
+        : IconMap[this.nzStatus as NzResultIconType];
   }
 }

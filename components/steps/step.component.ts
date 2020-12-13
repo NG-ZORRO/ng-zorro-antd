@@ -55,8 +55,7 @@ import { Subject } from 'rxjs';
                 status: nzStatus,
                 index: index
               }"
-            >
-            </ng-template>
+            ></ng-template>
           </span>
         </ng-template>
       </div>
@@ -152,6 +151,16 @@ export class NzStepComponent implements OnDestroy {
     if (this.clickable && this.currentIndex !== this.index && !this.nzDisabled) {
       this.click$.next(this.index);
     }
+  }
+
+  enable(): void {
+    this.nzDisabled = false;
+    this.cdr.markForCheck();
+  }
+
+  disable(): void {
+    this.nzDisabled = true;
+    this.cdr.markForCheck();
   }
 
   markForCheck(): void {

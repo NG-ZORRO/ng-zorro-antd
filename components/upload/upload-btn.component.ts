@@ -20,7 +20,6 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
   host: {
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
-    '[class.ant-upload]': 'true',
     '[class.ant-upload-disabled]': 'options.disabled',
     '(click)': 'onClick()',
     '(keydown)': 'onKeyDown($event)',
@@ -335,7 +334,10 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
   }
 
-  constructor(@Optional() private http: HttpClient) {
+  constructor(@Optional() private http: HttpClient, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-upload');
+
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }

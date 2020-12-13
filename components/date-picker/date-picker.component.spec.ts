@@ -824,8 +824,19 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzMode', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-12-01');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择日期');
+
       fixtureInstance.nzMode = 'month';
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择月份');
+      expect(getPickerInput(fixture.debugElement).value).toEqual('2020-12');
+
       openPickerByClickTrigger();
       expect(overlayContainerElement.querySelector('.ant-picker-month-panel')).toBeDefined();
     }));
@@ -883,6 +894,25 @@ describe('NzDatePickerComponent', () => {
       expect(nzOnChange).toHaveBeenCalled();
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(22);
+    }));
+
+    // #6070
+    it('should reset after inputing invalid value and close panel', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = getPickerInput(fixture.debugElement);
+
+      // Wrong inputing support
+      typeInElement('wrong', input);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(document.body, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(input.value).toBe('');
     }));
   }); // /specified date picker testing
 

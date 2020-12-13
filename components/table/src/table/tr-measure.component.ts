@@ -34,17 +34,17 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
       style="padding: 0px; border: 0px; height: 0px;"
       *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
     ></td>
-  `,
-  host: {
-    '[class.ant-table-measure-now]': 'true'
-  }
+  `
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Input() listOfMeasureColumn: string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
   private destroy$ = new Subject();
-  constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone) {}
+  constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-measure-now');
+  }
   trackByFunc(_: number, key: string): string {
     return key;
   }

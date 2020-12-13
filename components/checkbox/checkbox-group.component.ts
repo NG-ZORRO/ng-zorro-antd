@@ -44,15 +44,14 @@ export interface NzCheckBoxOptionInterface {
     }
   ],
   host: {
-    '[class.ant-checkbox-group]': 'true',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
   }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+  onChange: OnChangeType = () => { };
+  onTouched: OnTouchedType = () => { };
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 
@@ -74,7 +73,10 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-checkbox-group');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {

@@ -64,7 +64,6 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
     }
   ],
   host: {
-    '[class.ant-checkbox-wrapper]': 'true',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-rtl]': `dir === 'rtl'`,
     '(click)': 'hostClick($event)'
@@ -79,8 +78,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+  onChange: OnChangeType = () => { };
+  onTouched: OnTouchedType = () => { };
   @ViewChild('inputElement', { static: true }) private inputElement!: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;
@@ -138,7 +137,10 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality
-  ) {}
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-checkbox-wrapper');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {

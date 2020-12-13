@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnDestroy,
   OnInit,
@@ -34,12 +35,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-collapse]': 'true',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'",
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
-    '[class.ant-collapse-borderless]': '!nzBordered'
+    '[class.ant-collapse-borderless]': '!nzBordered',
+    '[class.ant-collapse-rtl]': "dir === 'rtl'"
   }
 })
 export class NzCollapseComponent implements OnDestroy, OnInit {
@@ -57,7 +57,14 @@ export class NzCollapseComponent implements OnDestroy, OnInit {
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-collapse');
+
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

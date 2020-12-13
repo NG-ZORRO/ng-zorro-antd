@@ -144,7 +144,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     </ng-template>
   `,
   host: {
-    '[class.ant-select]': 'true',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
@@ -311,13 +310,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.activatedValue = matchedItem.nzValue;
       }
     }
-    if (
-      this.listOfValue.length !== 0 &&
-      listOfContainerItem.findIndex(item => this.compareWith(item.nzValue, this.activatedValue)) === -1
-    ) {
-      const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
-      this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
-    }
+    const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
+    this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     let listOfGroupLabel: Array<string | TemplateRef<NzSafeAny> | null> = [];
     if (this.isReactiveDriven) {
       listOfGroupLabel = [...new Set(this.nzOptions.filter(o => o.groupLabel).map(o => o.groupLabel!))];
@@ -502,7 +496,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) { }
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select');
+  }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/
