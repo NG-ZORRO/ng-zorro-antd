@@ -171,6 +171,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   ) {}
 
   ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+      this.updateTrackAndHandles();
+      this.onValueChange(this.getValue(true));
+    });
+
     this.handles = generateHandlers(this.nzRange ? 2 : 1);
     this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
     this.bindDraggingHandlers();
@@ -179,14 +187,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
     }
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-      this.updateTrackAndHandles();
-      this.onValueChange(this.getValue(true));
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
