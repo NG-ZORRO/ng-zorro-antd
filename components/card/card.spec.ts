@@ -1,5 +1,6 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzCardComponent } from './card.component';
@@ -17,26 +18,29 @@ import { NzDemoCardSimpleComponent } from './demo/simple';
 import { NzDemoCardTabsComponent } from './demo/tabs';
 
 describe('card', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCardModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoCardBasicComponent,
-        NzDemoCardBorderLessComponent,
-        NzDemoCardFlexibleContentComponent,
-        NzDemoCardGridCardComponent,
-        NzDemoCardInColumnComponent,
-        NzDemoCardInnerComponent,
-        NzDemoCardLoadingComponent,
-        NzDemoCardMetaComponent,
-        NzDemoCardSimpleComponent,
-        NzDemoCardTabsComponent,
-        TestCardSizeComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzCardModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [
+          NzDemoCardBasicComponent,
+          NzDemoCardBorderLessComponent,
+          NzDemoCardFlexibleContentComponent,
+          NzDemoCardGridCardComponent,
+          NzDemoCardInColumnComponent,
+          NzDemoCardInnerComponent,
+          NzDemoCardLoadingComponent,
+          NzDemoCardMetaComponent,
+          NzDemoCardSimpleComponent,
+          NzDemoCardTabsComponent,
+          TestCardSizeComponent,
+          NzTestCardRtlComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoCardBasicComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
@@ -119,6 +123,19 @@ describe('card', () => {
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card-small');
   });
+
+  describe('RTL', () => {
+    it('should card className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestCardRtlComponent);
+      const card = fixture.debugElement.query(By.directive(NzCardComponent));
+      fixture.detectChanges();
+      expect(card.nativeElement.classList).toContain('ant-card-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(card.nativeElement.classList).not.toContain('ant-card-rtl');
+    });
+  });
 });
 
 @Component({
@@ -132,4 +149,20 @@ describe('card', () => {
 })
 class TestCardSizeComponent {
   size = 'default';
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-card>
+        <p>Card content</p>
+        <p>Card content</p>
+        <p>Card content</p>
+      </nz-card>
+    </div>
+  `
+})
+export class NzTestCardRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }
