@@ -6,3 +6,16 @@ textarea.nz-textarea-autosize-measuring {
   padding: 2px 0 !important;
   box-sizing: content-box !important;
 }
+
+.@{search-prefix} {
+  &-enter-button {
+    & + .@{ant-prefix}-input-group-addon,
+    input + .@{ant-prefix}-input-group-addon {
+      .@{search-rtl-cls}& {
+        .@{search-prefix}-button.@{ant-prefix}-btn-icon-only {
+          .square(@height-base);
+        }
+      }
+    }
+  }
+}
