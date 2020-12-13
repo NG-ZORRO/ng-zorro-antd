@@ -56,8 +56,8 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject();
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -69,7 +69,9 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
     private cdr: ChangeDetectorRef,
     private nzRadioService: NzRadioService,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality) {// TODO: move to host after View Engine deprecation
+    @Optional() private directionality: Directionality
+  ) {
+    // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-radio-group');
   }
 
