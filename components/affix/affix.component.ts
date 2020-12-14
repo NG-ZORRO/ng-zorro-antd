@@ -198,17 +198,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     this.affixStyle = affixStyle;
     if (fixed) {
       wrapEl.classList.add(NZ_AFFIX_CLS_PREFIX);
-
-      if (this.dir === 'rtl') {
-        wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
-      }
     } else {
       wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX);
-
-      if (this.dir === 'rtl') {
-        wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
-      }
     }
+    this.updateRtlClass();
     if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
       this.nzChange.emit(fixed);
     }
@@ -313,6 +306,19 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
 
     if (e.type === 'resize') {
       this.syncPlaceholderStyle(e);
+    }
+  }
+
+  private updateRtlClass(): void {
+    const wrapEl = this.fixedEl.nativeElement;
+    if (this.dir === 'rtl') {
+      if (wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
+        wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
+      } else {
+        wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
+      }
+    } else {
+      wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
     }
   }
 }
