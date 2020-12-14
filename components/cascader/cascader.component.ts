@@ -161,6 +161,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
               [activated]="isOptionActivated(option, i)"
               [highlightText]="inSearchingMode ? inputValue : ''"
               [option]="option"
+              [dir]="dir"
               (mouseenter)="onOptionMouseEnter(option, i, $event)"
               (mouseleave)="onOptionMouseLeave(option, i, $event)"
               (click)="onOptionClick(option, i, $event)"

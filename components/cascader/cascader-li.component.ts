@@ -10,15 +10,13 @@ import {
   ElementRef,
   Input,
   OnInit,
-  Optional,
   Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
+import { Direction } from '@angular/cdk/bidi';
 import { NzCascaderOption } from './typings';
-// tslint:disable-next-line: ordered-imports
-import { Directionality, Direction } from '@angular/cdk/bidi';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,32 +54,15 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
   @Input() expandIcon: string | TemplateRef<void> = '';
+  @Input() dir: Direction = 'ltr';
 
-  dir: Direction = 'ltr';
   readonly nativeElement: HTMLElement;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    @Optional() private directionality: Directionality
-  ) {
+  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
     this.nativeElement = elementRef.nativeElement;
-    this.dir = this.directionality.value;
   }
   ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change.subscribe((direction: Direction) => {
-      this.dir = direction;
-
-      if (this.expandIcon === '' && this.dir === 'rtl') {
-        this.expandIcon = 'left';
-      } else if (this.expandIcon === '') {
-        this.expandIcon = 'right';
-      }
-    });
-
     if (this.expandIcon === '' && this.dir === 'rtl') {
       this.expandIcon = 'left';
     } else if (this.expandIcon === '') {
