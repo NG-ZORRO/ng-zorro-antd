@@ -148,6 +148,8 @@ describe('nz descriptions', () => {
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
       <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="itemTitle + i" [nzSpan]="col"></nz-descriptions-item>
