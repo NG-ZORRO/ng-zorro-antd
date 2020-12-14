@@ -86,6 +86,7 @@ a {
       .ant-row-rtl & {
         padding-right: 40px !important;
         padding-left: 16px !important;
+        text-align: right;
       }
     }
 
@@ -210,6 +211,12 @@ a {
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  .page-wrapper-rtl & {
+    right: auto;
+    left: 32px;
+  }
+
   &-tooltip {
     .ant-tooltip-inner {
       min-width: 100px;
