@@ -3,14 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Inject, Input, NgZone, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, Input, NgZone, Optional } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
 import { NzTabPositionMode } from './interfaces';
 
 @Directive({
@@ -20,12 +16,9 @@ import { NzTabPositionMode } from './interfaces';
     '[class.ant-tabs-ink-bar-animated]': '_animated'
   }
 })
-export class NzTabsInkBarDirective implements OnDestroy, OnInit {
+export class NzTabsInkBarDirective {
   @Input() position: NzTabPositionMode = 'horizontal';
   @Input() animated = true;
-
-  dir: Direction = 'ltr';
-  private readonly destroy$ = new Subject();
 
   get _animated(): boolean {
     return this.animationMode !== 'NoopAnimations' && this.animated;
@@ -34,15 +27,8 @@ export class NzTabsInkBarDirective implements OnDestroy, OnInit {
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private ngZone: NgZone,
-    @Optional() private directionality: Directionality,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) public animationMode?: string
   ) {}
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
-  }
 
   alignToElement(element: HTMLElement): void {
     this.ngZone.runOutsideAngular(() => {
@@ -67,7 +53,7 @@ export class NzTabsInkBarDirective implements OnDestroy, OnInit {
   }
 
   getLeftPosition(element: HTMLElement): string {
-    return element ? (this.dir === 'rtl' ? element.offsetLeft + 'px' : element.offsetLeft + 'px') : '0';
+    return element ? (element.offsetLeft || 0) + 'px' : '0';
   }
 
   getElementWidth(element: HTMLElement): string {
@@ -80,10 +66,5 @@ export class NzTabsInkBarDirective implements OnDestroy, OnInit {
 
   getElementHeight(element: HTMLElement): string {
     return element ? (element.offsetHeight || 0) + 'px' : '0';
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
