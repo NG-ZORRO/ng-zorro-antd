@@ -1,6 +1,7 @@
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
+import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
 import chalk from 'chalk';
 import { Schema } from '../schema';
 
@@ -12,8 +13,7 @@ const iconAssetObject = {
 };
 
 export function addIconToAssets(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
+  return updateWorkspace(workspace => {
     const project = getProjectFromWorkspace(workspace, options.project);
     const targetOptions = getProjectTargetOptions(project, 'build');
 
@@ -30,10 +30,8 @@ export function addIconToAssets(options: Schema): Rule {
           `because there is already a icon assets file referenced.`));
         console.log(chalk.yellow(`Please manually add the following config to your assets:`));
         console.log(chalk.cyan(JSON.stringify(iconAssetObject, null, 2)));
-        return host;
+        return;
       }
     }
-    host.overwrite('angular.json', JSON.stringify(workspace, null, 2));
-    return host;
-  };
+  })
 }

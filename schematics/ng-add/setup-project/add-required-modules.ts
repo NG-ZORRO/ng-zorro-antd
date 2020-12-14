@@ -1,3 +1,4 @@
+import { ProjectDefinition, WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addModuleImportToRootModule,
@@ -5,9 +6,8 @@ import {
   getProjectMainFile,
   hasNgModuleImport
 } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
-import { ProjectType, WorkspaceProject } from '@schematics/angular/utility/workspace-models';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import chalk from 'chalk';
 import { Schema } from '../schema';
 
@@ -17,9 +17,9 @@ const modulesMap = {
 };
 
 export function addRequiredModules(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace, options.project) as WorkspaceProject<ProjectType.Application>;
+  return async (host: Tree) => {
+    const workspace = await getWorkspace(host);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
 
     for (const module in modulesMap) {
@@ -27,12 +27,12 @@ export function addRequiredModules(options: Schema): Rule {
         project, appModulePath, options);
     }
 
-    return host;
+    return;
   };
 }
 
 function addModuleImportToApptModule(host: Tree, moduleName: string, src: string,
-                                     project: WorkspaceProject<ProjectType.Application>, appModulePath: string,
+                                     project: ProjectDefinition, appModulePath: string,
                                      options: Schema): void {
   if (hasNgModuleImport(host, appModulePath, moduleName)) {
     console.log(chalk.yellow(`Could not set up "${chalk.blue(moduleName)}" ` +

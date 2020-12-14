@@ -6,5 +6,6 @@ export const SchematicsTestTsConfig = {
 }
 
 export const SchematicsTestNGConfig = {
+  version: 1,
   projects: {t: {root: '', architect: {build: {options: {tsConfig: './tsconfig.json'}}}}}
 }

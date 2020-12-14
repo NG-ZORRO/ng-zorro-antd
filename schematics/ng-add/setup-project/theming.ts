@@ -1,14 +1,13 @@
-import { normalize } from '@angular-devkit/core';
-import { SchematicsException, Tree } from '@angular-devkit/schematics';
+import { logging, normalize } from '@angular-devkit/core';
+import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
+import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import {
   getProjectFromWorkspace,
   getProjectStyleFile,
   getProjectTargetOptions
 } from '@angular/cdk/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { getWorkspace } from '@schematics/angular/utility/config';
-import { ProjectType, WorkspaceProject, WorkspaceSchema } from '@schematics/angular/utility/workspace-models';
-import chalk from 'chalk';
+import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
 import { join } from 'path';
 import { createCustomTheme } from '../../utils/create-custom-theme';
 import { Schema } from '../schema';
@@ -24,18 +23,14 @@ const defaultTargetBuilders = {
 };
 
 /** Add pre-built styles to the main project style file. */
-export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
-  return function (host: Tree): Tree {
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace, options.project) as WorkspaceProject<ProjectType.Application>;
+export function addThemeToAppStyles(options: Schema): Rule {
+  return async (host: Tree, context: SchematicContext) =>  {
 
     if (options.theme) {
-      insertCustomTheme(project, options.project, host, workspace);
+      return insertCustomTheme(options.project, host, context.logger);
     } else {
-      insertCompiledTheme(project, host, workspace);
+      return insertCompiledTheme(options.project, context.logger);
     }
-
-    return host;
   };
 }
 
@@ -43,9 +38,11 @@ export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
  * Insert a custom theme to project style file. If no valid style file could be found, a new
  * Scss file for the custom theme will be created.
  */
-function insertCustomTheme(project: WorkspaceProject, projectName: string, host: Tree,
-                           workspace: WorkspaceSchema): void {
+async function insertCustomTheme(projectName: string, host: Tree,
+                                 logger: logging.LoggerApi): Promise<Rule> {
 
+  const workspace = await getWorkspace(host);
+  const project = getProjectFromWorkspace(workspace, projectName);
   const stylesPath = getProjectStyleFile(project, 'less');
   const themeContent = createCustomTheme();
 
@@ -60,15 +57,13 @@ function insertCustomTheme(project: WorkspaceProject, projectName: string, host:
     const customThemePath = normalize(join(project.sourceRoot, defaultCustomThemeFilename));
 
     if (host.exists(customThemePath)) {
-      console.log();
-      console.warn(chalk.yellow(`Cannot create a custom NG-ZORRO theme because
-          ${chalk.bold(customThemePath)} already exists. Skipping custom theme generation.`));
-      return;
+      logger.warn(`Cannot create a custom NG-ZORRO theme because
+          ${customThemePath} already exists. Skipping custom theme generation.`);
+      return noop();
     }
 
     host.create(customThemePath, themeContent);
-    addThemeStyleToTarget(project, 'build', host, customThemePath, workspace);
-    return;
+    return addThemeStyleToTarget(projectName, 'build', customThemePath, logger);
   }
 
   const insertion = new InsertChange(stylesPath, 0, themeContent);
@@ -79,53 +74,54 @@ function insertCustomTheme(project: WorkspaceProject, projectName: string, host:
 }
 
 /** Insert a pre-built theme into the angular.json file. */
-function insertCompiledTheme(project: WorkspaceProject, host: Tree,
-                             workspace: WorkspaceSchema): void {
-  addThemeStyleToTarget(project, 'build', host, compiledThemePath, workspace);
-  addThemeStyleToTarget(project, 'test', host, compiledThemePath, workspace);
+function insertCompiledTheme(project: string, logger: logging.LoggerApi): Rule {
+    return chain([
+      addThemeStyleToTarget(project, 'build', compiledThemePath, logger),
+      addThemeStyleToTarget(project, 'test', compiledThemePath, logger)
+    ])
 }
 
 /** Adds a theming style entry to the given project target options. */
-function addThemeStyleToTarget(project: WorkspaceProject, targetName: 'test' | 'build', host: Tree,
-                               assetPath: string, workspace: WorkspaceSchema): void {
-  // Do not update the builder options in case the target does not use the default CLI builder.
-  if (!validateDefaultTargetBuilder(project, targetName)) {
-    return;
-  }
+function addThemeStyleToTarget(projectName: string, targetName: 'test' | 'build',
+                               assetPath: string, logger: logging.LoggerApi): Rule {
+  return updateWorkspace(workspace => {
+    const project = getProjectFromWorkspace(workspace, projectName);
+    // Do not update the builder options in case the target does not use the default CLI builder.
+    if (!validateDefaultTargetBuilder(project, targetName, logger)) {
+      return;
+    }
+    const targetOptions = getProjectTargetOptions(project, targetName);
+    const styles = targetOptions.styles as Array<string | {input: string}>;
 
-  const targetOptions = getProjectTargetOptions(project, targetName);
+    if (!styles) {
+      targetOptions.styles = [ assetPath ];
+    } else {
+      const existingStyles = styles.map(s => typeof s === 'string' ? s : s.input);
 
-  if (!targetOptions.styles) {
-    targetOptions.styles = [ assetPath ];
-  } else {
-    const existingStyles = targetOptions.styles.map(s => typeof s === 'string' ? s : s.input);
+      for (const [index, stylePath] of existingStyles.entries()) {
+        // If the given asset is already specified in the styles, we don't need to do anything.
+        if (stylePath === assetPath) {
+          return;
+        }
 
-    for (const [ index, stylePath ] of existingStyles.entries()) {
-      // If the given asset is already specified in the styles, we don't need to do anything.
-      if (stylePath === assetPath) {
-        return;
-      }
-
-      // In case a prebuilt theme is already set up, we can safely replace the theme with the new
-      // theme file. If a custom theme is set up, we are not able to safely replace the custom
-      // theme because these files can contain custom styles, while prebuilt themes are
-      // always packaged and considered replaceable.
-      if (stylePath.includes(defaultCustomThemeFilename)) {
-        console.log();
-        console.warn(chalk.yellow(`Could not style file to the CLI project configuration ` +
-          `because there is already a custom theme file referenced.`));
-        console.warn(chalk.yellow(`Please manually add the following style file to your configuration:`));
-        console.warn(chalk.cyan(`${chalk.bold(assetPath)}`));
-        return;
-      } else if (stylePath.includes(compiledThemePathSegment)) {
-        targetOptions.styles.splice(index, 1);
+        // In case a prebuilt theme is already set up, we can safely replace the theme with the new
+        // theme file. If a custom theme is set up, we are not able to safely replace the custom
+        // theme because these files can contain custom styles, while prebuilt themes are
+        // always packaged and considered replaceable.
+        if (stylePath.includes(defaultCustomThemeFilename)) {
+          logger.error(`Could not style file to the CLI project configuration ` +
+            `because there is already a custom theme file referenced.`);
+          logger.info(`Please manually add the following style file to your configuration:`);
+          logger.info(`${assetPath}`);
+          return;
+        } else if (stylePath.includes(compiledThemePathSegment)) {
+          styles.splice(index, 1);
+        }
       }
     }
+    styles.unshift(assetPath);
 
-    targetOptions.styles.unshift(assetPath);
-  }
-
-  host.overwrite('angular.json', JSON.stringify(workspace, null, 2));
+  }) as unknown as Rule
 }
 
 /**
@@ -133,9 +129,9 @@ function addThemeStyleToTarget(project: WorkspaceProject, targetName: 'test' | '
  * provided by the Angular CLI. If the configured builder does not match the default builder,
  * this function can either throw or just show a warning.
  */
-function validateDefaultTargetBuilder(project: WorkspaceProject, targetName: 'build' | 'test'): boolean {
+function validateDefaultTargetBuilder(project: ProjectDefinition, targetName: 'build' | 'test', logger: logging.LoggerApi): boolean {
   const defaultBuilder = defaultTargetBuilders[ targetName ];
-  const targetConfig = project.architect?.[ targetName ] || project.targets?.[ targetName ];
+  const targetConfig = project.targets && project.targets.get(targetName);
   const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
 
   if (!isDefaultBuilder && targetName === 'build') {
@@ -143,7 +139,7 @@ function validateDefaultTargetBuilder(project: WorkspaceProject, targetName: 'bu
       `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
       `configuration if the builder has been changed.`);
   } else if (!isDefaultBuilder) {
-    console.warn(`Your project is not using the default builders for "${targetName}". This ` +
+    logger.warn(`Your project is not using the default builders for "${targetName}". This ` +
       `means that we cannot add the configured theme to the "${targetName}" target.`);
   }
 

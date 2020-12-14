@@ -10,16 +10,16 @@ import {
   parseSourceFile
 } from '@angular/cdk/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import chalk from 'chalk';
 import * as ts from 'typescript';
 
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
+  return async (host: Tree) => {
+    const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
@@ -50,7 +50,7 @@ export function registerLocale(options: Schema): Rule {
 
     host.commitUpdate(recorder);
 
-    return host;
+    return;
   };
 }
 

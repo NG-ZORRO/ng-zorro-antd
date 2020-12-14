@@ -1,3 +1,4 @@
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addModuleImportToRootModule,
@@ -5,8 +6,8 @@ import {
   getProjectMainFile,
   hasNgModuleImport
 } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import chalk from 'chalk';
 import { Schema } from '../schema';
 
@@ -15,9 +16,9 @@ const noopAnimationsModuleName = 'NoopAnimationsModule';
 const animationsModulePath = '@angular/platform-browser/animations';
 
 export function addAnimationsModule(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace, options.project);
+  return async (host: Tree) => {
+    const workspace = await getWorkspace(host);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
 
     if (options.animations) {
@@ -34,6 +35,6 @@ export function addAnimationsModule(options: Schema): Rule {
         animationsModulePath, project);
     }
 
-    return host;
+    return;
   };
 }

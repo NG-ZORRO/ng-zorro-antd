@@ -3,21 +3,20 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
+import { createTestApp } from '../../../testing/test-app';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('v10 form components migration', () => {
   let runner: SchematicTestRunner;
-  let host: TempScopedNodeJsSyncHost;
+  let host: HostTree;
   let tree: UnitTestTree;
-  let tmpDirPath: string;
-  let previousWorkingDir: string;
   let warnOutput: string[];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     runner = new SchematicTestRunner('test', require.resolve('../../../migration.json'));
-    host = new TempScopedNodeJsSyncHost();
-    tree = new UnitTestTree(new HostTree(host));
-
+    host = new HostTree();
+    tree = await createTestApp(runner, {name: 'testing'}, host);
+    tree.files.forEach(f => writeFile(f, tree.readContent(f)));
     writeFile('/tsconfig.json', JSON.stringify(SchematicsTestTsConfig));
     writeFile('/angular.json', JSON.stringify(SchematicsTestNGConfig));
 
@@ -28,23 +27,14 @@ describe('v10 form components migration', () => {
       }
     });
 
-    previousWorkingDir = shx.pwd();
-    tmpDirPath = getSystemPath(host.root);
-
-    shx.cd(tmpDirPath);
-
-    writeFakeAngular();
   });
 
-  afterEach(() => {
-    shx.cd(previousWorkingDir);
-    shx.rm('-r', tmpDirPath);
-  });
-
-  function writeFakeAngular(): void { writeFile('/node_modules/@angular/core/index.d.ts', ``); }
-
-  function writeFile(filePath: string, contents: string): void {
-    host.sync.write(normalize(filePath), virtualFs.stringToFileBuffer(contents));
+  function writeFile(filePath: string, content: string): void {
+    if (host.exists(filePath)) {
+      host.overwrite(filePath, content);
+    } else {
+      host.create(filePath, content);
+    }
   }
 
   // tslint:disable-next-line:no-any
