@@ -60,6 +60,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzDuration: NumberInput;
 
   private scrollListenerDestroy$ = new Subject();
+  private destroy$ = new Subject();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
@@ -87,7 +88,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.registerScrollEvent();
 
-    this.directionality.change?.pipe(takeUntil(this.scrollListenerDestroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -128,6 +129,8 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.scrollListenerDestroy$.next();
     this.scrollListenerDestroy$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
