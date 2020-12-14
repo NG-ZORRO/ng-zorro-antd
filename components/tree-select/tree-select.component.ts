@@ -83,7 +83,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
         [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
-        [dir]="dir === 'rtl' ? 'rtl' : 'ltr'"
+        [dir]="dir"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
