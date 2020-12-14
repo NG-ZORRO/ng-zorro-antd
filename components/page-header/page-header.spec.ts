@@ -150,6 +150,9 @@ describe('NzPageHeaderComponent', () => {
     });
 
     it('should className correct after change Dir', () => {
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
+
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
 
