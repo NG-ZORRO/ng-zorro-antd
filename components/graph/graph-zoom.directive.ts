@@ -14,7 +14,8 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
 Selection.bind('transition', d3Transition);
 
 @Directive({
-  selector: '[nz-graph-zoom]'
+  selector: '[nz-graph-zoom]',
+  exportAs: 'nzGraphZoom'
 })
 export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
   @Input() nzZoom?: number;
