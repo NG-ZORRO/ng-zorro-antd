@@ -365,13 +365,11 @@ describe('pagination', () => {
 
   describe('RTL', () => {
     let fixture: ComponentFixture<NzTestPaginationRtlComponent>;
-    let testComponent: NzTestPaginationComponent;
     let pagination: DebugElement;
     let paginationElement: HTMLElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationRtlComponent);
-      testComponent = fixture.debugElement.query(By.directive(NzTestPaginationComponent)).componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       paginationElement = pagination.nativeElement;
@@ -388,9 +386,9 @@ describe('pagination', () => {
 
     it('should render icons correct', () => {
       fixture.detectChanges();
-      testComponent.total = 500;
+      fixture.componentInstance.total = 500;
       fixture.detectChanges();
-      testComponent.pageIndex = 7;
+      fixture.componentInstance.pageIndex = 7;
       fixture.detectChanges();
       const prev = paginationElement.firstElementChild as HTMLElement;
       const next = paginationElement.lastElementChild as HTMLElement;
@@ -472,11 +470,14 @@ export class NzTestPaginationAutoResizeComponent {}
 @Component({
   template: `
     <div [dir]="direction">
-      <nz-test-pagination-component></nz-test-pagination-component>
+      <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize"></nz-pagination>
     </div>
   `
 })
 export class NzTestPaginationRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+  pageIndex = 1;
+  pageSize = 10;
+  total = 50;
 }

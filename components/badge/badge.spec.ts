@@ -1,34 +1,20 @@
-import { DIR_DOCUMENT } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
-
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 
 describe('badge', () => {
-  let fakeDocument: FakeDocument;
   beforeEach(fakeAsync(() => {
-    fakeDocument = { body: {}, documentElement: {} };
     TestBed.configureTestingModule({
-      imports: [NzBadgeModule, NoopAnimationsModule],
-      declarations: [NzTestBadgeBasicComponent],
-      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      imports: [BidiModule, NzBadgeModule, NoopAnimationsModule],
+      declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
     });
     TestBed.compileComponents();
   }));
-
-  it('should RTL work', () => {
-    fakeDocument.body.dir = 'rtl';
-    const fixture = TestBed.createComponent(NzTestBadgeBasicComponent);
-    const badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
-    fixture.detectChanges();
-    expect(badgeElement.nativeElement.classList).toContain('ant-badge-rtl');
-  });
 
   describe('basic badge', () => {
     let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
@@ -152,6 +138,28 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
     });
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestBadgeRtlComponent>;
+    let badge: DebugElement;
+    let badgeElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestBadgeRtlComponent);
+      badge = fixture.debugElement.query(By.directive(NzBadgeComponent));
+      fixture.detectChanges();
+      badgeElement = badge.nativeElement;
+    });
+
+    it('should pagination className correct on dir change', () => {
+      fixture.detectChanges();
+      expect(badgeElement.classList).toContain('ant-badge-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(badgeElement.classList).not.toContain('ant-badge-rtl');
+    });
+  });
 });
 
 @Component({
@@ -183,4 +191,17 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-badge [nzCount]="count"></nz-badge>
+    </div>
+  `
+})
+export class NzTestBadgeRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+  count = 5;
 }

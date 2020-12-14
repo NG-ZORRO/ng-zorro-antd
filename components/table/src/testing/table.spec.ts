@@ -1,8 +1,7 @@
-import { DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import en_US from '../../../i18n/languages/en_US';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { NzTableModule } from '../table.module';
@@ -10,15 +9,12 @@ import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table', () => {
   let injector: Injector;
-  let fakeDocument: FakeDocument;
 
   beforeEach(
     waitForAsync(() => {
-      fakeDocument = { body: {}, documentElement: {} };
       injector = TestBed.configureTestingModule({
-        imports: [NzTableModule],
-        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent],
-        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+        imports: [BidiModule, NzTableModule],
+        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent, NzTestTableRtlComponent]
       });
       TestBed.compileComponents();
     })
@@ -256,12 +252,27 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
     });
   });
-  it('should rtl className correct', () => {
-    fakeDocument.body.dir = 'rtl';
-    const fixture = TestBed.createComponent(NzTestTableBasicComponent);
-    const table = fixture.debugElement.query(By.directive(NzTableComponent));
-    fixture.detectChanges();
-    expect(table.nativeElement.classList).toContain('ant-table-wrapper-rtl');
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestTableRtlComponent>;
+    let table: DebugElement;
+    let tableElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTableRtlComponent);
+      table = fixture.debugElement.query(By.directive(NzTableComponent));
+      fixture.detectChanges();
+      tableElement = table.nativeElement;
+    });
+
+    it('should table className correct on dir change', () => {
+      fixture.detectChanges();
+      expect(tableElement.classList).toContain('ant-table-wrapper-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(tableElement.classList).not.toContain('ant-table-wrapper-rtl');
+    });
   });
 });
 
@@ -448,5 +459,66 @@ export class NzTableSpecCrashComponent {
         name: `name ${i + 1}`
       }));
     }, 1000);
+  }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-table #dynamicTable [nzData]="dataSet" [nzSimple]="simple">
+        <thead *ngIf="header">
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+            <tr>
+              <td>{{ data.name }}</td>
+              <td>{{ data.age }}</td>
+              <td>{{ data.address }}</td>
+              <td>
+                <a href="#">Action 一 {{ data.name }}</a>
+                <a href="#">Delete</a>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+  `
+})
+export class NzTestTableRtlComponent implements OnInit {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+
+  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent;
+  pageIndex = 1;
+  pageSize = 10;
+  dataSet: Array<{
+    name?: string;
+    age?: string;
+    address?: string;
+    description?: string;
+    checked?: boolean;
+    expand?: boolean;
+  }> = [];
+  header = true;
+  simple = false;
+
+  ngOnInit(): void {
+    for (let i = 1; i <= 20; i++) {
+      this.dataSet.push({
+        name: 'John Brown',
+        age: `${i}2`,
+        address: `New York No. ${i} Lake Park`,
+        description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
+        checked: false,
+        expand: false
+      });
+    }
   }
 }
