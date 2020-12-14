@@ -1,6 +1,7 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, OnInit } from '@angular/core';
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -826,6 +827,67 @@ describe('nz-slider', () => {
       expect(sliderInstance.value).toEqual([2, 99]);
     });
   });
+
+  describe('RTL', () => {
+    let testBed: ComponentBed<NzTestSliderRtlComponent>;
+    let fixture: ComponentFixture<NzTestSliderRtlComponent>;
+    let trackFillElement: HTMLElement;
+    let trackHandleElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestSliderRtlComponent, {
+        imports: [NzSliderModule, BidiModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
+      trackHandleElement = sliderNativeElement.querySelector('.ant-slider-handle') as HTMLElement;
+    });
+
+    it('should className correct on dir change', fakeAsync(() => {
+      expect(sliderNativeElement.classList).toContain('ant-slider-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(sliderNativeElement.classList).not.toContain('ant-slider-rtl');
+    }));
+
+    it('should update the track fill on click', fakeAsync(() => {
+      expect(trackFillElement.style.width).toBe('0%');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.39, true);
+      fixture.detectChanges();
+
+      expect(trackFillElement.style.width).toBe('39%');
+    }));
+
+    it('should update track fill style on direction change', () => {
+      expect(trackFillElement.style.left).toBe('auto');
+      expect(trackFillElement.style.right).toBe('0%');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(trackFillElement.style.left).toBe('0%');
+      expect(trackFillElement.style.right).toBe('auto');
+    });
+
+    it('should update track handle style on direction change', () => {
+      dispatchClickEventSequence(sliderNativeElement, 0.39, true);
+      fixture.detectChanges();
+
+      expect(trackHandleElement.style.left).toBe('auto');
+      expect(trackHandleElement.style.right).toBe('39%');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(trackHandleElement.style.right).toBe('auto');
+      expect(trackHandleElement.style.left).toBe('39%');
+    });
+  });
 });
 
 const styles = `
@@ -993,11 +1055,11 @@ class NzTestSliderKeyboardComponent {
  * @param percentage The percentage of the slider where the click should occur. Used to find the
  * physical location of the click.
  */
-function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: number): void {
+function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: number, isRtl: boolean = false): void {
   const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
   const dimensions = trackElement.getBoundingClientRect();
-  const x = dimensions.left + dimensions.width * percentage;
-  const y = dimensions.top + dimensions.height * percentage;
+  const x = dimensions.left + dimensions.width * (isRtl ? 1 - percentage : percentage);
+  const y = dimensions.top + dimensions.height * (isRtl ? 1 - percentage : percentage);
 
   dispatchMouseenterEvent(sliderElement);
   dispatchMouseEvent(sliderElement, 'mousedown', x, y);
@@ -1076,4 +1138,16 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
   const x = dimensions.left;
 
   dispatchMouseEvent(element, 'mouseenter', x, y);
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-slider></nz-slider>
+    </div>
+  `
+})
+export class NzTestSliderRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }
