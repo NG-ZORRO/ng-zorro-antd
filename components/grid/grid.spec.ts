@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
@@ -161,6 +162,36 @@ describe('grid', () => {
       expect(batchSizeMatch(1, 'xs')).toBe(false);
     });
   });
+  describe('RTL', () => {
+    let rowElement: HTMLElement;
+    let colElement: HTMLElement;
+    let testBed: ComponentBed<NzTestGridRtlComponent>;
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestGridRtlComponent, { imports: [BidiModule, NzGridModule] });
+      rowElement = testBed.debugElement.query(By.directive(NzRowDirective)).nativeElement;
+      colElement = testBed.debugElement.query(By.directive(NzColDirective)).nativeElement;
+    });
+    describe('row', () => {
+      it('should className correct on dir change', () => {
+        expect(rowElement.className).toBe('ant-row ant-row-rtl');
+
+        testBed.fixture.componentInstance.direction = 'ltr';
+        testBed.fixture.detectChanges();
+
+        expect(rowElement.className).toBe('ant-row');
+      });
+    });
+    describe('col', () => {
+      it('should className correct on dir change', () => {
+        expect(colElement.className).toBe('ant-col ant-col-rtl');
+
+        testBed.fixture.componentInstance.direction = 'ltr';
+        testBed.fixture.detectChanges();
+
+        expect(colElement.className).toBe('ant-col');
+      });
+    });
+  });
 });
 
 @Component({
@@ -211,4 +242,18 @@ export class TestColComponent {
   lg: number | null | { [key: string]: number } = null;
   xl: number | null | { [key: string]: number } = null;
   xxl: number | null | { [key: string]: number } = null;
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <div nz-row>
+        <div nz-col></div>
+      </div>
+    </div>
+  `
+})
+export class NzTestGridRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

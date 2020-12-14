@@ -100,12 +100,12 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnInit(): void {
-    this.setGutterStyle();
-
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
+
+    this.setGutterStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

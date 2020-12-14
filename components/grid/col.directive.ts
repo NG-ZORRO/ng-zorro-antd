@@ -64,7 +64,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       [`ant-col-offset-${this.nzOffset}`]: isNotNil(this.nzOffset),
       [`ant-col-pull-${this.nzPull}`]: isNotNil(this.nzPull),
       [`ant-col-push-${this.nzPush}`]: isNotNil(this.nzPush),
-      ['ant-col-rtl']: this.isRtlLayout,
+      ['ant-col-rtl']: this.dir === 'rtl',
       ...this.generateClass()
     };
     for (const i in this.classMap) {
@@ -124,14 +124,14 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ) {}
 
   ngOnInit(): void {
-    this.setHostClassMap();
-    this.setHostFlexStyle();
-
     this.dir = this.directionality.value;
     this.directionality.change.subscribe((direction: Direction) => {
       this.dir = direction;
       this.setHostClassMap();
     });
+
+    this.setHostClassMap();
+    this.setHostFlexStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -162,8 +162,5 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-  get isRtlLayout(): boolean {
-    return this.dir === 'rtl';
   }
 }
