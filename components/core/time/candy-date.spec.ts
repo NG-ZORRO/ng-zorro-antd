@@ -1,3 +1,4 @@
+import differenceInCalendarMonths from 'date-fns/differenceInCalendarMonths';
 import { CandyDate, normalizeRangeValue, SingleValue } from './candy-date';
 
 describe('candy-date coverage supplements', () => {
@@ -52,11 +53,11 @@ describe('candy-date coverage supplements', () => {
 
     result = normalizeRangeValue([null, null], false);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
-    expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
 
     result = normalizeRangeValue([new CandyDate(), new CandyDate()], false);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
-    expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
 
     result = normalizeRangeValue([new CandyDate(), new CandyDate()], true);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());

@@ -1,5 +1,6 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -7,13 +8,15 @@ import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
 
 describe('spin', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSpinModule, NzIconTestModule],
-      declarations: [NzTestSpinBasicComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzSpinModule, NzIconTestModule],
+        declarations: [NzTestSpinBasicComponent, NzTestSpinRtlComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
 
   describe('spin basic', () => {
     let fixture: ComponentFixture<NzTestSpinBasicComponent>;
@@ -131,9 +134,24 @@ describe('spin', () => {
       expect(spin.nativeElement.querySelector('.ant-spin-text').innerText).toBe('tip');
     }));
   });
+
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestSpinRtlComponent);
+      const spin = fixture.debugElement.query(By.directive(NzSpinComponent));
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-spin',
   template: `
     <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i></ng-template>
     <nz-spin [nzTip]="tip" [nzSize]="size" [nzDelay]="delay" [nzSpinning]="spinning" [nzSimple]="simple" [nzIndicator]="indicator">
@@ -152,4 +170,16 @@ export class NzTestSpinBasicComponent {
   simple = false;
 
   constructor(public nzConfigService: NzConfigService) {}
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-spin></nz-test-basic-spin>
+    </div>
+  `
+})
+export class NzTestSpinRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

@@ -22,16 +22,8 @@
 
       &:last-child {
         margin-right: 40px;
-      }
-    }
-  }
 
-  // Adjust github button style
-
-  .ant-row-rtl {
-    .menu-row {
-      > * {
-        &:last-child {
+        .page-wrapper-rtl & {
           margin-right: 16px;
           margin-left: 40px;
         }
@@ -93,14 +85,6 @@
   }
 }
 
-.ant-row-rtl {
-  #github-btn {
-    .gh-count {
-      display: none !important;
-    }
-  }
-}
-
 #logo {
   height: @header-height;
   padding-left: 40px;
@@ -112,7 +96,7 @@
   white-space: nowrap;
   text-decoration: none;
 
-  .ant-row-rtl & {
+  .page-wrapper-rtl & {
     float: right;
     padding-right: 40px;
     padding-left: 0;
@@ -125,7 +109,7 @@
     width: 28.27px;
     margin-right: 16px;
 
-    .ant-row-rtl & {
+    .page-wrapper-rtl & {
       margin-right: 0;
       margin-left: 16px;
     }
@@ -237,12 +221,17 @@
   border-left: 1px solid @site-border-color-split;
   transition: width 0.5s;
 
-  .ant-row-rtl & {
+  .page-wrapper-rtl & {
     margin: 0 0 0 auto !important;
     padding-right: 16px;
     padding-left: 0;
     border-right: 1px solid @site-border-color-split;
     border-left: none;
+
+    input {
+      padding-left: 11px;
+      padding-right: 20px;
+    }
   }
 
   > * {
@@ -288,7 +277,7 @@
       right: 0;
       left: auto;
 
-      .ant-row-rtl & {
+      .page-wrapper-rtl & {
         right: auto;
         left: 0;
       }
@@ -300,7 +289,7 @@
       padding-left: 11px;
       cursor: pointer;
 
-      .ant-row-rtl & {
+      .page-wrapper-rtl & {
         padding-right: 11px;
         padding-left: 20px;
       }
@@ -339,7 +328,7 @@
     color: #aaa;
     font-size: 12px;
 
-    .ant-row-rtl & {
+    .page-wrapper-rtl & {
       right: auto;
       left: 16px;
     }

@@ -3,8 +3,23 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzCommentActionComponent as CommentAction } from './comment-cells';
 
 @Component({
@@ -39,13 +54,31 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'ant-comment'
+    '[class.ant-comment]': `true`,
+    '[class.ant-comment-rtl]': `dir === "rtl"`
   }
 })
-export class NzCommentComponent {
+export class NzCommentComponent implements OnDestroy, OnInit {
   @Input() nzAuthor?: string | TemplateRef<void>;
   @Input() nzDatetime?: string | TemplateRef<void>;
+  dir: Direction = 'ltr';
+
+  private destroy$ = new Subject<void>();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

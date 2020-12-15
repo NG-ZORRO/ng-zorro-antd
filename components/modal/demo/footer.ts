@@ -13,9 +13,7 @@ import { Component } from '@angular/core';
       [nzFooter]="modalFooter"
       (nzOnCancel)="handleCancel()"
     >
-      <ng-template #modalTitle>
-        Custom Modal Title
-      </ng-template>
+      <ng-template #modalTitle>Custom Modal Title</ng-template>
 
       <ng-template #modalContent>
         <p>Modal Content</p>
@@ -26,7 +24,7 @@ import { Component } from '@angular/core';
       </ng-template>
 
       <ng-template #modalFooter>
-        <span>Modal Footer: </span>
+        <span>Modal Footer:</span>
         <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
@@ -48,7 +46,7 @@ export class NzDemoModalFooterComponent {
     setTimeout(() => {
       this.isVisible = false;
       this.isConfirmLoading = false;
-    }, 3000);
+    }, 1000);
   }
 
   handleCancel(): void {

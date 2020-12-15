@@ -1,6 +1,8 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -204,7 +206,32 @@ describe('list', () => {
   });
 });
 
+describe('list RTL', () => {
+  let testBed: ComponentBed<NzTestListRtlComponent>;
+  let fixture: ComponentFixture<NzTestListRtlComponent>;
+  let componentElement: HTMLElement;
+
+  beforeEach(() => {
+    testBed = createComponentBed(NzTestListRtlComponent, {
+      declarations: [TestListComponent, NzTestListRtlComponent],
+      imports: [NzListModule, NzIconTestModule, BidiModule]
+    });
+    componentElement = testBed.debugElement.query(By.directive(NzListComponent)).nativeElement;
+    fixture = testBed.fixture;
+    fixture.detectChanges();
+  });
+
+  it('should className correct on dir change', () => {
+    expect(componentElement.classList).toContain('ant-list-rtl');
+    fixture.componentInstance.direction = 'ltr';
+    fixture.detectChanges();
+    expect(componentElement.classList).not.toContain('ant-list-rtl');
+  });
+});
+
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-list',
   template: `
     <nz-list
       #comp
@@ -227,8 +254,7 @@ describe('list', () => {
             nzTitle="title"
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          >
-          </nz-list-item-meta>
+          ></nz-list-item-meta>
         </nz-list-item>
       </ng-template>
       <ng-template #loadMore>
@@ -281,7 +307,10 @@ class TestListWithTemplateComponent {
   template: `
     <nz-list id="item-string">
       <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
-        <ng-template #action><i nz-icon nzType="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+        <ng-template #action>
+          <i nz-icon nzType="star-o" style="margin-right: 8px;"></i>
+          156
+        </ng-template>
         <ng-template #extra>
           <img width="272" class="extra-logo" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
         </ng-template>
@@ -289,8 +318,7 @@ class TestListWithTemplateComponent {
           nzTitle="title"
           nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
           nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-        >
-        </nz-list-item-meta>
+        ></nz-list-item-meta>
       </nz-list-item>
     </nz-list>
     <nz-list id="item-template">
@@ -307,4 +335,16 @@ class TestListWithTemplateComponent {
 })
 class TestListItemComponent {
   noFlex = false;
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-list></nz-test-list>
+    </div>
+  `
+})
+export class NzTestListRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

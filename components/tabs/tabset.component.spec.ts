@@ -160,7 +160,8 @@ describe('NzTabSet', () => {
       fixture.detectChanges();
 
       const tab = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1]!;
-      const tabsContainer = fixture.debugElement.query(By.css('.ant-tabs-nav'))!.nativeElement as HTMLElement;
+      const tabsContainer = fixture.debugElement.query(By.css('.ant-tabs-nav-wrap'))!.nativeElement as HTMLElement;
+      const trigger = tab!.nativeElement as HTMLElement;
 
       expect(component.handleSelection).toHaveBeenCalledTimes(0);
 
@@ -170,23 +171,47 @@ describe('NzTabSet', () => {
 
       expect(component.handleSelection).toHaveBeenCalledTimes(1);
 
-      dispatchKeyboardEvent(tabsContainer, 'keydown', LEFT_ARROW);
+      dispatchKeyboardEvent(tabsContainer, 'keydown', LEFT_ARROW, trigger);
       fixture.detectChanges();
-      dispatchKeyboardEvent(tabsContainer, 'keydown', ENTER);
+      dispatchKeyboardEvent(tabsContainer, 'keydown', ENTER, trigger);
       fixture.detectChanges();
       flush();
 
       expect(component.handleSelection).toHaveBeenCalledTimes(2);
       expect(component.handleSelection).toHaveBeenCalledWith(0);
 
-      dispatchKeyboardEvent(tabsContainer, 'keydown', RIGHT_ARROW);
+      dispatchKeyboardEvent(tabsContainer, 'keydown', RIGHT_ARROW, trigger);
       fixture.detectChanges();
-      dispatchKeyboardEvent(tabsContainer, 'keydown', SPACE);
+      dispatchKeyboardEvent(tabsContainer, 'keydown', SPACE, trigger);
       fixture.detectChanges();
       flush();
 
       expect(component.handleSelection).toHaveBeenCalledTimes(3);
       expect(component.handleSelection).toHaveBeenCalledWith(1);
+    }));
+
+    it('should not emit nzSelectedIndexChange when key-event on navigation list outside', fakeAsync(() => {
+      const component = fixture.componentInstance;
+      component.selectedIndex = 0;
+      spyOn(component, 'handleSelection');
+      fixture.detectChanges();
+      fixture.detectChanges();
+      flush();
+
+      const tabsContainer = fixture.debugElement.query(By.css('.ant-tabs-nav-wrap'))!.nativeElement as HTMLElement;
+      const trigger = fixture.debugElement.query(By.css('.extra-input'))!.nativeElement as HTMLElement;
+
+      expect(component.handleSelection).toHaveBeenCalledTimes(0);
+
+      dispatchKeyboardEvent(tabsContainer, 'keydown', LEFT_ARROW, trigger);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(tabsContainer, 'keydown', ENTER, trigger);
+      fixture.detectChanges();
+      flush();
+
+      expect(component.handleSelection).toHaveBeenCalledTimes(0);
+      tick(300);
+      fixture.detectChanges();
     }));
 
     it('should clean up the tabs QueryList on destroy', () => {
@@ -840,11 +865,15 @@ xdescribe('NzTabSet router', () => {
       [nzTabBarStyle]="tabBarStyle"
       [nzCentered]="centered"
       [nzCanDeactivate]="canDeactivate"
+      [nzTabBarExtraContent]="extraTemplate"
     >
       <nz-tab nzTitle="Tab 0" nzClosable>Content of Tab Pane 0</nz-tab>
       <nz-tab nzTitle="Tab 1" nzClosable>Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
     </nz-tabset>
+    <ng-template #extraTemplate>
+      <input type="text" class="extra-input" />
+    </ng-template>
   `
 })
 class SimpleTabsTestComponent {

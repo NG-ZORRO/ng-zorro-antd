@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,6 +12,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -33,6 +36,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
     <div
       *ngIf="!closed"
       class="ant-alert"
+      [class.ant-alert-rtl]="dir === 'rtl'"
       [class.ant-alert-success]="nzType === 'success'"
       [class.ant-alert-info]="nzType === 'info'"
       [class.ant-alert-warning]="nzType === 'warning'"
@@ -48,12 +52,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
       <ng-container *ngIf="nzShowIcon">
         <i nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></i>
       </ng-container>
-      <span class="ant-alert-message" *ngIf="nzMessage">
-        <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
-      </span>
-      <span class="ant-alert-description" *ngIf="nzDescription">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
-      </span>
+      <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
+        <span class="ant-alert-message" *ngIf="nzMessage">
+          <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
+        </span>
+        <span class="ant-alert-description" *ngIf="nzDescription">
+          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+        </span>
+      </div>
       <button type="button" tabindex="0" *ngIf="nzCloseable || nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">
         <ng-template #closeDefaultTemplate>
           <i nz-icon nzType="close"></i>
@@ -70,7 +76,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
-export class NzAlertComponent implements OnChanges, OnDestroy {
+export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzCloseable: BooleanInput;
   static ngAcceptInputType_nzShowIcon: BooleanInput;
@@ -90,17 +96,27 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
   inferredIconType: string = 'info-circle';
+  dir: Direction = 'ltr';
   private isTypeSet = false;
   private isShowIconSet = false;
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+  }
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   closeAlert(): void {

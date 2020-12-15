@@ -1,5 +1,6 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,13 +9,20 @@ import { NzCollapseComponent } from './collapse.component';
 import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCollapseModule, NoopAnimationsModule],
-      declarations: [NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent, NzTestCollapseIconComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
+        declarations: [
+          NzTestCollapseBasicComponent,
+          NzTestCollapseTemplateComponent,
+          NzTestCollapseIconComponent,
+          NzTestCollapseRtlComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
     let testComponent: NzTestCollapseBasicComponent;
@@ -169,9 +177,24 @@ describe('collapse', () => {
       expect(panels[2].nativeElement.querySelector('.anticon-caret-right')).toBeDefined();
     });
   });
+
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestCollapseRtlComponent);
+      const collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
+      fixture.detectChanges();
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-collapse',
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
@@ -235,3 +258,15 @@ export class NzTestCollapseTemplateComponent {}
   `
 })
 export class NzTestCollapseIconComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-collapse></nz-test-basic-collapse>
+    </div>
+  `
+})
+export class NzTestCollapseRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

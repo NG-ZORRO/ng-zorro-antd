@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,6 +12,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   TemplateRef,
   ViewChild,
@@ -65,6 +66,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
   locale!: NzUploadI18nInterface;
+  dir: Direction = 'ltr';
 
   // #region fields
 
@@ -170,7 +172,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) { }
 
   // #region upload
 
@@ -312,7 +314,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       this.prefixCls,
       `${this.prefixCls}-${this.nzType}`,
       ...subCls,
-      (this.nzDisabled && `${this.prefixCls}-disabled`) || ''
+      (this.nzDisabled && `${this.prefixCls}-disabled`) || '',
+      (this.dir === 'rtl' && `${this.prefixCls}-rtl`) || ''
     ].filter(item => !!item);
 
     this.cdr.detectChanges();
@@ -321,6 +324,13 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // #endregion
 
   ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.setClassMap();
+      this.cdr.detectChanges();
+    });
+
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();

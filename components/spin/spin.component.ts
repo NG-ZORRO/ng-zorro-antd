@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectorRef,
   Component,
@@ -10,6 +10,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -40,6 +41,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
     <div *ngIf="isLoading">
       <div
         class="ant-spin"
+        [class.ant-spin-rtl]="dir === 'rtl'"
         [class.ant-spin-spinning]="isLoading"
         [class.ant-spin-lg]="nzSize === 'large'"
         [class.ant-spin-sm]="nzSize === 'small'"
@@ -74,8 +76,13 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);
   isLoading = false;
+  dir: Direction = 'ltr';
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     const loading$ = this.delay$.pipe(
@@ -98,6 +105,13 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

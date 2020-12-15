@@ -1,18 +1,21 @@
-import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzTagModule, NoopAnimationsModule],
-      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzTagModule, NoopAnimationsModule],
+        declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('basic tag', () => {
     let fixture: ComponentFixture<NzTestTagBasicComponent>;
     let testComponent: NzTestTagBasicComponent;
@@ -116,9 +119,23 @@ describe('tag', () => {
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
     }));
   });
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestTagRtlComponent);
+      const tag = fixture.debugElement.query(By.directive(NzTagComponent));
+      fixture.detectChanges();
+      expect(tag.nativeElement.className).toContain('ant-tag-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(tag.nativeElement.className).not.toContain('ant-tag-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-tag',
   template: `
     <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
       Tag 1
@@ -143,4 +160,16 @@ export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
     e.preventDefault();
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-tag></nz-test-basic-tag>
+    </div>
+  `
+})
+export class NzTestTagRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

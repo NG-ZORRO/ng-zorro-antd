@@ -1,6 +1,7 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -21,7 +22,7 @@ describe('NzPageHeaderComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
+        imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
         declarations: [
           NzDemoPageHeaderBasicComponent,
@@ -29,7 +30,8 @@ describe('NzPageHeaderComponent', () => {
           NzDemoPageHeaderContentComponent,
           NzDemoPageHeaderActionsComponent,
           NzDemoPageHeaderResponsiveComponent,
-          NzDemoPageHeaderGhostComponent
+          NzDemoPageHeaderGhostComponent,
+          NzDemoPageHeaderRtlComponent
         ]
       }).compileComponents();
       location = TestBed.inject(Location);
@@ -132,4 +134,46 @@ describe('NzPageHeaderComponent', () => {
     fixture.detectChanges();
     expect(context.onBack).toHaveBeenCalled();
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzDemoPageHeaderRtlComponent>;
+    let pageHeader: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoPageHeaderRtlComponent);
+      pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
+    });
+
+    it('should className correct after change Dir', () => {
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(pageHeader.nativeElement.classList).not.toContain('ant-page-header-rtl');
+    });
+
+    it('should have an default back icon', () => {
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back i.anticon-arrow-right')).toBeTruthy();
+    });
+  });
 });
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-demo-page-header-basic></nz-demo-page-header-basic>
+    </div>
+  `
+})
+export class NzDemoPageHeaderRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

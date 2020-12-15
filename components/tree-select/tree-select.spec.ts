@@ -1,5 +1,7 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { TestKey } from '@angular/cdk/testing';
+import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -109,10 +111,8 @@ describe('tree-select component', () => {
       fixture.detectChanges();
     });
     it('should disabled work', fakeAsync(() => {
-      expect(treeSelect.nativeElement.classList).toContain('ant-select-enabled');
       testComponent.disabled = true;
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.classList).not.toContain('ant-select-enabled');
       expect(treeSelect.nativeElement.classList).toContain('ant-select-disabled');
       expect(treeSelectComponent.nzOpen).toBe(false);
       treeSelect.nativeElement.click();
@@ -196,6 +196,47 @@ describe('tree-select component', () => {
       flush();
       expect(treeSelectComponent.nzOpen).toBe(false);
     }));
+
+    it('should be focusable', fakeAsync(() => {
+      const focusTrigger = treeSelect.query(By.css('.ant-select-selection-search-input')).nativeElement;
+      expect(treeSelect.nativeElement.classList).not.toContain('ant-select-focused');
+      dispatchFakeEvent(focusTrigger, 'focus');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(treeSelect.nativeElement.classList).toContain('ant-select-focused');
+    }));
+
+    it('should open dropdown when keydown', fakeAsync(async () => {
+      const testElement = new UnitTestElement(treeSelect.nativeElement, async () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      });
+      expect(treeSelectComponent.nzOpen).toBe(false);
+      await testElement.sendKeys(TestKey.ESCAPE);
+      expect(treeSelectComponent.nzOpen).toBe(false);
+
+      await testElement.sendKeys(TestKey.ENTER);
+      expect(treeSelectComponent.nzOpen).toBe(true);
+    }));
+
+    it('should close dropdown when TAB keydown', fakeAsync(async () => {
+      const testElement = new UnitTestElement(treeSelect.nativeElement, async () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      });
+
+      treeSelectComponent.nzOpen = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      await testElement.sendKeys(TestKey.TAB);
+      expect(treeSelectComponent.nzOpen).toBe(false);
+    }));
+
     it('should showSearch work', fakeAsync(() => {
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
@@ -203,11 +244,13 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.querySelector('nz-select-search')).toBeTruthy();
+      const searchInput = treeSelect.nativeElement.querySelector('nz-select-search .ant-select-selection-search-input');
+      expect(searchInput).toBeTruthy();
+      expect(searchInput.style.opacity).toBe('');
       testComponent.showSearch = false;
       fixture.detectChanges();
       tick();
-      expect(treeSelect.nativeElement.querySelector('nz-select-search')).toBeNull();
+      expect(searchInput.style.opacity).toBe('0');
       flush();
       fixture.detectChanges();
     }));

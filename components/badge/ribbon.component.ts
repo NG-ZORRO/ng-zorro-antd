@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { badgePresetColors } from './preset-colors';
 
 @Component({
@@ -24,16 +33,19 @@ import { badgePresetColors } from './preset-colors';
       <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
     </div>
-  `,
-  host: {
-    '[class.ant-ribbon-wrapper]': 'true'
-  }
+  `
 })
 export class NzRibbonComponent implements OnChanges {
   @Input() nzColor: string | undefined;
   @Input() nzPlacement: 'start' | 'end' = 'end';
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-ribbon-wrapper');
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;
     if (nzColor) {

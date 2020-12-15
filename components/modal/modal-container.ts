@@ -2,12 +2,23 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
 import { AnimationEvent } from '@angular/animations';
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  ComponentRef,
+  Directive,
+  ElementRef,
+  EmbeddedViewRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2
+} from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -25,7 +36,7 @@ export function throwNzModalContentAlreadyAttachedError(): never {
 }
 
 @Directive()
-export class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy {
+export class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy, OnInit {
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
 
@@ -38,6 +49,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   document: Document;
   modalRef!: NzModalRef;
   isStringContent: boolean = false;
+  dir: Direction = 'ltr';
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
   private focusTrap!: FocusTrap;
   private mouseDown = false;
@@ -64,6 +76,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     protected overlayRef: OverlayRef,
     protected nzConfigService: NzConfigService,
     public config: ModalOptions,
+    @Optional() private directionality: Directionality,
     document?: NzSafeAny,
     protected animationType?: string
   ) {
@@ -77,6 +90,14 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       .subscribe(() => {
         this.updateMaskClassname();
       });
+  }
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
   }
 
   onContainerClick(e: MouseEvent): void {

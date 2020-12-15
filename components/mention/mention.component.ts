@@ -20,6 +20,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Inject,
   Input,
@@ -28,9 +29,11 @@ import {
   OnInit,
   Optional,
   Output,
+  QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
@@ -63,6 +66,7 @@ export type MentionPlacement = 'top' | 'bottom';
     <ng-template #suggestions>
       <ul class="ant-mention-dropdown">
         <li
+          #items
           class="ant-mention-dropdown-item"
           *ngFor="let suggestion of filteredSuggestions; let i = index"
           [class.focus]="i === activeIndex"
@@ -99,6 +103,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
+  @ViewChildren('items', { read: ElementRef })
+  items!: QueryList<ElementRef>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
   set suggestionChild(value: TemplateRef<{ $implicit: NzSafeAny }>) {
@@ -123,6 +129,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
+  }
+
+  private get focusItemElement(): HTMLElement | null {
+    const itemArr = this.items?.toArray();
+    if (itemArr && itemArr[this.activeIndex]) {
+      return itemArr[this.activeIndex].nativeElement;
+    }
+    return null;
   }
 
   constructor(
@@ -270,11 +284,19 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   private setNextItemActive(): void {
     this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
     this.cdr.markForCheck();
+    this.scrollToFocusItem();
   }
 
   private setPreviousItemActive(): void {
     this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
     this.cdr.markForCheck();
+    this.scrollToFocusItem();
+  }
+
+  private scrollToFocusItem(): void {
+    if (this.focusItemElement) {
+      this.focusItemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    }
   }
 
   private canOpen(): boolean {

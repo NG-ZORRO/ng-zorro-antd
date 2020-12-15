@@ -40,3 +40,10 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzSuffix]` | The suffix icon for the Input, can work with `nzPrefix` | `string \| TemplateRef<void>` | - |
 | `[nzCompact]` | Whether use compact style | `boolean` | `false` |
 | `[nzSize]` | The size of `nz-input-group` specifies the size of the included `nz-input` fields | `'large' \| 'small' \| 'default'` | `'default'` |
+
+### nz-textarea-count
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| `[nzMaxCharacterCount]` | `textarea` maximum character count displayed | `number` | - |
+| `[nzComputeCharacterCount]` | customized `characterCount` computation function | `(v: string) => number` | `v => v.length` |

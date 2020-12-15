@@ -73,6 +73,7 @@ registerLocaleData(zh);
 | `[nzDisabledTime]` | 不可选择的时间 | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzShowToday]` | 是否展示“今天”按钮 | `boolean` | `true` |
+| `[nzShowNow]` | 当设定了`nzShowTime`的时候，面板是否显示“此刻”按钮 | `boolean` | `true` |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
 
 

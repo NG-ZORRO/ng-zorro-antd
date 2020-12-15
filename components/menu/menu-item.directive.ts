@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectorRef,
@@ -38,7 +39,8 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
     '[class.ant-menu-item-danger]': `!isMenuInsideDropDown && nzDanger`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
-    '[style.paddingLeft.px]': 'nzPaddingLeft || inlinePaddingLeft',
+    '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
+    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
   }
 })
@@ -53,6 +55,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
+  dir: Direction = 'ltr';
   @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
@@ -117,6 +120,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
+    @Optional() private directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
     @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
@@ -138,6 +142,11 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngAfterContentInit(): void {

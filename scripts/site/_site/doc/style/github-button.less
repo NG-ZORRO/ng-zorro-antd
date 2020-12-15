@@ -65,7 +65,7 @@
 }
 .gh-count:hover,
 .gh-count:focus {
-  color: #4183C4;
+  color: #4183c4;
 }
 .gh-count:before,
 .gh-count:after {
@@ -83,6 +83,12 @@
   margin-top: -4px;
   border-width: 4px 4px 4px 0;
   border-right-color: #fafafa;
+
+  .page-wrapper-rtl & {
+    transform: rotate(180deg);
+    left: auto;
+    right: -3px;
+  }
 }
 .gh-count:after {
   top: 50%;
@@ -91,6 +97,12 @@
   margin-top: -5px;
   border-width: 5px 5px 5px 0;
   border-right-color: #d4d4d4;
+
+  .page-wrapper-rtl & {
+    transform: rotate(180deg);
+    left: auto;
+    right: -4px;
+  }
 }
 .github-btn-large {
   height: 30px;

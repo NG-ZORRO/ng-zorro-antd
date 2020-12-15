@@ -26,7 +26,7 @@ Segmentfault / Stack Overflow is a much better place to ask questions since:
 
 To save your and our time, we will systematically close all issues that are requests for general support and redirect people to Segmentfault / Stack Overflow.
 
-If you would like to chat about the question in real-time, you can reach out via [our gitter channel][gitter].
+If you would like to chat about the question in real-time, you can reach out via [![Discord](https://img.shields.io/discord/748677963142135818?label=Discord&style=flat-square)](https://discord.com/channels/748677963142135818/764322550712893451).
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
@@ -235,5 +235,5 @@ A detailed explanation can be found in this [document][commit-message-format].
 [commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
 [dev-doc]: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/docs/DEVELOPER.md
 [github]: https://github.com/NG-ZORRO/ng-zorro-antd
-[gitter]: https://gitter.im/ng-zorro/ng-zorro-antd
+[discord]: https://discord.com/channels/748677963142135818/764322550712893451
 [plunker]: http://plnkr.co/edit

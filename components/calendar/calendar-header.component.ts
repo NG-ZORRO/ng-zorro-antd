@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
@@ -43,8 +43,7 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
     </div>
   `,
   host: {
-    '[style.display]': `'block'`,
-    '[class.ant-fullcalendar-header]': `true`
+    '[style.display]': `'block'`
   }
 })
 export class NzCalendarHeaderComponent implements OnInit {
@@ -82,7 +81,10 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(private i18n: I18n, private dateHelper: DateHelperService, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-fullcalendar-header');
+  }
 
   ngOnInit(): void {
     this.setUpYears();
