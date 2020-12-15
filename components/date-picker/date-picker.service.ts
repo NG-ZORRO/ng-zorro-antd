@@ -14,8 +14,7 @@ export class DatePickerService implements OnDestroy {
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
-  arrowLeft: string = 'auto';
-  arrowRight: string = 'auto';
+  arrowLeft: number = 0;
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
