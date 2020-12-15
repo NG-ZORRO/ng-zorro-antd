@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 @Component({
   selector: 'nz-tree-node-title',
-  template: ` <ng-template [ngTemplateOutlet]="treeTemplate" [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }">
-    </ng-template>
+  template: `
+    <ng-template [ngTemplateOutlet]="treeTemplate" [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"></ng-template>
     <ng-container *ngIf="!treeTemplate">
       <span
         *ngIf="icon && showIcon"
@@ -28,8 +28,10 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
           <i nz-icon *ngIf="icon" [nzType]="icon"></i>
         </span>
       </span>
-      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue:'i':'font-highlight'"> </span>
-    </ng-container>`,
+      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue:'i':'font-highlight'"></span>
+      <nz-tree-drop-indicator *ngIf="showIndicator" [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+    </ng-container>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   host: {
@@ -47,7 +49,7 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
     '[class.ant-tree-node-selected]': `!selectMode && isSelected`
   }
 })
-export class NzTreeNodeTitleComponent {
+export class NzTreeNodeTitleComponent implements OnChanges {
   @Input() searchValue!: string;
   @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
   @Input() draggable!: boolean;
@@ -62,6 +64,9 @@ export class NzTreeNodeTitleComponent {
   @Input() isMatched!: boolean;
   @Input() isExpanded!: boolean;
   @Input() isLeaf!: boolean;
+  // Drag indicator
+  @Input() showIndicator = true;
+  @Input() dragPosition?: number;
 
   get canDraggable(): boolean | null {
     return this.draggable && !this.isDisabled ? true : null;
@@ -77,5 +82,14 @@ export class NzTreeNodeTitleComponent {
 
   get isSwitcherClose(): boolean {
     return !this.isExpanded && !this.isLeaf;
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { showIndicator, dragPosition } = changes;
+    if (showIndicator || dragPosition) {
+      this.cdr.markForCheck();
+    }
   }
 }

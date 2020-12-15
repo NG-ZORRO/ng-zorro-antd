@@ -10,6 +10,7 @@ import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
 import { NzTreeIndentComponent } from './tree-indent.component';
 import { NzTreeNodeCheckboxComponent } from './tree-node-checkbox.component';
 import { NzTreeNodeSwitcherComponent } from './tree-node-switcher.component';
@@ -25,7 +26,8 @@ import { NzTreeComponent } from './tree.component';
     NzTreeIndentComponent,
     NzTreeNodeSwitcherComponent,
     NzTreeNodeCheckboxComponent,
-    NzTreeNodeTitleComponent
+    NzTreeNodeTitleComponent,
+    NzTreeDropIndicatorComponent
   ],
   exports: [NzTreeComponent, NzTreeNodeComponent, NzTreeIndentComponent]
 })
