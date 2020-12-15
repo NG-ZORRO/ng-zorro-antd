@@ -47,6 +47,7 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+  global?: GlobalConfig;
 }
 
 export interface SelectConfig {
@@ -279,6 +280,10 @@ export interface TypographyConfig {
   nzCopyIcons: [NzTSType, NzTSType];
   nzEditTooltip?: null | NzTSType;
   nzEditIcon: NzTSType;
+}
+
+export interface GlobalConfig {
+  nzDirection: 'rtl' | 'ltr';
 }
 
 export type NzConfigKey = keyof NzConfig;

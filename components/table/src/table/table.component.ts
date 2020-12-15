@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
@@ -16,6 +17,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -53,6 +55,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
       <div
         #tableMainElement
         class="ant-table"
+        [class.ant-table-rtl]="dir === 'rtl'"
         [class.ant-table-fixed-header]="nzData.length && scrollY"
         [class.ant-table-fixed-column]="scrollX"
         [class.ant-table-has-fix-left]="hasFixLeft"
@@ -115,7 +118,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-  `
+  `,
+  host: {
+    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
+  }
 })
 export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -181,6 +187,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   private destroy$ = new Subject<void>();
   private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
+  dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
@@ -199,7 +206,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService
+    private nzTableDataService: NzTableDataService,
+    @Optional() private directionality: Directionality
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-table-wrapper');
@@ -214,6 +222,13 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   ngOnInit(): void {
     const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
     queryParams$.pipe(takeUntil(this.destroy$)).subscribe(this.nzQueryParams);
     pageIndexDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageIndex => {
       if (pageIndex !== this.nzPageIndex) {

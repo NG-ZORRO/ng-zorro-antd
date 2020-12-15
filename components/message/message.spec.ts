@@ -195,13 +195,21 @@ describe('message', () => {
 
     tick(50000);
   }));
+
+  describe('RTL', () => {
+    it('should apply classname', () => {
+      nzConfigService.set('global', { nzDirection: 'rtl' });
+      messageService.info('INFO');
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('INFO');
+      expect(overlayContainerElement.querySelector('.ant-message-rtl')).not.toBeNull();
+    });
+  });
 });
 
 @Component({
   template: `
-    <ng-template #contentTemplate>
-      Content in template
-    </ng-template>
+    <ng-template #contentTemplate>Content in template</ng-template>
   `
 })
 export class NzTestMessageComponent {

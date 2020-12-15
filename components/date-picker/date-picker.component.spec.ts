@@ -1,3 +1,4 @@
+import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
@@ -32,9 +33,11 @@ describe('NzDatePickerComponent', () => {
   let i18nService: NzI18nService;
 
   beforeEach(fakeAsync(() => {
+    const dir = 'ltr';
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule, ReactiveFormsModule],
       providers: [
+        { provide: Directionality, useFactory: () => ({ value: dir }) }
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
       ],
       declarations: [NzTestDatePickerComponent]

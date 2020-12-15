@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
@@ -19,12 +20,13 @@ describe('pagination', () => {
   beforeEach(
     waitForAsync(() => {
       injector = TestBed.configureTestingModule({
-        imports: [NzPaginationModule, NoopAnimationsModule],
+        imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
         declarations: [
           NzTestPaginationComponent,
           NzTestPaginationRenderComponent,
           NzTestPaginationTotalComponent,
-          NzTestPaginationAutoResizeComponent
+          NzTestPaginationAutoResizeComponent,
+          NzTestPaginationRtlComponent
         ]
       });
       TestBed.compileComponents();
@@ -360,6 +362,46 @@ describe('pagination', () => {
     const nextText = (dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement).title;
     expect(nextText).toBe(en_US.Pagination.next_page);
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestPaginationRtlComponent>;
+    let pagination: DebugElement;
+    let paginationElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestPaginationRtlComponent);
+      pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
+      fixture.detectChanges();
+      paginationElement = pagination.nativeElement;
+    });
+
+    it('should pagination className correct on dir change', () => {
+      fixture.detectChanges();
+      expect(pagination.nativeElement.classList).toContain('ant-pagination-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(pagination.nativeElement.classList).not.toContain('ant-pagination-rtl');
+    });
+
+    it('should render icons correct', () => {
+      fixture.detectChanges();
+      fixture.componentInstance.total = 500;
+      fixture.detectChanges();
+      fixture.componentInstance.pageIndex = 7;
+      fixture.detectChanges();
+      const prev = paginationElement.firstElementChild as HTMLElement;
+      const next = paginationElement.lastElementChild as HTMLElement;
+      expect(prev.querySelector('.anticon')?.classList.contains('anticon-right')).toBe(true);
+      expect(next.querySelector('.anticon')?.classList.contains('anticon-left')).toBe(true);
+
+      const prev_5 = paginationElement.querySelector('.ant-pagination-jump-prev') as HTMLElement;
+      const next_5 = paginationElement.querySelector('.ant-pagination-jump-next') as HTMLElement;
+
+      expect(prev_5.querySelector('.anticon')?.classList.contains('anticon-double-right')).toBe(true);
+      expect(next_5.querySelector('.anticon')?.classList.contains('anticon-double-left')).toBe(true);
+    });
+  });
 });
 
 @Component({
@@ -424,3 +466,18 @@ export class NzTestPaginationTotalComponent {
   `
 })
 export class NzTestPaginationAutoResizeComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize"></nz-pagination>
+    </div>
+  `
+})
+export class NzTestPaginationRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+  pageIndex = 1;
+  pageSize = 10;
+  total = 50;
+}

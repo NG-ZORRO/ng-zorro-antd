@@ -16,6 +16,7 @@ import {
   Input,
   NgZone,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   QueryList,
@@ -28,9 +29,10 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { defer, merge, Observable, Subscription } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
+import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
@@ -52,6 +54,7 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
         #panel
         class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-select-dropdown-hidden]="!showPanel"
+        [class.ant-select-dropdown-rtl]="dir === 'rtl'"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -80,7 +83,7 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
   `,
   animations: [slideMotion]
 })
-export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit {
   static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
   static ngAcceptInputType_nzBackfill: BooleanInput;
 
@@ -97,6 +100,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   showPanel: boolean = true;
   isOpen: boolean = false;
   activeItem!: NzAutocompleteOptionComponent;
+  dir: Direction = 'ltr';
+  private destroy$ = new Subject<void>();
 
   /**
    * Options accessor, its source may be content or dataSource
@@ -148,8 +153,17 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
 
   ngAfterContentInit(): void {
     if (!this.nzDataSource) {
@@ -167,6 +181,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     this.dataSourceChangeSubscription.unsubscribe();
     this.selectionChangeSubscription.unsubscribe();
     this.optionMouseEnterSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   setVisibility(): void {

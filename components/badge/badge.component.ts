@@ -3,12 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -17,6 +23,8 @@ import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
@@ -59,7 +67,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
 })
-export class NzBadgeComponent implements OnChanges {
+export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowZero: BooleanInput;
   static ngAcceptInputType_nzShowDot: BooleanInput;
@@ -67,6 +75,8 @@ export class NzBadgeComponent implements OnChanges {
   static ngAcceptInputType_nzStandalone: BooleanInput;
   showSup = false;
   presetColor: string | null = null;
+  dir: Direction = 'ltr';
+  private destroy$ = new Subject<void>();
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzStandalone = false;
@@ -80,9 +90,24 @@ export class NzBadgeComponent implements OnChanges {
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
 
-  constructor(public nzConfigService: NzConfigService, private elementRef: ElementRef) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-badge');
+  }
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.prepareBadgeForRtl();
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+    this.prepareBadgeForRtl();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -93,5 +118,22 @@ export class NzBadgeComponent implements OnChanges {
     if (nzShowDot || nzDot || nzCount || nzShowZero) {
       this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount! > 0 || (this.nzCount! <= 0 && this.nzShowZero);
     }
+  }
+
+  private prepareBadgeForRtl(): void {
+    if (this.isRtlLayout) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+    }
+  }
+
+  get isRtlLayout(): boolean {
+    return this.dir === 'rtl';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

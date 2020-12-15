@@ -63,9 +63,10 @@ import { Component } from '@angular/core';
         disabled
         nz-input
         placeholder="~"
-        style="width: 30px; border-left: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
+        class="demo-input-split"
+        style="width: 30px; border-left: 0px; border-right: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
       />
-      <input type="text" nz-input placeholder="Maximum" style="width: 100px; text-align: center; border-left: 0px;" />
+      <input type="text" nz-input placeholder="Maximum" class="demo-input-right" />
     </nz-input-group>
     <br />
     <nz-input-group nzCompact>
@@ -83,7 +84,20 @@ import { Component } from '@angular/core';
       </nz-select>
       <nz-cascader [nzOptions]="options" style="width: 70%;"></nz-cascader>
     </nz-input-group>
-  `
+  `,
+  styles: [
+    `
+      .ant-input.demo-input-right {
+        width: 100px;
+        text-align: center;
+        border-left-width: 0px;
+      }
+
+      .ant-input.ant-input-rtl.demo-input-right {
+        border-right-width: 0px;
+      }
+    `
+  ]
 })
 export class NzDemoInputGroupComponent {
   options = [

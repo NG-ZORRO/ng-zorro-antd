@@ -2,8 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
 import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { Directionality } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
@@ -53,6 +53,7 @@ import { ModalOptions } from './modal-types';
     tabindex: '-1',
     role: 'dialog',
     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+    '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@modalContainer]': 'state',
@@ -73,9 +74,10 @@ export class NzModalContainerComponent extends BaseModalContainerComponent {
     overlayRef: OverlayRef,
     nzConfigService: NzConfigService,
     public config: ModalOptions,
+    directionality: Directionality,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, directionality, document, animationType);
   }
 }

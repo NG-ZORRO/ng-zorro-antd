@@ -3,7 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -65,10 +80,11 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-success]': `nzStatus === 'success'`,
     '[class.ant-result-error]': `nzStatus === 'error'`,
     '[class.ant-result-info]': `nzStatus === 'info'`,
-    '[class.ant-result-warning]': `nzStatus === 'warning'`
+    '[class.ant-result-warning]': `nzStatus === 'warning'`,
+    '[class.ant-result-rtl]': `dir === 'rtl'`
   }
 })
-export class NzResultComponent implements OnChanges {
+export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
@@ -77,14 +93,34 @@ export class NzResultComponent implements OnChanges {
 
   icon?: string | TemplateRef<void>;
   isException = false;
+  dir: Direction = 'ltr';
 
-  constructor(private elementRef: ElementRef) {
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-result');
   }
 
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
+
   ngOnChanges(): void {
     this.setStatusIcon();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private setStatusIcon(): void {
@@ -96,7 +132,7 @@ export class NzResultComponent implements OnChanges {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-      ? undefined
-      : IconMap[this.nzStatus as NzResultIconType];
+        ? undefined
+        : IconMap[this.nzStatus as NzResultIconType];
   }
 }

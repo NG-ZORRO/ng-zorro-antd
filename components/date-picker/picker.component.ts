@@ -38,6 +38,7 @@ import {
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 
+import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -112,7 +113,8 @@ import { PREFIX_CLASS } from './util';
         class="{{ prefixCls }}-active-bar"
         style="position: absolute"
         [style.width.px]="inputWidth"
-        [style.left.px]="datePickerService?.arrowLeft"
+        [style.left]="datePickerService?.arrowLeft"
+        [style.right]="datePickerService?.arrowRight"
       ></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
@@ -140,6 +142,7 @@ import { PREFIX_CLASS } from './util';
       <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
           [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
@@ -170,6 +173,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() popupStyle: NgStyleInterface | null = null;
   @Input() dropdownClassName?: string;
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
+  @Input() dir: Direction = 'ltr';
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
@@ -288,8 +292,17 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   updateInputWidthAndArrowLeft(): void {
     this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
-    this.datePickerService.arrowLeft =
-      this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+
+    if (this.dir === 'rtl') {
+      this.datePickerService.arrowRight =
+        this.datePickerService.activeInput === 'right' ? this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0 : 0;
+      this.datePickerService.arrowLeft = 'auto';
+    } else {
+      this.datePickerService.arrowLeft =
+        this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+      this.datePickerService.arrowRight = 'auto';
+    }
+
     this.panel.cdr.markForCheck();
     this.cdr.markForCheck();
   }

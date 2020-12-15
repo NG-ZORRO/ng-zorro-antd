@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -12,6 +13,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -145,10 +148,11 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     class: 'ant-descriptions',
     '[class.ant-descriptions-bordered]': 'nzBordered',
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
-    '[class.ant-descriptions-small]': 'nzSize === "small"'
+    '[class.ant-descriptions-small]': 'nzSize === "small"',
+    '[class.ant-descriptions-rtl]': 'dir === "rtl"'
   }
 })
-export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
+export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzColon: BooleanInput;
@@ -165,11 +169,23 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
+  dir: Direction = 'ltr';
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
   private destroy$ = new Subject<void>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    @Optional() private directionality: Directionality
+  ) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {

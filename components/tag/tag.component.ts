@@ -3,13 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -18,6 +23,8 @@ import {
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-tag',
@@ -35,10 +42,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tag-has-color]': `nzColor && !isPresetColor`,
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
+    '[class.ant-tag-rtl]': `dir === 'rtl'`,
     '(click)': 'updateCheckedStatus()'
   }
 })
-export class NzTagComponent implements OnChanges {
+export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
@@ -46,6 +54,8 @@ export class NzTagComponent implements OnChanges {
   @Input() @InputBoolean() nzChecked = false;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  dir: Direction = 'ltr';
+  private destroy$ = new Subject<void>();
 
   updateCheckedStatus(): void {
     if (this.nzMode === 'checkable') {
@@ -61,9 +71,23 @@ export class NzTagComponent implements OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-tag');
+  }
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,5 +99,10 @@ export class NzTagComponent implements OnChanges {
         this.isPresetColor = isPresetColor(this.nzColor) || /^(success|processing|error|default|warning)$/.test(this.nzColor);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

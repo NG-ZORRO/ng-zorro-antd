@@ -1,5 +1,6 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 
@@ -40,26 +41,28 @@ describe('affix', () => {
   const height = 100;
   const width = 100;
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzAffixModule],
-      declarations: [TestAffixComponent],
-      providers: [
-        {
-          provide: NzScrollService,
-          useClass: NzScrollService
-        }
-      ]
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzAffixModule],
+        declarations: [TestAffixComponent],
+        providers: [
+          {
+            provide: NzScrollService,
+            useClass: NzScrollService
+          }
+        ]
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(TestAffixComponent);
-    context = fixture.componentInstance;
-    component = context.nzAffixComponent;
-    scrollService = TestBed.inject(NzScrollService);
-    componentObject = new NzAffixPageObject();
-    debugElement = fixture.debugElement;
-    componentObject.wrap().id = 'wrap';
-  }));
+      fixture = TestBed.createComponent(TestAffixComponent);
+      context = fixture.componentInstance;
+      component = context.nzAffixComponent;
+      scrollService = TestBed.inject(NzScrollService);
+      componentObject = new NzAffixPageObject();
+      debugElement = fixture.debugElement;
+      componentObject.wrap().id = 'wrap';
+    })
+  );
   afterEach(fakeAsync(() => {
     setupInitialState();
   }));
@@ -493,6 +496,43 @@ describe('affix-extra', () => {
   }));
 });
 
+describe('affix RTL', () => {
+  let fixture: ComponentFixture<TestAffixRtlComponent>;
+  let context: TestAffixRtlComponent;
+  let dl: DebugElement;
+
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzAffixModule],
+        declarations: [TestAffixRtlComponent]
+      }).compileComponents();
+      fixture = TestBed.createComponent(TestAffixRtlComponent);
+      context = fixture.componentInstance;
+      dl = fixture.debugElement;
+    })
+  );
+  it('should className correct on dir change', fakeAsync(() => {
+    const value = 10;
+    context.newOffsetBottom = value;
+    context.fakeTarget = window;
+    fixture.detectChanges();
+    const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
+    spyOn(el, 'getBoundingClientRect').and.returnValue({
+      top: 1000,
+      left: 5,
+      width: 200,
+      height: 20
+    } as DOMRect);
+    window.dispatchEvent(new Event('scroll'));
+    tick(30);
+    fixture.detectChanges();
+    window.dispatchEvent(new Event('scroll'));
+    tick(30);
+    fixture.detectChanges();
+    expect(el.querySelector('.ant-affix')?.classList).toContain('ant-affix-rtl');
+  }));
+});
 @Component({
   template: `
     <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
@@ -502,6 +542,26 @@ describe('affix-extra', () => {
   `
 })
 class TestAffixComponent {
+  @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
+  fakeTarget: string | Element | Window | null = null;
+  newOffset!: number;
+  newOffsetBottom!: number;
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
+        <button id="content">Affix Button</button>
+      </nz-affix>
+      <div id="target"></div>
+    </div>
+  `
+})
+export class TestAffixRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
   fakeTarget: string | Element | Window | null = null;
   newOffset!: number;

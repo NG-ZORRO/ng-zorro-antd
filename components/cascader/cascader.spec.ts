@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 // tslint:disable:no-any
 import {
   COMMA,
@@ -46,6 +47,25 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
+        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
+      }).compileComponents();
+
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
+
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+    currentOverlayContainer.ngOnDestroy();
+    overlayContainer.ngOnDestroy();
+  }));
+
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
     let cascader: DebugElement;
@@ -58,26 +78,6 @@ describe('cascader', () => {
     function getInputEl(): HTMLElement {
       return cascader.nativeElement.querySelector('input')!;
     }
-
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
-          declarations: [NzDemoCascaderDefaultComponent],
-          providers: []
-        }).compileComponents();
-
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-          overlayContainer = oc;
-          overlayContainerElement = oc.getContainerElement();
-        })();
-      })
-    );
-
-    afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-      currentOverlayContainer.ngOnDestroy();
-      overlayContainer.ngOnDestroy();
-    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
@@ -1581,21 +1581,6 @@ describe('cascader', () => {
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-          declarations: [NzDemoCascaderLoadDataComponent],
-          providers: []
-        }).compileComponents();
-
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-          overlayContainer = oc;
-          overlayContainerElement = oc.getContainerElement();
-        })();
-      })
-    );
-
     afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
       currentOverlayContainer.ngOnDestroy();
       overlayContainer.ngOnDestroy();
@@ -1725,6 +1710,53 @@ describe('cascader', () => {
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
+    }));
+  });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzDemoCascaderRtlComponent>;
+    let cascader: DebugElement;
+    let testComponent: NzDemoCascaderRtlComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
+    });
+
+    it('should menu class work', fakeAsync(() => {
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-menu-rtl');
+    }));
+
+    it('should item arrow display correct direction', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.nzOptions = options3;
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl1.click();
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const itemEl21 = getItemAtColumnAndRow(2, 1)!;
+      expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
     }));
   });
 });
@@ -1940,6 +1972,8 @@ const options4 = [
 const options5: any[] = []; // tslint:disable-line:no-any
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-cascader-default',
   template: `
     <nz-cascader
       [(ngModel)]="values"
@@ -2091,4 +2125,18 @@ export class NzDemoCascaderLoadDataComponent {
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-cascader [nzOptions]="nzOptions"></nz-cascader>
+    </div>
+  `
+})
+export class NzDemoCascaderRtlComponent {
+  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
+  public nzOptions: any[] | null = options1;
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

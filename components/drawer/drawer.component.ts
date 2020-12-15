@@ -4,6 +4,7 @@
  */
 
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
@@ -56,6 +57,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
       <div
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
+        [class.ant-drawer-rtl]="dir === 'rtl'"
         [class.ant-drawer-open]="isOpen"
         [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
@@ -143,6 +145,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
+  dir: Direction = 'ltr';
 
   @Input()
   set nzVisible(value: boolean) {
@@ -236,6 +239,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   }
 
   constructor(
+    private cdr: ChangeDetectorRef,
+    // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
@@ -244,12 +249,19 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
-    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
+    @Optional() private directionality: Directionality
   ) {
     super();
   }
 
   ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+
     this.attachOverlay();
     this.updateOverlayStyle();
     this.updateBodyOverflow();

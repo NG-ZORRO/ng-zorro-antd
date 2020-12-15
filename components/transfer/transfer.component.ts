@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,6 +14,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -58,7 +60,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
-    <div class="ant-transfer-operation">
+    <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
       <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
         <i nz-icon nzType="left"></i>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
@@ -66,6 +68,16 @@ import { NzTransferListComponent } from './transfer-list.component';
       <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
         <i nz-icon nzType="right"></i>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+      </button>
+    </div>
+    <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
+      <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
+        <i nz-icon nzType="left"></i>
+        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+      </button>
+      <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
+        <i nz-icon nzType="right"></i>
+        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
     </div>
     <nz-transfer-list
@@ -93,6 +105,7 @@ import { NzTransferListComponent } from './transfer-list.component';
     ></nz-transfer-list>
   `,
   host: {
+    '[class.ant-transfer-rtl]': `dir === 'rtl'`,
     '[class.ant-transfer-disabled]': `nzDisabled`,
     '[class.ant-transfer-customize-list]': `nzRenderList`
   },
@@ -105,12 +118,14 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowSearch: BooleanInput;
 
   private unsubscribe$ = new Subject<void>();
+
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
   locale!: NzTransferI18nInterface;
 
   leftFilter = '';
   rightFilter = '';
+  dir: Direction = 'ltr';
 
   // #region fields
 
@@ -234,7 +249,11 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, private elementRef: ElementRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-transfer');
   }
@@ -273,6 +292,12 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
   }
 

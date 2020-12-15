@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +11,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -18,6 +21,8 @@ import {
 } from '@angular/core';
 import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Component({
@@ -34,6 +39,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-menu-vertical]="!isMenuInsideDropDown"
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
+      [class.ant-menu-rtl]="dir === 'rtl'"
       [ngClass]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
@@ -45,13 +51,14 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
     '[class.ant-menu-submenu-placement-right]': "mode === 'vertical' && position === 'right'",
     '[class.ant-menu-submenu-placement-left]': "mode === 'vertical' && position === 'left'",
+    '[class.ant-menu-submenu-rtl]': 'dir ==="rtl"',
     '[@slideMotion]': 'expandState',
     '[@zoomBigMotion]': 'expandState',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   }
 })
-export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
@@ -62,7 +69,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-menu-submenu', 'ant-menu-submenu-popup');
   }
@@ -73,6 +80,13 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
     }
   }
   expandState = 'collapsed';
+  dir: Direction = 'ltr';
+  private destroy$ = new Subject<void>();
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   calcMotionState(): void {
     if (this.nzOpen) {
       if (this.mode === 'horizontal') {
@@ -86,6 +100,11 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.calcMotionState();
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     const { mode, nzOpen } = changes;

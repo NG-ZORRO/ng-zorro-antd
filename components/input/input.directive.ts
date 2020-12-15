@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self, SimpleChanges } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -18,7 +19,8 @@ import { filter, takeUntil } from 'rxjs/operators';
     '[class.ant-input-borderless]': 'nzBorderless',
     '[class.ant-input-lg]': `nzSize === 'large'`,
     '[class.ant-input-sm]': `nzSize === 'small'`,
-    '[attr.disabled]': 'disabled || null'
+    '[attr.disabled]': 'disabled || null',
+    '[class.ant-input-rtl]': `dir=== 'rtl'`
   }
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
@@ -38,9 +40,15 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   }
   _disabled = false;
   disabled$ = new Subject<boolean>();
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(@Optional() @Self() public ngControl: NgControl, renderer: Renderer2, elementRef: ElementRef) {
+  constructor(
+    @Optional() @Self() public ngControl: NgControl,
+    renderer: Renderer2,
+    elementRef: ElementRef,
+    @Optional() private directionality: Directionality
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
 
@@ -55,6 +63,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
           this.disabled$.next(this.ngControl.disabled!);
         });
     }
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

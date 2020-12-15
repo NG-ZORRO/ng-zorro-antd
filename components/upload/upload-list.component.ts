@@ -4,6 +4,7 @@
  */
 
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -47,6 +48,7 @@ interface UploadListFile extends NzUploadFile {
     ])
   ],
   host: {
+    '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
     '[class.ant-upload-list-text]': `listType === 'text'`,
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
     '[class.ant-upload-list-picture-card]': `listType === 'picture-card'`
@@ -75,6 +77,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() previewIsImage?: (file: NzUploadFile) => boolean;
   @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() dir: Direction = 'ltr';
 
   private genErr(file: NzUploadFile): string {
     if (file.response && typeof file.response === 'string') {
@@ -154,7 +157,7 @@ export class NzUploadListComponent implements OnChanges {
 
           try {
             ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-          } catch {}
+          } catch { }
           const dataURL = canvas.toDataURL();
           this.doc.body.removeChild(canvas);
 

@@ -33,6 +33,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzPickerComponent } from './picker.component';
@@ -65,6 +66,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [placeholder]="nzPlaceHolder"
       style="display: inherit; align-items: center; width: 100%;"
       [dropdownClassName]="nzDropdownClassName"
+      [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
       [suffixIcon]="nzSuffixIcon"
@@ -87,6 +89,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
         [disabledTime]="nzDisabledTime"
         [extraFooter]="extraFooter"
         [ranges]="nzRanges"
+        [dir]="dir"
         (resultOk)="onResultOk()"
       ></date-range-popup>
     </div>
@@ -96,6 +99,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
+    '[class.ant-picker-rtl]': `dir === 'rtl'`,
     '[class.ant-picker-borderless]': `nzBorderless`,
     '(click)': 'picker.onClickInputBox($event)'
   },
@@ -124,6 +128,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   isRange: boolean = false; // Indicate whether the value is a range value
   focused: boolean = false;
   extraFooter?: TemplateRef<NzSafeAny> | string;
+  dir: Direction = 'ltr';
 
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
@@ -184,6 +189,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     // TODO: move to host after View Engine deprecation
@@ -222,6 +228,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     });
 
     this.setModeAndFormat();
+
+    this.directionality.change?.pipe(takeUntil(this.destroyed$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

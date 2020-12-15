@@ -9,11 +9,13 @@ import {
   Component,
   ElementRef,
   Input,
+  OnInit,
   Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
+import { Direction } from '@angular/cdk/bidi';
 import { NzCascaderOption } from './typings';
 
 @Component({
@@ -44,20 +46,28 @@ import { NzCascaderOption } from './typings';
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
   }
 })
-export class NzCascaderOptionComponent {
+export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
   @Input() option!: NzCascaderOption;
   @Input() activated = false;
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
+  @Input() expandIcon: string | TemplateRef<void> = '';
+  @Input() dir: Direction = 'ltr';
 
-  @Input() expandIcon: string | TemplateRef<void> = 'right';
   readonly nativeElement: HTMLElement;
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
     this.nativeElement = elementRef.nativeElement;
+  }
+  ngOnInit(): void {
+    if (this.expandIcon === '' && this.dir === 'rtl') {
+      this.expandIcon = 'left';
+    } else if (this.expandIcon === '') {
+      this.expandIcon = 'right';
+    }
   }
 
   get optionLabel(): string {

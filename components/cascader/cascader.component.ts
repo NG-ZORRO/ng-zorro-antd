@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
@@ -123,6 +124,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
       <div
         #menu
         class="ant-cascader-menus"
+        [class.ant-cascader-menu-rtl]="dir === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuVisible"
         [ngClass]="menuCls"
         [ngStyle]="nzMenuStyle"
@@ -159,6 +161,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
               [activated]="isOptionActivated(option, i)"
               [highlightText]="inSearchingMode ? inputValue : ''"
               [option]="option"
+              [dir]="dir"
               (mouseenter)="onOptionMouseEnter(option, i, $event)"
               (mouseleave)="onOptionMouseLeave(option, i, $event)"
               (click)="onOptionClick(option, i, $event)"
@@ -184,7 +187,8 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-picker-disabled]': 'nzDisabled',
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
-    '[class.ant-cascader-focused]': 'isFocused'
+    '[class.ant-cascader-focused]': 'isFocused',
+    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
@@ -226,7 +230,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
-  @Input() nzExpandIcon: string | TemplateRef<void> = 'right';
+  @Input() nzExpandIcon: string | TemplateRef<void> = '';
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -265,6 +269,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private inputString = '';
@@ -320,6 +325,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private i18nService: NzI18nService,
     elementRef: ElementRef,
     renderer: Renderer2,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
@@ -378,6 +384,12 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = this.directionality.value;
+      srv.$redraw.next();
+    });
   }
 
   ngOnDestroy(): void {

@@ -3,13 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -17,6 +20,8 @@ import {
 } from '@angular/core';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
 
 @Component({
@@ -29,16 +34,25 @@ import { NzMenuModeType } from './menu.types';
     <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
   `,
   host: {
+    '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
   }
 })
-export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
   @Input() nzOpen = false;
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
+  dir: Direction = 'ltr';
+  private destroy$ = new Subject<void>();
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-menu', 'ant-menu-inline', 'ant-menu-sub');
+  }
+
   calcMotionState(): void {
     if (this.nzOpen) {
       this.expandState = 'expanded';
@@ -46,12 +60,13 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
       this.expandState = 'collapsed';
     }
   }
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-menu', 'ant-menu-inline', 'ant-menu-sub');
-  }
   ngOnInit(): void {
     this.calcMotionState();
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     const { mode, nzOpen, menuClass } = changes;
@@ -75,5 +90,10 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
           });
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectorRef,
@@ -74,7 +75,8 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
     '[class.ant-menu-vertical]': `!isMenuInsideDropDown && actualMode === 'vertical'`,
     '[class.ant-menu-horizontal]': `!isMenuInsideDropDown && actualMode === 'horizontal'`,
     '[class.ant-menu-inline]': `!isMenuInsideDropDown && actualMode === 'inline'`,
-    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`
+    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`,
+    '[class.ant-menu-rtl]': `dir === 'rtl'`
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
@@ -90,6 +92,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   @Input() @InputBoolean() nzSelectable = !this.isMenuInsideDropDown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
   actualMode: NzMenuModeType = 'vertical';
+  dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
   private destroy$ = new Subject();
@@ -115,7 +118,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   constructor(
     private nzMenuService: MenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -131,6 +135,13 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
       if (this.nzSelectable && !menu.nzMatchRouter) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
       }
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.nzMenuService.setMode(this.actualMode);
+      this.cdr.markForCheck();
     });
   }
 

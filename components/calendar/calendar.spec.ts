@@ -1,6 +1,7 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -17,7 +18,7 @@ describe('Calendar', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, NzCalendarModule, NoopAnimationsModule],
+        imports: [BidiModule, FormsModule, NzCalendarModule, NoopAnimationsModule],
         declarations: [
           NzTestCalendarModeComponent,
           NzTestCalendarValueComponent,
@@ -26,7 +27,8 @@ describe('Calendar', () => {
           NzTestCalendarDateFullCellComponent,
           NzTestCalendarMonthCellComponent,
           NzTestCalendarMonthFullCellComponent,
-          NzTestCalendarChangesComponent
+          NzTestCalendarChangesComponent,
+          NzTestCalendarRtlComponent
         ],
         providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
       }).compileComponents();
@@ -420,6 +422,26 @@ describe('Calendar', () => {
       expect(component.selectChange).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestCalendarRtlComponent>;
+    let componentElement: HTMLElement;
+
+    beforeEach(
+      waitForAsync(() => {
+        fixture = TestBed.createComponent(NzTestCalendarRtlComponent);
+        componentElement = fixture.debugElement.query(By.directive(Calendar)).nativeElement;
+        fixture.detectChanges();
+      })
+    );
+
+    it('should className correct on dir change', fakeAsync(() => {
+      expect(componentElement.classList).toContain('ant-picker-calendar-rtl');
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(componentElement.classList).not.toContain('ant-picker-calendar-rtl');
+    }));
+  });
 });
 
 @Component({
@@ -517,4 +539,16 @@ class NzTestCalendarChangesComponent {
   date0 = new Date(2014, 3, 14);
   panelChange = jasmine.createSpy('panelChange callback');
   selectChange = jasmine.createSpy('selectChange callback');
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-calendar></nz-calendar>
+    </div>
+  `
+})
+export class NzTestCalendarRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

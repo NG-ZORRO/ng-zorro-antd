@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -14,6 +15,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
@@ -64,11 +67,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
+    '[class.ant-btn-rtl]': `dir === 'rtl'`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   }
 })
-export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
+export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBlock: BooleanInput;
   static ngAcceptInputType_nzGhost: BooleanInput;
@@ -88,6 +92,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 
@@ -117,7 +122,8 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    public nzConfigService: NzConfigService
+    public nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-btn');
@@ -127,6 +133,15 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+  }
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

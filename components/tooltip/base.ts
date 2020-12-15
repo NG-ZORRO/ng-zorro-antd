@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -14,6 +15,8 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -115,7 +118,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
     protected noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { specificTrigger } = changes;
@@ -299,7 +302,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class NzTooltipBaseComponent implements OnDestroy {
+export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
 
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
@@ -346,6 +349,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin!: CdkOverlayOrigin;
 
+  public dir: Direction = 'ltr';
+
   _classMap: NgClassInterface = {};
 
   _hasBackdrop = false;
@@ -354,10 +359,26 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    public cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality,
+    public noAnimation?: NzNoAnimationDirective
+  ) { }
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
 
   ngOnDestroy(): void {
     this.nzVisibleChange.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   show(): void {
@@ -369,6 +390,11 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
       this.nzVisible = true;
       this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
+    }
+
+    // for ltr for overlay to display tooltip in correct placement in rtl direction.
+    if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+      this.overlay.overlayRef.setDirection('ltr');
     }
   }
 

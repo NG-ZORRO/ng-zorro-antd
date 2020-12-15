@@ -45,9 +45,10 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
 
 export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
@@ -81,6 +82,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
+        [dir]="dir"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
@@ -194,6 +197,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   ],
   host: {
     '[class.ant-select-lg]': 'nzSize==="large"',
+    '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-single]': '!isMultiple',
@@ -291,9 +295,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
+  dir: Direction = 'ltr';
 
-  onChange: OnChangeType = _value => {};
-  onTouched: OnTouchedType = () => {};
+  private destroy$ = new Subject<void>();
+
+  onChange: OnChangeType = _value => { };
+  onTouched: OnTouchedType = () => { };
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';
@@ -309,6 +316,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    @Optional() private directionality: Directionality,
     private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
@@ -322,6 +330,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.isDestroy = false;
     this.selectionChangeSubscription = this.subscribeSelectionChange();
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+
     this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
         this.focused = false;
@@ -340,6 +355,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.isDestroy = true;
     this.closeDropDown();
     this.selectionChangeSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
     this.focusChangeSubscription.unsubscribe();
   }
 
