@@ -43,8 +43,8 @@ import { NzMenuModeType } from './menu.types';
   host: {
     '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
     '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
-    '[style.paddingLeft.px]': `dir === 'rtl' ? 0 : paddingLeft `,
-    '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : 0`,
+    '[style.paddingLeft.px]': `dir === 'rtl' ? null : paddingLeft `,
+    '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : null`,
     '(click)': 'clickTitle()',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
