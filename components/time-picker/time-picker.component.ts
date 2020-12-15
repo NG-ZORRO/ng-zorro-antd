@@ -32,7 +32,7 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Observable, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
@@ -286,10 +286,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.origin = new CdkOverlayOrigin(this.element);
 
-    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
-      map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder),
-      startWith(this.i18n.getLocaleData(`TimePicker.lang.placeholder`))
-    );
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
