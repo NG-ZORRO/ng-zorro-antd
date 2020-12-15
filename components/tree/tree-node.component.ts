@@ -80,7 +80,6 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   host: {
-    '[id]': 'nzTreeNode.key',
     '[class.ant-select-tree-treenode]': `nzSelectMode`,
     '[class.ant-select-tree-treenode-disabled]': `nzSelectMode && isDisabled`,
     '[class.ant-select-tree-treenode-switcher-open]': `nzSelectMode && isSwitcherOpen`,
