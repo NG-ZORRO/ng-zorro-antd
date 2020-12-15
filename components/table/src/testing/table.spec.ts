@@ -130,6 +130,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeDefined();
       expect(table.nativeElement.querySelectorAll('.ant-table-tbody tr').length).toBe(10);
       testComponent.pagination = false;
+      testComponent.front = false;
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
       expect(table.nativeElement.querySelectorAll('.ant-table-tbody tr').length).toBe(20);
@@ -207,6 +208,15 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
     });
+    it('should showPagination work with nzFrontPagination and hideOnSinglePage', () => {
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
+      testComponent.front = false;
+      testComponent.hideOnSinglePage = true;
+      testComponent.dataSet = [{}];
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
+    });
     it('#18n', () => {
       testComponent.dataSet = [];
       fixture.detectChanges();
@@ -271,7 +281,7 @@ describe('nz-table', () => {
       [nzHideOnSinglePage]="hideOnSinglePage"
       [nzWidthConfig]="widthConfig"
       [nzShowPagination]="pagination"
-      [nzFrontPagination]="pagination"
+      [nzFrontPagination]="front"
       [nzFooter]="footer ? 'Here is Footer' : null"
       [nzNoResult]="noResult"
       [nzTitle]="title ? 'Here is Title' : null"
@@ -325,6 +335,7 @@ export class NzTestTableBasicComponent implements OnInit {
   header = true;
   title = true;
   footer = true;
+  front = true;
   fixHeader = false;
   simple = false;
   size = 'small';
