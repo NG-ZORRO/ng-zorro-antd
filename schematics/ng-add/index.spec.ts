@@ -1,6 +1,7 @@
 import { normalize } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
+import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
@@ -24,7 +25,9 @@ describe('ng-add schematic', () => {
     const dependencies = packageJson.dependencies;
 
     expect(dependencies['ng-zorro-antd']).toBeDefined();
-    expect(runner.tasks.some(task => task.name === 'run-schematic')).toBe(true);
+
+    console.log(runner.tasks.map(e => e.name));
+    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
   it('should add hammerjs to package.json', async () => {
@@ -43,6 +46,12 @@ describe('ng-add schematic', () => {
     const dependencies = packageJson.dependencies;
 
     expect(dependencies['ng-zorro-antd']).toBeUndefined();
+  });
+
+  it('should skip install dependency package', async () => {
+    await runner.runSchematicAsync('ng-add', {skipInstall: true}, appTree).toPromise();
+
+    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(false);
   });
 
   it('should add hammerjs import to project main file', async () => {

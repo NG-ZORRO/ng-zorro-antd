@@ -48,6 +48,7 @@ export interface Schema {
   project?: string;
   /** Whether to skip package.json install. */
   skipPackageJson?: boolean;
+  skipInstall?: boolean;
   dynamicIcon?: boolean;
   theme?: boolean;
   gestures?: boolean;
