@@ -253,7 +253,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality) {
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-transfer');
   }

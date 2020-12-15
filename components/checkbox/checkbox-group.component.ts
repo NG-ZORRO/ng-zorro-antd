@@ -50,8 +50,8 @@ export interface NzCheckBoxOptionInterface {
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 

@@ -299,8 +299,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   private destroy$ = new Subject<void>();
 
-  onChange: OnChangeType = _value => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = _value => {};
+  onTouched: OnTouchedType = () => {};
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';

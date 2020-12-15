@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
 
@@ -151,6 +151,27 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
+    describe('setup I18n service', () => {
+      let srv: NzI18nService;
+
+      beforeEach(inject([NzI18nService], (s: NzI18nService) => {
+        srv = s;
+      }));
+
+      it('should detect the language changes', fakeAsync(() => {
+        let placeHolderValue: string | undefined;
+        placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
+
+        expect(placeHolderValue).toBe('请选择时间');
+
+        srv.setLocale(en_GB);
+        tick(400);
+        fixture.detectChanges();
+
+        placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
+        expect(placeHolderValue).toBe('Select time');
+      }));
+    });
   });
 
   function queryFromOverlay(selector: string): HTMLElement {

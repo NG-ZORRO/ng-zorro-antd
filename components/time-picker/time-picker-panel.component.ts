@@ -162,7 +162,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzAddOn?: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText?: string;
-  @Input() nzPlaceHolder?: string;
+  @Input() nzPlaceHolder?: string | null;
   @Input() @InputBoolean() nzUse12Hours = false;
   @Input() nzDefaultOpenValue?: Date;
 

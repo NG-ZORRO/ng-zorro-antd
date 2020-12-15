@@ -157,7 +157,7 @@ export class NzUploadListComponent implements OnChanges {
 
           try {
             ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-          } catch { }
+          } catch {}
           const dataURL = canvas.toDataURL();
           this.doc.body.removeChild(canvas);
 

@@ -234,8 +234,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private value: NzSafeAny | NzSafeAny[];
   private destroy$ = new Subject();
   private _nzShowArrow: boolean | undefined;
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   triggerWidth: number | null = null;
   listOfContainerItem: NzSelectItemInterface[] = [];

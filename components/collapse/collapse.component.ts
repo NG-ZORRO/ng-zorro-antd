@@ -61,7 +61,8 @@ export class NzCollapseComponent implements OnDestroy, OnInit {
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality) {
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-collapse');
 

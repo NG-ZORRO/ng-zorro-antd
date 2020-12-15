@@ -118,7 +118,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
     protected noAnimation?: NzNoAnimationDirective
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { specificTrigger } = changes;
@@ -365,7 +365,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     public cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     public noAnimation?: NzNoAnimationDirective
-  ) { }
+  ) {}
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;

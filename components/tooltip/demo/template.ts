@@ -4,7 +4,10 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tooltip-template',
   template: `
     <a nz-tooltip [nzTooltipTitle]="titleTemplate">This Tooltip has an Icon</a>
-    <ng-template #titleTemplate> <i nz-icon nzType="file"></i> <span>Tooltip With Icon</span> </ng-template>
+    <ng-template #titleTemplate>
+      <i nz-icon nzType="file"></i>
+      <span>Tooltip With Icon</span>
+    </ng-template>
   `,
   styles: [
     `
@@ -15,4 +18,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoTooltipTemplateComponent { }
+export class NzDemoTooltipTemplateComponent {}

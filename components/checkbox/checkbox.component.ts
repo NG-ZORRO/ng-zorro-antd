@@ -78,8 +78,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) private inputElement!: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;

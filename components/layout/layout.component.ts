@@ -4,7 +4,17 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, ContentChildren, ElementRef, OnDestroy, OnInit, Optional, QueryList, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzSiderComponent } from './sider.component';

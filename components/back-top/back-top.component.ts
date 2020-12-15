@@ -39,7 +39,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   template: `
-    <div class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl' " (click)="clickBackTop()" @fadeMotion *ngIf="visible">
+    <div class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
           <div class="ant-back-top-icon">

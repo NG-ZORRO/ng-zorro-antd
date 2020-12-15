@@ -694,7 +694,7 @@ class NzTestDrawerWithServiceComponent {
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef?: NzDrawerRef;
 
-  constructor(private drawerService: NzDrawerService) { }
+  constructor(private drawerService: NzDrawerService) {}
 
   openTemplate(): void {
     this.templateDrawerRef = this.drawerService.create({
@@ -718,7 +718,7 @@ class NzTestDrawerWithServiceComponent {
 export class NzDrawerCustomComponent {
   @Input() value: any; // tslint:disable-line:no-any
 
-  constructor(private drawerRef: NzDrawerRef) { }
+  constructor(private drawerRef: NzDrawerRef) {}
 
   close(): void {
     this.drawerRef.close(this.value);

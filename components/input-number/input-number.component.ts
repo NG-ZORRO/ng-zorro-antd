@@ -106,8 +106,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   disabledUp = false;
   disabledDown = false;
   dir: Direction = 'ltr';
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
