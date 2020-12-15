@@ -1,12 +1,14 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { en_GB, NzI18nInterface, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
 
@@ -151,6 +153,26 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
+    describe('setup I18n service', () => {
+      let srv: NzI18nService;
+
+      beforeEach(inject([NzI18nService], (s: NzI18nService) => {
+        srv = s;
+      }));
+
+      it('should detect the language changes', fakeAsync(() => {
+        let placeHolderValue: string | undefined;
+        testComponent.i18nPlaceHolder$.subscribe(v => (placeHolderValue = v));
+
+        expect(placeHolderValue).toBe('请选择时间');
+
+        srv.setLocale(en_GB);
+        tick(400);
+        fixture.detectChanges();
+
+        expect(placeHolderValue).toBe('Select time');
+      }));
+    });
   });
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -166,13 +188,14 @@ describe('time-picker', () => {
       (ngModelChange)="onChange($event)"
       [(nzOpen)]="open"
       (nzOpenChange)="openChange($event)"
+      [nzPlaceHolder]="i18nPlaceHolder$ | async"
       [nzDisabled]="disabled"
       [nzUse12Hours]="use12Hours"
       [nzSuffixIcon]="nzSuffixIcon"
     ></nz-time-picker>
   `
 })
-export class NzTestTimePickerComponent {
+export class NzTestTimePickerComponent implements OnInit {
   open = false;
   openChange = jasmine.createSpy('open change');
   autoFocus = false;
@@ -180,6 +203,13 @@ export class NzTestTimePickerComponent {
   disabled = false;
   use12Hours = false;
   nzSuffixIcon?: string;
+  i18nPlaceHolder$: Observable<string | undefined> = of(undefined);
   onChange(): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
+
+  constructor(private i18n: NzI18nService) {}
+
+  ngOnInit(): void {
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder));
+  }
 }
