@@ -325,8 +325,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       this.nzTableStyleService.setNoResult(this.nzNoResult);
     }
 
-    this.showPagination =
-      (this.nzHideOnSinglePage && this.nzData.length > this.nzPageSize) || (this.nzData.length > 0 && !this.nzHideOnSinglePage);
+    this.updateShowPagination();
   }
 
   ngAfterViewInit(): void {
@@ -355,5 +354,12 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
     this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
     this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
+  }
+
+  private updateShowPagination(): void {
+    this.showPagination =
+      (this.nzHideOnSinglePage && this.nzData.length > this.nzPageSize) ||
+      (this.nzData.length > 0 && !this.nzHideOnSinglePage) ||
+      (!this.nzFrontPagination && this.nzTotal > this.nzPageSize);
   }
 }
