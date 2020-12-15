@@ -89,6 +89,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     if (
       changes.disabledDate ||
       changes.locale ||
+      changes.showWeek ||
       this.isDateRealChange(changes.activeDate) ||
       this.isDateRealChange(changes.value) ||
       this.isDateRealChange(changes.selectedValue) ||

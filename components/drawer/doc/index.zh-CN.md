@@ -33,7 +33,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
 | `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
 | `[nzFooter]` | 抽屉的页脚 | `string \| TemplateRef<void>` | - |
-| `[nzVisible]` | Drawer 是否可见 | `boolean` | - |
+| `[nzVisible]` | Drawer 是否可见，可以使用 `[(nzVisible)]` 双向绑定 | `boolean` | - |
 | `[nzPlacement]` | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number \| string` | `256` |
 | `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` | `256` |

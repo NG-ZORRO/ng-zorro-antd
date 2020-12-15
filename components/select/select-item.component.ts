@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -21,7 +21,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   `,
   host: {
     '[attr.title]': 'label',
-    '[class.ant-select-selection-item]': 'true',
     '[class.ant-select-selection-item-disabled]': 'disabled'
   }
 })
@@ -33,6 +32,12 @@ export class NzSelectItemComponent {
   @Input() contentTemplateOutletContext: NzSafeAny | null = null;
   @Input() contentTemplateOutlet: string | TemplateRef<NzSafeAny> | null = null;
   @Output() readonly delete = new EventEmitter<MouseEvent>();
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selection-item');
+  }
+
   onDelete(e: MouseEvent): void {
     e.preventDefault();
     e.stopPropagation();

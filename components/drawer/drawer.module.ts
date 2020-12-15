@@ -12,13 +12,14 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzDrawerContentDirective } from './drawer-content.directive';
 import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerServiceModule } from './drawer.service.module';
 
 @NgModule({
   imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
-  exports: [NzDrawerComponent],
-  declarations: [NzDrawerComponent],
+  exports: [NzDrawerComponent, NzDrawerContentDirective],
+  declarations: [NzDrawerComponent, NzDrawerContentDirective],
   entryComponents: [NzDrawerComponent]
 })
 export class NzDrawerModule {}

@@ -3,15 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -22,6 +27,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
@@ -45,8 +52,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
       (modeChange)="onModeChange($event)"
       (yearChange)="onYearSelect($event)"
       (monthChange)="onMonthSelect($event)"
-    >
-    </nz-calendar-header>
+    ></nz-calendar-header>
 
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
@@ -81,17 +87,19 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     </ng-template>
   `,
   host: {
-    '[class.ant-picker-calendar]': 'true',
     '[class.ant-picker-calendar-full]': 'nzFullscreen',
-    '[class.ant-picker-calendar-mini]': '!nzFullscreen'
+    '[class.ant-picker-calendar-mini]': '!nzFullscreen',
+    '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
-export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
+export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzFullscreen: BooleanInput;
 
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
+  private destroy$ = new Subject<void>();
+  dir: Direction = 'ltr';
 
   private onChangeFn: (date: Date) => void = () => {};
   private onTouchFn: () => void = () => {};
@@ -135,7 +143,17 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef, @Optional() private directionality: Directionality) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-picker-calendar');
+  }
+
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = this.directionality.value;
+    });
+  }
 
   onModeChange(mode: NzCalendarMode): void {
     this.nzModeChange.emit(mode);
@@ -186,5 +204,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
     if (changes.nzValue) {
       this.updateDate(new CandyDate(this.nzValue), false);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -268,7 +268,8 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    if (hasModifierKey(event)) {
+    const inNavigationList = this.navWarpRef.nativeElement.contains(event.target as HTMLElement);
+    if (hasModifierKey(event) || !inNavigationList) {
       return;
     }
 

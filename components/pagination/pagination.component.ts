@@ -3,20 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
@@ -25,6 +29,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PaginationItemRenderContext } from './pagination.types';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 
 @Component({
   selector: 'nz-pagination',
@@ -66,13 +72,15 @@ import { PaginationItemRenderContext } from './pagination.types';
     ></nz-pagination-default>
   `,
   host: {
-    '[class.ant-pagination]': 'true',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
-    '[class.mini]': `!nzSimple && size === 'small'`
+    '[class.mini]': `!nzSimple && size === 'small'`,
+    '[class.ant-pagination-rtl]': `dir === 'rtl'`
   }
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
   static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
@@ -86,15 +94,15 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
-  @Input() nzSize: 'default' | 'small' = 'default';
-  @Input() nzPageSizeOptions = [10, 20, 30, 40];
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
+  @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
+  @Input() @WithConfig() nzPageSizeOptions: number[] = [10, 20, 30, 40];
+  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger = false;
+  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper = false;
+  @Input() @WithConfig() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzShowSizeChanger = false;
-  @Input() @InputBoolean() nzHideOnSinglePage = false;
-  @Input() @InputBoolean() nzShowQuickJumper = false;
-  @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzResponsive = false;
+  @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputNumber() nzTotal = 0;
   @Input() @InputNumber() nzPageIndex = 1;
   @Input() @InputNumber() nzPageSize = 10;
@@ -102,6 +110,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   showPagination = true;
   locale!: NzPaginationI18nInterface;
   size: 'default' | 'small' = 'default';
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private total$ = new ReplaySubject<number>(1);
@@ -145,7 +154,17 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return Math.ceil(total / pageSize);
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    protected nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-pagination');
+  }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -166,6 +185,13 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
           this.cdr.markForCheck();
         }
       });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 11
 title:
   zh-CN: 定制日期单元格
   en-US: Customized Date Rendering

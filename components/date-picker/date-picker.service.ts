@@ -14,7 +14,8 @@ export class DatePickerService implements OnDestroy {
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
-  arrowLeft: number = 0;
+  arrowLeft: string = 'auto';
+  arrowRight: string = 'auto';
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
@@ -60,10 +61,8 @@ export class DatePickerService implements OnDestroy {
   }
 
   setValue(value: CompatibleValue): void {
-    if (value !== this.value) {
-      this.value = value;
-      this.valueChange$.next(this.value);
-    }
+    this.value = value;
+    this.valueChange$.next(this.value);
   }
 
   getActiveIndex(part: RangePartType = this.activeInput): number {

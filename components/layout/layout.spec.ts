@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { discardPeriodicTasks, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -174,6 +175,28 @@ describe('layout', () => {
       viewport.reset();
     }));
   });
+  describe('RTL', () => {
+    let testBed: ComponentBed<NzTestLayoutRtlComponent>;
+    let layouts: DebugElement[];
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestLayoutRtlComponent, {
+        imports: [BidiModule, NzLayoutModule],
+        declarations: [NzLayoutBasicComponent]
+      });
+      layouts = testBed.fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
+    });
+
+    it('should className correct on dir change', fakeAsync(() => {
+      testBed.fixture.detectChanges();
+      expect(layouts.every(layout => layout.nativeElement.classList.contains('ant-layout-rtl'))).toBe(true);
+
+      testBed.fixture.componentInstance.direction = 'ltr';
+      testBed.fixture.detectChanges();
+
+      expect(layouts.every(layout => layout.nativeElement.classList.contains('ant-layout-rtl'))).toBe(false);
+    }));
+  });
 });
 
 @Component({
@@ -254,6 +277,8 @@ export class NzLayoutResponsiveComponent {
 }
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-layout-basic',
   template: `
     <nz-layout>
       <nz-header>Header</nz-header>
@@ -290,3 +315,15 @@ export class NzLayoutResponsiveComponent {
   `
 })
 export class NzLayoutBasicComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-layout-basic></nz-test-layout-basic>
+    </div>
+  `
+})
+export class NzTestLayoutRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

@@ -1,26 +1,13 @@
-import { Component } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
 
 // tslint:disable-next-line no-any
 declare const viewport: any;
-
-@Component({
-  template: `
-    <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="itemTitle + i" [nzSpan]="col">
-      </nz-descriptions-item>
-    </nz-descriptions>
-  `
-})
-export class NzTestDescriptionsComponent {
-  bordered = false;
-  colspanArray: number[] = [1, 1, 1];
-  column: number | { [key: string]: number } = 3;
-  title = 'Title';
-  itemTitle = 'Item Title ';
-}
 
 describe('nz descriptions', () => {
   describe('with different spans', () => {
@@ -135,4 +122,56 @@ describe('nz descriptions', () => {
       expect(firstTitle.innerText).toBe('Item 0');
     }));
   });
+
+  describe('RTL', () => {
+    let testBed: ComponentBed<NzTestDescriptionsRtlComponent>;
+    let fixture: ComponentFixture<NzTestDescriptionsRtlComponent>;
+    let componentElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestDescriptionsRtlComponent, {
+        declarations: [NzTestDescriptionsComponent],
+        imports: [NzDescriptionsModule, BidiModule]
+      });
+      componentElement = testBed.debugElement.query(By.directive(NzDescriptionsComponent)).nativeElement;
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+    });
+
+    it('should className correct on dir change', fakeAsync(() => {
+      expect(componentElement.classList).toContain('ant-descriptions-rtl');
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(componentElement.classList).not.toContain('ant-descriptions-rtl');
+    }));
+  });
 });
+
+@Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-descriptions',
+  template: `
+    <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
+      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="itemTitle + i" [nzSpan]="col"></nz-descriptions-item>
+    </nz-descriptions>
+  `
+})
+export class NzTestDescriptionsComponent {
+  bordered = false;
+  colspanArray: number[] = [1, 1, 1];
+  column: number | { [key: string]: number } = 3;
+  title = 'Title';
+  itemTitle = 'Item Title ';
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-descriptions></nz-test-descriptions>
+    </div>
+  `
+})
+export class NzTestDescriptionsRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

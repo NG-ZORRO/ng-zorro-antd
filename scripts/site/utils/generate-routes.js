@@ -11,11 +11,13 @@ function generateLanguageData(itemData, language, reverseMap, key) {
   const cover = itemData[language].cover;
   const experimental = itemData[language].experimental;
   const description = itemData[language].description;
+  const hidden = itemData[language].hidden;
   const content = {
     label: title,
     path: `${experimental ? 'experimental' : 'components'}/${key}/${language}`,
     zh: subtitle,
     experimental: !!experimental,
+    hidden: !!hidden,
     cover,
     description
   };
@@ -73,7 +75,7 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
       name: key,
       language: navData.reverseMap[key].language,
       children: navData.reverseMap[key].list.filter(item => !item.experimental),
-      experimentalChildren: navData.reverseMap[key].list.filter(item => item.experimental)
+      experimentalChildren: navData.reverseMap[key].list.filter(item => item.experimental && !item.hidden)
     });
   }
 

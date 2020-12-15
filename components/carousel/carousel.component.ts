@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -18,6 +19,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   QueryList,
@@ -90,10 +92,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
-    '[class.ant-carousel-vertical]': 'vertical'
+    '[class.ant-carousel-vertical]': 'vertical',
+    '[class.ant-carousel-rtl]': `dir ==='rtl'`
   }
 })
-export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzEnableSwipe: BooleanInput;
   static ngAcceptInputType_nzDots: BooleanInput;
@@ -142,6 +145,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
   transitionInProgress: number | null = null;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
@@ -157,12 +161,20 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
+    @Optional() private directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
 
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
+  }
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.switchStrategy();
+    });
   }
 
   ngAfterContentInit(): void {

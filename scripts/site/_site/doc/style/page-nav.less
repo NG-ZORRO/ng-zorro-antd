@@ -12,6 +12,10 @@
     height: 72px;
     line-height: 72px;
     text-decoration: none;
+
+    .page-wrapper-rtl & {
+      float: right;
+    }
   }
 
   > a.prev-page {
@@ -22,6 +26,14 @@
       color: @site-text-color-secondary;
       font-size: 12px;
       transition: all 0.3s;
+
+      .page-wrapper-rtl & {
+        left: auto;
+        right: 0;
+        margin-right: 0;
+        margin-left: 1em;
+        transform: rotate(180deg);
+      }
     }
 
     .footer-nav-icon-after {
@@ -38,6 +50,11 @@
     float: right;
     text-align: right;
 
+    .page-wrapper-rtl & {
+      float: left;
+      text-align: left;
+    }
+
     .footer-nav-icon-after {
       position: relative;
       right: 0;
@@ -45,6 +62,14 @@
       color: @site-text-color-secondary;
       font-size: 12px;
       transition: all 0.3s;
+
+      .page-wrapper-rtl & {
+        right: auto;
+        left: 0;
+        margin-left: 0;
+        margin-right: 1em;
+        transform: rotate(180deg);
+      }
     }
 
     .footer-nav-icon-before {

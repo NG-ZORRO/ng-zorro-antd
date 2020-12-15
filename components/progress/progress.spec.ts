@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -9,12 +10,13 @@ import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorTy
 describe('progress', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzProgressModule],
+      imports: [BidiModule, NzProgressModule],
       declarations: [
         NzTestProgressLineComponent,
         NzTestProgressDashBoardComponent,
         NzTestProgressCircleComponent,
-        NzTestProgressCircleSuccessComponent
+        NzTestProgressCircleSuccessComponent,
+        NzTestProgressRtlComponent
       ]
     });
     TestBed.compileComponents();
@@ -388,6 +390,27 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe('rgb(135, 208, 104)');
     });
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestProgressRtlComponent>;
+    let progress: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestProgressRtlComponent);
+      fixture.detectChanges();
+      progress = fixture.debugElement.query(By.directive(NzProgressComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(progress.nativeElement.firstElementChild.classList).not.toContain('ant-progress-rtl');
+    });
+  });
 });
 
 @Component({
@@ -470,3 +493,15 @@ export class NzTestProgressCircleComponent {
   `
 })
 export class NzTestProgressCircleSuccessComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
+    </div>
+  `
+})
+export class NzTestProgressRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

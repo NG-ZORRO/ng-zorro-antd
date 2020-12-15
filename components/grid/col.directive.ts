@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   Directive,
@@ -41,6 +42,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   private classMap: { [key: string]: boolean } = {};
   private destroy$ = new Subject();
   hostFlexStyle: string | null = null;
+  dir: Direction = 'ltr';
   @Input() nzFlex: string | number | null = null;
   @Input() nzSpan: string | number | null = null;
   @Input() nzOrder: string | number | null = null;
@@ -62,6 +64,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       [`ant-col-offset-${this.nzOffset}`]: isNotNil(this.nzOffset),
       [`ant-col-pull-${this.nzPull}`]: isNotNil(this.nzPull),
       [`ant-col-push-${this.nzPush}`]: isNotNil(this.nzPush),
+      ['ant-col-rtl']: this.dir === 'rtl',
       ...this.generateClass()
     };
     for (const i in this.classMap) {
@@ -113,9 +116,20 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     return listClassMap;
   }
 
-  constructor(private elementRef: ElementRef, @Optional() @Host() public nzRowDirective: NzRowDirective, public renderer: Renderer2) {}
+  constructor(
+    private elementRef: ElementRef,
+    @Optional() @Host() public nzRowDirective: NzRowDirective,
+    public renderer: Renderer2,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change.subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.setHostClassMap();
+    });
+
     this.setHostClassMap();
     this.setHostFlexStyle();
   }

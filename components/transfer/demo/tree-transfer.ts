@@ -18,9 +18,9 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
             >
               <span class="ant-tree-checkbox-inner"></span>
             </span>
-            <span (click)="checkBoxChange(node, onItemSelect)" class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open">{{
-              node.title
-            }}</span>
+            <span (click)="checkBoxChange(node, onItemSelect)" class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open">
+              {{ node.title }}
+            </span>
           </ng-template>
         </nz-tree>
       </ng-template>

@@ -1,5 +1,6 @@
-import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
@@ -171,9 +172,43 @@ describe('nz-timeline', () => {
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('template');
     });
   });
+
+  describe('RTL', () => {
+    let testBed: ComponentBed<NzTestTimelineRtlComponent>;
+    let fixture: ComponentFixture<NzTestTimelineRtlComponent>;
+    let timeline: DebugElement;
+    let items: HTMLDivElement[] = [];
+
+    beforeEach(
+      waitForAsync(() => {
+        testBed = createComponentBed(NzTestTimelineRtlComponent, {
+          imports: [BidiModule, NzTimelineModule],
+          declarations: [NzTestTimelineBasicComponent]
+        });
+
+        fixture = testBed.fixture;
+
+        fixture.detectChanges();
+
+        timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+        items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+      })
+    );
+
+    it('should init className correct', () => {
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');
+      expect(items.length).toBeGreaterThan(0);
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-timeline',
   template: `
     <ng-template #dotTemplate>template</ng-template>
     <nz-timeline [nzPending]="pending" [nzReverse]="reverse" [nzMode]="mode">
@@ -226,3 +261,15 @@ export class NzTestTimelinePendingComponent {}
   `
 })
 export class NzTestTimelineCustomPositionComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-timeline></nz-test-basic-timeline>
+    </div>
+  `
+})
+export class NzTestTimelineRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

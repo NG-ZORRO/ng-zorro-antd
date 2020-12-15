@@ -1,8 +1,8 @@
 ---
 order: 2
 title:
-  zh-CN: 自定义页脚
-  en-US: Customized Footer
+  zh-CN: 自定义组成部分
+  en-US: Customized Parts
 ---
 
 ## zh-CN

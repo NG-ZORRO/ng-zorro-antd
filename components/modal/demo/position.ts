@@ -11,12 +11,15 @@ import { Component } from '@angular/core';
       (nzOnCancel)="handleCancelTop()"
       (nzOnOk)="handleOkTop()"
     >
-      <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
+      <ng-container *nzModalContent>
+        <p>some contents...</p>
+        <p>some contents...</p>
+        <p>some contents...</p>
+      </ng-container>
     </nz-modal>
 
-    <br /><br />
+    <br />
+    <br />
 
     <button nz-button nzType="primary" (click)="showModalMiddle()">Vertically centered modal dialog</button>
     <nz-modal
@@ -26,9 +29,11 @@ import { Component } from '@angular/core';
       (nzOnCancel)="handleCancelMiddle()"
       (nzOnOk)="handleOkMiddle()"
     >
-      <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
+      <ng-container *nzModalContent>
+        <p>some contents...</p>
+        <p>some contents...</p>
+        <p>some contents...</p>
+      </ng-container>
     </nz-modal>
   `,
   styles: [

@@ -14,9 +14,11 @@ import { NzModalService } from 'ng-zorro-antd/modal';
         (nzOnOk)="handleOk()"
         (nzOnCancel)="handleCancel()"
       >
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
+        <ng-container *nzModalContent>
+          <p>Bla bla ...</p>
+          <p>Bla bla ...</p>
+          <p>Bla bla ...</p>
+        </ng-container>
       </nz-modal>
     </div>
     <br />

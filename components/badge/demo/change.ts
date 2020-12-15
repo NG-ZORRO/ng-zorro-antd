@@ -26,6 +26,11 @@ import { Component } from '@angular/core';
         margin-right: 20px;
       }
 
+      nz-badge.ant-badge-rtl {
+        margin-right: 0;
+        margin-left: 20px;
+      }
+
       .head-example {
         width: 42px;
         height: 42px;

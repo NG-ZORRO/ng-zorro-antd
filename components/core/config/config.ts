@@ -35,6 +35,7 @@ export interface NzConfig {
   modal?: ModalConfig;
   notification?: NotificationConfig;
   pageHeader?: PageHeaderConfig;
+  pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
   space?: SpaceConfig;
@@ -46,6 +47,7 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+  global?: GlobalConfig;
 }
 
 export interface SelectConfig {
@@ -187,6 +189,14 @@ export interface PageHeaderConfig {
   nzGhost: boolean;
 }
 
+export interface PaginationConfig {
+  nzSize?: 'default' | 'small';
+  nzPageSizeOptions?: number[];
+  nzShowSizeChanger?: boolean;
+  nzShowQuickJumper?: boolean;
+  nzSimple?: boolean;
+}
+
 export interface ProgressConfig {
   nzGapDegree?: number;
   nzGapPosition?: 'top' | 'right' | 'bottom' | 'left';
@@ -270,6 +280,10 @@ export interface TypographyConfig {
   nzCopyIcons: [NzTSType, NzTSType];
   nzEditTooltip?: null | NzTSType;
   nzEditIcon: NzTSType;
+}
+
+export interface GlobalConfig {
+  nzDirection: 'rtl' | 'ltr';
 }
 
 export type NzConfigKey = keyof NzConfig;

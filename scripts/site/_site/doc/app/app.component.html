@@ -1,11 +1,16 @@
 <div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null">
-  <div class="page-wrapper">
+  <div
+    class="page-wrapper"
+    [class.page-wrapper-rtl]="direction === 'rtl'"
+    [dir]="direction"
+  >
     <app-header
       [windowWidth]="windowWidth"
       [page]="page"
       [(language)]="language"
       (languageChange)="switchLanguage($event)"
       (versionChange)="navigateToVersion($event)"
+      (directionChange)="switchDirection($event)"
     ></app-header>
     <div class="main-wrapper">
       <div nz-row>
@@ -85,7 +90,13 @@
 </div>
 
 <ng-template #sideOrDrawerTpl>
-  <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" [nzInlineIndent]="40">
+  <ul
+    nz-menu
+    [nzMode]="'inline'"
+    class="aside-container menu-site"
+    [nzInlineIndent]="40"
+    [class.ant-menu-rtl]="direction === 'rtl'"
+  >
     <ng-container *ngIf="page === 'docs'">
       <li
         *ngFor="let intro of routerList.intro"

@@ -29,6 +29,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
             [nzLoading]="getButtonCallableProp(button, 'loading')"
             [disabled]="getButtonCallableProp(button, 'disabled')"
             [nzType]="button.type!"
+            [nzDanger]="button.danger"
             [nzShape]="button.shape!"
             [nzSize]="button.size!"
             [nzGhost]="button.ghost!"
@@ -54,6 +55,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
         [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
         nz-button
         [nzType]="config.nzOkType!"
+        [nzDanger]="config.nzOkDanger"
         (click)="onOk()"
         [nzLoading]="!!config.nzOkLoading"
         [disabled]="config.nzOkDisabled"

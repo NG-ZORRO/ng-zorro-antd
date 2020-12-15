@@ -51,7 +51,7 @@ import { PREFIX_CLASS } from './util';
       </a>
       <ul *ngIf="hasTimePicker || rangeQuickSelector" class="{{ prefixCls }}-ranges">
         <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
-        <li *ngIf="hasTimePicker && !isRange" class="{{ prefixCls }}-now">
+        <li *ngIf="showNow" class="{{ prefixCls }}-now">
           <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
             {{ locale.now }}
           </a>
@@ -75,6 +75,7 @@ import { PREFIX_CLASS } from './util';
 export class CalendarFooterComponent implements OnChanges {
   @Input() locale!: NzCalendarI18nInterface;
   @Input() showToday: boolean = false;
+  @Input() showNow: boolean = false;
   @Input() hasTimePicker: boolean = false;
   @Input() isRange: boolean = false;
 

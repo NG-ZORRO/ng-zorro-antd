@@ -1,6 +1,7 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
@@ -9,13 +10,15 @@ import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
 describe('switch', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-      declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent, NzTestSwitchRtlComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('basic switch', () => {
     let fixture: ComponentFixture<NzTestSwitchBasicComponent>;
     let testComponent: NzTestSwitchBasicComponent;
@@ -221,6 +224,18 @@ describe('switch', () => {
       expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
     }));
   });
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestSwitchRtlComponent);
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      fixture.detectChanges();
+      expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(switchElement.nativeElement.firstElementChild!.classList).not.toContain('ant-switch-rtl');
+    });
+  });
 });
 
 @Component({
@@ -236,8 +251,7 @@ describe('switch', () => {
       [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren"
-    >
-    </nz-switch>
+    ></nz-switch>
   `
 })
 export class NzTestSwitchBasicComponent {
@@ -258,7 +272,7 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="close"></i></ng-template>
-    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"> </nz-switch>
+    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"></nz-switch>
   `
 })
 export class NzTestSwitchTemplateComponent {}
@@ -282,4 +296,17 @@ export class NzTestSwitchFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-switch [(ngModel)]="switchValue"></nz-switch>
+    </div>
+  `
+})
+export class NzTestSwitchRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+  switchValue = false;
 }

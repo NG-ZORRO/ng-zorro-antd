@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
@@ -15,6 +16,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -43,6 +45,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       #ulElement
       class="ant-rate"
       [class.ant-rate-disabled]="nzDisabled"
+      [class.ant-rate-rtl]="dir === 'rtl'"
       [ngClass]="classMap"
       (blur)="onBlur($event)"
       (focus)="onFocus($event)"
@@ -101,6 +104,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   classMap: NgClassType = {};
   starArray: number[] = [];
   starStyleArray: NgClassType[] = [];
+  dir: Direction = 'ltr';
 
   private readonly destroy$ = new Subject<void>();
   private hasHalf = false;
@@ -122,7 +126,12 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(public nzConfigService: NzConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;
@@ -150,6 +159,13 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

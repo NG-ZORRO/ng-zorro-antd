@@ -21,6 +21,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -38,6 +39,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
 @NgModule({
   declarations: [AppComponent, DEMOComponent],
   imports: [
+    BidiModule,
     BrowserModule.withServerTransition({ appId: 'docs' }),
     BrowserAnimationsModule,
     FormsModule,
@@ -69,7 +71,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } } }],
+  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

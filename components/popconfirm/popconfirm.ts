@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -129,6 +130,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       <div
         class="ant-popover"
         [ngClass]="_classMap"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -180,8 +182,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
 
   _prefix = 'ant-popover';
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-    super(cdr, noAnimation);
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(cdr, directionality, noAnimation);
   }
 
   ngOnDestroy(): void {
