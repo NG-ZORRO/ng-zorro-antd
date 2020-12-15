@@ -39,8 +39,8 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
     '[class.ant-menu-item-danger]': `!isMenuInsideDropDown && nzDanger`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
-    '[style.paddingLeft.px]': `dir === 'rtl' ? 0 : nzPaddingLeft || inlinePaddingLeft`,
-    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : 0`,
+    '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
+    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
   }
 })
