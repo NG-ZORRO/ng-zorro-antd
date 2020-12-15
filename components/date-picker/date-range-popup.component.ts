@@ -100,6 +100,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [locale]="locale!"
         [isRange]="isRange"
         [showToday]="showToday"
+        [showNow]="showNow"
         [hasTimePicker]="hasTimePicker"
         [okDisabled]="!isAllowed($any(datePickerService?.value))"
         [extraFooter]="extraFooter"
@@ -139,6 +140,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() disabledDate?: DisabledDateFn;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
   @Input() showToday!: boolean;
+  @Input() showNow!: boolean;
   @Input() showTime!: SupportTimeOptions | boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() ranges?: PresetRanges;

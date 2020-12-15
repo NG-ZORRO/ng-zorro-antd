@@ -80,6 +80,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
         (calendarChange)="onCalendarChange($event)"
         [locale]="nzLocale?.lang!"
         [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
+        [showNow]="nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime"
         [showTime]="nzShowTime"
         [dateRender]="nzDateRender"
         [disabledDate]="nzDisabledDate"
@@ -116,6 +117,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzInputReadOnly: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzShowToday: BooleanInput;
+  static ngAcceptInputType_nzShowNow: BooleanInput;
   static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
 
@@ -151,6 +153,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
+  @Input() @InputBoolean() nzShowNow: boolean = true;
   @Input() nzMode: NzDateMode | NzDateMode[] = 'date';
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;

@@ -988,6 +988,7 @@ describe('NzRangePickerComponent', () => {
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
         [nzShowToday]="nzShowToday"
+        [nzShowNow]="nzShowNow"
         [nzMode]="nzMode"
         [nzRanges]="nzRanges"
         [nzDefaultPickerValue]="nzDefaultPickerValue"
@@ -1036,6 +1037,7 @@ class NzTestRangePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
+  nzShowNow = false;
   nzMode = 'date';
 
   nzRanges: any; // tslint:disable-line:no-any
