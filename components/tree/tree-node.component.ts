@@ -30,8 +30,8 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'nz-tree-node',
-  exportAs: 'nzTreeNode',
+  selector: 'nz-tree-node[builtin]',
+  exportAs: 'nzTreeBuiltinNode',
   template: `
     <nz-tree-indent [nzTreeLevel]="nzTreeNode.level" [nzSelectMode]="nzSelectMode" [nzIsStart]="isStart" [nzIsEnd]="isEnd"></nz-tree-indent>
     <nz-tree-node-switcher
@@ -47,6 +47,7 @@ import { takeUntil } from 'rxjs/operators';
       (click)="clickExpand($event)"
     ></nz-tree-node-switcher>
     <nz-tree-node-checkbox
+      builtin
       *ngIf="nzCheckable"
       (click)="clickCheckBox($event)"
       [nzSelectMode]="nzSelectMode"
@@ -100,7 +101,7 @@ import { takeUntil } from 'rxjs/operators';
     '(mousedown)': 'onMousedown($event)'
   }
 })
-export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
+export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowLine: BooleanInput;
   static ngAcceptInputType_nzShowExpand: BooleanInput;
   static ngAcceptInputType_nzCheckable: BooleanInput;

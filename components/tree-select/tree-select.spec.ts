@@ -325,7 +325,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      node = overlayContainerElement.querySelector('nz-tree-node')!;
+      node = overlayContainerElement.querySelector('nz-tree-node[builtin]')!;
       dispatchMouseEvent(node, 'click');
       fixture.detectChanges();
       flush();
@@ -447,7 +447,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
-      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node')[2];
+      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node[builtin]')[2];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       flush();

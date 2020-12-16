@@ -6,8 +6,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'nz-tree-node-checkbox',
-  template: ` <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span> `,
+  selector: 'nz-tree-node-checkbox[builtin]',
+  template: `
+    <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   host: {
@@ -21,7 +23,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     '[class.ant-tree-checkbox-disabled]': `!nzSelectMode && (isDisabled || isDisableCheckbox)`
   }
 })
-export class NzTreeNodeCheckboxComponent {
+export class NzTreeNodeBuiltinCheckboxComponent {
   @Input() nzSelectMode = false;
   @Input() isChecked?: boolean;
   @Input() isHalfChecked?: boolean;

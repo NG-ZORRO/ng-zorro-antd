@@ -91,6 +91,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     </div>
     <ng-template #nodeTemplate let-treeNode>
       <nz-tree-node
+        builtin
         [icon]="treeNode.icon"
         [title]="treeNode.title"
         [isLoading]="treeNode.isLoading"
