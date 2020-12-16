@@ -57,6 +57,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       nz-picker
       [isRange]="isRange"
       [open]="nzOpen"
+      [dir]="dir"
       [separator]="nzSeparator"
       [disabled]="nzDisabled"
       [inputReadOnly]="nzInputReadOnly"

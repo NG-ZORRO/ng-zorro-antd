@@ -109,13 +109,7 @@ import { PREFIX_CLASS } from './util';
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div
-        class="{{ prefixCls }}-active-bar"
-        style="position: absolute"
-        [style.width.px]="inputWidth"
-        [style.left]="datePickerService?.arrowLeft"
-        [style.right]="datePickerService?.arrowRight"
-      ></div>
+      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
@@ -192,6 +186,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   inputValue!: NzSafeAny;
+  activeBarStyle: object = {};
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
     {
@@ -293,14 +288,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   updateInputWidthAndArrowLeft(): void {
     this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
 
+    const baseStyle = { position: 'absolute', width: `${this.inputWidth}px` };
+    this.datePickerService.arrowLeft =
+      this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+
     if (this.dir === 'rtl') {
-      this.datePickerService.arrowRight =
-        this.datePickerService.activeInput === 'right' ? this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0 : 0;
-      this.datePickerService.arrowLeft = 'auto';
+      this.activeBarStyle = { ...baseStyle, right: `${this.datePickerService.arrowLeft}px` };
     } else {
-      this.datePickerService.arrowLeft =
-        this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
-      this.datePickerService.arrowRight = 'auto';
+      this.activeBarStyle = { ...baseStyle, left: `${this.datePickerService.arrowLeft}px` };
     }
 
     this.panel.cdr.markForCheck();
