@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,17 @@ import { NzTransferSearchComponent } from './transfer-search.component';
 import { NzTransferComponent } from './transfer.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzCheckboxModule, NzButtonModule, NzInputModule, NzI18nModule, NzIconModule, NzEmptyModule],
+  imports: [
+    BidiModule,
+    CommonModule,
+    FormsModule,
+    NzCheckboxModule,
+    NzButtonModule,
+    NzInputModule,
+    NzI18nModule,
+    NzIconModule,
+    NzEmptyModule
+  ],
   declarations: [NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent],
   exports: [NzTransferComponent]
 })

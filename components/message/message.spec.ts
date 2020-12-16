@@ -198,7 +198,7 @@ describe('message', () => {
 
   describe('RTL', () => {
     it('should apply classname', () => {
-      nzConfigService.set('global', { nzDirection: 'rtl' });
+      nzConfigService.set('message', { nzDirection: 'rtl' });
       messageService.info('INFO');
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('INFO');

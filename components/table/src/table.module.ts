@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { BidiModule } from '@angular/cdk/bidi';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
@@ -97,6 +98,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzThSelectionComponent
   ],
   imports: [
+    BidiModule,
     NzMenuModule,
     FormsModule,
     NzOutletModule,

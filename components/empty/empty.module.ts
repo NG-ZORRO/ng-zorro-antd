@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -16,7 +17,7 @@ import { NzEmptyDefaultComponent } from './partial/default';
 import { NzEmptySimpleComponent } from './partial/simple';
 
 @NgModule({
-  imports: [CommonModule, PortalModule, NzOutletModule, NzI18nModule],
+  imports: [BidiModule, CommonModule, PortalModule, NzOutletModule, NzI18nModule],
   declarations: [NzEmptyComponent, NzEmbedEmptyComponent, NzEmptyDefaultComponent, NzEmptySimpleComponent],
   exports: [NzEmptyComponent, NzEmbedEmptyComponent]
 })

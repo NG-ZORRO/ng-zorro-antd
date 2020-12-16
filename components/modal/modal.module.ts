@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ import { NzModalService } from './modal.service';
 @NgModule({
   imports: [
     CommonModule,
+    BidiModule,
     OverlayModule,
     NzOutletModule,
     PortalModule,

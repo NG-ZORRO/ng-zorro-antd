@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -32,6 +33,6 @@ import { NzTextareaCountComponent } from './textarea-count.component';
     NzAutosizeDirective,
     NzInputGroupWhitSuffixOrPrefixDirective
   ],
-  imports: [CommonModule, NzIconModule, PlatformModule, NzOutletModule]
+  imports: [BidiModule, CommonModule, NzIconModule, PlatformModule, NzOutletModule]
 })
 export class NzInputModule {}

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -20,6 +21,16 @@ import { NzTimePickerComponent } from './time-picker.component';
 @NgModule({
   declarations: [NzTimePickerComponent, NzTimePickerPanelComponent],
   exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
-  imports: [CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule, NzOutletModule, NzButtonModule]
+  imports: [
+    BidiModule,
+    CommonModule,
+    FormsModule,
+    NzI18nModule,
+    OverlayModule,
+    NzIconModule,
+    NzOverlayModule,
+    NzOutletModule,
+    NzButtonModule
+  ]
 })
 export class NzTimePickerModule {}

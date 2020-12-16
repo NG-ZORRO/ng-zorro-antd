@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -20,7 +21,7 @@ import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeComponent } from './tree.component';
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule, NzIconModule, NzNoAnimationModule, NzHighlightModule, ScrollingModule],
+  imports: [BidiModule, CommonModule, NzOutletModule, NzIconModule, NzNoAnimationModule, NzHighlightModule, ScrollingModule],
   declarations: [
     NzTreeComponent,
     NzTreeNodeBuiltinComponent,

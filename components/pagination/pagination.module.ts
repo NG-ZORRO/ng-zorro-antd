@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +26,6 @@ import { NzPaginationComponent } from './pagination.component';
     NzPaginationDefaultComponent
   ],
   exports: [NzPaginationComponent],
-  imports: [CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule]
+  imports: [BidiModule, CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule]
 })
 export class NzPaginationModule {}

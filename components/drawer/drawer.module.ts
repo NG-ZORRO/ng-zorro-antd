@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
@@ -17,7 +18,16 @@ import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerServiceModule } from './drawer.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
+  imports: [
+    BidiModule,
+    CommonModule,
+    OverlayModule,
+    PortalModule,
+    NzIconModule,
+    NzOutletModule,
+    NzNoAnimationModule,
+    NzDrawerServiceModule
+  ],
   exports: [NzDrawerComponent, NzDrawerContentDirective],
   declarations: [NzDrawerComponent, NzDrawerContentDirective],
   entryComponents: [NzDrawerComponent]
