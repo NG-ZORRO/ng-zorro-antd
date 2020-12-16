@@ -82,29 +82,13 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
 
-  describe('when nzBackdrop=false', () => {
+  describe('when nzHasBackdrop=true', () => {
     let fixture: ComponentFixture<NzTestDropdownComponent>;
 
     beforeEach(() => {
       fixture = createComponent(NzTestDropdownComponent, [], []);
-      fixture.componentInstance.backdrop = false;
+      fixture.componentInstance.backdrop = true;
     });
-
-    it('backdrop should be invisible if nzTrigger=click', fakeAsync(() => {
-      fixture.componentInstance.trigger = 'click';
-      fixture.detectChanges();
-
-      expect(() => {
-        const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
-        dispatchFakeEvent(dropdownElement, 'click');
-
-        tick(1000);
-        fixture.detectChanges();
-
-        const backdrop = overlayContainerElement.querySelector('.nz-overlay-transparent-backdrop');
-        expect(backdrop).not.toBeNull();
-      }).not.toThrowError();
-    }));
 
     it('should disappear if invisible backdrop clicked if nzTrigger=click', fakeAsync(() => {
       fixture.componentInstance.trigger = 'click';
@@ -117,15 +101,14 @@ describe('dropdown', () => {
         tick(1000);
         fixture.detectChanges();
 
-        const backdrop = overlayContainerElement.querySelector('.nz-overlay-transparent-backdrop');
+        const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
         expect(backdrop).not.toBeNull();
 
         dispatchFakeEvent(backdrop as Element, 'click');
         tick(1000);
         fixture.detectChanges();
 
-        const nullBackdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
-        expect(nullBackdrop).toBeNull();
+        expect(overlayContainerElement.querySelector('.cdk-overlay-backdrop')).toBeNull();
       }).not.toThrowError();
     }));
   });
@@ -133,6 +116,7 @@ describe('dropdown', () => {
   it('should disappear if Escape pressed', fakeAsync(() => {
     const fixture = createComponent(NzTestDropdownComponent, [], []);
     fixture.componentInstance.trigger = 'click';
+    fixture.componentInstance.backdrop = true;
     fixture.detectChanges();
 
     expect(() => {
@@ -207,10 +191,11 @@ describe('dropdown', () => {
       [nzTrigger]="trigger"
       [nzDisabled]="disabled"
       [nzPlacement]="placement"
-      [nzBackdrop]="backdrop"
+      [nzHasBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
-      >Trigger
+    >
+      Trigger
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
@@ -222,7 +207,7 @@ describe('dropdown', () => {
   `
 })
 export class NzTestDropdownComponent {
-  backdrop = true;
+  backdrop = false;
   trigger = 'hover';
   placement = 'bottomLeft';
   disabled = false;
@@ -232,9 +217,9 @@ export class NzTestDropdownComponent {
 
 @Component({
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)"
-      >Hover me</a
-    >
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)">
+      Hover me
+    </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item class="first-menu">Clicking me will not close the menu.</li>

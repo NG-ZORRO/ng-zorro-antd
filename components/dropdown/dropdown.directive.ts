@@ -37,6 +37,7 @@ const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSI
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   static ngAcceptInputType_nzBackdrop: BooleanInput;
+  static ngAcceptInputType_nzHasBackdrop: BooleanInput;
   static ngAcceptInputType_nzClickHide: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
@@ -56,10 +57,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
   /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
+   * @deprecated Not supported, use `nzHasBackDrop` instead.
+   * @breaking-change 12.0.0
    */
-  @Input() @InputBoolean() nzBackdrop = true;
+  @Input() @InputBoolean() nzBackdrop = false;
+  @Input() @InputBoolean() nzHasBackdrop = false;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
@@ -144,13 +146,13 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
                 positionStrategy: this.positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
-                hasBackdrop: this.nzTrigger === 'click',
-                backdropClass: this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
+                hasBackdrop: (this.nzHasBackdrop || this.nzBackdrop) && this.nzTrigger === 'click',
                 scrollStrategy: this.overlay.scrollStrategies.reposition()
               });
               merge(
                 this.overlayRef.backdropClick(),
                 this.overlayRef.detachments(),
+                this.overlayRef.outsidePointerEvents().pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
                 this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
               )
                 .pipe(mapTo(false), takeUntil(this.destroy$))
@@ -210,7 +212,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
     }
     if (nzBackdrop) {
-      warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
+      warnDeprecation('`nzBackdrop` in dropdown component will be removed in 12.0.0, please use `nzHasBackdrop` instead.');
     }
   }
 }
