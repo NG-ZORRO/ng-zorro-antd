@@ -54,6 +54,13 @@
       }
     }
 
+    .@{collapse-prefix-cls}-header-collapsible-only {
+      cursor: default;
+      .@{collapse-prefix-cls}-header-text {
+        cursor: pointer;
+      }
+    }
+
     &.@{collapse-prefix-cls}-no-arrow {
       > .@{collapse-prefix-cls}-header {
         padding-left: 12px;
@@ -76,12 +83,7 @@
     }
   }
 
-  &-anim-active {
-    transition: height 0.2s @ease-out;
-  }
-
   &-content {
-    overflow: hidden;
     color: @text-color;
     background-color: @collapse-content-bg;
     border-top: @border-width-base @border-style-base @border-color-base;
@@ -90,7 +92,7 @@
       padding: @collapse-content-padding;
     }
 
-    &-inactive {
+    &-hidden {
       display: none;
     }
   }
