@@ -80,6 +80,7 @@ import { ModalOptions } from './modal-types';
                 (click)="onOk()"
                 [nzLoading]="!!config.nzOkLoading"
                 [disabled]="config.nzOkDisabled"
+                [nzDanger]="config.nzOkDanger"
               >
                 {{ config.nzOkText || locale.okText }}
               </button>
