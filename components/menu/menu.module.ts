@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
@@ -19,7 +20,7 @@ import { NzSubMenuTitleComponent } from './submenu-title.component';
 import { NzSubMenuComponent } from './submenu.component';
 
 @NgModule({
-  imports: [CommonModule, PlatformModule, OverlayModule, NzIconModule, NzNoAnimationModule, NzOutletModule],
+  imports: [BidiModule, CommonModule, PlatformModule, OverlayModule, NzIconModule, NzNoAnimationModule, NzOutletModule],
   declarations: [
     NzMenuDirective,
     NzMenuItemDirective,

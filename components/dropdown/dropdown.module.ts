@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 
@@ -24,6 +25,7 @@ import { NzDropDownDirective } from './dropdown.directive';
 
 @NgModule({
   imports: [
+    BidiModule,
     CommonModule,
     OverlayModule,
     FormsModule,

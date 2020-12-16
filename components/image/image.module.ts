@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { BidiModule } from '@angular/cdk/bidi';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -16,7 +17,7 @@ import { NzImageService } from './image.service';
 @NgModule({
   declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
   exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
-  imports: [CommonModule, NzIconModule, DragDropModule, NzPipesModule],
+  imports: [BidiModule, CommonModule, NzIconModule, DragDropModule, NzPipesModule],
   providers: [NzImageService]
 })
 export class NzImageModule {}

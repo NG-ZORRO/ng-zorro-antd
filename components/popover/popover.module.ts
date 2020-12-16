@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,6 @@ import { NzPopoverComponent, NzPopoverDirective } from './popover';
   exports: [NzPopoverDirective, NzPopoverComponent],
   entryComponents: [NzPopoverComponent],
   declarations: [NzPopoverDirective, NzPopoverComponent],
-  imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
+  imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
 })
 export class NzPopoverModule {}

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -57,6 +58,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
 
   // Confirm
   nzIconType?: string = 'question-circle';
+  nzDirection?: Direction;
 }
 
 export interface ModalButtonOptions<T = NzSafeAny> {

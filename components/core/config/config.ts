@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
@@ -47,7 +48,6 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
-  global?: GlobalConfig;
   image?: ImageConfig;
 }
 
@@ -151,6 +151,7 @@ export interface DrawerConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
   nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
 }
 
 export interface EmptyConfig {
@@ -174,12 +175,14 @@ export interface MessageConfig {
   nzMaxStack?: number;
   nzPauseOnHover?: boolean;
   nzTop?: number | string;
+  nzDirection?: Direction;
 }
 
 export interface ModalConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
   nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
 }
 
 export interface NotificationConfig extends MessageConfig {
@@ -287,10 +290,6 @@ export interface TypographyConfig {
 
 export interface ImageConfig {
   nzFallback?: string;
-}
-
-export interface GlobalConfig {
-  nzDirection: 'rtl' | 'ltr';
 }
 
 export type NzConfigKey = keyof NzConfig;

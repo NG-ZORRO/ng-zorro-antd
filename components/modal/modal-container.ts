@@ -4,21 +4,10 @@
  */
 import { AnimationEvent } from '@angular/animations';
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import {
-  ChangeDetectorRef,
-  ComponentRef,
-  Directive,
-  ElementRef,
-  EmbeddedViewRef,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Renderer2
-} from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
@@ -35,7 +24,7 @@ export function throwNzModalContentAlreadyAttachedError(): never {
 }
 
 @Directive()
-export class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy, OnInit {
+export class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy {
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
 
@@ -75,12 +64,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     protected overlayRef: OverlayRef,
     protected nzConfigService: NzConfigService,
     public config: ModalOptions,
-    @Optional() private directionality: Directionality,
     document?: NzSafeAny,
     protected animationType?: string
   ) {
     super();
     this.document = document;
+    this.dir = overlayRef.getDirection();
     this.isStringContent = typeof config.nzContent === 'string';
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
@@ -88,14 +77,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       .subscribe(() => {
         this.updateMaskClassname();
       });
-  }
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
   }
 
   onContainerClick(e: MouseEvent): void {

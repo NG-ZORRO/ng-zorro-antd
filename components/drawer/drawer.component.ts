@@ -145,7 +145,6 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
-  dir: Direction = 'ltr';
 
   @Input()
   set nzVisible(value: boolean) {
@@ -238,6 +237,11 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     return value instanceof TemplateRef;
   }
 
+  // from service config
+  @WithConfig() nzDirection?: Direction = undefined;
+
+  dir: Direction = 'ltr';
+
   constructor(
     private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
@@ -260,7 +264,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
       this.dir = direction;
       this.cdr.detectChanges();
     });
-    this.dir = this.directionality.value;
+    this.dir = this.nzDirection || this.directionality.value;
 
     this.attachOverlay();
     this.updateOverlayStyle();

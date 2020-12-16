@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
@@ -45,7 +46,8 @@ export class NzModalService implements OnDestroy {
     private overlay: Overlay,
     private injector: Injector,
     private nzConfigService: NzConfigService,
-    @Optional() @SkipSelf() private parentModal: NzModalService
+    @Optional() @SkipSelf() private parentModal: NzModalService,
+    @Optional() private directionality: Directionality
   ) {}
 
   create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
@@ -128,9 +130,9 @@ export class NzModalService implements OnDestroy {
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
-      disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true)
+      disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
+      direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
     });
-
     if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
       overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
     }

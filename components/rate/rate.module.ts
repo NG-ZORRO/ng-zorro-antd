@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -15,6 +16,6 @@ import { NzRateComponent } from './rate.component';
 @NgModule({
   exports: [NzRateComponent],
   declarations: [NzRateComponent, NzRateItemComponent],
-  imports: [CommonModule, NzIconModule, NzToolTipModule]
+  imports: [BidiModule, CommonModule, NzIconModule, NzToolTipModule]
 })
 export class NzRateModule {}

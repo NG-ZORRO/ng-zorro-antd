@@ -58,6 +58,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
+| nzDirection | 消息文字方向 | `'ltr' \| 'rtl'` | - |
 
 ### NzMessageRef
 

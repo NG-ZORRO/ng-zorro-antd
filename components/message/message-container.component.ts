@@ -14,14 +14,14 @@ import { NzMNContainerComponent } from './base';
 import { NzMessageData } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
-const NZ_CONFIG_GLOBAL_NAME = 'global';
 
 const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   nzAnimate: true,
   nzDuration: 3000,
   nzMaxStack: 7,
   nzPauseOnHover: true,
-  nzTop: 24
+  nzTop: 24,
+  nzDirection: 'ltr'
 };
 
 @Component({
@@ -44,7 +44,7 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
 
   constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
     super(cdr, nzConfigService);
-    const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_GLOBAL_NAME);
+    const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
     this.dir = config?.nzDirection || 'ltr';
   }
 
@@ -52,16 +52,12 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.updateConfig());
-
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_GLOBAL_NAME)
-      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_GLOBAL_NAME);
+        this.updateConfig();
+        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
         if (config) {
           const { nzDirection } = config;
-          this.dir = nzDirection;
+          this.dir = nzDirection || this.dir;
         }
       });
   }

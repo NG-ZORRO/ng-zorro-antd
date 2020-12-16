@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -22,6 +23,7 @@ import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
   exports: [NzPopconfirmComponent, NzPopconfirmDirective],
   entryComponents: [NzPopconfirmComponent],
   imports: [
+    BidiModule,
     CommonModule,
     NzButtonModule,
     OverlayModule,

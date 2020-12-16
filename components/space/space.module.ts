@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -12,6 +13,6 @@ import { NzSpaceComponent } from './space.component';
 @NgModule({
   declarations: [NzSpaceComponent, NzSpaceItemComponent],
   exports: [NzSpaceComponent, NzSpaceItemComponent],
-  imports: [CommonModule]
+  imports: [BidiModule, CommonModule]
 })
 export class NzSpaceModule {}

@@ -116,7 +116,10 @@ export class HeaderComponent implements OnChanges {
 
   toggleDirection(): void {
     this.directionChange.emit(this.nextDirection);
-    this.nzConfigService.set('global', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('modal', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('drawer', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('message', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('notification', { nzDirection: this.nextDirection });
     if (this.nextDirection === 'rtl') {
       this.nextDirection = 'ltr';
     } else {

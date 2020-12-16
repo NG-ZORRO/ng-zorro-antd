@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -13,7 +14,7 @@ import { NzStepComponent } from './step.component';
 import { NzStepsComponent } from './steps.component';
 
 @NgModule({
-  imports: [CommonModule, NzIconModule, NzOutletModule],
+  imports: [BidiModule, CommonModule, NzIconModule, NzOutletModule],
   exports: [NzStepsComponent, NzStepComponent],
   declarations: [NzStepsComponent, NzStepComponent]
 })

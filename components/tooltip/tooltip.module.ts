@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -16,6 +17,6 @@ import { NzToolTipComponent, NzTooltipDirective } from './tooltip';
   declarations: [NzToolTipComponent, NzTooltipDirective],
   exports: [NzToolTipComponent, NzTooltipDirective],
   entryComponents: [NzToolTipComponent],
-  imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule]
+  imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule]
 })
 export class NzToolTipModule {}
