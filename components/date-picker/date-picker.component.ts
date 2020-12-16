@@ -35,7 +35,6 @@ import { DatePickerService } from './date-picker.service';
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
@@ -143,10 +142,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
-  /**
-   * @deprecated use method `open` or `close` instead.
-   * @breaking-change 11.0.0
-   */
   @Input() @InputBoolean() nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
@@ -159,8 +154,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
+  @Input() nzMode: NzDateMode = 'date';
   @Input() @InputBoolean() nzShowNow: boolean = true;
-  @Input() nzMode: NzDateMode | NzDateMode[] = 'date';
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string = undefined;
@@ -261,10 +256,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
     }
 
-    if (changes.nzOpen) {
-      warnDeprecation(`'nzOpen' in DatePicker is going to be removed in 11.0.0. Please use open() or close() method instead.`);
-    }
-
     if (changes.nzMode) {
       this.setDefaultPlaceHolder();
       this.setModeAndFormat();
@@ -288,13 +279,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.nzMode = 'date';
     }
 
-    // TODO: compatible for array type
-    if (Array.isArray(this.nzMode)) {
-      warnDeprecation(
-        `'nzMode' in DatePicker will not be string[], only can be 'decade' | 'year' | 'month' | 'week' | 'date' type in 11.0.0.`
-      );
-      this.nzMode = this.nzMode[0];
-    }
     this.panelMode = this.isRange ? [this.nzMode, this.nzMode] : this.nzMode;
 
     // Default format when it's empty
