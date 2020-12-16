@@ -9,9 +9,9 @@ import { addThemeToAppStyles } from './theming';
 
 export default function (options: Schema): Rule {
   return chain([
+    registerLocale(options),
     addRequiredModules(options),
     addAnimationsModule(options),
-    registerLocale(options),
     addThemeToAppStyles(options),
     options.dynamicIcon ? addIconToAssets(options) : noop(),
     options.gestures ? hammerjsImport(options) : noop()

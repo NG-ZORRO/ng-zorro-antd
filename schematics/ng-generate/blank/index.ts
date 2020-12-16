@@ -1,7 +1,7 @@
-import { Rule, Tree } from '@angular-devkit/schematics';
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { noop, Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
-import chalk from 'chalk';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { existsSync, statSync as fsStatSync } from 'fs';
 import { Schema } from './schema';
 
@@ -11,18 +11,18 @@ const bootPageHTML = `<!-- NG-ZORRO -->
 </a>`;
 
 export default function(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
+  return async (host: Tree, context) => {
+    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, options.project);
     const appHTMLFile = `${project.sourceRoot}/app/app.component.html`;
     const buffer = host.read(appHTMLFile);
 
     if (!buffer) {
-      console.log();
-      console.error(
-        chalk.red(`Could not find the project ${chalk.blue(appHTMLFile)} file inside of the ` + `workspace config`)
+
+      context.logger.error(
+       `Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`
       );
-      return;
+      return noop();
     }
     if (existsSync(appHTMLFile)) {
       const stat = fsStatSync(appHTMLFile);
@@ -33,6 +33,6 @@ export default function(options: Schema): Rule {
       host.overwrite(appHTMLFile, bootPageHTML);
     }
 
-    return host;
+    return noop();
   };
 }

@@ -1,4 +1,5 @@
 import { strings } from '@angular-devkit/core';
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
   applyTemplates,
@@ -13,14 +14,14 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { addModule } from '../../utils/root-module';
 
 import { Schema } from './schema';
 
 export default function(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
+  return async (host: Tree) => {
+    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, options.project);
     const prefix = options.prefix || project.prefix;
     return chain([
