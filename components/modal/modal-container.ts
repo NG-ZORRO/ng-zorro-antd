@@ -20,7 +20,6 @@ import {
   Renderer2
 } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -83,7 +82,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     super();
     this.document = document;
     this.isStringContent = typeof config.nzContent === 'string';
-    this.setContainer();
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -286,36 +284,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     }
   }
 
-  private setContainer(): void {
-    const container = this.getContainer();
-    if (container) {
-      this.render.appendChild(container, this.elementRef.nativeElement);
-    }
-  }
-
-  private resetContainer(): void {
-    const container = this.getContainer();
-    if (container) {
-      this.render.appendChild(this.overlayRef.overlayElement, this.elementRef.nativeElement);
-    }
-  }
-
-  /**
-   * Set the container element.
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  private getContainer(): HTMLElement | null {
-    const { nzGetContainer } = this.config;
-    const container = typeof nzGetContainer === 'function' ? nzGetContainer() : nzGetContainer;
-    if (container instanceof HTMLElement) {
-      warnDeprecation('nzGetContainer of nz-modal is not support, will be removed in 11.0.0');
-      return container;
-    } else {
-      return null;
-    }
-  }
-
   updateMaskClassname(): void {
     const backdropElement = this.overlayRef.backdropElement;
     if (backdropElement) {
@@ -329,7 +297,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
 
   onAnimationDone(event: AnimationEvent): void {
     if (event.toState === 'enter') {
-      this.setContainer();
       this.trapFocus();
     } else if (event.toState === 'exit') {
       this.restoreFocus();
@@ -343,7 +310,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       this.setEnterAnimationClass();
       this.bindBackdropStyle();
     } else if (event.toState === 'exit') {
-      this.resetContainer();
       this.setExitAnimationClass();
     }
     this.animationStateChanged.emit(event);
