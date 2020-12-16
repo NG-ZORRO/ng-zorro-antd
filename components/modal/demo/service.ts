@@ -132,7 +132,8 @@ export class NzDemoModalServiceComponent {
         },
         {
           label: 'Change Button Status',
-          type: 'danger',
+          type: 'primary',
+          danger: true,
           loading: false,
           onClick(): void {
             this.loading = true;
