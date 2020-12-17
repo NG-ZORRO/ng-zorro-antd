@@ -16,6 +16,11 @@
       "default": false,
       "description": "Do not add ng-zorro-antd dependencies to package.json (e.g., --skipPackageJson)"
     },
+    "skipInstall": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not install dependency package."
+    },
     "dynamicIcon": {
       "type": "boolean",
       "default": false,
