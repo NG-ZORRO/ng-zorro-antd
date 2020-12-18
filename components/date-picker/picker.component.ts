@@ -10,6 +10,8 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair,
   HorizontalConnectionPos,
+  Overlay,
+  ScrollStrategy,
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -41,6 +43,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzScrollStrategyToken, ScrollStrategyProviderFactory } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -151,6 +154,7 @@ import { PREFIX_CLASS } from './util';
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-wrapper'"
+      [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
       (positionChange)="onPositionChange($event)"
       (detach)="onOverlayDetach()"
       (overlayKeydown)="onOverlayKeydown($event)"
@@ -160,7 +164,14 @@ import { PREFIX_CLASS } from './util';
     </ng-template>
   `,
   animations: [slideMotion],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NzScrollStrategyToken,
+      deps: [Overlay],
+      useFactory: ScrollStrategyProviderFactory
+    }
+  ]
 })
 export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() noAnimation: boolean = false;
@@ -199,6 +210,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   inputValue!: NzSafeAny;
   activeBarStyle: object = {};
   overlayOpen: boolean = false; // Available when "open"=undefined
+  scrollStrategy: ScrollStrategy;
   overlayPositions: ConnectionPositionPair[] = [
     {
       offsetX: -12,
@@ -248,10 +260,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private platform: Platform,
     private nzResizeObserver: NzResizeObserver,
     public datePickerService: DatePickerService,
+    @Inject(NzScrollStrategyToken) scrollStrategyFactory: ScrollStrategy,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
+
+    this.scrollStrategy = scrollStrategyFactory;
   }
 
   ngOnInit(): void {

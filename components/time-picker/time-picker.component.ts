@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, ScrollStrategy } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -32,7 +33,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isNil, NzScrollStrategyToken, ScrollStrategyProviderFactory } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Observable, of, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -75,6 +76,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       nzConnectedOverlay
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
+      [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayOffsetY]="-2"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
@@ -120,7 +122,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '(click)': 'open()'
   },
   animations: [slideMotion],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
+  providers: [
+    {
+      provide: NzScrollStrategyToken,
+      deps: [Overlay],
+      useFactory: ScrollStrategyProviderFactory
+    },
+    { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
+  ]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -152,6 +161,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   ];
   dir: Direction = 'ltr';
+  scrollStrategy: ScrollStrategy;
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzId: string | null = null;
@@ -292,10 +302,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private dateHelper: DateHelperService,
     private platform: Platform,
     private elementRef: ElementRef,
+    @Inject(NzScrollStrategyToken) scrollStrategyFactory: ScrollStrategy,
     @Optional() private directionality: Directionality
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-picker');
+
+    this.scrollStrategy = scrollStrategyFactory;
   }
 
   ngOnInit(): void {

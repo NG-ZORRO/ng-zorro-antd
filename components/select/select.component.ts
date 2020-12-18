@@ -6,7 +6,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, Overlay, ScrollStrategy } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -18,6 +18,7 @@ import {
   EventEmitter,
   forwardRef,
   Host,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -37,7 +38,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isNotNil, NzScrollStrategyToken, ScrollStrategyProviderFactory } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -62,6 +63,11 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   exportAs: 'nzSelect',
   preserveWhitespaces: false,
   providers: [
+    {
+      provide: NzScrollStrategyToken,
+      deps: [Overlay],
+      useFactory: ScrollStrategyProviderFactory
+    },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),
@@ -114,6 +120,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
+      [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
       [cdkConnectedOverlayOpen]="nzOpen"
       (overlayKeydown)="onOverlayKeyDown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
@@ -246,6 +253,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   listOfValue: NzSafeAny[] = [];
   focused = false;
   dir: Direction = 'ltr';
+  scrollStrategy: ScrollStrategy;
 
   generateTagItem(value: string): NzSelectItemInterface {
     return {
@@ -499,11 +507,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     private elementRef: ElementRef,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
+    @Inject(NzScrollStrategyToken) scrollStrategyFactory: ScrollStrategy,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-select');
+    this.scrollStrategy = scrollStrategyFactory;
   }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
