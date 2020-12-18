@@ -164,7 +164,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   };
 
   coreTransform = (node: NzGraphGroupNode) => {
-    return `translate(0, ${node.labelHeight})`;
+    return `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
   };
 
   constructor(

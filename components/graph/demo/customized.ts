@@ -6,7 +6,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
   template: `
     <button nz-button nzType="default" (click)="expandAll()">ExpandAll</button>
     <button nz-button nzType="default" (click)="collapseAll()">CollapseAll</button>
-    <button nz-button nzType="primary" (click)="layout()">Layout</button>
+    <button nz-button nzType="primary" (click)="fit()">Fit</button>
     <nz-radio-group [(ngModel)]="rankDirection">
       <label nz-radio-button nzValue="LR">LR</label>
       <label nz-radio-button nzValue="RL">RL</label>
@@ -267,7 +267,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
     this.graphData.collapseAll();
   }
 
-  layout(): void {
+  fit(): void {
     this.zoomController?.fitCenter();
   }
 

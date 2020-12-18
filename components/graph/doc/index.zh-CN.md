@@ -5,7 +5,6 @@ type: 数据展示
 title: Hierarchy Graph
 cols: 1
 experimental: true
-hidden: true
 ---
 
 <blockquote style="border-color: #faad14;">
