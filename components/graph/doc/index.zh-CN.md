@@ -48,6 +48,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `[nzGraphData]` | 数据源 | `NzGraphData(data: NzGraphDataDef?)` | `` |
 | `[nzRankDirection]` | 图方向 | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
 | `[nzAutoSize]` | 是否根据节点内容自适应高度(默认等高) | `boolean` | `false` |
+| `[nzGraphLayoutConfig]` | 全局配置 | `NzGraphLayoutConfig` | `` |
 
 #### 组件方法
 
@@ -77,6 +78,14 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `collapse` | 收起全部 group 节点 | `(nodeName: string) => void` |
 | `isExpand` | 获取 group 节点展开状态 | `(nodeName: string) => boolean` |
 | `expansionModel` | 展开节点存储对象 | `SelectionModel<string>` |
+
+### NzGraphLayoutConfig
+| 属性 | 说明 | 类型 |
+| --- | --- | --- |
+| `layout` | 布局参数 | `{ nodeSep: number; rankSep: number; edgeSep: number; }` |
+| `subScene` | group 节点 | `{ paddingTop: number; paddingBottom: number; paddingLeft: number; paddingRight: number; labelHeight: number; }` |
+| `defaultCompoundNode` | group 节点 size | `{ width: number; height: number; maxLabelWidth: number; }` |
+| `defaultNode` | 默认节点 size | `{ width: number; height: number; labelOffset: number; maxLabelWidth: number; }` |
 
 #### NzGraphDataDef
 

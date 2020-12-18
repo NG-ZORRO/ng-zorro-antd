@@ -45,7 +45,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `[nzGraphData]` | Data source | `NzGraphData(data: NzGraphDataDef?)` | `` |
 | `[nzRankDirection]` | Graph Direction | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
 | `[nzAutoFit]` | Whether to automatically adjust the height of the node, the default equal height | `boolean` | `false` |
-
+| `[nzGraphLayoutConfig]` | Global config of graph | `NzGraphLayoutConfig` | `` |
 
 #### Methods
 
@@ -75,6 +75,14 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `collapse` | collapse group node | `(nodeName: string) => void` |
 | `isExpand` | get if expanded of node | `(nodeName: string) => boolean` |
 | `expansionModel` | model of expanded nodes' info | `SelectionModel<string>` |
+
+### NzGraphLayoutConfig
+| Method | Description | Type |
+| --- | --- | --- |
+| `layout` | graph layout config | `{ nodeSep: number; rankSep: number; edgeSep: number; }` |
+| `subScene` | group node config | `{ paddingTop: number; paddingBottom: number; paddingLeft: number; paddingRight: number; labelHeight: number; }` |
+| `defaultCompoundNode` | group node size | `{ width: number; height: number; maxLabelWidth: number; }` |
+| `defaultNode` | default node size | `{ width: number; height: number; labelOffset: number; maxLabelWidth: number; }` |
 
 
 #### NzGraphDataDef

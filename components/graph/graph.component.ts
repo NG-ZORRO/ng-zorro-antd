@@ -43,7 +43,7 @@ import {
   NzGraphEdge,
   NzGraphEdgeDef,
   NzGraphGroupNode,
-  NzGraphLayoutSetting,
+  NzGraphLayoutConfig,
   NzGraphNode,
   NzGraphNodeDef,
   NzGraphOption,
@@ -132,7 +132,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
    */
   @Input() nzGraphData!: NzGraphData;
   @Input() nzRankDirection: NzRankDirection = 'LR';
-  @Input() nzGraphLayoutSettings?: NzGraphLayoutSetting;
+  @Input() nzGraphLayoutConfig?: NzGraphLayoutConfig;
   @Input() @InputBoolean() nzAutoSize = false;
 
   @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
@@ -185,9 +185,10 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzAutoFit, nzRankDirection, nzGraphData, nzGraphLayoutSettings } = changes;
-    if (nzGraphLayoutSettings) {
-      Object.assign(this.layoutSetting, this.nzGraphLayoutSettings || {});
+    const { nzAutoFit, nzRankDirection, nzGraphData, nzGraphLayoutConfig } = changes;
+    if (nzGraphLayoutConfig) {
+      this.layoutSetting = this.mergeConfig(nzGraphLayoutConfig.currentValue);
+      // Object.assign(this.layoutSetting, this.nzGraphLayoutSetting || {});
     }
 
     if (nzGraphData) {
@@ -439,5 +440,30 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     data.edges.forEach(e => {
       this.mapOfEdgeAttr[`${e.v}-${e.w}`] = e;
     });
+  }
+
+  /**
+   * Merge config with user inputs
+   * @param config
+   * @private
+   */
+  private mergeConfig(config: NzGraphLayoutConfig): NzLayoutSetting {
+    const graphMeta = config?.layout || {};
+    const subSceneMeta = config?.subScene || {};
+    const defaultNodeMeta = config?.defaultNode || {};
+    const defaultCompoundNodeMeta = config?.defaultCompoundNode || {};
+    const bridge = NZ_GRAPH_LAYOUT_SETTING.nodeSize.bridge;
+
+    const graph: NzLayoutSetting['graph'] = { meta: { ...NZ_GRAPH_LAYOUT_SETTING.graph.meta, ...graphMeta } };
+    const subScene: NzLayoutSetting['subScene'] = {
+      meta: { ...NZ_GRAPH_LAYOUT_SETTING.subScene.meta, ...subSceneMeta }
+    };
+    const nodeSize: NzLayoutSetting['nodeSize'] = {
+      meta: { ...NZ_GRAPH_LAYOUT_SETTING.nodeSize.meta, ...defaultCompoundNodeMeta },
+      node: { ...NZ_GRAPH_LAYOUT_SETTING.nodeSize.node, ...defaultNodeMeta },
+      bridge
+    };
+
+    return { graph, subScene, nodeSize };
   }
 }

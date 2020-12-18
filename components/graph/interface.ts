@@ -56,6 +56,32 @@ export interface NzGraphEdge extends HierarchyBaseEdgeInfo {
 // tslint:disable-next-line:no-empty-interface
 export interface NzLayoutSetting extends LayoutConfig {}
 
+export interface NzGraphBaseLayout {
+  layout: {
+    nodeSep: number;
+    rankSep: number;
+    edgeSep: number;
+  };
+  subScene: {
+    paddingTop: number;
+    paddingBottom: number;
+    paddingLeft: number;
+    paddingRight: number;
+    labelHeight: number;
+  };
+  defaultCompoundNode: {
+    width: number;
+    height: number;
+    maxLabelWidth: number;
+  };
+  defaultNode: {
+    width: number;
+    height: number;
+    labelOffset: number;
+    maxLabelWidth: number;
+  };
+}
+
 export function nzTypeDefinition<T>(): (item: unknown) => T {
   return item => item as T;
 }
@@ -69,29 +95,12 @@ export type NzDeepPartial<T> = {
     : NzDeepPartial<T[P]>;
 };
 
-export type NzGraphLayoutSetting = NzDeepPartial<NzLayoutSetting>;
+export type NzGraphLayoutConfig = NzDeepPartial<NzGraphBaseLayout>;
 export const NZ_GRAPH_LAYOUT_SETTING: NzLayoutSetting = {
   graph: {
-    /** Graph parameter for metanode. */
     meta: {
-      /**
-       * Dagre's nodesep param - number of pixels that
-       * separate nodes horizontally in the layout.
-       *
-       * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-       */
       nodeSep: 50,
-      /**
-       * Dagre's ranksep param - number of pixels
-       * between each rank in the layout.
-       *
-       * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-       */
-      rankSep: 30,
-      /**
-       * Dagre's edgesep param - number of pixels that separate
-       * edges horizontally in the layout.
-       */
+      rankSep: 50,
       edgeSep: 5
     }
   },
@@ -105,26 +114,20 @@ export const NZ_GRAPH_LAYOUT_SETTING: NzLayoutSetting = {
     }
   },
   nodeSize: {
-    /** Size of meta nodes. */
     meta: {
       width: 50,
       maxLabelWidth: 0,
       height: 50
     },
-    /** Size of op nodes. */
     node: {
       width: 50,
       height: 50,
       labelOffset: 10,
       maxLabelWidth: 40
     },
-    /** Size of bridge nodes. */
     bridge: {
-      // NOTE: bridge nodes will normally be invisible, but they must
-      // take up some space so that the layout step leaves room for
-      // their edges.
-      width: 10,
-      height: 10,
+      width: 5,
+      height: 5,
       radius: 2,
       labelOffset: 0
     }
