@@ -25,7 +25,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { buildGraph } from '@nx-component/hierarchy-graph';
+import { buildGraph } from 'dagre-compound';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -159,12 +159,12 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   subGraphTransform = (node: NzGraphGroupNode) => {
     const x = node.x - node.coreBox.width / 2.0;
-    const y = node.y - node.height / 2.0 + node.paddingTop / 2.0;
+    const y = node.y - node.height / 2.0 + node.paddingTop;
     return `translate(${x}, ${y})`;
   };
 
   coreTransform = (node: NzGraphGroupNode) => {
-    return `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
+    return `translate(0, ${node.labelHeight})`;
   };
 
   constructor(

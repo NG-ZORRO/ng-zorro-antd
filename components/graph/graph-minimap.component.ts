@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular
 import { ZoomBehavior } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Minimap } from './core/minimap';
-import { NzZoomTransform, NZ_GRAPH_LAYOUT_SETTING } from './interface';
+import { NzZoomTransform } from './interface';
 
 @Component({
   selector: 'nz-graph-minimap',
@@ -46,7 +46,7 @@ export class NzGraphMinimapComponent implements OnInit {
   init(containerEle: ElementRef, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
     const svgEle = containerEle.nativeElement.querySelector('svg');
     const zoomEle = containerEle.nativeElement.querySelector('svg > g');
-    this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, NZ_GRAPH_LAYOUT_SETTING.minimap.size, 0);
+    this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
   }
 
   zoom(transform: NzZoomTransform): void {

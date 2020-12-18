@@ -54,18 +54,18 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
         height: 100%;
         line-height: 1.2;
         border-radius: 0;
-        text-align: left;
+        text-align: center;
         word-break: break-all;
         display: block;
       }
 
       .custom {
-        min-height: 80px;
+        min-height: 30px;
         height: fit-content;
       }
 
       .title {
-        padding: 8px;
+        padding: 4px;
         word-break: keep-all;
       }
     `
@@ -225,7 +225,15 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
       },
       {
         v: '10',
+        w: '14'
+      },
+      {
+        v: '10',
         w: '12'
+      },
+      {
+        v: '11',
+        w: '14'
       },
       {
         v: '12',
@@ -233,7 +241,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
       }
     ],
     compound: {
-      group0: ['4', '5', '15']
+      G0: ['4', '5', '15']
     }
   };
   rankDirection: NzRankDirection = 'TB';

@@ -38,7 +38,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 安装依赖：
 
 ```sh
-npm install @nx-component/hierarchy-graph
+npm install dagre-compound
 npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
@@ -112,7 +112,6 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `w` | 目标节点 | `number\|string` |
 | `label?` | 线内容 | `string` |
 | `points` | points | `Array<{ x: number; y: number; }>` |
-| `adjoiningEdge` | adjoiningEdge | `{ v: string; w: string; points: points>; } \| null` |
 
 #### NzGraphGroupNode
 
@@ -162,5 +161,5 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
     * `.nz-graph-edge-text` 线文本元素
 
 ## 说明
-- [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): graph 布局计算库
+- [dagre-compound](https://www.npmjs.com/package/dagre-compound): 基于 Dagre 的 嵌套布局计算库
 - [SelectionModel](https://github.com/angular/components/blob/master/src/cdk/collections/selection-model.ts)

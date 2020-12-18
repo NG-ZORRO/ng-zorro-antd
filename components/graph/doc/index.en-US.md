@@ -35,7 +35,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 Dependencies:
 
 ```sh
-npm install @nx-component/hierarchy-graph
+npm install dagre-compound
 npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
@@ -111,7 +111,6 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `w` | target node | `number\|string` |
 | `label?` | edge content | `string` |
 | `points` | points | `Array<{ x: number; y: number; }>` |
-| `adjoiningEdge` | adjoiningEdge | `{ v: string; w: string; points: points>; } \| null` |
 
 #### NzGraphGroupNode
 
@@ -161,5 +160,5 @@ The Component styles only contain the necessary positional properties and simple
     * `.nz-graph-edge-text` The class name of svg:text element
 
 ## More
-- [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): Auto-layout graph library
+- [dagre-compound](https://www.npmjs.com/package/dagre-compound): Dagre-based nested layout calculation library
 - [SelectionModel](https://github.com/angular/components/blob/master/src/cdk/collections/selection-model.ts)
