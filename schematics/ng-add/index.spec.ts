@@ -8,6 +8,7 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { join } from "path";
 import { createTestApp } from '../testing/test-app';
+import { createCustomTheme } from '../utils/create-custom-theme';
 
 describe('ng-add schematic', () => {
   let runner: SchematicTestRunner;
@@ -26,7 +27,6 @@ describe('ng-add schematic', () => {
 
     expect(dependencies['ng-zorro-antd']).toBeDefined();
 
-    console.log(runner.tasks.map(e => e.name));
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
@@ -82,9 +82,8 @@ describe('ng-add schematic', () => {
     const buffer = tree.read(customThemePath);
     const themeContent = buffer!.toString();
 
-    expect(themeContent).toContain(`@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less`);
-    expect(themeContent).toContain(`@ant-prefix: ant;`);
-    expect(themeContent).toContain(`@primary-color: @blue-6;`);
+    expect(themeContent).toContain(createCustomTheme())
+
     expect(getProjectTargetOptions(project, 'build').styles)
     .toContain('projects/ng-zorro/src/styles.less');
   });
