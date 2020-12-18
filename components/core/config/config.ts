@@ -290,6 +290,10 @@ export interface TypographyConfig {
 
 export interface ImageConfig {
   nzFallback?: string;
+  nzPlaceholder?: string;
+  nzDisablePreview?: string;
+  nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
 }
 
 export type NzConfigKey = keyof NzConfig;

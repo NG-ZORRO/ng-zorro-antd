@@ -17,10 +17,12 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 
 | 参数        | 说明                               | 类型             | 默认值 | 支持全局配置  |
 | ----------- | ---------------------------------- | ---------------- | ------ | ----- |
-| nzSrc         | 图片地址                           | `string`           | -      | - |
-| nzFallback    | 加载失败容错地址                   | `string`           | -      | - |
-| nzPlaceholder | 加载占位地址                          | `string`        | -      | - |
-| nzDisablePreview     | 是否禁止预览                       | `boolean`          | `false` | ✅ |
+| nzSrc | 图片地址 | `string` | - | - |
+| nzFallback | 加载失败容错地址 | `string` | - | ✅ |
+| nzPlaceholder | 加载占位地址 | `string` | - | ✅ |
+| nzDisablePreview | 是否禁止预览 | `boolean` | `false` | ✅ |
+| nzCloseOnNavigation | 导航时是否关闭预览 | `boolean` | `false` | ✅ |
+| nzDirection | 文字方向 | `Direction` | `'ltr'` | ✅ |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
