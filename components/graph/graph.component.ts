@@ -14,7 +14,6 @@ import {
   EventEmitter,
   Host,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -32,12 +31,13 @@ import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { finalize, skip, take, takeUntil } from 'rxjs/operators';
+import { finalize, take, takeUntil } from 'rxjs/operators';
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
+import { NzGraphZoomDirective } from './graph-zoom.directive';
 import {
   NzGraphDataDef,
   NzGraphEdge,
@@ -145,6 +145,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
   mapOfNodeAttr: { [key: string]: NzGraphNodeDef } = {};
   mapOfEdgeAttr: { [key: string]: NzGraphEdgeDef } = {};
+  zoom = 1;
 
   public readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();
   private dataSource?: NzGraphData;
@@ -168,14 +169,17 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzGraphZoom?: NzGraphZoomDirective
   ) {}
 
   ngOnInit(): void {
-    this.graphRenderedSubject$.pipe(skip(this.nzAutoSize ? 1 : 0), take(1), takeUntil(this.destroy$)).subscribe(() => {
-      this.fitCenter();
+    this.graphRenderedSubject$.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
+      // Only zooming is not set, move graph to center
+      if (!this.nzGraphZoom) {
+        this.fitCenter();
+      }
       this.nzGraphInitialized.emit(this);
     });
   }
@@ -198,7 +202,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
         this.drawGraph(this.dataSource!.dataSource, {
           rankDirection: this.nzRankDirection,
           expanded: this.dataSource!.expansionModel.selected || []
-        }).then();
+        }).then(() => {
+          this.cdr.markForCheck();
+        });
       }
     }
 
@@ -243,7 +249,10 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
       this.elementRef.nativeElement.querySelector('svg'),
       this.elementRef.nativeElement.querySelector('svg > g')
     )!;
-    this.transformStyle = `translate(${x}, ${y})scale(${k})`;
+    if (k) {
+      this.zoom = k;
+      this.transformStyle = `translate(${x}, ${y})scale(${k})`;
+    }
     this.cdr.markForCheck();
   }
 
@@ -261,21 +270,22 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
         // Need better performance
         this.renderInfo = renderInfo;
         this.cdr.markForCheck();
-        this.drawNodes(!this.noAnimation?.nzNoAnimation).then(() => {
-          // Update element
-          this.cdr.markForCheck();
-          this.graphRenderedSubject$.next();
-          this.nzGraphRendered.emit(this);
-        });
-
-        if (needResize) {
-          this.resizeNodeSize().then(() => {
-            const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
-            return this.drawGraph(dataSource, options, false);
+        this.requestId = requestAnimationFrame(() => {
+          this.drawNodes(!this.noAnimation?.nzNoAnimation).then(() => {
+            // Update element
+            this.cdr.markForCheck();
+            if (needResize) {
+              this.resizeNodeSize().then(() => {
+                const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
+                this.drawGraph(dataSource, options, false).then(() => resolve());
+              });
+            } else {
+              this.graphRenderedSubject$.next();
+              this.nzGraphRendered.emit(this);
+              resolve();
+            }
           });
-        } else {
-          resolve();
-        }
+        });
       });
       this.cdr.markForCheck();
     });
@@ -287,55 +297,49 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
    */
   drawNodes(animate: boolean = true): Promise<void> {
     return new Promise(resolve => {
-      this.ngZone.onStable.pipe(take(1)).subscribe(() => {
-        if (animate) {
-          this.makeNodesAnimation().subscribe(() => {
-            resolve();
-          });
-        } else {
-          this.listOfNodeComponent.map(node => {
-            node.makeNoAnimation();
-          });
+      if (animate) {
+        this.makeNodesAnimation().subscribe(() => {
           resolve();
-        }
-      });
+        });
+      } else {
+        this.listOfNodeComponent.map(node => {
+          node.makeNoAnimation();
+        });
+        resolve();
+      }
     });
   }
 
   private resizeNodeSize(): Promise<void> {
     return new Promise(resolve => {
-      this.ngZone.onStable.pipe(take(1)).subscribe(() => {
-        const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
-        let scale = this.getScale();
-
-        this.listOfNodeElement.forEach(nodeEle => {
-          const contentEle = nodeEle.nativeElement;
-          if (contentEle) {
-            let width: number;
-            let height: number;
-            // Check if foreignObject is set
-            const clientRect = contentEle.querySelector('foreignObject > :first-child')?.getBoundingClientRect();
-            if (clientRect) {
-              width = clientRect.width;
-              height = clientRect.height;
-            } else {
-              const bBoxRect = contentEle.getBBox();
-              width = bBoxRect.width;
-              height = bBoxRect.height;
-              // getBBox will return actual value
-              scale = 1;
-            }
-            // Element id type is string
-            const node = dataSource.nodes.find(n => `${n.id}` === nodeEle.nativeElement.id);
-
-            if (node && width && height) {
-              node.height = height / scale;
-              node.width = width / scale;
-            }
+      const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
+      let scale = this.nzGraphZoom?.nzZoom || this.zoom || 1;
+      this.listOfNodeElement.forEach(nodeEle => {
+        const contentEle = nodeEle.nativeElement;
+        if (contentEle) {
+          let width: number;
+          let height: number;
+          // Check if foreignObject is set
+          const clientRect = contentEle.querySelector('foreignObject > :first-child')?.getBoundingClientRect();
+          if (clientRect) {
+            width = clientRect.width;
+            height = clientRect.height;
+          } else {
+            const bBoxRect = contentEle.getBBox();
+            width = bBoxRect.width;
+            height = bBoxRect.height;
+            // getBBox will return actual value
+            scale = 1;
           }
-        });
-        resolve();
+          // Element id type is string
+          const node = dataSource.nodes.find(n => `${n.id}` === nodeEle.nativeElement.id);
+          if (node && width && height) {
+            node.height = height / scale;
+            node.width = width / scale;
+          }
+        }
       });
+      resolve();
     });
   }
 
@@ -381,19 +385,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     } else {
       throw Error(`A valid data source must be provided.`);
     }
-  }
-
-  // TODO
-  // A better way?
-  private getScale(): number {
-    const transform = (this.elementRef.nativeElement.querySelector('svg > g') as SVGGElement)?.getAttribute('transform') || '';
-    // Get current scale
-    const regex = /scale\(([0-9\.]+)\)/g;
-    const match = regex.exec(transform);
-    if (match && match[1]) {
-      return parseFloat(match[1]);
-    }
-    return 1;
   }
 
   /**
