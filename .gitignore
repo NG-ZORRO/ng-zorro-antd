@@ -10,9 +10,6 @@ junit/
 out-tsc/
 /publish/
 /lib/
-integration/**/lib/
-integration/**/*.ngfactory.ts
-integration/**/*.ngsummary.json
 schematics/demo
 schematics/utils/create-custom-theme.ts
 schematics/utils/version-names.ts

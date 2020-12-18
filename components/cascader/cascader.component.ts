@@ -34,10 +34,10 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
 import {
@@ -745,7 +745,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (this.isLabelRenderTemplate) {
       this.labelRenderContext = { labels, selectedOptions };
     } else {
-      this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
+      this.labelRenderText = defaultDisplayRender.call(this, labels);
     }
   }
 

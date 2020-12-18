@@ -24,7 +24,7 @@ import {BidiModule} from '@angular/cdk/bidi';
 在模版中为应用或其后代设置方向。
 
 ```html
-<tag-name dir="rtl" ></tag-name>
+<div dir="rtl"></div>
 ```
 
 ## 在服务中设置
@@ -50,5 +50,5 @@ class MyComponent {
 
 ### 参考
 
-- [Angular CDK  Bidirectionality](https://material.angular.io/cdk/bidi/api)
+- [Angular CDK Bidirectionality](https://material.angular.io/cdk/bidi/api)
 - [dir - HTML（超文本标记语言） | MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/dir)
