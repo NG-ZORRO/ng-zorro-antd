@@ -120,6 +120,7 @@ export class HeaderComponent implements OnChanges {
     this.nzConfigService.set('drawer', { nzDirection: this.nextDirection });
     this.nzConfigService.set('message', { nzDirection: this.nextDirection });
     this.nzConfigService.set('notification', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('image', { nzDirection: this.nextDirection });
     if (this.nextDirection === 'rtl') {
       this.nextDirection = 'ltr';
     } else {

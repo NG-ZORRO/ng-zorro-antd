@@ -2,11 +2,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Injectable, Injector, Optional } from '@angular/core';
+import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 
 import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
@@ -19,7 +19,12 @@ export interface NzImageService {
 
 @Injectable()
 export class NzImageService {
-  constructor(private overlay: Overlay, private injector: Injector, private nzConfigService: NzConfigService) {}
+  constructor(
+    private overlay: Overlay,
+    private injector: Injector,
+    private nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   preview(images: NzImage[], options?: NzImagePreviewOptions): NzImagePreviewRef {
     return this.display(images, options);
@@ -52,13 +57,14 @@ export class NzImageService {
   }
 
   private createOverlay(config: NzImagePreviewOptions): OverlayRef {
-    const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
+    const globalConfig = (this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) as ImageConfig) || {};
     const overLayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
       disposeOnNavigation: config.nzCloseOnNavigation ?? globalConfig.nzCloseOnNavigation ?? true,
-      backdropClass: IMAGE_PREVIEW_MASK_CLASS_NAME
+      backdropClass: IMAGE_PREVIEW_MASK_CLASS_NAME,
+      direction: config.nzDirection || globalConfig.nzDirection || this.directionality.value
     });
 
     return this.overlay.create(overLayConfig);

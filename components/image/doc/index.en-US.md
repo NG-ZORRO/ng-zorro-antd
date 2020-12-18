@@ -17,9 +17,11 @@ Previewable image.
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | nzSrc | Image path | `string` | - | - |
-| nzFallback | Load failure fault-tolerant src | `string` | - | - |
-| nzPlaceholder | Load placeholder src | `string` | - | - |
+| nzFallback | Load failure fault-tolerant src | `string` | - | ✅ |
+| nzPlaceholder | Load placeholder src | `string` | - | ✅ |
 | nzDisablePreview | Whether to disable the preview | `boolean` | `false` | ✅ |
+| nzCloseOnNavigation | Close preview while navigating | `boolean` | `false` | ✅ |
+| nzDirection | Text directionality | `Direction` | `'ltr'` | ✅ |
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 

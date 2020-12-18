@@ -2,10 +2,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { Directive, ElementRef, Input, OnChanges, OnInit, Optional, SimpleChanges } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChanges } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzImageGroupComponent } from './image-group.component';
 import { NzImageService } from './image.service';
@@ -21,18 +24,20 @@ export type ImageStatusType = 'error' | 'loading' | 'normal';
     '(click)': 'onPreview()'
   }
 })
-export class NzImageDirective implements OnInit, OnChanges {
+export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzDisablePreview: BooleanInput;
 
   @Input() nzSrc = '';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
-  @Input() nzFallback: string | null = null;
-  @Input() nzPlaceholder: string | null = null;
+  @Input() @WithConfig() nzFallback: string | null = null;
+  @Input() @WithConfig() nzPlaceholder: string | null = null;
 
+  dir?: Direction;
   backLoadImage!: HTMLImageElement;
   private status: ImageStatusType = 'normal';
+  private destroy$: Subject<void> = new Subject();
 
   get previewable(): boolean {
     return !this.nzDisablePreview && this.status !== 'error';
@@ -42,7 +47,9 @@ export class NzImageDirective implements OnInit, OnChanges {
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzImageService: NzImageService,
-    @Optional() private parentGroup: NzImageGroupComponent
+    protected cdr: ChangeDetectorRef,
+    @Optional() private parentGroup: NzImageGroupComponent,
+    @Optional() private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +57,18 @@ export class NzImageDirective implements OnInit, OnChanges {
     if (this.parentGroup) {
       this.parentGroup.addImage(this);
     }
+    if (this.directionality) {
+      this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+        this.dir = direction;
+        this.cdr.detectChanges();
+      });
+      this.dir = this.directionality.value;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onPreview(): void {
@@ -62,12 +81,12 @@ export class NzImageDirective implements OnInit, OnChanges {
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
       const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
-      const previewRef = this.nzImageService.preview(previewImages);
+      const previewRef = this.nzImageService.preview(previewImages, { nzDirection: this.dir });
       previewRef.switchTo(previewIndex);
     } else {
       // preview not inside image group
       const previewImages = [{ src: this.nzSrc }];
-      this.nzImageService.preview(previewImages);
+      this.nzImageService.preview(previewImages, { nzDirection: this.dir });
     }
   }
 

@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction } from '@angular/cdk/bidi';
 
 export class NzImagePreviewOptions {
   nzKeyboard?: boolean = true;
@@ -11,6 +12,7 @@ export class NzImagePreviewOptions {
   nzZIndex?: number;
   nzZoom?: number;
   nzRotate?: number;
+  nzDirection?: Direction;
 }
 
 export interface NzImage {
