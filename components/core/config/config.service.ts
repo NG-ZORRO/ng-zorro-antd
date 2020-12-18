@@ -83,7 +83,7 @@ export function WithConfig<T>() {
         this.assignmentCount[propName] = (this.assignmentCount[propName] || 0) + 1;
 
         if (originalDescriptor?.set) {
-          originalDescriptor.set.bind(this)(value);
+          originalDescriptor.set.bind(this)(value!);
         } else {
           this[privatePropName] = value;
         }

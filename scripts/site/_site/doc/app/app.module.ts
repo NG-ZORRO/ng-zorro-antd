@@ -1,3 +1,4 @@
+import { BidiModule } from '@angular/cdk/bidi';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -20,8 +21,6 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
-
-import { BidiModule } from '@angular/cdk/bidi';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -66,7 +65,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     RouterModule.forRoot(
       routes,
       environment.production
-        ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled', initialNavigation: 'enabled' }
+        ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled', initialNavigation: 'enabledNonBlocking' }
         : {}
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })

@@ -24,7 +24,7 @@ import {BidiModule} from '@angular/cdk/bidi';
 Set the direction for the application or its descendants in the template.
 
 ```html
-<tag-name dir="rtl" ></tag-name>
+<div dir="rtl"></div>
 ```
 
 ## Set in the service
@@ -49,5 +49,5 @@ class MyComponent {
 
 ### References
 
-- [Angular CDK  Bidirectionality](https://material.angular.io/cdk/bidi/api)
+- [Angular CDK Bidirectionality](https://material.angular.io/cdk/bidi/api)
 - [dir - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir)
