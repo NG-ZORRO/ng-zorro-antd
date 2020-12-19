@@ -12,7 +12,6 @@
     "strictTemplates": true,
     "fullTemplateTypeCheck": true,
     "enableResourceInlining": true,
-    "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "ng-zorro-antd",
