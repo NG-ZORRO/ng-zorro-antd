@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { VERSION } from 'ng-zorro-antd/version';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { VERSION } from 'ng-zorro-antd/version';
+
 const RESPONSIVE_XS = 1120;
 const RESPONSIVE_SM = 1200;
 
 @Component({
   selector: 'app-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header id="header" class="clearfix">
       <i
