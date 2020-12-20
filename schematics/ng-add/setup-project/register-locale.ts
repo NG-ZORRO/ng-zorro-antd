@@ -1,4 +1,4 @@
-import { Rule, Tree } from "@angular-devkit/schematics";
+import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
@@ -8,14 +8,14 @@ import {
   insertAfterLastOccurrence,
   insertImport,
   parseSourceFile
-} from "@angular/cdk/schematics";
-import { Change, InsertChange, NoopChange } from "@schematics/angular/utility/change";
-import { getAppModulePath } from "@schematics/angular/utility/ng-ast-utils";
-import { getWorkspace } from "@schematics/angular/utility/workspace";
-import { blue, cyan, yellow } from "chalk";
-import * as ts from "typescript";
+} from '@angular/cdk/schematics';
+import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
+import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { blue, cyan, yellow } from 'chalk';
+import * as ts from 'typescript';
 
-import { Schema } from "../schema";
+import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
   return async (host: Tree) => {
@@ -24,18 +24,18 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
 
-    const locale = options.locale || "en_US";
-    const localePrefix = locale.split("_")[0];
+    const locale = options.locale || 'en_US';
+    const localePrefix = locale.split('_')[0];
 
     const recorder = host.beginUpdate(appModulePath);
 
     const changes = [
-      insertImport(moduleSource, appModulePath, "NZ_I18N",
-        "ng-zorro-antd/i18n"),
+      insertImport(moduleSource, appModulePath, 'NZ_I18N',
+        'ng-zorro-antd/i18n'),
       insertImport(moduleSource, appModulePath, locale,
-        "ng-zorro-antd/i18n"),
-      insertImport(moduleSource, appModulePath, "registerLocaleData",
-        "@angular/common"),
+        'ng-zorro-antd/i18n'),
+      insertImport(moduleSource, appModulePath, 'registerLocaleData',
+        '@angular/common'),
       insertImport(moduleSource, appModulePath, localePrefix,
         `@angular/common/locales/${localePrefix}`, true),
       registerLocaleData(moduleSource, appModulePath, localePrefix),
@@ -60,7 +60,7 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[0].getChildren()[0]?.getText() === "registerLocaleData";
+    return fun[0].getChildren()[0]?.getText() === 'registerLocaleData';
   });
 
   if (registerLocaleDataFun.length === 0) {
@@ -77,9 +77,9 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 }
 
 function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
-  const metadataField = "providers";
-  const nodes = getDecoratorMetadata(moduleSource, "NgModule", "@angular/core");
-  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, "providers",
+  const metadataField = 'providers';
+  const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
+  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
     `{ provide: NZ_I18N, useValue: ${locale} }`, null);
   let node: any = nodes[0];  // tslint:disable-line:no-any
 
@@ -115,7 +115,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     if (arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      node = arrLiteral.elements.filter(e => e.getText?.().includes("NZ_I18N"));
+      node = arrLiteral.elements.filter(e => e.getText?.().includes('NZ_I18N'));
       if (node.length === 0) {
         return addProvide;
       } else {
