@@ -1,15 +1,22 @@
 import { Platform } from '@angular/cdk/platform';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-github-btn',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="gh-btn" tabindex="-1" [href]="'https://github.com/' + org + '/' + repo" target="_blank" rel="noopener" aria-hidden="true">
       <span class="gh-ico" aria-hidden="true"></span>
       <span class="gh-text">Star</span>
     </a>
-    <a class="gh-count" target="_blank" rel="noopener" [href]="'https://github.com/' + org + '/' + repo + '/stargazers'" style="display: block;">
+    <a
+      class="gh-count"
+      target="_blank"
+      rel="noopener"
+      [href]="'https://github.com/' + org + '/' + repo + '/stargazers'"
+      style="display: block;"
+    >
       {{ starCount }}
     </a>
   `,

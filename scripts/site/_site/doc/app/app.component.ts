@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from 
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzMessageRef, NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -21,7 +21,7 @@ interface DocPageMeta {
   description: string;
 }
 
-type SiteTheme = 'default' | 'dark' | 'compact';
+type SiteTheme = 'default' | 'dark' | 'compact' | 'aliyun';
 const defaultKeywords =
   'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架';
 
@@ -60,8 +60,7 @@ export class AppComponent implements OnInit {
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
     url.splice(-1);
-    // tslint:disable-next-line:prefer-template
-    this.router.navigateByUrl(url.join('/') + '/' + language);
+    this.router.navigateByUrl(`${url.join('/')}/${language}`).then();
   }
 
   switchDirection(direction: 'ltr' | 'rtl'): void {
@@ -79,30 +78,50 @@ export class AppComponent implements OnInit {
       return;
     }
     const theme = (localStorage.getItem('site-theme') as SiteTheme) || 'default';
-    this.onThemeChange(theme);
+    this.onThemeChange(theme, false);
   }
 
-  onThemeChange(theme: string): void {
+  onThemeChange(theme: string, notification: boolean = true): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.theme = theme as SiteTheme;
-    this.appService.theme$.next(theme);
-    this.renderer.setAttribute(document.body, 'data-theme', theme);
-    const dom = document.getElementById('site-theme');
-    if (dom) {
-      dom.remove();
+    let loading: NzMessageRef | null = null;
+    if (notification) {
+      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, { nzDuration: 0 });
     }
-    localStorage.removeItem('site-theme');
+    this.renderer.addClass(this.document.activeElement, 'preload');
+    const successLoaded = () => {
+      this.theme = theme as SiteTheme;
+      this.appService.theme$.next(theme);
+      this.renderer.setAttribute(document.body, 'data-theme', theme);
+      localStorage.removeItem('site-theme');
+      localStorage.setItem('site-theme', theme);
+      ['dark', 'compact', 'aliyun']
+        .filter(item => item !== theme)
+        .forEach(item => {
+          const dom = document.getElementById(`site-theme-${item}`);
+          if (dom) {
+            dom.remove();
+          }
+        });
+      setTimeout(() => this.renderer.removeClass(this.document.activeElement, 'preload'));
+      if (notification) {
+        this.nzMessageService.remove(loading?.messageId);
+        this.nzMessageService.success(this.language === 'en' ? `Switching theme successfully` : `切换主题成功`);
+      }
+    };
     if (theme !== 'default') {
       const style = document.createElement('link');
       style.type = 'text/css';
       style.rel = 'stylesheet';
-      style.id = 'site-theme';
+      style.id = `site-theme-${theme}`;
       style.href = `assets/${theme}.css`;
-
-      localStorage.setItem('site-theme', theme);
+      style.onload = () => {
+        successLoaded();
+      };
       document.body.append(style);
+    } else {
+      successLoaded();
     }
   }
 
@@ -111,7 +130,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private title: Title,
     private nzI18nService: NzI18nService,
-    private msg: NzMessageService,
+    private nzMessageService: NzMessageService,
     private ngZone: NgZone,
     private platform: Platform,
     private meta: Meta,
@@ -119,11 +138,11 @@ export class AppComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
-  ) { }
+  ) {}
 
   navigateToPage(url: string): void {
     if (url) {
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl(url).then();
     }
   }
 
@@ -139,7 +158,7 @@ export class AppComponent implements OnInit {
       return;
     }
     if (version !== this.currentVersion) {
-      window.location.href = window.location.origin + `/version/` + version;
+      window.location.href = `${window.location.origin}/version/${version}`;
     } else {
       window.location.href = window.location.origin;
     }
@@ -196,7 +215,7 @@ export class AppComponent implements OnInit {
             if (this.language === 'en') {
               this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
             } else {
-              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`)
+              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
             }
           } else {
             this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
@@ -222,7 +241,7 @@ export class AppComponent implements OnInit {
               );
             }
           } else {
-            this.updateMateTitle(`NG-ZORRO - Angular UI component library`)
+            this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
             this.updateDocMetaAndLocale();
           }
         }
@@ -348,13 +367,15 @@ export class AppComponent implements OnInit {
     if (!this.platform.isBrowser) {
       return;
     }
+    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, { nzDuration: 0 });
     const changeColor = () => {
       (window as any).less
         .modifyVars({
           '@primary-color': res.color.hex
         })
         .then(() => {
-          this.msg.success(`应用成功`);
+          this.nzMessageService.remove(loading.messageId);
+          this.nzMessageService.success(this.language === 'en' ? `Switching color successfully` : `应用成功`);
           this.color = res.color.hex;
           window.scrollTo(0, 0);
         });

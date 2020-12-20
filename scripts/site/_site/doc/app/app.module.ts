@@ -32,11 +32,12 @@ import { HeaderModule } from './header/header.module';
 import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
 import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
+import { SideComponent } from './side/side.component';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
 
 @NgModule({
-  declarations: [AppComponent, DEMOComponent],
+  declarations: [AppComponent, DEMOComponent, SideComponent],
   imports: [
     BidiModule,
     BrowserModule.withServerTransition({ appId: 'docs' }),
