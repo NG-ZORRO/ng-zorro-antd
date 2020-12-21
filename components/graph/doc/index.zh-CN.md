@@ -2,7 +2,7 @@
 category: Components
 subtitle: 流程图
 type: 数据展示
-title: Hierarchy Graph
+title: Graph
 cols: 1
 experimental: true
 ---

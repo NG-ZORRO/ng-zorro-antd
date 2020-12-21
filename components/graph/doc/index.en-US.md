@@ -1,7 +1,7 @@
 ---
 category: Components
 type: Data Display
-title: Hierarchy Graph
+title: Graph
 cols: 1
 experimental: true
 ---
