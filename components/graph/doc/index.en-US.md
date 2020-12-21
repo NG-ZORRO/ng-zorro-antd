@@ -43,7 +43,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | --- | --- | --- | --- |
 | `[nzGraphData]` | Data source | `NzGraphData(data: NzGraphDataDef?)` | `` |
 | `[nzRankDirection]` | Graph Direction | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
-| `[nzAutoFit]` | Whether to automatically adjust the height of the node, the default equal height | `boolean` | `false` |
+| `[nzAutoSize]` | Whether to automatically adjust the height of the node, the default equal height | `boolean` | `false` |
 | `[nzGraphLayoutConfig]` | Global config of graph | `NzGraphLayoutConfig` | `` |
 
 #### Methods
