@@ -5,7 +5,7 @@
     }
   },
   "peerDependencies": {
-    "@nx-component/hierarchy-graph": "0.0.7",
+    "dagre-compound": "~0.0.3",
     "d3": "^6.2.0"
   }
 }

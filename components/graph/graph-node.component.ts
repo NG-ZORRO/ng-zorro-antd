@@ -18,7 +18,7 @@ interface Info {
 @Component({
   selector: '[nz-graph-node]',
   template: `
-    <svg:g [attr.width]="node.width" [attr.height]="node.height">
+    <svg:g>
       <ng-container
         *ngIf="customTemplate"
         [ngTemplateOutlet]="customTemplate"

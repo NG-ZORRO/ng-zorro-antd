@@ -2,10 +2,9 @@
 category: Components
 subtitle: 流程图
 type: 数据展示
-title: Hierarchy Graph
+title: Graph
 cols: 1
 experimental: true
-hidden: true
 ---
 
 <blockquote style="border-color: #faad14;">
@@ -38,7 +37,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 安装依赖：
 
 ```sh
-npm install @nx-component/hierarchy-graph
+npm install dagre-compound
 npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
@@ -48,6 +47,7 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `[nzGraphData]` | 数据源 | `NzGraphData(data: NzGraphDataDef?)` | `` |
 | `[nzRankDirection]` | 图方向 | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
 | `[nzAutoSize]` | 是否根据节点内容自适应高度(默认等高) | `boolean` | `false` |
+| `[nzGraphLayoutConfig]` | 全局配置 | `NzGraphLayoutConfig` | `` |
 
 #### 组件方法
 
@@ -77,6 +77,14 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `collapse` | 收起全部 group 节点 | `(nodeName: string) => void` |
 | `isExpand` | 获取 group 节点展开状态 | `(nodeName: string) => boolean` |
 | `expansionModel` | 展开节点存储对象 | `SelectionModel<string>` |
+
+### NzGraphLayoutConfig
+| 属性 | 说明 | 类型 |
+| --- | --- | --- |
+| `layout` | 布局参数 | `{ nodeSep: number; rankSep: number; edgeSep: number; }` |
+| `subScene` | group 节点 | `{ paddingTop: number; paddingBottom: number; paddingLeft: number; paddingRight: number; labelHeight: number; }` |
+| `defaultCompoundNode` | group 节点 size | `{ width: number; height: number; maxLabelWidth: number; }` |
+| `defaultNode` | 默认节点 size | `{ width: number; height: number; labelOffset: number; maxLabelWidth: number; }` |
 
 #### NzGraphDataDef
 
@@ -112,7 +120,6 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `w` | 目标节点 | `number\|string` |
 | `label?` | 线内容 | `string` |
 | `points` | points | `Array<{ x: number; y: number; }>` |
-| `adjoiningEdge` | adjoiningEdge | `{ v: string; w: string; points: points>; } \| null` |
 
 #### NzGraphGroupNode
 
@@ -162,5 +169,5 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
     * `.nz-graph-edge-text` 线文本元素
 
 ## 说明
-- [@nx-component/hierarchy-graph](https://www.npmjs.com/package/@nx-component/hierarchy-graph): graph 布局计算库
+- [dagre-compound](https://www.npmjs.com/package/dagre-compound): 基于 Dagre 的 嵌套布局计算库
 - [SelectionModel](https://github.com/angular/components/blob/master/src/cdk/collections/selection-model.ts)

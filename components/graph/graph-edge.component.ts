@@ -78,22 +78,7 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
   }
 
   setLine(): void {
-    // TODO
-    // Need to move it to hierarchy graph
-    const adjoiningPath = this.getAdjoiningEdgeElement();
-    if (adjoiningPath) {
-      const adjoiningPoint = adjoiningPath
-        .getPointAtLength(this.edge.inbound ? adjoiningPath.getTotalLength() : 0)
-        .matrixTransform(adjoiningPath.getCTM()!)
-        .matrixTransform(this.path.getCTM()!.inverse());
-      const points = [...this.edge.points];
-      const index = this.edge.inbound ? 0 : points.length - 1;
-      points[index].x = adjoiningPoint.x;
-      points[index].y = adjoiningPoint.y;
-      this.setPath(this.line(points)!);
-    } else {
-      this.setPath(this.line(this.edge.points)!);
-    }
+    this.setPath(this.line(this.edge.points)!);
   }
 
   setPath(d: string): void {
@@ -108,14 +93,5 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
     this.path.setAttribute('data-edge', this.id);
     this.path.setAttribute('data-v', `${this.edge.v}`);
     this.path.setAttribute('data-w', `${this.edge.w}`);
-  }
-
-  getAdjoiningEdgeElement(): SVGPathElement | null {
-    const adjoiningEdge = this.edge.adjoiningEdge;
-    if (adjoiningEdge) {
-      return document.querySelector(`path[data-edge="${adjoiningEdge.v}--${adjoiningEdge.w}"]`) as SVGPathElement;
-    } else {
-      return null;
-    }
   }
 }

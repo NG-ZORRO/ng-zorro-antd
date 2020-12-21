@@ -6,7 +6,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
   template: `
     <button nz-button nzType="default" (click)="expandAll()">ExpandAll</button>
     <button nz-button nzType="default" (click)="collapseAll()">CollapseAll</button>
-    <button nz-button nzType="primary" (click)="layout()">Layout</button>
+    <button nz-button nzType="primary" (click)="fit()">Fit</button>
     <nz-radio-group [(ngModel)]="rankDirection">
       <label nz-radio-button nzValue="LR">LR</label>
       <label nz-radio-button nzValue="RL">RL</label>
@@ -24,11 +24,11 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       <ng-container *nzGraphNode="let node">
         <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
           <!-- Make sure 'foreignObject > :first-child' is existing when nzAutoSize is set with true -->
-          <div [class.custom-node]="node.type === 1" (click)="focusNode(node.id || node.name)">
+          <xhtml:div class="graph-node" [class.custom]="node.type === 1" (click)="focusNode(node.id || node.name)">
             <div class="title">
               {{ node.name }}
             </div>
-          </div>
+          </xhtml:div>
         </foreignObject>
       </ng-container>
     </nz-graph>
@@ -47,14 +47,26 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
         height: 400px;
       }
 
-      foreignObject {
+      .graph-node {
         border: 1px solid #8cc8ff;
+        cursor: pointer;
+        font-size: 12px;
+        height: 100%;
+        line-height: 1.2;
+        border-radius: 0;
+        text-align: center;
+        word-break: break-all;
+        display: block;
       }
 
-      .custom-node {
-        height: 100%;
-        height: 80px;
-        display: block;
+      .custom {
+        min-height: 30px;
+        height: fit-content;
+      }
+
+      .title {
+        padding: 4px;
+        word-break: keep-all;
       }
     `
   ]
@@ -213,7 +225,15 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
       },
       {
         v: '10',
+        w: '14'
+      },
+      {
+        v: '10',
         w: '12'
+      },
+      {
+        v: '11',
+        w: '14'
       },
       {
         v: '12',
@@ -221,7 +241,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
       }
     ],
     compound: {
-      group0: ['4', '5', '15']
+      G0: ['4', '5', '15']
     }
   };
   rankDirection: NzRankDirection = 'TB';
@@ -247,7 +267,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
     this.graphData.collapseAll();
   }
 
-  layout(): void {
+  fit(): void {
     this.zoomController?.fitCenter();
   }
 
@@ -256,6 +276,7 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   }
 
   graphInitialized(_ele: NzGraphComponent): void {
+    // Only nz-graph-zoom enabled, you should run `fitCenter` manually
     this.zoomController?.fitCenter();
   }
 }

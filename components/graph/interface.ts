@@ -10,9 +10,9 @@ import {
   HierarchyGraphEdgeDef,
   HierarchyGraphNodeDef,
   HierarchyGraphNodeInfo,
-  HierarchyGraphOption
-} from '@nx-component/hierarchy-graph';
-import { LayoutSetting } from '@nx-component/hierarchy-graph/dist/types';
+  HierarchyGraphOption,
+  LayoutConfig
+} from 'dagre-compound';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export interface NzGraphDataDef extends HierarchyGraphDef {
@@ -54,7 +54,33 @@ export interface NzGraphEdge extends HierarchyBaseEdgeInfo {
 }
 
 // tslint:disable-next-line:no-empty-interface
-export interface NzLayoutSetting extends LayoutSetting {}
+export interface NzLayoutSetting extends LayoutConfig {}
+
+export interface NzGraphBaseLayout {
+  layout: {
+    nodeSep: number;
+    rankSep: number;
+    edgeSep: number;
+  };
+  subScene: {
+    paddingTop: number;
+    paddingBottom: number;
+    paddingLeft: number;
+    paddingRight: number;
+    labelHeight: number;
+  };
+  defaultCompoundNode: {
+    width: number;
+    height: number;
+    maxLabelWidth: number;
+  };
+  defaultNode: {
+    width: number;
+    height: number;
+    labelOffset: number;
+    maxLabelWidth: number;
+  };
+}
 
 export function nzTypeDefinition<T>(): (item: unknown) => T {
   return item => item as T;
@@ -69,120 +95,42 @@ export type NzDeepPartial<T> = {
     : NzDeepPartial<T[P]>;
 };
 
-export type NzGraphLayoutSetting = NzDeepPartial<NzLayoutSetting>;
+export type NzGraphLayoutConfig = NzDeepPartial<NzGraphBaseLayout>;
 export const NZ_GRAPH_LAYOUT_SETTING: NzLayoutSetting = {
-  animation: {
-    /** Default duration for graph animations in ms. */
-    duration: 250
-  },
   graph: {
-    /** Graph parameter for metanode. */
     meta: {
-      /**
-       * Dagre's nodesep param - number of pixels that
-       * separate nodes horizontally in the layout.
-       *
-       * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-       */
       nodeSep: 50,
-      /**
-       * Dagre's ranksep param - number of pixels
-       * between each rank in the layout.
-       *
-       * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-       */
-      rankSep: 40,
-      /**
-       * Dagre's edgesep param - number of pixels that separate
-       * edges horizontally in the layout.
-       */
+      rankSep: 50,
       edgeSep: 5
-    },
-    /**
-     * Padding is used to correctly position the graph SVG inside of its parent
-     * element. The padding amounts are applied using an SVG transform of X and
-     * Y coordinates.
-     */
-    padding: { paddingTop: 10, paddingLeft: 0 }
+    }
   },
-  subscene: {
+  subScene: {
     meta: {
       paddingTop: 20,
       paddingBottom: 20,
       paddingLeft: 20,
       paddingRight: 20,
-      /**
-       * Used to leave room for the label on top of the highest node in
-       * the groupCore graph.
-       */
-      labelHeight: 20,
-      /** X-space between each extracted node and the groupCore graph. */
-      extractXOffset: 0,
-      /** Y-space between each extracted node. */
-      extractYOffset: 0
+      labelHeight: 20
     }
   },
   nodeSize: {
-    /** Size of meta nodes. */
     meta: {
-      radius: 2,
-      width: 160,
+      width: 50,
       maxLabelWidth: 0,
-      /** A scale for the node's height based on number of nodes inside */
-      // Hack - set this as an any type to avoid issues in exporting a type
-      // from an external module.
-      height: 100,
-      /** The radius of the circle denoting the expand button. */
-      expandButtonRadius: 3
+      height: 50
     },
-    /** Size of op nodes. */
-    op: {
-      width: 160,
-      height: 100,
-      radius: 1, // for making annotation touching ellipse
+    node: {
+      width: 50,
+      height: 50,
       labelOffset: 10,
       maxLabelWidth: 40
     },
-    /** Size of bridge nodes. */
     bridge: {
-      // NOTE: bridge nodes will normally be invisible, but they must
-      // take up some space so that the layout step leaves room for
-      // their edges.
-      width: 10,
-      height: 10,
+      width: 5,
+      height: 5,
       radius: 2,
       labelOffset: 0
     }
-  },
-  shortcutSize: {
-    /** Size of shortcuts for op nodes */
-    op: { width: 10, height: 4 },
-    /** Size of shortcuts for meta nodes */
-    meta: { width: 12, height: 4, radius: 1 },
-    /** Size of shortcuts for series nodes */
-    series: {
-      width: 14,
-      height: 4
-    }
-  },
-  annotations: {
-    /** Maximum possible width of the bounding box for in annotations */
-    inboxWidth: 50,
-    /** Maximum possible width of the bounding box for out annotations */
-    outboxWidth: 50,
-    /** X-space between the shape and each annotation-node. */
-    xOffset: 10,
-    /** Y-space between each annotation-node. */
-    yOffset: 3,
-    /** X-space between each annotation-node and its label. */
-    labelOffset: 2,
-    /** Defines the max width for annotation label */
-    maxLabelWidth: 120
-  },
-  constant: { size: { width: 4, height: 4 } },
-  minimap: {
-    /** The maximum width/height the minimap can have. */
-    size: 150
   }
 };
 
