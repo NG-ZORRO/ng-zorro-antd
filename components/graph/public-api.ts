@@ -9,6 +9,7 @@ export * from './data-source/graph-data-source';
 export * from './graph.module';
 export * from './graph.component';
 export * from './graph-node.directive';
+export * from './graph-group-node.directive';
 export * from './graph-zoom.directive';
 export * from './graph-node.component';
 export * from './graph-edge.component';
