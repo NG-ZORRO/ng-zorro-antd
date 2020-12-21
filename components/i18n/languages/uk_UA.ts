@@ -129,5 +129,17 @@ export default {
   },
   Empty: {
     description: 'Даних немає'
+  },
+  Icon: {
+    icon: 'іконка'
+  },
+  Text: {
+    edit: 'Редагувати',
+    copy: 'Копіювати',
+    copied: 'Скопійовано',
+    expand: 'Розгорнути'
+  },
+  PageHeader: {
+    back: 'Назад'
   }
 };
