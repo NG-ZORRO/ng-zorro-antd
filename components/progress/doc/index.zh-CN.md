@@ -21,6 +21,8 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 ## API
 
+### nz-progress
+
 各类型通用的属性。
 
 | 属性 | 说明 | 类型 | 默认值 |

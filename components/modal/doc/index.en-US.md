@@ -39,7 +39,6 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOkDisabled      | Whether to disable Ok button or not | `boolean` | `false` |
 | nzCancelDisabled  | Whether to disable Cancel button or not | `boolean` | `false` |
 | nzFooter          | Footer content, set as footer=null when you don't need default buttons. <i>1. Only valid in normal mode.<br>2. You can customize the buttons to the maximum extent by passing a `ModalButtonOptions` configuration (see the case or the instructions below).</i> | string<br>TemplateRef<br>ModalButtonOptions | OK and Cancel buttons |
-| nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| A default container |
 | nzKeyboard        | Whether support press esc to close | `boolean` | `true` |
 | nzMask            | Whether show mask or not. | `boolean` | `true` | ✅ |
 | nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` | ✅ |

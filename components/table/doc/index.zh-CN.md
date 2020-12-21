@@ -90,6 +90,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzItemRender]` | 用于自定义页码的结构，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | `boolean` | `false` | ✅ |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - | ✅ |
+| `[nzTemplateMode]` | 模板模式，无需将数据传递给 `nzData` | `boolean` | `false` |
 | `[nzVirtualItemSize]` | 虚拟滚动时每一列的高度，与 [cdk itemSize](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | 缓冲区最大像素高度，与 [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | 缓冲区最小像素高度，低于该值时将加载新结构，与 [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `100` |

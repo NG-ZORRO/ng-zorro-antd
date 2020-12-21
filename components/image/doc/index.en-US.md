@@ -14,6 +14,8 @@ Previewable image.
 
 ## API
 
+### [nz-image]
+
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | nzSrc | Image path | `string` | - | - |
@@ -36,6 +38,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 ## Related type definition
 
 ### NzImage
+
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | src | src | `string` | - |
@@ -44,6 +47,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | height | height | `string` | - |
 
 ### NzImagePreviewOptions
+
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | nzKeyboard      | Whether support press `esc` to close | `boolean` | `true` |
@@ -54,6 +58,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | nzRotate      | Rotate rate | `number` | 0 |
 
 ### NzImagePreviewRef
+
 | Name | Description |
 | --- | --- |
 | switchTo(index: number): void | Switch to index |
