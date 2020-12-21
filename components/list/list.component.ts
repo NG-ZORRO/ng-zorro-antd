@@ -35,7 +35,7 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
         <ng-container *ngFor="let item of nzDataSource; let index = index">
           <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
         </ng-container>
-        <ng-content select="nz-list-item, [nz-list-item]"></ng-content>
+        <ng-content></ng-content>
       </div>
     </ng-template>
 
@@ -64,7 +64,6 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
         </div>
         <nz-list-empty *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0" [nzNoResult]="nzNoResult"></nz-list-empty>
       </ng-container>
-      <ng-content></ng-content>
     </nz-spin>
 
     <nz-list-footer *ngIf="nzFooter">
