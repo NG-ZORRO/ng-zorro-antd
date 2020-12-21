@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
 import { execSync, spawnSync } from 'child_process';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -11,13 +11,13 @@ const read = require('readline-sync');
 /* Shortcut methods */
 const print = console.log;
 const log = {
-  info: (msg: string) => print(chalk.bgBlue.black(' INFO\t'), chalk.blue(msg)),
-  warn: (msg: string) => print(chalk.bgYellow.black(' WARN\t'), chalk.yellow(msg)),
+  info: (msg: string) => print(bgBlue.black(' INFO\t'), blue(msg)),
+  warn: (msg: string) => print(bgYellow.black(' WARN\t'), yellow(msg)),
   error: (msg: string) => {
-    print(chalk.bgRed.black(' ERROR\t'), chalk.red(msg));
+    print(bgRed.black(' ERROR\t'), red(msg));
     process.exit(1);
   },
-  success: (msg: string) => print(chalk.bgGreen.black(' SUCCESS\t'), chalk.green(msg))
+  success: (msg: string) => print(bgGreen.black(' SUCCESS\t'), green(msg))
 };
 
 /* The whole process */
@@ -111,7 +111,7 @@ function bumpVersion(): void {
   let version;
 
   while (!versionNumberValid) {
-    version = read.question(chalk.bgYellow.black('Please input the new version:') + '  ');
+    version = read.question(bgYellow.black('Please input the new version:') + '  ');
     if (checkVersionNumber(currentVersion, version)) {
       versionNumberValid = true;
     } else {
@@ -149,7 +149,7 @@ function updateChangelog(): void {
   let completeEditing = false;
 
   while (!completeEditing) {
-    const result = read.question(chalk.bgYellow.black('Please manually update docs/changelog. Press [Y] if you are done:') + '  ');
+    const result = read.question(bgYellow.black('Please manually update docs/changelog. Press [Y] if you are done:') + '  ');
     if (result.trim().toLowerCase() === 'y') {
       completeEditing = true;
     }
