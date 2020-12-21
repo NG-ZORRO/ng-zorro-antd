@@ -15,6 +15,8 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 
 ## API
 
+### [nz-image]
+
 | 参数        | 说明                               | 类型             | 默认值 | 支持全局配置  |
 | ----------- | ---------------------------------- | ---------------- | ------ | ----- |
 | nzSrc | 图片地址 | `string` | - | - |
@@ -36,6 +38,7 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 ## 相关类型定义
 
 ### NzImage
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | src | src | `string` | - |
@@ -44,6 +47,7 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 | height | 图片高度 | `string` | - |
 
 ### NzImagePreviewOptions
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | nzKeyboard      | 是否支持键盘 esc 关闭 | `boolean` | `true` |
@@ -54,6 +58,7 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 | nzRotate      | 旋转角度 | `number` | 0 |
 
 ### NzImagePreviewRef
+
 | 名称 | 描述 |
 | --- | --- |
 | switchTo(index: number): void | 设置预览索引 |

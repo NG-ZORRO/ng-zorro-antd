@@ -40,7 +40,6 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzOkDisabled      | 是否禁用确定按钮 | `boolean` | `false` |
 | nzCancelDisabled  | 是否禁用取消按钮 | `boolean` | `false` |
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
-| nzGetContainer    | 模态框内容容器 | `HTMLElement \| () => HTMLElement` | - |
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
