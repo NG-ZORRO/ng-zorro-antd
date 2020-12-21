@@ -64,6 +64,7 @@ components/page-header/**                 @CK110
 components/transfer/**                    @Ricbet
 components/i18n/**                        @wenqi73
 components/pipes/**                       @chensimeng
+components/image/**                       @stygian-desolator
 
 # The `components/core/*` owners
 components/core/config/**                 @wendellhu95
