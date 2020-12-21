@@ -229,7 +229,7 @@
       "prefix": "nz",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
