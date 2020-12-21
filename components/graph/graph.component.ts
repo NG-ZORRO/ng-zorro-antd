@@ -25,16 +25,21 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+
 import { buildGraph } from 'dagre-compound';
+
+import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { finalize, take, takeUntil } from 'rxjs/operators';
+import { calculateTransform } from './core/utils';
+
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { finalize, take, takeUntil } from 'rxjs/operators';
-import { calculateTransform } from './core/utils';
+
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
+import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
 import { NzGraphZoomDirective } from './graph-zoom.directive';
@@ -90,14 +95,21 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
           <svg:g class="nz-graph-nodes">
             <ng-container *ngFor="let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun">
               <g
-                *ngIf="node.type !== 2"
+                *ngIf="node.type === 1"
                 class="nz-graph-node"
                 nz-graph-node
                 [node]="node"
-                [customTemplate]="customGraphNodeTemplate"
+                [customTemplate]="nodeTemplate"
                 (nodeClick)="clickNode($event)"
               ></g>
-
+              <g
+                *ngIf="node.type === 0"
+                class="nz-graph-node"
+                nz-graph-node
+                [node]="node"
+                [customTemplate]="groupNodeTemplate"
+                (nodeClick)="clickNode($event)"
+              ></g>
               <ng-container
                 *ngIf="node.expanded"
                 [ngTemplateOutlet]="groupTemplate"
@@ -120,8 +132,11 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
   @ViewChildren(NzGraphNodeComponent) listOfNodeComponent!: QueryList<NzGraphNodeComponent>;
 
-  @ContentChild(NzGraphNodeDirective, { static: true, read: TemplateRef }) customGraphNodeTemplate?: TemplateRef<{
-    $implicit: NzGraphNode | NzGraphGroupNode;
+  @ContentChild(NzGraphNodeDirective, { static: true, read: TemplateRef }) nodeTemplate?: TemplateRef<{
+    $implicit: NzGraphNode;
+  }>;
+  @ContentChild(NzGraphGroupNodeDirective, { static: true, read: TemplateRef }) groupNodeTemplate?: TemplateRef<{
+    $implicit: NzGraphGroupNode;
   }>;
   @ContentChild(NzGraphEdgeDirective, { static: true, read: TemplateRef }) customGraphEdgeTemplate?: TemplateRef<{
     $implicit: NzGraphEdge;

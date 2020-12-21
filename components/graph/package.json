@@ -5,7 +5,7 @@
     }
   },
   "peerDependencies": {
-    "dagre-compound": "~0.0.3",
+    "dagre-compound": "0.0.4",
     "d3": "^6.2.0"
   }
 }

@@ -34,8 +34,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 Dependencies:
 
 ```sh
-npm install dagre-compound
-npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
+npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
 ### nz-graph
@@ -133,6 +132,17 @@ Customize the graph node template
 ```html
 <nz-graph [nzGraphData]="data">
   <ng-container *nzGraphNode="let node">
+    <span>{{ node.name }} - {{ node.label }}</span>
+  </ng-container>
+</nz-graph>
+```
+
+### [nzGraphGroupNode]
+Customize the graph group-node template
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphGroupNode="let node">
     <span>{{ node.name }} - {{ node.label }}</span>
   </ng-container>
 </nz-graph>

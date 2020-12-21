@@ -37,8 +37,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 安装依赖：
 
 ```sh
-npm install dagre-compound
-npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
+npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
 ### nz-graph
@@ -130,11 +129,22 @@ npm install d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 | `edges` | `NzGraphEdge[]` |
 
 ### [nzGraphNode]
-自定义节点渲染模板
+自定义叶子节点渲染模板
 
 ```html
 <nz-graph [nzGraphData]="data">
   <ng-container *nzGraphNode="let node">
+    <span>{{ node.name }} - {{ node.label }}</span>
+  </ng-container>
+</nz-graph>
+```
+
+### [nzGraphGroupNode]
+自定义组节点渲染模板
+
+```html
+<nz-graph [nzGraphData]="data">
+  <ng-container *nzGraphGroupNode="let node">
     <span>{{ node.name }} - {{ node.label }}</span>
   </ng-container>
 </nz-graph>

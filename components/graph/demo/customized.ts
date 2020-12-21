@@ -14,7 +14,6 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
     <nz-graph
-      nzNoAnimation
       nz-graph-zoom
       [nzGraphData]="graphData"
       [nzAutoSize]="true"
@@ -23,8 +22,17 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
     >
       <ng-container *nzGraphNode="let node">
         <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
-          <!-- Make sure 'foreignObject > :first-child' is existing when nzAutoSize is set with true -->
-          <xhtml:div class="graph-node" [class.custom]="node.type === 1" (click)="focusNode(node.id || node.name)">
+          <xhtml:div class="graph-node leaf-node" (click)="focusNode(node.id || node.name)">
+            <div class="title">
+              {{ node.name }}
+            </div>
+          </xhtml:div>
+        </foreignObject>
+      </ng-container>
+
+      <ng-container *nzGraphGroupNode="let node">
+        <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+          <xhtml:div class="graph-node group-node" (click)="focusNode(node.id || node.name)">
             <div class="title">
               {{ node.name }}
             </div>
@@ -59,7 +67,13 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
         display: block;
       }
 
-      .custom {
+      .group-node {
+        border-width: 4px;
+      }
+
+      .leaf-node {
+        color: #1a90ff;
+        background: rgba(26, 144, 255, 0.15);
         min-height: 30px;
         height: fit-content;
       }

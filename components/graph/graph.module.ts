@@ -8,9 +8,11 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 import { NzGraphDefsComponent } from './graph-defs.component';
 import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
+import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphMinimapComponent } from './graph-minimap.component';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
@@ -22,6 +24,7 @@ const COMPONENTS = [
   NzGraphMinimapComponent,
   NzGraphDefsComponent,
   NzGraphNodeDirective,
+  NzGraphGroupNodeDirective,
   NzGraphZoomDirective,
   NzGraphNodeComponent,
   NzGraphEdgeComponent,
