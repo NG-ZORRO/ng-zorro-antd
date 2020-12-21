@@ -19,7 +19,7 @@ export default {
   },
   DatePicker: {
     lang: {
-      placeholder: 'Оберіть дату',     
+      placeholder: 'Оберіть дату',
       yearPlaceholder: 'Оберіть рік',
       quarterPlaceholder: 'Оберіть квартал',
       monthPlaceholder: 'Оберіть місяць',
