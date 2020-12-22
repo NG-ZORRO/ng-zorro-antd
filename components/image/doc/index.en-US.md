@@ -31,7 +31,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 ### NzImageService
 
 | Property | Description | Type | Default |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | images | Preview images | `NzImage[]` | - |
 | options | Preview options | `NzImagePreviewOptions` | - |
 
