@@ -140,12 +140,6 @@
           "configurations": {
             "production": {}
           }
-        },
-        "service-work": {
-          "builder": "additional-service-worker-builder:service-worker",
-          "options": {
-            "browserTarget": "ng-zorro-antd-doc:build:production"
-          }
         }
       }
     },

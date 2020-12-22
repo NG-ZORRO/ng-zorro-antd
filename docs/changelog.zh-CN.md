@@ -18,6 +18,45 @@ timeline: true
 
 `2020-12-21`
 
+
+## 新特性
+
+### 支持 RTL
+
+在 `body` 或 `html` 上设置 `dir` 属性。
+
+```html
+<html dir="rtl"></html>
+```
+
+或者使用 Angular CDK bidi module 设置双方向
+
+```typescript
+import {BidiModule} from '@angular/cdk/bidi';
+```
+
+非常感谢 [@saeedrahimi](https://github.com/saeedrahimi), [@hdm91](https://github.com/hdm91), [@HDaghash](https://github.com/HDaghash), [@hmdnikoo](https://github.com/hmdnikoo) 的贡献!
+
+### 新增 Image 组件
+
+可用于处理图片的渐进加载，加载失败占位符，以及图文内容中的图片（多张）预览。
+
+非常感谢 [@stygian-desolator](https://github.com/stygian-desolator) 的贡献！
+
+### 新增 Graph 实验性组件
+
+支持自定义的多层级的图（Graph）渲染。
+
+### 新增 Tree View 组件
+
+原有的 Tree 已经包含了许多常用的功能，为了处理更多定制性更高的场景我们开发了更基础的 Tree View 组件，具有更高的定制度并且能够更好的控制性能。
+
+### 新增内置 Aliyun 主题
+
+```less
+@import "~ng-zorro-antd/ng-zorro-antd.aliyun.less";
+```
+
 ### Bug Fixes
 
 * **tree:** 修复样式 ([#6198](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6198)) ([a481a15](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a481a156278047472e1324b87df896b37246a0ed))
@@ -43,17 +82,17 @@ timeline: true
 ### BREAKING CHANGES
 
 **date-picker**
-- `[nzMode]` does not support `NzDateMode[]` type any more, please adjust it manually.
+- `[nzMode]` 不再支持 `NzDateMode[]` 数组类型。
 
 **modal**
-- `[nzGetContainer]` has been removed, please remove it manually.
-- `open` method in `NzModalRef` has been removed, please remove it manually.
+- `[nzGetContainer]` 以被移除。
+- `NzModalRef` 的 `open` 方法以被移除。
 
 **tabs**
-- `[nzShowPagination]` input has been removed, please remove it manually.
-- `(nzOnPrevClick)` output has been removed, please remove it manually.
-- `(nzOnNextClick)` output has been removed, please remove it manually.
-- `a[nz-tab-link]` selector has been removed, please use `ng-template[nzTabLink] > a[nz-tab-link]` instead.
+- `[nzShowPagination]` input 以被移除。
+- `(nzOnPrevClick)` output 以被移除。
+- `(nzOnNextClick)` output 以被移除。
+- `a[nz-tab-link]` 用法以被移除，请使用 `ng-template[nzTabLink] > a[nz-tab-link]` 代替.
 
 
 ## 历史版本

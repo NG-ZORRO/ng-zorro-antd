@@ -119,6 +119,10 @@ components/overview/en
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
+/components/image/en
+/components/image/zh
+/components/tree-view/en
+/components/tree-view/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -129,8 +133,6 @@ components/overview/en
 /docs/customize-theme/zh
 /docs/global-config/en
 /docs/global-config/zh
-/docs/experimental/zh
-/docs/experimental/en
 /docs/faq/en
 /docs/faq/zh
 /docs/getting-started/en
@@ -151,5 +153,7 @@ components/overview/en
 /experimental/resizable/en
 /experimental/code-editor/zh
 /experimental/code-editor/en
+/experimental/graph/zh
+/experimental/graph/en
 /docs/migration-v10/en
 /docs/migration-v10/zh
