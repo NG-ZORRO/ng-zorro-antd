@@ -94,17 +94,17 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    <nz-select-clear
-      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
-      [clearIcon]="nzClearIcon"
-      (clear)="onClearSelection()"
-    ></nz-select-clear>
     <nz-select-arrow
       *ngIf="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
     ></nz-select-arrow>
+    <nz-select-clear
+      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
+      [clearIcon]="nzClearIcon"
+      (clear)="onClearSelection()"
+    ></nz-select-clear>
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
