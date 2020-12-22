@@ -72,6 +72,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [suffixIcon]="nzSuffixIcon"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
+      [id]="nzId"
     >
       <date-range-popup
         [isRange]="isRange"
@@ -160,6 +161,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string = undefined;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
+  @Input() nzId: string | null = null;
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
   @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();

@@ -64,6 +64,7 @@ registerLocaleData(zh);
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[(ngModel)]` | 日期 | `Date` | - |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 
 ### nz-date-picker[nzMode="date"]
 
