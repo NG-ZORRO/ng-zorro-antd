@@ -66,7 +66,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     RouterModule.forRoot(
       routes,
       environment.production
-        ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled', initialNavigation: 'enabledNonBlocking' }
+        ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled', initialNavigation: 'enabledBlocking' }
         : {}
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
