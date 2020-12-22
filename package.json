@@ -62,7 +62,6 @@
     "@types/node": "^14.14.14",
     "@types/parse5": "^5.0.3",
     "@types/shelljs": "^0.8.8",
-    "additional-service-worker-builder": "0.0.2",
     "antd-theme-generator": "1.2.2",
     "chalk": "^4.1.0",
     "classlist.js": "^1.1.20150312",

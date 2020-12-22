@@ -18,6 +18,44 @@ timeline: true
 
 `2020-12-21`
 
+
+## Highlights
+
+### RTL Support
+
+Set the dir attribute on the document body or html tag.
+```html
+<html dir="rtl"></html>
+```
+
+Or use Angular CDK bidi module for bi-directional.
+
+```typescript
+import {BidiModule} from '@angular/cdk/bidi';
+```
+
+Super thanks to [@saeedrahimi](https://github.com/saeedrahimi), [@hdm91](https://github.com/hdm91), [@HDaghash](https://github.com/HDaghash), [@hmdnikoo](https://github.com/hmdnikoo) for contributing this!
+
+### New Image component
+
+Used to handle progressive loading of images; failure fallback, and preview of image(s).
+
+Super thanks to [@stygian-desolator](https://github.com/stygian-desolator) for contributing this!
+
+### New Graph experimental component
+
+Support customized multi-level graph rendering.
+
+### New Tree View component
+
+The previous Tree already contains many common features, and to handle more customizable scenarios we developed a more basic Tree View component with higher ability of customization and better control over performance.
+
+### New built-in Aliyun theme
+
+```less
+@import "~ng-zorro-antd/ng-zorro-antd.aliyun.less";
+```
+
 ### Bug Fixes
 
 * **tree:** fix tree styles ([#6198](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6198)) ([a481a15](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a481a156278047472e1324b87df896b37246a0ed))
