@@ -33,7 +33,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 
 ### Page header sections
 | Element | Description |
-| ----- | ----------- | ---- | ------------- |
+| ----- | ----- |
 | `nz-page-header-title` | Title section |
 | `nz-page-header-subtitle` | Subtitle section, `[nzTitle]` has high priority |
 | `nz-page-header-content` | Content section, `[nzSubtitle]` has high priority |

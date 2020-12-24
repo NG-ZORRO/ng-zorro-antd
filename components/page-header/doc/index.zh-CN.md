@@ -34,7 +34,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 
 ### Page header 组成部分
 | 元素 | 说明 |
-| ----- | ----------- | ---- | ------------- |
+| ----- | ----- |
 | `nz-page-header-title` | title 部分，`[nzTitle]` 优先级更高 |
 | `nz-page-header-subtitle` | subtitle 部分，`[nzSubtitle]` 优先级更高 |
 | `nz-page-header-content` | 内容部分 |
