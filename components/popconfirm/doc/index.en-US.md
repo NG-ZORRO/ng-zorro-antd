@@ -36,15 +36,16 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmOverlayStyle]` | Style of the popconfirm card | `object` | - |
 | `[nzPopconfirmBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 
-| Param | Description | Type | Default value |
-| ----- | ----------- | ---- | ------------- |
-| `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` |
-| `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` |
-| `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
-| `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` |
-| `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - |
-| `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - |
-| `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - |
+| Param | Description | Type | Default value | Global Config |
+| ----- | ----------- | ---- | ------------- | ------------ |
+| `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` | - |
+| `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` | - |
+| `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` | - |
+| `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` | - |
+| `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - | - |
+| `[nzAutoFocus]` | Autofocus a button | `null \| 'ok' \| 'cancel'` | `null` | ✅ |
+| `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - | - |
+| `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - | - |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 

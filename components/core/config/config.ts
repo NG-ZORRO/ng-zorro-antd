@@ -314,6 +314,7 @@ export interface ImageConfig {
 
 export interface PopConfirmConfig {
   nzPopconfirmBackdrop?: boolean;
+  nzAutofocus?: null | 'ok' | 'cancel';
 }
 
 export interface PopoverConfig {
