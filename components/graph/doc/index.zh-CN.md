@@ -40,30 +40,44 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
-### nz-graph
+### svg[nz-svg-container]
+
+定义一个 SVG 容器。
+
+### g[nzZoom]
+
+```typescript
+@Directive({
+  selector: 'g[nzZoom], svg:g[nzZoom]',
+  exportAs: 'NzSvgGZoom',
+})
+```
+
+定义一个可缩放可平移的 SVG Graph 元素，必须位于 `svg[nz-svg-container]` 内。
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzGraphData]` | 数据源 | `NzGraphData(data: NzGraphDataDef?)` | `` |
+| `[nzZoomMaxScale]` | 最大缩放比例 | `number` | `Number.MAX_SAFE_INTEGER` |
+| `[nzZoomMinScale]` | 最小缩放比例 | `number` | `Number.MIN_SAFE_INTEGER` |
+| `(nzBeforeZoomEvents)` | 缩放发生前的事件，可以通过调用 `preventDefault` 阻止缩放。 | `EventEmitter<WheelEvent \| MouseEvent>` | - |
+
+**实例方法**
+
+| 方法 | 描述 |
+| --- | --- |
+| `scale(scale: number, duration: number = 0): Promise<void>` | 设置到指定缩放级别 |
+| `fitCenter(duration: number = 0, fitScale: number = 1): Promise<void>` | 缩放到适合的尺寸并平移到 SVG 容器的中心。`fitScale` 参数是在缩放到适合的尺寸后的比例基础上的比例，而不是最终的缩放比例。 |
+| `centerByElement(element: SVGGElement, duration: number = 0): Promise<void>` | 将一个子节点平移到 SVG 容器的中心。`element` 参数必须为 `g` 标签。 |
+| `fitCenterByElement(element: SVGGElement, fitScale: number = 1, duration: number = 0): Promise<void>` | 将一个子节缩放到适合的尺寸并平移到 SVG 容器的中心。`element` 参数必须为 `g` 标签，`fitScale` 参数是在缩放到适合的尺寸后的比例基础上的比例，而不是最终的缩放比例。 |
+
+
+### g[nz-graph]
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzGraphData]` | 数据源 | `NzGraphData(data: NzGraphDataDef?)` | - |
 | `[nzRankDirection]` | 图方向 | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
 | `[nzAutoSize]` | 是否根据节点内容自适应高度(默认等高) | `boolean` | `false` |
-| `[nzGraphLayoutConfig]` | 全局配置 | `NzGraphLayoutConfig` | `` |
-
-#### 组件方法
-
-| 名称 | 描述 |
-| --- | --- |
-| `fitCenter()` | 居中图并自适应缩放（如使用缩放功能请使用 `nz-graph-zoom`） |
-
-### [nz-graph-zoom]
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[(nzZoom)]` | 缩放比例 | `number` | `1` |
-| `[nzMinZoom]` | 最小缩放 | `number` | `0.1` |
-| `[nzMaxZoom]` | 最大缩放 | `number` | `10` |
-| `(nzTransformEvent)` | 缩放事件 | `() => NzZoomTransform` | `` |
-| `(fitCenter)` | 居中图并自适应缩放 | `() => void` | `void` |
-| `(focus)` | 居中单个节点 | `(e: SVGGElement, duration: number) => void` | `void` |
+| `[nzGraphLayoutConfig]` | 全局配置 | `NzGraphLayoutConfig` | - |
 
 #### NzGraphData
 
@@ -113,7 +127,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 #### NzGraphEdge
 
 | 属性 | 说明 | 类型 |
-| --- | --- |
+| --- | --- | --- |
 | `id` | id | `string` |
 | `v` | 起始节点 | `number\|string` |
 | `w` | 目标节点 | `number\|string` |
@@ -132,35 +146,41 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 自定义叶子节点渲染模板
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphNode="let node">
-    <span>{{ node.name }} - {{ node.label }}</span>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphNode="let node">
+      <span>{{ node.name }} - {{ node.label }}</span>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### [nzGraphGroupNode]
 自定义组节点渲染模板
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphGroupNode="let node">
-    <span>{{ node.name }} - {{ node.label }}</span>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphGroupNode="let node">
+      <span>{{ node.name }} - {{ node.label }}</span>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### [nzGraphEdge]
 自定义边渲染模板
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphEdge="let edge">
-    <svg:g>
-      <path></path>
-    </svg:g>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphEdge="let edge">
+      <svg:g>
+        <path></path>
+      </svg:g>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### 样式

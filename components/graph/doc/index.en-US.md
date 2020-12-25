@@ -37,30 +37,44 @@ Dependencies:
 npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
-### nz-graph
+### svg[nz-svg-container]
+
+Defines an SVG container.
+
+### g[nzZoom]
+
+```typescript
+@Directive({
+  selector: 'g[nzZoom], svg:g[nzZoom]',
+  exportAs: 'NzSvgGZoom',
+})
+```
+
+Defines a scalable and translatable SVG Graph element that must be in `svg[nz-svg-container]`.
+
+| Parameter | Description | Type | Default |
+| --- | --- | --- | --- |
+| `[nzZoomMaxScale]` | The maximum zoom scale | `number` | `Infinity` |
+| `[nzZoomMinScale]` | The minimum zoom scale | `number` | `-Infinity` |
+| `(nzBeforeZoomEvents)` | Events before the zoom occurs, the zoom can be prevented by calling `preventDefault`. | `EventEmitter<WheelEvent \| MouseEvent>` | - |
+
+**Instance Methods**
+
+| Method | Description |
+| --- | --- |
+| `scale(scale: number, duration: number = 0): Promise<void>` | Zoom to specified scale. |
+| `fitCenter(duration: number = 0, fitScale: number = 1): Promise<void>` | Zoom to the fit size and center of the svg container. The `fitScale` is based on the scale after fitting. |
+| `centerByElement(element: SVGGElement, duration: number = 0): Promise<void>` | Zoom a child node to the center of the svg container, The `element` type is SVGGElement. |
+| `fitCenterByElement(element: SVGGElement, fitScale: number = 1, duration: number = 0): Promise<void>` | Zoom a child node to the fit size and center of the svg container. The `fitScale` is based on the scale after fitting, and the `element` type is SVGGElement.   |
+
+
+### g[nz-graph]
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |
 | `[nzGraphData]` | Data source | `NzGraphData(data: NzGraphDataDef?)` | `` |
 | `[nzRankDirection]` | Graph Direction | `TB` \| `BT` \| `LR` \| `RL` | `LR` |
 | `[nzAutoSize]` | Whether to automatically adjust the height of the node, the default equal height | `boolean` | `false` |
 | `[nzGraphLayoutConfig]` | Global config of graph | `NzGraphLayoutConfig` | `` |
-
-#### Methods
-
-| Method | Description |
-| --- | --- |
-| `fitCenter()` | Move graph to center(use `nz-graph-zoom` instead if zooming is enabled) |
-
-### [nz-graph-zoom]
-
-| Parameter | Description | Type | Default |
-| --- | --- | --- | --- |
-| `[(nzZoom)]` | Default zoom scale | `number` | `1` |
-| `[nzMinZoom]` | Minimum zoom scale | `number` | `0.1` |
-| `[nzMaxZoom]` | Maximum zoom scale | `number` | `10` |
-| `(nzTransformEvent)` | Event of zooming | `() => NzZoomTransform` | `` |
-| `(fitCenter)` | Move graph to center | `() => void` | `void` |
-| `(focus)` | Move target node to center | `(e: SVGGElement, duration: number) => void` | `void` |
 
 #### NzGraphData
 
@@ -130,35 +144,41 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 Customize the graph node template
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphNode="let node">
-    <span>{{ node.name }} - {{ node.label }}</span>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphNode="let node">
+      <span>{{ node.name }} - {{ node.label }}</span>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### [nzGraphGroupNode]
 Customize the graph group-node template
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphGroupNode="let node">
-    <span>{{ node.name }} - {{ node.label }}</span>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphGroupNode="let node">
+      <span>{{ node.name }} - {{ node.label }}</span>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### [nzGraphEdge]
 Customize the graph edge template
 
 ```html
-<nz-graph [nzGraphData]="data">
-  <ng-container *nzGraphEdge="let edge">
-    <svg:g>
-      <path></path>
-    </svg:g>
-  </ng-container>
-</nz-graph>
+<svg nz-svg-container>
+  <g nz-graph [nzGraphData]="data">
+    <ng-container *nzGraphEdge="let edge">
+      <svg:g>
+        <path></path>
+      </svg:g>
+    </ng-container>
+  </g>
+</svg>
 ```
 
 ### Styling

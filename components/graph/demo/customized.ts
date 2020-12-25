@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, NzRankDirection } from 'ng-zorro-antd/graph';
+import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzRankDirection, NzZoomControl } from 'ng-zorro-antd/graph';
 
 @Component({
   selector: 'nz-demo-graph-customized',
@@ -13,33 +13,39 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
       <label nz-radio-button nzValue="TB">TB</label>
       <label nz-radio-button nzValue="BT">BT</label>
     </nz-radio-group>
-    <nz-graph
-      nz-graph-zoom
-      [nzGraphData]="graphData"
-      [nzAutoSize]="true"
-      [nzRankDirection]="rankDirection"
-      (nzGraphInitialized)="graphInitialized($event)"
-    >
-      <ng-container *nzGraphNode="let node">
-        <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
-          <xhtml:div class="graph-node leaf-node" (click)="focusNode(node.id || node.name)">
-            <div class="title">
-              {{ node.name }}
-            </div>
-          </xhtml:div>
-        </foreignObject>
-      </ng-container>
 
-      <ng-container *nzGraphGroupNode="let node">
-        <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
-          <xhtml:div class="graph-node group-node" (click)="focusNode(node.id || node.name)">
-            <div class="title">
-              {{ node.name }}
-            </div>
-          </xhtml:div>
-        </foreignObject>
-      </ng-container>
-    </nz-graph>
+    <svg nz-svg-container width="100%" height="500px">
+      <g
+        nz-graph
+        nzZoom
+        [nzZoomMinScale]="0.5"
+        [nzZoomMaxScale]="10"
+        [nzGraphData]="graphData"
+        [nzAutoSize]="true"
+        [nzRankDirection]="rankDirection"
+        (nzGraphInitialized)="graphInitialized($event)"
+      >
+        <g *nzGraphNode="let node" #gElement (click)="focusToNode(gElement)">
+          <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+            <xhtml:div class="graph-node leaf-node">
+              <div class="title">
+                {{ node.name }}
+              </div>
+            </xhtml:div>
+          </foreignObject>
+        </g>
+
+        <g *nzGraphGroupNode="let node" #gElement (click)="focusToNode(gElement)">
+          <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+            <xhtml:div class="graph-node group-node">
+              <div class="title">
+                {{ node.name }}
+              </div>
+            </xhtml:div>
+          </foreignObject>
+        </g>
+      </g>
+    </svg>
   `,
   styles: [
     `
@@ -87,8 +93,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
 })
 export class NzDemoGraphCustomizedComponent implements OnInit {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;
-  @ViewChild(NzGraphZoomDirective, { static: true }) zoomController!: NzGraphZoomDirective;
-  zoom = 0.5;
+  @ViewChild(NzZoomControl, { static: true }) zoom!: NzZoomControl;
   testDef: NzGraphDataDef = {
     nodes: [
       {
@@ -260,7 +265,6 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   };
   rankDirection: NzRankDirection = 'TB';
   graphData = new NzGraphData(this.testDef);
-
   constructor() {}
 
   ngOnInit(): void {}
@@ -282,15 +286,15 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   }
 
   fit(): void {
-    this.zoomController?.fitCenter();
+    this.zoom.fitCenter(300, 0.9).then();
   }
 
-  focusNode(e: string | number): void {
-    this.zoomController?.focus(e);
+  focusToNode(el: Element): void {
+    const gEle = el as SVGGElement;
+    this.zoom.centerByElement(gEle, 300).then();
   }
 
   graphInitialized(_ele: NzGraphComponent): void {
-    // Only nz-graph-zoom enabled, you should run `fitCenter` manually
-    this.zoomController?.fitCenter();
+    this.zoom.fitCenter(0, 0.9).then();
   }
 }
