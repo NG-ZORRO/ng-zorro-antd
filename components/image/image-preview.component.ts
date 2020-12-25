@@ -4,15 +4,26 @@
  */
 import { AnimationEvent } from '@angular/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
+import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
   icon: string;
@@ -57,6 +68,7 @@ const initialPosition = {
               <img
                 cdkDragHandle
                 class="ant-image-preview-img"
+                #imgRef
                 *ngIf="index === imageIndex"
                 [attr.src]="image.src"
                 [attr.alt]="image.alt"
@@ -157,6 +169,8 @@ export class NzImagePreviewComponent implements OnDestroy {
   containerClick = new EventEmitter<void>();
   closeClick = new EventEmitter<void>();
 
+  @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
+
   private zoom: number;
   private rotate: number;
   private destroy$ = new Subject();
@@ -228,6 +242,7 @@ export class NzImagePreviewComponent implements OnDestroy {
     this.zoom += 1;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
+    this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
@@ -235,6 +250,7 @@ export class NzImagePreviewComponent implements OnDestroy {
       this.zoom -= 1;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
+      this.position = { ...initialPosition };
     }
   }
 
@@ -296,7 +312,23 @@ export class NzImagePreviewComponent implements OnDestroy {
 
   onDragReleased(): void {
     this.isDragging = false;
-    this.position = { ...initialPosition };
+    const width = this.imageRef.nativeElement.offsetWidth * this.zoom;
+    const height = this.imageRef.nativeElement.offsetHeight * this.zoom;
+    const { left, top } = getOffset(this.imageRef.nativeElement);
+    const { width: clientWidth, height: clientHeight } = getClientSize();
+    const isRotate = this.rotate % 180 !== 0;
+    const fitContentParams = {
+      width: isRotate ? height : width,
+      height: isRotate ? width : height,
+      left,
+      top,
+      clientWidth,
+      clientHeight
+    };
+    const fitContentPos = getFitContentPosition(fitContentParams);
+    if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
+      this.position = { ...this.position, ...fitContentPos };
+    }
   }
 
   ngOnDestroy(): void {

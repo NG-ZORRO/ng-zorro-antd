@@ -11,3 +11,4 @@ export * from './image-preview.component';
 export * from './image-preview-options';
 export * from './image-preview-ref';
 export * from './image.module';
+export * from './utils';
