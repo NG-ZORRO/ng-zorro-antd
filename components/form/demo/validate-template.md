@@ -11,7 +11,7 @@ title:
 
 1. `nzHasFeedback`：用于给输入框添加反馈图标。
 2. `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip`：设置不同状态校验文案。
-> 当同一种状态下存在多种提示情况时，`nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` 均支持传入 `TemplateRef<{ $implicit: NgModel }` 类型，可以通过[模板变量]((https://www.angular.cn/guide/template-syntax))导出 `NgModel` 后用于切换不同的提示信息。
+> 当同一种状态下存在多种提示情况时，`nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` 均支持传入 `TemplateRef<{ $implicit: NgModel }` 类型，可以通过[模板变量](https://www.angular.cn/guide/template-syntax)导出 `NgModel` 后用于切换不同的提示信息。
 
 
 ## en-US
