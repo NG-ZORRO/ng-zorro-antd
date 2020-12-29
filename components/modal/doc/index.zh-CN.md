@@ -106,7 +106,7 @@ constructor(modal: NzModalService) {
 #### NzModalService的其他方法/属性
 
 | 方法/属性 | 说明 | 类型 |
-|----|----|
+|----|----|----|
 | openModals | 当前打开的所有Modal引用列表 | NzModalRef[] |
 | afterAllClose | 所有Modal完全关闭后的回调 | Observable&lt;void&gt; |
 | closeAll() | 关闭所有模态框 | function |
