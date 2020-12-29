@@ -14,6 +14,7 @@ components/modal/**                       @hsuanxyz
 components/steps/**                       @hsuanxyz
 components/tag/**                         @hsuanxyz
 components/tree-select/**                 @hsuanxyz
+components/tree-view/**                   @hsuanxyz
 components/typography/**                  @hsuanxyz
 components/space/**                       @hsuanxyz
 components/resizable/**                   @hsuanxyz
