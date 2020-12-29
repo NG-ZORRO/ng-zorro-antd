@@ -16,13 +16,12 @@ import {
   Input,
   NgZone,
   OnChanges,
-  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
-import { NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
+import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
 const isImageFileType = (type: string): boolean => !!type && type.indexOf('image/') === 0;
 
@@ -76,7 +75,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onDownload?: (file: NzUploadFile) => void;
   @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() previewIsImage?: (file: NzUploadFile) => boolean;
-  @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() iconRender: NzIconRenderTemplate | null = null;
   @Input() dir: Direction = 'ltr';
 
   private genErr(file: NzUploadFile): string {
