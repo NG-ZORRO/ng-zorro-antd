@@ -13,6 +13,10 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
 - 需要展示图片时使用。
 - 加载大图时渐进加载或加载失败时容错处理。
 
+```ts
+import { NzImageModule } from 'ng-zorro-antd/image';
+```
+
 ## API
 
 ### [nz-image]
