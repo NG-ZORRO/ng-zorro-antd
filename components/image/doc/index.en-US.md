@@ -12,6 +12,10 @@ Previewable image.
 - When you need to display pictures.
 - Display when loading a large image or fault tolerant handling when loading fail.
 
+```ts
+import { NzImageModule } from 'ng-zorro-antd/image';
+```
+
 ## API
 
 ### [nz-image]
