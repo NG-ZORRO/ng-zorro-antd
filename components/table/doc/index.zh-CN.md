@@ -213,6 +213,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzDropdownMenu]` | Dropdown 下拉菜单组件 | `NzDropdownMenuComponent` | - |
 | `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
 | `[nzActive]` | 是否激活选中图标效果 | `boolean` | `false` |
+| `[nzHasBackdrop]` | 是否附带背景板 | `boolean` | `false` |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
 
 
