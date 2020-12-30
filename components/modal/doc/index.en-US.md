@@ -105,7 +105,7 @@ constructor(modal: NzModalService) {
 #### Other Methods/Attributes for NzModalService
 
 | Methods/Attributes | Description | Type |
-|----|----|
+|----|----|----|
 | openModals | All currently open Modal list | NzModalRef[] |
 | afterAllClose | Callback called after all Modals closed completely | Observable&lt;void&gt; |
 | closeAll() | Close all modals | function |
