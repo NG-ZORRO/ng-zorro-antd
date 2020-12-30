@@ -18,7 +18,15 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
-import { NzImage, NzImageDirective, NzImageGroupComponent, NzImageModule, NzImagePreviewRef, NzImageService } from 'ng-zorro-antd/image';
+import {
+  getFitContentPosition,
+  NzImage,
+  NzImageDirective,
+  NzImageGroupComponent,
+  NzImageModule,
+  NzImagePreviewRef,
+  NzImageService
+} from 'ng-zorro-antd/image';
 
 const SRC = 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`';
 const QUICK_SRC =
@@ -345,6 +353,106 @@ describe('Preview', () => {
       expect(backdropElement.classList).toContain('fade-leave-active');
       flush();
     }));
+  });
+
+  describe('Drag', () => {
+    it('should drag released work', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.onDragStarted();
+      previewInstance.onDragReleased();
+      expect(previewInstance.position).toEqual({ x: 0, y: 0 });
+    }));
+
+    it('should position calculate correct', () => {
+      let params = {
+        width: 200,
+        height: 200,
+        top: 0,
+        left: 0,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+      let pos = getFitContentPosition(params);
+      expect(pos.x).toBe(0);
+      expect(pos.y).toBe(0);
+
+      params = {
+        width: 2000,
+        height: 1000,
+        top: 0,
+        left: 0,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBeNull();
+      expect(pos.y).toBeNull();
+
+      params = {
+        width: 2000,
+        height: 1000,
+        top: 100,
+        left: 100,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBe(460);
+      expect(pos.y).toBe(116);
+
+      params = {
+        width: 2000,
+        height: 1000,
+        top: -200,
+        left: -200,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBeNull();
+      expect(pos.y).toBeNull();
+
+      params = {
+        width: 1000,
+        height: 500,
+        top: -200,
+        left: -200,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBe(0);
+      expect(pos.y).toBe(0);
+
+      params = {
+        width: 1200,
+        height: 600,
+        top: -200,
+        left: -200,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBe(-60);
+      expect(pos.y).toBe(-84);
+
+      params = {
+        width: 1000,
+        height: 900,
+        top: -200,
+        left: -200,
+        clientWidth: 1080,
+        clientHeight: 768
+      };
+
+      pos = getFitContentPosition(params);
+      expect(pos.x).toBe(-40);
+      expect(pos.y).toBe(-66);
+    });
   });
 });
 
