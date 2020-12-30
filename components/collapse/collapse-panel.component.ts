@@ -13,6 +13,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -20,6 +21,7 @@ import {
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -47,7 +49,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
         <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
       </div>
     </div>
-    <div class="ant-collapse-content" [class.ant-collapse-content-active]="nzActive" [@collapseMotion]="nzActive ? 'expanded' : 'hidden'">
+    <div
+      class="ant-collapse-content"
+      [class.ant-collapse-content-active]="nzActive"
+      [@.disabled]="noAnimation?.nzNoAnimation"
+      [@collapseMotion]="nzActive ? 'expanded' : 'hidden'"
+    >
       <div class="ant-collapse-content-box">
         <ng-content></ng-content>
       </div>
@@ -88,7 +95,8 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     @Host() private nzCollapseComponent: NzCollapseComponent,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-collapse-item');
