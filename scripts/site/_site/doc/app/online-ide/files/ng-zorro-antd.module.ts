@@ -30,6 +30,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -62,6 +63,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
+import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
@@ -96,6 +98,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzGridModule,
     NzI18nModule,
     NzIconModule,
+    NzImageModule,
     NzInputModule,
     NzInputNumberModule,
     NzLayoutModule,
@@ -130,6 +133,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzTransButtonModule,
     NzTransferModule,
     NzTreeModule,
+    NzTreeViewModule,
     NzTreeSelectModule,
     NzTypographyModule,
     NzUploadModule,
