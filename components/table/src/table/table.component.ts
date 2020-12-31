@@ -98,7 +98,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     </nz-spin>
     <ng-template #paginationTemplate>
       <nz-pagination
-        *ngIf="nzShowPagination && showPagination && data.length"
+        *ngIf="nzShowPagination && data.length"
+        [hidden]="!showPagination"
         class="ant-table-pagination ant-table-pagination-right"
         [nzShowSizeChanger]="nzShowSizeChanger"
         [nzPageSizeOptions]="nzPageSizeOptions"

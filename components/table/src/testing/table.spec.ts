@@ -207,7 +207,7 @@ describe('nz-table', () => {
       testComponent.hideOnSinglePage = true;
       testComponent.dataSet = [{}];
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
+      expect(table.nativeElement.querySelector('.ant-pagination[hidden]')).not.toBeNull();
     });
     it('should showPagination work with nzFrontPagination and hideOnSinglePage', () => {
       fixture.detectChanges();
