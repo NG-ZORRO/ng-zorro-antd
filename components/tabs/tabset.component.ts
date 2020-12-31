@@ -84,7 +84,7 @@ let nextId = 0;
         [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
-        (click)="clickNavItem(tab, i)"
+        (click)="clickNavItem(tab, i, $event)"
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
@@ -383,11 +383,22 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     }
   }
 
-  clickNavItem(tab: NzTabComponent, index: number): void {
+  clickNavItem(tab: NzTabComponent, index: number, e: MouseEvent): void {
     if (!tab.nzDisabled) {
       // ignore nzCanDeactivate
       tab.nzClick.emit();
-      this.setSelectedIndex(index);
+      if (!this.isRouterLinkClickEvent(index, e)) {
+        this.setSelectedIndex(index);
+      }
+    }
+  }
+
+  private isRouterLinkClickEvent(index: number, event: MouseEvent): boolean {
+    const target = event.target as HTMLElement;
+    if (this.nzLinkRouter) {
+      return !!this.tabs.toArray()[index]?.linkDirective?.elementRef.nativeElement.contains(target);
+    } else {
+      return false;
     }
   }
 
@@ -444,7 +455,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       const index = this.findShouldActiveTabIndex();
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
-        this.nzSelectedIndexChange.emit(index);
       }
       this.nzHideAll = index === -1;
     }
