@@ -258,6 +258,35 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('marks', () => {
+    let testBed: ComponentBed<SliderWithMarksComponent>;
+    let fixture: ComponentFixture<SliderWithMarksComponent>;
+    let markListElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(SliderWithMarksComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+      markListElement = sliderNativeElement.querySelector('.ant-slider-mark') as HTMLElement;
+    });
+
+    it('should have start mark at the start', () => {
+      const value0Mark = markListElement.children[0] as HTMLElement;
+
+      expect(value0Mark.style.left).toEqual('0%');
+    });
+
+    it('should have end mark at the end', () => {
+      const value100Mark = markListElement.children[1] as HTMLElement;
+
+      expect(value100Mark.style.left).toEqual('100%');
+    });
+  });
+
   describe('step', () => {
     let testBed: ComponentBed<SliderWithStepComponent>;
     let fixture: ComponentFixture<SliderWithStepComponent>;
@@ -532,6 +561,24 @@ describe('nz-slider', () => {
 
       const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
       expect(trackElement.style.width).toBe('1%');
+    });
+
+    it('should reverse marks', () => {
+      const markList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-mark') as HTMLElement;
+      const value0Mark = markList.children[0] as HTMLElement;
+      const value100Mark = markList.children[1] as HTMLElement;
+
+      expect(value0Mark.style.left).toEqual('100%');
+      expect(value100Mark.style.left).toEqual('0%');
+    });
+
+    it('should reverse steps', () => {
+      const stepList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-step') as HTMLElement;
+      const value0Step = stepList.children[0] as HTMLElement;
+      const value100Step = stepList.children[1] as HTMLElement;
+
+      expect(value0Step.style.left).toEqual('100%');
+      expect(value100Step.style.left).toEqual('0%');
     });
   });
 
@@ -931,6 +978,15 @@ class SliderWithValueComponent {}
 
 @Component({
   template: `
+    <nz-slider [nzMarks]="marks"></nz-slider>
+  `
+})
+class SliderWithMarksComponent {
+  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+}
+
+@Component({
+  template: `
     <nz-slider [nzStep]="step"></nz-slider>
   `,
   styles: [styles]
@@ -965,12 +1021,14 @@ class VerticalSliderComponent {}
 
 @Component({
   template: `
-    <nz-slider nzReverse></nz-slider>
+    <nz-slider nzReverse [nzMarks]="marks"></nz-slider>
     <nz-slider nzReverse nzRange></nz-slider>
     <nz-slider nzVertical nzReverse></nz-slider>
   `
 })
-class ReverseSliderComponent {}
+class ReverseSliderComponent {
+  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+}
 
 @Component({
   template: `

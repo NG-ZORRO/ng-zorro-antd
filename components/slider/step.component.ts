@@ -23,8 +23,7 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
         *ngFor="let mark of steps; trackBy: trackById"
         [class.ant-slider-dot-active]="mark.active"
         [ngStyle]="mark.style!"
-      >
-      </span>
+      ></span>
     </div>
   `
 })
@@ -35,16 +34,21 @@ export class NzSliderStepComponent implements OnChanges {
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[] = [];
+  @Input() min!: number;
+  @Input() max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
+  @Input() reverse!: boolean;
 
   steps: NzDisplayedStep[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.marksArray) {
+    const { marksArray, lowerBound, upperBound, reverse } = changes;
+
+    if (marksArray || reverse) {
       this.buildSteps();
     }
-    if (changes.marksArray || changes.lowerBound || changes.upperBound) {
+    if (marksArray || lowerBound || upperBound || reverse) {
       this.togglePointActive();
     }
   }
@@ -57,7 +61,13 @@ export class NzSliderStepComponent implements OnChanges {
     const orient = this.vertical ? 'bottom' : 'left';
 
     this.steps = this.marksArray.map(mark => {
-      const { value, offset, config } = mark;
+      const { value, config } = mark;
+      let offset = mark.offset;
+      const range = this.max - this.min;
+
+      if (this.reverse) {
+        offset = ((this.max - value) / range) * 100;
+      }
 
       return {
         value,
