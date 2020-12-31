@@ -851,6 +851,47 @@ xdescribe('NzTabSet router', () => {
   });
 });
 
+describe('NzTabSet router', () => {
+  let fixture: ComponentFixture<RouterTabsTestComponent>;
+  let tabs: DebugElement;
+  let router: Router;
+  describe('basic', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        declarations: [RouterTabsTestComponent]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(RouterTabsTestComponent);
+      fixture.detectChanges();
+
+      tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
+    });
+
+    it('should change router and emit handleSelection once when click', fakeAsync(() => {
+      fixture.ngZone!.run(() => {
+        router = TestBed.inject(Router);
+        router.initialNavigation();
+        const component = fixture.componentInstance;
+        spyOn(component, 'handleSelection');
+        fixture.detectChanges();
+
+        expect((tabs.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+        expect(component.handleSelection).toHaveBeenCalledTimes(0);
+
+        // select the second tab
+        const tabLabel = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1];
+        tabLabel.nativeElement.click();
+        fixture.detectChanges();
+        flush();
+
+        expect((tabs.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+        expect(component.handleSelection).toHaveBeenCalledTimes(1);
+      });
+    }));
+  });
+});
+
 @Component({
   template: `
     <nz-tabset
@@ -1068,7 +1109,7 @@ class DeprecatedAPITabsTestComponent {
 
 @Component({
   template: `
-    <nz-tabset nzLinkRouter>
+    <nz-tabset nzLinkRouter (nzSelectedIndexChange)="handleSelection($event)">
       <nz-tab nzTitle="default">
         <a *nzTabLink nz-tab-link [routerLink]="['.']">One</a>
         One
@@ -1081,7 +1122,11 @@ class DeprecatedAPITabsTestComponent {
     <router-outlet></router-outlet>
   `
 })
-export class RouterTabsTestComponent {}
+export class RouterTabsTestComponent {
+  handleSelection(_event: number): void {
+    // noop
+  }
+}
 
 const routes: Routes = [
   {
