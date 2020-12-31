@@ -10,7 +10,7 @@ import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } fr
 import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getElementOffset } from 'ng-zorro-antd/core/util';
+import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
@@ -110,7 +110,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       throwNzModalContentAlreadyAttachedError();
     }
     this.savePreviouslyFocusedElement();
-    this.setModalTransformOrigin();
+    this.setZIndexForBackdrop();
     return this.portalOutlet.attachComponentPortal(portal);
   }
 
@@ -119,11 +119,13 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       throwNzModalContentAlreadyAttachedError();
     }
     this.savePreviouslyFocusedElement();
+    this.setZIndexForBackdrop();
     return this.portalOutlet.attachTemplatePortal(portal);
   }
 
   attachStringContent(): void {
     this.savePreviouslyFocusedElement();
+    this.setZIndexForBackdrop();
   }
 
   getNativeElement(): HTMLElement {
@@ -244,6 +246,15 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
   }
 
+  private setZIndexForBackdrop(): void {
+    const backdropElement = this.overlayRef.backdropElement;
+    if (backdropElement) {
+      if (isNotNil(this.config.nzZIndex)) {
+        this.render.setStyle(backdropElement, 'z-index', this.config.nzZIndex);
+      }
+    }
+  }
+
   bindBackdropStyle(): void {
     const backdropElement = this.overlayRef.backdropElement;
     if (backdropElement) {
@@ -254,6 +265,8 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
         });
         this.oldMaskStyle = null;
       }
+
+      this.setZIndexForBackdrop();
 
       if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
         const styles: { [key: string]: string } = { ...this.config.nzMaskStyle };

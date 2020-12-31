@@ -552,9 +552,12 @@ describe('NzModal', () => {
     fixture.detectChanges();
 
     const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    const mask = overlayContainerElement.querySelector('.ant-modal-mask') as HTMLElement;
 
     expect(modal.style.zIndex).toBe('1001');
+    expect(mask.style.zIndex).toBe('1001');
 
+    console.log(mask);
     modalRef.updateConfig({
       nzZIndex: 1100
     });
@@ -562,6 +565,7 @@ describe('NzModal', () => {
     flushMicrotasks();
 
     expect(modal.style.zIndex).toBe('1100');
+    expect(mask.style.zIndex).toBe('1100');
 
     modalRef.close();
     fixture.detectChanges();
