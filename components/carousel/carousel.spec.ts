@@ -277,27 +277,6 @@ describe('carousel', () => {
     // Already covered in components specs.
     // describe('opacity strategy', () => {});
   });
-
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestCarouselRtlComponent>;
-    let carouselWrapper: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCarouselRtlComponent);
-      fixture.detectChanges();
-      carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));
-    });
-
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.classList).toContain('ant-carousel-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-
-      expect(carouselWrapper.nativeElement.classList).not.toContain('ant-carousel-rtl');
-    });
-  });
 });
 
 describe('carousel custom strategies', () => {

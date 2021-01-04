@@ -92,8 +92,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
-    '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir ==='rtl'`
+    '[class.ant-carousel-vertical]': 'vertical'
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
@@ -173,7 +172,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
-      this.switchStrategy();
     });
   }
 
