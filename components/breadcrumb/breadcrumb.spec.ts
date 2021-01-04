@@ -204,6 +204,26 @@ describe('breadcrumb', () => {
       });
     }));
 
+    it('should [nzRouteFn] work', fakeAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
+        declarations: [NzBreadcrumbRouteWithCustomFnDemoComponent, NzBreadcrumbNullComponent]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(NzBreadcrumbRouteWithCustomFnDemoComponent);
+      breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+
+      fixture.ngZone!.run(() => {
+        router = TestBed.inject(Router);
+        router.initialNavigation();
+
+        // Breadcrumb should conatin added params by nzRouteFn
+        router.navigate(['one', 'two']);
+        flushFixture(fixture);
+        expect(breadcrumb.componentInstance.breadcrumbs[0].url).toContain('active=true');
+      });
+    }));
+
     it('should route data breadcrumb navigate work', fakeAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
@@ -291,6 +311,16 @@ class NzBreadcrumbRouteLabelDemoComponent {}
 })
 class NzBreadcrumbRouteLabelWithCustomFnDemoComponent {
   labelFn = (label: string) => (label ? `${label} ${label}` : '');
+}
+
+@Component({
+  template: `
+    <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'" [nzRouteFn]="routeFn"></nz-breadcrumb>
+    <router-outlet></router-outlet>
+  `
+})
+class NzBreadcrumbRouteWithCustomFnDemoComponent {
+  routeFn = (route: string) => route + ';active=true';
 }
 
 @Component({

@@ -88,3 +88,33 @@ use `nzRouteLabelFn` to format breadcrumb label in international application:
 // In component
 translateFn = (key:string) => this.yourI18nService.translate(key);
 ```
+
+
+use `nzRouteFn` to format or bind params and query strings to the route it slef in international application:
+
+```html
+<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'breadcrumbI18nKey'" [nzRouteLabelFn]="translateFn" [nzRouteFn]="customRoute"></nz-breadcrumb>
+```
+
+
+```ts
+
+// In component
+
+ bindCurrentParams(params, route) {
+    let newRoute = route;
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        newRoute += `;${key}=${params[key]}`;
+      }
+    }
+    return newRoute;
+  }
+
+const params = this.activatedRoute.snapshot.params;
+
+
+customRoute = (route:string) => this.bindCurrentParams(params,route);
+
+
+```
