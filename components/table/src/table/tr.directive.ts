@@ -58,8 +58,9 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
         listOfFixedRight.forEach(cell => cell.setIsFirstRight(cell === listOfFixedRight[0]));
       });
       /** calculate fixed nzLeft and nzRight **/
-      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$]).subscribe(
-        ([listOfAutoWidth, listOfLeftCell]) => {
+      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(([listOfAutoWidth, listOfLeftCell]) => {
           listOfLeftCell.forEach((cell, index) => {
             if (cell.isAutoLeft) {
               const currentArray = listOfLeftCell.slice(0, index);
@@ -68,10 +69,10 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
               cell.setAutoLeftWidth(`${width}px`);
             }
           });
-        }
-      );
-      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$]).subscribe(
-        ([listOfAutoWidth, listOfRightCell]) => {
+        });
+      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(([listOfAutoWidth, listOfRightCell]) => {
           listOfRightCell.forEach((_, index) => {
             const cell = listOfRightCell[listOfRightCell.length - index - 1];
             if (cell.isAutoRight) {
@@ -83,8 +84,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
               cell.setAutoRightWidth(`${width}px`);
             }
           });
-        }
-      );
+        });
     }
   }
 
