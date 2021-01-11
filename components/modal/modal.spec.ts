@@ -588,6 +588,22 @@ describe('NzModal', () => {
     flush();
   }));
 
+  it('should set the nzCentered of the modal', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzCentered: true,
+      nzContent: TestWithModalContentComponent
+    });
+    fixture.detectChanges();
+
+    const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.classList).toContain('ant-modal-centered');
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
   it('should set the nzClassName of the modal', fakeAsync(() => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent,

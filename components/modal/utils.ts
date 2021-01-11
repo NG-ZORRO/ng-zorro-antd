@@ -25,6 +25,7 @@ export function setContentInstanceParams<T>(instance: T, params: Partial<T> | un
 
 export function getConfigFromComponent(component: NzModalComponent): ModalOptions {
   const {
+    nzCentered,
     nzMask,
     nzMaskClosable,
     nzClosable,
@@ -60,6 +61,7 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzAutofocus
   } = component;
   return {
+    nzCentered,
     nzMask,
     nzMaskClosable,
     nzClosable,
