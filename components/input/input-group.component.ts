@@ -25,7 +25,7 @@ import {
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject } from 'rxjs';
-import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzInputDirective } from './input.directive';
 
 @Directive({
@@ -164,7 +164,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         switchMap(list => {
           return merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)]);
         }),
-        flatMap(() => listOfInputChange$),
+        mergeMap(() => listOfInputChange$),
         map(list => list.some((input: NzInputDirective) => input.disabled)),
         takeUntil(this.destroy$)
       )
