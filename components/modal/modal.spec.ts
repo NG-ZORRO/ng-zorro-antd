@@ -1227,6 +1227,7 @@ describe('NzModal', () => {
       fixture.detectChanges();
       expect((overlayContainerElement.querySelector('.ant-modal') as HTMLDivElement).style.width).toBe('416px');
       expect(modalRef.getConfig().nzMaskClosable).toBe(false);
+      expect(modalRef.getConfig().nzCentered).toBe(false);
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(1);
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-title')!.textContent).toBe('Test Title');
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-content')!.textContent).toBe('Test Content');
@@ -1319,6 +1320,22 @@ describe('NzModal', () => {
       });
       fixture.detectChanges();
       expect(modalRef.getConfig().nzCancelText).toBe('cancel');
+
+      modalRef.close();
+      fixture.detectChanges();
+      flush();
+    }));
+
+    it('should set nzCentered', fakeAsync(() => {
+      const modalRef = modalService.confirm({
+        nzCentered: true
+      });
+      fixture.detectChanges();
+
+      expect(modalRef.getConfig().nzCentered).toBe(true);
+
+      const modal = overlayContainerElement.querySelector('nz-modal-confirm-container') as HTMLElement;
+      expect(modal.classList).toContain('ant-modal-centered');
 
       modalRef.close();
       fixture.detectChanges();
