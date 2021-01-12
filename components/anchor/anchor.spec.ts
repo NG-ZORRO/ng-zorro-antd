@@ -16,7 +16,7 @@ describe('anchor', () => {
   let page: PageObject;
   let srv: NzScrollService;
   beforeEach(() => {
-    const i = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [NzAnchorModule],
       declarations: [TestComponent]
     });
@@ -26,7 +26,7 @@ describe('anchor', () => {
     fixture.detectChanges();
     page = new PageObject();
     spyOn(context, '_scroll');
-    srv = i.get(NzScrollService);
+    srv = TestBed.inject(NzScrollService);
   });
   afterEach(() => context.comp.ngOnDestroy());
 
