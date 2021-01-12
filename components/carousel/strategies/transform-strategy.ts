@@ -3,20 +3,35 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { QueryList } from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
+import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { NzCarouselContentDirective } from '../carousel-content.directive';
-import { PointerVector } from '../typings';
+import { NzCarouselComponentAsSource, PointerVector } from '../typings';
 
 import { NzCarouselBaseStrategy } from './base-strategy';
 
-export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
+interface NzCarouselTransformStrategyOptions {
+  direction: 'left' | 'right';
+}
+
+export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarouselTransformStrategyOptions> {
   private isDragging = false;
   private isTransitioning = false;
 
   private get vertical(): boolean {
     return this.carouselComponent!.vertical;
+  }
+
+  constructor(
+    carouselComponent: NzCarouselComponentAsSource,
+    cdr: ChangeDetectorRef,
+    renderer: Renderer2,
+    platform: Platform,
+    options?: NzCarouselTransformStrategyOptions
+  ) {
+    super(carouselComponent, cdr, renderer, platform, options);
   }
 
   dispose(): void {

@@ -81,7 +81,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         [class.slick-dots-left]="nzDotPosition === 'left'"
         [class.slick-dots-right]="nzDotPosition === 'right'"
       >
-        <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
+        <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="onLiClick(i)">
           <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
         </li>
       </ul>
@@ -92,7 +92,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
-    '[class.ant-carousel-vertical]': 'vertical'
+    '[class.ant-carousel-vertical]': 'vertical',
+    '[class.ant-carousel-rtl]': `dir ==='rtl'`
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
@@ -115,6 +116,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() @WithConfig() @InputBoolean() nzAutoPlay: boolean = false;
   @Input() @WithConfig() @InputNumber() nzAutoPlaySpeed: number = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
+
+  /**
+   * this property is passed directly to an NzCarouselBaseStrategy
+   */
+  @Input() nzStrategyOptions: NzSafeAny = undefined;
 
   @Input()
   // @ts-ignore
@@ -170,8 +176,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
   ngOnInit(): void {
     this.dir = this.directionality.value;
+
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
+      this.markContentActive(this.activeIndex);
+      this.cdr.detectChanges();
     });
   }
 
@@ -249,6 +258,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     }
   }
 
+  onLiClick = (index: number) => {
+    if (this.dir === 'rtl') {
+      this.goTo(this.carouselContents.length - 1 - index);
+    } else {
+      this.goTo(index);
+    }
+  };
   next(): void {
     this.goTo(this.activeIndex + 1);
   }
@@ -313,7 +329,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     if (this.carouselContents) {
       this.carouselContents.forEach((slide, i) => {
-        slide.isActive = index === i;
+        if (this.dir === 'rtl') {
+          slide.isActive = index === this.carouselContents.length - 1 - i;
+        } else {
+          slide.isActive = index === i;
+        }
       });
     }
 
