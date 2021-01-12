@@ -49,8 +49,8 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
-            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
-            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
+            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
+            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }"></ng-container>
           </div>
           <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </div>
@@ -71,28 +71,29 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
-      <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
-      <inner-popup
-        *ngIf="show(partType)"
-        [showWeek]="showWeek"
-        [endPanelMode]="getPanelMode(endPanelMode, partType)"
-        [partType]="partType"
-        [locale]="locale!"
-        [showTimePicker]="hasTimePicker"
-        [timeOptions]="getTimeOptions(partType)"
-        [panelMode]="getPanelMode(panelMode, partType)"
-        (panelModeChange)="onPanelModeChange($event, partType)"
-        [activeDate]="getActiveDate(partType)"
-        [value]="getValue(partType)"
-        [disabledDate]="disabledDate"
-        [dateRender]="dateRender"
-        [selectedValue]="$any(datePickerService?.value)"
-        [hoverValue]="$any(hoverValue)"
-        (cellHover)="onCellHover($event)"
-        (selectDate)="changeValueFromSelect($event, !showTime)"
-        (selectTime)="onSelectTime($event, partType)"
-        (headerChange)="onActiveDateChange($event, partType)"
-      ></inner-popup>
+      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'" [style.display]="show(partType) ? 'block' : 'none'">
+        <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
+        <inner-popup
+          [showWeek]="showWeek"
+          [endPanelMode]="getPanelMode(endPanelMode, partType)"
+          [partType]="partType"
+          [locale]="locale!"
+          [showTimePicker]="hasTimePicker"
+          [timeOptions]="getTimeOptions(partType)"
+          [panelMode]="getPanelMode(panelMode, partType)"
+          (panelModeChange)="onPanelModeChange($event, partType)"
+          [activeDate]="getActiveDate(partType)"
+          [value]="getValue(partType)"
+          [disabledDate]="disabledDate"
+          [dateRender]="dateRender"
+          [selectedValue]="$any(datePickerService?.value)"
+          [hoverValue]="$any(hoverValue)"
+          (cellHover)="onCellHover($event)"
+          (selectDate)="changeValueFromSelect($event, !showTime)"
+          (selectTime)="onSelectTime($event, partType)"
+          (headerChange)="onActiveDateChange($event, partType)"
+        ></inner-popup>
+      </div>
     </ng-template>
 
     <ng-template #tplFooter>
@@ -109,12 +110,6 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         (clickOk)="onClickOk()"
         (clickToday)="onClickToday($event)"
       ></calendar-footer>
-    </ng-template>
-
-    <ng-template #tplRangePart let-partType="partType">
-      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
-        <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: partType }"></ng-container>
-      </div>
     </ng-template>
 
     <!-- Range ONLY: Range Quick Selector -->

@@ -41,19 +41,28 @@ export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
   return !!start && !!end && end.isBeforeDay(start);
 }
 
-export function normalizeRangeValue(value: SingleValue[], allowSameInTwoPanel: boolean, type: NormalizedMode = 'month'): CandyDate[] {
+export function normalizeRangeValue(
+  value: SingleValue[],
+  hasTimePicker: boolean,
+  type: NormalizedMode = 'month',
+  activePart: 'left' | 'right' = 'left'
+): CandyDate[] {
   const [start, end] = value;
   let newStart: CandyDate = start || new CandyDate();
-  let newEnd: CandyDate = end || new CandyDate();
+  let newEnd: CandyDate = end || (hasTimePicker ? newStart : newStart.add(1, type));
+
   if (start && !end) {
     newStart = start;
-    newEnd = start.add(1, type);
+    newEnd = hasTimePicker ? start : start.add(1, type);
   } else if (!start && end) {
-    newStart = end.add(-1, type);
+    newStart = hasTimePicker ? end : end.add(-1, type);
     newEnd = end;
-  }
-  if (newEnd.isSame(newStart, type) && !allowSameInTwoPanel) {
-    newEnd = newStart.add(1, type);
+  } else if (start && end && !hasTimePicker) {
+    if (activePart === 'left') {
+      newEnd = newStart.add(1, type);
+    } else {
+      newStart = newEnd.add(-1, type);
+    }
   }
   return [newStart, newEnd];
 }

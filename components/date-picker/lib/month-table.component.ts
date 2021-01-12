@@ -37,7 +37,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
-        trackByIndex: this.activeDate.getYear()
+        trackByIndex: rowIndex
       };
 
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
@@ -45,7 +45,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
         const isDisabled = this.isDisabledMonth(month);
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
         const cell: DateCell = {
-          trackByIndex: content,
+          trackByIndex: colIndex,
           value: month.nativeDate,
           isDisabled,
           isSelected: month.isSameMonth(this.value),

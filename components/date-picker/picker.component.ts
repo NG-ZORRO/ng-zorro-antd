@@ -270,6 +270,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       }
       this.focus();
       this.updateInputWidthAndArrowLeft();
+      this.panel?.updateActiveDate();
     });
   }
 
