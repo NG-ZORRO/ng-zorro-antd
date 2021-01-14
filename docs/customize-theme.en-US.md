@@ -1,51 +1,150 @@
 ---
 order: 6
-title: Customize Theme
+title: Theme Customization
 ---
 
 Ant Design allows you to customize some basic design aspects in order to meet the needs of UI diversity from business and brand, including primary color, border radius, border color, etc.
 
 ![](https://zos.alipayobjects.com/rmsportal/zTFoszBtDODhXfLAazfSpYbSLSEeytoG.png)
 
-## Less variables
-
-We are using [Less](https://lesscss.org/) as the development language for styling. A set of less variables are defined for each design aspect that can be customized to your needs.
+We are using [Less](https://lesscss.org/) as the development language for styling. A set of Less variables are defined for each design aspect that can be customized to your needs.
 
 > You can use the theme define file of react version in ng-zorro-antd too.
 
-### Customize theme with schematics
+## Use Pre-defined Themes
 
-Run `ng add ng-zorro-antd`, set up custom theme file, then modified the file `src/theme.less`.
+### Customize the theme
 
-### Without schematics
-
-Create a standalone less file named `theme.less` in `src` folder, and add the path of it to the list of `styles` in `angular.json` file.
+1. Configure with schematics. Run `ng add ng-zorro-antd`, choose not to set up custom theme file and your `angular.json` will be configured automatically:
 
 ```json
-...
-  "styles": [
-    ...
-    "src/theme.less"
-    ...
-  ]
+{
+  "build": {
+    "options": {
+      "styles": [
+        "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+      ]
+    }
+  }
+}
+```
+
+You can also add this config manually in `angular.json`.
+
+### Official Themes
+
+Besides the default theme, we have provided 3 more official themes. Please try them out and give us feedbacks.
+
+- 🌑 Dark Theme
+- 📦 Compact Theme
+- ☁️ Aliyun Theme
+
+#### Method 1: Less
+
+Import `ng-zorro-antd.less`, `ng-zorro-antd.dark.less`, `ng-zorro-antd.compact.less` or `ng-zorro-antd.aliyun.less` in the style file and override style variables.
+
+```less
+// Import the official default less style file
+@import "~ng-zorro-antd/ng-zorro-antd.less";
+
+// Import the official dark less style file
+//@import "~ng-zorro-antd/ng-zorro-antd.dark.less";
+
+// Import the official compact less style file
+//@import "~ng-zorro-antd/ng-zorro-antd.compact.less";
+
+// Import the official Aliyun less style file
+//@import "~ng-zorro-antd/ng-zorro-antd.aliyun.less";
+```
+
+
+#### Method 2: CSS
+
+If the project does not use Less, you can include `ng-zorro-antd.css`, `ng-zorro-antd.dark.css`, `ng-zorro-antd.compact.css` or `ng-zorro-antd.aliyun.css` in the CSS file or add to the `angular.json` config.
+
+CSS file:
+
+```css
+@import "~ng-zorro-antd/ng-zorro-antd.css";
+/*@import "~ng-zorro-antd/ng-zorro-antd.dark.css";*/
+/*@import "~ng-zorro-antd/ng-zorro-antd.compact.css";*/
+/*@import "~ng-zorro-antd/ng-zorro-antd.aliyun.css";*/
+```
+
+In `angular.json`:
+
+```json
+{
+  "build": {
+    "options": {
+      "styles": [
+        "node_modules/ng-zorro-antd/ng-zorro-antd.css"
+      ]
+    }
+  }
+}
+```
+
+## Customize Pre-defined Theme
+
+### Method 1: Override style variables in Less
+
+#### Import pre-defined theme file
+
+Import pre-defined theme file in the `src/styles.less` (or run `ng add ng-zorro-antd`, choose to set up custom theme automatically):
+
+```less
+// Custom Theming for NG-ZORRO
+// For more information: https://ng.ant.design/docs/customize-theme/en
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 ...
 ```
 
-Here is an example of `theme.less`
-> The base color is changed to `#f5222d` in the example below.
+#### Customize style variables
 
-```css
+After importing the theme file, override the values of theme style variables based on the project requirements. For example, the demo below illustrates how we can override the `ng-zorro-antd` default theme's `@primary-color` to `#f5222d`:
+
+```less
 // -------- import official less file -----------
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 
-// -------- override less var -----------
-@primary-color          : #f5222d;
+// -------- override less variables -----------
+@primary-color: #f5222d;
 ```
 
+### Method 2: Override theme variables in webpack
 
-### Customize in webpack
+#### Override by pre-defined theme variables
 
-Angular CLI provide [custom-webpack-builder](https://www.npmjs.com/package/@angular-builders/custom-webpack), you can modify the less variable via adjust the [less-loader](https://github.com/webpack-contrib/less-loader) options in webpack.
+Using less-loader in webpack if needed:
+
+```javascript
+const darkThemeVars = require('ng-zorro-antd/dark-theme');
+const compactThemeVars = require('ng-zorro-antd/compact-theme');
+module.exports = {
+  module: {
+    rules: [
+      {
+        test   : /\.less$/,
+        loader: 'less-loader',
+        options: {
+          modifyVars: {
+            'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
+            ...darkThemeVars,
+            ...compactThemeVars
+          },
+          javascriptEnabled: true
+        }
+      }
+    ]
+  }
+};
+
+```
+
+#### Override by customized style variables
+
+Angular CLI provide [custom-webpack-builder](https://www.npmjs.com/package/@angular-builders/custom-webpack), you can modify the less variable via adjusting the [less-loader](https://github.com/webpack-contrib/less-loader) options in webpack.
 
 1. Import `ng-zorro-antd.less` in `angular.json`
 
@@ -120,137 +219,214 @@ You can get more information about custom-webpack builder following the articles
 * [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
 * [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
-All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
+All less variables can be viewed [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
 
-## Official Themes
 
-We have some official themes, try them out and give us some feedback!
 
-- 🌑 Dark Theme (supported in 9+)
-- 📦 Compact Theme (supported in 9+)
-- ☁️ Aliyun Theme (supported in 11+)
+## Theme Dynamic Switching
 
-### Method 1
+We have prepared you a demonstration project illustrating how theme dynamic switching works, you can check it out [here](https://github.com/yangjunhan/nz-themes).
 
-Import `ng-zorro-antd.dark.less` or `ng-zorro-antd.compact.less` in the style file.
+### Configure angular.json file
 
-```less
-@import "~ng-zorro-antd/ng-zorro-antd.dark.less";    // Import the official dark less style file
-@import "~ng-zorro-antd/ng-zorro-antd.compact.less"; // Import the official compact less style file
-```
+1. Style preprocessor option `stylePreprocessorOptions`
 
-### Method 2
-
-If the project does not use Less, you can include `ng-zorro-antd.dark.css` or `ng-zorro-antd.compact.css` in the CSS file or add to the `angular.json` config.
-
-CSS file：
-
-```css
-@import "~ng-zorro-antd/ng-zorro-antd.dark.css";
-```
-
-angular.json
+Add path in a style preprocessor option called `stylePreprocessorOptions` in `angular.json`:
 
 ```json
-{
-  "build": {
-    "options": {
-      "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.css"
-      ]
+...
+"stylePreprocessorOptions": {
+  "includePaths": [
+    "src/path-to-mixin"
+  ]
+},
+...
+```
+
+As such, this config allows you to import `.themeMixin(@rules)` definition file which is under `src/path-to-mixin` path anywhere in the project without the need of using relative path:
+
+```css
+// A relative path works
+@import 'src/path-to-mixin/mixin';
+// But now this works as well
+@import 'mixin';
+```
+
+2. `bundleName` and `inject` in styles
+
+If you intend to dynamically switch the pre-defined themes at runtime, you would need to configure every theme's bundling strategy for the bundler. For example, if your app has default and dark themes, the `styles` option of `angular.json` needs to be configured as below:
+
+```json
+...
+"styles": [
+  "src/styles.less",
+  {
+    "input": "src/styles/default.less",
+    "bundleName": "default",
+    "inject": false
+  },
+  {
+    "input": "src/styles/dark.less",
+    "bundleName": "dark",
+    "inject": false
+  }
+],
+...
+```
+
+`bundleName` refers to the CSS bundle filename which is used for the href attribute in link tag for switching the pre-defined themes in the later section. `inject`'s default value is `true`, which the bundle is injected by default. For the purpose of theme dynamic switching, you need to set it to false to exclude the bundle from injection.
+
+### Customize theme stylesheets
+
+In the context of multiple themes, every theme is supposed to have its own style entry file. For better project manageability, we also recommend you to put all relevant theme entry files under `src/styles` path. For a project with default and dark thems, your project styles can be in the following structure:
+
+<pre>
+  src/styles
+  ├── dark.less
+  ├── default.less
+  └── themes
+      ├── base.less
+      ├── dark.less
+      ├── default.less
+      └── mixin.less
+</pre>
+
+Stylesheets under `src/styles/` are entry files which are used to import the pre-defined official entry file as well as theme customization stylesheets under `src/styles/themes/`. For example, `src/styles/dark.less` entry file contains the following lines:
+
+```less
+@import '../../node_modules/ng-zorro-antd/ng-zorro-antd';
+@import "./themes/dark";
+```
+
+Accordingly, `src/styles/themes/dark.less` is in charge of customizing dark theme:
+
+```less
+@import (multiple) '../../../node_modules/ng-zorro-antd/src/style/themes/dark';
+@import './base';
+
+@layout-sider-background: @component-background;
+@layout-header-background: @component-background;
+...
+```
+
+> The theme filename that you define can be identical to corresponding pre-defined theme filename. In such cases, `@import '<url>';` has no effects. Less provides us a solution to this circumstance which uses `multiple` method to import `.less` files with identical filenames, i.e. `@import (multiple) '<url>';`.
+
+Note that if there exists common style variables for all themes, you shoud create a `base.less` stylesheet and import it in every theme customization stylesheet:
+
+```less
+// base.less customizes common style variables
+@margin-md: 17px;
+...
+```
+
+### Switch themes
+
+Switching themes involves two parts. First is switching the project component theme, and the other is switching the pre-defined theme.
+
+#### Switching component theme
+
+The default encapsulation policy of Angular for the template and CSS styles is `ViewEncapsulation.Emulated`, also known as shimmed CSS that emulates the native behavior. Based on different encapsulation policy, Angular will package component styles into a JS file in different ways.
+
+However, it is troublesome to define styles in the following format:
+
+```less
+html {
+  &.default {
+    @import 'default';
+    // Component styles
+    ...
+  }
+  &.dark {
+    @import 'dark';
+    // Component styles
+    ...
+  }
+}
+```
+
+> Be noted that the configured path in the style preprocessor option `stylePreprocessorOptions` allows you to import file without the need of relative path.
+
+A better way to achieve this is to define a Mixin called `.themeMixin(@rules)` in the `mixin.less` file mentioned above:
+
+```less
+.themeMixin(@rules) {
+  html {
+    &.default {
+      @import './default.less';
+      @rules();
+    }
+    &.dark {
+      @import './dark.less';
+      @rules();
     }
   }
 }
 ```
 
-### Method 3
+Then, wrap all the component styles in the `.themeMixin(@rules)`:
 
-using less-loader in webpack to introduce as needed.
+```less
+@import "mixin"; // Similarly, no need for relative path
 
-```javascript
-const darkThemeVars = require('ng-zorro-antd/dark-theme');
-const compactThemeVars = require('ng-zorro-antd/compact-theme');
-module.exports = {
-  module: {
-    rules: [
-      {
-        test   : /\.less$/,
-        loader: 'less-loader',
-        options: {
-          modifyVars: {
-          'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
-            ...darkThemeVars,
-            ...compactThemeVars
-          },
-          javascriptEnabled: true
-        }
-      }
-    ]
+.themeMixin({
+  :host {
+    // Component styles
+    ...
   }
-};
-
-```
-
-## Switch Theming
-
-When using @angular/cli to configure themes, you must build applications for each theme. When you want to switch themes without reloading the application (like this website), you can use the following method to compile the theme into a style file, and switch at runtime:
-
-Note: Make sure theme variables exist in global styles, not in component scope styles, because component styles that have higher priority will prevent the theme override.
-
-1. Install Dependencies
-
-```bash
-npm i less -D less-plugin-clean-css -D
-```
-
-2. Script
-
-Take the dark theme, for example, use the less-compiler to compile the application's style entry file, and replace the style variables in the ` modifyVars`,  and output to target path.
-
-```js
-const less = require('less');
-const LessPluginCleanCSS = require('less-plugin-clean-css');
-const fs = require('fs');
-const darkThemeVars = require('ng-zorro-antd/dark-theme');
-
-const appStyles = 'path/src/styles.less'; // style entry path for the application
-const themeContent = `@import '${appStyles}';`;
-
-less.render(themeContent, {
-  javascriptEnabled: true,
-  plugins: [new LessPluginCleanCSS({ advanced: true })],
-  modifyVars: {
-    ...darkThemeVars
-  }
-}).then(data => {
-  fs.writeFileSync(
-    // output path for the theme style
-    'path/assets/themes/style.dark.css',
-    data.css
-  )
-}).catch(e => {
-  // log the render error
-  console.error(e);
 });
 ```
 
-3. Switch Theme at Runtime
+#### Switch pre-defined theme
 
-Dynamically create a `link` tag, dynamically load style files into the application, and remove them otherwise.
+Loading a pre-defined theme file can be achieved by dynamically creating a `link` tag, append it on the DOM and remove previous tag.
+
 ```ts
-changeTheme(theme: 'default' | 'dark'): void {
-  if (theme === 'dark') {
+private loadCss(href: string, id: string): Promise<Event> {
+  return new Promise((resolve, reject) => {
     const style = document.createElement('link');
-    style.type = 'text/css';
     style.rel = 'stylesheet';
-    style.id = 'dark-theme';
-    style.href = 'assets/themes/style.dark.css';
-    document.body.appendChild(style);
-  } else {
-    const dom = document.getElementById('dark-theme');
-    if (dom) {
-      dom.remove();
-    }
-  }
+    style.href = href;
+    style.id = id;
+    style.onload = resolve;
+    style.onerror = reject;
+    document.head.append(style);
+  });
 }
 ```
+
+`href` here refers to the path of the [bundle name](/docs/customize-theme/zh#Configure-angular-json-file), i.e. `bundleName`.
+
+#### Synchronize the style switching
+
+Project component styles will be packaged into a JS file which take effects immediately while switching themes via html `className`. On the other hand, it takes time to dynamically load the CSS theme file. If you attempt to perform two actions simultaneously, project styles will change immeditately whereas styles of the pre-defined theme remain unchanged until the CSS theme file is fully loaded, resulting two themes mixing on the web page. As such, you must wrap the loading CSS process in a Promise and force the `className` switching to wait until the former completely finishes.
+
+```ts
+...
+private removeUnusedTheme(theme: ThemeType): void {
+  document.documentElement.classList.remove(theme);
+  const removedThemeStyle = document.getElementById(theme);
+  if (removedThemeStyle) {
+    document.head.removeChild(removedThemeStyle);
+  }
+}
+...
+loadTheme(firstLoad = true): Promise<Event> {
+  const theme = this.currentTheme;
+  if (firstLoad) {
+    document.documentElement.classList.add(theme);
+  }
+  this.loadCss(`${theme}.css`, theme).then(
+    e => {
+      if (!firstLoad) {
+        document.documentElement.classList.add(theme);
+      }
+      this.removeUnusedTheme(this.previousTheme);
+      resolve(e);
+    },
+    e => reject(e)
+  );
+}
+...
+```
+
+Note: First-time loading of the user-defined default component theme must be performed immediately or there is a short period of time the app has no class of theme.
