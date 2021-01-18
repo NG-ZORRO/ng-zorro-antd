@@ -51,13 +51,25 @@ describe('candy-date coverage supplements', () => {
     expect(result[0]!.getMonth()).toEqual(8);
     expect(result[1]!.getMonth()).toEqual(9);
 
+    result = normalizeRangeValue([randomDay, null], true);
+    expect(result[0]!.getMonth()).toEqual(8);
+    expect(result[1]!.getMonth()).toEqual(8);
+
     result = normalizeRangeValue([null, null], false);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
     expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
 
-    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false);
+    result = normalizeRangeValue([null, null], true);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
-    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
+    expect(result[1]!.getMonth()).toEqual(now.getMonth());
+
+    result = normalizeRangeValue([randomDay, new CandyDate()], false, 'month', 'left');
+    expect(result[0]!.getMonth()).toEqual(randomDay.getMonth());
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, randomDay.nativeDate)).toEqual(1);
+
+    result = normalizeRangeValue([randomDay, new CandyDate()], false, 'month', 'right');
+    expect(result[1]!.getMonth()).toEqual(now.getMonth());
+    expect(differenceInCalendarMonths(result[0]!.nativeDate, now)).toEqual(-1);
 
     result = normalizeRangeValue([new CandyDate(), new CandyDate()], true);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());

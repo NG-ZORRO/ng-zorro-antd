@@ -47,7 +47,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     </div>
     <div class="ant-picker-content">
       <ul *ngIf="hourEnabled" #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let hour of hourRange">
+        <ng-container *ngFor="let hour of hourRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && hour.disabled)"
             class="ant-picker-time-panel-cell"
@@ -60,7 +60,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
         </ng-container>
       </ul>
       <ul *ngIf="minuteEnabled" #minuteListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let minute of minuteRange">
+        <ng-container *ngFor="let minute of minuteRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && minute.disabled)"
             class="ant-picker-time-panel-cell"
@@ -73,7 +73,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
         </ng-container>
       </ul>
       <ul *ngIf="secondEnabled" #secondListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let second of secondRange">
+        <ng-container *ngFor="let second of secondRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && second.disabled)"
             class="ant-picker-time-panel-cell"
@@ -277,6 +277,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzSecondStep(): number {
     return this._nzSecondStep;
+  }
+
+  trackByFn(index: number): number {
+    return index;
   }
 
   buildHours(): void {

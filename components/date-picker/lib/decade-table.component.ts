@@ -42,7 +42,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
     for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
-        trackByIndex: previousYear
+        trackByIndex: rowIndex
       };
 
       for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
@@ -51,7 +51,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
         const content = `${start}-${end}`;
 
         const cell: DecadeCell = {
-          trackByIndex: content,
+          trackByIndex: colIndex,
           value: this.activeDate.setYear(start).nativeDate,
           content,
           title: content,

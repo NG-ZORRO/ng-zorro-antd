@@ -18,7 +18,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 ## API
 
-**注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
+**注意：** nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
 例如：
 ```typescript
 import { registerLocaleData } from '@angular/common';

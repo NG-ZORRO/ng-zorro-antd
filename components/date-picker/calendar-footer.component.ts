@@ -92,22 +92,23 @@ export class CalendarFooterComponent implements OnChanges {
   isNonEmptyString = isNonEmptyString;
   isTodayDisabled: boolean = false;
   todayTitle: string = '';
-  private now: CandyDate = new CandyDate();
 
   constructor(private dateHelper: DateHelperService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    const now: Date = new Date();
     if (changes.disabledDate) {
-      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(this.now.nativeDate));
+      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(now));
     }
     if (changes.locale) {
       // NOTE: Compat for DatePipe formatting rules
       const dateFormat: string = transCompatFormat(this.locale.dateFormat);
-      this.todayTitle = this.dateHelper.format(this.now.nativeDate, dateFormat);
+      this.todayTitle = this.dateHelper.format(now, dateFormat);
     }
   }
 
   onClickToday(): void {
-    this.clickToday.emit(this.now.clone()); // To prevent the "now" being modified from outside, we use clone
+    const now: CandyDate = new CandyDate();
+    this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
   }
 }
