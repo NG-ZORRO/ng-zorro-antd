@@ -141,7 +141,7 @@ export interface DatePickerConfig {
 }
 
 export interface DescriptionsConfig {
-  nzBorder?: boolean;
+  nzBordered?: boolean;
   nzColumn?: { [key in NzBreakpointEnum]?: number } | number;
   nzSize?: 'default' | 'middle' | 'small';
   nzColon?: boolean;
