@@ -5,12 +5,13 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
 import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../typings';
 
-export abstract class NzCarouselBaseStrategy {
+export abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
   // Properties that strategies may want to use.
   protected carouselComponent: NzCarouselComponentAsSource | null;
   protected contents!: NzCarouselContentDirective[];
@@ -36,7 +37,8 @@ export abstract class NzCarouselBaseStrategy {
     carouselComponent: NzCarouselComponentAsSource,
     protected cdr: ChangeDetectorRef,
     protected renderer: Renderer2,
-    protected platform: Platform
+    protected platform: Platform,
+    protected options?: T
   ) {
     this.carouselComponent = carouselComponent;
   }
