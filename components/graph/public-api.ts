@@ -14,4 +14,5 @@ export * from './graph-zoom.directive';
 export * from './graph-node.component';
 export * from './graph-edge.component';
 export * from './graph-edge.directive';
+export * from './graph-defs.component';
 export * from './graph-minimap.component';
