@@ -1167,7 +1167,7 @@ describe('NzModal', () => {
             onClick: () => {
               return new Promise(resolve => {
                 setTimeout(() => {
-                  resolve();
+                  resolve(null);
                 }, 200);
               });
             }
@@ -1182,7 +1182,7 @@ describe('NzModal', () => {
             onClick: () => {
               return new Promise(resolve => {
                 setTimeout(() => {
-                  resolve();
+                  resolve(null);
                 }, 200);
               });
             }

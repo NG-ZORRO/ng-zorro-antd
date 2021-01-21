@@ -7,7 +7,7 @@
  */
 
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
-import { ProjectDefinition, WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
   applyTemplates,
@@ -25,11 +25,12 @@ import {
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
+import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {
   addDeclarationToModule,
   addEntryComponentToModule,
   addExportToModule,
-  getFirstNgModuleName
+  getDecoratorMetadata
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
@@ -39,7 +40,32 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { ProjectType } from '@schematics/angular/utility/workspace-models';
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
-import * as ts from 'typescript';
+
+function findClassDeclarationParent(node: ts.Node): ts.ClassDeclaration|undefined {
+  if (ts.isClassDeclaration(node)) {
+    return node;
+  }
+
+  return node.parent && findClassDeclarationParent(node.parent);
+}
+
+function getFirstNgModuleName(source: ts.SourceFile): string|undefined {
+  // First, find the @NgModule decorators.
+  const ngModulesMetadata = getDecoratorMetadata(source, 'NgModule', '@angular/core');
+  if (ngModulesMetadata.length === 0) {
+    return undefined;
+  }
+
+  // Then walk parent pointers up the AST, looking for the ClassDeclaration parent of the NgModule
+  // metadata.
+  const moduleClass = findClassDeclarationParent(ngModulesMetadata[0]);
+  if (!moduleClass || !moduleClass.name) {
+    return undefined;
+  }
+
+  // Get the class name of the module ClassDeclaration.
+  return moduleClass.name.text;
+}
 
 export interface ZorroComponentOptions extends ComponentOptions {
   classnameWithModule: boolean;
