@@ -211,6 +211,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     if (this.nzContent === text) {
       this.renderOnNextFrame();
     }
+    this.cdr.markForCheck();
   }
 
   onExpand(): void {

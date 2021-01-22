@@ -30,6 +30,6 @@ export class NzTableContentComponent {
   @Input() tableLayout: NzTableLayout = 'auto';
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  @Input() listOfColWidth: Array<string | null> = [];
+  @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() scrollX: string | null = null;
 }

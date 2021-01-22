@@ -37,7 +37,7 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
   `
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
-  @Input() listOfMeasureColumn: string[] = [];
+  @Input() listOfMeasureColumn: ReadonlyArray<string> = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
   private destroy$ = new Subject();
