@@ -34,7 +34,14 @@ import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTableQueryParams, NzTableSize } from '../table.types';
+import {
+  NzTableData,
+  NzTableLayout,
+  NzTablePaginationPosition,
+  NzTablePaginationType,
+  NzTableQueryParams,
+  NzTableSize
+} from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
@@ -107,7 +114,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [nzShowQuickJumper]="nzShowQuickJumper"
         [nzHideOnSinglePage]="nzHideOnSinglePage"
         [nzShowTotal]="nzShowTotal"
-        [nzSize]="nzSize === 'default' ? 'default' : 'small'"
+        [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
         [nzPageSize]="nzPageSize"
         [nzTotal]="nzTotal"
         [nzSimple]="nzSimple"
@@ -157,6 +164,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
+  @Input() nzPaginationType: NzTablePaginationType = 'default';
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
