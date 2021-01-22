@@ -55,8 +55,8 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `(nzChange)` | 上传文件改变时的状态 | `EventEmitter<NzUploadChangeParam>` | - |
 | `[nzDownload]`   | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页 | `(file: NzUploadFile) => void` | 跳转新标签页 |
 | `[nzTransformFile]`   | 在上传之前转换文件。支持返回一个 Observable 对象  | `(file: NzUploadFile) => NzUploadTransformFileType` | -  |
-| `[nzIconRender]`   | 自定义显示 icon  | `TemplateRef<void>` | -  |
-| `[nzFileListRender]`   | 自定义显示整个列表 | `TemplateRef<{ $implicit: UploadFile[] }>` | -  |
+| `[nzIconRender]`   | 自定义显示 icon  | `TemplateRef<{ $implicit: NzUploadFile }>` | -  |
+| `[nzFileListRender]`   | 自定义显示整个列表 | `TemplateRef<{ $implicit: NzUploadFile[] }>` | -  |
 
 #### nzChange
 
