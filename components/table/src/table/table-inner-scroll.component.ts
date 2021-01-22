@@ -68,17 +68,15 @@ import { NzTableData } from '../table.types';
         </table>
       </cdk-virtual-scroll-viewport>
     </ng-container>
-    <div class="ant-table-content" *ngIf="!scrollY">
-      <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
-        <table
-          nz-table-content
-          tableLayout="fixed"
-          [scrollX]="scrollX"
-          [listOfColWidth]="listOfColWidth"
-          [theadTemplate]="theadTemplate"
-          [contentTemplate]="contentTemplate"
-        ></table>
-      </div>
+    <div class="ant-table-content" #tableBodyElement *ngIf="!scrollY" [ngStyle]="bodyStyleMap">
+      <table
+        nz-table-content
+        tableLayout="fixed"
+        [scrollX]="scrollX"
+        [listOfColWidth]="listOfColWidth"
+        [theadTemplate]="theadTemplate"
+        [contentTemplate]="contentTemplate"
+      ></table>
     </div>
   `
 })
