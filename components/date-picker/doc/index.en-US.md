@@ -64,6 +64,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | Date | `Date` | - |
+| `[nzId]` | input id attribute inside the component| `string` | - |
 
 ### nz-date-picker[nzMode="date"]
 | Property | Description | Type | Default |
