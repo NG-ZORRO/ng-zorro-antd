@@ -2097,7 +2097,7 @@ export class NzDemoCascaderLoadDataComponent {
               label: 'Zhejiang'
             }
           ];
-          resolve();
+          resolve(null);
         } else if (index === 0) {
           node.children = [
             {
@@ -2105,7 +2105,7 @@ export class NzDemoCascaderLoadDataComponent {
               label: 'Hangzhou'
             }
           ];
-          resolve();
+          resolve(null);
         } else if (index === 1) {
           node.children = [
             {
@@ -2113,7 +2113,7 @@ export class NzDemoCascaderLoadDataComponent {
               label: 'West Lake'
             }
           ];
-          resolve();
+          resolve(null);
         } else {
           reject();
         }
