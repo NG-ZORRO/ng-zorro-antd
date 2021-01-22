@@ -36,7 +36,7 @@ export class NzTbodyComponent {
   isInsideTable = false;
   showEmpty$ = new BehaviorSubject<boolean>(false);
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
-  listOfMeasureColumn$ = new BehaviorSubject<string[]>([]);
+  listOfMeasureColumn$ = new BehaviorSubject<ReadonlyArray<string>>([]);
 
   constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
     this.isInsideTable = !!this.nzTableStyleService;

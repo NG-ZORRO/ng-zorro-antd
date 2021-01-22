@@ -63,8 +63,8 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   checked = false;
   loading = false;
   indeterminate = false;
-  listOfData: Data[] = [];
-  listOfCurrentPageData: Data[] = [];
+  listOfData: ReadonlyArray<Data> = [];
+  listOfCurrentPageData: ReadonlyArray<Data> = [];
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -75,7 +75,7 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
     }
   }
 
-  onCurrentPageDataChange(listOfCurrentPageData: Data[]): void {
+  onCurrentPageDataChange(listOfCurrentPageData: ReadonlyArray<Data>): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
   }

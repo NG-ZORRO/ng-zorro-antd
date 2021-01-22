@@ -160,8 +160,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
-  @Input() nzWidthConfig: Array<string | null> = [];
-  @Input() nzData: T[] = [];
+  @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
+  @Input() nzData: ReadonlyArray<T> = [];
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() nzPaginationType: NzTablePaginationType = 'default';
@@ -180,16 +180,16 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableData[]>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<ReadonlyArray<NzTableData>>();
 
   /** public data for ngFor tr */
-  public data: T[] = [];
+  public data: ReadonlyArray<T> = [];
   public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
-  listOfAutoColWidth: Array<string | null> = [];
-  listOfManualColWidth: Array<string | null> = [];
+  listOfAutoColWidth: ReadonlyArray<string | null> = [];
+  listOfManualColWidth: ReadonlyArray<string | null> = [];
   hasFixLeft = false;
   hasFixRight = false;
   showPagination = true;
