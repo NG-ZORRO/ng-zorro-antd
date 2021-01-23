@@ -42,6 +42,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzNodes]` | treeNodes 数据 | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
 | `[nzExpandedKeys]` | 默认展开指定的树节点 | `string[]` | - |
+| `[nzDisabledKeys]` | 指定禁用的树节点 | `string[]` | - |
 | `[nzDisplayWith]` | 如何在输入框显示所选的节点值的方法 | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | number | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | TemplateRef<{ $implicit: NzTreeNode[] }> | - |

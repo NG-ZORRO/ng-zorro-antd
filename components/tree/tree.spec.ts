@@ -118,6 +118,29 @@ describe('tree', () => {
         expect(component.treeComponent.getSelectedNodeList().length).toEqual(2);
       }));
 
+      it('should disable nodes based on nzDisabledKeys', fakeAsync(() => {
+        const { component, fixture, nativeElement } = testBed;
+        component.nodes = [
+          {
+            title: '0-0',
+            key: '0-0',
+            children: [
+              {
+                title: '0-1',
+                key: '0-1'
+              }
+            ]
+          }
+        ];
+        component.defaultDisabledKeys = ['0-0', '0-1'];
+        fixture.detectChanges();
+        const disabledNodes = nativeElement.querySelectorAll('.ant-tree-treenode-disabled');
+        expect(disabledNodes.length).toEqual(2);
+        tick(300);
+        fixture.detectChanges();
+        expect(component.treeComponent.getDisabledNodeList().length).toEqual(2);
+      }));
+
       it('should select only one nodes based on nzMultiple:false', fakeAsync(() => {
         const { component, fixture, nativeElement } = testBed;
         component.multiple = false;
@@ -571,6 +594,7 @@ describe('tree', () => {
       [nzCheckedKeys]="defaultCheckedKeys"
       [nzExpandedKeys]="defaultExpandedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
+      [nzDisabledKeys]="defaultDisabledKeys"
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
       [nzSearchFunc]="searchFunc"
@@ -601,6 +625,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultCheckedKeys: string[] = [];
   defaultSelectedKeys: string[] = [];
   defaultExpandedKeys: string[] = [];
+  defaultDisabledKeys: string[] = [];
   expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   searchFunc?: (node: NzTreeNodeOptions) => boolean;
   hideUnMatched = false;

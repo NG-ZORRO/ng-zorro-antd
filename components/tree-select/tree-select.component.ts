@@ -106,6 +106,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
           [nzExpandedKeys]="expandedKeys"
           [nzCheckedKeys]="nzCheckable ? value : []"
           [nzSelectedKeys]="!nzCheckable ? value : []"
+          [nzDisabledKeys]="nzDisabledKeys"
           [nzTreeTemplate]="treeTemplate"
           [nzCheckStrictly]="nzCheckStrictly"
           [nzVirtualItemSize]="nzVirtualItemSize"
@@ -253,6 +254,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
+  @Input() nzDisabledKeys: string[] = [];
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
