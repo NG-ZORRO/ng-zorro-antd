@@ -73,6 +73,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
         <nz-select-search
+          [id]="id"
           [disabled]="disabled"
           [value]="inputValue!"
           [autofocus]="autofocus"
@@ -91,6 +92,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   }
 })
 export class NzSelectTopControlComponent implements OnChanges {
+  @Input() id: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;

@@ -26,6 +26,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[ngModel]` | 当前时间 | `Date` | - |
 | `[nzAddOn]` | 选择框底部显示自定义的内容 | `TemplateRef<void>` | - |
 | `[nzAllowEmpty]` | 是否展示清除按钮 | `boolean` | `true` | ✅ |
