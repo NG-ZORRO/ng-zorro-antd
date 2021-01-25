@@ -27,7 +27,13 @@ import { NzMessageData } from './typings';
   preserveWhitespaces: false,
   animations: [moveUpMotion],
   template: `
-    <div class="ant-message-notice" [@moveUpMotion]="instance.state" (mouseenter)="onEnter()" (mouseleave)="onLeave()">
+    <div
+      class="ant-message-notice"
+      [@moveUpMotion]="instance.state"
+      (@moveUpMotion.done)="animationStateChanged.next($event)"
+      (mouseenter)="onEnter()"
+      (mouseleave)="onLeave()"
+    >
       <div class="ant-message-notice-content">
         <div class="ant-message-custom-content" [ngClass]="'ant-message-' + instance.type">
           <ng-container [ngSwitch]="instance.type">
