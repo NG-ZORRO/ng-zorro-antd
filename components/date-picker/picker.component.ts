@@ -147,6 +147,7 @@ import { PREFIX_CLASS } from './util';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
@@ -179,6 +180,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
   @Input() dir: Direction = 'ltr';
   @Input() nzId: string | null = null;
+  @Input() hasBackdrop = false;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();

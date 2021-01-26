@@ -114,6 +114,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
@@ -219,6 +220,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig() nzBackdrop = false;
   @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;

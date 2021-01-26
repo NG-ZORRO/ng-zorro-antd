@@ -73,6 +73,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
@@ -180,6 +181,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig() @InputBoolean() nzAllowEmpty: boolean = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
+  @Input() @WithConfig() nzBackdrop = false;
 
   emitValue(value: Date | null): void {
     this.setValue(value, true);

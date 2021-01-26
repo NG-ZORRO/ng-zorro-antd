@@ -54,6 +54,8 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   template: `
     <div
       nz-picker
+      style="display: inherit; align-items: center; width: 100%;"
+      [id]="nzId"
       [isRange]="isRange"
       [open]="nzOpen"
       [dir]="dir"
@@ -65,12 +67,12 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
       [placeholder]="nzPlaceHolder"
-      style="display: inherit; align-items: center; width: 100%;"
       [dropdownClassName]="nzDropdownClassName"
       [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
       [suffixIcon]="nzSuffixIcon"
+      [hasBackdrop]="nzBackdrop"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
       [nzId]="nzId"
@@ -166,6 +168,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string = undefined;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
+  @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
