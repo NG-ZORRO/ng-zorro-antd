@@ -105,6 +105,7 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
   }
 
   ngOnDestroy(): void {
+    this.mouseState$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
