@@ -37,7 +37,7 @@ the `virtualScrollViewport` member of the component instance.
 | [nzDataSource] | The data array to render | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | - |
 | [nzDirectoryTree] | Whether nodes are displayed as directory style | `boolean` | `false` |
 | [nzBlockNode] | Whether tree nodes fill remaining horizontal space| `boolean` | `false` |
-| [nzNodeWidth] | The width of nodes in the tree (in pixels) | `number` | `28` |
+| [nzItemSize] | The size of nodes in the tree (in pixels) | `number` | `28` |
 | [nzMinBufferPx] | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number` | `28 * 5` |
 | [nzMaxBufferPx] |  The amount of buffer required for rendering new nodes (in pixels) | `number` | `28 * 10` |
 

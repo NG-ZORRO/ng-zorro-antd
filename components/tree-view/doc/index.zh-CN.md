@@ -35,7 +35,7 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 | [nzDataSource] | 用于渲染树的数组数据 | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | - |
 | [nzDirectoryTree] | 节点是否以文件夹样式显示 | `boolean` | `false` |
 | [nzBlockNode] | 节点是否占据整行| `boolean` | `false` |
-| [nzNodeWidth] | 节点的宽度(px) | `number` | `28` |
+| [nzItemSize] | 节点的尺寸(px) | `number` | `28` |
 | [nzMinBufferPx] | 超出渲染区的最小缓存区大小(px) | `number` | `28 * 5` |
 | [nzMaxBufferPx] | 需要渲染新节点时的缓冲区大小(px) | `number` | `28 * 10` |
 
