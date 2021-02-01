@@ -8,6 +8,7 @@ export * from './modal.service';
 export * from './modal-ref';
 export * from './modal-config';
 export * from './modal.component';
+export * from './modal-title.directive';
 export * from './modal-footer.directive';
 export * from './modal-content.directive';
 export * from './modal.module';
