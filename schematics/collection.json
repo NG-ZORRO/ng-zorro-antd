@@ -31,7 +31,7 @@
     "add-icon-assets": {
       "description": "Add icon assets into CLI config",
       "factory": "./ng-add/setup-project/add-icon-assets#addIconToAssets",
-      "schema": "./ng-generate/boot-page/schema.json",
+      "schema": "./ng-generate/blank/schema.json",
       "aliases": ["fix-icon"]
     },
     "component": {
