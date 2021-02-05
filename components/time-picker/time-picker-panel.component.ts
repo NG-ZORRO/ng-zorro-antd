@@ -105,12 +105,12 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       <ul class="ant-picker-ranges">
         <li class="ant-picker-now">
           <a (click)="onClickNow()">
-            {{ 'Calendar.lang.now' | nzI18n }}
+            {{ nzNowText || ('Calendar.lang.now' | nzI18n) }}
           </a>
         </li>
         <li class="ant-picker-ok">
           <button nz-button type="button" nzSize="small" nzType="primary" (click)="onClickOk()">
-            {{ 'Calendar.lang.ok' | nzI18n }}
+            {{ nzOkText || ('Calendar.lang.ok' | nzI18n) }}
           </button>
         </li>
       </ul>
@@ -162,6 +162,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzAddOn?: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText?: string;
+  @Input() nzNowText?: string;
+  @Input() nzOkText?: string;
   @Input() nzPlaceHolder?: string | null;
   @Input() @InputBoolean() nzUse12Hours = false;
   @Input() nzDefaultOpenValue?: Date;

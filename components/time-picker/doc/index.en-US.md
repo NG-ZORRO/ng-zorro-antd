@@ -30,6 +30,8 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzAllowEmpty]` | allow clearing text | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzClearText]` | clear tooltip of icon | `string` | `'clear'` | ✅ |
+| `[nzNowText]` | text of the Now button  | `string` | `'Now'` | ✅ |
+| `[nzOkText]` | text of the Ok button | `string` | `'Ok'` | ✅ |
 | `[nzDefaultOpenValue]` | default open panel value if `[ngModel]` is null | `Date` | `new Date()` |
 | `[nzDisabled]` | determine whether the TimePicker is disabled | `boolean` | `false` |
 | `[nzDisabledHours]` | to specify the hours that cannot be selected | `() => number[]` | - |
