@@ -34,7 +34,14 @@ import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTableQueryParams, NzTableSize } from '../table.types';
+import {
+  NzTableData,
+  NzTableLayout,
+  NzTablePaginationPosition,
+  NzTablePaginationType,
+  NzTableQueryParams,
+  NzTableSize
+} from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
@@ -107,7 +114,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [nzShowQuickJumper]="nzShowQuickJumper"
         [nzHideOnSinglePage]="nzHideOnSinglePage"
         [nzShowTotal]="nzShowTotal"
-        [nzSize]="nzSize === 'default' ? 'default' : 'small'"
+        [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
         [nzPageSize]="nzPageSize"
         [nzTotal]="nzTotal"
         [nzSimple]="nzSimple"
@@ -153,10 +160,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
-  @Input() nzWidthConfig: Array<string | null> = [];
-  @Input() nzData: T[] = [];
+  @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
+  @Input() nzData: ReadonlyArray<T> = [];
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
+  @Input() nzPaginationType: NzTablePaginationType = 'default';
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
@@ -172,16 +180,16 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableData[]>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<ReadonlyArray<NzTableData>>();
 
   /** public data for ngFor tr */
-  public data: T[] = [];
+  public data: ReadonlyArray<T> = [];
   public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
-  listOfAutoColWidth: Array<string | null> = [];
-  listOfManualColWidth: Array<string | null> = [];
+  listOfAutoColWidth: ReadonlyArray<string | null> = [];
+  listOfManualColWidth: ReadonlyArray<string | null> = [];
   hasFixLeft = false;
   hasFixRight = false;
   showPagination = true;

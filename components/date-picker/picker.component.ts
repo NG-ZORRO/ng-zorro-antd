@@ -58,6 +58,7 @@ import { PREFIX_CLASS } from './util';
     <div *ngIf="!isRange" class="{{ prefixCls }}-input">
       <input
         #pickerInput
+        [attr.id]="id"
         [class.ant-input-disabled]="disabled"
         [disabled]="disabled"
         [readOnly]="inputReadOnly"
@@ -168,6 +169,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() dropdownClassName?: string;
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
   @Input() dir: Direction = 'ltr';
+  @Input() id: string | null = null;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();

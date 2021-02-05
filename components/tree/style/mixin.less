@@ -4,7 +4,8 @@
 @tree-node-prefix-cls: ~'@{tree-prefix-cls}-treenode';
 @select-tree-prefix-cls: ~'@{ant-prefix}-select-tree';
 @tree-motion: ~'@{ant-prefix}-motion-collapse';
-@tree-node-padding: @padding-xs / 2;
+@tree-node-padding: (@padding-xs / 2);
+@tree-node-hightlight-color: @volcano-7;
 
 .antTreeSwitcherIcon(@type: 'tree-default-open-icon') {
   .@{tree-prefix-cls}-switcher-icon,
@@ -43,7 +44,7 @@
 
 .antTreeFn(@custom-tree-prefix-cls) {
   @custom-tree-node-prefix-cls: ~'@{custom-tree-prefix-cls}-treenode';
-  .reset-component;
+  .reset-component();
   background: @tree-bg;
   border-radius: @border-radius-base;
   transition: background-color 0.3s;
@@ -89,6 +90,11 @@
 
     &-active .@{custom-tree-prefix-cls}-node-content-wrapper {
       background: @tree-node-hover-bg;
+    }
+
+    &.filter-node .@{custom-tree-prefix-cls}-title {
+      color: @tree-node-hightlight-color;
+      font-weight: 500;
     }
   }
 
@@ -230,7 +236,7 @@
         &::before {
           position: absolute;
           top: 0;
-          right: @tree-title-height / 2;
+          right: (@tree-title-height / 2);
           bottom: -@tree-node-padding;
           border-right: 1px solid @border-color-base;
           content: '';

@@ -51,7 +51,7 @@
       </ng-template>
     </ng-template>
     <ng-template #iconNode let-file>
-      <ng-container *ngIf="!iconRender; else iconRender">
+      <ng-container *ngIf="!iconRender; else customIconRender">
         <ng-container [ngSwitch]="listType">
           <ng-container *ngSwitchCase="'picture'">
             <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">
@@ -66,6 +66,11 @@
           <i *ngSwitchDefault nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></i>
         </ng-container>
       </ng-container>
+      <ng-template
+        #customIconRender
+        [ngTemplateOutlet]="iconRender"
+        [ngTemplateOutletContext]="{ $implicit: file }"
+      ></ng-template>
       <ng-template #iconNodeFileIcon>
         <i nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></i>
       </ng-template>

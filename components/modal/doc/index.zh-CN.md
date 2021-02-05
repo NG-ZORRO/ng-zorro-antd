@@ -34,6 +34,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | - |
 | nzBodyStyle       | Modal body 样式 | `object` | - |
 | nzCancelText      | 取消按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 取消 |
+| nzCentered        | 垂直居中展示 Modal | `boolean` | `false` |
 | nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | `boolean` | `true` |
 | nzOkLoading       | 确定按钮 loading | `boolean` | `false` |
 | nzCancelLoading   | 取消按钮 loading | `boolean` | `false` |

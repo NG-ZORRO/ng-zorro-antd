@@ -18,12 +18,12 @@ export class NzTableStyleService {
   columnCount$ = new ReplaySubject<number>(1);
   showEmpty$ = new ReplaySubject<boolean>(1);
   noResult$ = new ReplaySubject<string | TemplateRef<NzSafeAny> | undefined>(1);
-  private listOfThWidthConfigPx$ = new BehaviorSubject<Array<string | null>>([]);
-  private tableWidthConfigPx$ = new BehaviorSubject<Array<string | null>>([]);
+  private listOfThWidthConfigPx$ = new BehaviorSubject<ReadonlyArray<string | null>>([]);
+  private tableWidthConfigPx$ = new BehaviorSubject<ReadonlyArray<string | null>>([]);
   manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$]).pipe(
     map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
   );
-  private listOfAutoWidthPx$ = new ReplaySubject<string[]>(1);
+  private listOfAutoWidthPx$ = new ReplaySubject<ReadonlyArray<string>>(1);
   listOfListOfThWidthPx$ = merge(
     /** init with manual width **/
     this.manualWidthConfigPx$,
@@ -44,7 +44,7 @@ export class NzTableStyleService {
       })
     )
   );
-  listOfMeasureColumn$ = new ReplaySubject<string[]>(1);
+  listOfMeasureColumn$ = new ReplaySubject<ReadonlyArray<string>>(1);
   listOfListOfThWidth$ = this.listOfAutoWidthPx$.pipe(map(list => list.map(width => parseInt(width, 10))));
   enableAutoMeasure$ = new ReplaySubject<boolean>(1);
 
@@ -60,11 +60,11 @@ export class NzTableStyleService {
     this.hasFixRight$.next(hasFixRight);
   }
 
-  setTableWidthConfig(widthConfig: Array<string | null>): void {
+  setTableWidthConfig(widthConfig: ReadonlyArray<string | null>): void {
     this.tableWidthConfigPx$.next(widthConfig);
   }
 
-  setListOfTh(listOfTh: NzThMeasureDirective[]): void {
+  setListOfTh(listOfTh: ReadonlyArray<NzThMeasureDirective>): void {
     let columnCount = 0;
     listOfTh.forEach(th => {
       columnCount += (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
@@ -74,7 +74,7 @@ export class NzTableStyleService {
     this.listOfThWidthConfigPx$.next(listOfThPx);
   }
 
-  setListOfMeasureColumn(listOfTh: NzThMeasureDirective[]): void {
+  setListOfMeasureColumn(listOfTh: ReadonlyArray<NzThMeasureDirective>): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
       const length = (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;

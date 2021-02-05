@@ -26,6 +26,7 @@ import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
+  NzIconRenderTemplate,
   NzShowUploadList,
   NzUploadChangeParam,
   NzUploadFile,
@@ -110,7 +111,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
-  @Input() nzIconRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzIconRender: NzIconRenderTemplate | null = null;
   @Input() nzFileListRender: TemplateRef<void> | null = null;
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();

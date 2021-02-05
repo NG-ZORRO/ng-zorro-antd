@@ -37,7 +37,7 @@ export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;
   showEmpty$ = new BehaviorSubject<boolean>(false);
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
-  listOfMeasureColumn$ = new BehaviorSubject<string[]>([]);
+  listOfMeasureColumn$ = new BehaviorSubject<ReadonlyArray<string>>([]);
   private destroy$ = new Subject<void>();
 
   constructor(@Optional() private nzTableStyleService: NzTableStyleService) {

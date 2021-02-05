@@ -71,6 +71,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether to show pagination component at bottom of the table | `boolean` | `true` |
 | `[nzPaginationPosition]` | Specify the position of pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
+| `[nzPaginationType]` | Specify the size of pagination | `'default' \| 'small'` | `default` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` | ✅ |
 | `[nzOuterBordered]` | Whether to show table outer borders | `boolean` | `false` | - |
 | `[nzWidthConfig]` | Set col width can not used with `[nzWidth]` of `th` | `string[]` | `[]` |

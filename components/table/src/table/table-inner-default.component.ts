@@ -25,7 +25,7 @@ import { NzTableLayout } from '../table.types';
 })
 export class NzTableInnerDefaultComponent {
   @Input() tableLayout: NzTableLayout = 'auto';
-  @Input() listOfColWidth: Array<string | null> = [];
+  @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
 

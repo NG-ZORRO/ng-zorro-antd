@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzTableLayout, NzTablePaginationPosition, NzTableSize } from 'ng-zorro-antd/table';
+import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableSize } from 'ng-zorro-antd/table';
 
 interface ItemData {
   name: string;
@@ -30,6 +30,7 @@ interface Setting {
   tableScroll: string;
   tableLayout: NzTableLayout;
   position: NzTablePaginationPosition;
+  paginationType: NzTablePaginationType;
 }
 
 @Component({
@@ -38,11 +39,11 @@ interface Setting {
     <div class="components-table-demo-control-bar">
       <form nz-form nzLayout="inline" [formGroup]="settingForm!">
         <nz-form-item *ngFor="let switch of listOfSwitch">
-          <nz-form-label> {{ switch.name }} </nz-form-label>
+          <nz-form-label>{{ switch.name }}</nz-form-label>
           <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item *ngFor="let radio of listOfRadio">
-          <nz-form-label> {{ radio.name }} </nz-form-label>
+          <nz-form-label>{{ radio.name }}</nz-form-label>
           <nz-form-control>
             <nz-radio-group [formControlName]="radio.formControlName">
               <label *ngFor="let o of radio.listOfOption" nz-radio-button [nzValue]="o.value">{{ o.label }}</label>
@@ -59,6 +60,7 @@ interface Setting {
       [nzBordered]="settingValue.bordered"
       [nzSimple]="settingValue.simple"
       [nzLoading]="settingValue.loading"
+      [nzPaginationType]="settingValue.paginationType"
       [nzPaginationPosition]="settingValue.position"
       [nzShowSizeChanger]="settingValue.sizeChanger"
       [nzFrontPagination]="settingValue.pagination"
@@ -100,7 +102,7 @@ interface Setting {
             </td>
           </tr>
           <tr *ngIf="settingValue.expandable" [nzExpand]="data.expand">
-            <span> {{ data.description }}</span>
+            <span>{{ data.description }}</span>
           </tr>
         </ng-container>
       </tbody>
@@ -117,8 +119,8 @@ interface Setting {
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   settingForm?: FormGroup;
-  listOfData: ItemData[] = [];
-  displayData: ItemData[] = [];
+  listOfData: ReadonlyArray<ItemData> = [];
+  displayData: ReadonlyArray<ItemData> = [];
   allChecked = false;
   indeterminate = false;
   fixedColumn = false;
@@ -175,10 +177,18 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
         { value: 'bottom', label: 'Bottom' },
         { value: 'both', label: 'Both' }
       ]
+    },
+    {
+      name: 'Pagination Type',
+      formControlName: 'paginationType',
+      listOfOption: [
+        { value: 'default', label: 'Default' },
+        { value: 'small', label: 'Small' }
+      ]
     }
   ];
 
-  currentPageDataChange($event: ItemData[]): void {
+  currentPageDataChange($event: ReadonlyArray<ItemData>): void {
     this.displayData = $event;
     this.refreshStatus();
   }
@@ -200,7 +210,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     this.refreshStatus();
   }
 
-  generateData(): ItemData[] {
+  generateData(): ReadonlyArray<ItemData> {
     const data = [];
     for (let i = 1; i <= 100; i++) {
       data.push({
@@ -233,6 +243,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
       ellipsis: false,
       simple: false,
       size: 'small',
+      paginationType: 'default',
       tableScroll: 'unset',
       tableLayout: 'auto',
       position: 'bottom'
