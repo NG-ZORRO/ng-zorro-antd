@@ -526,7 +526,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private formatValue(value: NzSliderValue | null): NzSliderValue {
-    if (!value) {
+    if (value !== 0 && !value) {
       return this.nzRange ? [this.nzMin, this.nzMax] : this.nzMin;
     } else if (assertValueValid(value, this.nzRange)) {
       return isValueRange(value)
