@@ -76,13 +76,13 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   }
 
   ngOnInit(): void {
-    this.nzRadioService.selected$.subscribe(value => {
+    this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (this.value !== value) {
         this.value = value;
         this.onChange(this.value);
       }
     });
-    this.nzRadioService.touched$.subscribe(() => {
+    this.nzRadioService.touched$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
 

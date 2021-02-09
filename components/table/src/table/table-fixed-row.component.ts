@@ -45,7 +45,7 @@ export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnInit(): void {
     if (this.nzTableStyleService) {
       const { enableAutoMeasure$, hostWidth$ } = this.nzTableStyleService;
-      enableAutoMeasure$.subscribe(this.enableAutoMeasure$);
+      enableAutoMeasure$.pipe(takeUntil(this.destroy$)).subscribe(this.enableAutoMeasure$);
       hostWidth$.subscribe(this.hostWidth$);
     }
   }

@@ -132,7 +132,8 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
             })
         ),
         // TODO: after checked error here
-        delay(0)
+        delay(0),
+        takeUntil(this.destroy$)
       );
       listOfCalcOperator$.subscribe(list => {
         this.nzTableDataService.listOfCalcOperator$.next(list);
