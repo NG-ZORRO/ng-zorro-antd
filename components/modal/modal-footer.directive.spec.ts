@@ -131,7 +131,6 @@ class TestDirectiveFooterWithInitOpenedComponent {
     <div *nzModalFooter>
       <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
     </div>
-    s
   `
 })
 class TestDirectiveFooterInServiceComponent {
