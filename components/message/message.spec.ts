@@ -118,7 +118,7 @@ describe('message', () => {
 
     const messageElement = overlayContainerElement.querySelector('.ant-message-notice')!;
     dispatchMouseEvent(messageElement, 'mouseenter');
-    tick(1000);
+    tick(5000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');

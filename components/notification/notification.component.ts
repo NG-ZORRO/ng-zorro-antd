@@ -21,6 +21,7 @@ import { NzNotificationData } from './typings';
       [ngStyle]="instance.options?.nzStyle || null"
       [ngClass]="instance.options?.nzClass || ''"
       [@notificationMotion]="state"
+      (@notificationMotion.done)="animationStateChanged.next($event)"
       (click)="onClick($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
@@ -63,8 +64,7 @@ import { NzNotificationData } from './typings';
         [ngIf]="instance.template"
         [ngTemplateOutlet]="instance.template!"
         [ngTemplateOutletContext]="{ $implicit: this, data: instance.options?.nzData }"
-      >
-      </ng-template>
+      ></ng-template>
       <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
         <span class="ant-notification-notice-close-x">
           <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">
