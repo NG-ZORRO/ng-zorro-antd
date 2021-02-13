@@ -102,7 +102,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
       /** merged mouse state **/
       const mergedMouseState$ = merge(menuMouseState$, hostMouseState$);
       /** host click state **/
-      const hostClickState$ = fromEvent(nativeElement, 'click').pipe(mapTo(true));
+      const hostClickState$ = fromEvent(nativeElement, 'click').pipe(map(() => !this.nzVisible));
       /** visible state switch by nzTrigger **/
       const visibleStateByTrigger$ = this.nzTrigger$.pipe(
         switchMap(trigger => {
