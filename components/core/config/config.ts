@@ -257,6 +257,8 @@ export interface TabsConfig {
 export interface TimePickerConfig {
   nzAllowEmpty?: boolean;
   nzClearText?: string;
+  nzNowText?: string;
+  nzOkText?: string;
   nzFormat?: string;
   nzHourStep?: number;
   nzMinuteStep?: number;

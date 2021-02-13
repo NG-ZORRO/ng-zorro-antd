@@ -98,6 +98,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [nzDefaultOpenValue]="nzDefaultOpenValue"
               [nzAddOn]="nzAddOn"
               [nzClearText]="nzClearText"
+              [nzNowText]="nzNowText"
+              [nzOkText]="nzOkText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
               (ngModelChange)="onPanelValueChange($event)"
@@ -156,6 +158,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig() nzMinuteStep: number = 1;
   @Input() @WithConfig() nzSecondStep: number = 1;
   @Input() @WithConfig() nzClearText: string = 'clear';
+  @Input() @WithConfig() nzNowText: string = '';
+  @Input() @WithConfig() nzOkText: string = '';
   @Input() @WithConfig() nzPopupClassName: string = '';
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn?: TemplateRef<void>;
