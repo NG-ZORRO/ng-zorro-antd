@@ -37,6 +37,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'default'">
         <nz-select-search
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [showInput]="showSearch"
@@ -73,7 +74,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
         <nz-select-search
-          [id]="id"
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [autofocus]="autofocus"
@@ -92,7 +93,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   }
 })
 export class NzSelectTopControlComponent implements OnChanges {
-  @Input() id: string | null = null;
+  @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;

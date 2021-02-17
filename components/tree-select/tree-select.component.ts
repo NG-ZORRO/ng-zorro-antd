@@ -154,7 +154,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       </ng-container>
 
       <nz-select-search
-        [id]="nzId"
+        [nzId]="nzId"
         [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"

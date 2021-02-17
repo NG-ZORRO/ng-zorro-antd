@@ -74,7 +74,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     <nz-select-top-control
       cdkOverlayOrigin
       #origin="cdkOverlayOrigin"
-      [id]="nzId"
+      [nzId]="nzId"
       [open]="nzOpen"
       [disabled]="nzDisabled"
       [mode]="nzMode"
