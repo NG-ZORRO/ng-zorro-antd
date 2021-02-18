@@ -28,6 +28,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDisablePreview | Whether to disable the preview | `boolean` | `false` | ✅ |
 | nzCloseOnNavigation | Close preview while navigating | `boolean` | `false` | ✅ |
 | nzDirection | Text directionality | `Direction` | `'ltr'` | ✅ |
+| nzPreviewSrc | the different preview image path with `nzSrc` | `string` | - | - |
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 

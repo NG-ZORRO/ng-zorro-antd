@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 7
 title:
   zh-CN: 服务方式创建预览层
   en-US: Image Preview Service

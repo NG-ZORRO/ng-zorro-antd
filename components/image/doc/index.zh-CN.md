@@ -29,6 +29,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDisablePreview | 是否禁止预览 | `boolean` | `false` | ✅ |
 | nzCloseOnNavigation | 导航时是否关闭预览 | `boolean` | `false` | ✅ |
 | nzDirection | 文字方向 | `Direction` | `'ltr'` | ✅ |
+| nzPreviewSrc | 与 `nzSrc` 不同的预览图片地址 | `string` | - | - |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
