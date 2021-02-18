@@ -131,6 +131,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
+  @Input() inline: boolean = false;
   @Input() showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() disabledDate?: DisabledDateFn;
@@ -293,28 +294,42 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       this.hoverValue = selectedValue;
 
       if (emitValue) {
-        /**
-         * if sort order is wrong, clear the other part's value
-         */
-        if (wrongSortOrder(selectedValue)) {
+        if (this.inline) {
+          // For UE, Should always be reversed, and clear vaue when next part is right
           nextPart = this.reversedPart(checkedPart);
-          selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
-          this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
-        }
-
-        this.datePickerService.setValue(selectedValue);
-
-        /**
-         * range date usually selected paired,
-         * so we emit the date value only both date is allowed and both part are checked
-         */
-        if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+          if (nextPart === 'right') {
+            selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
+            this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
+          }
+          this.datePickerService.setValue(selectedValue);
           this.calendarChange.emit(selectedValue);
-          this.clearHoverValue();
-          this.datePickerService.emitValue$.next();
-        } else if (this.isAllowed(selectedValue)) {
-          nextPart = this.reversedPart(checkedPart);
-          this.calendarChange.emit([value.clone()]);
+          if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+            this.clearHoverValue();
+            this.datePickerService.emitValue$.next();
+          }
+        } else {
+          /**
+           * if sort order is wrong, clear the other part's value
+           */
+          if (wrongSortOrder(selectedValue)) {
+            nextPart = this.reversedPart(checkedPart);
+            selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
+            this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
+          }
+
+          this.datePickerService.setValue(selectedValue);
+          /**
+           * range date usually selected paired,
+           * so we emit the date value only both date is allowed and both part are checked
+           */
+          if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+            this.calendarChange.emit(selectedValue);
+            this.clearHoverValue();
+            this.datePickerService.emitValue$.next();
+          } else if (this.isAllowed(selectedValue)) {
+            nextPart = this.reversedPart(checkedPart);
+            this.calendarChange.emit([value.clone()]);
+          }
         }
       } else {
         this.datePickerService.setValue(selectedValue);

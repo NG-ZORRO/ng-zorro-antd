@@ -54,42 +54,44 @@ import { PREFIX_CLASS } from './util';
   selector: '[nz-picker]',
   exportAs: 'nzPicker',
   template: `
-    <!-- Content of single picker -->
-    <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-      <input
-        #pickerInput
-        [attr.id]="id"
-        [class.ant-input-disabled]="disabled"
-        [disabled]="disabled"
-        [readOnly]="inputReadOnly"
-        [(ngModel)]="inputValue"
-        placeholder="{{ getPlaceholder() }}"
-        [size]="inputSize"
-        (focus)="onFocus($event)"
-        (blur)="onBlur($event)"
-        (ngModelChange)="onInputChange($event)"
-        (keyup.enter)="onKeyupEnter($event)"
-      />
-      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-    </div>
+    <ng-container *ngIf="!inline; else inlineMode">
+      <!-- Content of single picker -->
+      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
+        <input
+          #pickerInput
+          [attr.id]="id"
+          [class.ant-input-disabled]="disabled"
+          [disabled]="disabled"
+          [readOnly]="inputReadOnly"
+          [(ngModel)]="inputValue"
+          placeholder="{{ getPlaceholder() }}"
+          [size]="inputSize"
+          (focus)="onFocus($event)"
+          (blur)="onBlur($event)"
+          (ngModelChange)="onInputChange($event)"
+          (keyup.enter)="onKeyupEnter($event)"
+        />
+        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      </div>
 
-    <!-- Content of range picker -->
-    <ng-container *ngIf="isRange">
-      <div class="{{ prefixCls }}-input">
-        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
-      </div>
-      <div #separatorElement class="{{ prefixCls }}-range-separator">
-        <span class="{{ prefixCls }}-separator">
-          <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
-        </span>
-        <ng-template #defaultSeparator>
-          <i nz-icon nzType="swap-right" nzTheme="outline"></i>
-        </ng-template>
-      </div>
-      <div class="{{ prefixCls }}-input">
-        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
-      </div>
-      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      <!-- Content of range picker -->
+      <ng-container *ngIf="isRange">
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+        </div>
+        <div #separatorElement class="{{ prefixCls }}-range-separator">
+          <span class="{{ prefixCls }}-separator">
+            <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
+          </span>
+          <ng-template #defaultSeparator>
+            <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+          </ng-template>
+        </div>
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      </ng-container>
     </ng-container>
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
@@ -121,6 +123,26 @@ import { PREFIX_CLASS } from './util';
       </span>
     </ng-template>
 
+    <ng-template #inlineMode>
+      <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
+        <div
+          class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
+          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-range]="isRange"
+          [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
+          [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
+          [ngStyle]="popupStyle"
+        >
+          <!-- Compatible for overlay that not support offset dynamically and immediately -->
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </ng-template>
+
     <!-- Overlay -->
     <ng-template
       cdkConnectedOverlay
@@ -134,21 +156,7 @@ import { PREFIX_CLASS } from './util';
       (overlayKeydown)="onOverlayKeydown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
     >
-      <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
-        <div
-          class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
-          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
-          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
-          [class.ant-picker-dropdown-range]="isRange"
-          [ngStyle]="popupStyle"
-        >
-          <!-- Compatible for overlay that not support offset dynamically and immediately -->
-          <ng-content></ng-content>
-        </div>
-      </div>
+      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
     </ng-template>
   `,
   animations: [slideMotion],
@@ -160,6 +168,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() open: boolean | undefined = undefined;
   @Input() disabled: boolean = false;
   @Input() inputReadOnly: boolean = false;
+  @Input() inline: boolean = false;
   @Input() placeholder!: string | string[];
   @Input() allowClear?: boolean;
   @Input() autoFocus?: boolean;
@@ -306,6 +315,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   getInput(partType?: RangePartType): HTMLInputElement | undefined {
+    if (this.inline) {
+      return undefined;
+    }
     return this.isRange
       ? partType === 'left'
         ? this.rangePickerInputs?.first.nativeElement
@@ -335,6 +347,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // Show overlay content
   showOverlay(): void {
+    if (this.inline) {
+      return;
+    }
     if (!this.realOpenState && !this.disabled) {
       this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
@@ -346,6 +361,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   hideOverlay(): void {
+    if (this.inline) {
+      return;
+    }
     if (this.realOpenState) {
       this.overlayOpen = false;
       this.openChange.emit(false);
