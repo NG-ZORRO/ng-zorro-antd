@@ -204,6 +204,11 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | `[nzExpand]` | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | `boolean` | - |
 
+### tfoot
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzSummary]` | 总结栏  | `boolean` | - |
 
 ### nz-filter-trigger
 
