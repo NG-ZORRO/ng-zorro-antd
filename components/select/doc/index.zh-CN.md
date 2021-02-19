@@ -34,6 +34,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | 是否在选中项后清空搜索框，只在 `mode` 为 `multiple` 或 `tags` 时有效。 | `boolean` | `true` |
 | `[nzAllowClear]` | 支持清除 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzBorderless]` | 是否无边框 | `boolean` | `false` | ✅ |
 | `[nzOpen]` | 下拉菜单是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzAutoFocus]` | 默认获取焦点 | `boolean` | `false` |
