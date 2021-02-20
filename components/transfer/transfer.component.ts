@@ -119,8 +119,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  @ViewChildren(NzTransferListComponent)
-  private lists!: QueryList<NzTransferListComponent>;
+  @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
   locale!: NzTransferI18nInterface;
 
   leftFilter = '';
