@@ -444,6 +444,22 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
+
+    it('should support nzInline', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+      overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
+      const cell = getFirstCell(); // Use the first cell
+      const cellText = cell.textContent!.trim();
+      dispatchMouseEvent(cell, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnChange).toHaveBeenCalled();
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getDate()).toBe(+cellText);
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1101,6 +1117,7 @@ describe('date-fns testing', () => {
         (nzOnOk)="nzOnOk($event)"
         [nzSuffixIcon]="nzSuffixIcon"
         [nzBorderless]="nzBorderless"
+        [nzInline]="nzInline"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1152,6 +1169,7 @@ class NzTestDatePickerComponent {
   nzMode: string = 'date';
   nzSuffixIcon!: string;
   nzBorderless = false;
+  nzInline = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}

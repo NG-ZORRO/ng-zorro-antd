@@ -312,6 +312,32 @@ describe('NzRangePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
     }));
+
+    it('should support nzInline', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
+
+      const left = getFirstCell('left'); // Use the first cell
+      const leftText = left.textContent!.trim();
+      dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(nzOnChange).not.toHaveBeenCalled();
+      // now the cursor focus on right
+      const right = getFirstCell('right');
+      dispatchMouseEvent(right, 'click');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
+      expect((result[0] as Date).getDate()).toBe(+leftText);
+    }));
   }); // /general api testing
 
   describe('panel switch and move forward/afterward', () => {
@@ -995,6 +1021,7 @@ describe('NzRangePickerComponent', () => {
         [nzMode]="nzMode"
         [nzRanges]="nzRanges"
         [nzDefaultPickerValue]="nzDefaultPickerValue"
+        [nzInline]="nzInline"
         (nzOnPanelChange)="nzOnPanelChange($event)"
         (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
@@ -1034,6 +1061,7 @@ class NzTestRangePickerComponent {
   modelValueChange(_: Date[]): void {}
   nzDefaultPickerValue!: Array<Date | null>;
   nzSeparator!: string;
+  nzInline: boolean = false;
 
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;

@@ -4,7 +4,7 @@ import getISOWeek from 'date-fns/getISOWeek';
 @Component({
   selector: 'nz-demo-date-picker-inline',
   template: `
-    <nz-tabset nzSelectedIndex="5">
+    <nz-tabset>
       <nz-tab nzTitle="Default">
         <nz-date-picker nzInline [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
       </nz-tab>
