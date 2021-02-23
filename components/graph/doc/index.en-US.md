@@ -111,7 +111,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 #### NzGraphEdge
 
 | Parameter | Description | Type |
-| --- | --- |
+| --- | --- | --- |
 | `id` | id | `string` |
 | `v` | source node | `number\|string` |
 | `w` | target node | `number\|string` |
