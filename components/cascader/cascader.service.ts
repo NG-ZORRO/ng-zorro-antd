@@ -262,6 +262,10 @@ export class NzCascaderService implements OnDestroy {
     const loopParent = (node: NzCascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
+      // nzChangeOnSelect can click parent node
+      if(this.cascaderComponent.nzChangeOnSelect){
+        loopChild(node, disabled);
+      }
       node.children!.forEach(sNode => {
         if (!sNode.parent) {
           sNode.parent = node;
