@@ -88,7 +88,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzAlign]` | 垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | - |
-| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `number\|object\|[number, number]\|[object, object]` | - |
+| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `string\|number\|object\|[number, number]\|[object, object]` | - |
 | `[nzJustify]` | 水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | - |
 
 ### [nz-col]
