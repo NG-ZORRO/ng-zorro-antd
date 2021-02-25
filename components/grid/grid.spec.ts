@@ -50,6 +50,14 @@ describe('grid', () => {
       expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
       expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
     });
+    it('should gutter string work', () => {
+      expect(rowElement.style.cssText).toBe('');
+      expect(colElement.style.cssText).toBe('');
+      testBed.component.gutter = '16';
+      testBed.fixture.detectChanges();
+      expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
+      expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
+    });
     it('should gutter number array work', () => {
       testBed.component.gutter = [16, 16];
       testBed.fixture.detectChanges();
@@ -202,7 +210,13 @@ describe('grid', () => {
   `
 })
 export class TestGridComponent {
-  gutter: number | null | [number, number] | { [key: string]: number } | [{ [key: string]: number }, { [key: string]: number }] = null;
+  gutter:
+    | string
+    | number
+    | null
+    | [number, number]
+    | { [key: string]: number }
+    | [{ [key: string]: number }, { [key: string]: number }] = null;
   flex: string | null = null;
   justify: string | null = null;
   align: string | null = null;
