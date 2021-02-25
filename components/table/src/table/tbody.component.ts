@@ -4,9 +4,10 @@
  */
 /* tslint:disable:component-selector */
 
-import { ChangeDetectionStrategy, Component, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzTableStyleService } from '../table-style.service';
 
 @Component({
@@ -32,23 +33,29 @@ import { NzTableStyleService } from '../table-style.service';
     '[class.ant-table-tbody]': 'isInsideTable'
   }
 })
-export class NzTbodyComponent {
+export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;
   showEmpty$ = new BehaviorSubject<boolean>(false);
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
   listOfMeasureColumn$ = new BehaviorSubject<ReadonlyArray<string>>([]);
+  private destroy$ = new Subject<void>();
 
   constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
     this.isInsideTable = !!this.nzTableStyleService;
     if (this.nzTableStyleService) {
       const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
-      noResult$.subscribe(this.noResult$);
-      listOfMeasureColumn$.subscribe(this.listOfMeasureColumn$);
-      showEmpty$.subscribe(this.showEmpty$);
+      noResult$.pipe(takeUntil(this.destroy$)).subscribe(this.noResult$);
+      listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(this.listOfMeasureColumn$);
+      showEmpty$.pipe(takeUntil(this.destroy$)).subscribe(this.showEmpty$);
     }
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
     this.nzTableStyleService.setListOfAutoWidth(listOfAutoWidth);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

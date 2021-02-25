@@ -20,7 +20,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Datum auswählen',
+      yearPlaceholder: 'Jahr auswählen',
+      quarterPlaceholder: 'Quartal auswählen',
+      monthPlaceholder: 'Monat auswählen',
+      weekPlaceholder: 'Woche auswählen',
       rangePlaceholder: ['Startdatum', 'Enddatum'],
+      rangeYearPlaceholder: ['Startjahr', 'Endjahr'],
+      rangeMonthPlaceholder: ['Startmonat', 'Endmonat'],
+      rangeWeekPlaceholder: ['Startwoche', 'Endwoche'],
       locale: 'de_DE',
       today: 'Heute',
       now: 'Jetzt',
@@ -31,6 +38,7 @@ export default {
       year: 'Jahr',
       timeSelect: 'Zeit wählen',
       dateSelect: 'Datum wählen',
+      weekSelect: 'Woche wählen',
       monthSelect: 'Wähle einen Monat',
       yearSelect: 'Wähle ein Jahr',
       decadeSelect: 'Wähle ein Jahrzehnt',
@@ -49,7 +57,8 @@ export default {
       nextCentury: 'Nächstes Jahrhundert'
     },
     timePickerLocale: {
-      placeholder: 'Zeit auswählen'
+      placeholder: 'Zeit auswählen',
+      rangePlaceholder: ['Startzeit', 'Endzeit']
     }
   },
   TimePicker: {
@@ -58,7 +67,14 @@ export default {
   Calendar: {
     lang: {
       placeholder: 'Datum auswählen',
+      yearPlaceholder: 'Jahr auswählen',
+      quarterPlaceholder: 'Quartal auswählen',
+      monthPlaceholder: 'Monat auswählen',
+      weekPlaceholder: 'Woche auswählen',
       rangePlaceholder: ['Startdatum', 'Enddatum'],
+      rangeYearPlaceholder: ['Startjahr', 'Endjahr'],
+      rangeMonthPlaceholder: ['Startmonat', 'Endmonat'],
+      rangeWeekPlaceholder: ['Startwoche', 'Endwoche'],
       locale: 'de_DE',
       today: 'Heute',
       now: 'Jetzt',
@@ -69,6 +85,7 @@ export default {
       year: 'Jahr',
       timeSelect: 'Zeit wählen',
       dateSelect: 'Datum wählen',
+      weekSelect: 'Woche wählen',
       monthSelect: 'Wähle einen Monat',
       yearSelect: 'Wähle ein Jahr',
       decadeSelect: 'Wähle ein Jahrzehnt',
@@ -87,7 +104,8 @@ export default {
       nextCentury: 'Nächstes Jahrhundert'
     },
     timePickerLocale: {
-      placeholder: 'Zeit auswählen'
+      placeholder: 'Zeit auswählen',
+      rangePlaceholder: ['Startzeit', 'Endzeit']
     }
   },
   global: {
@@ -97,6 +115,8 @@ export default {
     filterTitle: 'Filter-Menü',
     filterConfirm: 'OK',
     filterReset: 'Zurücksetzen',
+    filterEmptyText: 'Keine Filter',
+    emptyText: 'Keine Daten',
     selectAll: 'Selektiere Alle',
     selectInvert: 'Selektion Invertieren',
     selectionAll: 'Wählen Sie alle Daten aus',
@@ -117,9 +137,16 @@ export default {
     cancelText: 'Abbrechen'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Suchen',
     itemUnit: 'Eintrag',
-    itemsUnit: 'Einträge'
+    itemsUnit: 'Einträge',
+    remove: 'Entfernen',
+    selectCurrent: 'Aktuelle Seite auswählen',
+    removeCurrent: 'Aktuelle Seite abwählen',
+    selectAll: 'Alle Daten auswählen',
+    removeAll: 'Alle Daten abwählen',
+    selectInvert: 'Aktuelle Auswahl invertieren'
   },
   Upload: {
     uploading: 'Hochladen...',

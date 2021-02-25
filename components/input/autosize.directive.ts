@@ -25,7 +25,7 @@ export interface AutoSizeType {
   }
 })
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
-  private autosize: boolean | AutoSizeType = false;
+  private autosize: boolean = false;
   private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
   private cachedLineHeight!: number;
   private previousValue!: string;
@@ -42,10 +42,10 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     const isAutoSizeType = (data: string | boolean | AutoSizeType): data is AutoSizeType => {
       return typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
     };
-    if (typeof value === 'string') {
+    if (typeof value === 'string' || value === true) {
       this.autosize = true;
     } else if (isAutoSizeType(value)) {
-      this.autosize = value;
+      this.autosize = true;
       this.minRows = value.minRows;
       this.maxRows = value.maxRows;
       this.maxHeight = this.setMaxHeight();

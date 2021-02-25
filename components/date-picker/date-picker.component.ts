@@ -60,6 +60,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [separator]="nzSeparator"
       [disabled]="nzDisabled"
       [inputReadOnly]="nzInputReadOnly"
+      [inline]="nzInline"
       [format]="nzFormat"
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
@@ -76,6 +77,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     >
       <date-range-popup
         [isRange]="isRange"
+        [inline]="nzInline"
         [defaultPickerValue]="nzDefaultPickerValue"
         [showWeek]="nzMode === 'week'"
         [panelMode]="panelMode"
@@ -102,6 +104,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
     '[class.ant-picker-borderless]': `nzBorderless`,
+    '[class.ant-picker-inline]': `nzInline`,
     '(click)': 'picker.onClickInputBox($event)'
   },
   providers: [
@@ -120,6 +123,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
   static ngAcceptInputType_nzInputReadOnly: BooleanInput;
+  static ngAcceptInputType_nzInline: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzShowToday: BooleanInput;
   static ngAcceptInputType_nzShowNow: BooleanInput;
@@ -143,6 +147,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
+  @Input() @InputBoolean() nzInline: boolean = false;
   @Input() @InputBoolean() nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
