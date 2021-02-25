@@ -21,7 +21,6 @@ import {
 } from '@angular/core';
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
-import { toNumber } from 'ng-zorro-antd/core/util';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -67,7 +66,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           }
         });
       } else {
-        results[index] = toNumber(g, null);
+        results[index] = Number(g) || null;
       }
     });
     return results;
