@@ -53,7 +53,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ### NzDrawerOptions
 
 | Params | Description | Type | Default | Global Config |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | - |
 | nzContentParams | The component inputs the param / The Template context. | `D` | - |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |

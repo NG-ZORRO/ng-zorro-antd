@@ -13,6 +13,35 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 11.2.0
+
+`2021-02-26`
+
+### Bug Fixes
+
+* **18n:** 新增 de_DE 翻译 ([#6434](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6434)) ([1c09fe1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c09fe15522c4d22691a7f30a66970c5cbbe67b6))
+* **18n:** 新增 es_ES 翻译 ([#6421](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6421)) ([6b878b9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6b878b9ac3519ea669b8e010ebef960b392721ef))
+* **docs:** 修复依赖警告问题 ([#6428](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6428)) ([2fbbe94](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2fbbe94cfa5923565ce61ad8f29326209ba84ab1))
+* **dropdown:** 修复再次点击没有关闭的问题 ([#6353](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6353)) ([#6354](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6354)) ([cd90349](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cd90349ff60db343b35dd1e2f47b134aeb16948d))
+* **grid,menu,radio,table:** 修复内存泄漏问题 ([#6408](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6408)) ([94607a0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/94607a0afacafdeccd942a525b3c5fce6491df7a))
+* **input:** 修复 `nzAutosize` 的问题 ([#6409](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6409)) ([8ca1e5a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8ca1e5aa6c5f02bdc308e60a9b5d2c9b602406ea))
+* **message:** 修复窗口关闭时闪烁的问题 ([#6296](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6296)) ([#6370](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6370)) ([772e76c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/772e76cc23506cb368e7c717f409e3c6ef5351c6))
+* **table:** 修复过滤问题 ([#6384](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6384)) ([#6385](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6385)) ([ad01c8f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ad01c8f9deb263330389bc8b9b9f4c84b6ecbf2b))
+* **tree-view:** 修复 API 名错误 ([#6386](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6386)) ([27a1c4e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/27a1c4e620e8342594f152fba65c5105e991c369))
+* **schematics:** 修复 `add-icon-assets` schema 路径问题 ([#6404](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6404)) ([340670d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/340670d8f1d2277c6da64866dfe16f94d3fdac80))
+
+
+### Features
+
+* **date-picker:** 新增 `nzInline` ([#6436](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6436)) ([4d80873](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4d808734343178abfc8e1baac90a1539b05b4c60))
+* **grid:** `nzGutter` 支持 string 类型 ([#6450](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6450)) ([ec03c7f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ec03c7fb09845d5d8320801b26df549046ca447c))
+* **time-picker:** 新增 `nzNowText` `nzOkText`([#6410](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6410)) ([ef3af58](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ef3af58e23d1e12a1b3cccf547e990550a54fcde))
+* **time-picker,select,tree-select:** 新增 `nzId` ([#6379](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6379)) ([85d423d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/85d423d77468e493c71220374bfac676dfc9505c))
+
+
+### Performance Improvements
+
+* **select:** 避免初始化回流 ([#6452](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6452)) ([342d2d1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/342d2d15bb1fb58b0fbd36c7a2bb8af183ef84c9))
 
 
 ## 11.1.0
