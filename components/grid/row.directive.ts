@@ -45,7 +45,7 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
-  @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
+  @Input() nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
 
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
@@ -66,7 +66,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           }
         });
       } else {
-        results[index] = g || null;
+        results[index] = Number(g) || null;
       }
     });
     return results;
