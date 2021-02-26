@@ -42,7 +42,7 @@ export class NzTabsInkBarDirective {
     if (this.position === 'horizontal') {
       inkBar.style.top = '';
       inkBar.style.height = '';
-      inkBar.style.left = this.getLeftPosition(element);
+      inkBar.style.transform = `translateX(${this.getLeftPosition(element)})`;
       inkBar.style.width = this.getElementWidth(element);
     } else {
       inkBar.style.left = '';
