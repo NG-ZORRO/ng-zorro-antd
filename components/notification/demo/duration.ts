@@ -11,7 +11,7 @@ export class NzDemoNotificationDurationComponent {
   createBasicNotification(): void {
     this.notification.blank(
       'Notification Title',
-      'I will never close automatically. I will be close automatically. I will never close automatically.',
+      'I will never close automatically. This is a purposely very very long description that has many many characters and words.',
       { nzDuration: 0 }
     );
   }
