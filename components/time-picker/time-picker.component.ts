@@ -48,6 +48,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     <div class="ant-picker-input">
       <input
         #inputElement
+        [attr.id]="nzId"
         type="text"
         [size]="inputSize"
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
@@ -153,6 +154,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   dir: Direction = 'ltr';
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
+  @Input() nzId: string | null = null;
   @Input() nzSize: string | null = null;
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;

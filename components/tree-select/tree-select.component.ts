@@ -154,6 +154,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       </ng-container>
 
       <nz-select-search
+        [nzId]="nzId"
         [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"
@@ -228,6 +229,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
   static ngAcceptInputType_nzCheckStrictly: BooleanInput;
 
+  @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;

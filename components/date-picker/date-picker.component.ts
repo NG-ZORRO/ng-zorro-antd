@@ -73,7 +73,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [suffixIcon]="nzSuffixIcon"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
-      [id]="nzId"
+      [nzId]="nzId"
     >
       <date-range-popup
         [isRange]="isRange"

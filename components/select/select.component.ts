@@ -74,6 +74,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     <nz-select-top-control
       cdkOverlayOrigin
       #origin="cdkOverlayOrigin"
+      [nzId]="nzId"
       [open]="nzOpen"
       [disabled]="nzDisabled"
       [mode]="nzMode"
@@ -172,6 +173,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
 
+  @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;

@@ -27,6 +27,7 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
   template: `
     <input
       #inputElement
+      [attr.id]="nzId"
       autocomplete="off"
       class="ant-select-selection-search-input"
       [ngModel]="value"
@@ -42,6 +43,7 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
+  @Input() nzId: string | null = null;
   @Input() disabled = false;
   @Input() mirrorSync = false;
   @Input() showInput = true;

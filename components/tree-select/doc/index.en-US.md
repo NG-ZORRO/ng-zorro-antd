@@ -22,6 +22,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[nzId]` | input id attribute inside the component| `string` | - |
 | `[nzAllowClear]` | Whether allow clear | `boolean` | `false` |
 | `[nzPlaceHolder]` | Placeholder of the select input | `string` | - |
 | `[nzDisabled]` | Disabled or not | `boolean` | `false` |

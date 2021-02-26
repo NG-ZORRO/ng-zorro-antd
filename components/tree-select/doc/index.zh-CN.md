@@ -22,6 +22,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[nzAllowClear]` | 显示清除按钮 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
 | `[nzDisabled]` | 禁用选择器 | `boolean` | `false` |
