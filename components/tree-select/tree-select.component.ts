@@ -4,6 +4,8 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
@@ -28,9 +30,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 
 import {
   NzFormatEmitEvent,
@@ -47,8 +50,6 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil, tap } from 'rxjs/operators';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
 
 export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
@@ -61,7 +62,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
 @Component({
   selector: 'nz-tree-select',
   exportAs: 'nzTreeSelect',
-  animations: [slideMotion, zoomMotion],
+  animations: [slideMotion],
   template: `
     <ng-template
       cdkConnectedOverlay
@@ -129,22 +130,14 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       <ng-container *ngIf="isMultiple">
         <nz-select-item
           *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
-          [@zoomMotion]
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
-          (@zoomMotion.done)="updatePosition()"
           (delete)="removeSelected(node, true)"
         ></nz-select-item>
 
         <nz-select-item
           *ngIf="selectedNodes.length > nzMaxTagCount"
-          [@zoomMotion]
-          (@zoomMotion.done)="updatePosition()"
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [contentTemplateOutlet]="nzMaxTagPlaceholder"
           [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
           [deletable]="false"
@@ -558,10 +551,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updatePosition(): void {
-    setTimeout(() => {
-      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-        this.cdkConnectedOverlay.overlayRef.updatePosition();
-      }
+    reqAnimFrame(() => {
+      this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }
 

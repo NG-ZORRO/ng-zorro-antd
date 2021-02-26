@@ -10,7 +10,6 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange }
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -31,10 +30,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
@@ -91,7 +92,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [listOfTopItem]="listOfTopItem"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
-      (animationEnd)="updateCdkConnectedOverlayPositions()"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
@@ -160,7 +160,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '(click)': 'onHostClick()'
   }
 })
-export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
+export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, AfterContentInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -480,14 +480,17 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   updateCdkConnectedOverlayStatus(): void {
     if (this.platform.isBrowser && this.originElement.nativeElement) {
-      this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
+      reqAnimFrame(() => {
+        this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
+        this.cdr.markForCheck();
+      });
     }
   }
 
   updateCdkConnectedOverlayPositions(): void {
-    if (this.cdkConnectedOverlay.overlayRef) {
-      this.cdkConnectedOverlay.overlayRef.updatePosition();
-    }
+    reqAnimFrame(() => {
+      this.cdkConnectedOverlay?.overlayRef?.updatePosition();
+    });
   }
 
   constructor(
@@ -605,10 +608,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngAfterViewInit(): void {
-    this.updateCdkConnectedOverlayStatus();
   }
 
   ngAfterContentInit(): void {
