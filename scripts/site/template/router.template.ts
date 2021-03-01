@@ -25,6 +25,7 @@ export interface RouterList {
     label: string;
     language: string;
     order: number;
+    hidden: boolean;
     description: string;
     experimental: boolean;
   }>;
