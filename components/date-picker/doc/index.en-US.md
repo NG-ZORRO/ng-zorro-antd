@@ -50,6 +50,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
 | `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
 | `[nzBorderless]` | remove the border | `boolean` | `false` | - |
+| `[nzInline]` | inline mode | `boolean` | `false` | - |
 | `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - | - |
 
 ### Common Methods
