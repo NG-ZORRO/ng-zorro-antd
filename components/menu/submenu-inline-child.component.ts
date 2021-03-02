@@ -19,7 +19,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
@@ -39,10 +40,12 @@ import { NzMenuModeType } from './menu.types';
   }
 })
 export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
+  static ngAcceptInputType_nzOpen: BooleanInput;
+
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
-  @Input() nzOpen = false;
+  @Input() @InputBoolean() nzOpen = false;
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
   dir: Direction = 'ltr';

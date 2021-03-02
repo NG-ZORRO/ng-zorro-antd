@@ -17,6 +17,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
@@ -51,11 +53,15 @@ import { NzMenuModeType } from './menu.types';
   }
 })
 export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
+  static ngAcceptInputType_isMenuInsideDropDown: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_paddingLeft: NumberInput;
+
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
-  @Input() isMenuInsideDropDown = false;
-  @Input() nzDisabled = false;
-  @Input() paddingLeft: number | null = null;
+  @Input() @InputBoolean() isMenuInsideDropDown = false;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputNumber() paddingLeft: number | null = null;
   @Input() mode: NzMenuModeType = 'vertical';
   @Output() readonly toggleSubMenu = new EventEmitter();
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();

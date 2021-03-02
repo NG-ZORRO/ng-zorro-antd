@@ -5,9 +5,9 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
+import { ensureInBounds, InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -37,15 +37,22 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
   static ngAcceptInputType_nzPreview: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzMaxHeight: NumberInput;
+  static ngAcceptInputType_nzMaxWidth: NumberInput;
+  static ngAcceptInputType_nzMinHeight: NumberInput;
+  static ngAcceptInputType_nzMinWidth: NumberInput;
+  static ngAcceptInputType_nzGridColumnCount: NumberInput;
+  static ngAcceptInputType_nzMaxColumn: NumberInput;
+  static ngAcceptInputType_nzMinColumn: NumberInput;
 
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
-  @Input() nzMaxHeight?: number;
-  @Input() nzMaxWidth?: number;
-  @Input() nzMinHeight: number = 40;
-  @Input() nzMinWidth: number = 40;
-  @Input() nzGridColumnCount: number = -1;
-  @Input() nzMaxColumn: number = -1;
-  @Input() nzMinColumn: number = -1;
+  @Input() @InputNumber() nzMaxHeight?: number;
+  @Input() @InputNumber() nzMaxWidth?: number;
+  @Input() @InputNumber() nzMinHeight: number = 40;
+  @Input() @InputNumber() nzMinWidth: number = 40;
+  @Input() @InputNumber() nzGridColumnCount: number = -1;
+  @Input() @InputNumber() nzMaxColumn: number = -1;
+  @Input() @InputNumber() nzMinColumn: number = -1;
   @Input() @InputBoolean() nzLockAspectRatio: boolean = false;
   @Input() @InputBoolean() nzPreview: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;

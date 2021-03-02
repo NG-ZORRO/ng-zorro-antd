@@ -39,8 +39,8 @@ import {
   NzTreeNodeKey,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzTreeService } from './tree.service';
@@ -176,6 +176,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   static ngAcceptInputType_nzAsyncData: BooleanInput;
   static ngAcceptInputType_nzDraggable: BooleanInput;
   static ngAcceptInputType_nzMultiple: BooleanInput;
+  static ngAcceptInputType_nzVirtualItemSize: NumberInput;
+  static ngAcceptInputType_nzVirtualMaxBufferPx: NumberInput;
+  static ngAcceptInputType_nzVirtualMinBufferPx: NumberInput;
 
   @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
   @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
@@ -190,9 +193,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzDraggable: boolean = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzVirtualItemSize = 28;
-  @Input() nzVirtualMaxBufferPx = 500;
-  @Input() nzVirtualMinBufferPx = 28;
+  @Input() @InputNumber() nzVirtualItemSize = 28;
+  @Input() @InputNumber() nzVirtualMaxBufferPx = 500;
+  @Input() @InputNumber() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
   @Input() nzTreeTemplate?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzBeforeDrop?: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;

@@ -15,7 +15,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -53,12 +54,16 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   }
 })
 export class NzBadgeSupComponent implements OnInit, OnChanges {
+  static ngAcceptInputType_nzDot: BooleanInput;
+  static ngAcceptInputType_nzOverflowCount: NumberInput;
+  static ngAcceptInputType_disableAnimation: BooleanInput;
+
   @Input() nzOffset?: [number, number];
   @Input() nzTitle?: string | null | undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;
-  @Input() nzDot = false;
-  @Input() nzOverflowCount: number = 99;
-  @Input() disableAnimation = false;
+  @Input() @InputBoolean() nzDot = false;
+  @Input() @InputNumber() nzOverflowCount: number = 99;
+  @Input() @InputBoolean() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   maxNumberArray: string[] = [];
   countArray: number[] = [];

@@ -27,8 +27,8 @@ import {
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
@@ -144,6 +144,9 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
   static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
   static ngAcceptInputType_nzSimple: BooleanInput;
+  static ngAcceptInputType_nzVirtualItemSize: NumberInput;
+  static ngAcceptInputType_nzVirtualMaxBufferPx: NumberInput;
+  static ngAcceptInputType_nzVirtualMinBufferPx: NumberInput;
 
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
@@ -152,11 +155,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzFooter: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzNoResult: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
-  @Input() nzVirtualItemSize = 0;
-  @Input() nzVirtualMaxBufferPx = 200;
-  @Input() nzVirtualMinBufferPx = 100;
+  @Input() @InputNumber() nzVirtualItemSize = 0;
+  @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
+  @Input() @InputNumber() nzVirtualMinBufferPx = 100;
   @Input() nzVirtualForTrackBy: TrackByFunction<NzTableData> = index => index;
-  @Input() nzLoadingDelay = 0;
+  @Input() @InputNumber() nzLoadingDelay = 0;
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;

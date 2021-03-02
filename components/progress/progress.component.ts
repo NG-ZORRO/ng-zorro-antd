@@ -17,8 +17,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
-import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -158,9 +158,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzStrokeWidth: NumberInput;
   static ngAcceptInputType_nzGapDegree: NumberInput;
   static ngAcceptInputType_nzSteps: NumberInput;
+  static ngAcceptInputType_nzShowInfo: BooleanInput;
+  static ngAcceptInputType_nzWidth: NumberInput;
 
-  @Input() @WithConfig() nzShowInfo: boolean = true;
-  @Input() nzWidth = 132;
+  @Input() @InputBoolean() @WithConfig() nzShowInfo: boolean = true;
+  @Input() @InputNumber() nzWidth = 132;
   @Input() @WithConfig() nzStrokeColor?: NzProgressStrokeColorType = undefined;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;

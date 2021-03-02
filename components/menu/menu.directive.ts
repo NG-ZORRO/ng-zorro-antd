@@ -21,8 +21,8 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuItemDirective } from './menu-item.directive';
@@ -82,10 +82,11 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
   static ngAcceptInputType_nzSelectable: BooleanInput;
+  static ngAcceptInputType_nzInlineIndent: NumberInput;
 
   @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
-  @Input() nzInlineIndent = 24;
+  @Input() @InputNumber() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
   @Input() nzMode: NzMenuModeType = 'vertical';
   @Input() @InputBoolean() nzInlineCollapsed = false;

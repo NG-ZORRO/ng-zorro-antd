@@ -15,8 +15,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
-import { toCssPixel } from 'ng-zorro-antd/core/util';
+import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
 
 @Component({
@@ -47,9 +48,13 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   `
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
-  @Input() nzActive = false;
-  @Input() nzLoading = true;
-  @Input() nzRound = false;
+  static ngAcceptInputType_nzActive: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzRound: BooleanInput;
+
+  @Input() @InputBoolean() nzActive = false;
+  @Input() @InputBoolean() nzLoading = true;
+  @Input() @InputBoolean() nzRound = false;
   @Input() nzTitle: NzSkeletonTitle | boolean = true;
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;

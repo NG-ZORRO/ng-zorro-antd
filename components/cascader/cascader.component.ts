@@ -32,8 +32,8 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassType, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, toArray } from 'ng-zorro-antd/core/util';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -199,6 +199,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzMouseEnterDelay: NumberInput;
+  static ngAcceptInputType_nzMouseLeaveDelay: NumberInput;
 
   @ViewChild('input', { static: false }) input!: ElementRef;
   @ViewChild('menu', { static: false }) menu!: ElementRef;
@@ -223,8 +225,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
   @Input() nzMenuStyle: NgStyleInterface | null = null;
-  @Input() nzMouseEnterDelay: number = 150; // ms
-  @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input() @InputNumber() nzMouseEnterDelay: number = 150; // ms
+  @Input() @InputNumber() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;

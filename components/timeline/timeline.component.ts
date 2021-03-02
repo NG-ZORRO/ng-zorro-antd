@@ -24,6 +24,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
 import { NzTimelineMode, NzTimelinePosition } from './typings';
@@ -74,12 +76,14 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
   `
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
+  static ngAcceptInputType_nzReverse: BooleanInput;
+
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
 
   @Input() nzMode: NzTimelineMode = 'left';
   @Input() nzPending?: string | boolean | TemplateRef<void>;
   @Input() nzPendingDot?: string | TemplateRef<void>;
-  @Input() nzReverse: boolean = false;
+  @Input() @InputBoolean() nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];

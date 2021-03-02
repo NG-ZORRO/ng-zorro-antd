@@ -43,8 +43,8 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgStyleInterface, NumberInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -221,6 +221,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   static ngAcceptInputType_nzMultiple: BooleanInput;
   static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
   static ngAcceptInputType_nzCheckStrictly: BooleanInput;
+  static ngAcceptInputType_nzVirtualItemSize: NumberInput;
+  static ngAcceptInputType_nzVirtualMaxBufferPx: NumberInput;
+  static ngAcceptInputType_nzVirtualMinBufferPx: NumberInput;
+  static ngAcceptInputType_nzMaxTagCount: NumberInput;
 
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -236,9 +240,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() nzVirtualItemSize = 28;
-  @Input() nzVirtualMaxBufferPx = 500;
-  @Input() nzVirtualMinBufferPx = 28;
+  @Input() @InputNumber() nzVirtualItemSize = 28;
+  @Input() @InputNumber() nzVirtualMaxBufferPx = 500;
+  @Input() @InputNumber() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzNotFoundContent?: string;
@@ -257,7 +261,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
-  @Input() nzMaxTagCount!: number;
+  @Input() @InputNumber() nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();

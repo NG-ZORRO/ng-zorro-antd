@@ -15,8 +15,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
@@ -35,8 +35,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [ngModel]="nzChecked"
       [nzIndeterminate]="nzIndeterminate"
       (ngModelChange)="onCheckedChange($event)"
-    >
-    </label>
+    ></label>
     <ng-content></ng-content>
   `,
   host: {
@@ -48,11 +47,12 @@ export class NzTdAddOnComponent implements OnChanges {
   static ngAcceptInputType_nzShowExpand: BooleanInput;
   static ngAcceptInputType_nzShowCheckbox: BooleanInput;
   static ngAcceptInputType_nzExpand: BooleanInput;
+  static ngAcceptInputType_nzIndentSize: NumberInput;
 
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
-  @Input() nzIndentSize = 0;
+  @Input() @InputNumber() nzIndentSize = 0;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzExpand = false;
