@@ -19,7 +19,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
   template: `
     <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
       <ng-container *nzStringTemplateOutlet="config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }">
-        <div *ngIf="!buttonsFooter" [innerHTML]="config.nzTitle"></div>
+        <div *ngIf="!buttonsFooter" [innerHTML]="config.nzFooter"></div>
         <ng-container *ngIf="buttonsFooter">
           <button
             *ngFor="let button of buttons"
