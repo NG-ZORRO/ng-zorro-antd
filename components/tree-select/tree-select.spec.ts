@@ -331,6 +331,14 @@ describe('tree-select component', () => {
       flush();
       expect(treeSelectComponent.nzOpen).toBe(true);
     }));
+
+    it('should nzBackdrop work', fakeAsync(() => {
+      testComponent.hasBackdrop = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
   });
 
   describe('checkable', () => {
@@ -608,6 +616,7 @@ describe('tree-select component', () => {
       [nzMultiple]="multiple"
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
+      [nzBackdrop]="hasBackdrop"
       nzDropdownClassName="class1 class2"
     ></nz-tree-select>
   `
@@ -682,6 +691,7 @@ export class NzTestTreeSelectBasicComponent {
       ]
     }
   ];
+  hasBackdrop = false;
 
   setNull(): void {
     this.value = null;

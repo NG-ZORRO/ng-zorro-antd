@@ -39,7 +39,6 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmOverlayClassName]` | 卡片类名 | `string` | - |
 | `[nzPopconfirmOverlayStyle]` | 卡片样式 | `object` | - |
 | `[nzPopconfirmBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
-| `[nzPopconfirmBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

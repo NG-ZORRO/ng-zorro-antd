@@ -16,6 +16,8 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -26,13 +28,16 @@ describe('time-picker', () => {
       TestBed.compileComponents();
       inject([OverlayContainer], (oc: OverlayContainer) => {
         overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
       })();
     })
   );
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
   describe('basic time-picker', () => {
     let testComponent: NzTestTimePickerComponent;
     let fixture: ComponentFixture<NzTestTimePickerComponent>;
@@ -116,9 +121,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe('11');
+      expect(overlayContainerElement.querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe('11');
 
-      dispatchMouseEvent(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell')!, 'click');
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-time-panel-cell')!, 'click');
       fixture.detectChanges();
       getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
@@ -151,6 +156,15 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
+    it('should backdrop work', fakeAsync(() => {
+      testComponent.nzBackdrop = true;
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
     describe('setup I18n service', () => {
       let srv: NzI18nService;
 
@@ -175,7 +189,7 @@ describe('time-picker', () => {
   });
 
   function queryFromOverlay(selector: string): HTMLElement {
-    return overlayContainer.getContainerElement().querySelector(selector) as HTMLElement;
+    return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
 });
 
@@ -190,6 +204,7 @@ describe('time-picker', () => {
       [nzDisabled]="disabled"
       [nzUse12Hours]="use12Hours"
       [nzSuffixIcon]="nzSuffixIcon"
+      [nzBackdrop]="nzBackdrop"
     ></nz-time-picker>
   `
 })
@@ -201,6 +216,7 @@ export class NzTestTimePickerComponent {
   disabled = false;
   use12Hours = false;
   nzSuffixIcon?: string;
+  nzBackdrop = false;
   onChange(): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }
