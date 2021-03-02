@@ -121,9 +121,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { specificTrigger } = changes;
+    const { trigger } = changes;
 
-    if (specificTrigger && !specificTrigger.isFirstChange()) {
+    if (trigger && !trigger.isFirstChange()) {
       this.registerTriggers();
     }
 
