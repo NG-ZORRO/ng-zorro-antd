@@ -5,33 +5,32 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
-import { NzSpaceDirection, NzSpaceSize } from './types';
+import { NzSpaceDirection } from './types';
 
-const spaceSize = {
-  small: 8,
-  middle: 16,
-  large: 24
-};
-
+/**
+ * @deprecated NzSpaceItemLegacyComponent will be removed on 12.0.0.
+ * @breaking-change 12.0.0
+ */
 @Component({
   selector: 'nz-space-item, [nz-space-item]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   host: {
     class: 'ant-space-item'
   }
 })
-export class NzSpaceItemComponent implements OnInit {
+export class NzSpaceItemLegacyComponent implements OnInit {
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
-  setDirectionAndSize(direction: NzSpaceDirection, size: number | NzSpaceSize): void {
-    const marginSize = typeof size === 'string' ? spaceSize[size] : size;
+  setDirectionAndSize(direction: NzSpaceDirection, size: number): void {
     if (direction === 'horizontal') {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'margin-bottom');
-      this.renderer.setStyle(this.elementRef.nativeElement, 'margin-right', `${marginSize}px`);
+      this.renderer.setStyle(this.elementRef.nativeElement, 'margin-right', `${size}px`);
     } else {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'margin-right');
-      this.renderer.setStyle(this.elementRef.nativeElement, 'margin-bottom', `${marginSize}px`);
+      this.renderer.setStyle(this.elementRef.nativeElement, 'margin-bottom', `${size}px`);
     }
   }
 

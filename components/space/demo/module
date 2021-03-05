@@ -1,11 +1,13 @@
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 export const moduleList = [
   NzRadioModule,
@@ -15,5 +17,7 @@ export const moduleList = [
   NzSpaceModule,
   NzIconModule,
   NzPopconfirmModule,
-  NzCardModule
+  NzCardModule,
+  NzDividerModule,
+  NzTypographyModule
 ];

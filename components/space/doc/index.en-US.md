@@ -23,6 +23,8 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
-| `[nzSize]` | space size | `small` \| `middle` \| `large` \| `number` | `small` | ✅ |
-| `[nzDirection]` | space direction | `vertical` \| `horizontal` | `horizontal` |  |
-| `[nzAlign]` | align items | `start` \| `end` \| `baseline` \| `horizontal` | - | |
+| `[nzSize]` | The space size | `'small' \| 'middle' \| 'large' \| number` | `small` | ✅ |
+| `[nzDirection]` | The space direction | `'vertical' \| 'horizontal'` | `horizontal` |  |
+| `[nzAlign]` | Align items | `'start' \| 'end' \| 'baseline' \| 'center'` | - | |
+| `[nzWrap]` | Auto wrap line, when `horizontal` effective| `boolean` | `false` | |
+| `[nzSplit]` | Set split | `TemplateRef` | - | |
