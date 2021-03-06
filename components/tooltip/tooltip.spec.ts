@@ -8,7 +8,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTooltipBaseDirective } from './base';
+import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
 import { NzToolTipModule } from './tooltip.module';
 
@@ -155,6 +155,23 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
       expect(component.visibilityTogglingCount).toBe(2);
+    }));
+
+    it('should not hide tooltip when `nzTooltipTrigger` is null', fakeAsync(() => {
+      const title = 'always show';
+
+      component.trigger = null;
+      component.visible = true;
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      component.trigger = 'click';
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).not.toContain(title);
     }));
   });
 
@@ -348,6 +365,8 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Manually
     </a>
 
+    <a #alwaysShow nz-tooltip [nzTooltipTrigger]="trigger" [nzTooltipTitle]="'always show'" [nzTooltipVisible]="visible">Always Show</a>
+
     <div>
       <button>A</button>
       <button #inBtnGroup nz-tooltip nzTooltipTitle="title-string">B</button>
@@ -367,8 +386,9 @@ export class NzTooltipTestComponent {
   titleTemplateDirective!: NzTooltipDirective;
 
   @ViewChild('focusTooltip', { static: false }) focusTemplate!: ElementRef;
+  @ViewChild('alwaysShow', { static: false }) alwaysShow!: ElementRef;
 
-  trigger: string | null = 'click';
+  trigger: NzTooltipTrigger = 'click';
 
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup!: ElementRef;
 
