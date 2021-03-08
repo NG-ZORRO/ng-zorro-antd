@@ -18,6 +18,7 @@ export interface VirtualDataInterface {
     <br />
     <nz-table
       #virtualTable
+      [nzBordered]="true"
       [nzVirtualItemSize]="54"
       [nzData]="listOfData"
       [nzVirtualForTrackBy]="trackByIndex"
