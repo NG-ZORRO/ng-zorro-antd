@@ -448,7 +448,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+    if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
       this.hide();
     }
   }
