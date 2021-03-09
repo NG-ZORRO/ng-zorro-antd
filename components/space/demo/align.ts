@@ -5,32 +5,27 @@ import { Component } from '@angular/core';
   template: `
     <div class="space-align-container">
       <div nz-space nzAlign="center" class="space-align-block">
-        <nz-space-item>center</nz-space-item>
-        <nz-space-item>
-          <button nz-button nzType="primary">Button</button>
-        </nz-space-item>
-        <span nz-space-item class="mock-block">Block</span>
+        <ng-container *nzSpaceItem>center</ng-container>
+        <button *nzSpaceItem nz-button nzType="primary">Button</button>
+        <span *nzSpaceItem class="mock-block">Block</span>
       </div>
+
       <div nz-space nzAlign="start" class="space-align-block">
-        <nz-space-item>start</nz-space-item>
-        <nz-space-item>
-          <button nz-button nzType="primary">Button</button>
-        </nz-space-item>
-        <span nz-space-item class="mock-block">Block</span>
+        <ng-container *nzSpaceItem>start</ng-container>
+        <button *nzSpaceItem nz-button nzType="primary">Button</button>
+        <span *nzSpaceItem class="mock-block">Block</span>
       </div>
+
       <div nz-space nzAlign="end" class="space-align-block">
-        <nz-space-item>end</nz-space-item>
-        <nz-space-item>
-          <button nz-button nzType="primary">Button</button>
-        </nz-space-item>
-        <span nz-space-item class="mock-block">Block</span>
+        <ng-container *nzSpaceItem>end</ng-container>
+        <button *nzSpaceItem nz-button nzType="primary">Button</button>
+        <span *nzSpaceItem class="mock-block">Block</span>
       </div>
+
       <div nz-space nzAlign="baseline" class="space-align-block">
-        <nz-space-item>baseline</nz-space-item>
-        <nz-space-item>
-          <button nz-button nzType="primary">Button</button>
-        </nz-space-item>
-        <span nz-space-item class="mock-block">Block</span>
+        <ng-container *nzSpaceItem>baseline</ng-container>
+        <button *nzSpaceItem nz-button nzType="primary">Button</button>
+        <span *nzSpaceItem class="mock-block">Block</span>
       </div>
     </div>
   `,
