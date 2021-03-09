@@ -150,7 +150,7 @@ describe('spin', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-spin',
   template: `
     <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i></ng-template>

@@ -15,8 +15,11 @@ import { NzStatisticValueType } from './typings';
   exportAs: 'nzStatisticNumber',
   template: `
     <span class="ant-statistic-content-value">
-      <ng-container *ngIf="nzValueTemplate" [ngTemplateOutlet]="nzValueTemplate" [ngTemplateOutletContext]="{ $implicit: nzValue }">
-      </ng-container>
+      <ng-container
+        *ngIf="nzValueTemplate"
+        [ngTemplateOutlet]="nzValueTemplate"
+        [ngTemplateOutletContext]="{ $implicit: nzValue }"
+      ></ng-container>
       <ng-container *ngIf="!nzValueTemplate">
         <span *ngIf="displayInt" class="ant-statistic-content-value-int">{{ displayInt }}</span>
         <span *ngIf="displayDecimal" class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>

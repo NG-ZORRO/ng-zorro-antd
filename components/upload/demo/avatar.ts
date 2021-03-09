@@ -37,8 +37,8 @@ export class NzDemoUploadAvatarComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) => {
-    return new Observable((observer: Observer<boolean>) => {
+  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) =>
+    new Observable((observer: Observer<boolean>) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
         this.msg.error('You can only upload JPG file!');
@@ -54,7 +54,6 @@ export class NzDemoUploadAvatarComponent {
       observer.next(isJpgOrPng && isLt2M);
       observer.complete();
     });
-  };
 
   private getBase64(img: File, callback: (img: string) => void): void {
     const reader = new FileReader();

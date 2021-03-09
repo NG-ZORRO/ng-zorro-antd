@@ -1,4 +1,4 @@
-// tslint:disable:no-any no-parameter-reassignment
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-param-reassign */
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferDirection, TransferItem } from './interface';
+import { NzTransferComponent, NzTransferModule } from './index';
 
 const COUNT = 21;
 const LEFTCOUNT = 2;
@@ -106,9 +106,7 @@ describe('transfer', () => {
     });
 
     it('should be custom filter option', () => {
-      instance.nzFilterOption = (inputValue: string, item: any): boolean => {
-        return item.description.indexOf(inputValue) > -1;
-      };
+      instance.nzFilterOption = (inputValue: string, item: any): boolean => item.description.indexOf(inputValue) > -1;
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
@@ -240,13 +238,12 @@ describe('transfer', () => {
     });
 
     it('should be uncheck all when two verification error', () => {
-      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
-        return of(arg.list).pipe(
+      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> =>
+        of(arg.list).pipe(
           map(() => {
             throw new Error('error');
           })
         );
-      };
       fixture.detectChanges();
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -409,7 +406,7 @@ describe('transfer', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-transfer',
   template: `
     <nz-transfer
@@ -546,7 +543,7 @@ class TestTransferCustomRenderComponent implements OnInit {
   `
 })
 class Test996Component implements OnInit {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   list: any[] = [];
 
   ngOnInit(): void {

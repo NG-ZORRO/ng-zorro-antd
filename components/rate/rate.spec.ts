@@ -255,7 +255,7 @@ describe('rate', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-rate',
   template: `
     <nz-rate

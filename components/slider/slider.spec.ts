@@ -704,7 +704,7 @@ describe('nz-slider', () => {
     });
 
     it('should stop at new steps when step=null or dots=true', () => {
-      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // tslint:disable-line:no-any
+      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
       testComponent.step = null;
       fixture.detectChanges();
 
@@ -1187,6 +1187,7 @@ class NzTestSliderKeyboardComponent {
 /**
  * Dispatches a click event sequence (consisting of moueseenter, click) from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percentage The percentage of the slider where the click should occur. Used to find the
  * physical location of the click.
@@ -1204,6 +1205,7 @@ function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: numb
 
 /**
  * Dispatches a slide event sequence (consisting of slidestart, slide, slideend) from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param startPercent The percentage of the slider where the slide will begin.
  * @param endPercent The percentage of the slider where the slide will end.
@@ -1221,6 +1223,7 @@ function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: nu
 
 /**
  * Dispatches a slide event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will happen.
  */
@@ -1235,6 +1238,7 @@ function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
 
 /**
  * Dispatches a slidestart event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will begin.
  */
@@ -1251,6 +1255,7 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
 
 /**
  * Dispatches a slideend event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will end.
  */
@@ -1266,6 +1271,7 @@ function dispatchSlideEndEvent(sliderElement: HTMLElement, percent: number): voi
 /**
  * Dispatches a mouseenter event from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param element The element from which the event will be dispatched.
  */
 function dispatchMouseenterEvent(element: HTMLElement): void {

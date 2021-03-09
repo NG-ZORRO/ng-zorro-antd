@@ -21,16 +21,14 @@ import { formatDistance } from 'date-fns';
           <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
         </nz-form-item>
         <nz-form-item>
-          <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
-            Add Comment
-          </button>
+          <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">Add Comment</button>
         </nz-form-item>
       </nz-comment-content>
     </nz-comment>
   `
 })
 export class NzDemoCommentEditorComponent {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[] = [];
   submitting = false;
   user = {
@@ -53,12 +51,10 @@ export class NzDemoCommentEditorComponent {
           datetime: new Date(),
           displayTime: formatDistance(new Date(), new Date())
         }
-      ].map(e => {
-        return {
-          ...e,
-          displayTime: formatDistance(new Date(), e.datetime)
-        };
-      });
+      ].map(e => ({
+        ...e,
+        displayTime: formatDistance(new Date(), e.datetime)
+      }));
     }, 800);
   }
 }

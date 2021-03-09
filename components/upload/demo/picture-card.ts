@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 
-function getBase64(file: File): Promise<string | ArrayBuffer | null> {
-  return new Promise((resolve, reject) => {
+const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
-}
 
 @Component({
   selector: 'nz-demo-upload-picture-card',

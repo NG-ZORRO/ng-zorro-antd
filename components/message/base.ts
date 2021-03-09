@@ -209,10 +209,10 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
       this.closeTimer = setTimeout(() => {
         this.closeTimer = undefined;
-        this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+        this.destroyed.next({ id: this.instance.messageId, userAction });
       }, 200);
     } else {
-      this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+      this.destroyed.next({ id: this.instance.messageId, userAction });
     }
   }
 

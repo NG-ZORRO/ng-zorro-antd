@@ -277,7 +277,7 @@ export class NzLayoutResponsiveComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-layout-basic',
   template: `
     <nz-layout>

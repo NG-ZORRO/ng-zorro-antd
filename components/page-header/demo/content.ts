@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
       </nz-breadcrumb>
 
       <!--avatar-->
-      <nz-avatar nz-page-header-avatar nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4"> </nz-avatar>
+      <nz-avatar nz-page-header-avatar nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4"></nz-avatar>
 
       <!--title-->
       <nz-page-header-title>Title</nz-page-header-title>
@@ -56,9 +56,18 @@ import { Component } from '@angular/core';
               psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
             </p>
             <div class="content-link">
-              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start </a>
-              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info </a>
-              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc </a>
+              <a>
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />
+                Quick Start
+              </a>
+              <a>
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />
+                Product Info
+              </a>
+              <a>
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />
+                Product Doc
+              </a>
             </div>
           </div>
           <div class="content-image">

@@ -218,7 +218,7 @@ describe('affix', () => {
     });
 
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', fakeAsync(() => {
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       context.newOffset = offsetTop.toString() as any;
       setupInitialState({ offsetTop: offsetTop + 1 });
       emitScroll(window, 2);

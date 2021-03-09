@@ -7,7 +7,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export function scrollIntoView(node: HTMLElement): void {
   const nodeAsAny = node as NzSafeAny;
   if (nodeAsAny.scrollIntoViewIfNeeded) {
-    /* tslint:disable-next-line:no-string-literal */
+    /* eslint-disable-next-line @typescript-eslint/dot-notation */
     nodeAsAny.scrollIntoViewIfNeeded(false);
     return;
   }

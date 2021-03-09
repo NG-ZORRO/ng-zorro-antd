@@ -62,7 +62,7 @@ describe('i18n service', () => {
 
     it('should warn when locale for a component is not provided', () => {
       const spy = spyOn(console, 'warn');
-      srv.setLocale({ locale: 'not_existing_language' } as any); // tslint:disable-line no-any
+      srv.setLocale({ locale: 'not_existing_language' } as any); // eslint-disable-line  @typescript-eslint/no-explicit-any
       expect(srv.getLocaleData('global.placeholder')).toBeTruthy();
       expect(spy).toHaveBeenCalledWith(
         '[NG-ZORRO]:',

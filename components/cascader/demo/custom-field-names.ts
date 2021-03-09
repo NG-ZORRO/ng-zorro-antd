@@ -60,8 +60,7 @@ const options = [
       [nzShowSearch]="true"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    >
-    </nz-cascader>
+    ></nz-cascader>
   `
 })
 export class NzDemoCascaderCustomFieldNamesComponent {

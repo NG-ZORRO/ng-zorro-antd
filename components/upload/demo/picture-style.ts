@@ -6,10 +6,14 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
   template: `
     <div class="clearfix">
       <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [(nzFileList)]="fileList1">
-        <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
+        <button nz-button>
+          <i nz-icon nzType="upload"></i>
+          Upload
+        </button>
       </nz-upload>
     </div>
-    <br /><br />
+    <br />
+    <br />
     <div class="clearfix">
       <nz-upload
         class="upload-list-inline"
@@ -18,7 +22,10 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
         [(nzFileList)]="fileList2"
       >
         <button nz-button>
-          <span><i nz-icon nzType="upload"></i> Upload</span>
+          <span>
+            <i nz-icon nzType="upload"></i>
+            Upload
+          </span>
         </button>
       </nz-upload>
     </div>

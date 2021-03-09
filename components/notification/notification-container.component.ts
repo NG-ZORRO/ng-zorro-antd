@@ -178,6 +178,6 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
 
   protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
     const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
-    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement, ...options };
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement, ...options };
   }
 }

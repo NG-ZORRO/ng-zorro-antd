@@ -117,6 +117,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   /**
    * use internal Image object handle fallback & placeholder
+   *
    * @private
    */
   private backLoad(): void {

@@ -1,4 +1,4 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component, DebugElement, Injector, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -249,9 +249,7 @@ describe('upload', () => {
 
       describe('[nzData]', () => {
         it('should custom form data vis function', () => {
-          instance.nzData = () => {
-            return { a: 1 };
-          };
+          instance.nzData = () => ({ a: 1 });
           fixture.detectChanges();
           pageObject.postSmall();
           const req = httpMock.expectOne(instance.nzAction as string);
@@ -297,9 +295,7 @@ describe('upload', () => {
 
       describe('[nzHeaders]', () => {
         it('should custom form data vis function', () => {
-          instance.nzHeaders = () => {
-            return { a: '1' };
-          };
+          instance.nzHeaders = () => ({ a: '1' });
           fixture.detectChanges();
           pageObject.postSmall();
           const req = httpMock.expectOne(instance.nzAction as string);
@@ -446,9 +442,7 @@ describe('upload', () => {
           });
           it('cancel upload when returan a false value', () => {
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (): Observable<any> => {
-              return of(false);
-            };
+            instance.beforeUpload = (): Observable<any> => of(false);
             fixture.detectChanges();
             pageObject.postSmall();
             expect(instance._nzChange).toBeUndefined();
@@ -457,9 +451,7 @@ describe('upload', () => {
             let warnMsg = '';
             console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (): Observable<any> => {
-              return throwError('');
-            };
+            instance.beforeUpload = (): Observable<any> => throwError('');
             fixture.detectChanges();
             pageObject.postSmall();
             expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
@@ -513,21 +505,19 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: (fileList: NzUploadFile[]) => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
-                  });
-                }
+                  })
               },
               {
                 name: 'f2',
-                fn: (fileList: NzUploadFile[]) => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
-                  });
-                }
+                  })
               }
             ];
             fixture.detectChanges();
@@ -541,11 +531,10 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: () => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: () =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.error('filter error');
-                  });
-                }
+                  })
               }
             ];
             fixture.detectChanges();
@@ -1108,11 +1097,9 @@ describe('upload', () => {
               file: (handle: any) => {
                 handle(new Item(item.name));
               },
-              createReader: () => {
-                return {
-                  readEntries: (handle: any) => handle(item.children!.map(makeFileSystemEntry))
-                };
-              }
+              createReader: () => ({
+                readEntries: (handle: any) => handle(item.children!.map(makeFileSystemEntry))
+              })
             };
             return ret;
           };

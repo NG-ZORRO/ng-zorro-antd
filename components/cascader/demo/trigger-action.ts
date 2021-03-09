@@ -52,8 +52,7 @@ const options = [
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    >
-    </nz-cascader>
+    ></nz-cascader>
   `
 })
 export class NzDemoCascaderTriggerActionComponent {

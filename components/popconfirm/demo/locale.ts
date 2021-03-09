@@ -4,9 +4,16 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'nz-demo-popconfirm-locale',
   template: `
-    <a nz-popconfirm nzPopconfirmTitle="Are you sure?" nzOkText="ok" nzCancelText="cancel" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()"
-      >delete</a
+    <a
+      nz-popconfirm
+      nzPopconfirmTitle="Are you sure?"
+      nzOkText="ok"
+      nzCancelText="cancel"
+      (nzOnConfirm)="confirm()"
+      (nzOnCancel)="cancel()"
     >
+      delete
+    </a>
   `
 })
 export class NzDemoPopconfirmLocaleComponent {

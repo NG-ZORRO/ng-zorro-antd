@@ -81,7 +81,7 @@ import { NzTableData } from '../table.types';
   `
 })
 export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @Input() data: ReadonlyArray<NzTableData> = [];
+  @Input() data: readonly NzTableData[] = [];
   @Input() scrollX: string | null = null;
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;

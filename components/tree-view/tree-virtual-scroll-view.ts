@@ -64,7 +64,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
 
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>): void {
+  renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
   }
 

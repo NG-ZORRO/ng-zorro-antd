@@ -116,7 +116,7 @@ export class NzDemoTreeViewSearchComponent {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level
+            level
           };
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);

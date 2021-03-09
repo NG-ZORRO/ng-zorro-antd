@@ -6,7 +6,7 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 import { NzDemoCodeEditorBasicComponent } from './demo/basic';
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const monaco: any;
 
 @Component({
@@ -15,12 +15,12 @@ declare const monaco: any;
   `
 })
 export class NzTestCodeEditorFullControlComponent {
-  // tslint:disable-next-line no-any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   editor: any;
 
   code = '';
 
-  // tslint:disable-next-line no-any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   onEditorInit(e: any): void {
     this.editor = e;
     this.editor.setModel(monaco.editor.createModel("console.log('Hello ng-zorro-antd')", 'typescript'));

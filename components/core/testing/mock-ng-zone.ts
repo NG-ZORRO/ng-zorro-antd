@@ -13,23 +13,24 @@ import { EventEmitter, Injectable, NgZone } from '@angular/core';
  * to flush out `onStable` subscriptions in tests.
  *
  * via: https://github.com/angular/angular/blob/master/packages/core/testing/src/ng_zone_mock.ts
+ *
  * @docs-private
  */
 @Injectable()
 export class MockNgZone extends NgZone {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onStable: EventEmitter<any> = new EventEmitter(false);
 
   constructor() {
     super({ enableLongStackTrace: false });
   }
 
-  // tslint:disable-next-line:no-any ban-types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
   run(fn: Function): any {
     return fn();
   }
 
-  // tslint:disable-next-line:ban-types no-any
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
   runOutsideAngular(fn: Function): any {
     return fn();
   }

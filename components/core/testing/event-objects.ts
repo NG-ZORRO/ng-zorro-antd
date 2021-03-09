@@ -87,10 +87,10 @@ export function createKeyboardEvent(
   });
 
   // IE won't set `defaultPrevented` on synthetic events so we need to do it manually.
-  // tslint:disable-next-line:typedef
-  event.preventDefault = function() {
+  // eslint-disable-next-line
+  event.preventDefault = function () {
     Object.defineProperty(event, 'defaultPrevented', { get: () => true, configurable: true });
-    // tslint:disable-next-line:no-invalid-this
+    // eslint-disable-next-line no-invalid-this
     return originalPreventDefault.apply(this, arguments);
   };
 

@@ -306,7 +306,7 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-empty-test-custom',
   template: `
     <div>I'm in component {{ name }}</div>

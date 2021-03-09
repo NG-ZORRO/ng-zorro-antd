@@ -96,9 +96,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       });
       filter.checked = !filter.checked;
     } else {
-      this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
-        return { ...item, checked: item === filter };
-      });
+      this.listOfParsedFilter = this.listOfParsedFilter.map(item => ({ ...item, checked: item === filter }));
     }
     this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
   }

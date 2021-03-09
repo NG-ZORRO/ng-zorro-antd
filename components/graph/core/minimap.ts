@@ -123,7 +123,7 @@ export class Minimap {
         }
         for (const i of new Array(cssRules.length).keys()) {
           // Remove tf-* selectors from the styles.
-          stylesText += cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '') + '\n';
+          stylesText += `${cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '')}\n`;
         }
       } catch (e) {
         if (e.name !== 'SecurityError') {
@@ -201,13 +201,14 @@ export class Minimap {
         [this.canvas, this.canvasBuffer] = [this.canvasBuffer, this.canvas];
       });
     };
-    image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXml);
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgXml)}`;
   }
 
   /**
    * Handles changes in zooming/panning. Should be called from the main svg
    * to notify that a zoom/pan was performed and this minimap will update it's
    * viewpoint rectangle.
+   *
    * @param transform
    */
   zoom(transform?: ZoomTransform | NzZoomTransform): void {

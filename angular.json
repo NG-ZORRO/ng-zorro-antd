@@ -269,6 +269,16 @@
             "tsConfig": "components/tsconfig.spec.json",
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "fix": true,
+            "lintFilePatterns": [
+              "components/**/*.ts",
+              "components/**/*.html"
+            ]
+          }
         }
       }
     }

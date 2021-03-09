@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 
-import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 import { NzBreadCrumbModule } from './breadcrumb.module';
@@ -257,7 +257,7 @@ describe('breadcrumb', () => {
   });
 });
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 function flushFixture(fixture: ComponentFixture<any>): void {
   fixture.detectChanges();
   flush();
@@ -265,7 +265,7 @@ function flushFixture(fixture: ComponentFixture<any>): void {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-breadcrumb',
   template: `
     <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>

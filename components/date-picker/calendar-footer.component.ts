@@ -25,7 +25,7 @@ import { PREFIX_CLASS } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'calendar-footer',
   exportAs: 'calendarFooter',
   template: `

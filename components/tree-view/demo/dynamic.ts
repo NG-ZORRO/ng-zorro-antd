@@ -66,11 +66,7 @@ class DynamicDatasource implements DataSource<FlatNode> {
       this.treeControl.expansionModel.changed.pipe(tap(change => this.handleExpansionChange(change))),
       this.flattenedData
     ];
-    return merge(...changes).pipe(
-      map(() => {
-        return this.expandFlattenedNodes(this.flattenedData.getValue());
-      })
-    );
+    return merge(...changes).pipe(map(() => this.expandFlattenedNodes(this.flattenedData.getValue())));
   }
 
   expandFlattenedNodes(nodes: FlatNode[]): FlatNode[] {

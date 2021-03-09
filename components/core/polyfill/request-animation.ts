@@ -4,7 +4,7 @@
  */
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-// tslint:disable: typedef no-invalid-this
+/* eslint-disable no-invalid-this */
 const availablePrefixes = ['moz', 'ms', 'webkit'];
 
 function requestAnimationFramePolyfill(): typeof requestAnimationFrame {

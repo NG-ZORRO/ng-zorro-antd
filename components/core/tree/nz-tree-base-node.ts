@@ -68,6 +68,7 @@ export class NzTreeNode {
 
   /**
    * Init nzTreeNode
+   *
    * @param option: user's input
    * @param parent
    * @param service: base nzTreeService

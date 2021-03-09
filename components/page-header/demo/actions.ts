@@ -17,9 +17,7 @@ import { Component } from '@angular/core';
           <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
           <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
-            Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
-          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">Gonghu Road, Xihu District, Hangzhou, Zhejiang, China</nz-descriptions-item>
         </nz-descriptions>
       </nz-page-header-content>
     </nz-page-header>

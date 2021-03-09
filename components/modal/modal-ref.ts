@@ -68,15 +68,14 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => {
-          return (
+        filter(
+          event =>
             (this.config.nzKeyboard as boolean) &&
             !this.config.nzCancelLoading &&
             !this.config.nzOkLoading &&
             event.keyCode === ESCAPE &&
             !hasModifierKey(event)
-          );
-        })
+        )
       )
       .subscribe(event => {
         event.preventDefault();

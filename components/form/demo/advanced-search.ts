@@ -26,9 +26,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
         </div>
       </div>
     </form>
-    <div class="search-result-list">
-      Search Result List
-    </div>
+    <div class="search-result-list">Search Result List</div>
   `,
 
   styles: [

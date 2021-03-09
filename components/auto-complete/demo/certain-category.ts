@@ -20,8 +20,8 @@ export interface AutocompleteOptionGroups {
       <nz-autocomplete #auto>
         <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
           <ng-template #groupTitle>
-            <span
-              >{{ group.title }}
+            <span>
+              {{ group.title }}
               <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
             </span>
           </ng-template>

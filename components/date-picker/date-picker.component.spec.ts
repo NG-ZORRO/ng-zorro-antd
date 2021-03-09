@@ -714,7 +714,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzShowTime', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fixtureInstance.nzShowTime = '' as any;
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -775,13 +775,11 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = () => {
-        return {
-          nzDisabledHours: () => [0, 1, 2],
-          nzDisabledMinutes: () => [0, 1],
-          nzDisabledSeconds: () => [0]
-        };
-      };
+      fixtureInstance.nzDisabledTime = () => ({
+        nzDisabledHours: () => [0, 1, 2],
+        nzDisabledMinutes: () => [0, 1],
+        nzDisabledSeconds: () => [0]
+      });
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -809,13 +807,11 @@ describe('NzDatePickerComponent', () => {
 
     it('should nzDisabledTime invalid input not emit', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = () => {
-        return {
-          nzDisabledHours: () => [0, 1, 2],
-          nzDisabledMinutes: () => [0, 1],
-          nzDisabledSeconds: () => [0]
-        };
-      };
+      fixtureInstance.nzDisabledTime = () => ({
+        nzDisabledHours: () => [0, 1, 2],
+        nzDisabledMinutes: () => [0, 1],
+        nzDisabledSeconds: () => [0]
+      });
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -1187,7 +1183,7 @@ class NzTestDatePickerComponent {
   nzInputReadOnly: boolean = false;
   nzFormat!: string;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
@@ -1199,9 +1195,9 @@ class NzTestDatePickerComponent {
 
   nzValue: Date | null = null;
   nzDefaultPickerValue: Date | null = null;
-  nzDateRender: any; // tslint:disable-line:no-any
+  nzDateRender: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzDisabledTime: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
   nzShowNow = false;

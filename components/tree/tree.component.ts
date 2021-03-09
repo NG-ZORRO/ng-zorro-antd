@@ -254,6 +254,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Render all properties of nzTree
+   *
    * @param changes: all changes from @Input
    */
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
@@ -315,6 +316,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   // Deal with properties
   /**
    * nzData
+   *
    * @param value
    */
   handleNzData(value: NzSafeAny[]): void {
@@ -364,6 +366,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Handle emit event
+   *
    * @param event
    * handle each event
    */

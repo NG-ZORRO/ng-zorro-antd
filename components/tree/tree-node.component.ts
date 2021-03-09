@@ -161,8 +161,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   destroy$ = new Subject();
   dragPos = 2;
   dragPosClass: { [key: string]: string } = {
-    '0': 'drag-over',
-    '1': 'drag-over-gap-bottom',
+    0: 'drag-over',
+    1: 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
   };
   showIndicator = false;
@@ -190,6 +190,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   /**
    * collapse node
+   *
    * @param event
    */
   clickExpand(event: MouseEvent): void {
@@ -230,6 +231,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   /**
    * check node
+   *
    * @param event
    */
   clickCheckBox(event: MouseEvent): void {
@@ -254,6 +256,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   /**
    * drag event
+   *
    * @param e
    */
   handleDragStart(e: DragEvent): void {

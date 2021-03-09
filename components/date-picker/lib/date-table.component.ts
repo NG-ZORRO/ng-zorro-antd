@@ -15,7 +15,7 @@ import { transCompatFormat } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
   exportAs: 'dateTable',
   templateUrl: './abstract-table.html'
@@ -80,11 +80,11 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const cell: DateCell = {
           trackByIndex: day,
           value: date.nativeDate,
-          label: label,
+          label,
           isSelected: false,
           isDisabled: false,
           isToday: false,
-          title: title,
+          title,
           cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,

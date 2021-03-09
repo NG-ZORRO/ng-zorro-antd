@@ -33,9 +33,7 @@ interface DataItem {
       <div class="ant-table-filter-dropdown">
         <div class="search-box">
           <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-            Search
-          </button>
+          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
           <button nz-button nzSize="small" (click)="reset()">Reset</button>
         </div>
       </div>

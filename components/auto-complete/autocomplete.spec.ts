@@ -901,7 +901,7 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((componentInstance.trigger as any).getConnectedElement().nativeElement).toEqual(
         componentInstance.inputGroupComponent.nativeElement
       );
@@ -1124,7 +1124,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   ];
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
-  // tslint:disable-next-line: no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   compareFun = (o1: any, o2: any) => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;

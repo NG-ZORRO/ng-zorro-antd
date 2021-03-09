@@ -19,9 +19,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
         </div>
       </div>
     </ng-template>
-    <button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
-      Open the notification box
-    </button>
+    <button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">Open the notification box</button>
   `
 })
 export class NzDemoNotificationWithBtnComponent {

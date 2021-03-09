@@ -36,22 +36,30 @@ describe('transition-patch', () => {
 });
 
 @Component({
-  template: ` <button nz-button></button> `
+  template: `
+    <button nz-button></button>
+  `
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
-  template: ` <button nz-button hidden></button> `
+  template: `
+    <button nz-button hidden></button>
+  `
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
-  template: ` <button nz-button hidden="abc"></button> `
+  template: `
+    <button nz-button hidden="abc"></button>
+  `
 })
 export class TestTransitionPatchRestoreComponent {}
 
 @Component({
-  template: ` <button nz-button [hidden]="hidden"></button> `
+  template: `
+    <button nz-button [hidden]="hidden"></button>
+  `
 })
 export class TestTransitionPatchHiddenBindingComponent {
   hidden = false;

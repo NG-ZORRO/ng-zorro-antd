@@ -230,7 +230,7 @@ describe('list RTL', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-list',
   template: `
     <nz-list
@@ -284,7 +284,7 @@ class TestListComponent {
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.'
   ];
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nzGrid: any = { gutter: 16, span: 12 };
 }
 

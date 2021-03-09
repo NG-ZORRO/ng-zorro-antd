@@ -27,9 +27,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
             </nz-resize-handle>
             Content 1
           </div>
-          <div>
-            Content 2
-          </div>
+          <div>Content 2</div>
         </nz-content>
       </nz-layout>
     </nz-layout>

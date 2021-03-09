@@ -71,14 +71,12 @@ interface ExampleFlatNode {
   `
 })
 export class NzDemoTreeViewDirectoryComponent implements AfterViewInit {
-  private transformer = (node: FoodNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-      disabled: !!node.disabled
-    };
-  };
+  private transformer = (node: FoodNode, level: number) => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level,
+    disabled: !!node.disabled
+  });
   selectListSelection = new SelectionModel<ExampleFlatNode>();
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(

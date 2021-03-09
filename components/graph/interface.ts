@@ -33,7 +33,7 @@ export interface NzGraphEdgeDef extends HierarchyGraphEdgeDef {
   label?: string;
 }
 
-// tslint:disable-next-line:no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface NzGraphOption extends HierarchyGraphOption {}
 export declare type NzRankDirection = 'TB' | 'BT' | 'LR' | 'RL';
 
@@ -58,7 +58,7 @@ export interface NzGraphEdge extends HierarchyBaseEdgeInfo {
   label?: string;
 }
 
-// tslint:disable-next-line:no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface NzLayoutSetting extends LayoutConfig {}
 
 export interface NzGraphBaseLayout {
@@ -94,7 +94,7 @@ export function nzTypeDefinition<T>(): (item: unknown) => T {
   return item => item as T;
 }
 
-// tslint:disable:no-shadowed-variable
+/* eslint-disable no-shadow */
 export type NzDeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<NzDeepPartial<U>>

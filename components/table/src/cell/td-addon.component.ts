@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 
 import {
   ChangeDetectionStrategy,
@@ -35,8 +35,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [ngModel]="nzChecked"
       [nzIndeterminate]="nzIndeterminate"
       (ngModelChange)="onCheckedChange($event)"
-    >
-    </label>
+    ></label>
     <ng-content></ng-content>
   `,
   host: {

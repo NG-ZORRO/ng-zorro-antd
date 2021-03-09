@@ -193,7 +193,7 @@ describe('collapse', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-collapse',
   template: `
     <ng-template #headerTemplate>template</ng-template>

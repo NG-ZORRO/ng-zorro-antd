@@ -15,9 +15,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
         <i nz-icon nzType="inbox"></i>
       </p>
       <p class="ant-upload-text">Click or drag file to this area to upload</p>
-      <p class="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
-      </p>
+      <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
     </nz-upload>
   `
 })

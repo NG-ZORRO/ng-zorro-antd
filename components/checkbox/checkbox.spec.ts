@@ -327,7 +327,7 @@ describe('checkbox', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-single-checkbox',
   template: `
     <label
@@ -352,7 +352,7 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-group-checkbox',
   template: `
     <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group>

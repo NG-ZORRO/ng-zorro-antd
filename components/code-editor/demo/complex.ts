@@ -76,7 +76,7 @@ export class NzDemoCodeEditorComplexComponent {
 console.log(flatten(['1', 2, [[3]]]))`;
   private document: Document;
 
-  // tslint:disable-next-line no-any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
     this.document = document;
   }

@@ -5,28 +5,20 @@ import { Component } from '@angular/core';
   template: `
     <h4>String</h4>
     <nz-breadcrumb nzSeparator=">">
-      <nz-breadcrumb-item>
-        Home
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
       <nz-breadcrumb-item>
         <a>Application List</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        An Application
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
     </nz-breadcrumb>
     <br />
     <h4>TemplateRef</h4>
     <nz-breadcrumb [nzSeparator]="iconTemplate">
-      <nz-breadcrumb-item>
-        Home
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
       <nz-breadcrumb-item>
         <a>Application List</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        An Application
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
     </nz-breadcrumb>
     <ng-template #iconTemplate><i nz-icon nzType="arrow-right"></i></ng-template>
   `,

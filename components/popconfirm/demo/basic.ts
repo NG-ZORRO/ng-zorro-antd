@@ -10,8 +10,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       nzPopconfirmPlacement="bottom"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
-      >Delete</a
     >
+      Delete
+    </a>
   `
 })
 export class NzDemoPopconfirmBasicComponent {

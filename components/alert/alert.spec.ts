@@ -134,7 +134,7 @@ describe('alert', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-alert',
   template: `
     <ng-template #template>template</ng-template>

@@ -16,8 +16,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzSearchValueChange)="nzEvent($event)"
-    >
-    </nz-tree>
+    ></nz-tree>
   `,
   styles: [
     `

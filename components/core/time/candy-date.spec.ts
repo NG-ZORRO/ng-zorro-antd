@@ -36,7 +36,7 @@ describe('candy-date coverage supplements', () => {
 
   it('should throw error while putting invalid date input', () => {
     const errorMessage = 'The input date type is not supported ("Date" is now recommended)';
-    expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // tslint:disable-line:no-any
+    expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
 
   it('should normalizeRangeValue work', () => {

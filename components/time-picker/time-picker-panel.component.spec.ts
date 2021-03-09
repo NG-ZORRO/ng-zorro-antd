@@ -179,9 +179,7 @@ describe('time-picker-panel', () => {
 
     it('should now disabled work', fakeAsync(() => {
       // disable every hour
-      testComponent.disabledHours = () => {
-        return [...Array(24).keys()];
-      };
+      testComponent.disabledHours = () => [...Array(24).keys()];
       fixture.detectChanges();
       flush();
       dispatchFakeEvent(panelElement.nativeElement.querySelector('.ant-picker-now > a'), 'click');

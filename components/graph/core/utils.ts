@@ -7,6 +7,7 @@ import { NzZoomTransform } from '../interface';
 
 /**
  * Calculate position and scale
+ *
  * @param containerEle
  * @param targetEle
  * @param scale: if scale is set, skip calculate scale value

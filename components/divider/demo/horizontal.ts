@@ -19,7 +19,10 @@ import { Component } from '@angular/core';
         tamen, quo modo.
       </p>
       <nz-divider nzDashed [nzText]="text">
-        <ng-template #text><i nz-icon nzType="plus"></i> Add</ng-template>
+        <ng-template #text>
+          <i nz-icon nzType="plus"></i>
+          Add
+        </ng-template>
       </nz-divider>
 
       <p>

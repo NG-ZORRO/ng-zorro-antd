@@ -5,7 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <button nz-button nzType="primary">primary</button>
     <button nz-button nzType="default">secondary</button>
-    <button nz-button nz-dropdown [nzDropdownMenu]="menu">Actions<i nz-icon nzType="down"></i></button>
+    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+      Actions
+      <i nz-icon nzType="down"></i>
+    </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>

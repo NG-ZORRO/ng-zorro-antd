@@ -268,7 +268,7 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
@@ -280,7 +280,7 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
@@ -292,7 +292,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
@@ -306,7 +306,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
@@ -331,7 +331,7 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
         fixture.detectChanges();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
@@ -343,7 +343,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         testComponent.disableditem.nativeElement.click();
@@ -405,7 +405,7 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[0].nzOpen = true;
         subs[1].nzOpen = true;
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1] as any).cdr.markForCheck();
         fixture.detectChanges();
         expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
@@ -505,7 +505,7 @@ describe('menu', () => {
       fixture.detectChanges();
       const subs = testComponent.subs.toArray();
       subs[0].nzOpen = true;
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (subs[1] as any).cdr.markForCheck();
       fixture.detectChanges();
       expect((overlayContainerElement.querySelector('.ant-menu-submenu') as HTMLUListElement).classList).toContain('ant-menu-submenu-rtl');
@@ -514,7 +514,7 @@ describe('menu', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">

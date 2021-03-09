@@ -60,8 +60,8 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   ];
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: ReadonlyArray<ItemData> = [];
-  listOfData: ReadonlyArray<ItemData> = [];
+  listOfCurrentPageData: readonly ItemData[] = [];
+  listOfData: readonly ItemData[] = [];
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -82,7 +82,7 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: ReadonlyArray<ItemData>): void {
+  onCurrentPageDataChange($event: readonly ItemData[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -93,13 +93,11 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listOfData = new Array(200).fill(0).map((_, index) => {
-      return {
-        id: index,
-        name: `Edward King ${index}`,
-        age: 32,
-        address: `London, Park Lane no. ${index}`
-      };
-    });
+    this.listOfData = new Array(200).fill(0).map((_, index) => ({
+      id: index,
+      name: `Edward King ${index}`,
+      age: 32,
+      address: `London, Park Lane no. ${index}`
+    }));
   }
 }

@@ -319,13 +319,9 @@ export class NzPageDemoIconComponent implements OnInit {
   localeObj: { [key: string]: string } = locale;
   searchingString = '';
 
-  trackByFn = (_index: number, item: string) => {
-    return `${item}-${this.currentTheme}`;
-  };
+  trackByFn = (_index: number, item: string) => `${item}-${this.currentTheme}`;
 
-  isNewIcon = (name: string) => {
-    return newIconNames.indexOf(name) > -1;
-  };
+  isNewIcon = (name: string) => newIconNames.indexOf(name) > -1;
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
@@ -340,7 +336,7 @@ export class NzPageDemoIconComponent implements OnInit {
 
   private _copy(value: string): Promise<string> {
     const promise = new Promise<string>((resolve): void => {
-      let copyTextArea = (null as any) as HTMLTextAreaElement; // tslint:disable-line:no-any
+      let copyTextArea = (null as any) as HTMLTextAreaElement; // eslint-disable-line @typescript-eslint/no-explicit-any
       try {
         copyTextArea = this.dom.createElement('textarea');
         copyTextArea.style.height = '0px';
@@ -372,9 +368,7 @@ export class NzPageDemoIconComponent implements OnInit {
     }));
 
     const otherIcons = currentThemeIcons
-      .filter(icon => {
-        return notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon));
-      })
+      .filter(icon => notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon)))
       .filter(name => name.includes(this.searchingString));
 
     notEmptyCategories.push({ name: 'other', icons: otherIcons });
@@ -393,7 +387,7 @@ export class NzPageDemoIconComponent implements OnInit {
     this.prepareIcons();
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(@Inject(DOCUMENT) private dom: any, private _iconService: NzIconService) {
     // This is to test that tree shake works!
     this._iconService.addIcon(AccountBookFill);

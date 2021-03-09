@@ -39,9 +39,8 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
 
   @Input()
   set nzAutosize(value: string | boolean | AutoSizeType) {
-    const isAutoSizeType = (data: string | boolean | AutoSizeType): data is AutoSizeType => {
-      return typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
-    };
+    const isAutoSizeType = (data: string | boolean | AutoSizeType): data is AutoSizeType =>
+      typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
     if (typeof value === 'string' || value === true) {
       this.autosize = true;
     } else if (isAutoSizeType(value)) {

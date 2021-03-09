@@ -481,7 +481,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginLeft(): string {
     if (this.tabPaneAnimated) {
       if (this.dir !== 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';
@@ -489,7 +489,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginRight(): string {
     if (this.tabPaneAnimated) {
       if (this.dir === 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';

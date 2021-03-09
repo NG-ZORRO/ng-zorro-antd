@@ -135,7 +135,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           .join('/');
 
         // Do not change nextUrl if routeUrl is falsy. This happens when it's a route lazy loading other modules.
-        const nextUrl = !!routeUrl ? url + `/${routeUrl}` : url;
+        const nextUrl = !!routeUrl ? `${url}/${routeUrl}` : url;
         const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
 
         // If have data, go to generate a breadcrumb for it.

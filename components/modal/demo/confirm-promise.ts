@@ -3,7 +3,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm-promise',
-  template: ` <button nz-button nzType="primary" (click)="showConfirm()">Confirm</button> `
+  template: `
+    <button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>
+  `
 })
 export class NzDemoModalConfirmPromiseComponent {
   confirmModal?: NzModalRef; // For testing by now

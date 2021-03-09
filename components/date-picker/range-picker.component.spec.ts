@@ -527,8 +527,8 @@ describe('NzRangePickerComponent', () => {
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-11-11 11:11:11'), new Date('2018-12-12 12:12:12')];
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') => {
-        return partial === 'start'
+      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') =>
+        partial === 'start'
           ? {
               nzDisabledHours: () => [0, 1, 2],
               nzDisabledMinutes: () => [0, 1],
@@ -539,7 +539,6 @@ describe('NzRangePickerComponent', () => {
               nzDisabledMinutes: () => [0, 1, 2],
               nzDisabledSeconds: () => [0, 1]
             };
-      };
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Left time picker
@@ -610,15 +609,14 @@ describe('NzRangePickerComponent', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixtureInstance.modelValue = [new Date('2018-11-11 01:00:00'), new Date('2018-12-12 00:00:00')];
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') => {
-        return partial === 'start'
+      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') =>
+        partial === 'start'
           ? {
               nzDisabledHours: () => [0]
             }
           : {
               nzDisabledHours: () => [1]
             };
-      };
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -1087,7 +1085,7 @@ class NzTestRangePickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder!: string[];
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
@@ -1099,15 +1097,15 @@ class NzTestRangePickerComponent {
   nzSeparator!: string;
   nzInline: boolean = false;
 
-  nzDateRender: any; // tslint:disable-line:no-any
+  nzDateRender: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzDisabledTime: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
   nzShowNow = false;
   nzMode = 'date';
 
-  nzRanges: any; // tslint:disable-line:no-any
+  nzRanges: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzOnPanelChange(_: string[]): void {}
   nzOnCalendarChange(): void {}
   nzOnOk(_: Array<null | Date>): void {}

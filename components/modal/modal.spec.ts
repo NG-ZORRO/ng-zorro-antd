@@ -898,13 +898,12 @@ describe('NzModal', () => {
     it('should set loading state when the callback is promise', fakeAsync(() => {
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
-        nzOnOk: () => {
-          return new Promise(resolve => {
+        nzOnOk: () =>
+          new Promise(resolve => {
             setTimeout(() => {
               resolve();
             }, 200);
-          });
-        }
+          })
       });
       fixture.detectChanges();
 
@@ -922,9 +921,7 @@ describe('NzModal', () => {
     it('should not close when the callback is return false', fakeAsync(() => {
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
-        nzOnOk: () => {
-          return false;
-        }
+        nzOnOk: () => false
       });
       fixture.detectChanges();
 
@@ -940,13 +937,12 @@ describe('NzModal', () => {
     it('should not close when the callback is return Promise<false>', fakeAsync(() => {
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
-        nzOnOk: () => {
-          return new Promise(resolve => {
+        nzOnOk: () =>
+          new Promise(resolve => {
             setTimeout(() => {
               resolve(false);
             }, 200);
-          });
-        }
+          })
       });
       fixture.detectChanges();
 
@@ -968,13 +964,12 @@ describe('NzModal', () => {
     it('should not close when the callback is return Promise.reject', fakeAsync(() => {
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
-        nzOnOk: () => {
-          return new Promise((_, reject) => {
+        nzOnOk: () =>
+          new Promise((_, reject) => {
             setTimeout(() => {
               reject('Promise.reject');
             }, 200);
-          });
-        }
+          })
       });
       fixture.detectChanges();
 
@@ -1164,13 +1159,12 @@ describe('NzModal', () => {
         nzFooter: [
           {
             label: 'Test Button0',
-            onClick: () => {
-              return new Promise(resolve => {
+            onClick: () =>
+              new Promise(resolve => {
                 setTimeout(() => {
                   resolve(null);
                 }, 200);
-              });
-            }
+              })
           },
           {
             label: 'Test Button1',
@@ -1179,13 +1173,12 @@ describe('NzModal', () => {
           {
             label: 'Test Button2',
             autoLoading: false,
-            onClick: () => {
-              return new Promise(resolve => {
+            onClick: () =>
+              new Promise(resolve => {
                 setTimeout(() => {
                   resolve(null);
                 }, 200);
-              });
-            }
+              })
           }
         ]
       });

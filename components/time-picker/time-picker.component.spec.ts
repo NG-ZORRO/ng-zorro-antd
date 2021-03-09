@@ -6,12 +6,12 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
 
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
 describe('time-picker', () => {

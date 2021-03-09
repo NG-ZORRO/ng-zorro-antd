@@ -89,7 +89,7 @@ export class NzDemoTreeViewEditableComponent {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level,
+            level,
             key: node.key
           };
     flatNode.name = node.name;

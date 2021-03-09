@@ -69,8 +69,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getTitleProps(): NzSkeletonTitle {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasParagraph: boolean = !!this.nzParagraph;
+    const hasAvatar = !!this.nzAvatar;
+    const hasParagraph = !!this.nzParagraph;
     let width = '';
     if (!hasAvatar && hasParagraph) {
       width = '38%';
@@ -87,8 +87,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getParagraphProps(): NzSkeletonParagraph {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasTitle: boolean = !!this.nzTitle;
+    const hasAvatar = !!this.nzAvatar;
+    const hasTitle = !!this.nzTitle;
     const basicProps: NzSkeletonParagraph = {};
     // Width
     if (!hasAvatar || !hasTitle) {

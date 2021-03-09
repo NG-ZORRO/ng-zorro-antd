@@ -1,5 +1,5 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   COMMA,
   DELETE,
@@ -1446,7 +1446,7 @@ describe('cascader', () => {
         sorter(a: NzCascaderOption[], b: NzCascaderOption[], _inputValue: string): number {
           const l1 = a[0].label;
           const l2 = b[0].label; // all reversed, just to be sure it works
-          return ('' + l1).localeCompare(l2!);
+          return `${l1}`.localeCompare(l2!);
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();
@@ -1977,10 +1977,10 @@ const options4 = [
   }
 ];
 
-const options5: any[] = []; // tslint:disable-line:no-any
+const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-cascader-default',
   template: `
     <nz-cascader
@@ -2060,9 +2060,7 @@ export class NzDemoCascaderDefaultComponent {
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 
-  fakeChangeOn = (node: any, _index: number): boolean => {
-    return node.value === 'zhejiang';
-  };
+  fakeChangeOn = (node: any, _index: number): boolean => node.value === 'zhejiang';
 
   clearSelection(): void {
     this.cascader.clearSelection();

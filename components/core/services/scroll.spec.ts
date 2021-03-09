@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable no-inferrable-types no-any prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-inferrable-types, @typescript-eslint/no-explicit-any, prefer-const */
 import { DOCUMENT, PlatformLocation } from '@angular/common';
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';

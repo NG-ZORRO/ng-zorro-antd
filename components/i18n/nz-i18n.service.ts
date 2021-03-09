@@ -77,6 +77,7 @@ export class NzI18nService {
 
   /**
    * Get locale data
+   *
    * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
    * @param defaultValue default value if the result is not "truthy"
    */

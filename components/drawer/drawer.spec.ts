@@ -718,7 +718,7 @@ class NzTestDrawerWithServiceComponent {
   `
 })
 export class NzDrawerCustomComponent {
-  @Input() value: any; // tslint:disable-line:no-any
+  @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   constructor(private drawerRef: NzDrawerRef) {}
 

@@ -13,11 +13,7 @@ export class NzImagePreviewRef {
   constructor(public previewInstance: NzImagePreviewComponent, private config: NzImagePreviewOptions, private overlayRef: OverlayRef) {
     overlayRef
       .keydownEvents()
-      .pipe(
-        filter(event => {
-          return (this.config.nzKeyboard as boolean) && event.keyCode === ESCAPE && !hasModifierKey(event);
-        })
-      )
+      .pipe(filter(event => (this.config.nzKeyboard as boolean) && event.keyCode === ESCAPE && !hasModifierKey(event)))
       .subscribe(event => {
         event.preventDefault();
         this.close();

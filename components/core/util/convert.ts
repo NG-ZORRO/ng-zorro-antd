@@ -22,7 +22,7 @@ export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
-// tslint:disable no-invalid-this
+// eslint-disable  no-invalid-this
 
 /**
  * Get the function-property type's value

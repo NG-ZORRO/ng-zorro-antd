@@ -304,7 +304,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 }
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
 

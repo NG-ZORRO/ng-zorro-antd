@@ -161,9 +161,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     const listOfInputChange$ = this.listOfNzInputDirective.changes.pipe(startWith(this.listOfNzInputDirective));
     listOfInputChange$
       .pipe(
-        switchMap(list => {
-          return merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)]);
-        }),
+        switchMap(list => merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)])),
         mergeMap(() => listOfInputChange$),
         map(list => list.some((input: NzInputDirective) => input.disabled)),
         takeUntil(this.destroy$)

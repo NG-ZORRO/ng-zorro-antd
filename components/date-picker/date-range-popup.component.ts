@@ -40,7 +40,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-range-popup',
   exportAs: 'dateRangePopup',
   template: `
@@ -210,6 +210,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Prevent input losing focus when click panel
+   *
    * @param event
    */
   onMousedown(event: MouseEvent): void {
@@ -377,13 +378,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => {
-    return this.disabledTime && this.disabledTime(value, 'start');
-  };
+  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => this.disabledTime && this.disabledTime(value, 'start');
 
-  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => {
-    return this.disabledTime && this.disabledTime(value, 'end');
-  };
+  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => this.disabledTime && this.disabledTime(value, 'end');
 
   isOneAllowed(selectedValue: SingleValue[]): boolean {
     const index = this.datePickerService.getActiveIndex();
@@ -469,9 +466,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private overrideHms(newValue: CandyDate | null, oldValue: CandyDate | null): CandyDate {
-    // tslint:disable-next-line:no-parameter-reassignment
+    // eslint-disable-next-line @typescript-eslint/no-param-reassign
     newValue = newValue || new CandyDate();
-    // tslint:disable-next-line:no-parameter-reassignment
+    // eslint-disable-next-line @typescript-eslint/no-param-reassign
     oldValue = oldValue || new CandyDate();
     return oldValue.setHms(newValue.getHours(), newValue.getMinutes(), newValue.getSeconds());
   }

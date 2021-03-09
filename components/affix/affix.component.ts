@@ -142,8 +142,8 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     }
 
     this.removeListeners();
-    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() => {
-      return merge(
+    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
+      merge(
         ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
         this.offsetChanged$.pipe(
           takeUntil(this.destroy$),
@@ -151,8 +151,8 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         )
       )
         .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
-        .subscribe(e => this.updatePosition(e as Event));
-    });
+        .subscribe(e => this.updatePosition(e as Event))
+    );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 

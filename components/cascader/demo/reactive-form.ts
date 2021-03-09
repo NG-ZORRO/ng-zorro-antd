@@ -49,7 +49,7 @@ const options = [
   selector: 'nz-demo-cascader-reactive-form',
   template: `
     <form [formGroup]="form" novalidate>
-      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"> </nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"></nz-cascader>
     </form>
     <br />
     <button nz-button (click)="reset()">Reset</button>

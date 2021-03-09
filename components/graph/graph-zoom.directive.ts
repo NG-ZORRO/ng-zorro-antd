@@ -103,6 +103,7 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   /**
    * Handle zoom event
+   *
    * @param transform
    */
   private zoomed({ transform }: NzSafeAny): void {
@@ -117,6 +118,7 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   /**
    * Scale with zoom and duration
+   *
    * @param duration
    * @param scale
    * @private

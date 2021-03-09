@@ -457,7 +457,7 @@ describe('steps', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-outer-steps',
   template: `
     <nz-steps

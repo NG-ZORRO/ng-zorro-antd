@@ -317,9 +317,7 @@ describe('NzTabSet', () => {
     it('should canDeactivate work', () => {
       const component = fixture.debugElement.componentInstance;
       component.selectedIndex = 0;
-      component.canDeactivate = (_: number, next: number) => {
-        return next !== 2;
-      };
+      component.canDeactivate = (_: number, next: number) => next !== 2;
 
       fixture.detectChanges();
 

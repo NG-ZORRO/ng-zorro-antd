@@ -11,9 +11,7 @@ import { Component } from '@angular/core';
           create their product prototypes beautifully and efficiently.
         </p>
       </nz-skeleton>
-      <button nz-button (click)="showSkeleton()" [disabled]="loading">
-        Show Skeleton
-      </button>
+      <button nz-button (click)="showSkeleton()" [disabled]="loading">Show Skeleton</button>
     </div>
   `,
   styles: [

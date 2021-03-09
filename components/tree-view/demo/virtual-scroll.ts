@@ -60,13 +60,11 @@ interface ExampleFlatNode {
   ]
 })
 export class NzDemoTreeViewVirtualScrollComponent implements AfterViewInit {
-  private transformer = (node: FoodNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level
-    };
-  };
+  private transformer = (node: FoodNode, level: number) => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level
+  });
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(
     node => node.level,

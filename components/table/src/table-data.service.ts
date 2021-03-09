@@ -14,7 +14,7 @@ export class NzTableDataService implements OnDestroy {
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
-  private listOfData$ = new BehaviorSubject<ReadonlyArray<NzTableData>>([]);
+  private listOfData$ = new BehaviorSubject<readonly NzTableData[]>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());
   listOfCalcOperator$ = new BehaviorSubject<
@@ -34,28 +34,22 @@ export class NzTableDataService implements OnDestroy {
   ]).pipe(
     debounceTime(0),
     skip(1),
-    map(([pageIndex, pageSize, listOfCalc]) => {
-      return {
-        pageIndex,
-        pageSize,
-        sort: listOfCalc
-          .filter(item => item.sortFn)
-          .map(item => {
-            return {
-              key: item.key!,
-              value: item.sortOrder
-            };
-          }),
-        filter: listOfCalc
-          .filter(item => item.filterFn)
-          .map(item => {
-            return {
-              key: item.key!,
-              value: item.filterValue
-            };
-          })
-      };
-    })
+    map(([pageIndex, pageSize, listOfCalc]) => ({
+      pageIndex,
+      pageSize,
+      sort: listOfCalc
+        .filter(item => item.sortFn)
+        .map(item => ({
+          key: item.key!,
+          value: item.sortOrder
+        })),
+      filter: listOfCalc
+        .filter(item => item.filterFn)
+        .map(item => ({
+          key: item.key!,
+          value: item.filterValue
+        }))
+    }))
   );
   private listOfDataAfterCalc$ = combineLatest([this.listOfData$, this.listOfCalcOperator$]).pipe(
     map(([listOfData, listOfCalcOperator]) => {
@@ -96,9 +90,7 @@ export class NzTableDataService implements OnDestroy {
       const maxPageIndex = Math.ceil(listOfData.length / pageSize) || 1;
       return pageIndex <= maxPageIndex;
     }),
-    map(([pageIndex, pageSize, listOfData]) => {
-      return listOfData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize);
-    })
+    map(([pageIndex, pageSize, listOfData]) => listOfData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize))
   );
   listOfCurrentPageData$ = this.frontPagination$.pipe(
     switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfDataAfterCalc$))
@@ -118,7 +110,7 @@ export class NzTableDataService implements OnDestroy {
   updatePageIndex(index: number): void {
     this.pageIndex$.next(index);
   }
-  updateListOfData(list: ReadonlyArray<NzTableData>): void {
+  updateListOfData(list: readonly NzTableData[]): void {
     this.listOfData$.next(list);
   }
   constructor() {}

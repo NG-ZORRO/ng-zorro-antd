@@ -119,8 +119,8 @@ interface Setting {
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   settingForm?: FormGroup;
-  listOfData: ReadonlyArray<ItemData> = [];
-  displayData: ReadonlyArray<ItemData> = [];
+  listOfData: readonly ItemData[] = [];
+  displayData: readonly ItemData[] = [];
   allChecked = false;
   indeterminate = false;
   fixedColumn = false;
@@ -188,7 +188,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     }
   ];
 
-  currentPageDataChange($event: ReadonlyArray<ItemData>): void {
+  currentPageDataChange($event: readonly ItemData[]): void {
     this.displayData = $event;
     this.refreshStatus();
   }
@@ -210,7 +210,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     this.refreshStatus();
   }
 
-  generateData(): ReadonlyArray<ItemData> {
+  generateData(): readonly ItemData[] {
     const data = [];
     for (let i = 1; i <= 100; i++) {
       data.push({

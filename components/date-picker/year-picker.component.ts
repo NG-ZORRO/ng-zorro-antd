@@ -10,7 +10,7 @@ import { NzDatePickerComponent } from './date-picker.component';
   selector: 'nz-year-picker',
   exportAs: 'nzYearPicker'
 })
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzYearPickerComponent {
   constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
     this.datePicker.nzMode = 'year';

@@ -223,9 +223,11 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   getOptionIndex(value: NzSafeAny): number {
-    return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
-      return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
-    }, -1)!;
+    return this.options.reduce(
+      (result: number, current: NzAutocompleteOptionComponent, index: number) =>
+        result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result,
+      -1
+    )!;
   }
 
   getOption(value: NzSafeAny): NzAutocompleteOptionComponent | null {

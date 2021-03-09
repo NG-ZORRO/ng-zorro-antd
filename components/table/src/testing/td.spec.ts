@@ -147,6 +147,8 @@ export class NzTestTdComponent {
 }
 
 @Component({
-  template: ` <td class="nz-disable-td" [nzChecked]="true"></td> `
+  template: `
+    <td class="nz-disable-td" [nzChecked]="true"></td>
+  `
 })
 export class NzTestDisableTdComponent {}

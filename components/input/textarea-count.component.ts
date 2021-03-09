@@ -35,7 +35,7 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   @ContentChild(NzInputDirective, { static: true }) nzInputDirective!: NzInputDirective;
   @Input() nzMaxCharacterCount: number = 0;
   @Input() nzComputeCharacterCount: (v: string) => number = v => v.length;
-  @Input() nzFormatter: (cur: number, max: number) => string = (c, m) => `${c}` + (m > 0 ? `/${m}` : ``);
+  @Input() nzFormatter: (cur: number, max: number) => string = (c, m) => `${c}${m > 0 ? `/${m}` : ``}`;
 
   private configChange$ = new Subject();
   private destroy$ = new Subject();

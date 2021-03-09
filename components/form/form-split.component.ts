@@ -11,7 +11,9 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzFormSplitComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {

@@ -46,7 +46,7 @@ describe('Component:nz-back-top', () => {
     component = fixture.componentInstance.nzBackTopComponent;
     componentObject = new NzBackTopPageObject();
     debugElement = fixture.debugElement;
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     scrollService = TestBed.inject(NzScrollService) as any;
   });
 

@@ -40,7 +40,7 @@ export class NzDemoTransferTreeTransferComponent {
 
   private generateTree(arr: NzTreeNodeOptions[]): NzTreeNodeOptions[] {
     const tree: NzTreeNodeOptions[] = [];
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedArr: any = {};
     let arrElem: NzTreeNodeOptions;
     let mappedElem: NzTreeNodeOptions;
