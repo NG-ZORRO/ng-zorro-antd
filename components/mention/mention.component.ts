@@ -41,6 +41,7 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
+import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -305,15 +306,21 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private resetCursorMention(): void {
-    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
+    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, NZ_MENTION_CONFIG.split) || '';
     const selectionStart = this.triggerNativeElement.selectionStart!;
     const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
-      const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
+      const endPos =
+        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
       const mention = value.substring(startPos, endPos);
-      if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
+      if (
+        (startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
+        startPos < 0 ||
+        mention.includes(prefix[i], 1) ||
+        mention.includes(NZ_MENTION_CONFIG.split)
+      ) {
         this.cursorMention = null;
         this.cursorMentionStart = -1;
         this.cursorMentionEnd = -1;
