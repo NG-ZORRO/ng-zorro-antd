@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-Vertical usage.
+垂直的列表。
 
 ## en-US
 
-Responsive configuration enables perfect presentation on small screen devices.
+Simplest Usage.
