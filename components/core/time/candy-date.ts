@@ -3,29 +3,31 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import addMonths from 'date-fns/addMonths';
-import addYears from 'date-fns/addYears';
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
-import differenceInCalendarMonths from 'date-fns/differenceInCalendarMonths';
-import differenceInCalendarYears from 'date-fns/differenceInCalendarYears';
-import differenceInHours from 'date-fns/differenceInHours';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
-import differenceInSeconds from 'date-fns/differenceInSeconds';
-import isFirstDayOfMonth from 'date-fns/isFirstDayOfMonth';
-import isLastDayOfMonth from 'date-fns/isLastDayOfMonth';
-import isSameDay from 'date-fns/isSameDay';
-import isSameHour from 'date-fns/isSameHour';
-import isSameMinute from 'date-fns/isSameMinute';
-import isSameMonth from 'date-fns/isSameMonth';
-import isSameSecond from 'date-fns/isSameSecond';
-import isSameYear from 'date-fns/isSameYear';
-import isToday from 'date-fns/isToday';
-import isValid from 'date-fns/isValid';
-import setDay from 'date-fns/setDay';
-import setMonth from 'date-fns/setMonth';
-import setYear from 'date-fns/setYear';
-import startOfMonth from 'date-fns/startOfMonth';
-import startOfWeek from 'date-fns/startOfWeek';
+import {
+  addMonths,
+  addYears,
+  differenceInCalendarDays,
+  differenceInCalendarMonths,
+  differenceInCalendarYears,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  isFirstDayOfMonth,
+  isLastDayOfMonth,
+  isSameDay,
+  isSameHour,
+  isSameMinute,
+  isSameMonth,
+  isSameSecond,
+  isSameYear,
+  isToday,
+  isValid,
+  setDay,
+  setMonth,
+  setYear,
+  startOfMonth,
+  startOfWeek
+} from 'date-fns';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -193,16 +195,12 @@ export class CandyDate implements IndexableObject {
     switch (mode) {
       case 'decade':
         return this.addYears(amount * 10);
-        break;
       case 'year':
         return this.addYears(amount);
-        break;
       case 'month':
         return this.addMonths(amount);
-        break;
       default:
         return this.addMonths(amount);
-        break;
     }
   }
 

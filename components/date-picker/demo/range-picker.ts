@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import getISOWeek from 'date-fns/getISOWeek';
+import { getISOWeek } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-date-picker-range-picker',
