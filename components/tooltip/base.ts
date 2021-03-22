@@ -23,6 +23,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
@@ -38,6 +39,7 @@ export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
+  config?: Required<PopoverConfig | PopConfirmConfig>;
   directiveTitle?: NzTSType | null;
   directiveContent?: NzTSType | null;
   title?: NzTSType | null;
@@ -117,7 +119,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected hostView: ViewContainerRef,
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
-    protected noAnimation?: NzNoAnimationDirective
+    protected noAnimation?: NzNoAnimationDirective,
+    protected nzConfigService?: NzConfigService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -311,6 +314,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   nzContent: NzTSType | null = null;
   nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
+  nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
 
@@ -352,8 +356,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   public dir: Direction = 'ltr';
 
   _classMap: NgClassInterface = {};
-
-  _hasBackdrop = false;
 
   _prefix = 'ant-tooltip';
 

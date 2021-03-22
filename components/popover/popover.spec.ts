@@ -100,27 +100,28 @@ describe('NzPopover', () => {
     fixture.detectChanges();
     expect(getInnerTextContent()).toContain('changed-content');
   }));
+
+  it('should nzPopoverBackdrop work', fakeAsync(() => {
+    const triggerElement = component.backdropPopover.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+  }));
 });
 
 @Component({
   template: `
-    <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">
-      Show
-    </a>
+    <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">Show</a>
 
-    <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">
-      Show
-    </a>
+    <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">Show</a>
 
     <a #changePopover nz-popover nzPopoverTitle="title-change" [nzPopoverContent]="content"></a>
 
-    <ng-template #templateTitle>
-      title-template
-    </ng-template>
+    <a #backdropPopover nz-popover nzPopoverContent="content-string" nzPopoverTrigger="click" [nzPopoverBackdrop]="true"></a>
 
-    <ng-template #templateContent>
-      content-template
-    </ng-template>
+    <ng-template #templateTitle>title-template</ng-template>
+
+    <ng-template #templateContent>content-template</ng-template>
   `
 })
 export class NzPopoverTestComponent {
@@ -135,6 +136,8 @@ export class NzPopoverTestComponent {
   @ViewChild('changePopover', { static: true }) changePopover!: ElementRef;
   @ViewChild('changePopover', { static: true, read: NzPopoverDirective })
   changePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
 
   content = 'content';
   visible = false;

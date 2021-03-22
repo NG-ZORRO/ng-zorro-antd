@@ -838,6 +838,14 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
 
+    it('should nzBackdrop works', fakeAsync(() => {
+      testComponent.nzBackdrop = true;
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
@@ -2000,6 +2008,7 @@ const options5: any[] = []; // tslint:disable-line:no-any
       [nzTriggerAction]="nzTriggerAction"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzValueProperty]="nzValueProperty"
+      [nzBackdrop]="nzBackdrop"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzSelect)="onSelect($event)"
@@ -2046,6 +2055,7 @@ export class NzDemoCascaderDefaultComponent {
   nzMouseLeaveDelay = 150; // ms
   nzSuffixIcon = 'down';
   nzExpandIcon = 'right';
+  nzBackdrop = false;
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');

@@ -25,6 +25,7 @@ import {
 } from '@angular/core';
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
@@ -32,6 +33,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 
 @Directive({
   selector: '[nz-popconfirm]',
@@ -41,6 +44,7 @@ import { takeUntil } from 'rxjs/operators';
   }
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzCondition: BooleanInput;
   static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
 
@@ -60,6 +64,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean = false;
   @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
+  @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
 
   // tslint:disable-next-line:no-output-rename
   @Output('nzPopconfirmVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
@@ -78,6 +83,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzCondition: ['nzCondition', () => this.nzCondition],
       nzIcon: ['nzIcon', () => this.nzIcon],
       nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
+      nzPopconfirmBackdrop: ['nzBackdrop', () => this.nzPopconfirmBackdrop],
       ...super.getProxyPropertyMap()
     };
   }
@@ -87,9 +93,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() noAnimation?: NzNoAnimationDirective,
+    nzConfigService?: NzConfigService
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
   }
 
   /**
@@ -119,6 +126,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"

@@ -31,6 +31,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[ngModel]` | 指定选中项 | `any[]` | - |
 | `[nzAllowClear]` | 是否支持清除 | `boolean` | `true` |
 | `[nzAutoFocus]` | 是否自动聚焦，当存在输入框时 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzChangeOn]` | 点击父级菜单选项时，可通过该函数判断是否允许值的变化 | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的演示 | `boolean` | `false` |
 | `[nzColumnClassName]` | 自定义浮层列类名 | `string` | - |

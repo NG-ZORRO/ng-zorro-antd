@@ -460,6 +460,13 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     }));
+
+    it('should support nzBackdrop', fakeAsync(() => {
+      fixtureInstance.nzBackdrop = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1118,6 +1125,7 @@ describe('date-fns testing', () => {
         [nzSuffixIcon]="nzSuffixIcon"
         [nzBorderless]="nzBorderless"
         [nzInline]="nzInline"
+        [nzBackdrop]="nzBackdrop"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1170,6 +1178,7 @@ class NzTestDatePickerComponent {
   nzSuffixIcon!: string;
   nzBorderless = false;
   nzInline = false;
+  nzBackdrop = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}

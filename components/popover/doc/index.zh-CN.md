@@ -35,6 +35,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏气泡框，单位：秒 | `number` | `0.1` |
 | `[nzPopoverOverlayClassName]` | 卡片类名 | `string` | - |
 | `[nzPopoverOverlayStyle]` | 卡片样式 | `object` | - |
+| `[nzPopoverBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意

@@ -38,6 +38,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
 | `[nzPopconfirmOverlayClassName]` | 卡片类名 | `string` | - |
 | `[nzPopconfirmOverlayStyle]` | 卡片样式 | `object` | - |
+| `[nzPopconfirmBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

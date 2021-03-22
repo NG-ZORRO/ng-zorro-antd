@@ -34,6 +34,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmMouseLeaveDelay]` | Delay in seconds, before popconfirm is hidden on mouse leave | `number` | `0.1` |
 | `[nzPopconfirmOverlayClassName]` | Class name of the popconfirm card | `string` | - |
 | `[nzPopconfirmOverlayStyle]` | Style of the popconfirm card | `object` | - |
+| `[nzPopconfirmBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |

@@ -36,6 +36,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | -------- | ----------- | ---- | ------- | - |
 | `[nzAllowClear]` | Whether to show clear button | `boolean` | `true` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` | - |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzDefaultPickerValue]` | default picker date | `Date` \| `Date[]` | - | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
 | `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |

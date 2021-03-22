@@ -264,6 +264,14 @@ describe('select', () => {
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
 
+    it('should nzBackdrop works', fakeAsync(() => {
+      component.nzOpen = true;
+      component.nzBackdrop = true;
+      fixture.detectChanges();
+      flush();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
     it('should close dropdown when ESC keydown', fakeAsync(() => {
       component.nzOpen = true;
       fixture.detectChanges();
@@ -1176,6 +1184,7 @@ describe('select', () => {
       [nzAutoFocus]="nzAutoFocus"
       [nzServerSearch]="nzServerSearch"
       [nzDisabled]="nzDisabled"
+      [nzBackdrop]="nzBackdrop"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
@@ -1237,6 +1246,7 @@ export class TestSelectTemplateDefaultComponent {
   nzServerSearch = false;
   nzDisabled = false;
   nzOpen = false;
+  nzBackdrop = false;
 }
 
 @Component({

@@ -109,6 +109,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
@@ -206,6 +207,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() @InputBoolean() nzServerSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
+  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
   @Input()
@@ -606,6 +608,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
       this.dir = direction;
       this.cdr.detectChanges();
     });
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent('select')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
 
     this.dir = this.directionality.value;
   }
