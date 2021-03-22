@@ -38,6 +38,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
 | `[nzExpandedKeys]` | 展开指定的树节点 | `string[]` | `[]` |
 | `[nzCheckedKeys]` | 指定选中复选框的树节点 | `string[]` | `[]` |
+| `[nzDisabledKeys]` | 指定禁用的树节点 | `string[]` | `[]` |
 | `[nzSelectedKeys]` | 指定选中的树节点 | `string[]` | `[]` |
 | `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | `string` | `null` |
 | `[nzSearchFunc]` | 自定义匹配方法，配合 nzSearchValue 使用 | `(node: NzTreeNodeOptions) => boolean` | `null` |

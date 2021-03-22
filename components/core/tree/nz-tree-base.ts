@@ -81,6 +81,13 @@ export class NzTreeBase {
   }
 
   /**
+   * Get disabled nodes
+   */
+  getDisabledNodeList(): NzTreeNode[] {
+    return this.nzTreeService.getDisabledNodeList();
+  }
+
+  /**
    * Get matched nodes(if nzSearchValue is not null)
    */
   getMatchedNodeList(): NzTreeNode[] {

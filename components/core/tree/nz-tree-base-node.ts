@@ -250,6 +250,12 @@ export class NzTreeNode {
     this.afterValueChange('isExpanded');
   }
 
+  public setDisabled(value: boolean): void {
+    this._isDisabled = value;
+    this.origin.disabled = value;
+    this.afterValueChange('isDisabled');
+  }
+
   public getParentNode(): NzTreeNode | null {
     return this.parentNode;
   }

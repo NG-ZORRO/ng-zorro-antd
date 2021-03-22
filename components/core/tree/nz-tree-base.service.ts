@@ -24,6 +24,7 @@ export class NzTreeBaseService {
   selectedNodeList: NzTreeNode[] = [];
   expandedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
+  disabledNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
 
@@ -36,6 +37,7 @@ export class NzTreeBaseService {
     this.selectedNodeList = [];
     this.halfCheckedNodeList = [];
     this.checkedNodeList = [];
+    this.disabledNodeList = [];
     this.matchedNodeList = [];
   }
 
@@ -70,6 +72,13 @@ export class NzTreeBaseService {
    */
   getExpandedNodeList(): NzTreeNode[] {
     return this.conductNodeState('expand');
+  }
+
+  /**
+   * return disabled nodes
+   */
+  getDisabledNodeList(): NzTreeNode[] {
+    return this.conductNodeState('disabled');
   }
 
   /**
@@ -162,6 +171,9 @@ export class NzTreeBaseService {
       case 'match':
         resultNodesList = this.matchedNodeList;
         break;
+      case 'disabled':
+        resultNodesList = this.disabledNodeList;
+        break;
       case 'check':
         resultNodesList = this.checkedNodeList;
         const isIgnore = (node: NzTreeNode): boolean => {
@@ -201,6 +213,18 @@ export class NzTreeBaseService {
       this.expandedNodeList.push(node);
     } else if (!node.isExpanded && index > -1) {
       this.expandedNodeList.splice(index, 1);
+    }
+  }
+
+  /**
+   * set disabled nodes
+   */
+  setDisabledNodeList(node: NzTreeNode): void {
+    const index = this.getIndexOfArray(this.disabledNodeList, node.key);
+    if (node.isDisabled && index === -1) {
+      this.disabledNodeList.push(node);
+    } else if (!node.isDisabled && index > -1) {
+      this.disabledNodeList.splice(index, 1);
     }
   }
 
@@ -515,6 +539,23 @@ export class NzTreeBaseService {
           return calc(node.children);
         }
         return true;
+      });
+    };
+    calc(this.rootNodes);
+  }
+
+  conductDisabledKeys(keys: NzTreeNodeKey[] | true = []): void {
+    const disabledKeySet = new Set(keys === true ? [] : keys);
+    this.disabledNodeList = [];
+    const calc = (nodes: NzTreeNode[]) => {
+      nodes.forEach(node => {
+        node.setDisabled(keys === true || disabledKeySet.has(node.key) || node.isDisabled);
+        if (node.isDisabled) {
+          this.setDisabledNodeList(node);
+        }
+        if (node.children.length > 0) {
+          calc(node.children);
+        }
       });
     };
     calc(this.rootNodes);

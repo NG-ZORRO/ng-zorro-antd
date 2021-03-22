@@ -200,6 +200,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzExpandedKeys: NzTreeNodeKey[] = [];
   @Input() nzSelectedKeys: NzTreeNodeKey[] = [];
   @Input() nzCheckedKeys: NzTreeNodeKey[] = [];
+  @Input() nzDisabledKeys: NzTreeNodeKey[] = [];
   @Input() nzSearchValue: string = '';
   @Input() nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
   @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
@@ -259,7 +260,17 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
     let useDefaultExpandedKeys = false;
     let expandAll = false;
-    const { nzData, nzExpandedKeys, nzSelectedKeys, nzCheckedKeys, nzCheckStrictly, nzExpandAll, nzMultiple, nzSearchValue } = changes;
+    const {
+      nzData,
+      nzExpandedKeys,
+      nzSelectedKeys,
+      nzCheckedKeys,
+      nzDisabledKeys,
+      nzCheckStrictly,
+      nzExpandAll,
+      nzMultiple,
+      nzSearchValue
+    } = changes;
 
     if (nzExpandAll) {
       useDefaultExpandedKeys = true;
@@ -293,6 +304,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
     if (nzSelectedKeys) {
       this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
+    }
+
+    if (nzDisabledKeys) {
+      this.handleDisabledKeys(this.nzDisabledKeys);
     }
 
     if (nzSearchValue) {
@@ -338,6 +353,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   handleSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.nzTreeService.conductSelectedKeys(keys, isMulti);
+  }
+
+  handleDisabledKeys(keys: NzTreeNodeKey[] | true = []): void {
+    this.nzTreeService.conductDisabledKeys(keys);
   }
 
   handleSearchValue(value: string, searchFunc?: (node: NzTreeNodeOptions) => boolean): void {
