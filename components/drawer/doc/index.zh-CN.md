@@ -27,7 +27,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
-| `[nzCloseOnNavigation]`    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
+| `[nzCloseOnNavigation]`    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzKeyboard]` | 是否支持键盘 esc 关闭 | `boolean` | `true` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
@@ -60,7 +60,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzCloseIcon | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | nzMask | 是否展示遮罩 | `boolean` | `true` | ✅ |
-| nzCloseOnNavigation    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
 | nzDirection        | 文字方向 | `'ltr' \| 'rtl'` | - | ✅ |
 | nzKeyboard | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
