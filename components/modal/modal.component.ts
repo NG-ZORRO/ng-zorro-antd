@@ -30,6 +30,7 @@ import { NzModalContentDirective } from './modal-content.directive';
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { NzModalRef } from './modal-ref';
+import { NzModalTitleDirective } from './modal-title.directive';
 import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
 import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
@@ -104,7 +105,14 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
-  @ContentChild(NzModalContentDirective, { static: true, read: TemplateRef }) contentFromContentChild!: TemplateRef<NzSafeAny>;
+  @ContentChild(NzModalTitleDirective, { static: true, read: TemplateRef })
+  set modalTitle(value: TemplateRef<NzSafeAny>) {
+    if (value) {
+      this.setTitleWithTemplate(value);
+    }
+  }
+  @ContentChild(NzModalContentDirective, { static: true, read: TemplateRef })
+  contentFromContentChild!: TemplateRef<NzSafeAny>;
   @ContentChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   set modalFooter(value: TemplateRef<NzSafeAny>) {
     if (value) {
@@ -172,6 +180,18 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
 
   getModalRef(): NzModalRef | null {
     return this.modalRef;
+  }
+
+  private setTitleWithTemplate(templateRef: TemplateRef<{}>): void {
+    this.nzTitle = templateRef;
+    if (this.modalRef) {
+      // If modalRef already created, set the title in next tick
+      Promise.resolve().then(() => {
+        this.modalRef!.updateConfig({
+          nzTitle: this.nzTitle
+        });
+      });
+    }
   }
 
   private setFooterWithTemplate(templateRef: TemplateRef<{}>): void {

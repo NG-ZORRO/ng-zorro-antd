@@ -159,6 +159,22 @@ nzFooter: [{
 
 以上配置项也可在运行态实时改变，来触发按钮行为改变。
 
+### [nzModalTitle]
+
+自定义标题。
+
+```html
+<div *nzModalTitle>
+  Custom Modal Title
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalTitle]>
+  Custom Modal Title
+</ng-template>
+```
+
 ### [nzModalFooter]
 
 自定义页脚。

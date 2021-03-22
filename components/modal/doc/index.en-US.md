@@ -158,6 +158,22 @@ nzFooter: [{
 
 The above configuration items can also be changed in real-time to trigger the button behavior change.
 
+### [nzModalTitle]
+
+Customize the title.
+
+```html
+<div *nzModalTitle>
+  Custom Modal Title
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalTitle]>
+  Custom Modal Title
+</ng-template>
+```
+
 ### [nzModalFooter]
 
 Customize the footer.
