@@ -206,6 +206,8 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
+  changeKeys = new Set<string>();
+  changeFlag: 'no-init' | 'init' | 'end-init' = 'no-init';
   dir: Direction = 'ltr';
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -274,39 +276,89 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
     }
 
-    if (nzData) {
-      this.handleNzData(this.nzData);
+    if (this.changeFlag === 'end-init') {
+      if (nzData) {
+        this.handleNzData(this.nzData);
+      }
+      if (nzCheckedKeys) {
+        this.handleCheckedKeys(this.nzCheckedKeys);
+      }
+      if (nzCheckStrictly) {
+        this.handleCheckedKeys(null);
+      }
+      if (nzExpandedKeys || nzExpandAll) {
+        useDefaultExpandedKeys = true;
+        this.handleExpandedKeys(expandAll || this.nzExpandedKeys);
+      }
+      if (nzSelectedKeys) {
+        this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
+      }
+      if (nzSearchValue) {
+        if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
+          useDefaultExpandedKeys = false;
+          this.handleSearchValue(nzSearchValue.currentValue, this.nzSearchFunc);
+          this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+        }
+      }
+
+      // flatten data
+      const currentExpandedKeys = this.getExpandedNodeList().map(v => v.key);
+      const newExpandedKeys = useDefaultExpandedKeys ? expandAll || this.nzExpandedKeys : currentExpandedKeys;
+      this.handleFlattenNodes(this.nzTreeService.rootNodes, newExpandedKeys);
     }
 
-    if (nzCheckedKeys) {
-      this.handleCheckedKeys(this.nzCheckedKeys);
-    }
-
-    if (nzCheckStrictly) {
-      this.handleCheckedKeys(null);
-    }
-
-    if (nzExpandedKeys || nzExpandAll) {
-      useDefaultExpandedKeys = true;
-      this.handleExpandedKeys(expandAll || this.nzExpandedKeys);
-    }
-
-    if (nzSelectedKeys) {
-      this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
-    }
-
-    if (nzSearchValue) {
-      if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
-        useDefaultExpandedKeys = false;
-        this.handleSearchValue(nzSearchValue.currentValue, this.nzSearchFunc);
-        this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+    // record attributes that change
+    if (this.changeFlag === 'no-init') {
+      if (Array.isArray(this.nzData) && this.nzData.length > 0) {
+        this.changeFlag = 'init';
+      }
+      if (nzCheckedKeys) {
+        this.changeKeys.add('nzCheckedKeys');
+      }
+      if (nzCheckStrictly) {
+        this.changeKeys.add('nzCheckStrictly');
+      }
+      if (nzExpandedKeys || nzExpandAll) {
+        this.changeKeys.add('nzExpandedKeys || nzExpandAll');
+      }
+      if (nzSelectedKeys) {
+        this.changeKeys.add('nzSelectedKeys');
+      }
+      if (nzSearchValue) {
+        this.changeKeys.add('nzSearchValue');
       }
     }
 
-    // flatten data
-    const currentExpandedKeys = this.getExpandedNodeList().map(v => v.key);
-    const newExpandedKeys = useDefaultExpandedKeys ? expandAll || this.nzExpandedKeys : currentExpandedKeys;
-    this.handleFlattenNodes(this.nzTreeService.rootNodes, newExpandedKeys);
+    // nzData assign value first, render attributes that record
+    if (this.changeFlag === 'init') {
+      this.changeFlag = 'end-init';
+      this.handleNzData(this.nzData);
+      if (this.changeKeys.has('nzCheckedKeys')) {
+        this.handleCheckedKeys(this.nzCheckedKeys);
+      }
+      if (this.changeKeys.has('nzCheckStrictly')) {
+        this.handleCheckedKeys(null);
+      }
+      if (this.changeKeys.has('nzExpandedKeys || nzExpandAll')) {
+        useDefaultExpandedKeys = true;
+        this.handleExpandedKeys(expandAll || this.nzExpandedKeys);
+      }
+      if (this.changeKeys.has('nzSelectedKeys')) {
+        this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
+      }
+      if (this.changeKeys.has('nzSearchValue')) {
+        if (this.nzSearchValue) {
+          useDefaultExpandedKeys = false;
+          this.handleSearchValue(this.nzSearchValue, this.nzSearchFunc);
+          this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+        }
+      }
+
+      // flatten data
+      const currentExpandedKeys = this.getExpandedNodeList().map(v => v.key);
+      const newExpandedKeys = useDefaultExpandedKeys ? expandAll || this.nzExpandedKeys : currentExpandedKeys;
+      this.handleFlattenNodes(this.nzTreeService.rootNodes, newExpandedKeys);
+    }
   }
 
   trackByFlattenNode(_: number, node: NzTreeNode): string {

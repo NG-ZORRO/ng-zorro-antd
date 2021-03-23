@@ -553,6 +553,99 @@ describe('tree', () => {
       }));
     });
   });
+
+  describe('NzTestTreeAsyncDataComponent', () => {
+    let testBed: ComponentBed<NzTestTreeAsyncDataComponent>;
+
+    const setNodes = () => {
+      const { component } = testBed;
+      component.nodes = [
+        {
+          title: '0-0',
+          key: '0-0',
+          children: [
+            {
+              title: '0-0-0',
+              key: '0-0-0'
+            },
+            {
+              title: '0-0-1',
+              key: '0-0-1'
+            },
+            {
+              title: '0-0-2',
+              key: '0-0-2',
+              isLeaf: true
+            }
+          ]
+        },
+        {
+          title: '0-1',
+          key: '0-1',
+          children: [{ title: '0-1-0-0', key: '0-1-0-0', isLeaf: true }]
+        },
+        {
+          title: '0-2',
+          key: '0-2',
+          disabled: true,
+          isLeaf: true
+        }
+      ];
+    };
+
+    beforeEach(() => {
+      testBed = prepareTest(NzTestTreeAsyncDataComponent);
+      const { fixture } = testBed;
+      fixture.detectChanges();
+    });
+
+    it('should init node after nzData assign value', fakeAsync(() => {
+      const { fixture, nativeElement } = testBed;
+      let selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(0);
+
+      setTimeout(setNodes, 1000);
+      tick(1000 + 10);
+      fixture.detectChanges();
+
+      selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(1);
+    }));
+
+    it('should record change', fakeAsync(() => {
+      const { component, fixture, nativeElement } = testBed;
+      let selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(0);
+
+      component.defaultSelectedKeys = ['0-0', '0-1'];
+      fixture.detectChanges();
+
+      setTimeout(setNodes, 1000);
+      tick(1000 + 10);
+      fixture.detectChanges();
+
+      selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(2);
+    }));
+
+    it('should able to change attribute after nzData assign value', fakeAsync(() => {
+      const { component, fixture, nativeElement } = testBed;
+      let selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(0);
+
+      setTimeout(setNodes, 1000);
+      tick(1000 + 10);
+      fixture.detectChanges();
+
+      selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(1);
+
+      component.defaultSelectedKeys = ['0-0', '0-1'];
+      fixture.detectChanges();
+      selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+      expect(selectedNodes.length).toEqual(2);
+    }));
+  });
 });
 
 /**
@@ -748,4 +841,19 @@ export class NzTestTreeBasicSearchComponent {
       isLeaf: true
     }
   ];
+}
+
+// -------------------------------------------
+// | Testing Async Loading Data Components
+// -------------------------------------------
+
+@Component({
+  template: `
+    <nz-tree [nzData]="nodes" [nzMultiple]="true" [nzSelectedKeys]="defaultSelectedKeys"></nz-tree>
+  `
+})
+export class NzTestTreeAsyncDataComponent {
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
+  defaultSelectedKeys: string[] = ['0-0'];
+  nodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
 }
