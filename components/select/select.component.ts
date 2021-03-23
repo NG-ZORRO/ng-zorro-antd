@@ -85,6 +85,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [removeIcon]="nzRemoveIcon"
       [placeHolder]="nzPlaceHolder"
       [maxTagCount]="nzMaxTagCount"
+      [maxTagTextLength]="nzMaxTagTextLength"
       [customTemplate]="nzCustomTemplate"
       [tokenSeparators]="nzTokenSeparators"
       [showSearch]="nzShowSearch"
@@ -184,6 +185,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzMaxTagCount = Infinity;
+  @Input() nzMaxTagTextLength = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()

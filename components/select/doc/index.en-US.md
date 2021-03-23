@@ -58,6 +58,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
 | `[nzLoading]` | indicate loading state | `boolean` | false |
 | `[nzMaxTagCount]` | Max tag count to show| `number` | - |
+| `[nzMaxTagTextLength]` | Max tag text length to show | `number` | - |
 | `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | `TemplateRef<{ $implicit: any[] }>` | - |
 | `[nzOptionHeightPx]` | Each option height inside the dropdown | `number` | `32` |

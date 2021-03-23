@@ -59,6 +59,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzTokenSeparators]` | 在 tags 和 multiple 模式下自动分词的分隔符 | `string[]` | `[]` |
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
+| `[nzMaxTagTextLength]` | 最大显示的 tag 文本长度 | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
 | `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzOptionHeightPx]` | 下拉菜单中每个 Option 的高度 | `number` | `32` |

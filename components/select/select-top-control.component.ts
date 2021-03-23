@@ -92,6 +92,8 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
   @Input() maxTagCount: number = Infinity;
+  @Input() maxTagTextLength: number = Infinity;
+  @Input() tagTextEllipsis: string = '…';
   @Input() autofocus = false;
   @Input() disabled = false;
   @Input() mode: NzSelectModeType = 'default';
@@ -199,14 +201,14 @@ export class NzSelectTopControlComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;
+    const { listOfTopItem, maxTagCount, maxTagTextLength, tagTextEllipsis, customTemplate, maxTagPlaceholder } = changes;
     if (listOfTopItem) {
       this.updateTemplateVariable();
     }
-    if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) {
+    if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder || maxTagTextLength || tagTextEllipsis) {
       const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, this.maxTagCount).map(o => {
         return {
-          nzLabel: o.nzLabel,
+          nzLabel: this.getLabelToShow(o.nzLabel),
           nzValue: o.nzValue,
           nzDisabled: o.nzDisabled,
           contentTemplateOutlet: this.customTemplate,
@@ -227,5 +229,11 @@ export class NzSelectTopControlComponent implements OnChanges {
       }
       this.listOfSlicedItem = listOfSlicedItem;
     }
+  }
+  private getLabelToShow(text: string | null): string | null {
+    if (text === null || text.length <= this.maxTagTextLength) {
+      return text;
+    }
+    return `${text.slice(0, this.maxTagTextLength).trim()}${this.tagTextEllipsis}`;
   }
 }
