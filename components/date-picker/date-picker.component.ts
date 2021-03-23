@@ -89,6 +89,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
         [showTime]="nzShowTime"
         [dateRender]="nzDateRender"
         [disabledDate]="nzDisabledDate"
+        [isOpen]="isOpen"
         [disabledTime]="nzDisabledTime"
         [extraFooter]="extraFooter"
         [ranges]="nzRanges"
@@ -134,6 +135,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   focused: boolean = false;
   extraFooter?: TemplateRef<NzSafeAny> | string;
   dir: Direction = 'ltr';
+  isOpen: boolean;
 
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
@@ -195,6 +197,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
+    this.isOpen = this.nzOpen === undefined ? false : this.nzOpen;
+
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-picker');
   }
@@ -299,6 +303,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
    * @param open The overlayOpen in picker component
    */
   onOpenChange(open: boolean): void {
+    this.isOpen = open;
     this.nzOnOpenChange.emit(open);
   }
 

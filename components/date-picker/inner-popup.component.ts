@@ -49,6 +49,7 @@ import { PREFIX_CLASS } from './util';
                 [locale]="locale"
                 (valueChange)="onChooseDecade($event)"
                 [disabledDate]="disabledDate"
+                [isOpen]="isOpen"
               ></decade-table>
             </div>
           </ng-container>
@@ -69,6 +70,7 @@ import { PREFIX_CLASS } from './util';
                 [value]="value"
                 [locale]="locale"
                 [disabledDate]="disabledDate"
+                [isOpen]="isOpen"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
                 (valueChange)="onChooseYear($event)"
@@ -93,6 +95,7 @@ import { PREFIX_CLASS } from './util';
                 [activeDate]="activeDate"
                 [locale]="locale"
                 [disabledDate]="disabledDate"
+                [isOpen]="isOpen"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
                 (valueChange)="onChooseMonth($event)"
@@ -119,6 +122,7 @@ import { PREFIX_CLASS } from './util';
                 [value]="value"
                 [activeDate]="activeDate"
                 [disabledDate]="disabledDate"
+                [isOpen]="isOpen"
                 [cellRender]="dateRender"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
@@ -160,6 +164,7 @@ export class InnerPopupComponent implements OnChanges {
   @Input() showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
+  @Input() isOpen!: boolean;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue!: CandyDate[]; // Range ONLY
   @Input() hoverValue!: CandyDate[]; // Range ONLY

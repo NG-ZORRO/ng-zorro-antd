@@ -85,6 +85,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           [activeDate]="getActiveDate(partType)"
           [value]="getValue(partType)"
           [disabledDate]="disabledDate"
+          [isOpen]="isOpen"
           [dateRender]="dateRender"
           [selectedValue]="$any(datePickerService?.value)"
           [hoverValue]="$any(hoverValue)"
@@ -135,6 +136,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() disabledDate?: DisabledDateFn;
+  @Input() isOpen!: boolean;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
   @Input() showToday!: boolean;
   @Input() showNow!: boolean;
