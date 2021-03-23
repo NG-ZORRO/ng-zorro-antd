@@ -26,7 +26,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 })
 export class NzSelectItemComponent {
   @Input() disabled = false;
-  @Input() label: string | null | undefined = null;
+  @Input() label: string | number | null | undefined = null;
   @Input() deletable = false;
   @Input() removeIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplateOutletContext: NzSafeAny | null = null;

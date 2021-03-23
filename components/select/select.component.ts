@@ -47,7 +47,7 @@ import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType, NzSelectOp
 
 const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
   if (item && item.nzLabel) {
-    return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+    return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
   } else {
     return false;
   }
@@ -314,7 +314,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     }
     const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
-    let listOfGroupLabel: Array<string | TemplateRef<NzSafeAny> | null> = [];
+    let listOfGroupLabel: Array<string | number | TemplateRef<NzSafeAny> | null> = [];
     if (this.isReactiveDriven) {
       listOfGroupLabel = [...new Set(this.nzOptions.filter(o => o.groupLabel).map(o => o.groupLabel!))];
     } else {
@@ -556,7 +556,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
       const listOfTransformedItem = listOfOptions.map(item => {
         return {
           template: item.label instanceof TemplateRef ? item.label : null,
-          nzLabel: typeof item.label === 'string' ? item.label : null,
+          nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
           nzValue: item.value,
           nzDisabled: item.disabled || false,
           nzHide: item.hide || false,

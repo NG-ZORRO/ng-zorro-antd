@@ -1223,7 +1223,7 @@ export class TestSelectTemplateDefaultComponent {
   nzShowArrow = true;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
-      return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+      return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     } else {
       return false;
     }
@@ -1365,7 +1365,7 @@ export class TestSelectReactiveDefaultComponent {
   nzShowArrow = true;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
-      return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+      return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     } else {
       return false;
     }

@@ -12,10 +12,12 @@ import { Subject } from 'rxjs';
   exportAs: 'nzOptionGroup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzOptionGroupComponent implements OnChanges {
-  @Input() nzLabel: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
   changes = new Subject<void>();
   ngOnChanges(): void {
     this.changes.next();
