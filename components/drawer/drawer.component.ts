@@ -44,6 +44,7 @@ import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzDrawerContentDirective } from './drawer-content.directive';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
+import { getMaxZIndex } from './utils';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
@@ -66,7 +67,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [class.ant-drawer-left]="nzPlacement === 'left'"
         [style.transform]="offsetTransform"
         [style.transition]="placementChanging ? 'none' : null"
-        [style.zIndex]="nzZIndex"
+        [style.zIndex]="nzZIndex || zIndex"
       >
         <div class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
         <div
@@ -141,7 +142,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() nzWrapClassName?: string;
   @Input() nzWidth: number | string = 256;
   @Input() nzHeight: number | string = 256;
-  @Input() nzZIndex = 1000;
+  @Input() nzZIndex?: number;
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
@@ -172,6 +173,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   portal?: TemplatePortal;
   focusTrap?: FocusTrap;
   isOpen = false;
+  zIndex = 1000;
   templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
@@ -334,6 +336,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     this.overlayKeyboardDispatcher.remove(this.overlayRef!);
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
+      this.zIndex = 1000;
       this.updateBodyOverflow();
       this.restoreFocus();
       this.nzAfterClose.next(result);
@@ -343,6 +346,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   }
 
   open(): void {
+    this.zIndex = getMaxZIndex('.ant-drawer');
     this.attachOverlay();
     this.isOpen = true;
     this.nzVisibleChange.emit(true);

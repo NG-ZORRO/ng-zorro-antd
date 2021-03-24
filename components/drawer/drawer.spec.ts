@@ -18,7 +18,7 @@ describe('NzDrawerComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationModule],
-        declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
+        declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent, NzTestDrawerNestedComponent]
       }).compileComponents();
     })
   );
@@ -478,6 +478,7 @@ describe('NzDrawerComponent', () => {
       expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-wrapper-body') as HTMLElement).style.height).toBe('100%');
     });
   });
+
   describe('RTL', () => {
     let component: NzTestDrawerRtlComponent;
     let fixture: ComponentFixture<NzTestDrawerRtlComponent>;
@@ -504,6 +505,33 @@ describe('NzDrawerComponent', () => {
       component.open();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-rtl')).toBe(false);
+    });
+  });
+
+  describe('nested', () => {
+    let component: NzTestDrawerNestedComponent;
+    let fixture: ComponentFixture<NzTestDrawerNestedComponent>;
+    let overlayContainerElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDrawerNestedComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should z-index change', () => {
+      fixture.detectChanges();
+      const drawers = overlayContainerElement.querySelectorAll('.ant-drawer') as NodeListOf<HTMLElement>;
+      component.visible1 = true;
+      fixture.detectChanges();
+      expect(drawers[0].style.zIndex).toBe('1001');
+      component.visible2 = true;
+      fixture.detectChanges();
+      expect(drawers[1].style.zIndex).toBe('1002');
     });
   });
 });
@@ -748,4 +776,16 @@ export class NzTestDrawerRtlComponent {
   close(): void {
     this.visible = false;
   }
+}
+
+@Component({
+  template: `
+    <nz-drawer [nzVisible]="visible1">
+      <nz-drawer [nzVisible]="visible2"></nz-drawer>
+    </nz-drawer>
+  `
+})
+export class NzTestDrawerNestedComponent {
+  visible1 = false;
+  visible2 = false;
 }
