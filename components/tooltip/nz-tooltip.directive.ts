@@ -27,6 +27,7 @@ import { NzToolTipComponent } from './nz-tooltip.component';
 })
 export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  private triggerDisposables: Array<() => void> = [];
 
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
@@ -204,27 +205,34 @@ export class NzTooltipDirective implements AfterViewInit, OnInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
       let overlayElement;
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
-        this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
-        if (this.tooltip.overlay.overlayRef && !overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
-          overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
-          this.renderer.listen(overlayElement, 'mouseenter', () => this.delayEnterLeave(false, true));
-          this.renderer.listen(overlayElement, 'mouseleave', () => this.delayEnterLeave(false, false));
-        }
-      });
+      this.triggerDisposables.push(
+        this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay))
+      );
+      this.triggerDisposables.push(
+        this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
+          this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
+          if (this.tooltip.overlay.overlayRef && !overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
+            overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
+            this.renderer.listen(overlayElement, 'mouseenter', () => this.delayEnterLeave(false, true));
+            this.renderer.listen(overlayElement, 'mouseleave', () => this.delayEnterLeave(false, false));
+          }
+        })
+      );
     } else if (this.tooltip.nzTrigger === 'focus') {
-      this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
-      this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
+      this.triggerDisposables.push(this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show()));
+      this.triggerDisposables.push( this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide()));
     } else if (this.tooltip.nzTrigger === 'click') {
-      this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
-        e.preventDefault();
-        this.show();
-      });
+      this.triggerDisposables.push(
+        this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
+          e.preventDefault();
+          this.show();
+        })
+      );
     }
   }
 
   ngOnDestroy(): void {
+    this.triggerDisposables.forEach(dispose => dispose());
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
