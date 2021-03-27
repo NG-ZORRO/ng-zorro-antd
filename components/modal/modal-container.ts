@@ -80,7 +80,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   }
 
   onContainerClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget && !this.mouseDown && this.showMask && this.maskClosable) {
+    if (e.target === e.currentTarget && !this.mouseDown && this.maskClosable) {
       this.containerClick.emit();
     }
   }

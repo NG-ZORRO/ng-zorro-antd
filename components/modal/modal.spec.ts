@@ -444,41 +444,67 @@ describe('NzModal', () => {
     flush();
   }));
 
-  it(
-    'should not close when clicking on the modal wrap and ' + 'nzMaskClosable or nzMask is false',
-    fakeAsync(() => {
-      const modalRef = modalService.create({
-        nzContent: TestWithModalContentComponent,
-        nzMaskClosable: false
-      });
+  it('should not close when clicking on the modal wrap and nzMaskClosable is false', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzMaskClosable: false
+    });
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      const modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
-      dispatchMouseEvent(modalWrap, 'mousedown');
-      fixture.detectChanges();
-      dispatchMouseEvent(modalWrap, 'mouseup');
-      flush();
-      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
+    const modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    dispatchMouseEvent(modalWrap, 'mousedown');
+    fixture.detectChanges();
+    dispatchMouseEvent(modalWrap, 'mouseup');
+    flush();
+    modalWrap.click();
+    fixture.detectChanges();
+    flush();
+    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
 
-      modalRef.updateConfig({
-        nzMaskClosable: true,
-        nzMask: false
-      });
+    modalRef.updateConfig({
+      nzMaskClosable: false,
+      nzMask: false
+    });
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      dispatchMouseEvent(modalWrap, 'mousedown');
-      fixture.detectChanges();
-      dispatchMouseEvent(modalWrap, 'mouseup');
-      flush();
-      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
+    dispatchMouseEvent(modalWrap, 'mousedown');
+    fixture.detectChanges();
+    dispatchMouseEvent(modalWrap, 'mouseup');
+    flush();
+    modalWrap.click();
+    fixture.detectChanges();
+    flush();
+    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
 
-      modalRef.close();
-      fixture.detectChanges();
-      flush();
-    })
-  );
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should close when clicking on the modal wrap with nzMaskClosable is true and nzMask is false', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzMask: false
+    });
+
+    fixture.detectChanges();
+
+    const modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    dispatchMouseEvent(modalWrap, 'mousedown');
+    fixture.detectChanges();
+    dispatchMouseEvent(modalWrap, 'mouseup');
+    flush();
+    modalWrap.click();
+    fixture.detectChanges();
+    flush();
+    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeFalsy();
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
 
   it('should notify the observers if all open modals have finished closing', fakeAsync(() => {
     const ref1 = modalService.create({
