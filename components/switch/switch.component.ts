@@ -153,12 +153,14 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   ngAfterViewInit(): void {
-    this.focusMonitor.monitor(this.switchElement!.nativeElement, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        /** https://github.com/angular/angular/issues/17793 **/
-        Promise.resolve().then(() => this.onTouched());
-      }
-    });
+    this.focusMonitor.monitor(this.switchElement!.nativeElement, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          /** https://github.com/angular/angular/issues/17793 **/
+          Promise.resolve().then(() => this.onTouched());
+        }
+      });
   }
 
   ngOnDestroy(): void {

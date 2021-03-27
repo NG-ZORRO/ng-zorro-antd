@@ -382,17 +382,19 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        this.isFocused = false;
-        this.updateDisplayValue(this.value!);
-        this.nzBlur.emit();
-        Promise.resolve().then(() => this.onTouched());
-      } else {
-        this.isFocused = true;
-        this.nzFocus.emit();
-      }
-    });
+    this.focusMonitor.monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.isFocused = false;
+          this.updateDisplayValue(this.value!);
+          this.nzBlur.emit();
+          Promise.resolve().then(() => this.onTouched());
+        } else {
+          this.isFocused = true;
+          this.nzFocus.emit();
+        }
+      });
 
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
