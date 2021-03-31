@@ -3,9 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChanges } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChanges
+} from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -44,6 +56,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   constructor(
+    @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzImageService: NzImageService,
@@ -107,7 +120,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
    * @private
    */
   private backLoad(): void {
-    this.backLoadImage = new Image();
+    this.backLoadImage = this.document.createElement('img');
     this.backLoadImage.src = this.nzSrc;
     this.status = 'loading';
 
