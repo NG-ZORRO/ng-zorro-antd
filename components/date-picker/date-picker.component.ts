@@ -107,7 +107,8 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
     '[class.ant-picker-borderless]': `nzBorderless`,
     '[class.ant-picker-inline]': `nzInline`,
-    '(click)': 'picker.onClickInputBox($event)'
+    '(click)': 'picker.onClickInputBox($event)',
+    '(keydown)': 'onKeydown($event)'
   },
   providers: [
     DatePickerService,
@@ -418,6 +419,21 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
         this.nzOnOk.emit((this.datePickerService.value as CandyDate).nativeDate);
       } else {
         this.nzOnOk.emit(null);
+      }
+    }
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (!this.isRange && event.key === 'Tab') {
+      this.close();
+    } else if (this.isRange && event.key === 'Tab') {
+      if (this.datePickerService.activeInput === 'left' && event.shiftKey) {
+        this.close();
+        return;
+      }
+      if (this.datePickerService.activeInput === 'right' && !event.shiftKey) {
+        this.close();
+        return;
       }
     }
   }

@@ -19,7 +19,7 @@ import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n'
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
-import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
+import { ENTER_EVENT, getPickerAbstract, getPickerInput, TAB_EVENT } from './testing/util';
 import { PREFIX_CLASS } from './util';
 
 registerLocaleData(zh);
@@ -148,6 +148,18 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should open by click and close by tab', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(getPickerContainer).not.toBeNull();
+
+      getPickerAbstract(fixture.debugElement).dispatchEvent(TAB_EVENT);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
     }));
 
     it('should support changing language at runtime', fakeAsync(() => {

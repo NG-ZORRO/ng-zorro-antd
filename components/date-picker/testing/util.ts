@@ -9,6 +9,7 @@ import { NzPickerComponent } from '../picker.component';
 import { PREFIX_CLASS } from '../util';
 
 export const ENTER_EVENT = new KeyboardEvent('keyup', { key: 'Enter' });
+export const TAB_EVENT = new KeyboardEvent('keydown', { key: 'Tab' });
 
 export function getPickerAbstract<T = HTMLElement>(debugElement: DebugElement): T {
   return debugElement.query(By.css(`.${PREFIX_CLASS}`)).nativeElement;
