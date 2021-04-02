@@ -14,7 +14,13 @@ import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent, typeInEle
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
-import { ENTER_EVENT, getPickerAbstract, getPickerInput, getRangePickerRightInput } from 'ng-zorro-antd/date-picker/testing/util';
+import {
+  ENTER_EVENT,
+  getPickerAbstract,
+  getPickerInput,
+  getRangePickerRightInput,
+  TAB_EVENT
+} from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -61,6 +67,26 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(document.body, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should open by click and close by tab', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getPickerAbstract(fixture.debugElement).dispatchEvent(TAB_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getRangePickerRightInput(fixture.debugElement).focus();
+      getPickerAbstract(fixture.debugElement).dispatchEvent(TAB_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();

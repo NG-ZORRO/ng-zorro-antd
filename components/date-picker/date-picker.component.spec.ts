@@ -153,7 +153,7 @@ describe('NzDatePickerComponent', () => {
     it('should open by click and close by tab', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(getPickerContainer).not.toBeNull();
+      expect(getPickerContainer()).not.toBeNull();
 
       getPickerAbstract(fixture.debugElement).dispatchEvent(TAB_EVENT);
       fixture.detectChanges();
