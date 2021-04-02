@@ -303,6 +303,10 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+  nzPreload?: boolean;
+  nzOptimize?: boolean;
+  nzOptimizeSizes?: number[];
+  nzLoader?(params: { src: string; width: number }): string;
 }
 
 export interface PopConfirmConfig {

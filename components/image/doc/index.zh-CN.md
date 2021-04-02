@@ -23,7 +23,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 | 参数        | 说明                               | 类型             | 默认值 | 支持全局配置  |
 | ----------- | ---------------------------------- | ---------------- | ------ | ----- |
-| nzSrc | 图片地址 | `string` | - | - |
+| nzSrc | url | `string` | - | |
 | nzFallback | 加载失败容错地址 | `string` | - | ✅ |
 | nzPlaceholder | 加载占位地址 | `string` | - | ✅ |
 | nzDisablePreview | 是否禁止预览 | `boolean` | `false` | ✅ |
@@ -31,6 +31,19 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDirection | 文字方向 | `Direction` | `'ltr'` | ✅ |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
+
+### nz-image
+
+| 参数        | 说明                               | 类型             | 默认值 | 支持全局配置  |
+| --- | --- | --- | --- | --- |
+|nzSrc | url | `string` | - | |
+|nzAlt | alt | `string` | - | |
+|nzWidth | 宽度 | `number\|string` | `auto` | |
+|nzHeight | 高度 | `number\|string` | `auto` | |
+|nzLoader | 图片加载器 | `NzImageLoader` | `defaultLoader` | ✅ |
+|nzOptimize | 是否优化图片加载 | `boolean` | `false` | ✅ |
+|nzPreload | 是否预加载图片 | `boolean` | `false` | ✅ |
+|nzOptimizeSizes | 优化加载尺寸 | `number[]` | `[16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840]` | ✅ |
 
 ### NzImageService
 
@@ -69,3 +82,12 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | prev(): void | 上一张 |
 | next(): void | 下一张 |
 | close(): void | 关闭预览 |
+
+### NzImageLoader
+```ts
+export type NzImageLoader = (params: { src: string; width: number }) => string;
+
+export const defaultLoader: NzImageLoader = ({ src }) => {
+  return encodeURIComponent(src);
+};
+```

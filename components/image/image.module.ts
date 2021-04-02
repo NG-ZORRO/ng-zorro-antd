@@ -13,14 +13,15 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 import { NzImageGroupComponent } from './image-group.component';
 import { NzImagePreviewComponent } from './image-preview.component';
+import { NzImageComponent } from './image.component';
 import { NzImageDirective } from './image.directive';
 import { NzImageService } from './image.service';
 
 @NgModule({
   imports: [BidiModule, OverlayModule, PortalModule, DragDropModule, CommonModule, NzIconModule, NzPipesModule],
-  exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
+  exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent, NzImageComponent],
   providers: [NzImageService],
   entryComponents: [NzImagePreviewComponent],
-  declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent]
+  declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent, NzImageComponent]
 })
 export class NzImageModule {}

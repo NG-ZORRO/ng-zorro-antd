@@ -9,7 +9,7 @@ Previewable image.
 
 ## When To Use
 
-- When you need to display pictures.
+- Use when you need to show pictures.
 - Display when loading a large image or fault tolerant handling when loading fail.
 
 ```ts
@@ -22,7 +22,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
-| nzSrc | Image path | `string` | - | - |
+| nzSrc | URL | `string` | - | |
 | nzFallback | Load failure fault-tolerant src | `string` | - | ✅ |
 | nzPlaceholder | Load placeholder src | `string` | - | ✅ |
 | nzDisablePreview | Whether to disable the preview | `boolean` | `false` | ✅ |
@@ -31,6 +31,18 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
+### nz-image
+
+| Property | Description | Type | Default | Global Config |
+| --- | --- | --- | --- | --- |
+|nzSrc | URL | `string` | - | |
+|nzAlt | Alt | `string` | - | |
+|nzWidth | Width | `number\|string` | `auto` | |
+|nzHeight | Height | `number\|string` | `auto` | |
+|nzLoader | Loader | `NzImageLoader` | `defaultLoader` | ✅ |
+|nzOptimize | Whether to optimize image loading | `boolean` | `false` | ✅ |
+|nzPreload | Whether to preload image | `boolean` | `false` | ✅ |
+|nzOptimizeSizes | Optimized loading size | `number[]` | `[16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840]` | ✅ |
 
 ### NzImageService
 
@@ -69,3 +81,13 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | prev(): void | Previous image |
 | next(): void | Next image |
 | close(): void | Close image preview |
+
+### NzImageLoader
+
+```ts
+export type NzImageLoader = (params: {src: string; width: number}) => string;
+
+export const defaultLoader: NzImageLoader = ({ src }) => {
+  return encodeURIComponent(src);
+};
+```

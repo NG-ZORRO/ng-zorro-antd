@@ -19,6 +19,7 @@ import {
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import {
+  defaultLoader,
   getFitContentPosition,
   NzImage,
   NzImageDirective,
@@ -456,6 +457,59 @@ describe('Preview', () => {
   });
 });
 
+describe('Optimize', () => {
+  let fixture: ComponentFixture<TestImageOptimizeComponent>;
+  let context: TestImageOptimizeComponent;
+  let debugElement: DebugElement;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzImageModule, TestImageModule]
+    });
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestImageOptimizeComponent);
+    context = fixture.componentInstance;
+    debugElement = fixture.debugElement;
+  });
+
+  it('should not optimize by default', () => {
+    const _src = 'test.jpg';
+    const _encode = encodeURIComponent(_src);
+    context.src = _src;
+    fixture.detectChanges();
+    const image = debugElement.nativeElement.querySelector('img') as HTMLImageElement;
+    expect(image.src).toContain(_encode);
+    expect(image.srcset).toBe('');
+  });
+
+  it('should nzOptimize work', () => {
+    const _src = 'test.jpg';
+    const _encode = encodeURIComponent(_src);
+    context.src = _src;
+    context.optimize = true;
+    fixture.detectChanges();
+    const image = debugElement.nativeElement.querySelector('img') as HTMLImageElement;
+    expect(image.src).toContain(_encode);
+    expect(image.srcset).toBe(`${_encode} 1x, ${_encode} 2x`);
+  });
+
+  it('should nzLoader work', () => {
+    const _src = 'test.jpg';
+    const _width = 100;
+    context.src = _src;
+    context.width = _width;
+    context.optimize = true;
+    context.loader = ({ src, width }) => `${src}?w=${width}`;
+    fixture.detectChanges();
+    const image = debugElement.nativeElement.querySelector('img') as HTMLImageElement;
+    expect(image.src).toContain(`${_src}`);
+    expect(image.srcset).toBe(`${_src}?w=128 1x, ${_src}?w=256 2x`);
+  });
+});
+
 @Component({
   template: `
     <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />
@@ -505,7 +559,24 @@ export class TestImagePreviewGroupComponent {
   }
 }
 
-const TEST_COMPONENTS = [TestImageFallbackComponent, TestImagePlaceholderComponent, TestImagePreviewGroupComponent];
+@Component({
+  template: `
+    <nz-image [nzSrc]="src" [nzOptimize]="optimize" [nzLoader]="loader" [nzWidth]="width" nzHeight="200" nzAlt="test"></nz-image>
+  `
+})
+export class TestImageOptimizeComponent {
+  src = '';
+  optimize = false;
+  loader = defaultLoader;
+  width = 200;
+}
+
+const TEST_COMPONENTS = [
+  TestImageFallbackComponent,
+  TestImagePlaceholderComponent,
+  TestImageOptimizeComponent,
+  TestImagePreviewGroupComponent
+];
 
 @NgModule({
   imports: [NzImageModule],
