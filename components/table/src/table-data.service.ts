@@ -101,7 +101,7 @@ export class NzTableDataService implements OnDestroy {
     })
   );
   listOfCurrentPageData$ = this.frontPagination$.pipe(
-    switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfData$))
+    switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfDataAfterCalc$))
   );
   total$ = this.frontPagination$.pipe(
     switchMap(pagination => (pagination ? this.listOfDataAfterCalc$ : this.listOfData$)),
