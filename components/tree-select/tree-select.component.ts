@@ -48,7 +48,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
-import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { merge, of as observableOf, Subject } from 'rxjs';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { NzTreeSelectService } from './tree-select.service';
 
@@ -287,8 +287,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   focused = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  selectionChangeSubscription!: Subscription;
-  focusChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -326,7 +324,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   ngOnInit(): void {
     this.isDestroy = false;
-    this.selectionChangeSubscription = this.subscribeSelectionChange();
+    this.subscribeSelectionChange();
 
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -334,27 +332,28 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     });
     this.dir = this.directionality.value;
 
-    this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        this.focused = false;
-        this.cdr.markForCheck();
-        Promise.resolve().then(() => {
-          this.onTouched();
-        });
-      } else {
-        this.focused = true;
-        this.cdr.markForCheck();
-      }
-    });
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.focused = false;
+          this.cdr.markForCheck();
+          Promise.resolve().then(() => {
+            this.onTouched();
+          });
+        } else {
+          this.focused = true;
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
-    this.selectionChangeSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
-    this.focusChangeSubscription.unsubscribe();
   }
 
   isComposingChange(isComposing: boolean): void {
@@ -493,8 +492,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
   }
 
-  subscribeSelectionChange(): Subscription {
-    return merge(
+  subscribeSelectionChange(): void {
+    merge(
       this.nzTreeClick.pipe(
         tap((event: NzFormatEmitEvent) => {
           const node = event.node!;
@@ -517,23 +516,25 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
       this.nzCleared,
       this.nzRemoved
-    ).subscribe(() => {
-      this.updateSelectedNodes();
-      const value = this.selectedNodes.map(node => node.key!);
-      this.value = [...value];
-      if (this.nzShowSearch || this.isMultiple) {
-        this.inputValue = '';
-        this.isNotFound = false;
-      }
-      if (this.isMultiple) {
-        this.onChange(value);
-        this.focusOnInput();
-        this.updatePosition();
-      } else {
-        this.closeDropDown();
-        this.onChange(value.length ? value[0] : null);
-      }
-    });
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateSelectedNodes();
+        const value = this.selectedNodes.map(node => node.key!);
+        this.value = [...value];
+        if (this.nzShowSearch || this.isMultiple) {
+          this.inputValue = '';
+          this.isNotFound = false;
+        }
+        if (this.isMultiple) {
+          this.onChange(value);
+          this.focusOnInput();
+          this.updatePosition();
+        } else {
+          this.closeDropDown();
+          this.onChange(value.length ? value[0] : null);
+        }
+      });
   }
 
   updateSelectedNodes(init: boolean = false): void {
