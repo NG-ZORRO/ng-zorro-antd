@@ -15,7 +15,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None
 })
 export class NzOptionItemGroupComponent {
-  @Input() nzLabel: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
 
   constructor(private elementRef: ElementRef) {
     // TODO: move to host after View Engine deprecation
