@@ -107,8 +107,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
     '[class.ant-picker-borderless]': `nzBorderless`,
     '[class.ant-picker-inline]': `nzInline`,
-    '(click)': 'picker.onClickInputBox($event)',
-    '(keydown)': 'onKeydown($event)'
+    '(click)': 'picker.onClickInputBox($event)'
   },
   providers: [
     DatePickerService,
@@ -384,13 +383,16 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.datePickerService.initialValue = newValue;
   }
 
-  onFocusChange(value: boolean): void {
-    this.focused = value;
+  onFocusChange(value: FocusEvent): void {
+    // When the relatedTarget is part of the elementRef, it means that it's a range-picker and you are navigating to
+    // the other input in that range picker. In that case we don't want to close the picker.
+    this.focused = (value.type === 'blur' && this.elementRef.nativeElement.contains(value.relatedTarget)) || value.type === 'focus';
     // TODO: avoid autoFocus cause change after checked error
     if (this.focused) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
+      this.close();
     }
   }
 
@@ -419,21 +421,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
         this.nzOnOk.emit((this.datePickerService.value as CandyDate).nativeDate);
       } else {
         this.nzOnOk.emit(null);
-      }
-    }
-  }
-
-  onKeydown(event: KeyboardEvent): void {
-    if (!this.isRange && event.key === 'Tab') {
-      this.close();
-    } else if (this.isRange && event.key === 'Tab') {
-      if (this.datePickerService.activeInput === 'left' && event.shiftKey) {
-        this.close();
-        return;
-      }
-      if (this.datePickerService.activeInput === 'right' && !event.shiftKey) {
-        this.close();
-        return;
       }
     }
   }
