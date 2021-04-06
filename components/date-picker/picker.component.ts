@@ -182,7 +182,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzId: string | null = null;
   @Input() hasBackdrop = false;
 
-  @Output() readonly focusChange = new EventEmitter<boolean>();
+  @Output() readonly focusChange = new EventEmitter<FocusEvent>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
@@ -336,7 +336,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onFocus(event: FocusEvent, partType?: RangePartType): void {
     event.preventDefault();
-    this.focusChange.emit(true);
+    this.focusChange.emit(event);
     if (partType) {
       this.datePickerService.inputPartChange$.next(partType);
     }
@@ -344,7 +344,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onBlur(event: FocusEvent): void {
     event.preventDefault();
-    this.focusChange.emit(false);
+    this.focusChange.emit(event);
   }
 
   // Show overlay content

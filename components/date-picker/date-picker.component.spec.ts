@@ -150,6 +150,20 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
+    it('should open by click and close by tab', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getSecondPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
     it('should support changing language at runtime', fakeAsync(() => {
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('请选择日期');
@@ -467,6 +481,10 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+
+    function getSecondPickerInput(fixtureDebugElement: DebugElement): HTMLInputElement {
+      return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
+    }
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1141,11 +1159,17 @@ describe('date-fns testing', () => {
 
       <!-- Suite 4 -->
       <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
+
+      <!-- Suite 5 -->
+      <ng-container *ngSwitchCase="5">
+        <nz-date-picker [ngModel]="firstValue"></nz-date-picker>
+        <nz-date-picker [ngModel]="secondValue"></nz-date-picker>
+      </ng-container>
     </ng-container>
   `
 })
 class NzTestDatePickerComponent {
-  useSuite!: 1 | 2 | 3 | 4;
+  useSuite!: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
   @ViewChild(NzDatePickerComponent, { static: false }) datePicker!: NzDatePickerComponent;
@@ -1193,4 +1217,8 @@ class NzTestDatePickerComponent {
 
   // --- Suite 4
   control!: FormControl;
+
+  // --- Suite 5
+  firstValue!: Date;
+  secondValue!: Date;
 }

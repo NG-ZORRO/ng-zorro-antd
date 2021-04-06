@@ -67,6 +67,27 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should open by click and close by tab', fakeAsync(() => {
+      fixtureInstance.useSuite = 4;
+
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getRangePickerRightInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getRegularPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
     it('should focus on the trigger after a click outside', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -930,6 +951,10 @@ describe('NzRangePickerComponent', () => {
     return queryFromOverlay('.ant-picker-panel:first-child td.ant-picker-cell-selected .ant-picker-cell-inner') as HTMLElement;
   }
 
+  function getRegularPickerInput(fixtureDebugElement: DebugElement): HTMLInputElement {
+    return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[2].nativeElement as HTMLInputElement;
+  }
+
   // function getSecondSelectedDayCell(): HTMLElement {
   //   return queryFromOverlay('.ant-picker-panel:last-child td.ant-picker-cell-selected .ant-picker-cell-inner') as HTMLElement;
   // }
@@ -1033,16 +1058,22 @@ describe('NzRangePickerComponent', () => {
       <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
-      <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
+      <!-- use another picker to avoid nzOpen's side-effects because nzOpen act as "true" if used -->
       <nz-range-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-range-picker>
 
       <!-- Suite 3 -->
       <nz-range-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-range-picker>
+
+      <!-- Suite 4 -->
+      <ng-container *ngSwitchCase="4">
+        <nz-range-picker [(ngModel)]="modelValue"></nz-range-picker>
+        <nz-date-picker [ngModel]="singleValue"></nz-date-picker>
+      </ng-container>
     </ng-container>
   `
 })
 class NzTestRangePickerComponent {
-  useSuite!: 1 | 2 | 3;
+  useSuite!: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
@@ -1078,4 +1109,7 @@ class NzTestRangePickerComponent {
 
   // --- Suite 2
   nzOpen: boolean = false;
+
+  // --- Suite 4
+  singleValue!: Date;
 }
