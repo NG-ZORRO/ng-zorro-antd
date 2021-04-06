@@ -5,7 +5,6 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
   selector: 'nz-demo-date-picker-start-end',
   template: `
     <nz-date-picker
-      #startDatePicker
       [nzDisabledDate]="disabledStartDate"
       nzShowTime
       nzFormat="yyyy-MM-dd HH:mm:ss"
