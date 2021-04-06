@@ -344,7 +344,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onBlur(event: FocusEvent): void {
     event.preventDefault();
-    console.log(event);
     this.focusChange.emit(event);
   }
 

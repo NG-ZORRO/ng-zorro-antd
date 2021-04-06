@@ -11,8 +11,7 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
       nzFormat="yyyy-MM-dd HH:mm:ss"
       [(ngModel)]="startValue"
       nzPlaceHolder="Start"
-      (nzOnOk)="handleOk()"
-      (keydown)="handleKeydown($event)"
+      (nzOnOpenChange)="handleStartOpenChange($event)"
     ></nz-date-picker>
     <nz-date-picker
       #endDatePicker
@@ -21,6 +20,7 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
       nzFormat="yyyy-MM-dd HH:mm:ss"
       [(ngModel)]="endValue"
       nzPlaceHolder="End"
+      (nzOnOpenChange)="handleEndOpenChange($event)"
     ></nz-date-picker>
   `,
   styles: [
@@ -34,7 +34,6 @@ import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
 export class NzDemoDatePickerStartEndComponent {
   startValue: Date | null = null;
   endValue: Date | null = null;
-  @ViewChild('startDatePicker') startDatePicker!: NzDatePickerComponent;
   @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
 
   disabledStartDate = (startValue: Date): boolean => {
@@ -51,14 +50,14 @@ export class NzDemoDatePickerStartEndComponent {
     return endValue.getTime() <= this.startValue.getTime();
   };
 
-  handleOk(): void {
-    this.endDatePicker.open();
-  }
-
-  handleKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.startDatePicker.close();
+  handleStartOpenChange(open: boolean): void {
+    if (!open) {
       this.endDatePicker.open();
     }
+    console.log('handleStartOpenChange', open);
+  }
+
+  handleEndOpenChange(open: boolean): void {
+    console.log('handleEndOpenChange', open);
   }
 }
