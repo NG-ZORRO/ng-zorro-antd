@@ -96,7 +96,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                   </ng-container>
                 </ng-container>
                 <ng-template #contentElseTemp>
-                  <ng-container *ngIf="contentFromContentChild">
+                  <ng-container *ngIf="contentFromContentChild && (isOpen || inAnimation)">
                     <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
                   </ng-container>
                 </ng-template>
@@ -172,6 +172,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   portal?: TemplatePortal;
   focusTrap?: FocusTrap;
   isOpen = false;
+  inAnimation = false;
   templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
@@ -329,6 +330,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   close(result?: R): void {
     this.isOpen = false;
+    this.inAnimation = true;
     this.nzVisibleChange.emit(false);
     this.updateOverlayStyle();
     this.overlayKeyboardDispatcher.remove(this.overlayRef!);
@@ -336,6 +338,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     setTimeout(() => {
       this.updateBodyOverflow();
       this.restoreFocus();
+      this.inAnimation = false;
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
       this.componentInstance = null;
@@ -345,6 +348,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   open(): void {
     this.attachOverlay();
     this.isOpen = true;
+    this.inAnimation = true;
     this.nzVisibleChange.emit(true);
     this.overlayKeyboardDispatcher.add(this.overlayRef!);
     this.updateOverlayStyle();
@@ -353,6 +357,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     this.trapFocus();
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
+      this.inAnimation = false;
+      this.changeDetectorRef.detectChanges();
       this.nzAfterOpen.next();
     }, this.getAnimationDuration());
   }
