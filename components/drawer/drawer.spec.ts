@@ -641,9 +641,11 @@ describe('NzDrawerService', () => {
       (nzOnClose)="close()"
       (nzVisibleChange)="triggerVisible($event)"
     >
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <ng-container *nzDrawerContent>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </ng-container>
     </nz-drawer>
   `
 })
@@ -729,9 +731,11 @@ export class NzDrawerCustomComponent {
   template: `
     <div [dir]="direction">
       <nz-drawer [nzVisible]="visible" (nzOnClose)="close()">
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <ng-container *nzDrawerContent>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </ng-container>
       </nz-drawer>
     </div>
   `
