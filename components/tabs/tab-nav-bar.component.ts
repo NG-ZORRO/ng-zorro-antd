@@ -185,7 +185,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     this.keyManager = new FocusKeyManager<NzTabNavItemDirective>(this.items)
       .withHorizontalOrientation(this.getLayoutDirection())
       .withWrap();
-    this.keyManager.updateActiveItem(0);
+    this.keyManager.updateActiveItem(this.selectedIndex);
 
     reqAnimFrame(realign);
 

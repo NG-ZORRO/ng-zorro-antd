@@ -28,7 +28,7 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
 export class NzDemoTabsSlideComponent implements OnInit {
   tabs: Array<{ name: string; content: string; disabled: boolean }> = [];
   nzTabPosition: NzTabPosition = 'top';
-  selectedIndex = 0;
+  selectedIndex = 27;
 
   /* tslint:disable-next-line:no-any */
   log(args: any[]): void {
