@@ -25,11 +25,15 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[nzId]` | input id attribute inside the component| `string` | - |
 | `[ngModel]` | to set time | `Date` | - |
-| `[nzAddon]` | called from timepicker panel to render some addon to its bottom | `TemplateRef<void>` | - |
+| `[nzAddOn]` | called from timepicker panel to render some addon to its bottom | `TemplateRef<void>` | - |
 | `[nzAllowEmpty]` | allow clearing text | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzClearText]` | clear tooltip of icon | `string` | `'clear'` | ✅ |
+| `[nzNowText]` | text of the Now button  | `string` | `'Now'` | ✅ |
+| `[nzOkText]` | text of the Ok button | `string` | `'Ok'` | ✅ |
 | `[nzDefaultOpenValue]` | default open panel value if `[ngModel]` is null | `Date` | `new Date()` |
 | `[nzDisabled]` | determine whether the TimePicker is disabled | `boolean` | `false` |
 | `[nzDisabledHours]` | to specify the hours that cannot be selected | `() => number[]` | - |

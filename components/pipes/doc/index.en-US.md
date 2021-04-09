@@ -55,7 +55,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `type` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | '' |
+| `method` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | '' |
 
 ### __nzSanitizer__
 

@@ -68,30 +68,25 @@ import { NzTableData } from '../table.types';
         </table>
       </cdk-virtual-scroll-viewport>
     </ng-container>
-    <div class="ant-table-content" *ngIf="!scrollY">
-      <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
-        <table
-          nz-table-content
-          tableLayout="fixed"
-          [scrollX]="scrollX"
-          [listOfColWidth]="listOfColWidth"
-          [theadTemplate]="theadTemplate"
-          [contentTemplate]="contentTemplate"
-        ></table>
-      </div>
+    <div class="ant-table-content" #tableBodyElement *ngIf="!scrollY" [ngStyle]="bodyStyleMap">
+      <table
+        nz-table-content
+        tableLayout="fixed"
+        [scrollX]="scrollX"
+        [listOfColWidth]="listOfColWidth"
+        [theadTemplate]="theadTemplate"
+        [contentTemplate]="contentTemplate"
+      ></table>
     </div>
-  `,
-  host: {
-    '[class.ant-table-container]': 'true'
-  }
+  `
 })
 export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @Input() data: NzTableData[] = [];
+  @Input() data: ReadonlyArray<NzTableData> = [];
   @Input() scrollX: string | null = null;
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() widthConfig: string[] = [];
-  @Input() listOfColWidth: Array<string | null> = [];
+  @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualItemSize = 0;
@@ -130,7 +125,16 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
     }
   }
 
-  constructor(private renderer: Renderer2, private ngZone: NgZone, private platform: Platform, private resizeService: NzResizeService) {}
+  constructor(
+    private renderer: Renderer2,
+    private ngZone: NgZone,
+    private platform: Platform,
+    private resizeService: NzResizeService,
+    private elementRef: ElementRef
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-container');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;

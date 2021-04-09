@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -129,7 +130,8 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
     '[class.ant-menu-submenu-vertical]': `!isMenuInsideDropDown && mode === 'vertical'`,
     '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropDown && mode === 'horizontal'`,
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
-    '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`
+    '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
+    '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
   }
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
@@ -158,6 +160,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   overlayPositions = listOfVerticalPositions;
   isSelected = false;
   isActive = false;
+  dir: Direction = 'ltr';
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -198,6 +201,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     public nzSubmenuService: NzSubmenuService,
     private platform: Platform,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -233,6 +237,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         this.nzOpenChange.emit(this.nzOpen);
         this.cdr.markForCheck();
       }
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.markForCheck();
     });
   }
 

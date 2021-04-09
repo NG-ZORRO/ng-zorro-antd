@@ -36,6 +36,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | -------- | ----------- | ---- | ------- | - |
 | `[nzAllowClear]` | Whether to show clear button | `boolean` | `true` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` | - |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzDefaultPickerValue]` | default picker date | `Date` \| `Date[]` | - | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
 | `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
@@ -49,6 +50,8 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzRenderExtraFooter]` | render extra footer in panel | `TemplateRef \| string \| (() => TemplateRef \| string)` | - |
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
 | `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
+| `[nzBorderless]` | remove the border | `boolean` | `false` | - |
+| `[nzInline]` | inline mode | `boolean` | `false` | - |
 | `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - | - |
 
 ### Common Methods
@@ -63,6 +66,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | Date | `Date` | - |
+| `[nzId]` | input id attribute inside the component| `string` | - |
 
 ### nz-date-picker[nzMode="date"]
 | Property | Description | Type | Default |
@@ -71,6 +75,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzShowToday]` | whether to show 'Today' button | `boolean` | `true` |
+| `[nzShowNow]` | whether to show 'Now' button on panel when `nzShowTime` is set | `boolean` | `true` |
 | `(nzOnOk)` | callback when click ok button | `EventEmitter<Date>` | - |
 
 ### nz-range-picker

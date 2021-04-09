@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-back-top-target',
   template: `
     Scroll down to see the bottom-right
-    <strong> gray </strong>
+    <strong>gray</strong>
     button.
     <div class="long-div" #divTarget>
       <div class="long-div-inner"></div>
@@ -25,6 +25,11 @@ import { Component } from '@angular/core';
 
       :host ::ng-deep .long-div .ant-back-top {
         right: 150px;
+      }
+
+      :host ::ng-deep .long-div .ant-back-top-rtl {
+        right: unset;
+        left: 150px;
       }
 
       :host ::ng-deep strong {

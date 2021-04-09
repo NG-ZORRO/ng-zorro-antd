@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTableSortOrder } from '../table.types';
 
@@ -20,10 +29,7 @@ import { NzTableSortOrder } from '../table.types';
         <i nz-icon nzType="caret-down" *ngIf="isDown" class="ant-table-column-sorter-down" [class.active]="sortOrder == 'descend'"></i>
       </span>
     </span>
-  `,
-  host: {
-    '[class.ant-table-column-sorters]': 'true'
-  }
+  `
 })
 export class NzTableSortersComponent implements OnChanges {
   @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
@@ -31,6 +37,12 @@ export class NzTableSortersComponent implements OnChanges {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   isUp = false;
   isDown = false;
+
+  constructor(private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-column-sorters');
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { sortDirections } = changes;
     if (sortDirections) {

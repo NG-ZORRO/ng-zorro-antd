@@ -14,3 +14,16 @@
   margin-top: 6px;
   margin-bottom: 6px;
 }
+
+.@{dropdown-prefix-cls} {
+  &-menu {
+    &-item,
+    &-submenu-title {
+      .@{dropdown-prefix-cls}-menu-submenu-arrow {
+        .@{dropdown-prefix-cls}-rtl & {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}

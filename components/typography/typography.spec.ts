@@ -1,10 +1,10 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -18,10 +18,12 @@ describe('typography', () => {
   let componentElement: HTMLElement;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let zone: MockNgZone;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      providers: [{ provide: NgZone, useFactory: () => (zone = new MockNgZone()) }],
       declarations: [
         NzTestTypographyComponent,
         NzTestTypographyCopyComponent,
@@ -248,32 +250,42 @@ describe('typography', () => {
       fixture.detectChanges();
     }));
 
-    it('should edit work', () => {
-      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
-      editButton!.click();
-      fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
-      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
-      typeInElement('test', textarea);
-      fixture.detectChanges();
-      dispatchFakeEvent(textarea, 'blur');
-      fixture.detectChanges();
-      expect(testComponent.str).toBe('test');
-    });
-
-    it('should edit focus', fakeAsync(() => {
+    it('should edit work', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
+
+      expect(testComponent.str).toBe('This is an editable text.');
+      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
+      typeInElement('test', textarea);
+      fixture.detectChanges();
+      dispatchFakeEvent(textarea, 'blur');
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(testComponent.str).toBe('test');
+    }));
+
+    it('should edit focus', fakeAsync(() => {
+      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+      editButton!.click();
+
+      fixture.detectChanges();
+      zone.simulateZoneExit();
+
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
+
       expect(document.activeElement === textarea).toBe(true);
       dispatchFakeEvent(textarea, 'blur');
+      flush();
       fixture.detectChanges();
     }));
 
-    it('should apply changes when Enter keydown', () => {
+    it('should apply changes when Enter keydown', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
@@ -282,9 +294,12 @@ describe('typography', () => {
       fixture.detectChanges();
       const event = createKeyboardEvent('keydown', ENTER, textarea);
       testComponent.nzTypographyComponent.textEditRef!.onEnter(event);
+
+      flush();
       fixture.detectChanges();
+
       expect(testComponent.str).toBe('test');
-    });
+    }));
   });
 
   describe('ellipsis', () => {

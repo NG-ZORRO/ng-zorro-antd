@@ -1,10 +1,10 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzMessageRef, NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -21,19 +21,22 @@ interface DocPageMeta {
   description: string;
 }
 
-type SiteTheme = 'default' | 'dark' | 'compact';
-const defaultKeywords = 'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架'
+type SiteTheme = 'default' | 'dark' | 'compact' | 'aliyun';
+const defaultKeywords =
+  'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: [`
-    @media (max-width:767px){
-      .main-menu {
-        display: none;
+  styles: [
+    `
+      @media (max-width: 767px) {
+        .main-menu {
+          display: none;
+        }
       }
-    }
-  `]
+    `
+  ]
 })
 export class AppComponent implements OnInit {
   /**
@@ -51,13 +54,23 @@ export class AppComponent implements OnInit {
   theme: SiteTheme = 'default';
 
   language: 'zh' | 'en' = 'en';
+  direction: 'ltr' | 'rtl' = 'ltr';
   currentVersion = VERSION.full;
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
     url.splice(-1);
-    // tslint:disable-next-line:prefer-template
-    this.router.navigateByUrl(url.join('/') + '/' + language);
+    this.router.navigateByUrl(`${url.join('/')}/${language}`).then();
+  }
+
+  switchDirection(direction: 'ltr' | 'rtl'): void {
+    this.direction = direction;
+    if (direction === 'rtl') {
+      this.renderer.setAttribute(document.body, 'dir', 'rtl');
+    } else {
+      this.renderer.removeAttribute(document.body, 'dir');
+    }
+    this.cdr.detectChanges();
   }
 
   initTheme(): void {
@@ -65,30 +78,50 @@ export class AppComponent implements OnInit {
       return;
     }
     const theme = (localStorage.getItem('site-theme') as SiteTheme) || 'default';
-    this.onThemeChange(theme);
+    this.onThemeChange(theme, false);
   }
 
-  onThemeChange(theme: string): void {
+  onThemeChange(theme: string, notification: boolean = true): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.theme = theme as SiteTheme;
-    this.appService.theme$.next(theme);
-    this.renderer.setAttribute(document.body, 'data-theme', theme);
-    const dom = document.getElementById('site-theme');
-    if (dom) {
-      dom.remove();
+    let loading: NzMessageRef | null = null;
+    if (notification) {
+      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, { nzDuration: 0 });
     }
-    localStorage.removeItem('site-theme');
+    this.renderer.addClass(this.document.activeElement, 'preload');
+    const successLoaded = () => {
+      this.theme = theme as SiteTheme;
+      this.appService.theme$.next(theme);
+      this.renderer.setAttribute(document.body, 'data-theme', theme);
+      localStorage.removeItem('site-theme');
+      localStorage.setItem('site-theme', theme);
+      ['dark', 'compact', 'aliyun']
+        .filter(item => item !== theme)
+        .forEach(item => {
+          const dom = document.getElementById(`site-theme-${item}`);
+          if (dom) {
+            dom.remove();
+          }
+        });
+      setTimeout(() => this.renderer.removeClass(this.document.activeElement, 'preload'));
+      if (notification) {
+        this.nzMessageService.remove(loading?.messageId);
+        this.nzMessageService.success(this.language === 'en' ? `Switching theme successfully` : `切换主题成功`);
+      }
+    };
     if (theme !== 'default') {
       const style = document.createElement('link');
       style.type = 'text/css';
       style.rel = 'stylesheet';
-      style.id = 'site-theme';
+      style.id = `site-theme-${theme}`;
       style.href = `assets/${theme}.css`;
-
-      localStorage.setItem('site-theme', theme);
+      style.onload = () => {
+        successLoaded();
+      };
       document.body.append(style);
+    } else {
+      successLoaded();
     }
   }
 
@@ -97,19 +130,19 @@ export class AppComponent implements OnInit {
     private router: Router,
     private title: Title,
     private nzI18nService: NzI18nService,
-    private msg: NzMessageService,
+    private nzMessageService: NzMessageService,
     private ngZone: NgZone,
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
-  ) {
-  }
+  ) {}
 
   navigateToPage(url: string): void {
     if (url) {
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl(url).then();
     }
   }
 
@@ -125,7 +158,7 @@ export class AppComponent implements OnInit {
       return;
     }
     if (version !== this.currentVersion) {
-      window.location.href = window.location.origin + `/version/` + version;
+      window.location.href = `${window.location.origin}/version/${version}`;
     } else {
       window.location.href = window.location.origin;
     }
@@ -135,13 +168,12 @@ export class AppComponent implements OnInit {
   private getLanguageFromURL(url: string): 'en' | 'zh' | null {
     const language = url.split('/')[url.split('/').length - 1].split('#')[0].split('?')[0];
     if (['zh', 'en'].indexOf(language) !== -1) {
-      return language as 'en' | 'zh'
+      return language as 'en' | 'zh';
     }
     return null;
   }
 
   ngOnInit(): void {
-
     if (this.platform.isBrowser) {
       this.renderer.removeClass(this.document.activeElement, 'preload');
       this.addWindowWidthListener();
@@ -167,7 +199,7 @@ export class AppComponent implements OnInit {
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
 
         if (currentDemoComponent) {
-          const path  = currentDemoComponent.path.replace(/\/(en|zh)/, '');
+          const path = currentDemoComponent.path.replace(/\/(en|zh)/, '');
           if (this.language === 'en') {
             this.updateMateTitle(`${currentDemoComponent.label} | NG-ZORRO`);
           } else {
@@ -178,15 +210,15 @@ export class AppComponent implements OnInit {
 
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {
-          const path  = currentIntroComponent.path.replace(/\/(en|zh)/, '');
-          if ( (/docs\/introduce/.test(this.router.url))) {
+          const path = currentIntroComponent.path.replace(/\/(en|zh)/, '');
+          if (/docs\/introduce/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle(`NG-ZORRO - Angular UI component library`)
+              this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
             } else {
-              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`)
+              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
             }
           } else {
-            this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`)
+            this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
           }
           this.updateDocMetaAndLocale(currentIntroComponent.description, currentIntroComponent.label, path);
         }
@@ -194,14 +226,14 @@ export class AppComponent implements OnInit {
         if (!currentIntroComponent && !currentDemoComponent) {
           if (/components\/overview/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle('Components | NG-ZORRO')
+              this.updateMateTitle('Components | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO provides plenty of UI components to enrich your web applications, and we will improve components experience consistently.',
                 'overview',
                 'components/overview'
               );
             } else {
-              this.updateMateTitle('组件(Components) | NG-ZORRO')
+              this.updateMateTitle('组件(Components) | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践。',
                 'overview, 预览',
@@ -209,7 +241,7 @@ export class AppComponent implements OnInit {
               );
             }
           } else {
-            this.updateMateTitle(`NG-ZORRO - Angular UI component library`)
+            this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
             this.updateDocMetaAndLocale();
           }
         }
@@ -287,7 +319,6 @@ export class AppComponent implements OnInit {
     });
     const doc = this.document as Document;
     this.renderer.setAttribute(doc.documentElement, 'lang', isEn ? 'en' : 'zh-Hans');
-
   }
 
   private addHreflang(href: string): void {
@@ -305,14 +336,14 @@ export class AppComponent implements OnInit {
           hreflang: 'zh',
           suffix: 'zh'
         }
-      ]
+      ];
       hreflangs.forEach(hreflang => {
         const link = this.renderer.createElement('link');
         this.renderer.setAttribute(link, 'rel', 'alternate');
         this.renderer.setAttribute(link, 'hreflang', hreflang.hreflang);
         this.renderer.setAttribute(link, 'href', `https://ng.ant.design/${href}/${hreflang.suffix}`);
         this.renderer.appendChild(this.document.head, link);
-      })
+      });
     }
   }
 
@@ -336,13 +367,15 @@ export class AppComponent implements OnInit {
     if (!this.platform.isBrowser) {
       return;
     }
+    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, { nzDuration: 0 });
     const changeColor = () => {
       (window as any).less
         .modifyVars({
           '@primary-color': res.color.hex
         })
         .then(() => {
-          this.msg.success(`应用成功`);
+          this.nzMessageService.remove(loading.messageId);
+          this.nzMessageService.success(this.language === 'en' ? `Switching color successfully` : `应用成功`);
           this.color = res.color.hex;
           window.scrollTo(0, 0);
         });

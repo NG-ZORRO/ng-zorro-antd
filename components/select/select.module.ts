@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { A11yModule } from '@angular/cdk/a11y';
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -31,6 +32,7 @@ import { NzSelectComponent } from './select.component';
 
 @NgModule({
   imports: [
+    BidiModule,
     CommonModule,
     NzI18nModule,
     FormsModule,

@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       (nzOnOk)="handleOk()"
       [nzOkLoading]="isOkLoading"
     >
-      <p>Modal Content</p>
+      <p *nzModalContent>Modal Content</p>
     </nz-modal>
   `
 })

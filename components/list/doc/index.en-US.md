@@ -100,3 +100,8 @@ Description component for the list items meta part.
 #### nz-list-item-meta-avatar
 
 Avatar component for the list items meta part.
+
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzSrc]` | The address of the image for an image avatar | `string` | - |
+

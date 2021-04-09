@@ -118,7 +118,7 @@ describe('message', () => {
 
     const messageElement = overlayContainerElement.querySelector('.ant-message-notice')!;
     dispatchMouseEvent(messageElement, 'mouseenter');
-    tick(1000);
+    tick(5000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -195,13 +195,21 @@ describe('message', () => {
 
     tick(50000);
   }));
+
+  describe('RTL', () => {
+    it('should apply classname', () => {
+      nzConfigService.set('message', { nzDirection: 'rtl' });
+      messageService.info('INFO');
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('INFO');
+      expect(overlayContainerElement.querySelector('.ant-message-rtl')).not.toBeNull();
+    });
+  });
 });
 
 @Component({
   template: `
-    <ng-template #contentTemplate>
-      Content in template
-    </ng-template>
+    <ng-template #contentTemplate>Content in template</ng-template>
   `
 })
 export class NzTestMessageComponent {

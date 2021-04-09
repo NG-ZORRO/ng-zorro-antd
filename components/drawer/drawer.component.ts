@@ -4,15 +4,18 @@
  */
 
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   EventEmitter,
   Inject,
   Injector,
@@ -29,12 +32,16 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+
+import { NzDrawerContentDirective } from './drawer-content.directive';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 
@@ -50,6 +57,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
       <div
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
+        [class.ant-drawer-rtl]="dir === 'rtl'"
         [class.ant-drawer-open]="isOpen"
         [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
@@ -82,10 +90,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
-                <ng-container *ngIf="isTemplateRef(nzContent)">
-                  <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
+                <ng-container *ngIf="nzContent; else contentElseTemp">
+                  <ng-container *ngIf="isTemplateRef(nzContent)">
+                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
+                  </ng-container>
                 </ng-container>
-                <ng-content *ngIf="!nzContent"></ng-content>
+                <ng-template #contentElseTemp>
+                  <ng-container *ngIf="contentFromContentChild && (isOpen || inAnimation)">
+                    <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
+                  </ng-container>
+                </ng-template>
+                <ng-content *ngIf="!(nzContent || contentFromContentChild)"></ng-content>
               </div>
               <div *ngIf="nzFooter" class="ant-drawer-footer">
                 <ng-container *nzStringTemplateOutlet="nzFooter"><div [innerHTML]="nzFooter"></div></ng-container>
@@ -101,7 +116,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
@@ -142,11 +157,13 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   @Output() readonly nzOnViewInit = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @ViewChild('drawerTemplate', { static: true }) drawerTemplate!: TemplateRef<void>;
   @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet?: CdkPortalOutlet;
+  @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef }) contentFromContentChild?: TemplateRef<NzSafeAny>;
 
-  destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
   placementChangeTimeoutId = -1;
@@ -155,6 +172,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   portal?: TemplatePortal;
   focusTrap?: FocusTrap;
   isOpen = false;
+  inAnimation = false;
   templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
@@ -220,7 +238,14 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     return value instanceof TemplateRef;
   }
 
+  // from service config
+  @WithConfig() nzDirection?: Direction = undefined;
+
+  dir: Direction = 'ltr';
+
   constructor(
+    private cdr: ChangeDetectorRef,
+    // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
@@ -229,12 +254,19 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
-    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
+    @Optional() private directionality: Directionality
   ) {
     super();
   }
 
   ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.nzDirection || this.directionality.value;
+
     this.attachOverlay();
     this.updateOverlayStyle();
     this.updateBodyOverflow();
@@ -247,6 +279,14 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     setTimeout(() => {
       this.nzOnViewInit.emit();
     });
+  }
+
+  ngAfterContentInit(): void {
+    if (!(this.contentFromContentChild || this.nzContent)) {
+      warnDeprecation(
+        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzDrawerContent></ng-template>` to declare the content of the drawer.'
+      );
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -290,12 +330,15 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   close(result?: R): void {
     this.isOpen = false;
+    this.inAnimation = true;
+    this.nzVisibleChange.emit(false);
     this.updateOverlayStyle();
     this.overlayKeyboardDispatcher.remove(this.overlayRef!);
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
       this.updateBodyOverflow();
       this.restoreFocus();
+      this.inAnimation = false;
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
       this.componentInstance = null;
@@ -305,6 +348,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   open(): void {
     this.attachOverlay();
     this.isOpen = true;
+    this.inAnimation = true;
+    this.nzVisibleChange.emit(true);
     this.overlayKeyboardDispatcher.add(this.overlayRef!);
     this.updateOverlayStyle();
     this.updateBodyOverflow();
@@ -312,6 +357,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     this.trapFocus();
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
+      this.inAnimation = false;
+      this.changeDetectorRef.detectChanges();
       this.nzAfterOpen.next();
     }, this.getAnimationDuration());
   }

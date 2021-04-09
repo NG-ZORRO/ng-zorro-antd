@@ -1,5 +1,6 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -7,13 +8,16 @@ import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzAlertModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
+        declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent, NzTestAlertRtlComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
+
   describe('basic alert', () => {
     let fixture: ComponentFixture<NzDemoTestBasicComponent>;
     let testComponent: NzDemoTestBasicComponent;
@@ -115,9 +119,23 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeDefined();
     });
   });
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestAlertRtlComponent);
+      const alert = fixture.debugElement.query(By.directive(NzAlertComponent));
+      fixture.detectChanges();
+      expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-alert',
   template: `
     <ng-template #template>template</ng-template>
     <nz-alert
@@ -130,8 +148,7 @@ describe('alert', () => {
       [nzIconType]="iconType"
       [nzType]="type"
       (nzOnClose)="onClose($event)"
-    >
-    </nz-alert>
+    ></nz-alert>
   `
 })
 export class NzDemoTestBasicComponent {
@@ -148,6 +165,20 @@ export class NzDemoTestBasicComponent {
 }
 
 @Component({
-  template: ` <nz-alert nzBanner> </nz-alert> `
+  template: `
+    <nz-alert nzBanner></nz-alert>
+  `
 })
 export class NzDemoTestBannerComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-alert></nz-test-basic-alert>
+    </div>
+  `
+})
+export class NzTestAlertRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

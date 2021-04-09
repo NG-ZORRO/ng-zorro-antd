@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { VERSION } from 'ng-zorro-antd/version';
 
 const RESPONSIVE_XS = 1120;
@@ -6,6 +7,7 @@ const RESPONSIVE_SM = 1200;
 
 @Component({
   selector: 'app-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header id="header" class="clearfix">
       <i
@@ -19,13 +21,15 @@ const RESPONSIVE_SM = 1200;
         [nzPopoverContent]="menu"
       ></i>
 
+      <app-join *ngIf="language === 'zh'"></app-join>
+
       <div nz-row style="flex-flow: nowrap">
         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
           <app-logo></app-logo>
         </div>
         <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="18" [nzLg]="18" [nzXl]="19" [nzXXl]="20" class="menu-row">
           <div app-searchbar [language]="language" [responsive]="responsive" (focusChange)="onFocusChange($event)"></div>
-          <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"> </ng-container>
+          <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"></ng-container>
         </div>
       </div>
     </header>
@@ -76,6 +80,9 @@ const RESPONSIVE_SM = 1200;
           >
             {{ language == 'zh' ? 'English' : '中文' }}
           </button>
+          <button nz-button nzGhost nzSize="small" class="header-button header-direction-button" (click)="toggleDirection()">
+            {{ nextDirection | uppercase }}
+          </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
         </ng-template>
       </ng-container>
@@ -88,14 +95,17 @@ export class HeaderComponent implements OnChanges {
   @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
   @Output() versionChange = new EventEmitter<string>();
   @Output() languageChange = new EventEmitter<'zh' | 'en'>();
+  @Output() directionChange = new EventEmitter<'ltr' | 'rtl'>();
 
   searching = false;
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
+  oldVersionList = ['10.2.x', '9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
   currentVersion = VERSION.full;
+  nextDirection: 'ltr' | 'rtl' = 'rtl';
 
+  constructor(private nzConfigService: NzConfigService) {}
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
   }
@@ -106,6 +116,20 @@ export class HeaderComponent implements OnChanges {
 
   onChangeLanguage(language: 'en' | 'zh'): void {
     this.languageChange.emit(language);
+  }
+
+  toggleDirection(): void {
+    this.directionChange.emit(this.nextDirection);
+    this.nzConfigService.set('modal', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('drawer', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('message', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('notification', { nzDirection: this.nextDirection });
+    this.nzConfigService.set('image', { nzDirection: this.nextDirection });
+    if (this.nextDirection === 'rtl') {
+      this.nextDirection = 'ltr';
+    } else {
+      this.nextDirection = 'rtl';
+    }
   }
 
   updateResponsive(): void {

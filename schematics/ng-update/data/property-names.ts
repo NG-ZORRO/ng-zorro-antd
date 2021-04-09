@@ -38,5 +38,23 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
         }
       ]
     }
+  ],
+
+  [TargetVersion.V11]: [
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/6172',
+      changes: [
+        {
+          replace: 'nzGetContainer',
+          replaceWith: '/** TODO(NG-ZORRO V11) nzGetContainer is deprecated, please remove it manually. **/nzGetContainer',
+          limitedTo: { classes: ['ModalOptions'] }
+        },
+        {
+          replace: 'open',
+          replaceWith: '/** TODO(NG-ZORRO V11) open is deprecated, please remove it manually. **/open',
+          limitedTo: { classes: ['NzModalRef'] }
+        }
+      ]
+    }
   ]
 };

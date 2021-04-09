@@ -4,6 +4,9 @@
  */
 
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+/** get some code from https://github.com/angular/material2 */
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -13,13 +16,11 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
-  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -30,7 +31,7 @@ import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
@@ -79,15 +80,16 @@ let nextId = 0;
     >
       <div
         class="ant-tabs-tab"
+        [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
+        [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
-        (click)="clickNavItem(tab, i)"
+        (click)="clickNavItem(tab, i, $event)"
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
         <div
           role="tab"
-          [style.margin-right.px]="nzTabBarGutter"
           [attr.tabIndex]="getTabIndex(tab, i)"
           [attr.aria-disabled]="tab.nzDisabled"
           [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
@@ -117,7 +119,8 @@ let nextId = 0;
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left.%]="tabPaneAnimated ? -(nzSelectedIndex || 0) * 100 : null"
+        [style.margin-left]="getTabContentMarginLeft()"
+        [style.margin-right]="getTabContentMarginRight()"
       >
         <div
           nz-tab-body
@@ -136,6 +139,7 @@ let nextId = 0;
     '[class.ant-tabs-editable]': `nzType === 'editable-card'`,
     '[class.ant-tabs-editable-card]': `nzType === 'editable-card'`,
     '[class.ant-tabs-centered]': `nzCentered`,
+    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
     '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
     '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
     '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
@@ -145,7 +149,7 @@ let nextId = 0;
     '[class.ant-tabs-large]': `nzSize === 'large'`
   }
 })
-export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit, OnChanges {
+export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzHideAdd: BooleanInput;
@@ -154,11 +158,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   static ngAcceptInputType_nzLinkRouter: BooleanInput;
   static ngAcceptInputType_nzLinkExact: BooleanInput;
   static ngAcceptInputType_nzSelectedIndex: NumberInput;
-  /**
-   * @deprecated
-   * @breaking-change 11.0.0
-   */
-  static ngAcceptInputType_nzShowPagination: NumberInput;
 
   @Input()
   get nzSelectedIndex(): number | null {
@@ -187,22 +186,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Output() readonly nzTabListScroll = new EventEmitter<NzTabScrollEvent>();
   @Output() readonly nzClose = new EventEmitter<{ index: number }>();
   @Output() readonly nzAdd = new EventEmitter<void>();
-
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Input() @InputBoolean() nzShowPagination = true;
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Output() readonly nzOnNextClick = new EventEmitter<void>();
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
 
   get position(): NzTabPositionMode {
     return ['top', 'bottom'].indexOf(this.nzTabPosition) === -1 ? 'vertical' : 'horizontal';
@@ -238,6 +221,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
 
+  dir: Direction = 'ltr';
   private readonly tabSetId!: number;
   private destroy$ = new Subject<void>();
   private indexToSelect: number | null = 0;
@@ -246,17 +230,21 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   private tabsSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private router: Router) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality,
+    @Optional() private router: Router
+  ) {
     this.tabSetId = nextId++;
   }
 
   ngOnInit(): void {
-    if (this.nzOnNextClick.observers.length) {
-      warnDeprecation(`(nzOnNextClick) of nz-tabset is not support, will be removed in 11.0.0`);
-    }
-    if (this.nzOnPrevClick.observers.length) {
-      warnDeprecation(`(nzOnPrevClick) of nz-tabset is not support, will be removed in 11.0.0`);
-    }
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {
@@ -395,11 +383,22 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     }
   }
 
-  clickNavItem(tab: NzTabComponent, index: number): void {
+  clickNavItem(tab: NzTabComponent, index: number, e: MouseEvent): void {
     if (!tab.nzDisabled) {
       // ignore nzCanDeactivate
       tab.nzClick.emit();
-      this.setSelectedIndex(index);
+      if (!this.isRouterLinkClickEvent(index, e)) {
+        this.setSelectedIndex(index);
+      }
+    }
+  }
+
+  private isRouterLinkClickEvent(index: number, event: MouseEvent): boolean {
+    const target = event.target as HTMLElement;
+    if (this.nzLinkRouter) {
+      return !!this.tabs.toArray()[index]?.linkDirective?.elementRef.nativeElement.contains(target);
+    } else {
+      return false;
     }
   }
 
@@ -456,7 +455,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       const index = this.findShouldActiveTabIndex();
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
-        this.nzSelectedIndexChange.emit(index);
       }
       this.nzHideAll = index === -1;
     }
@@ -476,9 +474,24 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzShowPagination')) {
-      warnDeprecation(`[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0`);
+  private getTabContentMarginValue(): number {
+    return -(this.nzSelectedIndex || 0) * 100;
+  }
+
+  getTabContentMarginLeft(): string {
+    if (this.tabPaneAnimated) {
+      if (this.dir !== 'rtl') {
+        return this.getTabContentMarginValue() + '%';
+      }
     }
+    return '';
+  }
+  getTabContentMarginRight(): string {
+    if (this.tabPaneAnimated) {
+      if (this.dir === 'rtl') {
+        return this.getTabContentMarginValue() + '%';
+      }
+    }
+    return '';
   }
 }

@@ -1,17 +1,11 @@
 import { Platform } from '@angular/cdk/platform';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 const CNMirrorSite = 'ng-zorro.gitee.io';
 
 @Component({
   selector: 'ul[nz-menu][app-navagation]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <li nz-menu-item [nzSelected]="page === 'docs'">
       <a [routerLink]="['docs', 'introduce', language]">
@@ -44,9 +38,7 @@ const CNMirrorSite = 'ng-zorro.gitee.io';
     </ng-container>
     <ng-template #additionalItems>
       <li nz-menu-item>
-        <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" rel="noopener noreferrer">
-          Github
-        </a>
+        <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" rel="noopener noreferrer">Github</a>
       </li>
       <li nz-menu-item>
         <a (click)="changeLanguage(language === 'zh' ? 'en' : 'zh', $event)">{{ language == 'zh' ? 'English' : '中文' }}</a>

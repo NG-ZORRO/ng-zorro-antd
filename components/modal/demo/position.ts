@@ -11,39 +11,31 @@ import { Component } from '@angular/core';
       (nzOnCancel)="handleCancelTop()"
       (nzOnOk)="handleOkTop()"
     >
-      <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
+      <ng-container *nzModalContent>
+        <p>some contents...</p>
+        <p>some contents...</p>
+        <p>some contents...</p>
+      </ng-container>
     </nz-modal>
 
-    <br /><br />
+    <br />
+    <br />
 
     <button nz-button nzType="primary" (click)="showModalMiddle()">Vertically centered modal dialog</button>
     <nz-modal
-      nzWrapClassName="vertical-center-modal"
       [(nzVisible)]="isVisibleMiddle"
       nzTitle="Vertically centered modal dialog"
+      nzCentered
       (nzOnCancel)="handleCancelMiddle()"
       (nzOnOk)="handleOkMiddle()"
     >
-      <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
+      <ng-container *nzModalContent>
+        <p>some contents...</p>
+        <p>some contents...</p>
+        <p>some contents...</p>
+      </ng-container>
     </nz-modal>
-  `,
-  styles: [
-    `
-      ::ng-deep .vertical-center-modal {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      ::ng-deep .vertical-center-modal .ant-modal {
-        top: 0;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoModalPositionComponent {
   isVisibleTop = false;

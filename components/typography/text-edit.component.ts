@@ -10,6 +10,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Output,
@@ -22,7 +23,7 @@ import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-text-edit',
@@ -68,14 +69,14 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   @Input() icon: NzTSType = 'edit';
   @Input() tooltip?: null | NzTSType;
   @Output() readonly startEditing = new EventEmitter<void>();
-  @Output() readonly endEditing = new EventEmitter<string>();
+  @Output() readonly endEditing = new EventEmitter<string>(true);
   @ViewChild('textarea', { static: false }) textarea!: ElementRef<HTMLTextAreaElement>;
   @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective!: NzAutosizeDirective;
 
   beforeText?: string;
   currentText?: string;
   nativeElement = this.host.nativeElement;
-  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(private zone: NgZone, private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -119,11 +120,12 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   }
 
   focusAndSetValue(): void {
-    setTimeout(() => {
+    this.zone.onStable.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       if (this.textarea?.nativeElement) {
         this.textarea.nativeElement.focus();
         this.textarea.nativeElement.value = this.currentText || '';
         this.autosizeDirective.resizeToFitContent();
+        this.cdr.markForCheck();
       }
     });
   }

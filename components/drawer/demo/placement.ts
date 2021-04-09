@@ -12,9 +12,11 @@ import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
     </nz-radio-group>
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer [nzClosable]="false" [nzVisible]="visible" [nzPlacement]="placement" nzTitle="Basic Drawer" (nzOnClose)="close()">
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <ng-container *nzDrawerContent>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </ng-container>
     </nz-drawer>
   `
 })

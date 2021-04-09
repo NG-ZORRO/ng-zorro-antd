@@ -1,10 +1,15 @@
 import { Platform } from '@angular/cdk/platform';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef,
+  EventEmitter,
   HostListener,
-  Input, OnChanges, Output, SimpleChanges,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -15,13 +20,16 @@ declare const docsearch: any;
 
 @Component({
   selector: 'div[app-searchbar]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <i nz-icon nzType="search"></i>
-    <input nz-input
-           #searchInput
-           (focus)="triggerFocus(true)"
-           (blur)="triggerFocus(false)"
-           [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
+    <input
+      nz-input
+      #searchInput
+      (focus)="triggerFocus(true)"
+      (blur)="triggerFocus(false)"
+      [placeholder]="language == 'zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'"
+    />
   `,
   host: {
     id: 'search-box',
@@ -31,7 +39,6 @@ declare const docsearch: any;
   encapsulation: ViewEncapsulation.None
 })
 export class SearchbarComponent implements OnChanges {
-
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
   @Input() language: 'zh' | 'en' = 'zh';
   @Input() responsive: null | 'narrow' | 'crowded' = null;
@@ -48,8 +55,7 @@ export class SearchbarComponent implements OnChanges {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
-  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
 
   triggerFocus(focus: boolean): void {
     if (this.docsearch) {
@@ -59,7 +65,7 @@ export class SearchbarComponent implements OnChanges {
     }
 
     if (!this.docsearch) {
-     this.initDocsearch();
+      this.initDocsearch();
     }
   }
 
@@ -100,5 +106,4 @@ export class SearchbarComponent implements OnChanges {
       this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] };
     }
   }
-
 }

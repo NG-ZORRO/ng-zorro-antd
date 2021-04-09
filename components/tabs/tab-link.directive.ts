@@ -3,10 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Host, Optional, Self, TemplateRef } from '@angular/core';
+import { Directive, ElementRef, Host, Optional, Self, TemplateRef } from '@angular/core';
 import { RouterLink, RouterLinkWithHref } from '@angular/router';
-
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 
 import { TabTemplateContext } from './interfaces';
 
@@ -30,12 +28,8 @@ export class NzTabLinkTemplateDirective {
 })
 export class NzTabLinkDirective {
   constructor(
+    public elementRef: ElementRef<HTMLAnchorElement>,
     @Optional() @Self() public routerLink?: RouterLink,
-    @Optional() @Self() public routerLinkWithHref?: RouterLinkWithHref,
-    @Optional() nzTabLinkTemplateDirective?: NzTabLinkTemplateDirective
-  ) {
-    if (!nzTabLinkTemplateDirective) {
-      warnDeprecation(`'a[nz-tab-link]' is deprecated. Please use 'ng-template[nzTabLink] > a[nz-tab-link]' instead.`);
-    }
-  }
+    @Optional() @Self() public routerLinkWithHref?: RouterLinkWithHref
+  ) {}
 }

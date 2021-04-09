@@ -33,20 +33,22 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzAfterClose      | Specify a EventEmitter that will be emitted when modal is closed completely (Can listen for parameters passed in the close/destroy method) | EventEmitter | - |
 | nzBodyStyle       | Body style for modal body element. Such as height, padding etc. | `object` | - |
 | nzCancelText      | Text of the Cancel button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | Cancel |
+| nzCentered        | Centered Modal | `boolean` | `false` |
 | nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. <i>Invalid value in confirm box mode (default will be hidden)</i> | `boolean` | `true` |
 | nzOkLoading       | Whether to apply loading visual effect for OK button or not | `boolean` | `false` |
 | nzCancelLoading   | Whether to apply loading visual effect for Cancel button or not | `boolean` | `false` |
 | nzOkDisabled      | Whether to disable Ok button or not | `boolean` | `false` |
 | nzCancelDisabled  | Whether to disable Cancel button or not | `boolean` | `false` |
 | nzFooter          | Footer content, set as footer=null when you don't need default buttons. <i>1. Only valid in normal mode.<br>2. You can customize the buttons to the maximum extent by passing a `ModalButtonOptions` configuration (see the case or the instructions below).</i> | string<br>TemplateRef<br>ModalButtonOptions | OK and Cancel buttons |
-| nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| A default container |
 | nzKeyboard        | Whether support press esc to close | `boolean` | `true` |
 | nzMask            | Whether show mask or not. | `boolean` | `true` | ✅ |
 | nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` | ✅ |
-| nzCloseOnNavigation    | Whether to close the modal when the navigation history changes | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | Whether to close the modal when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` | ✅ |
+| nzDirection        | Direction of the text in the modal | `'ltr' \| 'rtl'` | - | ✅ |
 | nzMaskStyle       | Style for modal's mask element. | `object` | - |
 | nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
-| nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
+| nzOkType          | Button type of the OK button. <i>Consistent with the `nzType` of the `nz-button`.</i> | `string` | `primary` |
+| nzOkDanger        | Danger status of the OK button. <i>Consistent with the `nzDanger` of the `nz-button`.</i> | `boolean` | `false` |
 | nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
 | nzCloseIcon       | Custom close icon | `string\|TemplateRef<void>` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
@@ -104,7 +106,7 @@ constructor(modal: NzModalService) {
 #### Other Methods/Attributes for NzModalService
 
 | Methods/Attributes | Description | Type |
-|----|----|
+|----|----|----|
 | openModals | All currently open Modal list | NzModalRef[] |
 | afterAllClose | Callback called after all Modals closed completely | Observable&lt;void&gt; |
 | closeAll() | Close all modals | function |
@@ -136,6 +138,7 @@ The button configuration items are as follows (along with the button component):
 nzFooter: [{
   label: string; // Button text
   type?: string; // Types
+  danger?: boolean; // Whether danger
   shape?: string; // Shape
   ghost?: boolean; // Whether ghost
   size?: string; // Size
@@ -155,9 +158,25 @@ nzFooter: [{
 
 The above configuration items can also be changed in real-time to trigger the button behavior change.
 
+### [nzModalTitle]
+
+Customize the title.
+
+```html
+<div *nzModalTitle>
+  Custom Modal Title
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalTitle]>
+  Custom Modal Title
+</ng-template>
+```
+
 ### [nzModalFooter]
 
-Another way to customize the footer button.
+Customize the footer.
 
 ```html
 <div *nzModalFooter>

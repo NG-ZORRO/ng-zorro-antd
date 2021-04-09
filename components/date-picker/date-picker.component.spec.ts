@@ -1,3 +1,4 @@
+import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
@@ -7,6 +8,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
 
 import { enUS } from 'date-fns/locale';
@@ -31,9 +33,11 @@ describe('NzDatePickerComponent', () => {
   let i18nService: NzI18nService;
 
   beforeEach(fakeAsync(() => {
+    const dir = 'ltr';
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule, ReactiveFormsModule],
       providers: [
+        { provide: Directionality, useFactory: () => ({ value: dir }) }
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
       ],
       declarations: [NzTestDatePickerComponent]
@@ -144,6 +148,20 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should open by click and close by tab', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getSecondPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
     }));
 
     it('should support changing language at runtime', fakeAsync(() => {
@@ -434,6 +452,39 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     }));
+
+    it('should support nzBorderless', fakeAsync(() => {
+      fixtureInstance.nzBorderless = true;
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
+    }));
+
+    it('should support nzInline', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+      overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
+      const cell = getFirstCell(); // Use the first cell
+      const cellText = cell.textContent!.trim();
+      dispatchMouseEvent(cell, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnChange).toHaveBeenCalled();
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getDate()).toBe(+cellText);
+    }));
+
+    it('should support nzBackdrop', fakeAsync(() => {
+      fixtureInstance.nzBackdrop = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
+    function getSecondPickerInput(fixtureDebugElement: DebugElement): HTMLInputElement {
+      return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
+    }
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -814,9 +865,50 @@ describe('NzDatePickerComponent', () => {
       expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
     }));
 
+    it('should support nzShowNow', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(overlayContainerElement.querySelector('.ant-picker-footer')).toBeDefined();
+
+      fixtureInstance.nzShowTime = true;
+
+      fixtureInstance.nzShowNow = false;
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeNull();
+
+      fixtureInstance.nzShowNow = true;
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeDefined();
+
+      // Click now button
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-now-btn'), 'click');
+      fixture.detectChanges();
+
+      // Click ok button
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(isEqual(new Date(), result)).toBeTruthy();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
+    }));
+
     it('should support nzMode', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-12-01');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择日期');
+
       fixtureInstance.nzMode = 'month';
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).placeholder).toEqual('请选择月份');
+      expect(getPickerInput(fixture.debugElement).value).toEqual('2020-12');
+
       openPickerByClickTrigger();
       expect(overlayContainerElement.querySelector('.ant-picker-month-panel')).toBeDefined();
     }));
@@ -875,6 +967,25 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(22);
     }));
+
+    // #6070
+    it('should reset after inputing invalid value and close panel', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = getPickerInput(fixture.debugElement);
+
+      // Wrong inputing support
+      typeInElement('wrong', input);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(document.body, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(input.value).toBe('');
+    }));
   }); // /specified date picker testing
 
   function getPreBtn(): HTMLElement {
@@ -896,7 +1007,7 @@ describe('NzDatePickerComponent', () => {
   describe('ngModel value accesors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
-    it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
+    it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11-11');
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
@@ -1023,12 +1134,16 @@ describe('date-fns testing', () => {
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
         [nzShowToday]="nzShowToday"
+        [nzShowNow]="nzShowNow"
         [nzMode]="nzMode"
         (nzOnPanelChange)="nzOnPanelChange($event)"
         (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
         [nzSuffixIcon]="nzSuffixIcon"
+        [nzBorderless]="nzBorderless"
+        [nzInline]="nzInline"
+        [nzBackdrop]="nzBackdrop"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1044,11 +1159,17 @@ describe('date-fns testing', () => {
 
       <!-- Suite 4 -->
       <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
+
+      <!-- Suite 5 -->
+      <ng-container *ngSwitchCase="5">
+        <nz-date-picker [ngModel]="firstValue"></nz-date-picker>
+        <nz-date-picker [ngModel]="secondValue"></nz-date-picker>
+      </ng-container>
     </ng-container>
   `
 })
 class NzTestDatePickerComponent {
-  useSuite!: 1 | 2 | 3 | 4;
+  useSuite!: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
   @ViewChild(NzDatePickerComponent, { static: false }) datePicker!: NzDatePickerComponent;
@@ -1076,8 +1197,12 @@ class NzTestDatePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
+  nzShowNow = false;
   nzMode: string = 'date';
   nzSuffixIcon!: string;
+  nzBorderless = false;
+  nzInline = false;
+  nzBackdrop = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}
@@ -1092,4 +1217,8 @@ class NzTestDatePickerComponent {
 
   // --- Suite 4
   control!: FormControl;
+
+  // --- Suite 5
+  firstValue!: Date;
+  secondValue!: Date;
 }

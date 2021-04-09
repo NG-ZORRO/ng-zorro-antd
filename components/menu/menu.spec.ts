@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
@@ -16,7 +17,7 @@ describe('menu', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+        imports: [BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
         declarations: [
           NzTestBasicMenuHorizontalComponent,
           NzTestBasicMenuInlineComponent,
@@ -28,7 +29,8 @@ describe('menu', () => {
           NzTestMenuInlineComponent,
           NzDemoMenuNgForComponent,
           NzTestNgIfMenuComponent,
-          NzTestSubMenuSelectedComponent
+          NzTestSubMenuSelectedComponent,
+          NzTestMenuRtlComponent
         ]
       });
 
@@ -475,9 +477,45 @@ describe('menu', () => {
       });
     });
   });
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestMenuRtlComponent>;
+    let testComponent: NzTestMenuHorizontalComponent;
+    let submenu: DebugElement;
+    let menu: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestMenuRtlComponent);
+      testComponent = fixture.debugElement.query(By.directive(NzTestMenuHorizontalComponent)).componentInstance;
+      submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
+      menu = fixture.debugElement.query(By.directive(NzMenuDirective));
+    });
+    it('should className correct on dir change', () => {
+      fixture.detectChanges();
+      expect(submenu.nativeElement.classList.contains('ant-menu-submenu-rtl')).toBe(true);
+      expect(menu.nativeElement.classList.contains('ant-menu-rtl')).toBe(true);
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(submenu.nativeElement.classList.contains('ant-menu-submenu-rtl')).toBe(false);
+      expect(menu.nativeElement.classList.contains('ant-menu-rtl')).toBe(false);
+    });
+
+    it('should nested submenu work', () => {
+      testComponent.open = true;
+      fixture.detectChanges();
+      const subs = testComponent.subs.toArray();
+      subs[0].nzOpen = true;
+      // tslint:disable-next-line:no-any
+      (subs[1] as any).cdr.markForCheck();
+      fixture.detectChanges();
+      expect((overlayContainerElement.querySelector('.ant-menu-submenu') as HTMLUListElement).classList).toContain('ant-menu-submenu-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
@@ -927,4 +965,15 @@ export class NzTestMenuSwitchModeComponent {
 })
 export class NzTestMenuThemeComponent {
   theme = true;
+}
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-menu-horizontal></nz-test-menu-horizontal>
+    </div>
+  `
+})
+export class NzTestMenuRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

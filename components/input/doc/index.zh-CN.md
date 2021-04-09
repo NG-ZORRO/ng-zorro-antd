@@ -40,3 +40,10 @@ nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w
 | `[nzCompact]` | 是否用紧凑模式 | `boolean` | `false` |
 | `[nzSearch]` | 是否用搜索框 | `boolean` | `false` |
 | `[nzSize]` | `nz-input-group` 中所有的 `nz-input` 的大小 | `'large' \| 'small' \| 'default'` | `'default'` |
+
+### nz-textarea-count
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzMaxCharacterCount]` | `textarea` 数字提示显示的最大值 | `number` | - |
+| `[nzComputeCharacterCount]` | 自定义计算 `characterCount` 的函数 | `(v: string) => number` | `v => v.length` |

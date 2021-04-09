@@ -18,7 +18,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 ## API
 
-**注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
+**注意：** nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
 例如：
 ```typescript
 import { registerLocaleData } from '@angular/common';
@@ -36,6 +36,7 @@ registerLocaleData(zh);
 | --- | --- | --- | --- | - |
 | `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` | - |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` | - |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzDefaultPickerValue]` | 默认面板日期 | `Date` \| `Date[]` | - | - |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` | - |
 | `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - | - |
@@ -49,6 +50,8 @@ registerLocaleData(zh);
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef \| string \| (() => TemplateRef \| string)` | - |
 | `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - | - |
 | `[nzSuffixIcon]` | 自定义的后缀图标 | `string` \| `TemplateRef` | - | ✅ |
+| `[nzBorderless]` | 移除边框 | `boolean` | `false` | - |
+| `[nzInline]` | 内联模式 | `boolean` | `false` | - |
 | `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - | - |
 
 ### 共同的方法
@@ -63,6 +66,7 @@ registerLocaleData(zh);
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[(ngModel)]` | 日期 | `Date` | - |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 
 ### nz-date-picker[nzMode="date"]
 
@@ -72,6 +76,7 @@ registerLocaleData(zh);
 | `[nzDisabledTime]` | 不可选择的时间 | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzShowToday]` | 是否展示“今天”按钮 | `boolean` | `true` |
+| `[nzShowNow]` | 当设定了`nzShowTime`的时候，面板是否显示“此刻”按钮 | `boolean` | `true` |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
 
 

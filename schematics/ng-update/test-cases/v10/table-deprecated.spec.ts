@@ -55,8 +55,8 @@ describe('v10 table components migration', () => {
   describe('table component', () => {
 
     it('should properly report deprecated input', async() => {
-      writeFile('/index.ts', `;
-      import {Component} from '@angular/core'
+      writeFile('/index.ts', `
+      import {Component} from '@angular/core';
       @Component({
         template: \`
         <table>

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -13,6 +14,6 @@ import { NzSwitchComponent } from './switch.component';
 @NgModule({
   exports: [NzSwitchComponent],
   declarations: [NzSwitchComponent],
-  imports: [CommonModule, NzWaveModule, NzIconModule, NzOutletModule]
+  imports: [BidiModule, CommonModule, NzWaveModule, NzIconModule, NzOutletModule]
 })
 export class NzSwitchModule {}

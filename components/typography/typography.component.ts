@@ -18,6 +18,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -37,6 +38,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
 
@@ -60,7 +62,10 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     <ng-container *ngIf="!editing">
       <ng-container
         *ngIf="
-          expanded || (!nzExpandable && nzEllipsisRows === 1 && !hasEllipsisObservers) || canCssEllipsis || (nzSuffix && expanded);
+          expanded ||
+            (!hasOperationsWithEllipsis && nzEllipsisRows === 1 && !hasEllipsisObservers) ||
+            canCssEllipsis ||
+            (nzSuffix && expanded);
           else jsEllipsis
         "
       >
@@ -97,6 +102,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   preserveWhitespaces: false,
   host: {
     '[class.ant-typography]': '!editing',
+    '[class.ant-typography-rtl]': 'dir === "rtl"',
     '[class.ant-typography-edit-content]': 'editing',
     '[class.ant-typography-secondary]': 'nzType === "secondary"',
     '[class.ant-typography-warning]': 'nzType === "warning"',
@@ -154,6 +160,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
+  dir: Direction = 'ltr';
 
   get hasEllipsisObservers(): boolean {
     return this.nzOnEllipsis.observers.length > 0;
@@ -161,6 +168,10 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   get canCssEllipsis(): boolean {
     return this.nzEllipsis && this.cssEllipsis && !this.expanded && !this.hasEllipsisObservers;
+  }
+
+  get hasOperationsWithEllipsis(): boolean {
+    return (this.nzCopyable || this.nzEditable || this.nzExpandable) && this.nzEllipsis;
   }
 
   private viewInit = false;
@@ -180,7 +191,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private platform: Platform,
     private i18n: NzI18nService,
     @Inject(DOCUMENT) document: NzSafeAny,
-    private resizeService: NzResizeService
+    private resizeService: NzResizeService,
+    @Optional() private directionality: Directionality
   ) {
     this.document = document;
   }
@@ -199,6 +211,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     if (this.nzContent === text) {
       this.renderOnNextFrame();
     }
+    this.cdr.markForCheck();
   }
 
   onExpand(): void {
@@ -317,6 +330,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

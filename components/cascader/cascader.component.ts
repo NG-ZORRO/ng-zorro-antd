@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
@@ -33,10 +34,10 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
 import {
@@ -99,8 +100,8 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
-          [class.ant-cascader-show-search]="!!nzShowSearch"
-          [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue"
+          [class.ant-cascader-picker-show-search]="!!nzShowSearch"
+          [class.ant-cascader-picker-focused]="!!nzShowSearch && isFocused && !inputValue"
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
@@ -113,6 +114,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
@@ -123,6 +125,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
       <div
         #menu
         class="ant-cascader-menus"
+        [class.ant-cascader-menu-rtl]="dir === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuVisible"
         [ngClass]="menuCls"
         [ngStyle]="nzMenuStyle"
@@ -159,6 +162,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
               [activated]="isOptionActivated(option, i)"
               [highlightText]="inSearchingMode ? inputValue : ''"
               [option]="option"
+              [dir]="dir"
               (mouseenter)="onOptionMouseEnter(option, i, $event)"
               (mouseleave)="onOptionMouseLeave(option, i, $event)"
               (click)="onOptionClick(option, i, $event)"
@@ -184,7 +188,8 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-picker-disabled]': 'nzDisabled',
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
-    '[class.ant-cascader-focused]': 'isFocused'
+    '[class.ant-cascader-focused]': 'isFocused',
+    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
@@ -215,6 +220,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig() nzBackdrop = false;
   @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
@@ -226,7 +232,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
-  @Input() nzExpandIcon: string | TemplateRef<void> = 'right';
+  @Input() nzExpandIcon: string | TemplateRef<void> = '';
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -265,6 +271,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private inputString = '';
@@ -320,6 +327,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private i18nService: NzI18nService,
     elementRef: ElementRef,
     renderer: Renderer2,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
@@ -352,7 +360,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
         this.nzSelectionChange.emit([]);
       } else {
         const { option, index } = data;
-        const shouldClose = option.isLeaf;
+        const shouldClose = option.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover');
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
@@ -378,6 +386,12 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = this.directionality.value;
+      srv.$redraw.next();
+    });
   }
 
   ngOnDestroy(): void {
@@ -427,6 +441,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
     if (visible) {
       this.cascaderService.syncOptions();
+      this.scrollToActivatedOptions();
+    }
+
+    if (!visible) {
+      this.inputValue = '';
     }
 
     this.menuVisible = visible;
@@ -728,7 +747,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (this.isLabelRenderTemplate) {
       this.labelRenderContext = { labels, selectedOptions };
     } else {
-      this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
+      this.labelRenderText = defaultDisplayRender.call(this, labels);
     }
   }
 
@@ -748,5 +767,17 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private setLocale(): void {
     this.locale = this.i18nService.getLocaleData('global');
     this.cdr.markForCheck();
+  }
+
+  private scrollToActivatedOptions(): void {
+    // scroll only until option menu view is ready
+    Promise.resolve().then(() => {
+      this.cascaderItems
+        .toArray()
+        .filter(e => e.activated)
+        .forEach(e => {
+          e.nativeElement?.scrollIntoView({ block: 'start', inline: 'nearest' });
+        });
+    });
   }
 }

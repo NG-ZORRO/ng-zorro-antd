@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { LayoutModule } from '@angular/cdk/layout';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,6 @@ import { NzSiderComponent } from './sider.component';
 @NgModule({
   declarations: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent, NzSiderTriggerComponent],
   exports: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent],
-  imports: [CommonModule, NzIconModule, LayoutModule, PlatformModule]
+  imports: [BidiModule, CommonModule, NzIconModule, LayoutModule, PlatformModule]
 })
 export class NzLayoutModule {}

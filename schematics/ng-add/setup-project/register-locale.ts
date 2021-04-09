@@ -10,22 +10,22 @@ import {
   parseSourceFile
 } from '@angular/cdk/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
-import chalk from 'chalk';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
-  return (host: Tree) => {
-    const workspace = getWorkspace(host);
+  return async (host: Tree) => {
+    const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
 
     const locale = options.locale || 'en_US';
-    const localePrefix = locale.split('_')[ 0 ];
+    const localePrefix = locale.split('_')[0];
 
     const recorder = host.beginUpdate(appModulePath);
 
@@ -50,7 +50,7 @@ export function registerLocale(options: Schema): Rule {
 
     host.commitUpdate(recorder);
 
-    return host;
+    return;
   };
 }
 
@@ -60,7 +60,7 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[ 0 ].getChildren()[ 0 ]?.getText() === 'registerLocaleData';
+    return fun[0].getChildren()[0]?.getText() === 'registerLocaleData';
   });
 
   if (registerLocaleDataFun.length === 0) {
@@ -68,10 +68,10 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
       modulePath, 0) as InsertChange;
   } else {
     console.log();
-    console.log(chalk.yellow(`Could not add the registerLocaleData to your app.module file (${chalk.blue(modulePath)}).` +
+    console.log(yellow(`Could not add the registerLocaleData to your app.module file (${blue(modulePath)}).` +
       `because there is already a registerLocaleData function.`));
-    console.log(chalk.yellow(`Please manually add the following code to your app.module:`));
-    console.log(chalk.cyan(`registerLocaleData(${locale});`));
+    console.log(yellow(`Please manually add the following code to your app.module:`));
+    console.log(cyan(`registerLocaleData(${locale});`));
     return new NoopChange();
   }
 }
@@ -81,7 +81,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
   const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
     `{ provide: NZ_I18N, useValue: ${locale} }`, null);
-  let node: any = nodes[ 0 ];  // tslint:disable-line:no-any
+  let node: any = nodes[0];  // tslint:disable-line:no-any
 
   if (!node) {
     return [];
@@ -107,7 +107,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   if (matchingProperties.length) {
-    const assignment = matchingProperties[ 0 ] as ts.PropertyAssignment;
+    const assignment = matchingProperties[0] as ts.PropertyAssignment;
     if (assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
       return [];
     }
@@ -120,10 +120,10 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
         return addProvide;
       } else {
         console.log();
-        console.log(chalk.yellow(`Could not provide the locale token to your app.module file (${chalk.blue(modulePath)}).` +
+        console.log(yellow(`Could not provide the locale token to your app.module file (${blue(modulePath)}).` +
           `because there is already a locale token in provides.`));
-        console.log(chalk.yellow(`Please manually add the following code to your provides:`));
-        console.log(chalk.cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
+        console.log(yellow(`Please manually add the following code to your provides:`));
+        console.log(cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
         return [];
       }
     }

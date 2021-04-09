@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 8
 title:
   zh-CN: 自定义日期范围选择
   en-US: Customized Range Picker

@@ -29,10 +29,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[ngModel]` | 当前选中的 nz-option 的 nzValue 值，可双向绑定，当 `nzMode` 为 `multiple` 或 `tags` 时，ngModel 为数组 | `any \| any[]` | - |
 | `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | 是否在选中项后清空搜索框，只在 `mode` 为 `multiple` 或 `tags` 时有效。 | `boolean` | `true` |
 | `[nzAllowClear]` | 支持清除 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzBorderless]` | 是否无边框 | `boolean` | `false` | ✅ |
 | `[nzOpen]` | 下拉菜单是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzAutoFocus]` | 默认获取焦点 | `boolean` | `false` |
@@ -58,7 +60,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
-| `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
+| `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzOptionHeightPx]` | 下拉菜单中每个 Option 的高度 | `number` | `32` |
 | `[nzOptionOverflowSize]` | 下拉菜单中最多展示的 Option 个数，超出部分滚动 | `number` | `8` |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
@@ -73,7 +75,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
-| `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string` | - |
+| `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string  \| number` | - |
 | `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
 | `[nzHide]` | 是否在选项列表中隐藏改选项 | `boolean` | `false` |
 | `[nzCustomContent]` | 是否自定义在下拉菜单中的Template内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
@@ -82,7 +84,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzLabel]` | 组名 | `string \| TemplateRef<void>` | - |
+| `[nzLabel]` | 组名 | `string  \| number \| TemplateRef<void>` | - |
 
 
 ## 方法

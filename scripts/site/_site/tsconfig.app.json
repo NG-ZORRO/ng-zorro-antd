@@ -16,9 +16,8 @@
     "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "strictTemplates": true,
-    "strictMetadataEmit": true,
-    "strictInjectionParameters":true
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   }
 }

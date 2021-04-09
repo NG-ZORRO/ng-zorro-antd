@@ -12,6 +12,7 @@ export type NzTableData =
     };
 export type NzTableLayout = 'fixed' | 'auto';
 export type NzTablePaginationPosition = 'top' | 'bottom' | 'both';
+export type NzTablePaginationType = 'default' | 'small';
 export type NzTableSize = 'middle' | 'default' | 'small';
 export type NzTableFilterList = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
 export type NzTableSortOrder = string | 'ascend' | 'descend' | null;

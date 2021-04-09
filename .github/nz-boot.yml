@@ -75,6 +75,7 @@ issue:
       Steps: hsuanxyz
       Tag: hsuanxyz
       TreeSelect: hsuanxyz
+      TreeView: hsuanxyz
       Typography: hsuanxyz
       Space: hsuanxyz
       Resizable: hsuanxyz
@@ -125,3 +126,4 @@ issue:
       PageHeader: CK110
       Transfer: Ricbet
       Pipes: chensimeng
+      Image: stygian-desolator

@@ -9,7 +9,6 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { NzCodeBoxModule } from './codebox/codebox.module';
 import { NzGithubBtnModule } from './github-btn/github-btn.module';
 import { NzHighlightModule } from './highlight/highlight.module';
@@ -29,8 +28,7 @@ import { NzHighlightModule } from './highlight/highlight.module';
     NzGridModule,
     NzIconModule,
     // third libs
-    DragDropModule,
-    QuicklinkModule
+    DragDropModule
   ],
   exports: [
     CommonModule,
@@ -47,9 +45,7 @@ import { NzHighlightModule } from './highlight/highlight.module';
     NzIconModule,
     // third libs
     ScrollingModule,
-    DragDropModule,
-    QuicklinkModule
+    DragDropModule
   ]
 })
-export class ShareModule {
-}
+export class ShareModule {}

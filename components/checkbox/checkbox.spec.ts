@@ -1,5 +1,6 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -9,19 +10,23 @@ import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
 
 describe('checkbox', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCheckboxModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestCheckboxSingleComponent,
-        NzTestCheckboxGroupComponent,
-        NzTestCheckboxFormComponent,
-        NzTestCheckboxGroupFormComponent,
-        NzTestCheckboxWrapperComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzCheckboxModule, FormsModule, ReactiveFormsModule],
+        declarations: [
+          NzTestCheckboxSingleComponent,
+          NzTestCheckboxGroupComponent,
+          NzTestCheckboxFormComponent,
+          NzTestCheckboxGroupFormComponent,
+          NzTestCheckboxWrapperComponent,
+          NzTestCheckboxSingleRtlComponent,
+          NzTestCheckboxGroupRtlComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('checkbox basic', () => {
     let fixture: ComponentFixture<NzTestCheckboxSingleComponent>;
     let testComponent: NzTestCheckboxSingleComponent;
@@ -40,7 +45,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(true);
-      expect(checkbox.nativeElement.lastElementChild.innerText).toBe('Checkbox');
+      expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
     });
     it('should click change', () => {
       fixture.detectChanges();
@@ -296,9 +301,34 @@ describe('checkbox', () => {
       expect(testComponent.onChange).toHaveBeenCalledTimes(1);
     }));
   });
+  describe('RTL', () => {
+    it('should single checkbox className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestCheckboxSingleRtlComponent);
+      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+      fixture.detectChanges();
+      expect(checkbox.nativeElement.classList).toContain('ant-checkbox-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(checkbox.nativeElement.classList).not.toContain('ant-checkbox-rtl');
+    });
+
+    it('should group checkbox className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestCheckboxGroupRtlComponent);
+      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
+      fixture.detectChanges();
+      expect(checkbox.nativeElement.classList).toContain('ant-checkbox-group-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(checkbox.nativeElement.classList).not.toContain('ant-checkbox-group-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-single-checkbox',
   template: `
     <label
       nz-checkbox
@@ -307,8 +337,9 @@ describe('checkbox', () => {
       [nzAutoFocus]="autoFocus"
       [nzIndeterminate]="indeterminate"
       (ngModelChange)="modelChange($event)"
-      >Checkbox</label
     >
+      Checkbox
+    </label>
   `
 })
 export class NzTestCheckboxSingleComponent {
@@ -321,7 +352,11 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  template: ` <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group> `
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-group-checkbox',
+  template: `
+    <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group>
+  `
 })
 export class NzTestCheckboxGroupComponent {
   options = [
@@ -394,4 +429,28 @@ export class NzTestCheckboxGroupFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-single-checkbox></nz-test-single-checkbox>
+    </div>
+  `
+})
+export class NzTestCheckboxSingleRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-group-checkbox></nz-test-group-checkbox>
+    </div>
+  `
+})
+export class NzTestCheckboxGroupRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

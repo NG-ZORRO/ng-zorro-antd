@@ -41,7 +41,7 @@ export class YearTableComponent extends AbstractTable {
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
-        trackByIndex: startYear
+        trackByIndex: rowIndex
       };
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const yearNum = previousYear + yearValue;
@@ -49,7 +49,7 @@ export class YearTableComponent extends AbstractTable {
         const content = this.dateHelper.format(year.nativeDate, 'yyyy');
         const isDisabled = this.isDisabledYear(year);
         const cell: YearCell = {
-          trackByIndex: content,
+          trackByIndex: colIndex,
           value: year.nativeDate,
           isDisabled,
           isSameDecade: yearNum >= startYear && yearNum <= endYear,

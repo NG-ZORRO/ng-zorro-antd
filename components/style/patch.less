@@ -11,6 +11,20 @@
   z-index: 1000;
 }
 
+.cdk-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  outline: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 .cdk-overlay-backdrop {
   top: 0;
   bottom: 0;
@@ -123,5 +137,10 @@
     &.ant-tabs-bottom .ant-tabs-ink-bar-animated {
       transition: none;
     }
+  }
+
+  // collapse
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow svg {
+    transition: none;
   }
 }

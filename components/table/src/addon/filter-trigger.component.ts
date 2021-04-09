@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 @Component({
@@ -18,6 +27,7 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
       class="ant-table-filter-trigger"
       nzTrigger="click"
       nzPlacement="bottomRight"
+      [nzHasBackdrop]="nzHasBackdrop"
       [nzClickHide]="false"
       [nzDropdownMenu]="nzDropdownMenu"
       [class.active]="nzActive"
@@ -30,7 +40,6 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
     </span>
   `,
   host: {
-    '[class.ant-table-filter-trigger-container]': 'true',
     '[class.ant-table-filter-trigger-container-open]': 'nzVisible'
   }
 })
@@ -38,21 +47,31 @@ export class NzFilterTriggerComponent {
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
+  @Input() nzHasBackdrop = false;
+
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+
   onVisibleChange(visible: boolean): void {
     this.nzVisible = visible;
     this.nzVisibleChange.next(visible);
   }
+
   onFilterClick($event: MouseEvent): void {
     $event.stopPropagation();
   }
+
   hide(): void {
     this.nzVisible = false;
     this.cdr.markForCheck();
   }
+
   show(): void {
     this.nzVisible = true;
     this.cdr.markForCheck();
   }
-  constructor(private cdr: ChangeDetectorRef) {}
+
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-filter-trigger-container');
+  }
 }

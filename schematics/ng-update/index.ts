@@ -11,8 +11,12 @@ import { FormTemplateRule } from './upgrade-rules/checks/form-template-rule';
 import { GlobalConfigRule } from './upgrade-rules/checks/global-config-rule';
 import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
+import { ModalTemplateRule } from './upgrade-rules/checks/modal-template-rule';
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
 import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
+import { TabsInputRule } from './upgrade-rules/checks/tabs-input-rule';
+import { TabsOutputRule } from './upgrade-rules/checks/tabs-output-rule';
+import { TabsTemplateRule } from './upgrade-rules/checks/tabs-template-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 const migrations: NullableDevkitMigration[] = [
@@ -26,7 +30,11 @@ const migrations: NullableDevkitMigration[] = [
   DateFnsCompatibleRule,
   FormTemplateRule,
   GridTemplateRule,
+  TabsInputRule,
+  TabsOutputRule,
+  TabsTemplateRule,
   TableTemplateRule,
+  ModalTemplateRule,
   SecondaryEntryPointsRule,
   ClassNamesMigration
 ];
@@ -44,6 +52,11 @@ export function updateToV9(): Rule {
 /** Entry point for the migration schematics with target of NG-ZORRO v10 */
 export function updateToV10(): Rule {
   return createMigrationSchematicRule(TargetVersion.V10, migrations, ruleUpgradeData, postUpdate);
+}
+
+/** Entry point for the migration schematics with target of NG-ZORRO v11 */
+export function updateToV11(): Rule {
+  return createMigrationSchematicRule(TargetVersion.V11, migrations, ruleUpgradeData, postUpdate);
 }
 
 /** Post-update schematic to be called when update is finished. */

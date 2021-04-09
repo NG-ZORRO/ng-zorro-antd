@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -11,44 +12,11 @@ import { NzCarouselModule } from './carousel.module';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
 
-@Component({
-  template: `
-    <nz-carousel
-      [nzEffect]="effect"
-      [nzDots]="dots"
-      [nzDotPosition]="dotPosition"
-      [nzDotRender]="dotRender"
-      [nzAutoPlay]="autoPlay"
-      [nzAutoPlaySpeed]="autoPlaySpeed"
-      (nzAfterChange)="afterChange($event)"
-      (nzBeforeChange)="beforeChange($event)"
-    >
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
-      <ng-template #dotRender let-index
-        ><a>{{ index + 1 }}</a></ng-template
-      >
-    </nz-carousel>
-  `
-})
-export class NzTestCarouselBasicComponent {
-  @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent!: NzCarouselComponent;
-  dots = true;
-  dotPosition = 'bottom';
-  effect = 'scrollx';
-  array = [1, 2, 3, 4];
-  autoPlay = false;
-  autoPlaySpeed = 3000;
-  afterChange = jasmine.createSpy('afterChange callback');
-  beforeChange = jasmine.createSpy('beforeChange callback');
-}
-
 describe('carousel', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent]
+      imports: [BidiModule, NzCarouselModule],
+      declarations: [NzTestCarouselBasicComponent, NzTestCarouselRtlComponent]
     });
     TestBed.compileComponents();
   }));
@@ -374,4 +342,51 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 
   dispatchMouseEvent(document, 'mousemove', 500 - distance, 0);
   dispatchMouseEvent(document, 'mouseup');
+}
+
+@Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-carousel',
+  template: `
+    <nz-carousel
+      [nzEffect]="effect"
+      [nzDots]="dots"
+      [nzDotPosition]="dotPosition"
+      [nzDotRender]="dotRender"
+      [nzAutoPlay]="autoPlay"
+      [nzAutoPlaySpeed]="autoPlaySpeed"
+      (nzAfterChange)="afterChange($event)"
+      (nzBeforeChange)="beforeChange($event)"
+    >
+      <div nz-carousel-content *ngFor="let index of array">
+        <h3>{{ index }}</h3>
+      </div>
+      <ng-template #dotRender let-index>
+        <a>{{ index + 1 }}</a>
+      </ng-template>
+    </nz-carousel>
+  `
+})
+export class NzTestCarouselBasicComponent {
+  @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent!: NzCarouselComponent;
+  dots = true;
+  dotPosition = 'bottom';
+  effect = 'scrollx';
+  array = [1, 2, 3, 4];
+  autoPlay = false;
+  autoPlaySpeed = 3000;
+  afterChange = jasmine.createSpy('afterChange callback');
+  beforeChange = jasmine.createSpy('beforeChange callback');
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-carousel></nz-test-carousel>
+    </div>
+  `
+})
+export class NzTestCarouselRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

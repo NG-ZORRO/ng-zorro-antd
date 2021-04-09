@@ -4,10 +4,13 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -41,7 +44,7 @@ export interface NzCheckBoxOptionInterface {
     }
   ],
   host: {
-    '[class.ant-checkbox-group]': 'true'
+    '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
   }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
@@ -52,6 +55,10 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 
+  dir: Direction = 'ltr';
+
+  private destroy$ = new Subject<void>();
+
   trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
   }
@@ -61,7 +68,15 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     this.onChange(this.options);
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private elementRef: ElementRef,
+    private focusMonitor: FocusMonitor,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-checkbox-group');
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -69,10 +84,19 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
         Promise.resolve().then(() => this.onTouched());
       }
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.elementRef);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {

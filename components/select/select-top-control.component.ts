@@ -7,6 +7,7 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -18,7 +19,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzSelectSearchComponent } from './select-search.component';
@@ -28,23 +28,14 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   selector: 'nz-select-top-control',
   exportAs: 'nzSelectTopControl',
   preserveWhitespaces: false,
-  animations: [zoomMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <!--single mode-->
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'default'">
-        <nz-select-item
-          *ngIf="isShowSingleLabel"
-          [deletable]="false"
-          [disabled]="false"
-          [removeIcon]="removeIcon"
-          [label]="listOfTopItem[0].nzLabel"
-          [contentTemplateOutlet]="customTemplate"
-          [contentTemplateOutletContext]="listOfTopItem[0]"
-        ></nz-select-item>
         <nz-select-search
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [showInput]="showSearch"
@@ -54,24 +45,30 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
+        <nz-select-item
+          *ngIf="isShowSingleLabel"
+          [deletable]="false"
+          [disabled]="false"
+          [removeIcon]="removeIcon"
+          [label]="listOfTopItem[0].nzLabel"
+          [contentTemplateOutlet]="customTemplate"
+          [contentTemplateOutletContext]="listOfTopItem[0]"
+        ></nz-select-item>
       </ng-container>
       <ng-container *ngSwitchDefault>
         <!--multiple or tags mode-->
         <nz-select-item
           *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
-          [@zoomMotion]
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [removeIcon]="removeIcon"
           [label]="item.nzLabel"
           [disabled]="item.nzDisabled || disabled"
           [contentTemplateOutlet]="item.contentTemplateOutlet"
           [deletable]="true"
           [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-          (@zoomMotion.done)="onAnimationEnd()"
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
         <nz-select-search
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [autofocus]="autofocus"
@@ -86,12 +83,11 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
   host: {
-    '[class.ant-select-selector]': 'true',
-    '(click)': 'onHostClick()',
     '(keydown)': 'onHostKeydown($event)'
   }
 })
 export class NzSelectTopControlComponent implements OnChanges {
+  @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
@@ -106,25 +102,13 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Input() tokenSeparators: string[] = [];
   @Output() readonly tokenize = new EventEmitter<string[]>();
   @Output() readonly inputValueChange = new EventEmitter<string>();
-  @Output() readonly animationEnd = new EventEmitter<void>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
-  @Output() readonly openChange = new EventEmitter<boolean>();
   @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent!: NzSelectSearchComponent;
   listOfSlicedItem: NzSelectTopControlItemType[] = [];
   isShowPlaceholder = true;
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
-
-  onHostClick(): void {
-    if (this.open && this.showSearch) {
-      return;
-    }
-
-    if (!this.disabled) {
-      this.openChange.next(!this.open);
-    }
-  }
 
   onHostKeydown(e: KeyboardEvent): void {
     const inputValue = (e.target as HTMLInputElement).value;
@@ -209,11 +193,10 @@ export class NzSelectTopControlComponent implements OnChanges {
     }
   }
 
-  onAnimationEnd(): void {
-    this.animationEnd.next();
+  constructor(private elementRef: ElementRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selector');
   }
-
-  constructor(@Host() @Optional() public noAnimation?: NzNoAnimationDirective) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;

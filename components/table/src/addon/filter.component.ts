@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -18,6 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { arraysEqual } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -63,10 +65,7 @@ interface NzThItemInterface {
         </div>
       </nz-dropdown-menu>
     </ng-container>
-  `,
-  host: {
-    '[class.ant-table-filter-column]': 'true'
-  }
+  `
 })
 export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -77,17 +76,16 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   private destroy$ = new Subject();
   locale!: NzTableI18nInterface;
-  isChanged = false;
   isChecked = false;
   isVisible = false;
   listOfParsedFilter: NzThItemInterface[] = [];
+  listOfChecked: NzSafeAny[] = [];
 
   trackByValue(_: number, item: NzThItemInterface): NzSafeAny {
     return item.value;
   }
 
   check(filter: NzThItemInterface): void {
-    this.isChanged = true;
     if (this.filterMultiple) {
       this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
         if (item === filter) {
@@ -111,7 +109,6 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   reset(): void {
-    this.isChanged = true;
     this.isVisible = false;
     this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter, true);
     this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
@@ -122,18 +119,19 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     this.isVisible = value;
     if (!value) {
       this.emitFilterData();
+    } else {
+      this.listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
     }
   }
 
   emitFilterData(): void {
-    if (this.isChanged) {
-      const listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
+    const listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
+    if (!arraysEqual(this.listOfChecked, listOfChecked)) {
       if (this.filterMultiple) {
         this.filterChange.emit(listOfChecked);
       } else {
         this.filterChange.emit(listOfChecked.length > 0 ? listOfChecked[0] : null);
       }
-      this.isChanged = false;
     }
   }
 
@@ -148,7 +146,10 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     return listOfParsedFilter.some(item => item.checked);
   }
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, private elementRef: ElementRef) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-table-filter-column');
+  }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,10 +22,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
-import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
 
 @Directive({
   selector: '[nz-popover]',
@@ -34,31 +37,42 @@ import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTr
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   @Input('nzPopoverTitle') title?: NzTSType;
   @Input('nzPopoverContent') content?: NzTSType;
   @Input('nz-popover') directiveTitle?: NzTSType | null;
   @Input('nzPopoverTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzPopoverPlacement') placement?: string = 'top';
+  @Input('nzPopoverPlacement') placement?: string | string[] = 'top';
   @Input('nzPopoverOrigin') origin?: ElementRef<HTMLElement>;
   @Input('nzPopoverVisible') visible?: boolean;
   @Input('nzPopoverMouseEnterDelay') mouseEnterDelay?: number;
   @Input('nzPopoverMouseLeaveDelay') mouseLeaveDelay?: number;
   @Input('nzPopoverOverlayClassName') overlayClassName?: string;
   @Input('nzPopoverOverlayStyle') overlayStyle?: NgStyleInterface;
+  @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
   // tslint:disable-next-line:no-output-rename
   @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
+      ...super.getProxyPropertyMap()
+    };
+  }
+
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    nzConfigService?: NzConfigService
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
   }
 }
 
@@ -74,6 +88,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
@@ -84,6 +99,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     >
       <div
         class="ant-popover"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -108,10 +124,18 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopoverComponent extends NzToolTipComponent {
-  _prefix = 'ant-popover-placement';
+  _prefix = 'ant-popover';
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-    super(cdr, noAnimation);
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(cdr, directionality, noAnimation);
+  }
+
+  get hasBackdrop(): boolean {
+    return this.nzTrigger === 'click' ? this.nzBackdrop : false;
   }
 
   protected isEmpty(): boolean {

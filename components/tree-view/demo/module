@@ -1,0 +1,10 @@
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+
+export const moduleList = [ NzTreeViewModule, NzIconModule, NzCheckboxModule, NzInputModule, NzSwitchModule, NzButtonModule, NzNoAnimationModule, NzHighlightModule ];

@@ -3,7 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
@@ -65,6 +77,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [class.ant-progress-show-info]="nzShowInfo"
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"
+      [class.ant-progress-rtl]="dir === 'rtl'"
     >
       <!-- line progress -->
       <div *ngIf="nzType === 'line'">
@@ -186,6 +199,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   pathString?: string;
   icon!: string;
 
+  dir: Direction = 'ltr';
+
   trackByFn = (index: number) => `${index}`;
 
   get formatter(): NzProgressFormatter {
@@ -208,7 +223,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private inferredStatus: NzProgressStatusType = 'normal';
   private destroy$ = new Subject<void>();
 
-  constructor(public nzConfigService: NzConfigService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
@@ -268,6 +287,13 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         this.setStrokeColor();
         this.getCirclePaths();
       });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

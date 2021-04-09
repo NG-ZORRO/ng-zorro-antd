@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { A11yModule } from '@angular/cdk/a11y';
+import { BidiModule } from '@angular/cdk/bidi';
 import { ObserversModule } from '@angular/cdk/observers';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
@@ -45,6 +46,16 @@ const DIRECTIVES = [
 @NgModule({
   declarations: [DIRECTIVES],
   exports: [DIRECTIVES],
-  imports: [CommonModule, ObserversModule, NzIconModule, NzOutletModule, PlatformModule, A11yModule, CdkScrollableModule, NzDropDownModule]
+  imports: [
+    BidiModule,
+    CommonModule,
+    ObserversModule,
+    NzIconModule,
+    NzOutletModule,
+    PlatformModule,
+    A11yModule,
+    CdkScrollableModule,
+    NzDropDownModule
+  ]
 })
 export class NzTabsModule {}

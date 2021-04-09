@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -13,7 +14,7 @@ import { NzNotificationComponent } from './notification.component';
 import { NzNotificationServiceModule } from './notification.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzNotificationServiceModule],
+  imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzNotificationServiceModule],
   declarations: [NzNotificationComponent, NzNotificationContainerComponent],
   entryComponents: [NzNotificationContainerComponent]
 })

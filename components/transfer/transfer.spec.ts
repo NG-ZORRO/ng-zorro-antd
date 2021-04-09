@@ -1,4 +1,5 @@
 // tslint:disable:no-any no-parameter-reassignment
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -18,14 +19,14 @@ const DISABLED = 1;
 
 describe('transfer', () => {
   let injector: Injector;
-  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent | Test996Component>;
+  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent>;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzTransferModule, NzIconTestModule],
-      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component]
+      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule],
+      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component, NzTestTransferRtlComponent]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     dl = fixture.debugElement;
@@ -324,6 +325,23 @@ describe('transfer', () => {
     }));
   });
 
+  describe('RTL', () => {
+    let componentElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTransferRtlComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should className correct on dir change', fakeAsync(() => {
+      expect(componentElement.classList).toContain('ant-transfer-rtl');
+      fixture.debugElement.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(componentElement.classList).not.toContain('ant-transfer-rtl');
+    }));
+  });
+
   class TransferPageObject {
     [key: string]: any;
 
@@ -391,6 +409,8 @@ describe('transfer', () => {
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-transfer',
   template: `
     <nz-transfer
       #comp
@@ -413,8 +433,7 @@ describe('transfer', () => {
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    >
-    </nz-transfer>
+    ></nz-transfer>
     <ng-template #renderList>
       <p class="transfer-renderList">renderList</p>
     </ng-template>
@@ -483,7 +502,10 @@ class TestTransferComponent implements OnInit {
 @Component({
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
-      <ng-template #render let-item> <i nz-icon nzType="{{ item.icon }}"></i> {{ item.title }} </ng-template>
+      <ng-template #render let-item>
+        <i nz-icon nzType="{{ item.icon }}"></i>
+        {{ item.title }}
+      </ng-template>
     </nz-transfer>
   `
 })
@@ -519,7 +541,9 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: ` <nz-transfer [nzDataSource]="list"></nz-transfer> `
+  template: `
+    <nz-transfer [nzDataSource]="list"></nz-transfer>
+  `
 })
 class Test996Component implements OnInit {
   // tslint:disable-next-line:no-any
@@ -536,4 +560,16 @@ class Test996Component implements OnInit {
 
     [0, 1].forEach(idx => (this.list[idx].direction = 'right'));
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-transfer></nz-test-transfer>
+    </div>
+  `
+})
+export class NzTestTransferRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

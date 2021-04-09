@@ -14,6 +14,7 @@ components/modal/**                       @hsuanxyz
 components/steps/**                       @hsuanxyz
 components/tag/**                         @hsuanxyz
 components/tree-select/**                 @hsuanxyz
+components/tree-view/**                   @hsuanxyz
 components/typography/**                  @hsuanxyz
 components/space/**                       @hsuanxyz
 components/resizable/**                   @hsuanxyz
@@ -64,6 +65,7 @@ components/page-header/**                 @CK110
 components/transfer/**                    @Ricbet
 components/i18n/**                        @wenqi73
 components/pipes/**                       @chensimeng
+components/image/**                       @stygian-desolator
 
 # The `components/core/*` owners
 components/core/config/**                 @wendellhu95

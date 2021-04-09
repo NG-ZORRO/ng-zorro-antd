@@ -69,7 +69,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const row: DateBodyRow = {
         isActive: false,
         dateCells: [],
-        trackByIndex: `${weekStart.getYear()}`
+        trackByIndex: week
       };
 
       for (let day = 0; day < 7; day++) {
@@ -78,7 +78,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
         const cell: DateCell = {
-          trackByIndex: title,
+          trackByIndex: day,
           value: date.nativeDate,
           label: label,
           isSelected: false,

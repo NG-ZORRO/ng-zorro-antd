@@ -15,8 +15,8 @@
 @form-font-height: ceil(@font-size-base * @line-height-base);
 
 .@{form-prefix-cls} {
-  .reset-component;
-  .reset-form;
+  .reset-component();
+  .reset-form();
 
   .@{form-prefix-cls}-text {
     display: inline-block;
@@ -57,7 +57,7 @@
 // =                             Item                             =
 // ================================================================
 .@{form-item-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   margin-bottom: @form-item-margin-bottom;
   vertical-align: top;
@@ -187,6 +187,14 @@
     font-size: @font-size-base;
     line-height: @line-height-base;
     transition: color 0.3s @ease-out; // sync input color transition
+  }
+
+  .@{ant-prefix}-input-textarea-show-count {
+    &::after {
+      position: absolute;
+      bottom: -22px;
+      width: 100%;
+    }
   }
 }
 

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -14,12 +15,15 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
@@ -35,12 +39,13 @@ export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
+  config?: Required<PopoverConfig | PopConfirmConfig>;
   directiveTitle?: NzTSType | null;
   directiveContent?: NzTSType | null;
   title?: NzTSType | null;
   content?: NzTSType | null;
   trigger?: NzTooltipTrigger;
-  placement?: string;
+  placement?: string | string[];
   origin?: ElementRef<HTMLElement>;
   visible?: boolean;
   mouseEnterDelay?: number;
@@ -69,8 +74,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.trigger !== 'undefined' ? this.trigger : 'hover';
   }
 
-  protected get _placement(): string {
-    return this.placement || 'top';
+  protected get _placement(): string[] {
+    const p = this.placement;
+    return Array.isArray(p) && p.length > 0 ? p : typeof p === 'string' && p ? [p] : ['top'];
   }
 
   protected get _visible(): boolean {
@@ -113,13 +119,14 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected hostView: ViewContainerRef,
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
-    protected noAnimation?: NzNoAnimationDirective
+    protected noAnimation?: NzNoAnimationDirective,
+    protected nzConfigService?: NzConfigService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { specificTrigger } = changes;
+    const { trigger } = changes;
 
-    if (specificTrigger && !specificTrigger.isFirstChange()) {
+    if (trigger && !trigger.isFirstChange()) {
       this.registerTriggers();
     }
 
@@ -298,7 +305,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class NzTooltipBaseComponent implements OnDestroy {
+export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
 
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
@@ -307,6 +314,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   nzContent: NzTSType | null = null;
   nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
+  nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
 
@@ -336,32 +344,43 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string) {
-    if (value !== this.preferredPlacement) {
-      this.preferredPlacement = value;
-      this._positions = [POSITION_MAP[this.nzPlacement], ...DEFAULT_TOOLTIP_POSITIONS];
-    }
+  set nzPlacement(value: string[]) {
+    const preferredPosition = value.map(placement => POSITION_MAP[placement]);
+    this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
 
-  get nzPlacement(): string {
-    return this.preferredPlacement;
-  }
+  preferredPlacement: string = 'top';
 
   origin!: CdkOverlayOrigin;
-  preferredPlacement = 'top';
+
+  public dir: Direction = 'ltr';
 
   _classMap: NgClassInterface = {};
-
-  _hasBackdrop = false;
 
   _prefix = 'ant-tooltip';
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    public cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality,
+    public noAnimation?: NzNoAnimationDirective
+  ) {}
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
 
   ngOnDestroy(): void {
     this.nzVisibleChange.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   show(): void {
@@ -373,6 +392,11 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
       this.nzVisible = true;
       this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
+    }
+
+    // for ltr for overlay to display tooltip in correct placement in rtl direction.
+    if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+      this.overlay.overlayRef.setDirection('ltr');
     }
   }
 
@@ -408,6 +432,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.preferredPlacement = getPlacementName(position)!;
     this.updateStyles();
+
+    // We have to trigger immediate change detection or the element would blink.
     this.cdr.detectChanges();
   }
 
@@ -424,7 +450,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+    if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
       this.hide();
     }
   }

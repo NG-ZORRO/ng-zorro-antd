@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { LayoutModule } from '@angular/cdk/layout';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
@@ -38,6 +39,6 @@ import { NzFormDirective } from './form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports: [CommonModule, NzGridModule, NzIconModule, NzToolTipModule, LayoutModule, PlatformModule, NzOutletModule]
+  imports: [BidiModule, CommonModule, NzGridModule, NzIconModule, NzToolTipModule, LayoutModule, PlatformModule, NzOutletModule]
 })
 export class NzFormModule {}

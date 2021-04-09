@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -19,6 +20,7 @@ import { NzTreeSelectComponent } from './tree-select.component';
 
 @NgModule({
   imports: [
+    BidiModule,
     CommonModule,
     OverlayModule,
     FormsModule,

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { LayoutModule } from '@angular/cdk/layout';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,6 @@ import { NzRowDirective } from './row.directive';
 @NgModule({
   declarations: [NzColDirective, NzRowDirective],
   exports: [NzColDirective, NzRowDirective],
-  imports: [CommonModule, LayoutModule, PlatformModule]
+  imports: [BidiModule, CommonModule, LayoutModule, PlatformModule]
 })
 export class NzGridModule {}

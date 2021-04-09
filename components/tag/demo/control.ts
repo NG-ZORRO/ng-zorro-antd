@@ -3,10 +3,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'nz-demo-tag-control',
   template: `
-    <nz-tag *ngFor="let tag of tags; let i = index" [nzMode]="i === 0 ? 'default' : 'closeable'" (nzAfterClose)="handleClose(tag)">
+    <nz-tag *ngFor="let tag of tags; let i = index" [nzMode]="i === 0 ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
       {{ sliceTagName(tag) }}
     </nz-tag>
-    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()"> <i nz-icon nzType="plus"></i> New Tag </nz-tag>
+    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+      <i nz-icon nzType="plus"></i>
+      New Tag
+    </nz-tag>
     <input
       #inputElement
       nz-input

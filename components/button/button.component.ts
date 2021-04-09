@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -14,11 +15,14 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -26,7 +30,13 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+/**
+ * @deprecated `danger` not supported, use `nzDanger` instead
+ * @breaking-change 12.0.0
+ */
+type NzLegacyButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+
+export type NzButtonType = NzLegacyButtonType;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -43,7 +53,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-btn]': `true`,
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -58,11 +67,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
+    '[class.ant-btn-rtl]': `dir === 'rtl'`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   }
 })
-export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
+export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBlock: BooleanInput;
   static ngAcceptInputType_nzGhost: BooleanInput;
@@ -82,6 +92,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 
@@ -111,8 +122,11 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    public nzConfigService: NzConfigService
+    public nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
   ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-btn');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -121,10 +135,23 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       });
   }
 
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading } = changes;
+    const { nzLoading, nzType } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
+    }
+
+    if (nzType?.currentValue === 'danger') {
+      warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
     }
   }
 

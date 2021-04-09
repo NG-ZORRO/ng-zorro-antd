@@ -1,11 +1,14 @@
 import { normalize } from '@angular-devkit/core';
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
+import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { join } from "path";
 import { createTestApp } from '../testing/test-app';
+import { createCustomTheme } from '../utils/create-custom-theme';
 
 describe('ng-add schematic', () => {
   let runner: SchematicTestRunner;
@@ -23,7 +26,8 @@ describe('ng-add schematic', () => {
     const dependencies = packageJson.dependencies;
 
     expect(dependencies['ng-zorro-antd']).toBeDefined();
-    expect(runner.tasks.some(task => task.name === 'run-schematic')).toBe(true);
+
+    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
   it('should add hammerjs to package.json', async () => {
@@ -44,10 +48,16 @@ describe('ng-add schematic', () => {
     expect(dependencies['ng-zorro-antd']).toBeUndefined();
   });
 
+  it('should skip install dependency package', async () => {
+    await runner.runSchematicAsync('ng-add', {skipInstall: true}, appTree).toPromise();
+
+    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(false);
+  });
+
   it('should add hammerjs import to project main file', async () => {
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {gestures: true}, appTree).toPromise();
-    const workspace = getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
     const fileContent = getFileContent(tree, normalize(join(project.sourceRoot, 'main.ts')));
 
     expect(fileContent).toContain(`import 'hammerjs';`);
@@ -55,8 +65,8 @@ describe('ng-add schematic', () => {
 
   it('should add default theme', async () => {
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {}, appTree).toPromise();
-    const workspace = getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
 
     expect(getProjectTargetOptions(project, 'build').styles)
     .toContain('./node_modules/ng-zorro-antd/ng-zorro-antd.min.css');
@@ -65,24 +75,23 @@ describe('ng-add schematic', () => {
   it('should add custom theme', async () => {
     appTree = await createTestApp(runner, {style: 'less'});
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {theme: true}, appTree).toPromise();
-    const workspace = getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
 
     const customThemePath = normalize(join(project.sourceRoot, 'styles.less'));
     const buffer = tree.read(customThemePath);
     const themeContent = buffer!.toString();
 
-    expect(themeContent).toContain(`@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less`);
-    expect(themeContent).toContain(`@ant-prefix: ant;`);
-    expect(themeContent).toContain(`@primary-color: @blue-6;`);
+    expect(themeContent).toContain(createCustomTheme())
+
     expect(getProjectTargetOptions(project, 'build').styles)
     .toContain('projects/ng-zorro/src/styles.less');
   });
 
   it('should add custom theme file when no LESS file in project', async () => {
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {theme: true}, appTree).toPromise();
-    const workspace = getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
 
     expect(getProjectTargetOptions(project, 'build').styles)
     .toContain('projects/ng-zorro/src/theme.less');
@@ -90,8 +99,8 @@ describe('ng-add schematic', () => {
 
   it('should add icon assets', async () => {
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {dynamicIcon: true}, appTree).toPromise();
-    const workspace = getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
     const assets = getProjectTargetOptions(project, 'build').assets;
 
     const assetsString = JSON.stringify(assets);
@@ -123,8 +132,8 @@ describe('ng-add schematic', () => {
   });
 
   it('should not add BrowserAnimationsModule if NoopAnimationsModule is set up', async () => {
-    const workspace = getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(appTree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
 
     addModuleImportToRootModule(
       appTree, 'NoopAnimationsModule', '@angular/platform-browser/animations', project);
@@ -138,8 +147,8 @@ describe('ng-add schematic', () => {
   });
 
   it('should not add NoopAnimationsModule if BrowserAnimationsModule is set up', async () => {
-    const workspace = getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace);
+    const workspace = await getWorkspace(appTree);
+    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition);
 
     addModuleImportToRootModule(
       appTree, 'BrowserAnimationsModule', '@angular/platform-browser/animations', project);

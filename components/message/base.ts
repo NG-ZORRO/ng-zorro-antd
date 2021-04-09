@@ -3,12 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
 import { NzMessageData, NzMessageDataOptions } from './typings';
 
@@ -144,9 +146,12 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   index?: number;
 
   readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
+  protected closeTimer?: number;
+  protected userAction: boolean = false;
   protected eraseTimer: number | null = null;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
@@ -158,6 +163,15 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
     if (this.options.nzAnimate) {
       this.instance.state = 'enter';
+      this.animationStateChanged
+        .pipe(
+          filter(event => event.phaseName === 'done' && event.toState === 'leave'),
+          take(1)
+        )
+        .subscribe(() => {
+          clearTimeout(this.closeTimer);
+          this.destroyed.next({ id: this.instance.messageId, userAction: this.userAction });
+        });
     }
 
     this.autoClose = this.options.nzDuration > 0;
@@ -172,6 +186,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
     if (this.autoClose) {
       this.clearEraseTimeout();
     }
+    this.animationStateChanged.complete();
   }
 
   onEnter(): void {
@@ -188,10 +203,12 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   }
 
   protected destroy(userAction: boolean = false): void {
+    this.userAction = userAction;
     if (this.options.nzAnimate) {
       this.instance.state = 'leave';
       this.cdr.detectChanges();
-      setTimeout(() => {
+      this.closeTimer = setTimeout(() => {
+        this.closeTimer = undefined;
         this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
       }, 200);
     } else {

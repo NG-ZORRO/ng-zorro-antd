@@ -34,7 +34,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'decade'">
             <decade-header
               [(value)]="activeDate"
-              [locale]="locale!"
+              [locale]="locale"
               [showSuperPreBtn]="enablePrevNext('prev', 'decade')"
               [showSuperNextBtn]="enablePrevNext('next', 'decade')"
               [showNextBtn]="false"
@@ -46,6 +46,7 @@ import { PREFIX_CLASS } from './util';
               <decade-table
                 [activeDate]="activeDate"
                 [value]="value"
+                [locale]="locale"
                 (valueChange)="onChooseDecade($event)"
                 [disabledDate]="disabledDate"
               ></decade-table>
@@ -54,7 +55,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'year'">
             <year-header
               [(value)]="activeDate"
-              [locale]="locale!"
+              [locale]="locale"
               [showSuperPreBtn]="enablePrevNext('prev', 'year')"
               [showSuperNextBtn]="enablePrevNext('next', 'year')"
               [showNextBtn]="false"
@@ -66,6 +67,7 @@ import { PREFIX_CLASS } from './util';
               <year-table
                 [activeDate]="activeDate"
                 [value]="value"
+                [locale]="locale"
                 [disabledDate]="disabledDate"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
@@ -77,7 +79,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'month'">
             <month-header
               [(value)]="activeDate"
-              [locale]="locale!"
+              [locale]="locale"
               [showSuperPreBtn]="enablePrevNext('prev', 'month')"
               [showSuperNextBtn]="enablePrevNext('next', 'month')"
               [showNextBtn]="false"
@@ -89,6 +91,7 @@ import { PREFIX_CLASS } from './util';
               <month-table
                 [value]="value"
                 [activeDate]="activeDate"
+                [locale]="locale"
                 [disabledDate]="disabledDate"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
@@ -101,7 +104,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchDefault>
             <date-header
               [(value)]="activeDate"
-              [locale]="locale!"
+              [locale]="locale"
               [showSuperPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
               [showSuperNextBtn]="showWeek ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
               [showPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
@@ -111,7 +114,7 @@ import { PREFIX_CLASS } from './util';
             ></date-header>
             <div class="{{ prefixCls }}-body">
               <date-table
-                [locale]="locale!"
+                [locale]="locale"
                 [showWeek]="showWeek"
                 [value]="value"
                 [activeDate]="activeDate"

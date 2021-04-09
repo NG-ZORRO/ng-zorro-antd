@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -33,7 +34,7 @@ const cellDirectives = [
 ];
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule, NzIconModule],
+  imports: [BidiModule, CommonModule, NzOutletModule, NzIconModule],
   declarations: [NzResultComponent, ...cellDirectives, ...partial],
   exports: [NzResultComponent, ...cellDirectives]
 })

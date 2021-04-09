@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
@@ -45,6 +46,14 @@ describe('grid', () => {
       expect(rowElement.style.cssText).toBe('');
       expect(colElement.style.cssText).toBe('');
       testBed.component.gutter = 16;
+      testBed.fixture.detectChanges();
+      expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
+      expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
+    });
+    it('should gutter string work', () => {
+      expect(rowElement.style.cssText).toBe('');
+      expect(colElement.style.cssText).toBe('');
+      testBed.component.gutter = '16';
       testBed.fixture.detectChanges();
       expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
       expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
@@ -161,6 +170,36 @@ describe('grid', () => {
       expect(batchSizeMatch(1, 'xs')).toBe(false);
     });
   });
+  describe('RTL', () => {
+    let rowElement: HTMLElement;
+    let colElement: HTMLElement;
+    let testBed: ComponentBed<NzTestGridRtlComponent>;
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestGridRtlComponent, { imports: [BidiModule, NzGridModule] });
+      rowElement = testBed.debugElement.query(By.directive(NzRowDirective)).nativeElement;
+      colElement = testBed.debugElement.query(By.directive(NzColDirective)).nativeElement;
+    });
+    describe('row', () => {
+      it('should className correct on dir change', () => {
+        expect(rowElement.className).toBe('ant-row ant-row-rtl');
+
+        testBed.fixture.componentInstance.direction = 'ltr';
+        testBed.fixture.detectChanges();
+
+        expect(rowElement.className).toBe('ant-row');
+      });
+    });
+    describe('col', () => {
+      it('should className correct on dir change', () => {
+        expect(colElement.className).toBe('ant-col ant-col-rtl');
+
+        testBed.fixture.componentInstance.direction = 'ltr';
+        testBed.fixture.detectChanges();
+
+        expect(colElement.className).toBe('ant-col');
+      });
+    });
+  });
 });
 
 @Component({
@@ -171,7 +210,13 @@ describe('grid', () => {
   `
 })
 export class TestGridComponent {
-  gutter: number | null | [number, number] | { [key: string]: number } | [{ [key: string]: number }, { [key: string]: number }] = null;
+  gutter:
+    | string
+    | number
+    | null
+    | [number, number]
+    | { [key: string]: number }
+    | [{ [key: string]: number }, { [key: string]: number }] = null;
   flex: string | null = null;
   justify: string | null = null;
   align: string | null = null;
@@ -211,4 +256,18 @@ export class TestColComponent {
   lg: number | null | { [key: string]: number } = null;
   xl: number | null | { [key: string]: number } = null;
   xxl: number | null | { [key: string]: number } = null;
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <div nz-row>
+        <div nz-col></div>
+      </div>
+    </div>
+  `
+})
+export class NzTestGridRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

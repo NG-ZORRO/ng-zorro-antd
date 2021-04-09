@@ -34,6 +34,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | - |
 | nzBodyStyle       | Modal body 样式 | `object` | - |
 | nzCancelText      | 取消按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 取消 |
+| nzCentered        | 垂直居中展示 Modal | `boolean` | `false` |
 | nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | `boolean` | `true` |
 | nzOkLoading       | 确定按钮 loading | `boolean` | `false` |
 | nzCancelLoading   | 取消按钮 loading | `boolean` | `false` |
@@ -43,10 +44,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
-| nzCloseOnNavigation    | 导航历史变化时是否关闭模态框 | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | 当用户在历史中前进/后退时是否关闭模态框。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
+| nzDirection        | 文字方向 | `'ltr' \| 'rtl'` | - | ✅ |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
 | nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
-| nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
+| nzOkType          | 确认按钮类型。<i>与 `nz-button` 的 `nzType` 类型值一致</i> | `string` | `primary` |
+| nzOkDanger        | 确认按钮是否为危险按钮。<i>与 `nz-button` 的 `nzDanger` 值保持一致</i> | `boolean` | `false` |
 | nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |
 | nzCloseIcon       | 自定义关闭图标 | `string\|TemplateRef<void>` | - |
@@ -104,7 +107,7 @@ constructor(modal: NzModalService) {
 #### NzModalService的其他方法/属性
 
 | 方法/属性 | 说明 | 类型 |
-|----|----|
+|----|----|----|
 | openModals | 当前打开的所有Modal引用列表 | NzModalRef[] |
 | afterAllClose | 所有Modal完全关闭后的回调 | Observable&lt;void&gt; |
 | closeAll() | 关闭所有模态框 | function |
@@ -136,6 +139,7 @@ constructor(modal: NzModalService) {
 nzFooter: [{
   label: string; // 按钮文本
   type?: string; // 类型
+  danger?: boolean; // 是否danger
   shape?: string; // 形状
   ghost?: boolean; // 是否ghost
   size?: string; // 大小
@@ -155,9 +159,25 @@ nzFooter: [{
 
 以上配置项也可在运行态实时改变，来触发按钮行为改变。
 
+### [nzModalTitle]
+
+自定义标题。
+
+```html
+<div *nzModalTitle>
+  Custom Modal Title
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalTitle]>
+  Custom Modal Title
+</ng-template>
+```
+
 ### [nzModalFooter]
 
-另一种自定义页脚按钮的方式。
+自定义页脚。
 
 ```html
 <div *nzModalFooter>

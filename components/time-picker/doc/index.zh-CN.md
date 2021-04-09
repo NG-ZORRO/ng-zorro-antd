@@ -26,11 +26,15 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[ngModel]` | 当前时间 | `Date` | - |
-| `[nzAddon]` | 选择框底部显示自定义的内容 | `TemplateRef<void>` | - |
+| `[nzAddOn]` | 选择框底部显示自定义的内容 | `TemplateRef<void>` | - |
 | `[nzAllowEmpty]` | 是否展示清除按钮 | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzClearText]` | 清除按钮的提示文案 | `string` | `'clear'` | ✅ |
+| `[nzNowText]` | 此刻按钮文本 | `string` | `"此刻"` | ✅ |
+| `[nzOkText]` | 确认按钮文本 | `string` | `"确定"` | ✅ |
 | `[nzDefaultOpenValue]` | 当 `[ngModel]` 不存在时，可以设置面板打开时默认选中的值 | `Date` | `new Date()` |
 | `[nzDisabled]` | 禁用全部操作 | `boolean` | `false` |
 | `[nzDisabledHours]` | 禁止选择部分小时选项 | `() => number[]` | - |

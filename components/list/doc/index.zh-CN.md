@@ -100,3 +100,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 ### nz-list-item-meta-avatar
 
 列表项元信息头像部分组件
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzSrc]` | 图片类头像的资源地址 | `string` | - |

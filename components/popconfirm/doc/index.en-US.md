@@ -25,7 +25,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | ----- | ----------- | ---- | ------------- |
 | `[nzPopconfirmTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
 | `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
-| `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopconfirmOrigin]` | Origin of the popconfirm | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | Show or hide popconfirm | `boolean` | `false` |
 | `[nzPopconfirmShowArrow]` | Whether popconfirm has arrow | `boolean`  | `true` |
@@ -34,6 +34,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmMouseLeaveDelay]` | Delay in seconds, before popconfirm is hidden on mouse leave | `number` | `0.1` |
 | `[nzPopconfirmOverlayClassName]` | Class name of the popconfirm card | `string` | - |
 | `[nzPopconfirmOverlayStyle]` | Style of the popconfirm card | `object` | - |
+| `[nzPopconfirmBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |

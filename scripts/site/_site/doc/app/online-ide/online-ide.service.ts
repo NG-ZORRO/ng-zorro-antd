@@ -20,20 +20,20 @@ export class OnlineIdeService {
   document: Document;
   template = 'angular-cli';
   dependencies = {
-    '@angular/animations': '^10.0.0',
-    '@angular/cdk': '^10.0.0',
-    '@angular/common': '^10.0.0',
-    '@angular/compiler': '^10.0.0',
-    '@angular/core': '^10.0.0',
-    '@angular/forms': '^10.0.0',
-    '@angular/platform-browser': '^10.0.0',
-    '@angular/platform-browser-dynamic': '^10.0.0',
-    '@angular/router': '^10.0.0',
-    '@ant-design/icons-angular': '10.0.0-beta.0',
-    'rxjs': '~6.5.4',
+    '@angular/animations': '^11.0.0',
+    '@angular/cdk': '^11.0.0',
+    '@angular/common': '^11.0.0',
+    '@angular/compiler': '^11.0.0',
+    '@angular/core': '^11.0.0',
+    '@angular/forms': '^11.0.0',
+    '@angular/platform-browser': '^11.0.0',
+    '@angular/platform-browser-dynamic': '^11.0.0',
+    '@angular/router': '^11.0.0',
+    '@ant-design/icons-angular': '^11.0.0',
+    rxjs: '~6.6.3',
     'core-js': '~3.6.5',
     'date-fns': '^2.0.0',
-    'tslib': '^2.0.0',
+    tslib: '^2.0.0',
     'zone.js': '~0.11.1',
     'ng-zorro-antd': `^${VERSION.full}`
   };

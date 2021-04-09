@@ -33,7 +33,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 radio group，wrap a group of `nz-radio`。
 
 | Property | Description | Type | Default |
-| -------- | ----------- | ---- | -------- | ------- |
+| -------- | ----------- | ---- | ------- |
 | `[ngModel]` | current selected `nz-radio` value, double binding | `any` | - |
 | `[nzName]` | The `name` property of all `input[type="radio"]` children | `string`  | - |
 | `[nzDisabled]` | Disable all radio buttons | `boolean` |  `false` |

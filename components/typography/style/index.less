@@ -105,10 +105,19 @@
       text-decoration: @link-hover-decoration;
     }
 
-    &[disabled] {
+    &[disabled],
+    &.@{typography-prefix-cls}-disabled {
       color: @disabled-color;
       cursor: not-allowed;
-      pointer-events: none;
+
+      &:active,
+      &:hover {
+        color: @disabled-color;
+      }
+
+      &:active {
+        pointer-events: none;
+      }
     }
   }
 

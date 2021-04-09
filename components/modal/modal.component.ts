@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,13 +21,16 @@ import {
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
 
+import { NzModalContentDirective } from './modal-content.directive';
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { NzModalRef } from './modal-ref';
+import { NzModalTitleDirective } from './modal-title.directive';
 import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
 import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
@@ -53,6 +55,8 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   static ngAcceptInputType_nzCancelLoading: BooleanInput;
   static ngAcceptInputType_nzKeyboard: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
+  static ngAcceptInputType_nzOkDanger: BooleanInput;
+  static ngAcceptInputType_nzCentered: BooleanInput;
 
   @Input() @InputBoolean() nzMask?: boolean;
   @Input() @InputBoolean() nzMaskClosable?: boolean;
@@ -65,14 +69,10 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzCentered = false;
   @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
   @Input() nzComponentParams?: T;
   @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
-  /**
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  @Input() nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
   @Input() nzWrapClassName?: string;
@@ -85,6 +85,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzOkText?: string | null;
   @Input() nzCancelText?: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
+  @Input() @InputBoolean() nzOkDanger: boolean = false;
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
   @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
@@ -104,12 +105,21 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
-  @ContentChild(NzModalFooterDirective)
-  set modalFooter(value: NzModalFooterDirective) {
-    if (value && value.templateRef) {
-      this.setFooterWithTemplate(value.templateRef);
+  @ContentChild(NzModalTitleDirective, { static: true, read: TemplateRef })
+  set modalTitle(value: TemplateRef<NzSafeAny>) {
+    if (value) {
+      this.setTitleWithTemplate(value);
     }
   }
+  @ContentChild(NzModalContentDirective, { static: true, read: TemplateRef })
+  contentFromContentChild!: TemplateRef<NzSafeAny>;
+  @ContentChild(NzModalFooterDirective, { static: true, read: TemplateRef })
+  set modalFooter(value: TemplateRef<NzSafeAny>) {
+    if (value) {
+      this.setFooterWithTemplate(value);
+    }
+  }
+
   private modalRef: NzModalRef | null = null;
 
   get afterOpen(): Observable<void> {
@@ -172,6 +182,18 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     return this.modalRef;
   }
 
+  private setTitleWithTemplate(templateRef: TemplateRef<{}>): void {
+    this.nzTitle = templateRef;
+    if (this.modalRef) {
+      // If modalRef already created, set the title in next tick
+      Promise.resolve().then(() => {
+        this.modalRef!.updateConfig({
+          nzTitle: this.nzTitle
+        });
+      });
+    }
+  }
+
   private setFooterWithTemplate(templateRef: TemplateRef<{}>): void {
     this.nzFooter = templateRef;
     if (this.modalRef) {
@@ -189,8 +211,13 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   private getConfig(): ModalOptions {
     const componentConfig = getConfigFromComponent(this);
     componentConfig.nzViewContainerRef = this.viewContainerRef;
-    if (!this.nzContent) {
+    if (!this.nzContent && !this.contentFromContentChild) {
       componentConfig.nzContent = this.contentTemplateRef;
+      warnDeprecation(
+        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzModalContent></ng-template>` to declare the content of the modal.'
+      );
+    } else {
+      componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
     }
     return componentConfig;
   }

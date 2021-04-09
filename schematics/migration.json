@@ -16,6 +16,11 @@
       "description": "Updates NG-ZORRO to v10 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/5775]",
       "factory": "./ng-update/index#updateToV10"
     },
+    "migration-v11": {
+      "version": "11.0.0-0",
+      "description": "Updates NG-ZORRO to v11 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/6217]",
+      "factory": "./ng-update/index#updateToV11"
+    },
     "ng-post-update": {
       "description": "Prints out results after ng-update.",
       "factory": "./ng-update/index#postUpdate",

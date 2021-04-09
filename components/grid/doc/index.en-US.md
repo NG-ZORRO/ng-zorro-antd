@@ -89,7 +89,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzAlign]` | the vertical alignment | `'top'\|'middle'\|'bottom'` | - |
-| `[nzGutter]` | spacing between grids, could be a number or a object like `{ xs: 8, sm: 16, md: 24}`. or you can use array to make horizontal and vertical spacing work at the same time `[horizontal, vertical]` | `number\|object\|[number, number]\|[object, object]` | `0` |
+| `[nzGutter]` | spacing between grids, could be a number or a object like `{ xs: 8, sm: 16, md: 24}`. or you can use array to make horizontal and vertical spacing work at the same time `[horizontal, vertical]` | `string\|number\|object\|[number, number]\|[object, object]` | `0` |
 | `[nzJustify]` | horizontal arrangement | `'start'\|'end'\|'center'\|'space-around'\|'space-between'` | - |
 
 ### [nz-col]

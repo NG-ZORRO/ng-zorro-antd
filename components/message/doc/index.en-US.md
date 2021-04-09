@@ -57,6 +57,7 @@ You can use `NzConfigService` to configure this component globally. Please check
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` | `true` |
 | nzAnimate | Whether to turn on animation | `boolean` | `true` |
 | nzTop | Distance from top | `number \| string` | `24` |
+| nzDirection | Direction of the text in the messages | `'ltr' \| 'rtl'` | - |
 
 ### NzMessageRef
 

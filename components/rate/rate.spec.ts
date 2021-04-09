@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,8 +13,8 @@ import { NzRateModule } from './rate.module';
 describe('rate', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzRateModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestRateBasicComponent, NzTestRateFormComponent]
+      imports: [BidiModule, NzRateModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestRateBasicComponent, NzTestRateFormComponent, NzTestRateRtlComponent]
     });
     TestBed.compileComponents();
   }));
@@ -231,9 +232,31 @@ describe('rate', () => {
       expect(testComponent.formGroup.get('rate')!.value).toBe(2);
     }));
   });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestRateRtlComponent>;
+    let rate: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestRateRtlComponent);
+      fixture.detectChanges();
+      rate = fixture.debugElement.query(By.directive(NzRateComponent));
+    });
+
+    it('should className correct on dir change', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
+    }));
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-rate',
   template: `
     <nz-rate
       [(ngModel)]="value"
@@ -247,8 +270,7 @@ describe('rate', () => {
       [nzAllowClear]="allowClear"
       [nzDisabled]="disabled"
       [nzAutoFocus]="autoFocus"
-    >
-    </nz-rate>
+    ></nz-rate>
   `
 })
 export class NzTestRateBasicComponent {
@@ -285,4 +307,15 @@ export class NzTestRateFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-rate></nz-test-rate>
+    </div>
+  `
+})
+export class NzTestRateRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

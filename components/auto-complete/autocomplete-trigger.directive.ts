@@ -14,7 +14,18 @@ import {
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, ExistingProvider, forwardRef, Inject, Input, OnDestroy, Optional, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  ExistingProvider,
+  forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  Optional,
+  ViewContainerRef
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
@@ -52,7 +63,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
     '(keydown)': 'handleKeydown($event)'
   }
 })
-export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
+export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete!: NzAutocompleteComponent;
 
@@ -83,6 +94,19 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny
   ) {}
+
+  ngAfterViewInit(): void {
+    if (this.nzAutocomplete) {
+      this.nzAutocomplete.animationStateChange.pipe(takeUntil(this.destroy$)).subscribe(event => {
+        if (event.toState === 'void') {
+          if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+          }
+        }
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroyPanel();
@@ -117,11 +141,10 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.nzAutocomplete.isOpen = this.panelOpen = false;
 
       if (this.overlayRef && this.overlayRef.hasAttached()) {
+        this.overlayRef.detach();
         this.selectionChangeSubscription.unsubscribe();
         this.overlayOutsideClickSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
-        this.overlayRef.dispose();
-        this.overlayRef = null;
         this.portal = null;
       }
     }

@@ -552,9 +552,12 @@ describe('NzModal', () => {
     fixture.detectChanges();
 
     const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    const mask = overlayContainerElement.querySelector('.ant-modal-mask') as HTMLElement;
 
     expect(modal.style.zIndex).toBe('1001');
+    expect(mask.style.zIndex).toBe('1001');
 
+    console.log(mask);
     modalRef.updateConfig({
       nzZIndex: 1100
     });
@@ -562,6 +565,7 @@ describe('NzModal', () => {
     flushMicrotasks();
 
     expect(modal.style.zIndex).toBe('1100');
+    expect(mask.style.zIndex).toBe('1100');
 
     modalRef.close();
     fixture.detectChanges();
@@ -578,6 +582,22 @@ describe('NzModal', () => {
     const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
 
     expect(modal.classList).toContain('test-wrap-class');
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should set the nzCentered of the modal', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzCentered: true,
+      nzContent: TestWithModalContentComponent
+    });
+    fixture.detectChanges();
+
+    const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.classList).toContain('ant-modal-centered');
 
     modalRef.close();
     fixture.detectChanges();
@@ -630,22 +650,6 @@ describe('NzModal', () => {
     const modal = overlayContainerElement.querySelector('.ant-modal-body') as HTMLElement;
 
     expect(modal.style.color).toContain('rgb(0, 0, 0)');
-
-    modalRef.close();
-    fixture.detectChanges();
-    flush();
-  }));
-
-  it('should set the container of the modal', fakeAsync(() => {
-    const modalRef = modalService.create({
-      nzContent: TestWithModalContentComponent,
-      nzGetContainer: document.body
-    });
-    fixture.detectChanges();
-    flushMicrotasks();
-
-    expect(overlayContainerElement.contains(modalRef.getElement())).toBe(false);
-    expect(document.body.contains(modalRef.getElement())).toBe(true);
 
     modalRef.close();
     fixture.detectChanges();
@@ -864,17 +868,6 @@ describe('NzModal', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(1);
       modalRef.triggerCancel();
-      fixture.detectChanges();
-      flush();
-      expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
-    }));
-
-    it('should open can be call', fakeAsync(() => {
-      const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(1);
-      modalRef.open();
-      modalRef.close();
       fixture.detectChanges();
       flush();
       expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
@@ -1174,7 +1167,7 @@ describe('NzModal', () => {
             onClick: () => {
               return new Promise(resolve => {
                 setTimeout(() => {
-                  resolve();
+                  resolve(null);
                 }, 200);
               });
             }
@@ -1189,7 +1182,7 @@ describe('NzModal', () => {
             onClick: () => {
               return new Promise(resolve => {
                 setTimeout(() => {
-                  resolve();
+                  resolve(null);
                 }, 200);
               });
             }
@@ -1234,6 +1227,7 @@ describe('NzModal', () => {
       fixture.detectChanges();
       expect((overlayContainerElement.querySelector('.ant-modal') as HTMLDivElement).style.width).toBe('416px');
       expect(modalRef.getConfig().nzMaskClosable).toBe(false);
+      expect(modalRef.getConfig().nzCentered).toBe(false);
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(1);
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-title')!.textContent).toBe('Test Title');
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-content')!.textContent).toBe('Test Content');
@@ -1326,6 +1320,22 @@ describe('NzModal', () => {
       });
       fixture.detectChanges();
       expect(modalRef.getConfig().nzCancelText).toBe('cancel');
+
+      modalRef.close();
+      fixture.detectChanges();
+      flush();
+    }));
+
+    it('should set nzCentered', fakeAsync(() => {
+      const modalRef = modalService.confirm({
+        nzCentered: true
+      });
+      fixture.detectChanges();
+
+      expect(modalRef.getConfig().nzCentered).toBe(true);
+
+      const modal = overlayContainerElement.querySelector('nz-modal-confirm-container') as HTMLElement;
+      expect(modal.classList).toContain('ant-modal-centered');
 
       modalRef.close();
       fixture.detectChanges();

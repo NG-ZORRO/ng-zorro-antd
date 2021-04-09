@@ -71,8 +71,9 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether to show pagination component at bottom of the table | `boolean` | `true` |
 | `[nzPaginationPosition]` | Specify the position of pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
+| `[nzPaginationType]` | Specify the size of pagination | `'default' \| 'small'` | `default` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` | ✅ |
-| `[nzOutBordered]` | Whether to show table outer borders | `boolean` | `false` | - |
+| `[nzOuterBordered]` | Whether to show table outer borders | `boolean` | `false` | - |
 | `[nzWidthConfig]` | Set col width can not used with `[nzWidth]` of `th` | `string[]` | `[]` |
 | `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |
@@ -212,6 +213,7 @@ Customized filter panel
 | `[nzDropdownMenu]` | Dropdown menu | `NzDropdownMenuComponent` | - |
 | `[nzVisible]` | whether the dropdown menu is visible, double binding | `boolean` | - |
 | `[nzActive]` | whether the icon status is activated | `boolean` | `false` |
+| `[nzHasBackdrop]` | Whether or not attach a backdrop. | `boolean` | `false` |
 | `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>` | - |
 
 

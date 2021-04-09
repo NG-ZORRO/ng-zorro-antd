@@ -3,9 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+  SimpleChanges
+} from '@angular/core';
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -18,7 +31,6 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
   selector: '[nz-row],nz-row,nz-form-item',
   exportAs: 'nzRow',
   host: {
-    '[class.ant-row]': `true`,
     '[class.ant-row-top]': `nzAlign === 'top'`,
     '[class.ant-row-middle]': `nzAlign === 'middle'`,
     '[class.ant-row-bottom]': `nzAlign === 'bottom'`,
@@ -26,16 +38,18 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-end]': `nzJustify === 'end'`,
     '[class.ant-row-center]': `nzJustify === 'center'`,
     '[class.ant-row-space-around]': `nzJustify === 'space-around'`,
-    '[class.ant-row-space-between]': `nzJustify === 'space-between'`
+    '[class.ant-row-space-between]': `nzJustify === 'space-between'`,
+    '[class.ant-row-rtl]': `dir === "rtl"`
   }
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
-  @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
+  @Input() nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
 
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
+  dir: Direction = 'ltr';
   private readonly destroy$ = new Subject();
 
   getGutter(): [number | null, number | null] {
@@ -52,7 +66,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           }
         });
       } else {
-        results[index] = g || null;
+        results[index] = Number(g) || null;
       }
     });
     return results;
@@ -72,17 +86,25 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     renderGutter('margin-top', verticalGutter);
     renderGutter('margin-bottom', verticalGutter);
   }
-
   constructor(
     public elementRef: ElementRef,
     public renderer: Renderer2,
     public mediaMatcher: MediaMatcher,
     public ngZone: NgZone,
     public platform: Platform,
-    private breakpointService: NzBreakpointService
-  ) {}
+    private breakpointService: NzBreakpointService,
+    @Optional() private directionality: Directionality
+  ) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-row');
+  }
 
   ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
+
     this.setGutterStyle();
   }
 

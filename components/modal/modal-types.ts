@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { OverlayRef } from '@angular/cdk/overlay';
+import { Direction } from '@angular/cdk/bidi';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -21,6 +21,7 @@ export interface StyleObjectLike {
 const noopFun = () => void 0;
 
 export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+  nzCentered?: boolean = false;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
   nzOkDisabled?: boolean = false;
@@ -35,6 +36,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzWidth?: number | string = 520;
   nzCloseIcon?: string | TemplateRef<void> = 'close';
   nzOkType?: NzButtonType = 'primary';
+  nzOkDanger?: boolean = false;
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
@@ -51,25 +53,19 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
   nzCloseOnNavigation?: boolean;
   nzViewContainerRef?: ViewContainerRef;
-
-  /**
-   * Reset the container element.
-   * @deprecated Not supported.
-   * @breaking-change 11.0.0
-   */
-  nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
-
   // Template use only
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
 
   // Confirm
   nzIconType?: string = 'question-circle';
+  nzDirection?: Direction;
 }
 
 export interface ModalButtonOptions<T = NzSafeAny> {
   label: string;
   type?: NzButtonType;
+  danger?: boolean;
   shape?: NzButtonShape;
   ghost?: boolean;
   size?: NzButtonSize;

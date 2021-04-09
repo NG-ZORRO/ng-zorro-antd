@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -14,6 +15,6 @@ import { NzRibbonComponent } from './ribbon.component';
 @NgModule({
   declarations: [NzBadgeComponent, NzBadgeSupComponent, NzRibbonComponent],
   exports: [NzBadgeComponent, NzRibbonComponent],
-  imports: [CommonModule, ObserversModule, NzOutletModule]
+  imports: [BidiModule, CommonModule, ObserversModule, NzOutletModule]
 })
 export class NzBadgeModule {}

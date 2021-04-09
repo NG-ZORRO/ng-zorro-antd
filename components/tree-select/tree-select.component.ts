@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BACKSPACE } from '@angular/cdk/keycodes';
+import { FocusMonitor } from '@angular/cdk/a11y';
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
@@ -27,9 +30,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 
 import {
   NzFormatEmitEvent,
@@ -44,9 +48,8 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-
+import { merge, of as observableOf, Subject } from 'rxjs';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { NzTreeSelectService } from './tree-select.service';
 
 export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
@@ -59,11 +62,12 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
 @Component({
   selector: 'nz-tree-select',
   exportAs: 'nzTreeSelect',
-  animations: [slideMotion, zoomMotion],
+  animations: [slideMotion],
   template: `
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
@@ -80,6 +84,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
+        [dir]="dir"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
@@ -125,22 +131,14 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       <ng-container *ngIf="isMultiple">
         <nz-select-item
           *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
-          [@zoomMotion]
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
-          (@zoomMotion.done)="updatePosition()"
           (delete)="removeSelected(node, true)"
         ></nz-select-item>
 
         <nz-select-item
           *ngIf="selectedNodes.length > nzMaxTagCount"
-          [@zoomMotion]
-          (@zoomMotion.done)="updatePosition()"
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [contentTemplateOutlet]="nzMaxTagPlaceholder"
           [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
           [deletable]="false"
@@ -150,14 +148,15 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       </ng-container>
 
       <nz-select-search
-        *ngIf="nzShowSearch"
+        [nzId]="nzId"
+        [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"
         (valueChange)="setInputValue($event)"
         [value]="inputValue"
         [mirrorSync]="isMultiple"
         [disabled]="nzDisabled"
-        [showInput]="nzOpen"
+        [focusTrigger]="nzOpen"
       ></nz-select-search>
 
       <nz-select-placeholder
@@ -193,8 +192,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   ],
   host: {
     '[class.ant-select-lg]': 'nzSize==="large"',
+    '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
-    '[class.ant-select-enabled]': '!nzDisabled',
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
@@ -202,7 +201,9 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     '[class.ant-select-multiple]': 'isMultiple',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
-    '(click)': 'trigger()'
+    '[class.ant-select-focused]': 'nzOpen || focused',
+    '(click)': 'trigger()',
+    '(keydown)': 'onKeydown($event)'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -222,6 +223,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
   static ngAcceptInputType_nzCheckStrictly: BooleanInput;
 
+  @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;
@@ -247,6 +249,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
+  @Input() @WithConfig() nzBackdrop = false;
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -281,12 +284,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isComposing = false;
   isDestroy = true;
   isNotFound = false;
+  focused = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  selectionChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
+  dir: Direction = 'ltr';
+
+  private destroy$ = new Subject<void>();
 
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
@@ -305,22 +311,49 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    @Optional() private directionality: Directionality,
+    private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
   }
 
   ngOnInit(): void {
     this.isDestroy = false;
-    this.selectionChangeSubscription = this.subscribeSelectionChange();
+    this.subscribeSelectionChange();
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.focused = false;
+          this.cdr.markForCheck();
+          Promise.resolve().then(() => {
+            this.onTouched();
+          });
+        } else {
+          this.focused = true;
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
-    this.selectionChangeSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isComposingChange(isComposing: boolean): void {
@@ -369,14 +402,31 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.onTouched = fn;
   }
 
+  onKeydown(event: KeyboardEvent): void {
+    if (this.nzDisabled) {
+      return;
+    }
+    switch (event.keyCode) {
+      case ESCAPE:
+        /**
+         * Skip the ESCAPE processing, it will be handled in {@link onOverlayKeyDown}.
+         */
+        break;
+      case TAB:
+        this.closeDropDown();
+        break;
+      default:
+        if (!this.nzOpen) {
+          this.openDropdown();
+        }
+    }
+  }
+
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
       this.closeDropDown();
     } else {
       this.openDropdown();
-      if (this.nzShowSearch || this.isMultiple) {
-        this.focusOnInput();
-      }
     }
   }
 
@@ -385,6 +435,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzOpen = true;
       this.nzOpenChange.emit(this.nzOpen);
       this.updateCdkConnectedOverlayStatus();
+      if (this.nzShowSearch || this.isMultiple) {
+        this.focusOnInput();
+      }
     }
   }
 
@@ -439,8 +492,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
   }
 
-  subscribeSelectionChange(): Subscription {
-    return merge(
+  subscribeSelectionChange(): void {
+    merge(
       this.nzTreeClick.pipe(
         tap((event: NzFormatEmitEvent) => {
           const node = event.node!;
@@ -463,23 +516,25 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
       this.nzCleared,
       this.nzRemoved
-    ).subscribe(() => {
-      this.updateSelectedNodes();
-      const value = this.selectedNodes.map(node => node.key!);
-      this.value = [...value];
-      if (this.nzShowSearch || this.isMultiple) {
-        this.inputValue = '';
-        this.isNotFound = false;
-      }
-      if (this.isMultiple) {
-        this.onChange(value);
-        this.focusOnInput();
-        this.updatePosition();
-      } else {
-        this.closeDropDown();
-        this.onChange(value.length ? value[0] : null);
-      }
-    });
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateSelectedNodes();
+        const value = this.selectedNodes.map(node => node.key!);
+        this.value = [...value];
+        if (this.nzShowSearch || this.isMultiple) {
+          this.inputValue = '';
+          this.isNotFound = false;
+        }
+        if (this.isMultiple) {
+          this.onChange(value);
+          this.focusOnInput();
+          this.updatePosition();
+        } else {
+          this.closeDropDown();
+          this.onChange(value.length ? value[0] : null);
+        }
+      });
   }
 
   updateSelectedNodes(init: boolean = false): void {
@@ -499,10 +554,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updatePosition(): void {
-    setTimeout(() => {
-      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-        this.cdkConnectedOverlay.overlayRef.updatePosition();
-      }
+    reqAnimFrame(() => {
+      this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }
 

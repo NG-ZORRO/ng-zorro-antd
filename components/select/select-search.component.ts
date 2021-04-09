@@ -27,6 +27,7 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
   template: `
     <input
       #inputElement
+      [attr.id]="nzId"
       autocomplete="off"
       class="ant-select-selection-search-input"
       [ngModel]="value"
@@ -39,12 +40,10 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
     />
     <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
   `,
-  host: {
-    '[class.ant-select-selection-search]': 'true'
-  },
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
+  @Input() nzId: string | null = null;
   @Input() disabled = false;
   @Input() mirrorSync = false;
   @Input() showInput = true;
@@ -79,7 +78,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     const hostDOM = this.elementRef.nativeElement;
     const inputDOM = this.inputElement.nativeElement;
     this.renderer.removeStyle(hostDOM, 'width');
-    mirrorDOM.innerHTML = `${inputDOM.value}&nbsp;`;
+    mirrorDOM.innerHTML = this.renderer.createText(`${inputDOM.value}&nbsp;`);
     this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
   }
 
@@ -91,7 +90,10 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {
+    // TODO: move to host after View Engine deprecation
+    this.elementRef.nativeElement.classList.add('ant-select-selection-search');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;

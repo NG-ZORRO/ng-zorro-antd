@@ -20,6 +20,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Inject,
   Input,
@@ -28,9 +29,11 @@ import {
   OnInit,
   Optional,
   Output,
+  QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
@@ -38,6 +41,7 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
+import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -63,6 +67,7 @@ export type MentionPlacement = 'top' | 'bottom';
     <ng-template #suggestions>
       <ul class="ant-mention-dropdown">
         <li
+          #items
           class="ant-mention-dropdown-item"
           *ngFor="let suggestion of filteredSuggestions; let i = index"
           [class.focus]="i === activeIndex"
@@ -99,6 +104,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
+  @ViewChildren('items', { read: ElementRef })
+  items!: QueryList<ElementRef>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
   set suggestionChild(value: TemplateRef<{ $implicit: NzSafeAny }>) {
@@ -123,6 +130,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
+  }
+
+  private get focusItemElement(): HTMLElement | null {
+    const itemArr = this.items?.toArray();
+    if (itemArr && itemArr[this.activeIndex]) {
+      return itemArr[this.activeIndex].nativeElement;
+    }
+    return null;
   }
 
   constructor(
@@ -270,11 +285,19 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   private setNextItemActive(): void {
     this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
     this.cdr.markForCheck();
+    this.scrollToFocusItem();
   }
 
   private setPreviousItemActive(): void {
     this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
     this.cdr.markForCheck();
+    this.scrollToFocusItem();
+  }
+
+  private scrollToFocusItem(): void {
+    if (this.focusItemElement) {
+      this.focusItemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    }
   }
 
   private canOpen(): boolean {
@@ -283,15 +306,21 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private resetCursorMention(): void {
-    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
+    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, NZ_MENTION_CONFIG.split) || '';
     const selectionStart = this.triggerNativeElement.selectionStart!;
     const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
-      const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
+      const endPos =
+        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
       const mention = value.substring(startPos, endPos);
-      if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
+      if (
+        (startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
+        startPos < 0 ||
+        mention.includes(prefix[i], 1) ||
+        mention.includes(NZ_MENTION_CONFIG.split)
+      ) {
         this.cursorMention = null;
         this.cursorMentionStart = -1;
         this.cursorMentionEnd = -1;
