@@ -72,6 +72,7 @@ const initialPosition = {
                 #imgRef
                 *ngIf="index === imageIndex"
                 [attr.src]="image.src"
+                [attr.srcset]="image.srcset"
                 [attr.alt]="image.alt"
                 [style.width]="image.width"
                 [style.height]="image.height"
