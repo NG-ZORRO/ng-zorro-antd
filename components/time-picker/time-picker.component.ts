@@ -54,8 +54,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
-        (focus)="onFocus(true)"
-        (blur)="onFocus(false)"
+        (focus)="onFocusChange($event)"
+        (blur)="onFocusChange($event)"
         (keyup.enter)="onKeyupEnter()"
         (keyup.escape)="onKeyupEsc()"
         (ngModelChange)="onInputChange($event)"
@@ -240,8 +240,11 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  onFocus(value: boolean): void {
-    this.focused = value;
+  onFocusChange(event: FocusEvent): void {
+    this.focused = event.type === 'focus';
+    if (!this.focused) {
+      this.close();
+    }
   }
 
   focus(): void {

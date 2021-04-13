@@ -1,10 +1,11 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
@@ -45,6 +46,7 @@ describe('time-picker', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerComponent);
       testComponent = fixture.debugElement.componentInstance;
+      testComponent.useSuite = 1;
       fixture.detectChanges();
       timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
@@ -164,6 +166,22 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+    it('should open with click and close with tab', fakeAsync(() => {
+      testComponent.useSuite = 2;
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      getSecondPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
 
     describe('setup I18n service', () => {
       let srv: NzI18nService;
@@ -191,24 +209,40 @@ describe('time-picker', () => {
   function queryFromOverlay(selector: string): HTMLElement {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
+
+  function getSecondPickerInput(fixtureDebugElement: DebugElement): HTMLInputElement {
+    return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
+  }
+
+  function getPickerContainer(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-panel-container`) as HTMLElement;
+  }
 });
 
 @Component({
   template: `
-    <nz-time-picker
-      [nzAutoFocus]="autoFocus"
-      [(ngModel)]="date"
-      (ngModelChange)="onChange($event)"
-      [(nzOpen)]="open"
-      (nzOpenChange)="openChange($event)"
-      [nzDisabled]="disabled"
-      [nzUse12Hours]="use12Hours"
-      [nzSuffixIcon]="nzSuffixIcon"
-      [nzBackdrop]="nzBackdrop"
-    ></nz-time-picker>
+    <ng-container [ngSwitch]="useSuite">
+      <nz-time-picker
+        *ngSwitchCase="1"
+        [nzAutoFocus]="autoFocus"
+        [(ngModel)]="date"
+        (ngModelChange)="onChange($event)"
+        [(nzOpen)]="open"
+        (nzOpenChange)="openChange($event)"
+        [nzDisabled]="disabled"
+        [nzUse12Hours]="use12Hours"
+        [nzSuffixIcon]="nzSuffixIcon"
+        [nzBackdrop]="nzBackdrop"
+      ></nz-time-picker>
+      <ng-container *ngSwitchCase="2">
+        <nz-time-picker [ngModel]="date"></nz-time-picker>
+        <nz-time-picker [ngModel]="date"></nz-time-picker>
+      </ng-container>
+    </ng-container>
   `
 })
 export class NzTestTimePickerComponent {
+  useSuite!: 1 | 2;
   open = false;
   openChange = jasmine.createSpy('open change');
   autoFocus = false;
