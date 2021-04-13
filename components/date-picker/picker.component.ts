@@ -155,7 +155,6 @@ import { PREFIX_CLASS } from './util';
       (positionChange)="onPositionChange($event)"
       (detach)="onOverlayDetach()"
       (overlayKeydown)="onOverlayKeydown($event)"
-      (overlayOutsideClick)="onClickOutside($event)"
     >
       <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
     </ng-template>
@@ -182,7 +181,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzId: string | null = null;
   @Input() hasBackdrop = false;
 
-  @Output() readonly focusChange = new EventEmitter<FocusEvent>();
+  @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
@@ -312,7 +311,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.activeBarStyle = { ...baseStyle, left: `${this.datePickerService.arrowLeft}px` };
     }
 
-    this.panel.cdr.markForCheck();
     this.cdr.markForCheck();
   }
 
@@ -336,7 +334,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onFocus(event: FocusEvent, partType?: RangePartType): void {
     event.preventDefault();
-    this.focusChange.emit(event);
+    this.focusChange.emit(true);
     if (partType) {
       this.datePickerService.inputPartChange$.next(partType);
     }
@@ -344,7 +342,12 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onBlur(event: FocusEvent): void {
     event.preventDefault();
-    this.focusChange.emit(event);
+    this.focusChange.emit(false);
+
+    const isFocus = this.elementRef.nativeElement.contains(event.relatedTarget);
+    if (!isFocus) {
+      this.checkAndClose();
+    }
   }
 
   // Show overlay content
@@ -356,7 +359,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.focus();
-      this.panel.init();
       this.openChange.emit(true);
       this.cdr.markForCheck();
     }
@@ -376,16 +378,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && !!this.allowClear;
   }
 
-  onClickInputBox(event: MouseEvent): void {
-    event.stopPropagation();
-    this.focus();
-    if (!this.isOpenHandledByUser()) {
-      this.showOverlay();
-    }
-  }
-
-  onClickOutside(event: MouseEvent): void {
-    if (this.elementRef.nativeElement.contains(event.target)) {
+  checkAndClose(): void {
+    if (!this.realOpenState) {
       return;
     }
 
@@ -401,6 +395,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     } else {
       this.datePickerService.setValue(this.datePickerService.initialValue!);
       this.hideOverlay();
+    }
+  }
+
+  onClickInputBox(event: MouseEvent): void {
+    event.stopPropagation();
+    this.focus();
+    if (!this.isOpenHandledByUser()) {
+      this.showOverlay();
     }
   }
 

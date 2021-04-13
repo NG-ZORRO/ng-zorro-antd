@@ -60,7 +60,7 @@ describe('NzRangePickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -81,6 +81,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
+      triggerInputBlur();
       getRegularPickerInput(fixture.debugElement).focus();
       fixture.detectChanges();
       tick(500);
@@ -92,7 +93,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -237,7 +238,7 @@ describe('NzRangePickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -402,7 +403,7 @@ describe('NzRangePickerComponent', () => {
       dispatchMouseEvent(getSuperNextBtn('left'), 'click');
       fixture.detectChanges();
 
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -476,7 +477,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       expect(getRangePickerRightInput(fixture.debugElement) === document.activeElement).toBeTruthy();
 
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -557,7 +558,7 @@ describe('NzRangePickerComponent', () => {
       ).toBeTruthy();
 
       // Close left panel
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -583,7 +584,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
 
       // Close left panel
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur('right');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -594,7 +595,7 @@ describe('NzRangePickerComponent', () => {
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(1);
 
       // Close left panel
-      dispatchMouseEvent(document.body, 'click');
+      triggerInputBlur();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -955,10 +956,6 @@ describe('NzRangePickerComponent', () => {
     return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[2].nativeElement as HTMLInputElement;
   }
 
-  // function getSecondSelectedDayCell(): HTMLElement {
-  //   return queryFromOverlay('.ant-picker-panel:last-child td.ant-picker-cell-selected .ant-picker-cell-inner') as HTMLElement;
-  // }
-
   function getPreBtn(part: RangePartType): HTMLElement {
     return queryFromOverlay(`.ant-picker-panel:${getCssIndex(part)} .${PREFIX_CLASS}-header-prev-btn`);
   }
@@ -1016,6 +1013,14 @@ describe('NzRangePickerComponent', () => {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
+  }
+
+  function triggerInputBlur(part: 'left' | 'right' = 'left'): void {
+    if (part === 'left') {
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'blur');
+    } else {
+      dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'blur');
+    }
   }
 });
 
