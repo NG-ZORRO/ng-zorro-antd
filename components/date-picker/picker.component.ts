@@ -67,7 +67,7 @@ import { PREFIX_CLASS } from './util';
           placeholder="{{ getPlaceholder() }}"
           [size]="inputSize"
           (focus)="onFocus($event)"
-          (blur)="onBlur($event)"
+          (focusout)="onFocusout($event)"
           (ngModelChange)="onInputChange($event)"
           (keyup.enter)="onKeyupEnter($event)"
         />
@@ -101,7 +101,7 @@ import { PREFIX_CLASS } from './util';
         [readOnly]="inputReadOnly"
         [size]="inputSize"
         (click)="onClickInputBox($event)"
-        (blur)="onBlur($event)"
+        (focusout)="onFocusout($event)"
         (focus)="onFocus($event, partType)"
         (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
@@ -282,7 +282,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       }
       this.focus();
       this.updateInputWidthAndArrowLeft();
-      this.panel?.updateActiveDate();
     });
   }
 
@@ -340,7 +339,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
   }
 
-  onBlur(event: FocusEvent): void {
+  // blur event has not the relatedTarget in IE11, use focusout instead.
+  onFocusout(event: FocusEvent): void {
     event.preventDefault();
     this.focusChange.emit(false);
 
@@ -358,6 +358,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (!this.realOpenState && !this.disabled) {
       this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
+      this.panel.init();
       this.focus();
       this.openChange.emit(true);
       this.cdr.markForCheck();
@@ -412,7 +413,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onOverlayKeydown(event: KeyboardEvent): void {
     if (event.keyCode === ESCAPE) {
-      this.datePickerService.setValue(this.datePickerService.initialValue!);
+      this.datePickerService.initValue();
     }
   }
 
@@ -450,7 +451,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onInputChange(value: string, isEnter: boolean = false): void {
     /**
-     * in IE11 focus/blur will trigger ngModelChange if has placeholder
+     * in IE11 focus/blur will trigger ngModelChange if placeholder changes,
      * so we forbidden IE11 to open panel through input change
      */
     if (
@@ -463,7 +464,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     const date = this.checkValidDate(value);
-    if (date) {
+    // Can only change date when it's open
+    if (date && this.realOpenState) {
       this.panel.changeValueFromSelect(date, isEnter);
     }
   }

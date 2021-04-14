@@ -1017,9 +1017,9 @@ describe('NzRangePickerComponent', () => {
 
   function triggerInputBlur(part: 'left' | 'right' = 'left'): void {
     if (part === 'left') {
-      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'blur');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
     } else {
-      dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'blur');
+      dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'focusout');
     }
   }
 });

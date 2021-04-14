@@ -1072,7 +1072,7 @@ describe('NzDatePickerComponent', () => {
   }
 
   function triggerInputBlur(): void {
-    dispatchFakeEvent(getPickerInput(fixture.debugElement), 'blur');
+    dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
   }
 });
 
