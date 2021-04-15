@@ -167,7 +167,5 @@ components/overview/en
 /experimental/resizable/en
 /experimental/code-editor/zh
 /experimental/code-editor/en
-/experimental/graph/zh
-/experimental/graph/en
 /experimental/experimental-image/zh
 /experimental/experimental-image/en
