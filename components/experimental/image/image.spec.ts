@@ -6,22 +6,31 @@
 import { Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
-import { defaultImageSrcLoader, isFixedSize, normalizeSrc, NzImageModule, NzImageSrcLoader } from 'ng-zorro-antd/experimental/image';
+import {
+  aliObjectsLoader,
+  cloudinaryLoader,
+  defaultImageSrcLoader,
+  imgixLoader,
+  isFixedSize,
+  normalizeSrc,
+  NzImageModule,
+  NzImageSrcLoader
+} from 'ng-zorro-antd/experimental/image';
 
-describe('Optimize', () => {
-  let fixture: ComponentFixture<TestImageExperimentalOptimizeComponent>;
-  let context: TestImageExperimentalOptimizeComponent;
+describe('Experimental', () => {
+  let fixture: ComponentFixture<TestImageExperimentalBaseComponent>;
+  let context: TestImageExperimentalBaseComponent;
   let debugElement: DebugElement;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [TestImageViewModule]
+      imports: [TestExperimentalImageModule]
     });
     TestBed.compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestImageExperimentalOptimizeComponent);
+    fixture = TestBed.createComponent(TestImageExperimentalBaseComponent);
     context = fixture.componentInstance;
     debugElement = fixture.debugElement;
   });
@@ -83,23 +92,53 @@ describe('Utils', () => {
   });
 });
 
+describe('NzSrcLoader', () => {
+  const src = 'test.jpg';
+  const width = 100;
+
+  it('#aliObjectsLoader', () => {
+    expect(
+      aliObjectsLoader({
+        src,
+        width
+      })
+    ).toBe(`https://zos.alipayobjects.com/rmsportal/${src}?x-oss-process=image/resize,w_${width}`);
+    expect(aliObjectsLoader({ src })).toBe(`https://zos.alipayobjects.com/rmsportal/${src}`);
+  });
+
+  it('#imgixLoader', () => {
+    expect(imgixLoader({ src, width })).toBe(`https://static.imgix.net/${src}?format=auto&fit=max&w=${width}`);
+    expect(imgixLoader({ src })).toBe(`https://static.imgix.net/${src}?format=auto`);
+  });
+
+  it('#cloudinaryLoader', () => {
+    expect(
+      cloudinaryLoader({
+        src,
+        width
+      })
+    ).toBe(`https://res.cloudinary.com/demo/image/upload/c_limit,q_auto,w_${width}/${src}`);
+    expect(cloudinaryLoader({ src })).toBe(`https://res.cloudinary.com/demo/image/upload/c_limit,q_auto/${src}`);
+  });
+});
+
 @Component({
   template: `
     <nz-image [nzSrc]="src" [nzAutoSrcset]="autoSrc" [nzSrcLoader]="loader" [nzWidth]="width" nzHeight="200" nzAlt="test"></nz-image>
   `
 })
-export class TestImageExperimentalOptimizeComponent {
+export class TestImageExperimentalBaseComponent {
   src = '';
   autoSrc = false;
   loader = defaultImageSrcLoader;
   width = 200;
 }
 
-const TEST_COMPONENTS = [TestImageExperimentalOptimizeComponent];
+const TEST_COMPONENTS = [TestImageExperimentalBaseComponent];
 
 @NgModule({
   imports: [NzImageModule],
   declarations: [...TEST_COMPONENTS],
   exports: [...TEST_COMPONENTS]
 })
-export class TestImageViewModule {}
+export class TestExperimentalImageModule {}
