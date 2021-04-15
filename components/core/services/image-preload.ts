@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -22,12 +21,9 @@ export class ImagePreloadService {
   private counter = new Map<string, number>();
   private linkRefs = new Map<string, HTMLLinkElement>();
 
-  constructor(private platform: Platform, @Inject(DOCUMENT) private document: NzSafeAny) {}
+  constructor(@Inject(DOCUMENT) private document: NzSafeAny) {}
 
   addPreload(option: PreloadOption): PreloadDisposeHandle {
-    if (this.platform.isBrowser) {
-      return () => void 0;
-    }
     const uniqueKey = `${option.src}${option.srcset}`;
     let currentCount = this.counter.get(uniqueKey) || 0;
     currentCount++;
