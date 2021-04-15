@@ -128,6 +128,8 @@ export class AppModule {}
 
 也可以使用 `useFactory` 将全局配置与区域配置合并后生效
 
+> 注意：全局配置在初始化之后修改将不会影响该部分配置结果
+
 ```typescript
 @Component({
   providers: [

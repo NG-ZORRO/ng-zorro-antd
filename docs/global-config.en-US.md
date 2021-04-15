@@ -127,6 +127,8 @@ Developers can use Dependency Injection to reset `NZ_CONFIG` within a particular
 
 You can also use `useFactory` to combine the global configuration with the local configuration to take effect
 
+> Note: Change global configuration after component initialization won't affect local configuration
+
 ```typescript
 @Component({
   providers: [
