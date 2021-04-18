@@ -93,7 +93,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [reverse]="nzReverse"
       ></nz-slider-step>
       <nz-slider-handle
-        *ngFor="let handle of handles"
+        *ngFor="let handle of handles; index as handleIndex"
         [vertical]="nzVertical"
         [reverse]="nzReverse"
         [offset]="handle.offset!"
@@ -103,6 +103,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [tooltipVisible]="nzTooltipVisible"
         [tooltipPlacement]="nzTooltipPlacement"
         [dir]="dir"
+        (focusin)="onHandleFocusIn(handleIndex)"
       ></nz-slider-handle>
       <nz-slider-marks
         *ngIf="marksArray"
@@ -201,6 +202,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     } else if (nzMarks && !nzMarks.firstChange) {
       this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
     } else if (nzRange && !nzRange.firstChange) {
+      this.handles = generateHandlers(nzRange.currentValue ? 2 : 1);
       this.setValue(this.formatValue(null));
     }
   }
@@ -236,6 +238,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
    * Event handler is only triggered when a slider handler is focused.
    */
   onKeyDown(e: KeyboardEvent): void {
+    if (this.nzDisabled) {
+      return;
+    }
+
     const code = e.keyCode;
     const isIncrease = code === RIGHT_ARROW || code === UP_ARROW;
     const isDecrease = code === LEFT_ARROW || code === DOWN_ARROW;
@@ -250,6 +256,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     step = this.dir === 'rtl' ? step * -1 : step;
     const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
+  }
+
+  onHandleFocusIn(index: number): void {
+    this.activeValueIndex = index;
   }
 
   private setValue(value: NzSliderValue | null, isWriteValue: boolean = false): void {
@@ -553,10 +563,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private generateMarkItems(marks: NzMarks): NzExtendedMark[] | null {
     const marksArray: NzExtendedMark[] = [];
     for (const key in marks) {
-      const mark = marks[key];
-      const val = typeof key === 'number' ? key : parseFloat(key);
-      if (val >= this.nzMin && val <= this.nzMax) {
-        marksArray.push({ value: val, offset: this.valueToOffset(val), config: mark });
+      if (marks.hasOwnProperty(key)) {
+        const mark = marks[key];
+        const val = typeof key === 'number' ? key : parseFloat(key);
+        if (val >= this.nzMin && val <= this.nzMax) {
+          marksArray.push({ value: val, offset: this.valueToOffset(val), config: mark });
+        }
       }
     }
     return marksArray.length ? marksArray : null;
