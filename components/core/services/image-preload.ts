@@ -54,7 +54,7 @@ export class ImagePreloadService {
     linkNode.as = 'image';
     linkNode.imageSrcset = option.srcset || '';
     linkNode.href = option.src;
-    this.document.head.append(linkNode);
+    this.document.head.appendChild(linkNode);
     return linkNode;
   }
 
