@@ -211,14 +211,14 @@ import {BidiModule} from '@angular/cdk/bidi';
 - `[nzMode]` 不再支持 `NzDateMode[]` 数组类型。
 
 **modal**
-- `[nzGetContainer]` 以被移除。
-- `NzModalRef` 的 `open` 方法以被移除。
+- `[nzGetContainer]` 已被移除。
+- `NzModalRef` 的 `open` 方法已被移除。
 
 **tabs**
-- `[nzShowPagination]` input 以被移除。
-- `(nzOnPrevClick)` output 以被移除。
-- `(nzOnNextClick)` output 以被移除。
-- `a[nz-tab-link]` 用法以被移除，请使用 `ng-template[nzTabLink] > a[nz-tab-link]` 代替.
+- `[nzShowPagination]` input 已被移除。
+- `(nzOnPrevClick)` output 已被移除。
+- `(nzOnNextClick)` output 已被移除。
+- `a[nz-tab-link]` 用法已被移除，请使用 `ng-template[nzTabLink] > a[nz-tab-link]` 代替.
 
 
 ## 历史版本
