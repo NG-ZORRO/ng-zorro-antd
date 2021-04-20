@@ -78,7 +78,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [nzId]="nzId"
     >
       <date-range-popup
-        *ngIf="picker.realOpenState || nzInline"
         [isRange]="isRange"
         [inline]="nzInline"
         [defaultPickerValue]="nzDefaultPickerValue"
@@ -210,7 +209,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
     // Default value
     this.datePickerService.isRange = this.isRange;
-    this.datePickerService.initValue();
+    this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
       const value = this.datePickerService.value;
       this.datePickerService.initialValue = cloneDate(value);

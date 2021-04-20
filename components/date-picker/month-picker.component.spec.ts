@@ -56,7 +56,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'blur');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -205,7 +205,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'blur');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);

@@ -22,7 +22,7 @@ import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, SingleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import {
@@ -49,8 +49,13 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
-            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
-            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }"></ng-container>
+            <ng-container *ngIf="hasTimePicker; else noTimePicker">
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: datePickerService.activeInput }"></ng-container>
+            </ng-container>
+            <ng-template #noTimePicker>
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }"></ng-container>
+            </ng-template>
           </div>
           <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </div>
@@ -71,7 +76,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
-      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'" [style.display]="show(partType) ? 'block' : 'none'">
+      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
         <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
         <inner-popup
           [showWeek]="showWeek"
@@ -144,10 +149,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() panelMode!: NzDateMode | NzDateMode[];
   @Input() defaultPickerValue!: CompatibleDate | undefined | null;
+  @Input() dir: Direction = 'ltr';
+
   @Output() readonly panelModeChange = new EventEmitter<NzDateMode | NzDateMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
-  @Input() dir: Direction = 'ltr';
 
   prefixCls: string = PREFIX_CLASS;
   endPanelMode: NzDateMode | NzDateMode[] = 'date';
@@ -167,10 +173,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   constructor(public datePickerService: DatePickerService, public cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.updateActiveDate();
-      this.cdr.markForCheck();
-    });
+    merge(this.datePickerService.valueChange$, this.datePickerService.inputPartChange$)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateActiveDate();
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -203,6 +211,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   init(): void {
     this.checkedPartArr = [false, false];
     this.updateActiveDate();
+    // trigger timepicker to reset
+    this.datePickerService.setValue(cloneDate(this.datePickerService.value));
   }
 
   /**

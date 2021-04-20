@@ -10,7 +10,7 @@ import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
-  initialValue?: CompatibleValue;
+  initialValue!: CompatibleValue;
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
@@ -21,12 +21,11 @@ export class DatePickerService implements OnDestroy {
   emitValue$ = new Subject<void>();
   inputPartChange$ = new Subject<RangePartType>();
 
-  initValue(): void {
-    if (this.isRange) {
-      this.initialValue = [];
-    } else {
-      this.initialValue = null;
+  initValue(reset: boolean = false): void {
+    if (reset) {
+      this.initialValue = this.isRange ? [] : null;
     }
+
     this.setValue(this.initialValue);
   }
 
