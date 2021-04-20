@@ -7,10 +7,10 @@ import { Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import {
-  aliObjectsLoader,
-  cloudinaryLoader,
+  createAliObjectsLoader,
+  createCloudinaryLoader,
+  createImgixLoader,
   defaultImageSrcLoader,
-  imgixLoader,
   isFixedSize,
   normalizeSrc,
   NzImageModule,
@@ -97,6 +97,7 @@ describe('NzSrcLoader', () => {
   const width = 100;
 
   it('#aliObjectsLoader', () => {
+    const aliObjectsLoader = createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal');
     expect(
       aliObjectsLoader({
         src,
@@ -107,11 +108,13 @@ describe('NzSrcLoader', () => {
   });
 
   it('#imgixLoader', () => {
+    const imgixLoader = createImgixLoader('https://static.imgix.net');
     expect(imgixLoader({ src, width })).toBe(`https://static.imgix.net/${src}?format=auto&fit=max&w=${width}`);
     expect(imgixLoader({ src })).toBe(`https://static.imgix.net/${src}?format=auto`);
   });
 
   it('#cloudinaryLoader', () => {
+    const cloudinaryLoader = createCloudinaryLoader('https://res.cloudinary.com/demo/image/upload');
     expect(
       cloudinaryLoader({
         src,

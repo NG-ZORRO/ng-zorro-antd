@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { aliObjectsLoader } from 'ng-zorro-antd/experimental/image';
+import { createAliObjectsLoader } from 'ng-zorro-antd/experimental/image';
 
 @Component({
   selector: 'nz-demo-experimental-image-src-loader',
@@ -9,5 +9,5 @@ import { aliObjectsLoader } from 'ng-zorro-antd/experimental/image';
 })
 export class NzDemoExperimentalImageSrcLoaderComponent {
   src = 'jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
-  loader = aliObjectsLoader;
+  loader = createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal');
 }

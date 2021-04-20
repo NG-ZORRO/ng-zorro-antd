@@ -54,23 +54,29 @@ export const defaultImageSrcLoader: NzImageSrcLoader = ({ src }) => {
   return src;
 };
 ```
-Other built-in loaders
+Built-in image CND creation method
+
 ```ts
-// Demo: https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/resize,w_256
-export const aliObjectsLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://zos.alipayobjects.com/rmsportal/${normalizeSrc(src)}?x-oss-process=image/resize,w_${width}`;
-};
 
-// Demo: https://static.imgix.net/daisy.png?format=auto&fit=max&w=300
-export const imgixLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://static.imgix.net/${normalizeSrc(src)}?format=auto&fit=max&w=${width}`;
-};
+/**
+ * AliObjectsLoader return format
+ * {domain}/{src}?x-oss-process=image/resize,w_{width}
+ */
+export function createAliObjectsLoader(domain: string): NzImageSrcLoader;
 
-// Demo: https://res.cloudinary.com/demo/image/upload/w_300,c_limit,q_auto/turtles.jpg
-export const cloudinaryLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://res.cloudinary.com/demo/image/upload/w_${width},c_limit,q_auto/${normalizeSrc(src)}`;
-};
+/**
+ * ImgixLoader return format
+ * {domain}/{src}?format=auto&fit=max&w={width}
+ */
+export function createImgixLoader(domain: string): NzImageSrcLoader;
+
+/**
+ * CloudinaryLoader return format
+ * {domain}/c_limit,q_auto,w_{width}/{src}
+ */
+export function createCloudinaryLoader(domain: string): NzImageSrcLoader;
 ```
+
 
 ### Responsive images and preloaded images
 

@@ -10,20 +10,35 @@ export const defaultImageSrcLoader: NzImageSrcLoader = ({ src }) => {
   return src;
 };
 
-// Demo: https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/resize,w_256
-export const aliObjectsLoader: NzImageSrcLoader = ({ src, width }) => {
-  const params = isNil(width) ? '' : `?x-oss-process=image/resize,w_${width}`;
-  return `https://zos.alipayobjects.com/rmsportal/${normalizeSrc(src)}${params}`;
-};
+/**
+ * AliObjectsLoader return format
+ * {domain}/{src}?x-oss-process=image/resize,w_{width}
+ */
+export function createAliObjectsLoader(domain: string): NzImageSrcLoader {
+  return ({ src, width }) => {
+    const params = isNil(width) ? '' : `?x-oss-process=image/resize,w_${width}`;
+    return `${domain}/${normalizeSrc(src)}${params}`;
+  };
+}
 
-// Demo: https://static.imgix.net/daisy.png?format=auto&fit=max&w=300
-export const imgixLoader: NzImageSrcLoader = ({ src, width }) => {
-  const params = isNil(width) ? '' : `&fit=max&w=${width}`;
-  return `https://static.imgix.net/${normalizeSrc(src)}?format=auto${params}`;
-};
+/**
+ * ImgixLoader return format
+ * {domain}/{src}?format=auto&fit=max&w={width}
+ */
+export function createImgixLoader(domain: string): NzImageSrcLoader {
+  return ({ src, width }) => {
+    const params = isNil(width) ? '' : `&fit=max&w=${width}`;
+    return `${domain}/${normalizeSrc(src)}?format=auto${params}`;
+  };
+}
 
-// Demo: https://res.cloudinary.com/demo/image/upload/w_300,c_limit,q_auto/turtles.jpg
-export const cloudinaryLoader: NzImageSrcLoader = ({ src, width }) => {
-  const params = isNil(width) ? '' : `,w_${width}`;
-  return `https://res.cloudinary.com/demo/image/upload/c_limit,q_auto${params}/${normalizeSrc(src)}`;
-};
+/**
+ * CloudinaryLoader return format
+ * {domain}/c_limit,q_auto,w_{width}/{src}
+ */
+export function createCloudinaryLoader(domain: string): NzImageSrcLoader {
+  return ({ src, width }) => {
+    const params = isNil(width) ? '' : `,w_${width}`;
+    return `${domain}/c_limit,q_auto${params}/${normalizeSrc(src)}`;
+  };
+}

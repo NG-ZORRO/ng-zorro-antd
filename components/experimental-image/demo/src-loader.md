@@ -46,11 +46,11 @@ If you want to use a different Loader in a different environment you can do the 
 import { environment } from 'environments/environment';
 
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
-import { aliObjectsLoader, defaultImageSrcLoader } from 'ng-zorro-antd/experimental/image';
+import { createAliObjectsLoader, defaultImageSrcLoader } from 'ng-zorro-antd/experimental/image';
 
 const ngZorroConfig: NzConfig = {
   imageExperimental: {
-    nzSrcLoader: environment.production ? aliObjectsLoader : defaultImageSrcLoader
+    nzSrcLoader: environment.production ? createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal') : defaultImageSrcLoader
   }
 };
 

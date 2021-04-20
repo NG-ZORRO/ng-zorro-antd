@@ -49,29 +49,35 @@ export type NzImageSrcLoader = (params: { src: string; width: number }) => strin
 
 ### nzSrcLoader
 
-使用 `nzSrcLoader` 可以帮助你填充请求图片的关键信息，例如 `src` 和 `width`，默认为：
+使用 `nzSrcLoader` 可以帮助你填充请求图片的关键信息，例如 `src` 和 `srcset`，默认为：
+
 ```ts
 export const defaultImageSrcLoader: NzImageSrcLoader = ({ src }) => {
   return src;
 };
 ```
-其它内置加载器
+
+内置的图片 CND 创建方法
+
 ```ts
-// Demo: https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/resize,w_256
-export const aliObjectsLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://zos.alipayobjects.com/rmsportal/${normalizeSrc(src)}?x-oss-process=image/resize,w_${width}`;
-};
 
-// Demo: https://static.imgix.net/daisy.png?format=auto&fit=max&w=300
-export const imgixLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://static.imgix.net/${normalizeSrc(src)}?format=auto&fit=max&w=${width}`;
-};
+/**
+ * AliObjectsLoader return format
+ * {domain}/{src}?x-oss-process=image/resize,w_{width}
+ */
+export function createAliObjectsLoader(domain: string): NzImageSrcLoader;
 
-// Demo: https://res.cloudinary.com/demo/image/upload/w_300,c_limit,q_auto/turtles.jpg
-export const cloudinaryLoader: NzImageSrcLoader = ({src, width}) => {
-  return `https://res.cloudinary.com/demo/image/upload/w_${width},c_limit,q_auto/${normalizeSrc(src)}`;
-};
+/**
+ * ImgixLoader return format
+ * {domain}/{src}?format=auto&fit=max&w={width}
+ */
+export function createImgixLoader(domain: string): NzImageSrcLoader;
 
+/**
+ * CloudinaryLoader return format
+ * {domain}/c_limit,q_auto,w_{width}/{src}
+ */
+export function createCloudinaryLoader(domain: string): NzImageSrcLoader;
 ```
 
 
