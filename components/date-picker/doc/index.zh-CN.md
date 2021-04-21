@@ -98,6 +98,10 @@ registerLocaleData(zh);
 
 > `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
-### nzFormat 特别说明
+## FAQ
 
-日期格式化目前同时支持两种方式：`DatePipe`（默认，[语法参考](https://angular.io/api/common/DatePipe)） 和 `date-fns`（[语法参考](https://date-fns.org/docs/format#description)，见[`如何使用 date-fns 进行日期格式化`](/docs/i18n/zh#如何使用Date-fns进行日期格式化)）。
+### 为何在设置 `nzFormat="dd/MM/yyyy"` 后手动输入不生效
+
+需要引入 `date-fns` 。日期格式化目前同时支持两种方式：`DatePipe`（默认，[语法参考](https://angular.io/api/common/DatePipe)） 和 `date-fns`（见[如何使用 `date-fns` 进行日期格式化](/docs/i18n/zh#如何使用Date-fns进行日期格式化)）。当你引入 `date-fns` 后，NG-ZORRO 会使用它提供的 API 来进行反序列化。
+
+
