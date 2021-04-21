@@ -3,16 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export default {
+ export default {
   locale: 'ka',
   Pagination: {
-    // Options.jsx
     items_per_page: '/ გვ.',
     jump_to: 'გადასვლა',
     jump_to_confirm: 'დადასტურება',
     page: '',
-
-    // Pagination.jsx
     prev_page: 'წინა გვერდი',
     next_page: 'შემდეგი გვერდი',
     prev_5: 'წინა 5 გვერდი',
@@ -22,6 +19,16 @@ export default {
   },
   DatePicker: {
     lang: {
+      placeholder: 'აირჩიეთ თარიღი',
+      yearPlaceholder: 'აირჩიეთ წელი',
+      quarterPlaceholder: 'აირჩიეთ კვარტალი',
+      monthPlaceholder: 'აირჩიეთ თვე',
+      weekPlaceholder: 'აირჩიეთ კვირა',
+      rangePlaceholder: ['დაწყების თარიღი', 'დასრულების თარიღი'],
+      rangeYearPlaceholder: ['დაწყების წელი', 'დასრულების წელი'],
+      rangeMonthPlaceholder: ['დაწყების თვე', 'დასრულების თვე'],
+      rangeWeekPlaceholder: ['დაწყების კვირა', 'დასრულების კვირა'],
+      locale: 'ka_GE',
       today: 'დღეს',
       now: 'ახლა',
       backToToday: 'მიმდინარე თარიღი',
@@ -50,14 +57,26 @@ export default {
       nextCentury: 'შემდეგი საუკუნე'
     },
     timePickerLocale: {
-      placeholder: 'აირჩიეთ დრო'
+      placeholder: 'აირჩიეთ დრო',
+      rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
     }
   },
   TimePicker: {
-    placeholder: 'აირჩიეთ დრო'
+    placeholder: 'აირჩიეთ დრო',
+    rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
   },
   Calendar: {
     lang: {
+      placeholder: 'აირჩიეთ თარიღი',
+      yearPlaceholder: 'აირჩიეთ წელი',
+      quarterPlaceholder: 'აირჩიეთ კვარტალი',
+      monthPlaceholder: 'აირჩიეთ თვე',
+      weekPlaceholder: 'აირჩიეთ კვირა',
+      rangePlaceholder: ['დაწყების თარიღი', 'დასრულების თარიღი'],
+      rangeYearPlaceholder: ['დაწყების წელი', 'დასრულების წელი'],
+      rangeMonthPlaceholder: ['დაწყების თვე', 'დასრულების თვე'],
+      rangeWeekPlaceholder: ['დაწყების კვირა', 'დასრულების კვირა'],
+      locale: 'ka_GE',
       today: 'დღეს',
       now: 'ახლა',
       backToToday: 'მიმდინარე თარიღი',
@@ -86,7 +105,8 @@ export default {
       nextCentury: 'შემდეგი საუკუნე'
     },
     timePickerLocale: {
-      placeholder: 'აირჩიეთ დრო'
+      placeholder: 'აირჩიეთ დრო',
+      rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
     }
   },
   global: {
@@ -96,9 +116,17 @@ export default {
     filterTitle: 'ფილტრი',
     filterConfirm: 'დიახ',
     filterReset: 'განულება',
+    filterEmptyText: 'ფილტრები არ არის',
+    emptyText: 'მონაცემები არ არის',
     selectAll: 'აირჩიეთ მიმდინარე გვერდი',
     selectInvert: 'გვერდის მიმართულების შეცვლა',
-    sortTitle: 'სორტირება'
+    selectionAll: 'აირჩიეთ ყველა მონაცემი',
+    sortTitle: 'სორტირება',
+    expand: 'მწკრივის გაშლა',
+    collapse: 'მწკრივის ჩაკეცვა',
+    triggerDesc: 'დააჭირეთ კლებადობით დასალაგებლად',
+    triggerAsc: 'დააჭირეთ ზრდადობით დასალაგებლად',
+    cancelSort: 'დააჭირეთ დალაგების გასაუქმებლად'
   },
   Modal: {
     okText: 'დიახ',
@@ -113,13 +141,20 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'ძიება',
     itemUnit: 'ელემ.',
-    itemsUnit: 'ელემ.'
+    itemsUnit: 'ელემ.',
+    remove: 'Remove',
+    selectCurrent: 'აირჩიეთ მიმდინარე გვერდი',
+    removeCurrent: 'წაშალეთ მიმდინარე გვერდი',
+    selectAll: 'აირჩიეთ ყველა მონაცემი',
+    removeAll: 'წაშალეთ ყველა მონაცემი',
+    selectInvert: 'მიმდინარე გვერდის შებრუნება'
   },
   Upload: {
     uploading: 'იტვირტება...',
     removeFile: 'ფაილის წაშლა',
     uploadError: 'ატვირთვის შეცდომა',
-    previewFile: 'ფაილის გადახედვა'
+    previewFile: 'ფაილის გადახედვა',
+    downloadFile: 'ფაილის ჩამოტვირთვა'
   },
   Empty: {
     description: 'მონაცემი არ არის'

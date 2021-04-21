@@ -947,7 +947,7 @@ describe('upload', () => {
         spyOn(window as any, 'Image').and.returnValue(new MockImage());
 
         instance.listType = 'picture';
-        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }];
         fixture.detectChanges();
         tick();
         expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
@@ -959,12 +959,12 @@ describe('upload', () => {
         spyOn(window as any, 'Image').and.returnValue(img);
 
         instance.listType = 'picture';
-        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }];
         fixture.detectChanges();
         tick();
         expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
       }));
-      it('should be ingore thumb when is invalid image data', () => {
+      it('should be ignore thumb when is invalid image data', () => {
         instance.listType = 'picture';
         instance.items = [{ originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined }];
         fixture.detectChanges();
@@ -973,7 +973,7 @@ describe('upload', () => {
       it('should be customize preview file', fakeAsync(() => {
         instance.previewFile = () => of('11');
         instance.listType = 'picture';
-        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }];
         fixture.detectChanges();
         tick();
         expect(instance.items[0].thumbUrl).toBe('11');

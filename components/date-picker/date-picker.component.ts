@@ -133,7 +133,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
 
   isRange: boolean = false; // Indicate whether the value is a range value
-  focused: boolean = false;
   extraFooter?: TemplateRef<NzSafeAny> | string;
   dir: Direction = 'ltr';
 
@@ -210,7 +209,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
     // Default value
     this.datePickerService.isRange = this.isRange;
-    this.datePickerService.initValue();
+    this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
       const value = this.datePickerService.value;
       this.datePickerService.initialValue = cloneDate(value);
@@ -383,16 +382,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.datePickerService.initialValue = newValue;
   }
 
-  onFocusChange(value: FocusEvent): void {
-    // When the relatedTarget is part of the elementRef, it means that it's a range-picker and you are navigating to
-    // the other input in that range picker. In that case we don't want to close the picker.
-    this.focused = (value.type === 'blur' && this.elementRef.nativeElement.contains(value.relatedTarget)) || value.type === 'focus';
+  onFocusChange(value: boolean): void {
     // TODO: avoid autoFocus cause change after checked error
-    if (this.focused) {
+    if (value) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
-      this.close();
     }
   }
 

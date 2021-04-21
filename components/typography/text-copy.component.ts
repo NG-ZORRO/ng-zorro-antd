@@ -29,6 +29,7 @@ import { takeUntil } from 'rxjs/operators';
   exportAs: 'nzTextCopy',
   template: `
     <button
+      type="button"
       nz-tooltip
       nz-trans-button
       [nzTooltipTitle]="copied ? copedTooltip : copyTooltip"

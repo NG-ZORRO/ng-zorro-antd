@@ -126,7 +126,7 @@ export class NzUploadListComponent implements OnChanges {
 
   private previewImage(file: File | Blob): Promise<string> {
     return new Promise(resolve => {
-      if (!isImageFileType(file.type)) {
+      if (!isImageFileType(file.type) || !this.platform.isBrowser) {
         resolve('');
         return;
       }

@@ -64,15 +64,15 @@ describe('Animation', () => {
     flushMicrotasks();
 
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
-    expect(modalContentElement!.classList).toContain('zoom-enter');
-    expect(modalContentElement!.classList).toContain('zoom-enter-active');
+    expect(modalContentElement!.classList).toContain('ant-zoom-enter');
+    expect(modalContentElement!.classList).toContain('ant-zoom-enter-active');
     tick(500);
 
     modalRef.close();
     fixture.detectChanges();
     flushMicrotasks();
-    expect(modalContentElement!.classList).toContain('zoom-leave');
-    expect(modalContentElement!.classList).toContain('zoom-leave-active');
+    expect(modalContentElement!.classList).toContain('ant-zoom-leave');
+    expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
     flush();
   }));
 });
