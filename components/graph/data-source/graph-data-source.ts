@@ -4,6 +4,7 @@
  */
 
 import { SelectionModel } from '@angular/cdk/collections';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NzGraphDataDef } from '../interface';
@@ -22,12 +23,16 @@ export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
 
   /** Expands one single data node. */
   expand(nodeName: string): void {
-    this.expansionModel.select(nodeName);
+    const compound = this.dataSource.compound || {};
+    const toBeSelected = this.findParents(compound, nodeName, [nodeName]);
+    this.expansionModel.select(...toBeSelected);
   }
 
   /** Collapses one single data node. */
   collapse(nodeName: string): void {
-    this.expansionModel.deselect(nodeName);
+    const compound = this.dataSource.compound || {};
+    const toBeDeselected = this.findChildren(compound, nodeName, [nodeName]);
+    this.expansionModel.deselect(...toBeDeselected);
   }
 
   /** Whether a given data node is expanded or not. Returns true if the data node is expanded. */
@@ -65,5 +70,27 @@ export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
 
   disconnect(): void {
     // do nothing for now
+  }
+
+  private findParents(data: NzSafeAny, key: string, parents: string[] = []): string[] {
+    const parent = Object.keys(data)
+      .filter(d => d !== key)
+      .find(d => data[d].includes(key));
+    if (!parent) {
+      return parents;
+    } else {
+      return this.findParents(data, parent, [parent, ...parents]);
+    }
+  }
+
+  private findChildren(data: NzSafeAny, key: string, children: string[] = []): string[] {
+    const groupIds = Object.keys(data);
+    const child = (data[key] || []).filter((c: string) => groupIds.includes(c));
+    if (child && child.length > 0) {
+      return child.reduce((pre: string[], cur: string) => {
+        return Array.from(new Set([...pre, ...this.findChildren(data, cur, [...children, cur])]));
+      }, children);
+    }
+    return children;
   }
 }

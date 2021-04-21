@@ -34,7 +34,7 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
   @Input() edge!: NzGraphEdge;
-  @Input() edgeType?: NzGraphEdgeType;
+  @Input() edgeType?: NzGraphEdgeType | string;
 
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphEdge;
