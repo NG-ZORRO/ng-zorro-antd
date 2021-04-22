@@ -343,14 +343,14 @@ describe('Preview', () => {
       flushMicrotasks();
       const backdropElement = getOverlayBackDropElement();
       const previewWrapElement = getPreviewWrapElement();
-      expect(backdropElement.classList).toContain('fade-enter');
-      expect(backdropElement.classList).toContain('fade-enter-active');
+      expect(backdropElement.classList).toContain('ant-fade-enter');
+      expect(backdropElement.classList).toContain('ant-fade-enter-active');
       tick(500);
       previewWrapElement.click();
       fixture.detectChanges();
       flushMicrotasks();
-      expect(backdropElement.classList).toContain('fade-leave');
-      expect(backdropElement.classList).toContain('fade-leave-active');
+      expect(backdropElement.classList).toContain('ant-fade-leave');
+      expect(backdropElement.classList).toContain('ant-fade-leave-active');
       flush();
     }));
   });

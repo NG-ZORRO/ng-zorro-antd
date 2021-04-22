@@ -97,6 +97,8 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 > Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
-### nzFormat special instructions
+## FAQ
 
-Date formatting currently supports two methods: `DatePipe` (default, [syntax reference](https://angular.io/api/common/DatePipe)) and `date-fns` ([syntax reference](https://date-fns.org/docs/format#description), see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).
+### Why does manual input not take effect after setting `nzFormat="dd/MM/yyyy"`
+
+You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (default, [syntax reference](https://angular.io/api/common/DatePipe)) and `date-fns` (see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO takes the function provided by `date-fns` to implement date deserialization after using it.

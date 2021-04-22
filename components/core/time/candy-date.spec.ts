@@ -71,6 +71,14 @@ describe('candy-date coverage supplements', () => {
     expect(result[1]!.getMonth()).toEqual(now.getMonth());
     expect(differenceInCalendarMonths(result[0]!.nativeDate, now)).toEqual(-1);
 
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false, 'month', 'left');
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
+
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false, 'month', 'right');
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
+
     result = normalizeRangeValue([new CandyDate(), new CandyDate()], true);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
     expect(result[1]!.getMonth()).toEqual(now.getMonth());

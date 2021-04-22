@@ -88,7 +88,13 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
             <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
-              <g class="nz-graph-edge" nz-graph-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
+              <g
+                class="nz-graph-edge"
+                nz-graph-edge
+                [edge]="edge"
+                [edgeType]="nzGraphLayoutConfig?.defaultEdge?.type"
+                [customTemplate]="customGraphEdgeTemplate"
+              ></g>
             </ng-container>
           </svg:g>
 
@@ -203,7 +209,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     const { nzAutoFit, nzRankDirection, nzGraphData, nzGraphLayoutConfig } = changes;
     if (nzGraphLayoutConfig) {
       this.layoutSetting = this.mergeConfig(nzGraphLayoutConfig.currentValue);
-      // Object.assign(this.layoutSetting, this.nzGraphLayoutSetting || {});
     }
 
     if (nzGraphData) {

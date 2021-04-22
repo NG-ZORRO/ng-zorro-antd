@@ -49,7 +49,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 ### 全局配置
 
-可以通过 `NzConfigService` 进行全局配置，详情请见文档中“全局配置项”章节。
+可以通过 `NzConfigService` 进行全局配置，详情请见文档中 [全局配置项](/docs/global-config/zh) 章节。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
