@@ -7,7 +7,7 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -873,6 +873,43 @@ describe('nz-slider', () => {
 
       expect(sliderInstance.value).toEqual([2, 99]);
     });
+
+    it('should work for range slider when activeValueIndex is undefined', () => {
+      testComponent.range = true;
+      fixture.detectChanges();
+
+      const handleElements = sliderNativeElement.querySelectorAll('nz-slider-handle');
+      expect(handleElements.length).toBe(2);
+
+      dispatchFakeEvent(handleElements[0]!, 'focusin');
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual([1, 100]);
+
+      dispatchFakeEvent(handleElements[1]!, 'focusin');
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', LEFT_ARROW);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual([1, 99]);
+    });
+
+    it('should not respond to keyboard event when disabled', () => {
+      expect(sliderInstance.value).toBe(0);
+
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(1);
+
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(1);
+
+      testComponent.disabled = false;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(2);
+    });
   });
 
   describe('RTL', () => {
@@ -1099,11 +1136,12 @@ class SliderShowTooltipComponent {
 
 @Component({
   template: `
-    <nz-slider [nzRange]="range"></nz-slider>
+    <nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider>
   `
 })
 class NzTestSliderKeyboardComponent {
   range = false;
+  disabled = false;
 }
 
 /**
