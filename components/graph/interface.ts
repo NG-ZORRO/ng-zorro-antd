@@ -15,6 +15,11 @@ import {
 } from 'dagre-compound';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+export enum NzGraphEdgeType {
+  LINE = 'line',
+  CURVE = 'curve'
+}
+
 export interface NzGraphDataDef extends HierarchyGraphDef {
   nodes: NzGraphNodeDef[];
   edges: NzGraphEdgeDef[];
@@ -79,6 +84,9 @@ export interface NzGraphBaseLayout {
     height: number;
     labelOffset: number;
     maxLabelWidth: number;
+  };
+  defaultEdge: {
+    type: NzGraphEdgeType | string; // Need to support extensions
   };
 }
 

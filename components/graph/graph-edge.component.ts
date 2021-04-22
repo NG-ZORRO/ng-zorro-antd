@@ -15,9 +15,9 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { curveBasis, line } from 'd3-shape';
+import { curveBasis, curveLinear, line } from 'd3-shape';
 import { take } from 'rxjs/operators';
-import { NzGraphEdge } from './interface';
+import { NzGraphEdge, NzGraphEdgeType } from './interface';
 
 @Component({
   selector: '[nz-graph-edge]',
@@ -34,6 +34,8 @@ import { NzGraphEdge } from './interface';
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
   @Input() edge!: NzGraphEdge;
+  @Input() edgeType?: NzGraphEdgeType | string;
+
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphEdge;
   }>;
@@ -44,10 +46,10 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
   private el!: SVGGElement;
   private path!: SVGPathElement;
 
-  private readonly line = line<{ x: number; y: number }>()
+  private line = line<{ x: number; y: number }>()
     .x(d => d.x)
     .y(d => d.y)
-    .curve(curveBasis);
+    .curve(curveLinear);
 
   constructor(private elementRef: ElementRef<SVGGElement>, private ngZone: NgZone, private cdr: ChangeDetectorRef) {
     this.el = this.elementRef.nativeElement;
@@ -58,7 +60,7 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { edge, customTemplate } = changes;
+    const { edge, customTemplate, edgeType } = changes;
     if (edge) {
       this.ngZone.onStable.pipe(take(1)).subscribe(() => {
         // Update path element if customTemplate set
@@ -69,6 +71,13 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
         this.setLine();
         this.cdr.markForCheck();
       });
+    }
+    if (edgeType) {
+      const type = this.edgeType === NzGraphEdgeType.CURVE ? curveBasis : curveLinear;
+      this.line = line<{ x: number; y: number }>()
+        .x(d => d.x)
+        .y(d => d.y)
+        .curve(type);
     }
   }
 
