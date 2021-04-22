@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
@@ -182,6 +182,54 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     }));
+    it('should set previous value when tabbing out with invalid input', fakeAsync(() => {
+      testComponent.useSuite = 2;
+
+      fixture.detectChanges();
+      const startDate = new Date('2020-03-27T13:49:54.917');
+      testComponent.date = startDate;
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('invalid', input);
+      fixture.detectChanges();
+
+      getSecondPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      flush();
+
+      expect(input.value).not.toEqual('invalid');
+    }));
+    it('should set new value when tabbing out with valid input', fakeAsync(() => {
+      testComponent.useSuite = 2;
+
+      fixture.detectChanges();
+      const startDate = new Date('2020-03-27T13:49:54.917');
+      testComponent.date = startDate;
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('20:10:30', input);
+      fixture.detectChanges();
+
+      getSecondPickerInput(fixture.debugElement).focus();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(testComponent.date.getHours()).toEqual(20);
+      expect(testComponent.date.getMinutes()).toEqual(10);
+      expect(testComponent.date.getSeconds()).toEqual(30);
+    }));
 
     describe('setup I18n service', () => {
       let srv: NzI18nService;
@@ -235,8 +283,8 @@ describe('time-picker', () => {
         [nzBackdrop]="nzBackdrop"
       ></nz-time-picker>
       <ng-container *ngSwitchCase="2">
-        <nz-time-picker [ngModel]="date"></nz-time-picker>
-        <nz-time-picker [ngModel]="date"></nz-time-picker>
+        <nz-time-picker [(ngModel)]="date"></nz-time-picker>
+        <nz-time-picker [(ngModel)]="date"></nz-time-picker>
       </ng-container>
     </ng-container>
   `

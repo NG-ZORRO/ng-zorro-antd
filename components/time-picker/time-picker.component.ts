@@ -243,7 +243,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   onFocusChange(event: FocusEvent): void {
     this.focused = event.type === 'focus';
     if (!this.focused) {
-      this.close();
+      this.setCurrentValueAndClose();
     }
   }
 
