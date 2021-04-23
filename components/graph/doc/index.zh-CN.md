@@ -103,8 +103,8 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | `type` | 节点类型(组: 0, 节点: 1) | `number` |
 | `parentNodeName` | 父节点名称 | `string` |
 | `coreBox` | 布局高宽 | `{ width: number;  height: number; }` |
-| `x` | x偏移 | `number` |
-| `y` | y偏移 | `number` |
+| `xOffset` | x偏移 | `number` |
+| `yOffset` | y偏移 | `number` |
 | `width` | 宽度 | `number` |
 | `height` | 高度 | `number` |
 | `[key: string]`| 用户输入 | `any` |
