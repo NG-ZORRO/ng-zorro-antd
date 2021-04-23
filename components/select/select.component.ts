@@ -648,6 +648,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.elementRef);
     this.destroy$.next();
     this.destroy$.complete();
   }

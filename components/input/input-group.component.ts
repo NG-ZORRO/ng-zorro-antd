@@ -198,6 +198,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     }
   }
   ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.elementRef);
     this.destroy$.next();
     this.destroy$.complete();
   }

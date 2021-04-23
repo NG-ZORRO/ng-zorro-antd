@@ -160,14 +160,16 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
     }
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        Promise.resolve().then(() => this.onTouched());
-        if (this.nzRadioService) {
-          this.nzRadioService.touch();
+    this.focusMonitor.monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          Promise.resolve().then(() => this.onTouched());
+          if (this.nzRadioService) {
+            this.nzRadioService.touch();
+          }
         }
-      }
-    });
+      });
 
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
