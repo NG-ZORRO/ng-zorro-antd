@@ -73,7 +73,7 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
       });
     }
     if (edgeType) {
-      const type = this.edgeType === NzGraphEdgeType.CURVE ? curveBasis : curveLinear;
+      const type = this.edgeType === NzGraphEdgeType.LINE ? curveLinear : curveBasis;
       this.line = line<{ x: number; y: number }>()
         .x(d => d.x)
         .y(d => d.y)
