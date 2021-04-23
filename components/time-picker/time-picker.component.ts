@@ -389,7 +389,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       return true;
     }
 
-    const disabledHours: number[] | undefined = this.nzDisabledHours?.();
+    const disabledHours = this.nzDisabledHours?.();
     const disabledMinutes = this.nzDisabledMinutes?.(value.getHours());
     const disabledSeconds = this.nzDisabledSeconds?.(value.getHours(), value.getMinutes());
 
