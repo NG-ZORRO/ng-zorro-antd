@@ -54,8 +54,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
-        (focus)="onFocusChange($event)"
-        (blur)="onFocusChange($event)"
+        (focus)="onFocus(true)"
+        (blur)="onFocus(false)"
         (keyup.enter)="onKeyupEnter()"
         (keyup.escape)="onKeyupEsc()"
         (ngModelChange)="onInputChange($event)"
@@ -240,10 +240,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  onFocusChange(event: FocusEvent): void {
-    this.focused = event.type === 'focus';
-    if (!this.focused) {
-      this.setCurrentValueAndClose();
+  onFocus(value: boolean): void {
+    if (!value) {
+      if (this.checkTimeValid(this.value)) {
+        this.setCurrentValueAndClose();
+      } else {
+        this.setValue(this.preValue);
+        this.close();
+      }
     }
   }
 
@@ -378,5 +382,21 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
     this.cdr.markForCheck();
+  }
+
+  private checkTimeValid(value: Date | null): boolean {
+    if (!value) {
+      return true;
+    }
+
+    const disabledHours: number[] | undefined = this.nzDisabledHours?.();
+    const disabledMinutes = this.nzDisabledMinutes?.(value.getHours());
+    const disabledSeconds = this.nzDisabledSeconds?.(value.getHours(), value.getMinutes());
+
+    return !(
+      disabledHours?.includes(value.getHours()) ||
+      disabledMinutes?.includes(value.getMinutes()) ||
+      disabledSeconds?.includes(value.getSeconds())
+    );
   }
 }

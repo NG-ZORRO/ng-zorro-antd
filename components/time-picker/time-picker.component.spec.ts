@@ -1,18 +1,20 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
+
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { isSameHour, isSameMinute, isSameSecond } from 'date-fns';
+import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
 
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
 describe('time-picker', () => {
@@ -46,7 +48,6 @@ describe('time-picker', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerComponent);
       testComponent = fixture.debugElement.componentInstance;
-      testComponent.useSuite = 1;
       fixture.detectChanges();
       timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
@@ -167,27 +168,21 @@ describe('time-picker', () => {
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
     it('should open with click and close with tab', fakeAsync(() => {
-      testComponent.useSuite = 2;
-
-      fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
-      getSecondPickerInput(fixture.debugElement).focus();
+      triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      flush();
+      tick(500);
       fixture.detectChanges();
+
       expect(getPickerContainer()).toBeNull();
     }));
     it('should set previous value when tabbing out with invalid input', fakeAsync(() => {
-      testComponent.useSuite = 2;
-
-      fixture.detectChanges();
-      const startDate = new Date('2020-03-27T13:49:54.917');
-      testComponent.date = startDate;
+      testComponent.date = new Date('2020-03-27T13:49:54.917');
 
       fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
@@ -199,18 +194,16 @@ describe('time-picker', () => {
       typeInElement('invalid', input);
       fixture.detectChanges();
 
-      getSecondPickerInput(fixture.debugElement).focus();
+      triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      flush();
+      tick(500);
+      fixture.detectChanges();
 
       expect(input.value).not.toEqual('invalid');
     }));
     it('should set new value when tabbing out with valid input', fakeAsync(() => {
-      testComponent.useSuite = 2;
-
-      fixture.detectChanges();
-      const startDate = new Date('2020-03-27T13:49:54.917');
-      testComponent.date = startDate;
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.date = new Date('2020-03-27T13:49:54.917');
 
       fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
@@ -221,14 +214,15 @@ describe('time-picker', () => {
       typeInElement('20:10:30', input);
       fixture.detectChanges();
 
-      getSecondPickerInput(fixture.debugElement).focus();
+      triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      flush();
+      tick(500);
       fixture.detectChanges();
 
-      expect(testComponent.date.getHours()).toEqual(20);
-      expect(testComponent.date.getMinutes()).toEqual(10);
-      expect(testComponent.date.getSeconds()).toEqual(30);
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(isSameHour(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
+      expect(isSameMinute(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
+      expect(isSameSecond(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
     }));
 
     describe('setup I18n service', () => {
@@ -258,20 +252,19 @@ describe('time-picker', () => {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
 
-  function getSecondPickerInput(fixtureDebugElement: DebugElement): HTMLInputElement {
-    return fixtureDebugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
-  }
-
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay(`.${PREFIX_CLASS}-panel-container`) as HTMLElement;
+  }
+
+  function triggerInputBlur(debugElement: DebugElement): void {
+    dispatchFakeEvent(getPickerInput(debugElement), 'blur');
   }
 });
 
 @Component({
   template: `
-    <ng-container [ngSwitch]="useSuite">
+    <ng-container>
       <nz-time-picker
-        *ngSwitchCase="1"
         [nzAutoFocus]="autoFocus"
         [(ngModel)]="date"
         (ngModelChange)="onChange($event)"
@@ -282,15 +275,10 @@ describe('time-picker', () => {
         [nzSuffixIcon]="nzSuffixIcon"
         [nzBackdrop]="nzBackdrop"
       ></nz-time-picker>
-      <ng-container *ngSwitchCase="2">
-        <nz-time-picker [(ngModel)]="date"></nz-time-picker>
-        <nz-time-picker [(ngModel)]="date"></nz-time-picker>
-      </ng-container>
     </ng-container>
   `
 })
 export class NzTestTimePickerComponent {
-  useSuite!: 1 | 2;
   open = false;
   openChange = jasmine.createSpy('open change');
   autoFocus = false;
@@ -299,6 +287,6 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon?: string;
   nzBackdrop = false;
-  onChange(): void {}
+  onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }
