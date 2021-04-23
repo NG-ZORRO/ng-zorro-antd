@@ -241,6 +241,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onFocus(value: boolean): void {
+    this.focused = value;
     if (!value) {
       if (this.checkTimeValid(this.value)) {
         this.setCurrentValueAndClose();
