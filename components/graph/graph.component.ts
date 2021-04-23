@@ -419,6 +419,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     const renderInfo = buildGraph(data, options, this.layoutSetting) as NzGraphGroupNode;
     const dig = (nodes: Array<NzGraphNode | NzGraphGroupNode>): void => {
       nodes.forEach(node => {
+        const { x, y } = node;
+        node.xOffset = x;
+        node.yOffset = y;
         if (node.type === 1 && this.mapOfNodeAttr.hasOwnProperty(node.name)) {
           Object.assign(node, this.mapOfNodeAttr[node.name]);
         } else if (node.type === 0) {
