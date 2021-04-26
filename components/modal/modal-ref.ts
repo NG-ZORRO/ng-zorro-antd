@@ -119,6 +119,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   }
 
   close(result?: R): void {
+    if (this.state !== NzModalState.OPEN) {
+      return;
+    }
     this.result = result;
     this.containerInstance.animationStateChanged
       .pipe(

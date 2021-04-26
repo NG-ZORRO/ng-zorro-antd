@@ -1396,6 +1396,26 @@ describe('NzModal', () => {
       expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
     }));
 
+    it('should set nzVisible to false when implicitly closed', fakeAsync(() => {
+      const closeSpy = jasmine.createSpy('close spy');
+      componentInstance.nzModalComponent.afterClose.subscribe(closeSpy);
+      expect(closeSpy).not.toHaveBeenCalled();
+
+      componentInstance.isVisible = true;
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(1);
+
+      modalService.closeAll();
+      componentFixture.detectChanges();
+      flush();
+
+      expect(closeSpy).toHaveBeenCalled();
+      expect(componentInstance.isVisible).toBe(false);
+      expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
+    }));
+
     it('should nzOnCancel work', fakeAsync(() => {
       componentInstance.isVisible = true;
       componentFixture.detectChanges();
