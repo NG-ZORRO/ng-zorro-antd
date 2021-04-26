@@ -7,7 +7,6 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { isSameHour, isSameMinute, isSameSecond } from 'date-fns';
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -220,9 +219,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
 
       const result = (onChange.calls.allArgs()[0] as Date[])[0];
-      expect(isSameHour(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
-      expect(isSameMinute(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
-      expect(isSameSecond(result, new Date('2021-04-23T20:10:30'))).toBeTruthy();
+      expect(result.getHours()).toEqual(20);
+      expect(result.getMinutes()).toEqual(10);
+      expect(result.getSeconds()).toEqual(30);
     }));
 
     describe('setup I18n service', () => {
@@ -263,19 +262,17 @@ describe('time-picker', () => {
 
 @Component({
   template: `
-    <ng-container>
-      <nz-time-picker
-        [nzAutoFocus]="autoFocus"
-        [(ngModel)]="date"
-        (ngModelChange)="onChange($event)"
-        [(nzOpen)]="open"
-        (nzOpenChange)="openChange($event)"
-        [nzDisabled]="disabled"
-        [nzUse12Hours]="use12Hours"
-        [nzSuffixIcon]="nzSuffixIcon"
-        [nzBackdrop]="nzBackdrop"
-      ></nz-time-picker>
-    </ng-container>
+    <nz-time-picker
+      [nzAutoFocus]="autoFocus"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+      [(nzOpen)]="open"
+      (nzOpenChange)="openChange($event)"
+      [nzDisabled]="disabled"
+      [nzUse12Hours]="use12Hours"
+      [nzSuffixIcon]="nzSuffixIcon"
+      [nzBackdrop]="nzBackdrop"
+    ></nz-time-picker>
   `
 })
 export class NzTestTimePickerComponent {
