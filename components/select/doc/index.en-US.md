@@ -39,7 +39,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
 | `[nzDisabled]` | Whether disabled select | `boolean` | `false` |
 | `[nzDropdownClassName]` | className of dropdown menu | `string` | - |
-| `[nzDropdownMatchSelectWidth]` | Whether dropdown's with is same with select. | `boolean` | `true` |
+| `[nzDropdownMatchSelectWidth]` | Whether dropdown's width is same width than select. | `boolean` | `true` |
 | `[nzDropdownStyle]` | style of dropdown menu | `object` | - |
 | `[nzCustomTemplate]` | The custom template of select | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
 | `[nzServerSearch]` | nz-option will not be filtered when set to true | `boolean` | `false` |
