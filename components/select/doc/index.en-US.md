@@ -77,7 +77,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLabel]` | The text show in nz-select and dropdown menu | `string  \| number` | - |
 | `[nzValue]` | The value passed to ngModel of nz-select | `any ` | - |
 | `[nzHide]` | Whether hide the option in the option list | `boolean` | `false` |
-| `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will relace nzLabel when it was set to true | `boolean` | `false` |
+| `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will replace nzLabel when it was set to true | `boolean` | `false` |
 
 ### nz-option-group
 
