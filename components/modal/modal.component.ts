@@ -24,7 +24,8 @@ import { NzButtonType } from 'ng-zorro-antd/button';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzModalContentDirective } from './modal-content.directive';
 import { NzModalFooterDirective } from './modal-footer.directive';
@@ -39,7 +40,9 @@ import { getConfigFromComponent } from './utils';
   selector: 'nz-modal',
   exportAs: 'nzModal',
   template: `
-    <ng-template><ng-content></ng-content></ng-template>
+    <ng-template>
+      <ng-content></ng-content>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -105,14 +108,17 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
+
   @ContentChild(NzModalTitleDirective, { static: true, read: TemplateRef })
   set modalTitle(value: TemplateRef<NzSafeAny>) {
     if (value) {
       this.setTitleWithTemplate(value);
     }
   }
+
   @ContentChild(NzModalContentDirective, { static: true, read: TemplateRef })
   contentFromContentChild!: TemplateRef<NzSafeAny>;
+
   @ContentChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   set modalFooter(value: TemplateRef<NzSafeAny>) {
     if (value) {
@@ -121,6 +127,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   }
 
   private modalRef: NzModalRef | null = null;
+  private destroy$ = new Subject<void>();
 
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
@@ -143,6 +150,14 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     if (!this.modalRef) {
       const config = this.getConfig();
       this.modalRef = this.modal.create(config);
+
+      // When the modal is implicitly closed (e.g. closeAll) the nzVisible needs to be set to the correct value and emit.
+      this.modalRef.afterClose
+        .asObservable()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.close();
+        });
     }
   }
 
@@ -240,5 +255,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
 
   ngOnDestroy(): void {
     this.modalRef?._finishDialogClose();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
