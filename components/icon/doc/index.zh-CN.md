@@ -153,7 +153,7 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<i nz-icon [iconfont]="'icon-tuichu'"></i>
+<i nz-icon [nzIconfont]="'icon-tuichu'"></i>
 ```
 
 其本质上是创建了一个使用 `<use>` 标签渲染图标的组件。
