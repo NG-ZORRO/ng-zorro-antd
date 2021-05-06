@@ -26,8 +26,9 @@ import { map, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
