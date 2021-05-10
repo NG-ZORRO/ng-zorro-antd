@@ -298,36 +298,38 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(input.value).toBe('Burns Bay Road');
+      expect(input.value).toBe(componentInstance.options[0]);
 
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
       flush();
 
-      expect(input.value).not.toBe('Burns Bay Road');
+      expect(input.value).toBe('');
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
       flush();
 
+      componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       componentInstance.trigger.handleKeydown(ENTER_EVENT);
       fixture.detectChanges();
       flush();
+      fixture.detectChanges();
 
-      expect(input.value).toBe('Downing Street');
+      expect(input.value).toBe(componentInstance.options[1]);
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
-      flush();
+      tick();
+      fixture.detectChanges();
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
+      fixture.detectChanges();
+      expect(input.value).toBe(componentInstance.options[2]);
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
-      tick(500);
-      flush();
-      fixture.detectChanges();
-      expect(input.value).toBe('Downing Street');
+      expect(input.value).toBe(componentInstance.options[1]);
     }));
 
     it('should overlayClassName & overlayStyle work', () => {
