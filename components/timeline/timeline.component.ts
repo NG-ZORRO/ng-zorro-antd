@@ -38,7 +38,8 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
   template: `
     <ul
       class="ant-timeline"
-      [class.ant-timeline-right]="nzMode === 'right'"
+      [class.ant-timeline-label]="hasLabelItem"
+      [class.ant-timeline-right]="!hasLabelItem && nzMode === 'right'"
       [class.ant-timeline-alternate]="nzMode === 'alternate' || nzMode === 'custom'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
@@ -84,6 +85,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
   dir: Direction = 'ltr';
+  hasLabelItem = false;
 
   private destroy$ = new Subject<void>();
 
@@ -134,14 +136,23 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   private updateChildren(): void {
     if (this.listOfItems && this.listOfItems.length) {
       const length = this.listOfItems.length;
+      let hasLabelItem = false;
 
-      this.listOfItems.forEach((item, index) => {
+      this.listOfItems.forEach((item: NzTimelineItemComponent, index: number) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position = getInferredTimelineItemPosition(index, this.nzMode);
+
+        if (!hasLabelItem && item.nzLabel) {
+          hasLabelItem = true;
+        }
+
         item.detectChanges();
       });
+
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
+      this.hasLabelItem = hasLabelItem;
     }
+
     this.cdr.markForCheck();
   }
 }

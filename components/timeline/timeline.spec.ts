@@ -2,8 +2,11 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+
+import { NzDemoTimelineLabelComponent } from './demo/label';
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
 
@@ -170,6 +173,38 @@ describe('nz-timeline', () => {
     it('should pending work', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('template');
+    });
+  });
+
+  describe('label', () => {
+    let testBed: ComponentBed<NzDemoTimelineLabelComponent>;
+    let fixture: ComponentFixture<NzDemoTimelineLabelComponent>;
+    let timeline: DebugElement;
+    let items: HTMLLIElement[];
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzDemoTimelineLabelComponent, {
+        imports: [NzTimelineModule, NzRadioModule]
+      });
+      fixture = testBed.fixture;
+
+      fixture.detectChanges();
+
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    });
+
+    it('should label work', () => {
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-label');
+      expect(items[0].firstElementChild!.classList).toContain('ant-timeline-item-label');
+      expect(items[2].firstElementChild!.classList).not.toContain('ant-timeline-item-label');
+    });
+
+    it('should mode right not affecting classnames', () => {
+      fixture.componentInstance.mode = 'right';
+      fixture.detectChanges();
+
+      expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-right');
     });
   });
 
