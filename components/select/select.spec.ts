@@ -11,7 +11,7 @@ import {
   ɵComponentBed as ComponentBed,
   ɵcreateComponentBed as createComponentBed
 } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
@@ -218,6 +218,11 @@ describe('select', () => {
       expect(selectElement.querySelector('nz-select-item')).toBeFalsy();
       component.value = { value: 'test_value' };
       component.compareWith = (o1: NzSafeAny, o2: NzSafeAny) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      component.compareWith = 'value';
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -501,6 +506,12 @@ describe('select', () => {
       expect(selectElement.querySelectorAll('nz-select-item').length).toBe(0);
       component.value = [{ value: 'value' }];
       component.compareWith = (o1: NzSafeAny, o2: NzSafeAny) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(selectElement.querySelectorAll('nz-select-item').length).toBe(1);
+      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent).toBe('label');
+      component.compareWith = 'value';
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -801,6 +812,11 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      component.compareWith = 'value';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
     }));
     it('should nzServerSearch works', fakeAsync(() => {
       component.listOfOption = [
@@ -984,6 +1000,12 @@ describe('select', () => {
       expect(selectElement.querySelectorAll('nz-select-item').length).toBe(0);
       component.value = [{ value: 'value' }];
       component.compareWith = (o1: NzSafeAny, o2: NzSafeAny) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(selectElement.querySelectorAll('nz-select-item').length).toBe(1);
+      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent).toBe('label');
+      component.compareWith = 'value';
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -1237,7 +1259,7 @@ export class TestSelectTemplateDefaultComponent {
       return false;
     }
   };
-  compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
+  compareWith: string | CompareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
   nzBorderless = false;
   nzShowSearch = false;
@@ -1286,7 +1308,7 @@ export class TestSelectTemplateMultipleComponent {
   nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
   nzTokenSeparators: string[] = [];
   nzMaxMultipleCount = Infinity;
-  compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
+  compareWith: string | CompareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAutoClearSearchValue = true;
 }
 
@@ -1380,7 +1402,7 @@ export class TestSelectReactiveDefaultComponent {
       return false;
     }
   };
-  compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
+  compareWith: string | CompareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
   nzBorderless = false;
   nzShowSearch = false;
@@ -1421,7 +1443,7 @@ export class TestSelectReactiveMultipleComponent {
   nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
   nzTokenSeparators: string[] = [];
   nzMaxMultipleCount = Infinity;
-  compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
+  compareWith: string | CompareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAutoClearSearchValue = true;
 }
 

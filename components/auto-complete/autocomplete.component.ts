@@ -28,8 +28,8 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, CompareWithInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputCompareWith } from 'ng-zorro-antd/core/util';
 import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
@@ -88,13 +88,14 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit {
   static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
   static ngAcceptInputType_nzBackfill: BooleanInput;
+  static ngAcceptInputType_compareWith: CompareWithInput;
 
   @Input() nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
-  @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
+  @Input() @InputCompareWith() compareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
   readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();

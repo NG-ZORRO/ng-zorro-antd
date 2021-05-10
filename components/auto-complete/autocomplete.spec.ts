@@ -17,6 +17,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CompareWith } from 'ng-zorro-antd/core/types';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Subject } from 'rxjs';
 
@@ -460,6 +461,19 @@ describe('auto-complete', () => {
       componentInstance.form.get('formControl')?.setValue({ label: 'Jack', value: 'jack' });
       flush();
       fixture.detectChanges();
+      componentInstance.trigger.openPanel();
+      const options = componentInstance.trigger.nzAutocomplete.options.toArray();
+      expect(options[0].selected).toBe(false);
+      expect(options[1].selected).toBe(true);
+      expect(input.value).toBe('Jack');
+      expect(componentInstance.form.get('formControl')?.value.value).toBe('jack');
+    }));
+
+    it('should compare object with property', fakeAsync(() => {
+      componentInstance.compareFun = 'label';
+      fixture.detectChanges();
+      componentInstance.form.get('formControl')?.setValue({ label: 'Jack', value: 'jack' });
+      flush();
       componentInstance.trigger.openPanel();
       const options = componentInstance.trigger.nzAutocomplete.options.toArray();
       expect(options[0].selected).toBe(false);
@@ -1123,7 +1137,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
   // tslint:disable-next-line: no-any
-  compareFun = (o1: any, o2: any) => {
+  compareFun: string | CompareWith = (o1: any, o2: any) => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {

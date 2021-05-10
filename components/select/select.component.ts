@@ -36,8 +36,8 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, CompareWithInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputCompareWith, isNotNil } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -173,6 +173,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   static ngAcceptInputType_nzServerSearch: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_compareWith: CompareWithInput;
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
@@ -197,7 +198,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   @Input() nzMaxMultipleCount = Infinity;
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
-  @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
+  @Input() @InputCompareWith() compareWith = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input() @InputBoolean() nzAllowClear = false;
   @Input() @WithConfig<boolean>() @InputBoolean() nzBorderless = false;
   @Input() @InputBoolean() nzShowSearch = false;
