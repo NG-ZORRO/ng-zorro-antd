@@ -434,6 +434,26 @@ describe('select', () => {
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
       });
     }));
+
+    it('should allow keydown up arrow and down arrow on empty list', fakeAsync(() => {
+      const flushChanges = () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [];
+      component.value = null;
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', UP_ARROW, inputElement);
+      flushChanges();
+      dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
+      flushChanges();
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.valueChange).not.toHaveBeenCalled();
+    }));
   });
   describe('multiple template mode', () => {
     let testBed: ComponentBed<TestSelectTemplateMultipleComponent>;

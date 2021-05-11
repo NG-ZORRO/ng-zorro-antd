@@ -394,14 +394,14 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         e.preventDefault();
         if (this.nzOpen) {
           const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabled.length - 1;
-          this.activatedValue = listOfFilteredOptionNotDisabled[preIndex].nzValue;
+          this.activatedValue = listOfFilteredOptionNotDisabled[preIndex]?.nzValue;
         }
         break;
       case DOWN_ARROW:
         e.preventDefault();
         if (this.nzOpen) {
           const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
-          this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
+          this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex]?.nzValue;
         } else {
           this.setOpenState(true);
         }
