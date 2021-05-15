@@ -45,7 +45,7 @@ The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
 ## Exclude body element's scroll event need to refresh the position of CDK
 
-In the usage of tooltip (including popconfirm、popover), body element's scroll event will update the position of tooltip. It will never update the position of tooltip if the scroll event happens in a custom element. You can add `cdkScrollable` directive to achieve the goal. Take notice that you need to import relative package `import {ScrollingModule} from '@angular/cdk/scrolling';`, for more information you can visit [scrolling/api](https://material.angular.io/cdk/scrolling/api).
+In the usage of tooltip (including popconfirm、popover), body element's scroll event will update the position of tooltip. It will never update the position of tooltip if the scroll event happens in a custom element. You can use [NzScrollingComponent](https://ng.ant.design/components/scrolling/en) component to achieve the goal.
 
 ## Note
 

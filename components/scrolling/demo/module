@@ -1,0 +1,4 @@
+import { NzScrollingModule } from 'ng-zorro-antd/scrolling';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+export const moduleList = [ NzScrollingModule, NzToolTipModule ];

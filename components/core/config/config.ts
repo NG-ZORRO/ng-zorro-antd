@@ -51,6 +51,7 @@ export interface NzConfig {
   image?: ImageConfig;
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
+  scrolling?: ScrollingConfig;
 }
 
 export interface SelectConfig {
@@ -311,6 +312,14 @@ export interface PopConfirmConfig {
 
 export interface PopoverConfig {
   nzPopoverBackdrop?: boolean;
+}
+
+export interface ScrollingConfig {
+  nzVirtual?: boolean;
+  nzHiddenBar?: boolean;
+  nzTemplateCacheSize?: number;
+  nzMinBufferPx?: number;
+  nzMaxBufferPx?: number;
 }
 
 export type NzConfigKey = keyof NzConfig;
