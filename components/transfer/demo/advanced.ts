@@ -9,17 +9,15 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       [nzDataSource]="list"
       nzShowSearch
       [nzOperations]="['to right', 'to left']"
-      [nzListStyle]="{ 'width.px': 250, 'height.px': 300 }"
+      [nzListStyle]="{ 'width.px': 400 }"
       [nzRender]="render"
       [nzFooter]="footer"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
     >
-      <ng-template #render let-item> {{ item.title }}-{{ item.description }} </ng-template>
+      <ng-template #render let-item>{{ item.title }}-{{ item.description }}</ng-template>
       <ng-template #footer let-direction>
-        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">
-          reload
-        </button>
+        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">reload</button>
       </ng-template>
     </nz-transfer>
   `

@@ -4,11 +4,11 @@
  */
 
 import { BidiModule } from '@angular/cdk/bidi';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzScrollingModule } from 'ng-zorro-antd/scrolling';
 
 import { NzTreeNodeCheckboxComponent } from './checkbox';
 import { NzTreeNodeIndentLineDirective, NzTreeNodeIndentsComponent } from './indent';
@@ -46,7 +46,7 @@ const treeWithControlComponents = [
 ];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzNoAnimationModule, ScrollingModule],
+  imports: [BidiModule, CommonModule, NzNoAnimationModule, NzScrollingModule],
   declarations: [treeWithControlComponents],
   exports: [treeWithControlComponents]
 })

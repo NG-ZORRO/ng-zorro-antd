@@ -86,7 +86,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[1], 'click');
       fixture.detectChanges();
       flush();
@@ -186,13 +186,13 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(component.searchValueChange).toHaveBeenCalledWith('test');
-      expect(document.querySelectorAll('nz-option-item').length).toBe(2);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(2);
       inputElement.value = '02';
       dispatchFakeEvent(inputElement, 'input');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(1);
     }));
     it('should nzFilterOption works', fakeAsync(() => {
       component.listOfOption = [
@@ -210,7 +210,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(3);
     }));
     it('should compareWith works', fakeAsync(() => {
       component.listOfOption = [{ nzValue: { value: 'test_value' }, nzLabel: 'test_label' }];
@@ -253,7 +253,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(3);
     }));
     it('should nzDisabled works', fakeAsync(() => {
       component.nzDisabled = true;
@@ -269,7 +269,9 @@ describe('select', () => {
       component.nzBackdrop = true;
       fixture.detectChanges();
       flush();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      expect(overlayContainerElement.children[0].classList.toString() + overlayContainerElement.children[1].classList.toString()).toContain(
+        'cdk-overlay-backdrop'
+      );
     }));
 
     it('should close dropdown when ESC keydown', fakeAsync(() => {
@@ -304,10 +306,10 @@ describe('select', () => {
       const inputElement = selectElement.querySelector('input')!;
       dispatchKeyboardEvent(inputElement, 'keydown', UP_ARROW, inputElement);
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item')[2]!.classList).toContain('ant-select-item-option-active');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[2]!.classList).toContain('ant-select-item-option-active');
       dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item')[0]!.classList).toContain('ant-select-item-option-active');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0]!.classList).toContain('ant-select-item-option-active');
       dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
       flushChanges();
       dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
@@ -338,7 +340,7 @@ describe('select', () => {
       ];
       component.nzOpen = true;
       flushChanges();
-      const targetItem = document.querySelectorAll('nz-option-item')[2]!;
+      const targetItem = document.querySelectorAll(notScrollOverlay('nz-option-item'))[2]!;
       expect(targetItem.classList).not.toContain('ant-select-item-option-active');
       dispatchFakeEvent(targetItem, 'mouseenter');
       flushChanges();
@@ -351,8 +353,8 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item')!.length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))!.length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))!.length).toBe(1);
       component.listOfGroup = [
         {
           nzLabel: 'group-1',
@@ -369,15 +371,15 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item')!.length).toBe(3);
-      expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(2);
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('group-1');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('label_01');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))!.length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))!.length).toBe(2);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))[0]!.textContent).toBe('group-1');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].textContent).toBe('label_01');
       component.listOfGroup[0].nzLabel = 'change-group';
       component.listOfGroup[0].children[0].nzLabel = 'change-label';
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('change-group');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('change-label');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))[0]!.textContent).toBe('change-group');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].textContent).toBe('change-label');
     }));
 
     it('should group item sort be right', fakeAsync(() => {
@@ -402,7 +404,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].parentElement!.querySelector(notScrollOverlay('nz-option-item'))!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
 
@@ -422,16 +425,20 @@ describe('select', () => {
       component.nzOpen = true;
       component.value = 0;
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item.ant-select-item-option-selected')).length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item.ant-select-item-option-selected'))[0].textContent).toBe(
+        'Falsy value'
+      );
       component.value = 'Truthy value';
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item.ant-select-item-option-selected')).length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item.ant-select-item-option-selected'))[0].textContent).toBe(
+        'Truthy value'
+      );
       ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
-        expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
+        expect(document.querySelectorAll(notScrollOverlay('nz-option-item.ant-select-item-option-selected')).length).toBe(0);
       });
     }));
   });
@@ -483,7 +490,7 @@ describe('select', () => {
       ];
       component.value = ['test_01'];
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[1], 'click');
       flushRefresh();
       expect(component.valueChange).toHaveBeenCalledTimes(1);
@@ -514,10 +521,10 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('.ant-select-selected-icon')).length).toBe(1);
       component.nzMenuItemSelectedIcon = component.iconTemplate;
       fixture.detectChanges();
-      expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(0);
+      expect(document.querySelectorAll(notScrollOverlay('.ant-select-selected-icon')).length).toBe(0);
       expect(document.querySelector('.ant-select-item-option-state')!.textContent).toBe('icon');
     }));
     it('should removeIcon works', fakeAsync(() => {
@@ -589,7 +596,7 @@ describe('select', () => {
       component.value = [];
       component.nzMaxMultipleCount = 1;
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[0], 'click');
       flushRefresh();
       expect(component.value.length).toBe(1);
@@ -610,7 +617,7 @@ describe('select', () => {
         { nzValue: 'test_02', nzLabel: 'test_02' }
       ];
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       const inputElement = selectElement.querySelector('input')!;
       inputElement.value = 'test';
       dispatchFakeEvent(inputElement, 'input');
@@ -715,7 +722,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[1], 'click');
       fixture.detectChanges();
       flush();
@@ -765,13 +772,13 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(component.searchValueChange).toHaveBeenCalledWith('test');
-      expect(document.querySelectorAll('nz-option-item').length).toBe(2);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(2);
       inputElement.value = '02';
       dispatchFakeEvent(inputElement, 'input');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(1);
     }));
     it('should nzFilterOption works', fakeAsync(() => {
       component.listOfOption = [
@@ -789,7 +796,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(3);
     }));
     it('should compareWith works', fakeAsync(() => {
       component.listOfOption = [{ value: { value: 'test_value' }, label: 'test_label' }];
@@ -818,7 +825,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item').length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item')).length).toBe(3);
     }));
     it('should keydown up arrow and down arrow', fakeAsync(() => {
       const flushChanges = () => {
@@ -837,10 +844,10 @@ describe('select', () => {
       const inputElement = selectElement.querySelector('input')!;
       dispatchKeyboardEvent(inputElement, 'keydown', UP_ARROW, inputElement);
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item')[2]!.classList).toContain('ant-select-item-option-active');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[2]!.classList).toContain('ant-select-item-option-active');
       dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
       flushChanges();
-      expect(document.querySelectorAll('nz-option-item')[0]!.classList).toContain('ant-select-item-option-active');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0]!.classList).toContain('ant-select-item-option-active');
       dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
       flushChanges();
       dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
@@ -871,7 +878,7 @@ describe('select', () => {
       ];
       component.nzOpen = true;
       flushChanges();
-      const targetItem = document.querySelectorAll('nz-option-item')[2]!;
+      const targetItem = document.querySelectorAll(notScrollOverlay('nz-option-item'))[2]!;
       expect(targetItem.classList).not.toContain('ant-select-item-option-active');
       dispatchFakeEvent(targetItem, 'mouseenter');
       flushChanges();
@@ -884,8 +891,8 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item')!.length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))!.length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))!.length).toBe(1);
       component.listOfOption = [
         { value: 'value_01', label: 'label_01', groupLabel: 'group-1' },
         { value: 'value_02', label: 'label_02', groupLabel: 'group-1' },
@@ -894,15 +901,15 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item')!.length).toBe(3);
-      expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(2);
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('group-1');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('label_01');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))!.length).toBe(3);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))!.length).toBe(2);
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))[0]!.textContent).toBe('group-1');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].textContent).toBe('label_01');
       component.listOfOption = [{ groupLabel: 'change-group', value: 'value_01', label: 'change-label' }];
 
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('change-group');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('change-label');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item-group'))[0]!.textContent).toBe('change-group');
+      expect(document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].textContent).toBe('change-label');
     }));
 
     it('should group item sort be right', fakeAsync(() => {
@@ -917,7 +924,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll(notScrollOverlay('nz-option-item'))[0].parentElement!.querySelector(notScrollOverlay('nz-option-item'))!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
   });
@@ -966,7 +974,7 @@ describe('select', () => {
       ];
       component.value = ['test_01'];
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[1], 'click');
       flushRefresh();
       expect(component.valueChange).toHaveBeenCalledTimes(1);
@@ -997,10 +1005,10 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(1);
+      expect(document.querySelectorAll(notScrollOverlay('.ant-select-selected-icon')).length).toBe(1);
       component.nzMenuItemSelectedIcon = component.iconTemplate;
       fixture.detectChanges();
-      expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(0);
+      expect(document.querySelectorAll(notScrollOverlay('.ant-select-selected-icon')).length).toBe(0);
       expect(document.querySelector('.ant-select-item-option-state')!.textContent).toBe('icon');
     }));
     it('should removeIcon works', fakeAsync(() => {
@@ -1072,7 +1080,7 @@ describe('select', () => {
       component.value = [];
       component.nzMaxMultipleCount = 1;
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       dispatchMouseEvent(listOfContainerItem[0], 'click');
       flushRefresh();
       expect(component.value.length).toBe(1);
@@ -1093,7 +1101,7 @@ describe('select', () => {
         { value: 'test_02', label: 'test_02' }
       ];
       flushRefresh();
-      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const listOfContainerItem = document.querySelectorAll(notScrollOverlay('nz-option-item'));
       const inputElement = selectElement.querySelector('input')!;
       inputElement.value = 'test';
       dispatchFakeEvent(inputElement, 'input');
@@ -1160,6 +1168,10 @@ describe('select', () => {
       expect(listOfItem[2].textContent).toBe('and 2 more selected');
     }));
   });
+
+  function notScrollOverlay(selector: string): string {
+    return `.cdk-overlay-pane:not(.ant-scroll-overlay-panel) ${selector}`;
+  }
 });
 
 @Component({

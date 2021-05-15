@@ -5,14 +5,11 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
 @Component({
   selector: 'nz-demo-transfer-custom-item',
   template: `
-    <nz-transfer
-      [nzDataSource]="list"
-      [nzListStyle]="{ 'width.px': 300, 'height.px': 300 }"
-      [nzRender]="render"
-      (nzSelectChange)="select($event)"
-      (nzChange)="change($event)"
-    >
-      <ng-template #render let-item> <i nz-icon nzType="{{ item.icon }}"></i> {{ item.title }} </ng-template>
+    <nz-transfer [nzDataSource]="list" [nzRender]="render" (nzSelectChange)="select($event)" (nzChange)="change($event)">
+      <ng-template #render let-item>
+        <i nz-icon nzType="{{ item.icon }}"></i>
+        {{ item.title }}
+      </ng-template>
     </nz-transfer>
   `
 })

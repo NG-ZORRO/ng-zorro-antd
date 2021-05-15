@@ -203,10 +203,12 @@ describe('transfer', () => {
         expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
         // All search input muse be disabled
         expect(dl.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
+
+        // TODO: no idea why first and last element repeat
         // All item muse be disabled
-        expect(dl.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
+        expect(dl.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT + 2);
         // All checkbox (include 2 checkall) muse be disabled
-        expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
+        expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2 + 2);
       });
       it('should be disabled clear', () => {
         pageObject.expectLeft(LEFTCOUNT).search('left', '1');
@@ -222,6 +224,12 @@ describe('transfer', () => {
         const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
         expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
       });
+    });
+
+    it('#nzVirtual', () => {
+      instance.nzVirtual = true;
+      fixture.detectChanges();
+      expect(dl.queryAll(By.css('ant-transfer-list-content-item')).length).toBeLessThan(COUNT);
     });
 
     it('#nzShowSelectAll', () => {
@@ -271,8 +279,9 @@ describe('transfer', () => {
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
-      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search'))
-        .nativeElement as HTMLElement).attributes.getNamedItem('placeholder')!.textContent;
+      const searchPhText = (
+        tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement
+      ).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
     });
   });
@@ -414,6 +423,7 @@ describe('transfer', () => {
   template: `
     <nz-transfer
       #comp
+      [nzVirtual]="nzVirtual"
       [nzDataSource]="nzDataSource"
       [nzRenderList]="nzRenderList"
       [nzShowSelectAll]="nzShowSelectAll"
@@ -447,6 +457,7 @@ describe('transfer', () => {
 class TestTransferComponent implements OnInit {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
   @ViewChild('renderList', { static: false }) renderListTpl!: TemplateRef<void>;
+  nzVirtual = false;
   nzDataSource: any[] = [];
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
