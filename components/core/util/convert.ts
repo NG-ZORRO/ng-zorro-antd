@@ -5,7 +5,6 @@
 
 import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
 
-import { warn } from 'ng-zorro-antd/core/logger';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export function toBoolean(value: boolean | string): boolean {
@@ -31,13 +30,9 @@ export function valueFunctionProp<T>(prop: FunctionProp<T> | T, ...args: NzSafeA
   return typeof prop === 'function' ? (prop as FunctionProp<T>)(...args) : prop;
 }
 
-function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {
+function propDecoratorFactory<T, D>(fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {
   function propDecorator(target: NzSafeAny, propName: string, originalDescriptor?: TypedPropertyDescriptor<NzSafeAny>): NzSafeAny {
-    const privatePropName = `$$__${propName}`;
-
-    if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
-      warn(`The prop "${privatePropName}" is already exist, it will be overrided by ${name} decorator.`);
-    }
+    const privatePropName = Symbol(propName);
 
     Object.defineProperty(target, privatePropName, {
       configurable: true,
@@ -77,13 +72,13 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
  * ```
  */
 export function InputBoolean(): NzSafeAny {
-  return propDecoratorFactory('InputBoolean', toBoolean);
+  return propDecoratorFactory(toBoolean);
 }
 
 export function InputCssPixel(): NzSafeAny {
-  return propDecoratorFactory('InputCssPixel', toCssPixel);
+  return propDecoratorFactory(toCssPixel);
 }
 
 export function InputNumber(fallbackValue?: NzSafeAny): NzSafeAny {
-  return propDecoratorFactory('InputNumber', (value: string | number) => toNumber(value, fallbackValue));
+  return propDecoratorFactory((value: string | number) => toNumber(value, fallbackValue));
 }
