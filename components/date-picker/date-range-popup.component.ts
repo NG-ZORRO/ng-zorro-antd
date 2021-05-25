@@ -208,13 +208,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.datePickerService.setActiveDate(activeDate, this.hasTimePicker, this.getPanelMode(this.endPanelMode) as NormalizedMode);
   }
 
-  init(): void {
-    this.checkedPartArr = [false, false];
-    this.updateActiveDate();
-    // trigger timepicker to reset
-    this.datePickerService.setValue(cloneDate(this.datePickerService.value));
-  }
-
   /**
    * Prevent input losing focus when click panel
    * @param event
