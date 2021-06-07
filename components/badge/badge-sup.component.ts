@@ -27,6 +27,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: `
     <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
       <span
+        [nzNoAnimation]="noAnimation"
         *ngFor="let n of maxNumberArray; let i = index"
         class="ant-scroll-number-only"
         [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
@@ -60,6 +61,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
+  @Input() noAnimation = false;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;

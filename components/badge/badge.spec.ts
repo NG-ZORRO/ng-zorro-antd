@@ -2,7 +2,8 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
@@ -10,7 +11,7 @@ import { NzBadgeModule } from './badge.module';
 describe('badge', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzBadgeModule, NoopAnimationsModule],
+      imports: [BidiModule, NzBadgeModule, NzNoAnimationModule, BrowserAnimationsModule],
       declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
     });
     TestBed.compileComponents();
@@ -125,6 +126,15 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
     }));
 
+    it('should disable animation for inner elements when `noAnimation` is `true` ', fakeAsync(() => {
+      testComponent.noAnimation = true;
+      fixture.detectChanges();
+      tick(1000);
+      expect(badgeElement.nativeElement.classList).toContain('nz-animate-disabled');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup .ant-scroll-number-only').classList).toContain('nz-animate-disabled');
+      fixture.detectChanges();
+    }));
+
     it('should status work', () => {
       testComponent.inner = false;
       const statusList = ['success', 'processing', 'default', 'error', 'warning'];
@@ -170,6 +180,7 @@ describe('badge', () => {
       [nzText]="text"
       [nzShowZero]="showZero"
       [nzOverflowCount]="overflow"
+      [nzNoAnimation]="noAnimation"
       [nzStyle]="style"
       [nzDot]="dot"
       [nzOffset]="offset"
@@ -191,6 +202,7 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
+  noAnimation = true;
 }
 
 @Component({

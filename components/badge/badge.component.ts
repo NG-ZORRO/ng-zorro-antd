@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,6 +22,7 @@ import {
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -57,8 +59,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
         [nzStyle]="nzStyle"
         [nzDot]="nzDot"
         [nzOverflowCount]="nzOverflowCount"
-        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor)"
+        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
         [nzCount]="nzCount"
+        [noAnimation]="!!noAnimation?.nzNoAnimation"
       ></nz-badge-sup>
     </ng-container>
   `,
@@ -95,7 +98,8 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-badge');
