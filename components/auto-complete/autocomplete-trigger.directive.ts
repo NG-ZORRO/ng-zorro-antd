@@ -72,9 +72,11 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   panelOpen: boolean = false;
 
   /** Current active option */
-  get activeOption(): NzAutocompleteOptionComponent | void {
+  get activeOption(): NzAutocompleteOptionComponent | null {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
+    } else {
+      return null;
     }
   }
 
@@ -165,9 +167,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
       }
       this.closePanel();
     } else if (this.panelOpen && keyCode === ENTER) {
-      if (this.nzAutocomplete.showPanel && this.activeOption) {
+      if (this.nzAutocomplete.showPanel) {
         event.preventDefault();
-        this.activeOption.selectViaInteraction();
+        if (this.activeOption) {
+          this.activeOption.selectViaInteraction();
+        } else {
+          this.closePanel();
+        }
       }
     } else if (this.panelOpen && isArrowKey && this.nzAutocomplete.showPanel) {
       event.stopPropagation();
@@ -328,7 +334,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     this.nzAutocomplete.clearSelectedOptions(null, true);
     if (index !== -1) {
       this.nzAutocomplete.setActiveItem(index);
-      this.nzAutocomplete.activeItem.select(false);
+      this.nzAutocomplete.activeItem!.select(false);
     } else {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
     }

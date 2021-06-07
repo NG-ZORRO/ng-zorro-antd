@@ -101,7 +101,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   showPanel: boolean = true;
   isOpen: boolean = false;
-  activeItem!: NzAutocompleteOptionComponent;
+  activeItem: NzAutocompleteOptionComponent | null = null;
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   animationStateChange = new EventEmitter<AnimationEvent>();
@@ -198,14 +198,18 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   setActiveItem(index: number): void {
-    const activeItem = this.options.toArray()[index];
+    const activeItem = this.options.get(index);
     if (activeItem && !activeItem.active) {
       this.activeItem = activeItem;
       this.activeItemIndex = index;
       this.clearSelectedOptions(this.activeItem);
       this.activeItem.setActiveStyles();
-      this.changeDetectorRef.markForCheck();
+    } else {
+      this.activeItem = null;
+      this.activeItemIndex = -1;
+      this.clearSelectedOptions();
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   setNextItemActive(): void {
