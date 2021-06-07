@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input, OnDestroy } from '@angular/core';
 import { animationFrameScheduler, asapScheduler, merge, Subscription } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 import { NzTreeNodeComponent } from './node';
@@ -49,7 +49,7 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   private currentIndents: string = '';
   private changeSubscription: Subscription;
 
-  constructor(private treeNode: NzTreeNodeComponent<T>, private tree: NzTreeView<T>) {
+  constructor(private treeNode: NzTreeNodeComponent<T>, private tree: NzTreeView<T>, private cdr: ChangeDetectorRef) {
     this.buildIndents();
     this.checkLast();
 
@@ -62,6 +62,7 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
       .subscribe(() => {
         this.buildIndents();
         this.checkAdjacent();
+        this.cdr.markForCheck();
       });
   }
 

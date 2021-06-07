@@ -56,6 +56,9 @@ interface FlatNode {
         >
           {{ node.name }}
         </nz-tree-node-option>
+        <button nz-button nzType="text" nzSize="small" (click)="delete(node)">
+          <i nz-icon nzType="minus" nzTheme="outline"></i>
+        </button>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasNoContent" nzTreeNodeIndentLine>
@@ -122,6 +125,33 @@ export class NzDemoTreeViewEditableComponent {
   hasNoContent = (_: number, node: FlatNode) => node.name === '';
   trackBy = (_: number, node: FlatNode) => `${node.key}-${node.name}`;
 
+  delete(node: FlatNode): void {
+    const originNode = this.flatNodeMap.get(node);
+
+    const dfsParentNode = (): TreeNode | null => {
+      const stack = [...this.treeData];
+      while (stack.length > 0) {
+        const n = stack.pop()!;
+        if (n.children) {
+          if (n.children.find(e => e === originNode)) {
+            return n;
+          }
+
+          for (let i = n.children.length - 1; i >= 0; i--) {
+            stack.push(n.children[i]);
+          }
+        }
+      }
+      return null;
+    };
+
+    const parentNode = dfsParentNode();
+    if (parentNode && parentNode.children) {
+      parentNode.children = parentNode.children.filter(e => e !== originNode);
+    }
+
+    this.dataSource.setData(this.treeData);
+  }
   addNewNode(node: FlatNode): void {
     const parentNode = this.flatNodeMap.get(node);
     if (parentNode) {
