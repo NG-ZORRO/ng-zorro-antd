@@ -3,6 +3,6 @@
     "lib": {
       "entryFile": "public-api.ts"
     },
-    "whitelistedNonPeerDependencies": ["tslib", "date-fns"]
+    "allowedNonPeerDependencies": ["tslib", "date-fns"]
   }
 }

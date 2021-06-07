@@ -5,5 +5,5 @@
   "lib": {
     "entryFile": "./public_api"
   },
-  "whitelistedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular", "resize-observer-polyfill"]
+  "allowedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular", "resize-observer-polyfill"]
 }
