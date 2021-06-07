@@ -481,6 +481,38 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('min and max and value is zero', () => {
+    let testBed: ComponentBed<SliderWithValueZeroComponent>;
+    let fixture: ComponentFixture<SliderWithValueZeroComponent>;
+    let trackFillElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(SliderWithValueZeroComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
+    });
+
+    it('should set the value equal to the middle value', () => {
+      fixture.whenStable().then(() => {
+        expect(sliderInstance.value).toBe(0);
+        expect(sliderInstance.nzMin).toBe(-5);
+        expect(sliderInstance.nzMax).toBe(5);
+      });
+    });
+
+    it('should set the fill to the middle value', () => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        expect(trackFillElement.style.width).toBe('50%');
+      });
+    });
+  });
+
   describe('vertical', () => {
     let testBed: ComponentBed<VerticalSliderComponent>;
     let fixture: ComponentFixture<VerticalSliderComponent>;
@@ -1039,6 +1071,14 @@ class SliderWithStepComponent {
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
+
+@Component({
+  template: `
+    <nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider>
+  `,
+  styles: [styles]
+})
+class SliderWithValueZeroComponent {}
 
 @Component({
   template: `
