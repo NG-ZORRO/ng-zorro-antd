@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
-import { ZoomBehavior } from 'd3-zoom';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+
 import { Minimap } from './core/minimap';
-import { NzZoomTransform } from './interface';
+import { NzSVGContainer } from './core/svg-container';
+import { NzZoomContent } from './core/zoom';
+import { NzMinMapZoomTransform } from './interface';
 
 @Component({
   selector: 'nz-graph-minimap',
@@ -34,22 +35,29 @@ import { NzZoomTransform } from './interface';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.nz-graph-minimap]': 'true'
+    class: 'nz-graph-minimap'
   }
 })
 export class NzGraphMinimapComponent implements OnInit {
   minimap?: Minimap;
+  @Input() nzContainer: NzSVGContainer | null = null;
+  @Input() nzZoomContent: NzZoomContent | null = null;
   constructor(private elementRef: ElementRef<HTMLElement>) {}
 
-  ngOnInit(): void {}
-
-  init(containerEle: ElementRef, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
-    const svgEle = containerEle.nativeElement.querySelector('svg');
-    const zoomEle = containerEle.nativeElement.querySelector('svg > g');
-    this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
+  ngOnInit(): void {
+    this.init();
   }
 
-  zoom(transform: NzZoomTransform): void {
+  init(): void {
+    if (this.nzContainer && this.nzZoomContent) {
+      const svgEle = this.nzContainer.svgElement;
+      const zoomEle = this.nzZoomContent.zoomElement;
+      const zoomBehavior = this.nzZoomContent._getD3ZoomBehavior();
+      this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
+    }
+  }
+
+  zoom(transform: NzMinMapZoomTransform): void {
     if (this.minimap) {
       this.minimap.zoom(transform);
     }

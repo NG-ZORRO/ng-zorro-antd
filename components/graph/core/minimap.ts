@@ -7,7 +7,7 @@ import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzZoomTransform } from '../interface';
+import { NzMinMapZoomTransform } from '../interface';
 
 const FRAC_VIEWPOINT_AREA = 0.8;
 
@@ -210,7 +210,7 @@ export class Minimap {
    * viewpoint rectangle.
    * @param transform
    */
-  zoom(transform?: ZoomTransform | NzZoomTransform): void {
+  zoom(transform?: ZoomTransform | NzMinMapZoomTransform): void {
     if (this.scaleMinimap == null) {
       // Scene is not ready yet.
       return;

@@ -144,7 +144,7 @@ export const NZ_GRAPH_LAYOUT_SETTING: NzLayoutSetting = {
 
 // Zoom interface
 
-export interface NzZoomTransform {
+export interface NzMinMapZoomTransform {
   x: number;
   y: number;
   k: number;

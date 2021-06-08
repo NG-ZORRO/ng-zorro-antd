@@ -28,21 +28,21 @@ import {
 
 import { buildGraph } from 'dagre-compound';
 
-import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { finalize, take, takeUntil } from 'rxjs/operators';
-import { calculateTransform } from './core/utils';
+import { zoomTransform } from 'd3-zoom';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { finalize, take, takeUntil } from 'rxjs/operators';
+
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
-import { NzGraphZoomDirective } from './graph-zoom.directive';
 import {
   NzGraphDataDef,
   NzGraphEdge,
@@ -57,6 +57,7 @@ import {
   nzTypeDefinition,
   NZ_GRAPH_LAYOUT_SETTING
 } from './interface';
+import { NzSvgGZoomDirective } from './svg-zoom.directive';
 
 /** Checks whether an object is a data source. */
 export function isDataSource(value: NzSafeAny): value is NzGraphData {
@@ -69,20 +70,11 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  selector: 'nz-graph',
+  selector: 'g[nz-graph], svg:g[nz-graph]',
   exportAs: 'nzGraph',
   template: `
-    <ng-content></ng-content>
-    <svg width="100%" height="100%">
-      <svg:defs nz-graph-defs></svg:defs>
-      <svg:g [attr.transform]="transformStyle">
-        <ng-container
-          [ngTemplateOutlet]="groupTemplate"
-          [ngTemplateOutletContext]="{ renderNode: renderInfo, type: 'root' }"
-        ></ng-container>
-      </svg:g>
-    </svg>
-
+    <svg:defs nz-graph-defs></svg:defs>
+    <ng-container [ngTemplateOutlet]="groupTemplate" [ngTemplateOutletContext]="{ renderNode: renderInfo, type: 'root' }"></ng-container>
     <ng-template #groupTemplate let-renderNode="renderNode" let-type="type">
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
@@ -190,17 +182,13 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<SVGGElement>,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzGraphZoom?: NzGraphZoomDirective
+    @Optional() public nzGraphZoom?: NzSvgGZoomDirective
   ) {}
 
   ngOnInit(): void {
     this.graphRenderedSubject$.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
-      // Only zooming is not set, move graph to center
-      if (!this.nzGraphZoom) {
-        this.fitCenter();
-      }
       this.nzGraphInitialized.emit(this);
     });
   }
@@ -263,21 +251,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   }
 
   /**
-   * Move graph to center and scale automatically
-   */
-  fitCenter(): void {
-    const { x, y, k } = calculateTransform(
-      this.elementRef.nativeElement.querySelector('svg'),
-      this.elementRef.nativeElement.querySelector('svg > g')
-    )!;
-    if (k) {
-      this.zoom = k;
-      this.transformStyle = `translate(${x}, ${y})scale(${k})`;
-    }
-    this.cdr.markForCheck();
-  }
-
-  /**
    * re-Draw graph
    * @param data
    * @param options
@@ -286,10 +259,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
   drawGraph(data: NzGraphDataDef, options: NzGraphOption, needResize: boolean = false): Promise<void> {
     return new Promise(resolve => {
       this.requestId = requestAnimationFrame(() => {
-        const renderInfo = this.buildGraphInfo(data, options);
         // TODO
         // Need better performance
-        this.renderInfo = renderInfo;
+        this.renderInfo = this.buildGraphInfo(data, options);
         this.cdr.markForCheck();
         this.requestId = requestAnimationFrame(() => {
           this.drawNodes(!this.noAnimation?.nzNoAnimation).then(() => {
@@ -331,10 +303,15 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     });
   }
 
+  private getCurrentZoomScale(): number {
+    const zoomElement = this.nzGraphZoom?.zoomElement || this.elementRef.nativeElement;
+    return zoomTransform(zoomElement).k || 1;
+  }
+
   private resizeNodeSize(): Promise<void> {
     return new Promise(resolve => {
       const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
-      let scale = this.nzGraphZoom?.nzZoom || this.zoom || 1;
+      let scale = this.getCurrentZoomScale();
       this.listOfNodeElement.forEach(nodeEle => {
         const contentEle = nodeEle.nativeElement;
         if (contentEle) {
