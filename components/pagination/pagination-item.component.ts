@@ -27,13 +27,13 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
             <i *ngSwitchDefault nz-icon nzType="left"></i>
           </ng-container>
         </button>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
             <i *ngSwitchDefault nz-icon nzType="right"></i>
@@ -97,12 +97,14 @@ export class NzPaginationItemComponent implements OnChanges {
         this.gotoIndex.emit(this.index!);
       } else {
         this.diffIndex.emit(
-          ({
-            next: 1,
-            prev: -1,
-            prev_5: -5,
-            next_5: 5
-          } as NzSafeAny)[this.type!]
+          (
+            {
+              next: 1,
+              prev: -1,
+              prev_5: -5,
+              next_5: 5
+            } as NzSafeAny
+          )[this.type!]
         );
       }
     }
@@ -110,13 +112,15 @@ export class NzPaginationItemComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { locale, index, type } = changes;
     if (locale || index || type) {
-      this.title = ({
-        page: `${this.index}`,
-        next: this.locale?.next_page,
-        prev: this.locale?.prev_page,
-        prev_5: this.locale?.prev_5,
-        next_5: this.locale?.next_5
-      } as NzSafeAny)[this.type!];
+      this.title = (
+        {
+          page: `${this.index}`,
+          next: this.locale?.next_page,
+          prev: this.locale?.prev_page,
+          prev_5: this.locale?.prev_5,
+          next_5: this.locale?.next_5
+        } as NzSafeAny
+      )[this.type!];
     }
   }
 }
