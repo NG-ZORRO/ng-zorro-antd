@@ -18,6 +18,7 @@ components/tree-view/**                   @hsuanxyz
 components/typography/**                  @hsuanxyz
 components/space/**                       @hsuanxyz
 components/resizable/**                   @hsuanxyz
+components/tabs/**                        @hsuanxyz
 components/breadcrumb/**                  @wendellhu95
 components/empty/**                       @wendellhu95
 components/carousel/**                    @wendellhu95
@@ -58,7 +59,6 @@ components/select/**                      @vthinkxie
 components/spin/**                        @vthinkxie
 components/switch/**                      @vthinkxie
 components/table/**                       @vthinkxie
-components/tabs/**                        @NearZXH
 components/tree/**                        @simplejason
 components/form/**                        @danranVm
 components/page-header/**                 @CK110
