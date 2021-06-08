@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "nz-ng-add",
+  "$id": "nz-ng-add",
   "title": "Ant Design of Angular(NG-ZORRO) ng-add schematic",
   "type": "object",
   "properties": {

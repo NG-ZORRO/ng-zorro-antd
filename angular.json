@@ -16,7 +16,6 @@
             "main": "./site/doc/main.ts",
             "tsConfig": "./site/doc/tsconfig.app.json",
             "polyfills": "./site/doc/polyfills.ts",
-            "aot": true,
             "assets": [
               "site/doc/assets",
               "site/doc/manifest.json",
@@ -42,7 +41,13 @@
               "codesandbox",
               "codesandbox-import-utils",
               "@ant-design/colors"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -74,14 +79,17 @@
             "es5": {
               "tsConfig": "./site/doc/tsconfig.es5.json"
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
             "main": "./site/doc/main.server.ts",
-            "tsConfig": "./site/doc/tsconfig.server.json"
+            "tsConfig": "./site/doc/tsconfig.server.json",
+            "sourceMap": true,
+            "optimization": false
           },
           "configurations": {
             "production": {
@@ -92,7 +100,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -154,7 +163,6 @@
             "index": "./site/iframe/index.html",
             "main": "./site/iframe/main.ts",
             "tsConfig": "./site/iframe/tsconfig.app.json",
-            "aot": true,
             "polyfills": "./site/iframe/polyfills.ts",
             "assets": [
               {
@@ -165,7 +173,13 @@
             ],
             "styles": [
               "components/ng-zorro-antd.less"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -184,7 +198,8 @@
               "buildOptimizer": true,
               "serviceWorker": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
