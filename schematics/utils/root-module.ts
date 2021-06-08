@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';

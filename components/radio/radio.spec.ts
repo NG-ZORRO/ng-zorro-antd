@@ -347,7 +347,13 @@ describe('radio', () => {
   // eslint-disable-next-line
   selector: 'nz-test-radio-single',
   template: `
-    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus">
+    <label
+      nz-radio
+      [(ngModel)]="value"
+      (ngModelChange)="modelChange($event)"
+      [nzDisabled]="disabled"
+      [nzAutoFocus]="autoFocus"
+    >
       Radio
     </label>
   `
@@ -361,9 +367,7 @@ export class NzTestRadioSingleComponent {
 }
 
 @Component({
-  template: `
-    <label nz-radio-button>Radio</label>
-  `
+  template: ` <label nz-radio-button>Radio</label> `
 })
 export class NzTestRadioButtonComponent {}
 
@@ -371,7 +375,13 @@ export class NzTestRadioButtonComponent {}
   // eslint-disable-next-line
   selector: 'nz-test-radio-group',
   template: `
-    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
+    <nz-radio-group
+      [(ngModel)]="value"
+      [nzName]="name"
+      [nzDisabled]="disabled"
+      (ngModelChange)="modelChange($event)"
+      [nzSize]="size"
+    >
       <ng-container [ngClass]>
         <label nz-radio-button nzValue="A">A</label>
         <label nz-radio-button nzValue="B">B</label>

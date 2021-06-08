@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
@@ -72,9 +73,21 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       </ng-template>
     </ng-template>
     <ng-template #affixTemplate>
-      <span *ngIf="nzPrefix || nzPrefixIcon" nz-input-group-slot type="prefix" [icon]="nzPrefixIcon" [template]="nzPrefix"></span>
+      <span
+        *ngIf="nzPrefix || nzPrefixIcon"
+        nz-input-group-slot
+        type="prefix"
+        [icon]="nzPrefixIcon"
+        [template]="nzPrefix"
+      ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-      <span *ngIf="nzSuffix || nzSuffixIcon" nz-input-group-slot type="suffix" [icon]="nzSuffixIcon" [template]="nzSuffix"></span>
+      <span
+        *ngIf="nzSuffix || nzSuffixIcon"
+        nz-input-group-slot
+        type="suffix"
+        [icon]="nzSuffixIcon"
+        [template]="nzSuffix"
+      ></span>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>

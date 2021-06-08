@@ -76,7 +76,12 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   beforeText?: string;
   currentText?: string;
   nativeElement = this.host.nativeElement;
-  constructor(private zone: NgZone, private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(
+    private zone: NgZone,
+    private host: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

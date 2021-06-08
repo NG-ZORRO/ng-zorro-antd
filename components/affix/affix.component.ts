@@ -274,7 +274,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         width,
         height: elemSize.height
       });
-    } else if (scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight && offsetMode.bottom) {
+    } else if (
+      scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight &&
+      offsetMode.bottom
+    ) {
       const targetBottomOffset = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
       const width = elemOffset.width;
       this.setAffixStyle(e, {

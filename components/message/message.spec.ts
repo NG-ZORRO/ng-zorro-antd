@@ -208,9 +208,7 @@ describe('message', () => {
 });
 
 @Component({
-  template: `
-    <ng-template #contentTemplate>Content in template</ng-template>
-  `
+  template: ` <ng-template #contentTemplate>Content in template</ng-template> `
 })
 export class NzTestMessageComponent {
   @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;

@@ -21,7 +21,12 @@ export const getParent = <T>(nodes: T[], node: T, getLevel: (dataNode: T) => num
   return null;
 };
 
-export const getNextSibling = <T>(nodes: T[], node: T, getLevel: (dataNode: T) => number, _index?: number): T | null => {
+export const getNextSibling = <T>(
+  nodes: T[],
+  node: T,
+  getLevel: (dataNode: T) => number,
+  _index?: number
+): T | null => {
   let index = typeof _index !== 'undefined' ? _index : nodes.indexOf(node);
   if (index < 0) {
     return null;

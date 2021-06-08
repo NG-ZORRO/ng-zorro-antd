@@ -13,7 +13,12 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective } from './calendar-cells';
+import {
+  NzDateCellDirective,
+  NzDateFullCellDirective,
+  NzMonthCellDirective,
+  NzMonthFullCellDirective
+} from './calendar-cells';
 import { NzCalendarHeaderComponent } from './calendar-header.component';
 import { NzCalendarComponent } from './calendar.component';
 
@@ -26,7 +31,13 @@ import { NzCalendarComponent } from './calendar.component';
     NzMonthCellDirective,
     NzMonthFullCellDirective
   ],
-  exports: [NzCalendarComponent, NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective],
+  exports: [
+    NzCalendarComponent,
+    NzDateCellDirective,
+    NzDateFullCellDirective,
+    NzMonthCellDirective,
+    NzMonthFullCellDirective
+  ],
   imports: [BidiModule, CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, LibPackerModule]
 })
 export class NzCalendarModule {}

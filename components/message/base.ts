@@ -20,7 +20,11 @@ export abstract class NzMNService {
   protected abstract componentPrefix: string;
   protected container?: NzMNContainerComponent;
 
-  constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
+  constructor(
+    protected nzSingletonService: NzSingletonService,
+    protected overlay: Overlay,
+    private injector: Injector
+  ) {}
 
   remove(id?: string): void {
     if (this.container) {

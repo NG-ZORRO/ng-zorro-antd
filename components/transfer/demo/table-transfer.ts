@@ -38,7 +38,11 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
           </thead>
           <tbody>
             <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
-              <td [nzChecked]="data.checked" [nzDisabled]="disabled || data.disabled" (nzCheckedChange)="onItemSelect(data)"></td>
+              <td
+                [nzChecked]="data.checked"
+                [nzDisabled]="disabled || data.disabled"
+                (nzCheckedChange)="onItemSelect(data)"
+              ></td>
               <td>{{ data.title }}</td>
               <td *ngIf="direction === 'left'">
                 <nz-tag>{{ data.tag }}</nz-tag>

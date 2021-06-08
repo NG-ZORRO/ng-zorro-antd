@@ -53,7 +53,11 @@ export class NzConfigService {
  */
 // eslint-disable-next-line
 export function WithConfig<T>() {
-  return function ConfigDecorator(target: NzSafeAny, propName: NzSafeAny, originalDescriptor?: TypedPropertyDescriptor<T>): NzSafeAny {
+  return function ConfigDecorator(
+    target: NzSafeAny,
+    propName: NzSafeAny,
+    originalDescriptor?: TypedPropertyDescriptor<T>
+  ): NzSafeAny {
     const privatePropName = `$$__assignedValue__${propName}`;
 
     Object.defineProperty(target, privatePropName, {

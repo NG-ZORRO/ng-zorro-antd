@@ -91,7 +91,12 @@ interface Setting {
         <ng-container *ngFor="let data of dynamicTable.data">
           <tr>
             <td [nzLeft]="fixedColumn" *ngIf="settingValue.expandable" [(nzExpand)]="data.expand"></td>
-            <td [nzLeft]="fixedColumn" *ngIf="settingValue.checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            <td
+              [nzLeft]="fixedColumn"
+              *ngIf="settingValue.checkbox"
+              [(nzChecked)]="data.checked"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
             <td [nzLeft]="fixedColumn">{{ data.name }}</td>
             <td>{{ data.age }}</td>
             <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td>

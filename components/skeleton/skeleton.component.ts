@@ -17,7 +17,13 @@ import {
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
-import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+import {
+  NzSkeletonAvatar,
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonParagraph,
+  NzSkeletonTitle
+} from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +38,11 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size || 'default'" [nzShape]="avatar.shape || 'circle'"></nz-skeleton-element>
+        <nz-skeleton-element
+          nzType="avatar"
+          [nzSize]="avatar.size || 'default'"
+          [nzShape]="avatar.shape || 'circle'"
+        ></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>

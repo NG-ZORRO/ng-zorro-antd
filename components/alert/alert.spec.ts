@@ -165,9 +165,7 @@ export class NzDemoTestBasicComponent {
 }
 
 @Component({
-  template: `
-    <nz-alert nzBanner></nz-alert>
-  `
+  template: ` <nz-alert nzBanner></nz-alert> `
 })
 export class NzDemoTestBannerComponent {}
 

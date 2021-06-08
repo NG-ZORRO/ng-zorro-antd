@@ -75,8 +75,10 @@ export class NzDemoFormValidateReactiveComponent {
 
   submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsDirty();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
     }
     console.log(value);
   }
@@ -85,8 +87,10 @@ export class NzDemoFormValidateReactiveComponent {
     e.preventDefault();
     this.validateForm.reset();
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsPristine();
-      this.validateForm.controls[key].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsPristine();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
     }
   }
 

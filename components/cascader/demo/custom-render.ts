@@ -49,7 +49,12 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-custom-render',
   template: `
-    <nz-cascader [nzLabelRender]="renderTpl" [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
+    <nz-cascader
+      [nzLabelRender]="renderTpl"
+      [nzOptions]="nzOptions"
+      [(ngModel)]="values"
+      (ngModelChange)="onChanges($event)"
+    ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
       <ng-container *ngFor="let label of labels; let i = index; let isLast = last">

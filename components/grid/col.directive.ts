@@ -108,7 +108,8 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           const prefixArray: Array<keyof EmbeddedProperty> = ['span', 'pull', 'push', 'offset', 'order'];
           prefixArray.forEach(prefix => {
             const prefixClass = prefix === 'span' ? '-' : `-${prefix}-`;
-            listClassMap[`ant-col-${sizeName}${prefixClass}${embedded[prefix]}`] = embedded && isNotNil(embedded[prefix]);
+            listClassMap[`ant-col-${sizeName}${prefixClass}${embedded[prefix]}`] =
+              embedded && isNotNil(embedded[prefix]);
           });
         }
       }
@@ -144,18 +145,20 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     if (this.nzRowDirective) {
-      this.nzRowDirective.actualGutter$.pipe(takeUntil(this.destroy$)).subscribe(([horizontalGutter, verticalGutter]) => {
-        const renderGutter = (name: string, gutter: number | null) => {
-          const nativeElement = this.elementRef.nativeElement;
-          if (gutter !== null) {
-            this.renderer.setStyle(nativeElement, name, `${gutter / 2}px`);
-          }
-        };
-        renderGutter('padding-left', horizontalGutter);
-        renderGutter('padding-right', horizontalGutter);
-        renderGutter('padding-top', verticalGutter);
-        renderGutter('padding-bottom', verticalGutter);
-      });
+      this.nzRowDirective.actualGutter$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(([horizontalGutter, verticalGutter]) => {
+          const renderGutter = (name: string, gutter: number | null) => {
+            const nativeElement = this.elementRef.nativeElement;
+            if (gutter !== null) {
+              this.renderer.setStyle(nativeElement, name, `${gutter / 2}px`);
+            }
+          };
+          renderGutter('padding-left', horizontalGutter);
+          renderGutter('padding-right', horizontalGutter);
+          renderGutter('padding-top', verticalGutter);
+          renderGutter('padding-bottom', verticalGutter);
+        });
     }
   }
 

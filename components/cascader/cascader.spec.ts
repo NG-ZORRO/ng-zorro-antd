@@ -24,7 +24,12 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import {
+  createFakeEvent,
+  createMouseEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent
+} from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzCascaderComponent } from './cascader.component';
@@ -37,10 +42,14 @@ describe('cascader', () => {
 
   function getItemAtColumnAndRow(column: number, row: number): HTMLElement | null {
     if (row === -1) {
-      return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`);
+      return overlayContainerElement.querySelector(
+        `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`
+      );
     }
 
-    return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`);
+    return overlayContainerElement.querySelector(
+      `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`
+    );
   }
 
   function getAllColumns(): NodeListOf<Element> {
@@ -50,7 +59,14 @@ describe('cascader', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
+        imports: [
+          BidiModule,
+          FormsModule,
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+          NzCascaderModule,
+          NzIconTestModule
+        ],
         declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
       }).compileComponents();
 
@@ -1748,7 +1764,9 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-menu-rtl');
+      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain(
+        'ant-cascader-menu-rtl'
+      );
     }));
 
     it('should item arrow display correct direction', fakeAsync(() => {
@@ -2015,7 +2033,9 @@ const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explici
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">{{ label }}{{ isLast ? '' : ' | ' }}</ng-container>
+      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">
+        {{ label }}{{ isLast ? '' : ' | ' }}
+      </ng-container>
     </ng-template>
   `,
   styles: [

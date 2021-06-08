@@ -5,7 +5,6 @@
 
 import {
   AfterContentChecked,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -132,7 +131,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   }
 })
-export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
+export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   static ngAcceptInputType_nzAutoSize: BooleanInput;
 
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
@@ -229,8 +228,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
     this.cdr.markForCheck();
   }
-
-  ngAfterViewInit(): void {}
 
   ngAfterContentChecked(): void {
     if (this.dataSource && !this._dataSubscription) {

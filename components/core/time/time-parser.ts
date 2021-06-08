@@ -62,7 +62,9 @@ export class NgTimeParser {
         );
       }
       if (isNotNil(this.matchMap.periodWide)) {
-        period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Wide).indexOf(match[this.matchMap.periodWide + 1]);
+        period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Wide).indexOf(
+          match[this.matchMap.periodWide + 1]
+        );
       }
       if (isNotNil(this.matchMap.periodAbbreviated)) {
         period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Abbreviated).indexOf(
@@ -132,7 +134,11 @@ export class NgTimeParser {
           break;
         case periodAbbreviatedMatch:
           this.matchMap.periodAbbreviated = index;
-          const periodsAbbreviated = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Abbreviated).join('|');
+          const periodsAbbreviated = getLocaleDayPeriods(
+            this.localeId,
+            FormStyle.Format,
+            TranslationWidth.Abbreviated
+          ).join('|');
           regexStr = regexStr.replace(periodAbbreviated, `(${periodsAbbreviated})`);
           break;
       }

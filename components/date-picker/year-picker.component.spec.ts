@@ -150,7 +150,9 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      const disabledCell = overlayContainerElement.querySelector('.ant-picker-year-panel tr td.ant-picker-cell-disabled')!;
+      const disabledCell = overlayContainerElement.querySelector(
+        '.ant-picker-year-panel tr td.ant-picker-cell-disabled'
+      )!;
       expect(disabledCell.textContent).toContain('2013');
     }));
 
@@ -319,7 +321,9 @@ describe('NzYearPickerComponent', () => {
   }
 
   function getSecondYearCell(): HTMLElement {
-    return queryFromOverlay('.ant-picker-year-panel td.ant-picker-cell:nth-child(2) .ant-picker-cell-inner') as HTMLElement;
+    return queryFromOverlay(
+      '.ant-picker-year-panel td.ant-picker-cell:nth-child(2) .ant-picker-cell-inner'
+    ) as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {

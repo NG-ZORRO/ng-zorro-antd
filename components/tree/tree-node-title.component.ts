@@ -3,13 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 @Component({
   selector: 'nz-tree-node-title',
   template: `
-    <ng-template [ngTemplateOutlet]="treeTemplate" [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"></ng-template>
+    <ng-template
+      [ngTemplateOutlet]="treeTemplate"
+      [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"
+    ></ng-template>
     <ng-container *ngIf="!treeTemplate">
       <span
         *ngIf="icon && showIcon"
@@ -29,7 +40,11 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
         </span>
       </span>
       <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue:'i':'font-highlight'"></span>
-      <nz-tree-drop-indicator *ngIf="showIndicator" [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+      <nz-tree-drop-indicator
+        *ngIf="showIndicator"
+        [dropPosition]="dragPosition"
+        [level]="context.level"
+      ></nz-tree-drop-indicator>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

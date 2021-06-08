@@ -7,7 +7,12 @@ import { Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output 
 
 import { fromEvent, Observable, Subscription } from 'rxjs';
 
-import { NzTabScrollEvent, NzTabScrollEventHandlerFun, NzTabScrollListOffset, NzTabScrollListOffsetEvent } from './interfaces';
+import {
+  NzTabScrollEvent,
+  NzTabScrollEventHandlerFun,
+  NzTabScrollListOffset,
+  NzTabScrollListOffsetEvent
+} from './interfaces';
 
 const MIN_SWIPE_DISTANCE = 0.1;
 const STOP_SWIPE_DISTANCE = 0.01;

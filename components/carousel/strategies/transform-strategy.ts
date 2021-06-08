@@ -52,7 +52,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
       if (this.vertical) {
         this.renderer.setStyle(this.slickTrackEl, 'width', `${this.unitWidth}px`);
         this.renderer.setStyle(this.slickTrackEl, 'height', `${this.length * this.unitHeight}px`);
-        this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`);
+        this.renderer.setStyle(
+          this.slickTrackEl,
+          'transform',
+          `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`
+        );
       } else {
         this.renderer.setStyle(this.slickTrackEl, 'height', `${this.unitHeight}px`);
         this.renderer.setStyle(this.slickTrackEl, 'width', `${this.length * this.unitWidth}px`);
@@ -71,7 +75,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
     const { to: t } = this.getFromToInBoundary(_f, _t);
     const complete$ = new Subject<void>();
 
-    this.renderer.setStyle(this.slickTrackEl, 'transition', `transform ${this.carouselComponent!.nzTransitionSpeed}ms ease`);
+    this.renderer.setStyle(
+      this.slickTrackEl,
+      'transition',
+      `transform ${this.carouselComponent!.nzTransitionSpeed}ms ease`
+    );
 
     if (this.vertical) {
       this.verticalTransform(_f, _t);
@@ -118,7 +126,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
           this.prepareVerticalContext(false);
         }
       }
-      this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-activeIndex * this.unitHeight + _vector.x}px, 0)`);
+      this.renderer.setStyle(
+        this.slickTrackEl,
+        'transform',
+        `translate3d(0, ${-activeIndex * this.unitHeight + _vector.x}px, 0)`
+      );
     } else {
       if (!this.isDragging && this.length > 2) {
         if (activeIndex === this.maxIndex) {
@@ -127,7 +139,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
           this.prepareHorizontalContext(false);
         }
       }
-      this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(${-activeIndex * this.unitWidth + _vector.x}px, 0, 0)`);
+      this.renderer.setStyle(
+        this.slickTrackEl,
+        'transform',
+        `translate3d(${-activeIndex * this.unitWidth + _vector.x}px, 0, 0)`
+      );
     }
 
     this.isDragging = true;

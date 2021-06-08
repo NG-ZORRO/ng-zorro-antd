@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-param-reassign */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -19,14 +19,21 @@ const DISABLED = 1;
 
 describe('transfer', () => {
   let injector: Injector;
-  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent>;
+  let fixture: ComponentFixture<
+    TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent
+  >;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
       imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule],
-      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component, NzTestTransferRtlComponent]
+      declarations: [
+        TestTransferComponent,
+        TestTransferCustomRenderComponent,
+        Test996Component,
+        NzTestTransferRtlComponent
+      ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     dl = fixture.debugElement;
@@ -268,8 +275,9 @@ describe('transfer', () => {
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
-      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search'))
-        .nativeElement as HTMLElement).attributes.getNamedItem('placeholder')!.textContent;
+      const searchPhText = (
+        tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement
+      ).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
     });
   });
@@ -310,9 +318,9 @@ describe('transfer', () => {
       instance = dl.componentInstance;
       pageObject = new TransferPageObject();
       fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain(
-        'ant-checkbox-checked'
-      );
+      expect(
+        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
+      ).not.toContain('ant-checkbox-checked');
       pageObject.checkItem('right', 1);
       tick(50);
       fixture.detectChanges();
@@ -372,7 +380,11 @@ describe('transfer', () => {
       return this;
     }
 
-    checkItem(direction: TransferDirection, index: number | number[], cls: string = '.ant-transfer-list-content-item label'): this {
+    checkItem(
+      direction: TransferDirection,
+      index: number | number[],
+      cls: string = '.ant-transfer-list-content-item label'
+    ): this {
       if (!Array.isArray(index)) {
         index = [index];
       }
@@ -386,7 +398,9 @@ describe('transfer', () => {
     }
 
     search(direction: TransferDirection, value: string): this {
-      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector('.ant-transfer-list-search') as HTMLInputElement;
+      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector(
+        '.ant-transfer-list-search'
+      ) as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
       fixture.detectChanges();
@@ -538,9 +552,7 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-transfer [nzDataSource]="list"></nz-transfer>
-  `
+  template: ` <nz-transfer [nzDataSource]="list"></nz-transfer> `
 })
 class Test996Component implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

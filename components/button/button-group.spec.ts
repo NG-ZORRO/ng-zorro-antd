@@ -19,7 +19,10 @@ describe('button-group', () => {
   });
 
   it('should RTL classname work', fakeAsync(() => {
-    const testBed = createComponentBed(NzTestButtonGroupRtlComponent, { declarations: [NzButtonGroupComponent], imports: [BidiModule] });
+    const testBed = createComponentBed(NzTestButtonGroupRtlComponent, {
+      declarations: [NzButtonGroupComponent],
+      imports: [BidiModule]
+    });
     const buttonGroupElement = testBed.debugElement.query(By.directive(NzButtonGroupComponent)).nativeElement;
     expect(buttonGroupElement.className).toBe('ant-btn-group ant-btn-group-rtl');
     testBed.component.direction = 'ltr';
@@ -29,9 +32,7 @@ describe('button-group', () => {
 });
 
 @Component({
-  template: `
-    <nz-button-group [nzSize]="nzSize"></nz-button-group>
-  `
+  template: ` <nz-button-group [nzSize]="nzSize"></nz-button-group> `
 })
 export class TestButtonGroupComponent {
   @Input() nzSize: NzButtonGroupSize = 'default';

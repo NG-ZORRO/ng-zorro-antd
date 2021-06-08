@@ -61,7 +61,10 @@ describe('autoresize', () => {
         autosize.resizeToFitContent();
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
 
         previousHeight = textarea.clientHeight;
@@ -78,7 +81,10 @@ describe('autoresize', () => {
         autosize.resizeToFitContent(true);
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
       }));
 
@@ -167,7 +173,10 @@ describe('autoresize', () => {
         autosize.resizeToFitContent();
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
 
         previousHeight = textarea.clientHeight;
@@ -184,7 +193,10 @@ describe('autoresize', () => {
         autosize.resizeToFitContent(true);
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
+        expect(textarea.clientHeight).toBeGreaterThan(
+          previousHeight,
+          'Expected textarea to have grown with added content.'
+        );
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
       }));
 
@@ -201,9 +213,7 @@ describe('autoresize', () => {
 });
 
 @Component({
-  template: `
-    <textarea nz-input nzAutosize [ngModel]="value"></textarea>
-  `,
+  template: ` <textarea nz-input nzAutosize [ngModel]="value"></textarea> `,
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
@@ -221,9 +231,7 @@ export class NzTestInputWithTextAreaAutoSizeStringComponent {
 }
 
 @Component({
-  template: `
-    <textarea nz-input ngModel [nzAutosize]="{ minRows: minRows, maxRows: maxRows }"></textarea>
-  `,
+  template: ` <textarea nz-input ngModel [nzAutosize]="{ minRows: minRows, maxRows: maxRows }"></textarea> `,
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
@@ -242,9 +250,7 @@ export class NzTestInputWithTextAreaAutoSizeObjectComponent {
 }
 
 @Component({
-  template: `
-    <textarea nz-input [nzAutosize]="true" [ngModel]="value"></textarea>
-  `,
+  template: ` <textarea nz-input [nzAutosize]="true" [ngModel]="value"></textarea> `,
   encapsulation: ViewEncapsulation.None,
   styles: [
     `

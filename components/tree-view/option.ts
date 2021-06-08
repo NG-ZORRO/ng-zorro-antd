@@ -3,7 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -11,9 +19,7 @@ import { NzTreeNodeComponent } from './node';
 
 @Component({
   selector: 'nz-tree-node-option',
-  template: `
-    <span class="ant-tree-title"><ng-content></ng-content></span>
-  `,
+  template: ` <span class="ant-tree-title"><ng-content></ng-content></span> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-node-content-wrapper',

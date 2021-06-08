@@ -21,7 +21,15 @@ import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeComponent } from './tree.component';
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzOutletModule, NzIconModule, NzNoAnimationModule, NzHighlightModule, ScrollingModule],
+  imports: [
+    BidiModule,
+    CommonModule,
+    NzOutletModule,
+    NzIconModule,
+    NzNoAnimationModule,
+    NzHighlightModule,
+    ScrollingModule
+  ],
   declarations: [
     NzTreeComponent,
     NzTreeNodeBuiltinComponent,

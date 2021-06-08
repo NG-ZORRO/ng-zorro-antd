@@ -21,7 +21,11 @@ describe('modal footer directive', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NzModalModule, NoopAnimationsModule],
-        declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent, TestDirectiveFooterWithInitOpenedComponent],
+        declarations: [
+          TestDirectiveFooterComponent,
+          TestDirectiveFooterInServiceComponent,
+          TestDirectiveFooterWithInitOpenedComponent
+        ],
         providers: [NzModalService]
       });
 
@@ -74,7 +78,9 @@ describe('modal footer directive', () => {
     fixture.detectChanges();
 
     expect(modalRef.componentInstance!.nzModalRef).toBe(modalRef);
-    expect(modalRef.componentInstance!.nzModalFooterDirective).toEqual(modalRef.getConfig().nzFooter as TemplateRef<{}>);
+    expect(modalRef.componentInstance!.nzModalFooterDirective).toEqual(
+      modalRef.getConfig().nzFooter as TemplateRef<{}>
+    );
   });
 });
 
@@ -93,7 +99,8 @@ describe('modal footer directive', () => {
 class TestDirectiveFooterComponent {
   isVisible = false;
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef }) nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
+  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
 
   constructor() {}
 
@@ -121,7 +128,8 @@ class TestDirectiveFooterComponent {
 class TestDirectiveFooterWithInitOpenedComponent {
   isVisible = true;
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef }) nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
+  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
 
   constructor() {}
 }
@@ -134,7 +142,8 @@ class TestDirectiveFooterWithInitOpenedComponent {
   `
 })
 class TestDirectiveFooterInServiceComponent {
-  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef }) nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
+  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
 
   constructor(public nzModalRef: NzModalRef) {}
 

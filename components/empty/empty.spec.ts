@@ -308,9 +308,7 @@ export class NzEmptyTestServiceComponent {
 @Component({
   // eslint-disable-next-line
   selector: 'nz-empty-test-custom',
-  template: `
-    <div>I'm in component {{ name }}</div>
-  `
+  template: ` <div>I'm in component {{ name }}</div> `
 })
 export class NzEmptyTestCustomComponent {
   constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}

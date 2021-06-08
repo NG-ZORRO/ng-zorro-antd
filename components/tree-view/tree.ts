@@ -73,7 +73,12 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  renderNodeChanges(data: T[] | readonly T[], dataDiffer?: IterableDiffer<T>, viewContainer?: ViewContainerRef, parentData?: T): void {
+  renderNodeChanges(
+    data: T[] | readonly T[],
+    dataDiffer?: IterableDiffer<T>,
+    viewContainer?: ViewContainerRef,
+    parentData?: T
+  ): void {
     super.renderNodeChanges(data, dataDiffer, viewContainer, parentData);
     this._dataSourceChanged.next();
   }

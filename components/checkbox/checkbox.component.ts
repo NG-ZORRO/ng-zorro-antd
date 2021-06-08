@@ -143,7 +143,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   }
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true)
+    this.focusMonitor
+      .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {

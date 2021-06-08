@@ -6,7 +6,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
-import { NzTableData, NzTableFilterFn, NzTableFilterValue, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
+import {
+  NzTableData,
+  NzTableFilterFn,
+  NzTableFilterValue,
+  NzTableQueryParams,
+  NzTableSortFn,
+  NzTableSortOrder
+} from './table.types';
 
 @Injectable()
 export class NzTableDataService implements OnDestroy {
@@ -56,7 +63,10 @@ export class NzTableDataService implements OnDestroy {
       let listOfDataAfterCalc = [...listOfData];
       const listOfFilterOperator = listOfCalcOperator.filter(item => {
         const { filterValue, filterFn } = item;
-        const isReset = filterValue === null || filterValue === undefined || (Array.isArray(filterValue) && filterValue!.length === 0);
+        const isReset =
+          filterValue === null ||
+          filterValue === undefined ||
+          (Array.isArray(filterValue) && filterValue!.length === 0);
         return !isReset && typeof filterFn === 'function';
       });
       for (const item of listOfFilterOperator) {
@@ -83,7 +93,11 @@ export class NzTableDataService implements OnDestroy {
       return listOfDataAfterCalc;
     })
   );
-  private listOfFrontEndCurrentPageData$ = combineLatest([this.pageIndexDistinct$, this.pageSizeDistinct$, this.listOfDataAfterCalc$]).pipe(
+  private listOfFrontEndCurrentPageData$ = combineLatest([
+    this.pageIndexDistinct$,
+    this.pageSizeDistinct$,
+    this.listOfDataAfterCalc$
+  ]).pipe(
     takeUntil(this.destroy$),
     filter(value => {
       const [pageIndex, pageSize, listOfData] = value;

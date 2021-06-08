@@ -200,7 +200,9 @@ describe('nz-tooltip', () => {
 
       component.style = { color: '#fff' };
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(255, 255, 255)');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe(
+        'rgb(255, 255, 255)'
+      );
 
       component.style = { color: '#000' };
       fixture.detectChanges();
@@ -291,15 +293,19 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain('ant-tooltip-pink');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
+        'ant-tooltip-pink'
+      );
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor).toBe(
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
         'rgb(255, 85, 0)'
       );
+      expect(
+        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
+      ).toBe('rgb(255, 85, 0)');
     }));
   });
 
@@ -350,7 +356,9 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">Click</a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">
+      Click
+    </a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
@@ -365,7 +373,15 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Manually
     </a>
 
-    <a #alwaysShow nz-tooltip [nzTooltipTrigger]="trigger" [nzTooltipTitle]="'always show'" [nzTooltipVisible]="visible">Always Show</a>
+    <a
+      #alwaysShow
+      nz-tooltip
+      [nzTooltipTrigger]="trigger"
+      [nzTooltipTitle]="'always show'"
+      [nzTooltipVisible]="visible"
+    >
+      Always Show
+    </a>
 
     <div>
       <button>A</button>

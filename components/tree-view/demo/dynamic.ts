@@ -1,6 +1,6 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
@@ -138,7 +138,7 @@ class DynamicDatasource implements DataSource<FlatNode> {
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
+export class NzDemoTreeViewDynamicComponent {
   treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,
     node => node.expandable
@@ -149,6 +149,4 @@ export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
   constructor() {}
 
   hasChild = (_: number, node: FlatNode) => node.expandable;
-
-  ngAfterViewInit(): void {}
 }

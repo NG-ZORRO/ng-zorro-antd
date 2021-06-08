@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /* eslint-disable no-invalid-this */
@@ -45,7 +46,10 @@ export function cancelRequestAnimationFrame(id: number): NzSafeAny {
   )[0];
 
   return prefix
-    ? ((window as NzSafeAny)[`${prefix}CancelAnimationFrame`] || (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`])
+    ? (
+        (window as NzSafeAny)[`${prefix}CancelAnimationFrame`] ||
+        (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`]
+      )
         // @ts-ignore
         .call(this, id)
     : clearTimeout(id);

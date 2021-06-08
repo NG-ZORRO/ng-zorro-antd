@@ -32,7 +32,11 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   preserveWhitespaces: false,
   template: `
     <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
-      <nz-message *ngFor="let instance of instances" [instance]="instance" (destroyed)="remove($event.id, $event.userAction)"></nz-message>
+      <nz-message
+        *ngFor="let instance of instances"
+        [instance]="instance"
+        (destroyed)="remove($event.id, $event.userAction)"
+      ></nz-message>
     </div>
   `
 })

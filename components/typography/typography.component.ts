@@ -69,14 +69,19 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
           else jsEllipsis
         "
       >
-        <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent }"></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="contentTemplate"
+          [ngTemplateOutletContext]="{ content: nzContent }"
+        ></ng-template>
         <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
       </ng-container>
       <ng-template #jsEllipsis>
         <span #ellipsisContainer></span>
         <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
         <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
-        <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{ locale?.expand }}</a>
+        <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">
+          {{ locale?.expand }}
+        </a>
       </ng-template>
     </ng-container>
 
@@ -264,7 +269,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e!.nativeElement);
+    const fixedNodes = [this.textCopyRef, this.textEditRef]
+      .filter(e => e && e.nativeElement)
+      .map(e => e!.nativeElement);
     const expandableBtnElement = this.getExpandableBtnElement();
     if (expandableBtnElement) {
       fixedNodes.push(expandableBtnElement);

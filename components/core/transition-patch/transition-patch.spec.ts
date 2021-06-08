@@ -26,7 +26,9 @@ describe('transition-patch', () => {
     expect(buttonElement.getAttribute('hidden')).toBe('abc');
   });
   it('should work if hidden binding', () => {
-    const testBed = createComponentBed(TestTransitionPatchHiddenBindingComponent, { imports: [NzTransitionPatchModule] });
+    const testBed = createComponentBed(TestTransitionPatchHiddenBindingComponent, {
+      imports: [NzTransitionPatchModule]
+    });
     const buttonElement = testBed.debugElement.query(By.directive(NzTransitionPatchDirective)).nativeElement;
     expect(buttonElement.getAttribute('hidden')).toBeFalsy();
     testBed.component.hidden = true;
@@ -36,30 +38,22 @@ describe('transition-patch', () => {
 });
 
 @Component({
-  template: `
-    <button nz-button></button>
-  `
+  template: ` <button nz-button></button> `
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
-  template: `
-    <button nz-button hidden></button>
-  `
+  template: ` <button nz-button hidden></button> `
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
-  template: `
-    <button nz-button hidden="abc"></button>
-  `
+  template: ` <button nz-button hidden="abc"></button> `
 })
 export class TestTransitionPatchRestoreComponent {}
 
 @Component({
-  template: `
-    <button nz-button [hidden]="hidden"></button>
-  `
+  template: ` <button nz-button [hidden]="hidden"></button> `
 })
 export class TestTransitionPatchHiddenBindingComponent {
   hidden = false;

@@ -17,7 +17,9 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
     >
       <ng-template #render let-item>{{ item.title }}-{{ item.description }}</ng-template>
       <ng-template #footer let-direction>
-        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">reload</button>
+        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">
+          reload
+        </button>
       </ng-template>
     </nz-transfer>
   `

@@ -73,7 +73,9 @@ export class NzFormLabelComponent implements OnDestroy {
   }
   // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
   get tooltipIcon(): NzFormTooltipIcon {
-    return this._tooltipIcon !== 'default' ? this._tooltipIcon : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
+    return this._tooltipIcon !== 'default'
+      ? this._tooltipIcon
+      : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 

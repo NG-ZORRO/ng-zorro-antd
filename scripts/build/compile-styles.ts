@@ -1,25 +1,36 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as less from 'less';
-import * as path from 'path';
 import { buildConfig } from '../build-config';
 
-const LessPluginCleanCSS = require('less-plugin-clean-css');
-const NpmImportPlugin = require('less-plugin-npm-import');
+const lessPluginCleanCSS = require('less-plugin-clean-css');
+const npmImportPlugin = require('less-plugin-npm-import');
 
-async function compileLess(content: string, savePath: string, min: boolean, sub?: boolean, rootPath?: string): Promise<void> {
-  // tslint:disable-next-line:no-any
+async function compileLess(
+  content: string,
+  savePath: string,
+  min: boolean,
+  sub?: boolean,
+  rootPath?: string
+): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const plugins: any[] = [];
-  const lessOptions: Less.Options = { plugins: plugins, javascriptEnabled: true };
+  const lessOptions: Less.Options = { plugins, javascriptEnabled: true };
 
   if (min) {
-    plugins.push(new LessPluginCleanCSS({ advanced: true }));
+    plugins.push(new lessPluginCleanCSS({ advanced: true }));
   }
 
   if (sub) {
     lessOptions.paths = [path.dirname(rootPath as string)];
     lessOptions.filename = rootPath;
     plugins.push(
-      new NpmImportPlugin({
+      new npmImportPlugin({
         prefix: '~'
       })
     );
@@ -49,8 +60,12 @@ export async function compile(): Promise<void | void[]> {
       const buildFilePath = `${sourcePath}/${dir}/style/entry.less`;
       const componentLess = await fs.readFile(buildFilePath, { encoding: 'utf8' });
       if (await fs.pathExists(buildFilePath)) {
-        promiseList.push(compileLess(componentLess, path.join(targetPath, dir, 'style', `index.css`), false, true, buildFilePath));
-        promiseList.push(compileLess(componentLess, path.join(targetPath, dir, 'style', `index.min.css`), true, true, buildFilePath));
+        promiseList.push(
+          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.css`), false, true, buildFilePath)
+        );
+        promiseList.push(
+          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.min.css`), true, true, buildFilePath)
+        );
       }
     }
   }
@@ -59,9 +74,18 @@ export async function compile(): Promise<void | void[]> {
   await fs.copy(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
   await fs.writeFile(`${targetPath}/components.less`, await fs.readFile(`${sourcePath}/components.less`));
   await fs.writeFile(`${targetPath}/ng-zorro-antd.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.less`));
-  await fs.writeFile(`${targetPath}/ng-zorro-antd.dark.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.dark.less`));
-  await fs.writeFile(`${targetPath}/ng-zorro-antd.aliyun.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.aliyun.less`));
-  await fs.writeFile(`${targetPath}/ng-zorro-antd.compact.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.compact.less`));
+  await fs.writeFile(
+    `${targetPath}/ng-zorro-antd.dark.less`,
+    await fs.readFile(`${sourcePath}/ng-zorro-antd.dark.less`)
+  );
+  await fs.writeFile(
+    `${targetPath}/ng-zorro-antd.aliyun.less`,
+    await fs.readFile(`${sourcePath}/ng-zorro-antd.aliyun.less`)
+  );
+  await fs.writeFile(
+    `${targetPath}/ng-zorro-antd.compact.less`,
+    await fs.readFile(`${sourcePath}/ng-zorro-antd.compact.less`)
+  );
 
   // Compile concentrated less file to CSS file.
   const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;

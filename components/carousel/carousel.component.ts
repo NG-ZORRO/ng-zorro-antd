@@ -58,7 +58,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   exportAs: 'nzCarousel',
   preserveWhitespaces: false,
   template: `
-    <div class="slick-initialized slick-slider" [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'">
+    <div
+      class="slick-initialized slick-slider"
+      [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
+    >
       <div
         #slickList
         class="slick-list"
@@ -81,8 +84,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         [class.slick-dots-left]="nzDotPosition === 'left'"
         [class.slick-dots-right]="nzDotPosition === 'right'"
       >
-        <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="onLiClick(i)">
-          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
+        <li
+          *ngFor="let content of carouselContents; let i = index"
+          [class.slick-active]="content.isActive"
+          (click)="onLiClick(i)"
+        >
+          <ng-template
+            [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
+            [ngTemplateOutletContext]="{ $implicit: i }"
+          ></ng-template>
         </li>
       </ul>
     </div>

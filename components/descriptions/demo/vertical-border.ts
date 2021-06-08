@@ -8,7 +8,9 @@ import { Component } from '@angular/core';
       <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Order Time">2018-04-24 18:00:00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">2018-04-24 18:00:00 To 2019-04-24 18:00:00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
+        2018-04-24 18:00:00 To 2019-04-24 18:00:00
+      </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
         <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
       </nz-descriptions-item>

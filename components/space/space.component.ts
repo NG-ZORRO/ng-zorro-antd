@@ -97,7 +97,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;
-    this.spaceSize = numberSize / (!!this.nzSplit ? 2 : 1);
+    this.spaceSize = numberSize / (this.nzSplit ? 2 : 1);
     if (this.nzSpaceItemComponents?.length) {
       warnDeprecation('`nz-space-item` in `nz-space` will be removed in 12.0.0, please use `*nzSpaceItem` instead.');
       this.nzSpaceItemComponents.forEach(item => {

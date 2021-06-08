@@ -1,5 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, NzRankDirection } from 'ng-zorro-antd/graph';
+import { Component, ViewChild } from '@angular/core';
+import {
+  NzGraphComponent,
+  NzGraphData,
+  NzGraphDataDef,
+  NzGraphZoomDirective,
+  NzRankDirection
+} from 'ng-zorro-antd/graph';
 
 @Component({
   selector: 'nz-demo-graph-customized',
@@ -85,7 +91,7 @@ import { NzGraphComponent, NzGraphData, NzGraphDataDef, NzGraphZoomDirective, Nz
     `
   ]
 })
-export class NzDemoGraphCustomizedComponent implements OnInit {
+export class NzDemoGraphCustomizedComponent {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;
   @ViewChild(NzGraphZoomDirective, { static: true }) zoomController!: NzGraphZoomDirective;
   zoom = 0.5;
@@ -262,8 +268,6 @@ export class NzDemoGraphCustomizedComponent implements OnInit {
   graphData = new NzGraphData(this.testDef);
 
   constructor() {}
-
-  ngOnInit(): void {}
 
   expand(name: string): void {
     this.graphData.expand(name);

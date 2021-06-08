@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EmbeddedViewRef, Input, OnChanges, SimpleChange, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  EmbeddedViewRef,
+  Input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  ViewContainerRef
+} from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
@@ -16,7 +25,10 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
   @Input() nzStringTemplateOutletContext: NzSafeAny | null = null;
   @Input() nzStringTemplateOutlet: NzSafeAny | TemplateRef<NzSafeAny> = null;
 
-  static ngTemplateContextGuard<T>(_dir: NzStringTemplateOutletDirective<T>, _ctx: NzSafeAny): _ctx is NzStringTemplateOutletContext {
+  static ngTemplateContextGuard<T>(
+    _dir: NzStringTemplateOutletDirective<T>,
+    _ctx: NzSafeAny
+  ): _ctx is NzStringTemplateOutletContext {
     return true;
   }
 
@@ -70,7 +82,8 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
           return true;
         }
       };
-      const shouldContextRecreate = nzStringTemplateOutletContext && hasContextShapeChanged(nzStringTemplateOutletContext);
+      const shouldContextRecreate =
+        nzStringTemplateOutletContext && hasContextShapeChanged(nzStringTemplateOutletContext);
       return shouldContextRecreate || shouldOutletRecreate;
     };
 

@@ -10,8 +10,16 @@ export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalO
   return { ...defaultOptions, ...config };
 }
 
-export function getValueWithConfig<T>(userValue: T | undefined, configValue: T | undefined, defaultValue: T): T | undefined {
-  return typeof userValue === 'undefined' ? (typeof configValue === 'undefined' ? defaultValue : configValue) : userValue;
+export function getValueWithConfig<T>(
+  userValue: T | undefined,
+  configValue: T | undefined,
+  defaultValue: T
+): T | undefined {
+  return typeof userValue === 'undefined'
+    ? typeof configValue === 'undefined'
+      ? defaultValue
+      : configValue
+    : userValue;
 }
 
 /**

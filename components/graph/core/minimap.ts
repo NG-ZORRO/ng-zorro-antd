@@ -117,7 +117,8 @@ export class Minimap {
 
     for (const k of new Array(document.styleSheets.length).keys()) {
       try {
-        const cssRules = (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
+        const cssRules =
+          (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
         if (cssRules == null) {
           continue;
         }

@@ -10,11 +10,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import en_US from '../i18n/languages/en_US';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzProgressModule } from '../progress/progress.module';
-import { NzToolTipModule } from '../tooltip/tooltip.module';
 
 import {
   NzShowUploadList,
@@ -30,7 +29,9 @@ import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 import { NzUploadComponent } from './upload.component';
 
-const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
+const FILECONTENT = [
+  `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
+];
 const FILE = new File(FILECONTENT, '');
 const PNGSMALL = {
   target: {
@@ -222,7 +223,8 @@ describe('upload', () => {
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
-        const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete').nativeElement as HTMLElement;
+        const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete')
+          .nativeElement as HTMLElement;
         expect(removeFileText.parentElement!.title).toBe(en_US.Upload.removeFile);
       });
     });
@@ -708,7 +710,9 @@ describe('upload', () => {
       private files: any;
 
       constructor() {
-        spyOn(this.btnComp, 'onClick').and.callFake(() => this.btnComp.onChange({ target: { files: this.files } } as any));
+        spyOn(this.btnComp, 'onClick').and.callFake(() =>
+          this.btnComp.onChange({ target: { files: this.files } } as any)
+        );
       }
 
       get btnEl(): DebugElement {
@@ -757,7 +761,15 @@ describe('upload', () => {
     let instance: TestUploadListComponent;
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconTestModule],
+        imports: [
+          CommonModule,
+          FormsModule,
+          NzToolTipModule,
+          NzProgressModule,
+          NzI18nModule,
+          NoopAnimationsModule,
+          NzIconTestModule
+        ],
         declarations: [NzUploadListComponent, TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
@@ -1473,9 +1485,7 @@ class TestUploadListComponent {
 }
 
 @Component({
-  template: `
-    <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div>
-  `
+  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div> `
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;

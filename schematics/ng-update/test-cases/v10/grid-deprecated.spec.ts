@@ -1,8 +1,5 @@
-import { getSystemPath, normalize, virtualFs } from '@angular-devkit/core';
-import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import * as shx from 'shelljs';
 import { createTestApp } from '../../../testing/test-app';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
@@ -37,7 +34,7 @@ describe('v10 form components migration', () => {
     }
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function runMigration(): Promise<any> {
     await runner.runSchematicAsync('migration-v10', {}, tree).toPromise();
   }

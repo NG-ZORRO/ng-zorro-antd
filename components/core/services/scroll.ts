@@ -103,7 +103,11 @@ export class NzScrollService {
    * @param containerEl container, `window` by default
    * @param y Scroll to `top`, 0 by default
    */
-  scrollTo(containerEl?: Element | HTMLElement | Window | Document | null, y: number = 0, options: NzScrollToOptions = {}): void {
+  scrollTo(
+    containerEl?: Element | HTMLElement | Window | Document | null,
+    y: number = 0,
+    options: NzScrollToOptions = {}
+  ): void {
     const target = containerEl ? containerEl : window;
     const scrollTop = this.getScroll(target);
     const startTime = Date.now();

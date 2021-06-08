@@ -6,16 +6,17 @@ import { Component } from '@angular/core';
     <article nz-typography>
       <h1 nz-typography>Introduction</h1>
       <p nz-typography>
-        In the process of internal desktop applications development, many different design specs and implementations would be involved,
-        which might cause designers and developers difficulties and duplication and reduce the efficiency of development.
+        In the process of internal desktop applications development, many different design specs and implementations
+        would be involved, which might cause designers and developers difficulties and duplication and reduce the
+        efficiency of development.
       </p>
       <p nz-typography>
-        After massive project practice and summaries, Ant Design, a design language for backgroundapplications, is refined by Ant UED Team,
-        which aims to
+        After massive project practice and summaries, Ant Design, a design language for backgroundapplications, is
+        refined by Ant UED Team, which aims to
         <span nz-typography>
           <strong>
-            uniform the user interface specs for internal background projects, lower the unnecessary cost of design differences and
-            implementation and liberate the resources ofdesign and front-end development
+            uniform the user interface specs for internal background projects, lower the unnecessary cost of design
+            differences and implementation and liberate the resources ofdesign and front-end development
           </strong>
         </span>
         .

@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ProjectDefinition, WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
 import {
@@ -23,8 +28,10 @@ export function addRequiredModules(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
 
     for (const module in modulesMap) {
-      addModuleImportToApptModule(host, module, modulesMap[module],
-        project, appModulePath, options);
+      if (modulesMap.hasOwnProperty(module)) {
+        addModuleImportToApptModule(host, module, modulesMap[module],
+          project, appModulePath, options);
+      }
     }
 
     return;

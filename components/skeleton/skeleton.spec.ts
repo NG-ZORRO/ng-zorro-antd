@@ -254,7 +254,12 @@ export class NzTestSkeletonComponent {
         [nzSize]="nzSize"
         [nzShape]="nzShape"
       ></nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+      <nz-skeleton-element
+        *ngSwitchCase="3"
+        nzType="input"
+        [nzActive]="nzActive"
+        [nzSize]="nzSize"
+      ></nz-skeleton-element>
       <nz-skeleton-element *ngSwitchCase="4" nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
     </ng-container>
   `

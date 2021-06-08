@@ -12,9 +12,7 @@ import { Subject } from 'rxjs';
   exportAs: 'nzOptionGroup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-content></ng-content>
-  `
+  template: ` <ng-content></ng-content> `
 })
 export class NzOptionGroupComponent implements OnChanges {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;

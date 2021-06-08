@@ -49,11 +49,13 @@ import { Component } from '@angular/core';
         <div nz-row>
           <div class="content">
             <p nz-paragraph>
-              Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
+              Ant Design interprets the color system into two levels: a system-level color system and a product-level
+              color system.
             </p>
             <p nz-paragraph>
-              Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers to have a clear
-              psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
+              Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers
+              to have a clear psychological expectation of color when adjusting colors, as well as facilitate
+              communication in teams.
             </p>
             <div class="content-link">
               <a>

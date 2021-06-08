@@ -62,7 +62,10 @@ import { NzTableData } from '../table.types';
         <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
           <tbody>
             <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
-              <ng-template [ngTemplateOutlet]="virtualTemplate" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-template>
+              <ng-template
+                [ngTemplateOutlet]="virtualTemplate"
+                [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+              ></ng-template>
             </ng-container>
           </tbody>
         </table>
@@ -166,11 +169,17 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
         );
         const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
         const data$ = this.data$.pipe(takeUntil(this.destroy$));
-        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(startWith(true), delay(0), takeUntil(this.destroy$));
+        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
+          startWith(true),
+          delay(0),
+          takeUntil(this.destroy$)
+        );
         setClassName$.subscribe(() => this.setScrollPositionClassName());
         scrollEvent$
           .pipe(filter(() => !!this.scrollY))
-          .subscribe(() => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft));
+          .subscribe(
+            () => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft)
+          );
       });
     }
   }

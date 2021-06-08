@@ -55,7 +55,9 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
           (click)="onSelect(item)"
           (contextmenu)="onContextmenu(item, $event)"
         >
-          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">{{ item.tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">
+            {{ item.tab.label }}
+          </ng-container>
         </li>
       </ul>
     </nz-dropdown-menu>

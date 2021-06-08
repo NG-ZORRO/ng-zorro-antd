@@ -217,7 +217,13 @@ export class NzTestDropdownComponent {
 
 @Component({
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)">
+    <a
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      [nzClickHide]="false"
+      [(nzVisible)]="visible"
+      (nzVisibleChange)="triggerVisible($event)"
+    >
       Hover me
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">

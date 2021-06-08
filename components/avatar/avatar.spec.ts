@@ -295,8 +295,6 @@ class TestAvatarComponent {
 }
 
 @Component({
-  template: `
-    <nz-avatar-group></nz-avatar-group>
-  `
+  template: ` <nz-avatar-group></nz-avatar-group> `
 })
 class TestAvatarGroupComponent {}

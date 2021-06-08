@@ -4,7 +4,16 @@
  */
 
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  Renderer2,
+  TemplateRef
+} from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { NzGraphGroupNode, NzGraphNode } from './interface';

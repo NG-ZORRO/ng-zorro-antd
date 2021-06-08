@@ -86,7 +86,11 @@ export class NzTreeFlatDataSource<T, F, K = F> extends DataSource<F> {
 
   _data: BehaviorSubject<T[]>;
 
-  constructor(private _treeControl: FlatTreeControl<F, K>, private _treeFlattener: NzTreeFlattener<T, F, K>, initialData: T[] = []) {
+  constructor(
+    private _treeControl: FlatTreeControl<F, K>,
+    private _treeFlattener: NzTreeFlattener<T, F, K>,
+    initialData: T[] = []
+  ) {
     super();
     this._data = new BehaviorSubject<T[]>(initialData);
     this.flatNodes();

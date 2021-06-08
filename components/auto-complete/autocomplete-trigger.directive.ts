@@ -307,7 +307,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getConnectedElement(): ElementRef {
-    return this.nzInputGroupWhitSuffixOrPrefixDirective ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef : this.elementRef;
+    return this.nzInputGroupWhitSuffixOrPrefixDirective
+      ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef
+      : this.elementRef;
   }
 
   private getHostWidth(): number {

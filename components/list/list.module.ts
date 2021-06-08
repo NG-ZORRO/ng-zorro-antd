@@ -22,7 +22,11 @@ import {
   NzListPaginationComponent
 } from './list-cell';
 import { NzListItemActionComponent, NzListItemActionsComponent, NzListItemExtraComponent } from './list-item-cell';
-import { NzListItemMetaAvatarComponent, NzListItemMetaDescriptionComponent, NzListItemMetaTitleComponent } from './list-item-meta-cell';
+import {
+  NzListItemMetaAvatarComponent,
+  NzListItemMetaDescriptionComponent,
+  NzListItemMetaTitleComponent
+} from './list-item-meta-cell';
 import { NzListItemMetaComponent } from './list-item-meta.component';
 import { NzListItemComponent } from './list-item.component';
 import { NzListComponent } from './list.component';

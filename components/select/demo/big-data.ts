@@ -4,7 +4,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   selector: 'nz-demo-select-big-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-select nzMode="multiple" nzPlaceHolder="Please select" [nzOptions]="listOfOption" [(ngModel)]="listOfSelectedValue"></nz-select>
+    <nz-select
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+      [nzOptions]="listOfOption"
+      [(ngModel)]="listOfSelectedValue"
+    ></nz-select>
   `,
   styles: [
     `

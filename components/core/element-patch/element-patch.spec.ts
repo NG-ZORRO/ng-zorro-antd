@@ -22,9 +22,7 @@ describe('nz-element', () => {
 });
 
 @Component({
-  template: `
-    <button nz-button nz-element>Action</button>
-  `
+  template: ` <button nz-button nz-element>Action</button> `
 })
 export class NzTestElementPatchComponent {
   @ViewChild(NzElementPatchDirective) element!: NzElementPatchDirective;

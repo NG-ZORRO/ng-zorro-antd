@@ -141,7 +141,10 @@ describe('rate', () => {
     });
     it('should hover rate work', () => {
       fixture.detectChanges();
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild, 'mouseover');
+      dispatchFakeEvent(
+        rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild,
+        'mouseover'
+      );
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(testComponent.onHoverChange).toHaveBeenCalledWith(4);

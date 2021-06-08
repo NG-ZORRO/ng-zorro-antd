@@ -12,7 +12,13 @@ export interface Data {
   selector: 'nz-demo-table-row-selection-and-operation',
   template: `
     <div class="send-request">
-      <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" (click)="sendRequest()">
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="setOfCheckedId.size === 0"
+        [nzLoading]="loading"
+        (click)="sendRequest()"
+      >
         Send Request
       </button>
       <span>Selected {{ setOfCheckedId.size }} items</span>
@@ -92,7 +98,9 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
-    this.listOfCurrentPageData.filter(({ disabled }) => !disabled).forEach(({ id }) => this.updateCheckedSet(id, checked));
+    this.listOfCurrentPageData
+      .filter(({ disabled }) => !disabled)
+      .forEach(({ id }) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
   }
 

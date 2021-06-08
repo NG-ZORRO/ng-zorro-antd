@@ -137,7 +137,13 @@ describe('tag', () => {
   // eslint-disable-next-line
   selector: 'nz-test-basic-tag',
   template: `
-    <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
+    <nz-tag
+      [nzMode]="mode"
+      [(nzChecked)]="checked"
+      [nzColor]="color"
+      (nzCheckedChange)="checkedChange($event)"
+      (nzOnClose)="onClose()"
+    >
       Tag 1
     </nz-tag>
   `
@@ -152,9 +158,7 @@ export class NzTestTagBasicComponent {
 }
 
 @Component({
-  template: `
-    <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>
-  `
+  template: ` <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {

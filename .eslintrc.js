@@ -1,27 +1,37 @@
+const prettierConfig = require('./.prettierrc.js');
+
 module.exports = {
   root: true,
+  parserOptions: { ecmaVersion: 2021 },
   overrides: [
     {
       files: ['*.ts'],
+      parser: '@typescript-eslint/parser',
       parserOptions: {
         tsconfigRootDir: __dirname,
         project: ['tsconfig.json'],
         createDefaultProgram: true
       },
+      plugins: ['@typescript-eslint', 'jsdoc', 'import', 'header'],
       extends: [
-        'prettier',
-        'plugin:prettier/recommended',
-        'plugin:@angular-eslint/ng-cli-compat',
-        'plugin:@angular-eslint/ng-cli-compat--formatting-add-on',
-        'plugin:@angular-eslint/template/process-inline-templates'
+        'plugin:@angular-eslint/recommended',
+        'plugin:@angular-eslint/template/process-inline-templates',
+        'plugin:prettier/recommended'
       ],
       rules: {
-        "prettier/prettier": [
-          "error",
-          {
-            "endOfLine": "auto"
-          }
+        'prettier/prettier': ['error', prettierConfig],
+        'header/header': [
+          2,
+          'block',
+          [
+            '*',
+            ' * Use of this source code is governed by an MIT-style license that can be',
+            ' * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE',
+            ' '
+          ],
+          2
         ],
+        'jsdoc/newline-after-description': 1,
         '@angular-eslint/component-selector': [
           'error',
           {
@@ -99,18 +109,19 @@ module.exports = {
         ],
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-this-alias': 'error',
-        'brace-style': ['error', '1tbs'],
-        'comma-dangle': 'error',
+        '@typescript-eslint/naming-convention': 'off',
+        '@typescript-eslint/no-unused-expressions': 'off',
+        'prefer-arrow/prefer-arrow-functions': 'off',
         'import/no-unassigned-import': 'error',
         'import/order': 'error',
-        'linebreak-style': ['error', 'unix'],
         'no-bitwise': 'off',
         'no-duplicate-imports': 'error',
-        'no-invalid-this': 'error',
+        'no-invalid-this': 'off',
         'no-irregular-whitespace': 'error',
         'no-magic-numbers': 'off',
         'no-multiple-empty-lines': 'error',
-        'no-redeclare': 'error',
+        'no-redeclare': 'off',
+        'no-underscore-dangle': 'off',
         'no-sparse-arrays': 'error',
         'no-template-curly-in-string': 'off',
         'prefer-object-spread': 'error',
@@ -119,9 +130,23 @@ module.exports = {
       }
     },
     {
+      files: ['**/demo/*.ts', '*.spec.ts'],
+      rules: {
+        'header/header': 'off'
+      }
+    },
+    {
       files: ['*.html'],
       extends: ['plugin:@angular-eslint/template/recommended'],
       rules: {}
+    },
+    {
+      files: ['*.html'],
+      excludedFiles: ['*inline-template-*.component.html'],
+      extends: ['plugin:prettier/recommended'],
+      rules: {
+        'prettier/prettier': ['error', { parser: 'angular' }]
+      }
     }
   ]
 };

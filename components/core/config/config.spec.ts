@@ -7,9 +7,7 @@ import { NZ_CONFIG } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
-  template: `
-    <button nz-button nzType="primary" [nzSize]="size">Global Config</button>
-  `
+  template: ` <button nz-button nzType="primary" [nzSize]="size">Global Config</button> `
 })
 export class NzGlobalConfigTestBasicComponent {
   size?: 'large' | 'default' | 'small';

@@ -229,7 +229,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } =
+      this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
@@ -304,7 +305,17 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzLoading, nzTemplateMode } = changes;
+    const {
+      nzScroll,
+      nzPageIndex,
+      nzPageSize,
+      nzFrontPagination,
+      nzData,
+      nzWidthConfig,
+      nzNoResult,
+      nzLoading,
+      nzTemplateMode
+    } = changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }

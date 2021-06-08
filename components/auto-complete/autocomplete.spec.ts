@@ -20,10 +20,21 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 
 import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
-import { NzAutocompleteComponent, NzAutocompleteModule, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective } from './index';
+import {
+  NzAutocompleteComponent,
+  NzAutocompleteModule,
+  NzAutocompleteOptionComponent,
+  NzAutocompleteTriggerDirective
+} from './index';
 
 describe('auto-complete', () => {
   let overlayContainer: OverlayContainer;
@@ -531,7 +542,9 @@ describe('auto-complete', () => {
       flush();
       differentValueWithFormFixture.detectChanges();
 
-      const differentValueWithFormInput = differentValueWithFormFixture.debugElement.query(By.css('input')).nativeElement;
+      const differentValueWithFormInput = differentValueWithFormFixture.debugElement.query(
+        By.css('input')
+      ).nativeElement;
 
       expect(differentValueWithFormInput.value).toBe('Lucy');
       expect(differentValueWithFormFixture.componentInstance.form.get('formControl')?.value).toBe('lucy');
@@ -863,7 +876,8 @@ describe('auto-complete', () => {
     }));
 
     it(
-      'should show the panel when the options are initialized later within a component with ' + 'OnPush change detection',
+      'should show the panel when the options are initialized later within a component with ' +
+        'OnPush change detection',
       fakeAsync(() => {
         fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
         fixture.detectChanges();
@@ -912,7 +926,13 @@ describe('auto-complete', () => {
 @Component({
   template: `
     <div>
-      <input class="input" nz-input [formControl]="inputControl" [nzAutocomplete]="auto" (input)="onInput($event.target?.value)" />
+      <input
+        class="input"
+        nz-input
+        [formControl]="inputControl"
+        [nzAutocomplete]="auto"
+        (input)="onInput($event.target?.value)"
+      />
       <nz-autocomplete #auto>
         <nz-auto-option *ngFor="let option of filteredOptions" [nzValue]="option">{{ option }}</nz-auto-option>
       </nz-autocomplete>
@@ -967,9 +987,7 @@ class NzTestAutocompletePropertyComponent {
 }
 
 @Component({
-  template: `
-    <input [nzAutocomplete]="auto" />
-  `
+  template: ` <input [nzAutocomplete]="auto" /> `
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
@@ -1111,7 +1129,9 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
     <form [formGroup]="form">
       <input formControlName="formControl" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto [compareWith]="compareFun">
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">{{ option.label }}</nz-auto-option>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">
+          {{ option.label }}
+        </nz-auto-option>
       </nz-autocomplete>
     </form>
   `

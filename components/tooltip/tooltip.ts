@@ -26,7 +26,13 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { Directionality } from '@angular/cdk/bidi';
-import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from './base';
+import {
+  isTooltipEmpty,
+  NzTooltipBaseComponent,
+  NzTooltipBaseDirective,
+  NzTooltipTrigger,
+  PropertyMapping
+} from './base';
 
 @Directive({
   selector: '[nz-tooltip]',

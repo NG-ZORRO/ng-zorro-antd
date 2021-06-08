@@ -10,7 +10,12 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
   template: `
-    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <nz-table
+      #rowSelectionTable
+      nzShowSizeChanger
+      [nzData]="listOfData"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    >
       <thead>
         <tr>
           <th

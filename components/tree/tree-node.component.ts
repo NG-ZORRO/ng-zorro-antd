@@ -23,7 +23,13 @@ import {
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import {
+  NzFormatBeforeDropEvent,
+  NzFormatEmitEvent,
+  NzTreeBaseService,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -33,7 +39,12 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'nz-tree-node[builtin]',
   exportAs: 'nzTreeBuiltinNode',
   template: `
-    <nz-tree-indent [nzTreeLevel]="nzTreeNode.level" [nzSelectMode]="nzSelectMode" [nzIsStart]="isStart" [nzIsEnd]="isEnd"></nz-tree-indent>
+    <nz-tree-indent
+      [nzTreeLevel]="nzTreeNode.level"
+      [nzSelectMode]="nzSelectMode"
+      [nzIsStart]="isStart"
+      [nzIsEnd]="isEnd"
+    ></nz-tree-indent>
     <nz-tree-node-switcher
       *ngIf="nzShowExpand"
       [nzShowExpand]="nzShowExpand"
@@ -171,7 +182,9 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
    */
   get displayStyle(): string {
     // to hide unmatched nodes
-    return this.nzSearchValue && this.nzHideUnMatched && !this.isMatched && !this.isExpanded && this.canHide ? 'none' : '';
+    return this.nzSearchValue && this.nzHideUnMatched && !this.isMatched && !this.isExpanded && this.canHide
+      ? 'none'
+      : '';
   }
 
   get isSwitcherOpen(): boolean {

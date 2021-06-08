@@ -160,7 +160,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
     }
-    this.focusMonitor.monitor(this.elementRef, true)
+    this.focusMonitor
+      .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {

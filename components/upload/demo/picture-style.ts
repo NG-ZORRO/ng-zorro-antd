@@ -5,7 +5,11 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
   selector: 'nz-demo-upload-picture-style',
   template: `
     <div class="clearfix">
-      <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [(nzFileList)]="fileList1">
+      <nz-upload
+        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        nzListType="picture"
+        [(nzFileList)]="fileList1"
+      >
         <button nz-button>
           <i nz-icon nzType="upload"></i>
           Upload

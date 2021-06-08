@@ -33,7 +33,10 @@ export function getKey(key: NzTreeNodeKey, pos: string): NzTreeNodeKey {
  * @param expandedKeys
  * need expanded keys, provides `true` means all expanded (used in `rc-tree-select`).
  */
-export function flattenTreeData(treeNodeList: NzTreeNode[] = [], expandedKeys: NzTreeNodeKey[] | true = []): FlattenNode[] {
+export function flattenTreeData(
+  treeNodeList: NzTreeNode[] = [],
+  expandedKeys: NzTreeNodeKey[] | true = []
+): FlattenNode[] {
   const expandedKeySet = new Set(expandedKeys === true ? [] : expandedKeys);
   const flattenList: FlattenNode[] = [];
 

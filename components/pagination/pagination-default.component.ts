@@ -37,7 +37,10 @@ import { PaginationItemRenderContext } from './pagination.types';
   template: `
     <ng-template #containerTemplate>
       <li class="ant-pagination-total-text" *ngIf="showTotal">
-        <ng-template [ngTemplateOutlet]="showTotal" [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="showTotal"
+          [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
+        ></ng-template>
       </li>
       <li
         *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"

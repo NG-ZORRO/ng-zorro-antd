@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -23,9 +24,7 @@ import { NzInputDirective } from './input.directive';
 
 @Component({
   selector: 'nz-textarea-count',
-  template: `
-    <ng-content select="textarea[nz-input]"></ng-content>
-  `,
+  template: ` <ng-content select="textarea[nz-input]"></ng-content> `,
   host: {
     class: 'ant-input-textarea-show-count'
   },

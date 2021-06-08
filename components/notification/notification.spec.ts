@@ -13,9 +13,7 @@ import { NzNotificationModule } from './notification.module';
 import { NzNotificationService } from './notification.service';
 
 @Component({
-  template: `
-    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
-  `
+  template: ` <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template> `
 })
 export class NzTestNotificationComponent {
   @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
@@ -237,7 +235,9 @@ describe('NzNotification', () => {
     nzConfigService.set('notification', { nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
     waitForNotificationToggling();
-    const notificationContainers = overlayContainerElement.querySelectorAll('.ant-notification') as NodeListOf<HTMLDivElement>;
+    const notificationContainers = overlayContainerElement.querySelectorAll(
+      '.ant-notification'
+    ) as NodeListOf<HTMLDivElement>;
     expect(notificationContainers[0].style.top).toBe('48px');
     expect(notificationContainers[0].style.bottom).toBeFalsy();
 

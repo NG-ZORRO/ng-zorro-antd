@@ -34,12 +34,14 @@ import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzDatePickerI18nInterface, NzDatePickerLangI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import {
+  DateHelperService,
+  NzDatePickerI18nInterface,
+  NzDatePickerLangI18nInterface,
+  NzI18nService
+} from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DatePickerService } from './date-picker.service';
-import { DateRangePopupComponent } from './date-range-popup.component';
-import { PREFIX_CLASS } from './util';
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
@@ -54,7 +56,17 @@ import {
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, RangePartType, SupportTimeOptions } from './standard-types';
+import { PREFIX_CLASS } from './util';
+import { DateRangePopupComponent } from './date-range-popup.component';
+import { DatePickerService } from './date-picker.service';
+import {
+  CompatibleDate,
+  DisabledTimeFn,
+  NzDateMode,
+  PresetRanges,
+  RangePartType,
+  SupportTimeOptions
+} from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working because the overlay can't get the height/width of it's content)
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
@@ -140,13 +152,22 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     </ng-template>
 
     <ng-template #inlineMode>
-      <div class="ant-picker-wrapper" [nzNoAnimation]="!!noAnimation?.nzNoAnimation" [@slideMotion]="'enter'" style="position: relative;">
+      <div
+        class="ant-picker-wrapper"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
+        [@slideMotion]="'enter'"
+        style="position: relative;"
+      >
         <div
           class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
           [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-bottomLeft]="
+            currentPositionY === 'bottom' && currentPositionX === 'start'
+          "
           [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-placement-bottomRight]="
+            currentPositionY === 'bottom' && currentPositionX === 'end'
+          "
           [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
           [class.ant-picker-dropdown-range]="isRange"
           [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
@@ -364,7 +385,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     const baseStyle = { position: 'absolute', width: `${this.inputWidth}px` };
     this.datePickerService.arrowLeft =
-      this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+      this.datePickerService.activeInput === 'left'
+        ? 0
+        : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
 
     if (this.dir === 'rtl') {
       this.activeBarStyle = { ...baseStyle, right: `${this.datePickerService.arrowLeft}px` };
@@ -539,7 +562,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   getPlaceholder(partType?: RangePartType): string {
-    return this.isRange ? this.nzPlaceHolder[this.datePickerService.getActiveIndex(partType!)] : (this.nzPlaceHolder as string);
+    return this.isRange
+      ? this.nzPlaceHolder[this.datePickerService.getActiveIndex(partType!)]
+      : (this.nzPlaceHolder as string);
   }
 
   isEmptyValue(value: CompatibleValue): boolean {
@@ -683,6 +708,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   /**
    * Triggered when overlayOpen changes (different with realOpenState)
+   *
    * @param open The overlayOpen in picker component
    */
   onOpenChange(open: boolean): void {
@@ -748,7 +774,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     }
   }
 
-  private getPropertyOfLocale<T extends keyof NzDatePickerLangI18nInterface>(type: T): NzDatePickerLangI18nInterface[T] {
+  private getPropertyOfLocale<T extends keyof NzDatePickerLangI18nInterface>(
+    type: T
+  ): NzDatePickerLangI18nInterface[T] {
     return this.nzLocale.lang[type] || this.i18n.getLocaleData(`DatePicker.lang.${type}`);
   }
 

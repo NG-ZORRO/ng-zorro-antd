@@ -5,7 +5,16 @@
 
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgModule, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   CloseCircleOutline,
@@ -359,11 +368,11 @@ describe('Preview', () => {
     it('should drag released work', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef?.previewInstance;
       tickChanges();
-      previewInstance.onDragStarted();
-      previewInstance.onDragReleased();
-      expect(previewInstance.position).toEqual({ x: 0, y: 0 });
+      previewInstance?.onDragStarted();
+      previewInstance?.onDragReleased();
+      expect(previewInstance?.position).toEqual({ x: 0, y: 0 });
     }));
 
     it('should position calculate correct', () => {
@@ -457,9 +466,7 @@ describe('Preview', () => {
 });
 
 @Component({
-  template: `
-    <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />
-  `
+  template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" /> `
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -469,9 +476,7 @@ export class TestImagePlaceholderComponent {
 }
 
 @Component({
-  template: `
-    <img nz-image [nzSrc]="src" [nzFallback]="fallback" />
-  `
+  template: ` <img nz-image [nzSrc]="src" [nzFallback]="fallback" /> `
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;

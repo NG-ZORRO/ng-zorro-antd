@@ -23,9 +23,7 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  template: `
-    <div class="ant-slider-track" [ngStyle]="style"></div>
-  `
+  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `
 })
 export class NzSliderTrackComponent implements OnChanges {
   static ngAcceptInputType_offset: NumberInput;

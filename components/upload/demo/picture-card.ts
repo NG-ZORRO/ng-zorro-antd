@@ -25,7 +25,12 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
           <div style="margin-top: 8px">Upload</div>
         </div>
       </nz-upload>
-      <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
+      <nz-modal
+        [nzVisible]="previewVisible"
+        [nzContent]="modalContent"
+        [nzFooter]="null"
+        (nzOnCancel)="previewVisible = false"
+      >
         <ng-template #modalContent>
           <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
         </ng-template>

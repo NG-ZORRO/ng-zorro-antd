@@ -1,6 +1,11 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import * as child_process from 'child_process';
-import * as gulp from 'gulp';
 import * as os from 'os';
+import * as gulp from 'gulp';
 
 const gulpClean = require('gulp-clean');
 const resolveBin = require('resolve-bin');
@@ -9,12 +14,12 @@ export function cleanTask(glob: string | string[]): gulp.TaskFunction {
   return () => gulp.src(glob, { read: false, allowEmpty: true }).pipe(gulpClean(null));
 }
 
-export function execTask(binPath: string, args: string[], env: {} = {}): gulp.TaskFunction {
+export function execTask(binPath: string, args: string[], env = {}): gulp.TaskFunction {
   return (done: (err?: Error | null) => void) => {
     // https://github.com/angular/angular-cli/issues/10922
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (process.stdout as any)._handle.setBlocking(true);
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (process.stdout as any)._handle.setBlocking(true);
     const bin = os.platform() === 'win32' && binPath === 'ng' ? `${binPath}.cmd` : binPath;
     const childProcess = child_process.spawn(bin, args, {
@@ -25,12 +30,17 @@ export function execTask(binPath: string, args: string[], env: {} = {}): gulp.Ta
 
     childProcess.on('close', (code: number) => {
       // tslint:disable-next-line:triple-equals
-      code != 0 ? done(new Error(`Process failed with code ${code}`)) : done();
+      code !== 0 ? done(new Error(`Process failed with code ${code}`)) : done();
     });
   };
 }
 
-export function execNodeTask(packageName: string, executable: string | string[], args?: string[], env: {} = {}): gulp.TaskFunction {
+export function execNodeTask(
+  packageName: string,
+  executable: string | string[],
+  args?: string[],
+  env = {}
+): gulp.TaskFunction {
   if (!args) {
     // tslint:disable-next-line:no-parameter-reassignment
     args = executable as string[];
@@ -38,10 +48,10 @@ export function execNodeTask(packageName: string, executable: string | string[],
     executable = '';
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (done: (err: any) => void) => {
-    // tslint:disable-next-line:no-any
-    resolveBin(packageName, { executable: executable }, (err: any, binPath: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolveBin(packageName, { executable }, (err: any, binPath: string) => {
       if (err) {
         done(err);
       } else {

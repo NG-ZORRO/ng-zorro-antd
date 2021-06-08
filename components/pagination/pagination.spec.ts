@@ -452,8 +452,15 @@ export class NzTestPaginationRenderComponent {}
 
 @Component({
   template: `
-    <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="85" [nzPageSize]="20" [nzShowTotal]="rangeTemplate"></nz-pagination>
-    <ng-template #rangeTemplate let-range="range" let-total>{{ range[0] }}-{{ range[1] }} of {{ total }} items</ng-template>
+    <nz-pagination
+      [(nzPageIndex)]="pageIndex"
+      [nzTotal]="85"
+      [nzPageSize]="20"
+      [nzShowTotal]="rangeTemplate"
+    ></nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
   `
 })
 export class NzTestPaginationTotalComponent {
@@ -461,16 +468,19 @@ export class NzTestPaginationTotalComponent {
 }
 
 @Component({
-  template: `
-    <nz-pagination nzResponsive></nz-pagination>
-  `
+  template: ` <nz-pagination nzResponsive></nz-pagination> `
 })
 export class NzTestPaginationAutoResizeComponent {}
 
 @Component({
   template: `
     <div [dir]="direction">
-      <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize"></nz-pagination>
+      <nz-pagination
+        [nzSimple]="false"
+        [(nzPageIndex)]="pageIndex"
+        [nzTotal]="total"
+        [(nzPageSize)]="pageSize"
+      ></nz-pagination>
     </div>
   `
 })

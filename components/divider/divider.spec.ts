@@ -75,7 +75,13 @@ describe('divider', () => {
 
 @Component({
   template: `
-    <nz-divider #comp [nzDashed]="nzDashed" [nzType]="nzType" [nzText]="nzText" [nzOrientation]="nzOrientation"></nz-divider>
+    <nz-divider
+      #comp
+      [nzDashed]="nzDashed"
+      [nzType]="nzType"
+      [nzText]="nzText"
+      [nzOrientation]="nzOrientation"
+    ></nz-divider>
   `
 })
 class TestDividerComponent {

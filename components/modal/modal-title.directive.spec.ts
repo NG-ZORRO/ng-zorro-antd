@@ -1,10 +1,10 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { NzModalTitleDirective } from './modal-title.directive';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzModalTitleDirective } from './modal-title.directive';
 
 import { NzModalRef } from './modal-ref';
 import { NzModalComponent } from './modal.component';
@@ -21,7 +21,11 @@ describe('modal title directive', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NzModalModule, NoopAnimationsModule],
-        declarations: [TestDirectiveTitleComponent, TestDirectiveTitleInServiceComponent, TestDirectiveTitleWithInitOpenedComponent],
+        declarations: [
+          TestDirectiveTitleComponent,
+          TestDirectiveTitleInServiceComponent,
+          TestDirectiveTitleWithInitOpenedComponent
+        ],
         providers: [NzModalService]
       });
 
@@ -123,9 +127,7 @@ class TestDirectiveTitleWithInitOpenedComponent {
 }
 
 @Component({
-  template: `
-    <div *nzModalTitle>Custom Modal Title</div>
-  `
+  template: ` <div *nzModalTitle>Custom Modal Title</div> `
 })
 class TestDirectiveTitleInServiceComponent {
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;

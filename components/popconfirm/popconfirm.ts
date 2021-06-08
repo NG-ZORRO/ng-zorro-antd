@@ -71,9 +71,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
-  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(
-    NzPopconfirmComponent
-  );
+  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> =
+    this.resolver.resolveComponentFactory(NzPopconfirmComponent);
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {

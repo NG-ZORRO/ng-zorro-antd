@@ -227,9 +227,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   @ViewChild(CdkConnectedOverlay, { static: true }) cdkConnectedOverlay!: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent, { static: true }) nzSelectTopControlComponent!: NzSelectTopControlComponent;
   @ContentChildren(NzOptionComponent, { descendants: true }) listOfNzOptionComponent!: QueryList<NzOptionComponent>;
-  @ContentChildren(NzOptionGroupComponent, { descendants: true }) listOfNzOptionGroupComponent!: QueryList<NzOptionGroupComponent>;
+  @ContentChildren(NzOptionGroupComponent, { descendants: true })
+  listOfNzOptionGroupComponent!: QueryList<NzOptionGroupComponent>;
   @ViewChild(NzOptionGroupComponent, { static: true, read: ElementRef }) nzOptionGroupComponentElement!: ElementRef;
-  @ViewChild(NzSelectTopControlComponent, { static: true, read: ElementRef }) nzSelectTopControlComponentElement!: ElementRef;
+  @ViewChild(NzSelectTopControlComponent, { static: true, read: ElementRef })
+  nzSelectTopControlComponentElement!: ElementRef;
   private listOfValue$ = new BehaviorSubject<NzSafeAny[]>([]);
   private listOfTemplateItem$ = new BehaviorSubject<NzSelectItemInterface[]>([]);
   private listOfTagAndTemplateItem: NzSelectItemInterface[] = [];
@@ -314,7 +316,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         this.activatedValue = matchedItem.nzValue;
       }
     }
-    const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
+    const activatedItem =
+      listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     let listOfGroupLabel: Array<string | number | TemplateRef<NzSafeAny> | null> = [];
     if (this.isReactiveDriven) {
@@ -387,8 +390,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     if (this.nzDisabled) {
       return;
     }
-    const listOfFilteredOptionNotDisabled = this.listOfContainerItem.filter(item => item.type === 'item').filter(item => !item.nzDisabled);
-    const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item => this.compareWith(item.nzValue, this.activatedValue));
+    const listOfFilteredOptionNotDisabled = this.listOfContainerItem
+      .filter(item => item.type === 'item')
+      .filter(item => !item.nzDisabled);
+    const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item =>
+      this.compareWith(item.nzValue, this.activatedValue)
+    );
     switch (e.keyCode) {
       case UP_ARROW:
         e.preventDefault();
@@ -555,19 +562,17 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     if (nzOptions) {
       this.isReactiveDriven = true;
       const listOfOptions = this.nzOptions || [];
-      const listOfTransformedItem = listOfOptions.map(item => {
-        return {
-          template: item.label instanceof TemplateRef ? item.label : null,
-          nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
-          nzValue: item.value,
-          nzDisabled: item.disabled || false,
-          nzHide: item.hide || false,
-          nzCustomContent: item.label instanceof TemplateRef,
-          groupLabel: item.groupLabel || null,
-          type: 'item',
-          key: item.value
-        };
-      });
+      const listOfTransformedItem = listOfOptions.map(item => ({
+        template: item.label instanceof TemplateRef ? item.label : null,
+        nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
+        nzValue: item.value,
+        nzDisabled: item.disabled || false,
+        nzHide: item.hide || false,
+        nzCustomContent: item.label instanceof TemplateRef,
+        groupLabel: item.groupLabel || null,
+        type: 'item',
+        key: item.value
+      }));
       this.listOfTemplateItem$.next(listOfTransformedItem);
     }
   }
@@ -596,10 +601,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         const listOfTagItem = listOfSelectedValue
           .filter(() => this.nzMode === 'tags')
           .filter(value => listOfTemplateItem.findIndex(o => this.compareWith(o.nzValue, value)) === -1)
-          .map(value => this.listOfTopItem.find(o => this.compareWith(o.nzValue, value)) || this.generateTagItem(value));
+          .map(
+            value => this.listOfTopItem.find(o => this.compareWith(o.nzValue, value)) || this.generateTagItem(value)
+          );
         this.listOfTagAndTemplateItem = [...listOfTemplateItem, ...listOfTagItem];
         this.listOfTopItem = this.listOfValue
-          .map(v => [...this.listOfTagAndTemplateItem, ...this.listOfTopItem].find(item => this.compareWith(v, item.nzValue))!)
+          .map(
+            v =>
+              [...this.listOfTagAndTemplateItem, ...this.listOfTopItem].find(item => this.compareWith(v, item.nzValue))!
+          )
           .filter(item => !!item);
         this.updateListOfContainerItem();
       });
@@ -639,7 +649,17 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         .subscribe(() => {
           const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
             const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
-            return { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel, type: 'item', key: nzValue };
+            return {
+              template,
+              nzLabel,
+              nzValue,
+              nzDisabled,
+              nzHide,
+              nzCustomContent,
+              groupLabel,
+              type: 'item',
+              key: nzValue
+            };
           });
           this.listOfTemplateItem$.next(listOfOptionInterface);
           this.cdr.markForCheck();

@@ -5,7 +5,17 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, Optional, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -79,7 +89,8 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   }
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true)
+    this.focusMonitor
+      .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {

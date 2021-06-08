@@ -118,7 +118,10 @@ export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
 export class NzIconPatchService {
   patched = false;
 
-  constructor(@Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {}
+  constructor(
+    @Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[],
+    private rootIconService: NzIconService
+  ) {}
 
   doPatch(): void {
     if (this.patched) {

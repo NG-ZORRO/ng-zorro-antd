@@ -83,7 +83,10 @@ describe('NzScrollService', () => {
     });
 
     it(`should be return element top when element is not size`, () => {
-      const ret = scrollService.getOffset({ getClientRects: () => [0], getBoundingClientRect: () => ({ top: 1, left: 1 }) } as any);
+      const ret = scrollService.getOffset({
+        getClientRects: () => [0],
+        getBoundingClientRect: () => ({ top: 1, left: 1 })
+      } as any);
       expect(ret.left).toBe(1);
       expect(ret.top).toBe(1);
     });

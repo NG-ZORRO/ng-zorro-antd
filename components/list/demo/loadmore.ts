@@ -26,7 +26,13 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
             <nz-list-item-action><a (click)="edit(item)">more</a></nz-list-item-action>
           </ul>
         </ng-container>
-        <nz-skeleton *ngIf="item.loading" [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="true"></nz-skeleton>
+        <nz-skeleton
+          *ngIf="item.loading"
+          [nzAvatar]="true"
+          [nzActive]="true"
+          [nzTitle]="false"
+          [nzLoading]="true"
+        ></nz-skeleton>
       </nz-list-item>
       <div class="loadmore" nz-list-load-more>
         <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>

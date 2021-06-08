@@ -141,7 +141,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       if (this.indexChangeSubscription) {
         this.indexChangeSubscription.unsubscribe();
       }
-      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index => this.nzIndexChange.emit(index));
+      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index =>
+        this.nzIndexChange.emit(index)
+      );
     }
   }
 
@@ -149,7 +151,8 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
     this.classMap = {
       [`ant-steps-${this.nzDirection}`]: true,
       [`ant-steps-label-horizontal`]: this.nzDirection === 'horizontal',
-      [`ant-steps-label-vertical`]: (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
+      [`ant-steps-label-vertical`]:
+        (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
       [`ant-steps-dot`]: this.showProcessDot,
       ['ant-steps-small']: this.nzSize === 'small',
       ['ant-steps-navigation']: this.nzType === 'navigation',

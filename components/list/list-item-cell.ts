@@ -23,9 +23,7 @@ import { switchMap, take, takeUntil } from 'rxjs/operators';
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
   exportAs: 'nzListItemExtra',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-item-extra'
   }
@@ -38,9 +36,7 @@ export class NzListItemExtraComponent {
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-template><ng-content></ng-content></ng-template>
-  `
+  template: ` <ng-template><ng-content></ng-content></ng-template> `
 })
 export class NzListItemActionComponent {
   @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;

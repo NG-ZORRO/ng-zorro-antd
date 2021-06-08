@@ -54,7 +54,9 @@ export class NzContextMenuService {
     ).subscribe(() => {
       this.close();
     });
-    this.overlayRef.attach(new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef));
+    this.overlayRef.attach(
+      new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef)
+    );
   }
 
   close(clear: boolean = false): void {

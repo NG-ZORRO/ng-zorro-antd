@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
@@ -173,7 +174,11 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   // #region upload
 
@@ -278,7 +283,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: NzUploadFile): void => {
     this.uploadComp.abort(file);
     file.status = 'removed';
-    const fnRes = typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
+    const fnRes =
+      typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
     (fnRes instanceof Observable ? fnRes : of(fnRes)).pipe(filter((res: boolean) => res)).subscribe(() => {
       this.nzFileList = this.removeFileItem(file, this.nzFileList);
       this.nzChange.emit({

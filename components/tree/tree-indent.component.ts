@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'nz-tree-indent',
@@ -27,15 +27,13 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
     '[class.ant-select-tree-indent]': 'nzSelectMode'
   }
 })
-export class NzTreeIndentComponent implements OnInit, OnChanges {
+export class NzTreeIndentComponent implements OnChanges {
   @Input() nzTreeLevel = 0;
   @Input() nzIsStart: boolean[] = [];
   @Input() nzIsEnd: boolean[] = [];
   @Input() nzSelectMode = false;
 
   listOfUnit: number[] = [];
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTreeLevel } = changes;

@@ -174,7 +174,10 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
 
       <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
 
-      <nz-select-clear *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear
+        *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length"
+        (clear)="onClearSelection()"
+      ></nz-select-clear>
     </div>
   `,
   providers: [
@@ -274,7 +277,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay!: CdkConnectedOverlay;
 
   @Input() nzTreeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{
+    $implicit: NzTreeNode;
+    origin: NzTreeNodeOptions;
+  }>;
   get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }

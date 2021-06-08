@@ -21,9 +21,7 @@ export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
 @Component({
   selector: 'nz-resize-handles',
   exportAs: 'nzResizeHandles',
-  template: `
-    <nz-resize-handle *ngFor="let dir of directions" [nzDirection]="dir"></nz-resize-handle>
-  `,
+  template: ` <nz-resize-handle *ngFor="let dir of directions" [nzDirection]="dir"></nz-resize-handle> `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzResizeHandlesComponent implements OnChanges {

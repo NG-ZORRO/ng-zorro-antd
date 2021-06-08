@@ -25,12 +25,18 @@ import { NzCascaderOption } from './typings';
   exportAs: 'nzCascaderOption',
   template: `
     <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
-      <ng-template [ngTemplateOutlet]="optionTemplate" [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="optionTemplate"
+        [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"
+      ></ng-template>
     </ng-container>
     <ng-template #defaultOptionTemplate>
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
-    <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
+    <span
+      *ngIf="!option.isLeaf || option.children?.length || option.loading"
+      class="ant-cascader-menu-item-expand-icon"
+    >
       <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
       <ng-template #icon>
         <ng-container *nzStringTemplateOutlet="expandIcon">

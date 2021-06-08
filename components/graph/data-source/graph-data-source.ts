@@ -87,9 +87,11 @@ export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
     const groupIds = Object.keys(data);
     const child = (data[key] || []).filter((c: string) => groupIds.includes(c));
     if (child && child.length > 0) {
-      return child.reduce((pre: string[], cur: string) => {
-        return Array.from(new Set([...pre, ...this.findChildren(data, cur, [...children, cur])]));
-      }, children);
+      return child.reduce(
+        (pre: string[], cur: string) =>
+          Array.from(new Set([...pre, ...this.findChildren(data, cur, [...children, cur])])),
+        children
+      );
     }
     return children;
   }

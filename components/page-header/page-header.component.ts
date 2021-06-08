@@ -88,8 +88,10 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() @WithConfig() nzGhost: boolean = true;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
-  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
+  @ContentChild(NzPageHeaderFooterDirective, { static: false })
+  nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false })
+  nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
   destroy$ = new Subject<void>();
@@ -131,7 +133,9 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nzBack.emit();
     } else {
       if (!this.location) {
-        throw new Error(`${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`);
+        throw new Error(
+          `${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`
+        );
       }
       this.location.back();
     }

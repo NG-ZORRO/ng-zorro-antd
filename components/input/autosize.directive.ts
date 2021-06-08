@@ -77,7 +77,9 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // need to be removed temporarily.
     textarea.classList.add('nz-textarea-autosize-measuring');
     textarea.placeholder = '';
-    let height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
+    let height =
+      Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight +
+      this.inputGap;
     if (this.maxHeight !== null && height > this.maxHeight) {
       height = this.maxHeight!;
     }
@@ -150,7 +152,8 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMinHeight(): number | null {
-    const minHeight = this.minRows && this.cachedLineHeight ? this.minRows * this.cachedLineHeight + this.inputGap : null;
+    const minHeight =
+      this.minRows && this.cachedLineHeight ? this.minRows * this.cachedLineHeight + this.inputGap : null;
 
     if (minHeight !== null) {
       this.el.style.minHeight = `${minHeight}px`;
@@ -159,7 +162,8 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMaxHeight(): number | null {
-    const maxHeight = this.maxRows && this.cachedLineHeight ? this.maxRows * this.cachedLineHeight + this.inputGap : null;
+    const maxHeight =
+      this.maxRows && this.cachedLineHeight ? this.maxRows * this.cachedLineHeight + this.inputGap : null;
     if (maxHeight !== null) {
       this.el.style.maxHeight = `${maxHeight}px`;
     }
@@ -170,7 +174,12 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // no-op handler that ensures we're running change detection on input events.
   }
 
-  constructor(private elementRef: ElementRef, private ngZone: NgZone, private platform: Platform, private resizeService: NzResizeService) {}
+  constructor(
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private platform: Platform,
+    private resizeService: NzResizeService
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.autosize && this.platform.isBrowser) {

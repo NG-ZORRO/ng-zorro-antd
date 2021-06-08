@@ -3,9 +3,7 @@ import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-virtual-scroll',
-  template: `
-    <nz-tree [nzData]="nodes" nzBlockNode nzVirtualHeight="300px"></nz-tree>
-  `
+  template: ` <nz-tree [nzData]="nodes" nzBlockNode nzVirtualHeight="300px"></nz-tree> `
 })
 export class NzDemoTreeVirtualScrollComponent implements OnInit {
   nodes: NzTreeNodeOptions[] = [];

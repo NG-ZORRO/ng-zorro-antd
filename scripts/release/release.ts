@@ -1,7 +1,12 @@
-import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { execSync, spawnSync } from 'child_process';
-import * as fs from 'fs-extra';
 import * as path from 'path';
+import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
+import * as fs from 'fs-extra';
 import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
 import { releaseSite } from './release-site';
@@ -77,9 +82,9 @@ function getUpstreamRemoteName(): string | null {
   const output = spawnSync('git', ['remote', 'show'], {
     encoding: 'utf-8'
   });
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const names: string[] = (output.stdout as any).split('\n').map((e: string) => e.trim());
-  // tslint:disable-next-line:prefer-for-of
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i = 0; i < names.length; i++) {
     const url = getRemoteUrl(names[i]);
     if (url.search(/github\.com(\/|:)NG-ZORRO\/ng-zorro-antd/) !== -1) {
@@ -93,7 +98,7 @@ function getRemoteUrl(remote: string): string {
   const output = spawnSync('git', ['remote', 'get-url', remote], {
     encoding: 'utf-8'
   });
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (output.stdout as any).trim();
 }
 
@@ -111,28 +116,37 @@ function bumpVersion(): void {
   let version;
 
   while (!versionNumberValid) {
-    version = read.question(bgYellow.black('Please input the new version:') + '  ');
+    version = read.question(`${bgYellow.black('Please input the new version:')}  `);
     if (checkVersionNumber(currentVersion, version)) {
       versionNumberValid = true;
     } else {
-      log.error(`Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`);
+      log.error(
+        `Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`
+      );
     }
   }
 
-  fs.writeJsonSync(packageJsonPath, { ...packageJson, version: version }, { spaces: 2 });
-  fs.writeFileSync(zorroVersionPath, fs.readFileSync(zorroVersionPath, 'utf-8').replace(/Version\('.+'\);/g, `Version('${version}');`));
+  fs.writeJsonSync(packageJsonPath, { ...packageJson, version }, { spaces: 2 });
+  fs.writeFileSync(
+    zorroVersionPath,
+    fs.readFileSync(zorroVersionPath, 'utf-8').replace(/Version\('.+'\);/g, `Version('${version}');`)
+  );
   log.success('Version updated!');
 }
 
 function fetchUpstream(): void {
   if (hasUncommittedChanges()) {
-    log.error('Current working tree has changes which are not committed. ' + 'Please make sure your working tree is clean.');
+    log.error(
+      'Current working tree has changes which are not committed. ' + 'Please make sure your working tree is clean.'
+    );
     return;
   }
   log.info('Fetching upstream...');
   const remoteName = getUpstreamRemoteName();
   if (!remoteName) {
-    log.error('The valid remote name does not exist. View detail https://help.github.com/en/articles/configuring-a-remote-for-a-fork');
+    log.error(
+      'The valid remote name does not exist. View detail https://help.github.com/en/articles/configuring-a-remote-for-a-fork'
+    );
     return;
   }
   execSync('git checkout master');
@@ -149,7 +163,9 @@ function updateChangelog(): void {
   let completeEditing = false;
 
   while (!completeEditing) {
-    const result = read.question(bgYellow.black('Please manually update docs/changelog. Press [Y] if you are done:') + '  ');
+    const result = read.question(
+      `${bgYellow.black('Please manually update docs/changelog. Press [Y] if you are done:')}  `
+    );
     if (result.trim().toLowerCase() === 'y') {
       completeEditing = true;
     }

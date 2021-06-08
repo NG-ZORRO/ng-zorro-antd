@@ -21,8 +21,6 @@ describe('nz-form-split', () => {
 });
 
 @Component({
-  template: `
-    <nz-form-split></nz-form-split>
-  `
+  template: ` <nz-form-split></nz-form-split> `
 })
 export class NzTestFormSplitComponent {}

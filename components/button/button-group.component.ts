@@ -4,7 +4,16 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, Optional, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -21,9 +30,7 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
     '[class.ant-btn-group-rtl]': `dir === 'rtl'`
   },
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `
+  template: ` <ng-content></ng-content> `
 })
 export class NzButtonGroupComponent implements OnDestroy, OnInit {
   @Input() nzSize: NzButtonGroupSize = 'default';

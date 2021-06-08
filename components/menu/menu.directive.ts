@@ -31,7 +31,10 @@ import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.tok
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
-export function MenuServiceFactory(serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService): MenuService {
+export function MenuServiceFactory(
+  serviceInsideDropDown: MenuService,
+  serviceOutsideDropDown: MenuService
+): MenuService {
   return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
 }
 export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean {
@@ -83,7 +86,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
   static ngAcceptInputType_nzSelectable: BooleanInput;
 
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true })
+  listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';

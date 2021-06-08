@@ -97,7 +97,11 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-result');
   }

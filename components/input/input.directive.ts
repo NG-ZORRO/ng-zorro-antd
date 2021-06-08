@@ -4,7 +4,18 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self, SimpleChanges } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+  Self,
+  SimpleChanges
+} from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';

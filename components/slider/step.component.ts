@@ -86,7 +86,8 @@ export class NzSliderStepComponent implements OnChanges {
       this.steps.forEach(step => {
         const value = step.value;
         const isActive =
-          (!this.included && value === this.upperBound) || (this.included && value <= this.upperBound! && value >= this.lowerBound!);
+          (!this.included && value === this.upperBound) ||
+          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
         step.active = isActive;
       });
     }

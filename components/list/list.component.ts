@@ -33,7 +33,10 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     <ng-template #itemsTpl>
       <div class="ant-list-items">
         <ng-container *ngFor="let item of nzDataSource; let index = index">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="nzRenderItem"
+            [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+          ></ng-template>
         </ng-container>
         <ng-content></ng-content>
       </div>
@@ -59,10 +62,16 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
             [nzXXl]="nzGrid.xxl || null"
             *ngFor="let item of nzDataSource; let index = index"
           >
-            <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nzRenderItem"
+              [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+            ></ng-template>
           </div>
         </div>
-        <nz-list-empty *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0" [nzNoResult]="nzNoResult"></nz-list-empty>
+        <nz-list-empty
+          *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0"
+          [nzNoResult]="nzNoResult"
+        ></nz-list-empty>
       </ng-container>
     </nz-spin>
 

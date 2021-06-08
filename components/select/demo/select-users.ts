@@ -57,7 +57,10 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
         .get(`${this.randomUserUrl}`)
         .pipe(map((res: any) => res.results))
         .pipe(map((list: any) => list.map((item: any) => `${item.name.first} ${name}`)));
-    const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
+    const optionList$: Observable<string[]> = this.searchChange$
+      .asObservable()
+      .pipe(debounceTime(500))
+      .pipe(switchMap(getRandomNameList));
     optionList$.subscribe(data => {
       this.optionList = data;
       this.isLoading = false;

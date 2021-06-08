@@ -114,7 +114,9 @@ export class NzUploadBtnComponent implements OnDestroy {
         const validType = type.trim();
         if (validType.charAt(0) === '.') {
           return (
-            fileName.toLowerCase().indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
+            fileName
+              .toLowerCase()
+              .indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
           );
         } else if (/\/\*$/.test(validType)) {
           // This is something like a image/* mime type
@@ -232,7 +234,9 @@ export class NzUploadBtnComponent implements OnDestroy {
 
     if (typeof transformFile === 'function') {
       const transformResult = transformFile(file);
-      process$ = process$.pipe(switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))));
+      process$ = process$.pipe(
+        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult)))
+      );
     }
 
     if (typeof data === 'function') {

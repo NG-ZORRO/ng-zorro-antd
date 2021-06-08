@@ -9,7 +9,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
 
-import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
+import {
+  isShowSearchObject,
+  NzCascaderComponentAsSource,
+  NzCascaderFilter,
+  NzCascaderOption,
+  NzCascaderSearchOption
+} from './typings';
 import { isChildOption, isParentOption } from './utils';
 
 /**
@@ -158,7 +164,12 @@ export class NzCascaderService implements OnDestroy {
    * @param performSelect Select
    * @param loadingChildren Try to load children asynchronously.
    */
-  setOptionActivated(option: NzCascaderOption, columnIndex: number, performSelect: boolean = false, loadingChildren: boolean = true): void {
+  setOptionActivated(
+    option: NzCascaderOption,
+    columnIndex: number,
+    performSelect: boolean = false,
+    loadingChildren: boolean = true
+  ): void {
     if (option.disabled) {
       return;
     }
@@ -190,7 +201,8 @@ export class NzCascaderService implements OnDestroy {
 
   setOptionSelected(option: NzCascaderOption, index: number): void {
     const changeOn = this.cascaderComponent.nzChangeOn;
-    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean => (typeof changeOn === 'function' ? changeOn(o, i) : false);
+    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean =>
+      typeof changeOn === 'function' ? changeOn(o, i) : false;
 
     if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
       this.selectedOptions = [...this.activatedOptions];
@@ -375,7 +387,12 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Load children of an option asynchronously.
    */
-  loadChildren(option: NzCascaderOption | NzSafeAny, columnIndex: number, success?: VoidFunction, failure?: VoidFunction): void {
+  loadChildren(
+    option: NzCascaderOption | NzSafeAny,
+    columnIndex: number,
+    success?: VoidFunction,
+    failure?: VoidFunction
+  ): void {
     const loadFn = this.cascaderComponent.nzLoadData;
 
     if (loadFn) {

@@ -6,7 +6,12 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-mention [nzSuggestions]="suggestions" (nzOnSearchChange)="onSearchChange($event)" [nzPrefix]="['#', '@']">
-      <input placeholder="input @ to mention people, # to mention tag" nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+      <input
+        placeholder="input @ to mention people, # to mention tag"
+        nzMentionTrigger
+        nz-input
+        [(ngModel)]="inputValue"
+      />
     </nz-mention>
   `
 })

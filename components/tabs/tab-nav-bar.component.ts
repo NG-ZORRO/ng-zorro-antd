@@ -21,7 +21,6 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -62,7 +61,13 @@ const CSS_TRANSFORM_TIME = 150;
       [class.ant-tabs-nav-wrap-ping-bottom]="pingBottom"
       #navWarp
     >
-      <div class="ant-tabs-nav-list" #navList nzTabScrollList (offsetChange)="onOffsetChange($event)" (tabScroll)="tabScroll.emit($event)">
+      <div
+        class="ant-tabs-nav-list"
+        #navList
+        nzTabScrollList
+        (offsetChange)="onOffsetChange($event)"
+        (tabScroll)="tabScroll.emit($event)"
+      >
         <ng-content></ng-content>
         <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
@@ -85,7 +90,7 @@ const CSS_TRANSFORM_TIME = 150;
     '(keydown)': 'handleKeydown($event)'
   }
 })
-export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
   static ngAcceptInputType_selectedIndex: NumberInput;
 
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
@@ -171,8 +176,6 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     private nzResizeObserver: NzResizeObserver,
     @Optional() private dir: Directionality
   ) {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     const dirChange = this.dir ? this.dir.change : of(null);

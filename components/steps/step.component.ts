@@ -36,7 +36,9 @@ import { Subject } from 'rxjs';
         <ng-template [ngIf]="!showProcessDot">
           <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"><i nz-icon nzType="check"></i></span>
           <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
-          <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
+          <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
+            {{ index + 1 }}
+          </span>
           <span class="ant-steps-icon" *ngIf="nzIcon">
             <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
               <i nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></i>

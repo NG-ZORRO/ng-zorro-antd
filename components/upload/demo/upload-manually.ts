@@ -18,7 +18,7 @@ import { filter } from 'rxjs/operators';
       [nzType]="'primary'"
       [nzLoading]="uploading"
       (click)="handleUpload()"
-      [disabled]="fileList.length == 0"
+      [disabled]="fileList.length === 0"
       style="margin-top: 16px"
     >
       {{ uploading ? 'Uploading' : 'Start Upload' }}

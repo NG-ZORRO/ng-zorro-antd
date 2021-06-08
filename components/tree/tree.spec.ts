@@ -472,7 +472,9 @@ describe('tree', () => {
         const dropNode = nativeElement.querySelector("[title='0-0']") as HTMLElement;
         component.beforeDrop = (): Observable<boolean> => of(true);
         fixture.detectChanges();
-        expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeNull();
+        expect(
+          (nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')
+        ).toBeNull();
         dispatchTouchEvent(dragNode, 'dragstart');
         dispatchTouchEvent(dropNode, 'dragenter');
         dispatchTouchEvent(dropNode, 'dragover');
@@ -480,7 +482,9 @@ describe('tree', () => {
         dispatchTouchEvent(dropNode, 'drop');
         tick(300);
         fixture.detectChanges();
-        expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeDefined();
+        expect(
+          (nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')
+        ).toBeDefined();
       }));
 
       it('should nzBlockNode work', fakeAsync(() => {

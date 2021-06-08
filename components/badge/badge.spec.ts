@@ -38,7 +38,9 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-scroll-number');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count');
-      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).not.toContain('ant-badge-multiple-words');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).not.toContain(
+        'ant-badge-multiple-words'
+      );
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('5');
       testComponent.count = 10;
       fixture.detectChanges();
@@ -131,7 +133,9 @@ describe('badge', () => {
       fixture.detectChanges();
       tick(1000);
       expect(badgeElement.nativeElement.classList).toContain('nz-animate-disabled');
-      expect(badgeElement.nativeElement.querySelector('nz-badge-sup .ant-scroll-number-only').classList).toContain('nz-animate-disabled');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup .ant-scroll-number-only').classList).toContain(
+        'nz-animate-disabled'
+      );
       fixture.detectChanges();
     }));
 
@@ -141,7 +145,9 @@ describe('badge', () => {
       statusList.forEach(status => {
         testComponent.status = status;
         fixture.detectChanges();
-        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(`ant-badge-status-${status}`);
+        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+          `ant-badge-status-${status}`
+        );
       });
       testComponent.text = 'test';
       fixture.detectChanges();

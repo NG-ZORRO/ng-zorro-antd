@@ -75,8 +75,10 @@ export class NzDemoFormAutoTipsComponent {
 
   submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsDirty();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
     }
     console.log(value);
   }
@@ -151,7 +153,9 @@ export class MyValidators extends Validators {
       return null;
     }
 
-    return isMobile(value) ? null : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
+    return isMobile(value)
+      ? null
+      : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
   }
 }
 

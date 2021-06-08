@@ -53,7 +53,12 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number = 0;
   private updater_?: Subscription | null;
 
-  constructor(cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform, @Optional() directionality: Directionality) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private platform: Platform,
+    @Optional() directionality: Directionality
+  ) {
     super(cdr, directionality);
   }
 

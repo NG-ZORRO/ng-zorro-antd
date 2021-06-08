@@ -63,7 +63,12 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() readonly textCopy = new EventEmitter<string>();
 
-  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}
+  constructor(
+    private host: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private clipboard: Clipboard,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

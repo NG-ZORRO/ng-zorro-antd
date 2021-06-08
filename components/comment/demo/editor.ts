@@ -21,7 +21,9 @@ import { formatDistance } from 'date-fns';
           <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
         </nz-form-item>
         <nz-form-item>
-          <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">Add Comment</button>
+          <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
+            Add Comment
+          </button>
         </nz-form-item>
       </nz-comment-content>
     </nz-comment>

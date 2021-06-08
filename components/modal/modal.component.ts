@@ -139,7 +139,11 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   open(): void {
     if (!this.nzVisible) {

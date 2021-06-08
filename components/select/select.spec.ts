@@ -26,7 +26,9 @@ describe('select', () => {
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -402,7 +404,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
 
@@ -423,11 +426,15 @@ describe('select', () => {
       component.value = 0;
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Falsy value'
+      );
       component.value = 'Truthy value';
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Truthy value'
+      );
       ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
@@ -441,7 +448,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -632,7 +641,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -686,7 +697,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveDefaultComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -917,7 +930,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
   });
@@ -927,7 +941,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -1115,7 +1131,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
