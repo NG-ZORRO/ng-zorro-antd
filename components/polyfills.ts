@@ -57,7 +57,7 @@ import 'classlist.js'; // Run `npm install --save classlist.js`.
  * Zone JS is required by default for Angular itself.
  */
 // tslint:disable-next-line:no-import-side-effect
-import 'zone.js/dist/zone'; // Included with Angular CLI.
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
