@@ -6,7 +6,7 @@
 import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
 
 import { warn } from 'ng-zorro-antd/core/logger';
-import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { CompareWith, FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);
@@ -20,6 +20,21 @@ export function toNumber(value: number | string, fallbackValue: number = 0): num
 
 export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
+}
+
+export function toCompareWith(value: string | CompareWith): CompareWith {
+  if (typeof value === 'string') {
+    return (o1, o2) => {
+      if (o1 && o2) {
+        return typeof o1 === 'string' ? o1 === o2[value] : o1[value] === o2[value];
+      }
+      return o1 === o2;
+    };
+  }
+  if (typeof value === 'function') {
+    return value;
+  }
+  return (o1, o2) => o1 === o2;
 }
 
 // tslint:disable no-invalid-this
@@ -86,4 +101,8 @@ export function InputCssPixel(): NzSafeAny {
 
 export function InputNumber(fallbackValue?: NzSafeAny): NzSafeAny {
   return propDecoratorFactory('InputNumber', (value: string | number) => toNumber(value, fallbackValue));
+}
+
+export function InputCompareWith(): NzSafeAny {
+  return propDecoratorFactory('InputCompareWith', toCompareWith);
 }
