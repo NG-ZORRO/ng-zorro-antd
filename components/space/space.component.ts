@@ -122,5 +122,8 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
     this.nzSpaceItemComponents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateSpaceItems();
     });
+    this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 }

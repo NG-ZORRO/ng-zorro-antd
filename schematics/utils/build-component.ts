@@ -28,7 +28,6 @@ import { Schema as ComponentOptions, Style } from '@schematics/angular/component
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {
   addDeclarationToModule,
-  addEntryComponentToModule,
   addExportToModule,
   getDecoratorMetadata
 } from '@schematics/angular/utility/ast-utils';
@@ -165,25 +164,6 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
         }
       }
       host.commitUpdate(exportRecorder);
-    }
-
-    if (options.entryComponent) {
-      // Need to refresh the AST because we overwrote the file in the host.
-      source = readIntoSourceFile(host, modulePath);
-
-      const entryComponentRecorder = host.beginUpdate(modulePath);
-      const entryComponentChanges = addEntryComponentToModule(
-        source,
-        modulePath,
-        strings.classify(`${options.name}Component`),
-        relativePath);
-
-      for (const change of entryComponentChanges) {
-        if (change instanceof InsertChange) {
-          entryComponentRecorder.insertLeft(change.pos, change.toAdd);
-        }
-      }
-      host.commitUpdate(entryComponentRecorder);
     }
 
     return host;
