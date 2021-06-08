@@ -1,10 +1,10 @@
 ---
 order: 15
-title: v11 升级指南
+title: v12 升级指南
 toc: false
 ---
 
-本文档将帮助你从 `ng-zorro-antd` 10.x 版本升级到 11.x 版本，如果你是 9.x 或者更老的版本，请先参考之前的升级文档升级到 10.x。
+本文档将帮助你从 `ng-zorro-antd` 11.x 版本升级到 12.x 版本。
 
 ## 开始之前
 
@@ -16,7 +16,7 @@ toc: false
 
 ### 1. 升级相关依赖
 
-- 前往 [https://update.angular.io/](https://update.angular.io/) 将项目升级到 Angular 11
+- 前往 [https://update.angular.io/](https://update.angular.io/) 将项目升级到 Angular 12
 - 如果你有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
 
 ### 升级 NG-ZORRO

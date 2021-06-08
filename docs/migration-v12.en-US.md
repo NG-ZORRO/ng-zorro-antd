@@ -1,10 +1,10 @@
 ---
 order: 15
-title: v11 Migration Guide
+title: v12 Migration Guide
 toc: false
 ---
 
-This document will help you upgrade from `ng-zorro-antd` 10.x version to 11.x version. If you are using 9.x or older version, please upgrade to 10.x first.
+This document will help you upgrade from `ng-zorro-antd` 11.x version to 12.x version.
 
 ## Before upgrade
 
@@ -14,7 +14,7 @@ This document will help you upgrade from `ng-zorro-antd` 10.x version to 11.x ve
 
 ### 1.Upgrade dependencies
 
-- Upgrade Angular to 11.x version, ref [https://update.angular.io/](https://update.angular.io/) .
+- Upgrade Angular to 12.x version, ref [https://update.angular.io/](https://update.angular.io/).
 - Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
 
 ### 2.Upgrade NG-ZORRO

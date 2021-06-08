@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "11.4.2",
+  "version": "12.0.0-beta.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -27,17 +27,17 @@
     "url": "https://github.com/NG-ZORRO/ng-zorro-antd/issues"
   },
   "dependencies": {
-    "@angular/cdk": "^11.0.2",
+    "@angular/cdk": "^12.0.3",
     "@ant-design/icons-angular": "^11.0.1",
     "date-fns": "^2.10.0",
     "resize-observer-polyfill": "^1.5.1"
   },
   "peerDependencies": {
-    "@angular/animations": "^11.0.4",
-    "@angular/common": "^11.0.4",
-    "@angular/forms": "^11.0.4",
-    "@angular/core": "^11.0.4",
-    "@angular/platform-browser": "^11.0.4",
-    "@angular/router": "^11.0.4"
+    "@angular/animations": "^12.0.3",
+    "@angular/common": "^12.0.3",
+    "@angular/forms": "^12.0.3",
+    "@angular/core": "^12.0.3",
+    "@angular/platform-browser": "^12.0.3",
+    "@angular/router": "^12.0.3"
   }
 }
