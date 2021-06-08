@@ -65,6 +65,28 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `filter` | 可选，选择是否保留选项的过滤函数，每级菜单的选项都会被匹配 | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
 | `sorter` | 可选，按照到每个最终选项的路径进行排序，默认按照原始数据的顺序 | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
 
+默认的 filter 如下所示：
+
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
+
+如果你想要在搜索时忽略大小写，就可以编写一个这样的 filter 函数：
+
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  })
+}
+```
+
 #### 方法
 
 | 名称 | 描述 |
