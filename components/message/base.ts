@@ -20,7 +20,11 @@ export abstract class NzMNService {
   protected abstract componentPrefix: string;
   protected container?: NzMNContainerComponent;
 
-  constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
+  constructor(
+    protected nzSingletonService: NzSingletonService,
+    protected overlay: Overlay,
+    private injector: Injector
+  ) {}
 
   remove(id?: string): void {
     if (this.container) {
@@ -209,10 +213,10 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
       this.closeTimer = setTimeout(() => {
         this.closeTimer = undefined;
-        this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+        this.destroyed.next({ id: this.instance.messageId, userAction });
       }, 200);
     } else {
-      this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+      this.destroyed.next({ id: this.instance.messageId, userAction });
     }
   }
 

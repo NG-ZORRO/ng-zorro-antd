@@ -267,7 +267,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions.filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
+      this.nzValueWith(suggestion).toLowerCase().includes(searchValue)
+    );
   }
 
   private resetDropdown(emit: boolean = true): void {
@@ -313,7 +315,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
     while (i >= 0) {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
       const endPos =
-        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
+        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1
+          ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart)
+          : value.length;
       const mention = value.substring(startPos, endPos);
       if (
         (startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
@@ -358,7 +362,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
-      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !this.overlayRef?.overlayElement.contains(clickTarget)) {
+      if (
+        this.isOpen &&
+        clickTarget !== this.trigger.el.nativeElement &&
+        !this.overlayRef?.overlayElement.contains(clickTarget)
+      ) {
         this.closeDropdown();
       }
     });

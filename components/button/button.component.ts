@@ -151,7 +151,9 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     }
 
     if (nzType?.currentValue === 'danger') {
-      warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
+      warnDeprecation(
+        `'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`
+      );
     }
   }
 

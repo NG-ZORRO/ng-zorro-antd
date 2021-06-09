@@ -105,7 +105,8 @@ export class NzSliderMarksComponent implements OnChanges {
       this.marks.forEach(mark => {
         const value = mark.value;
         const isActive =
-          (!this.included && value === this.upperBound) || (this.included && value <= this.upperBound! && value >= this.lowerBound!);
+          (!this.included && value === this.upperBound) ||
+          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
 
         mark.active = isActive;
       });

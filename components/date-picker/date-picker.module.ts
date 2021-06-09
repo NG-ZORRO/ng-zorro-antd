@@ -42,7 +42,13 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzButtonModule,
     LibPackerModule
   ],
-  exports: [NzDatePickerComponent, NzRangePickerComponent, NzMonthPickerComponent, NzYearPickerComponent, NzWeekPickerComponent],
+  exports: [
+    NzDatePickerComponent,
+    NzRangePickerComponent,
+    NzMonthPickerComponent,
+    NzYearPickerComponent,
+    NzWeekPickerComponent
+  ],
   declarations: [
     NzDatePickerComponent,
     NzMonthPickerComponent,

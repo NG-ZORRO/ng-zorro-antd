@@ -12,7 +12,11 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
       [nzAction]="mockOSSData.host"
       (nzChange)="onChange($event)"
     >
-      Photos: <button nz-button><i nz-icon nzType="upload"></i> Click to Upload</button>
+      Photos:
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        Click to Upload
+      </button>
     </nz-upload>
   `
 })
@@ -41,7 +45,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     return {
       key: file.url,
       OSSAccessKeyId: accessId,
-      policy: policy,
+      policy,
       Signature: signature
     };
   };

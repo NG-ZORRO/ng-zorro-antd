@@ -15,7 +15,8 @@ import { NzMarks } from 'ng-zorro-antd/slider';
       <h4>step=null || dots=true</h4>
       <nz-slider [nzMarks]="marks" [nzStep]="null" [ngModel]="37"></nz-slider>
       <nz-slider [nzMarks]="marks" nzDots [ngModel]="37"></nz-slider>
-      Change nzMarks dynamically: <button nz-button (click)="changeMarks()">Change nzMarks</button>
+      Change nzMarks dynamically:
+      <button nz-button (click)="changeMarks()">Change nzMarks</button>
     </div>
   `,
   styles: [

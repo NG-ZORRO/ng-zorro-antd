@@ -29,7 +29,14 @@ import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
+import {
+  TransferCanMove,
+  TransferChange,
+  TransferDirection,
+  TransferItem,
+  TransferSearchChange,
+  TransferSelectChange
+} from './interface';
 import { NzTransferListComponent } from './transfer-list.component';
 
 @Component({
@@ -61,21 +68,45 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
     <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
-      <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
+      <button
+        nz-button
+        (click)="moveToLeft()"
+        [disabled]="nzDisabled || !leftActive"
+        [nzType]="'primary'"
+        [nzSize]="'small'"
+      >
         <i nz-icon nzType="left"></i>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
-      <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
+      <button
+        nz-button
+        (click)="moveToRight()"
+        [disabled]="nzDisabled || !rightActive"
+        [nzType]="'primary'"
+        [nzSize]="'small'"
+      >
         <i nz-icon nzType="right"></i>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
     </div>
     <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
-      <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
+      <button
+        nz-button
+        (click)="moveToRight()"
+        [disabled]="nzDisabled || !rightActive"
+        [nzType]="'primary'"
+        [nzSize]="'small'"
+      >
         <i nz-icon nzType="left"></i>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
-      <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
+      <button
+        nz-button
+        (click)="moveToLeft()"
+        [disabled]="nzDisabled || !leftActive"
+        [nzType]="'primary'"
+        [nzSize]="'small'"
+      >
         <i nz-icon nzType="right"></i>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>

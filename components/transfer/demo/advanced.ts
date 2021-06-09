@@ -15,7 +15,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
     >
-      <ng-template #render let-item> {{ item.title }}-{{ item.description }} </ng-template>
+      <ng-template #render let-item>{{ item.title }}-{{ item.description }}</ng-template>
       <ng-template #footer let-direction>
         <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">
           reload

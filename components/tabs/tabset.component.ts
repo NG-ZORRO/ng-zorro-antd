@@ -125,7 +125,7 @@ let nextId = 0;
         <div
           nz-tab-body
           *ngFor="let tab of tabs; let i = index"
-          [active]="nzSelectedIndex == i && !nzHideAll"
+          [active]="nzSelectedIndex === i && !nzHideAll"
           [content]="tab.content"
           [forceRender]="tab.nzForceRender"
           [tabPaneAnimated]="tabPaneAnimated"
@@ -209,13 +209,16 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   get tabPaneAnimated(): boolean {
     return (
-      this.position === 'horizontal' && this.line && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
+      this.position === 'horizontal' &&
+      this.line &&
+      (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
     );
   }
 
   // Pick up only direct descendants under ivy rendering engine
   // We filter out only the tabs that belong to this tab set in `tabs`.
-  @ContentChildren(NzTabComponent, { descendants: true }) allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+  @ContentChildren(NzTabComponent, { descendants: true })
+  allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
   @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
@@ -364,7 +367,9 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       this.tabLabelSubscription.unsubscribe();
     }
 
-    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() => this.cdr.markForCheck());
+    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() =>
+      this.cdr.markForCheck()
+    );
   }
 
   private subscribeToAllTabChanges(): void {
@@ -481,7 +486,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginLeft(): string {
     if (this.tabPaneAnimated) {
       if (this.dir !== 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';
@@ -489,7 +494,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginRight(): string {
     if (this.tabPaneAnimated) {
       if (this.dir === 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';

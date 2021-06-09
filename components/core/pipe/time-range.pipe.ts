@@ -19,9 +19,9 @@ export class NzTimeRangePipe implements PipeTransform {
       if (current.indexOf(name) !== -1) {
         const v = Math.floor(duration / unit);
         duration -= v * unit;
-        return current.replace(new RegExp(`${name}+`, 'g'), (match: string) => {
-          return padStart(v.toString(), match.length, '0');
-        });
+        return current.replace(new RegExp(`${name}+`, 'g'), (match: string) =>
+          padStart(v.toString(), match.length, '0')
+        );
       }
       return current;
     }, format);

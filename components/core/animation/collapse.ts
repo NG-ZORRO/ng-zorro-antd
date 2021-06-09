@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, AnimationTriggerMetadata, query, stagger, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  AnimationTriggerMetadata,
+  query,
+  stagger,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 import { AnimationCurves } from './animation-consts';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [
@@ -22,7 +31,9 @@ export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollaps
       'nz-tree-node:leave,nz-tree-builtin-node:leave',
       [
         style({ overflow: 'hidden' }),
-        stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, opacity: 0, 'padding-bottom': 0 }))])
+        stagger(0, [
+          animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, opacity: 0, 'padding-bottom': 0 }))
+        ])
       ],
       {
         optional: true
@@ -33,7 +44,10 @@ export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollaps
       [
         style({ overflow: 'hidden', height: 0, opacity: 0, 'padding-bottom': 0 }),
         stagger(0, [
-          animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' }))
+          animate(
+            `150ms ${AnimationCurves.EASE_IN_OUT}`,
+            style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' })
+          )
         ])
       ],
       {

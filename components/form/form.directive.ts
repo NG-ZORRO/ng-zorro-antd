@@ -4,7 +4,17 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  Renderer2,
+  SimpleChange,
+  SimpleChanges
+} from '@angular/core';
 import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';

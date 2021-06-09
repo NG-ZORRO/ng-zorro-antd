@@ -10,7 +10,7 @@ import { NzResultComponent } from './result.component';
 import { NzResultModule } from './result.module';
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-result',
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
@@ -75,7 +75,12 @@ describe('nz-result', () => {
     });
 
     it('should content work', () => {
-      testComponent.icon = testComponent.title = testComponent.subtitle = testComponent.status = testComponent.extra = undefined;
+      testComponent.icon =
+        testComponent.title =
+        testComponent.subtitle =
+        testComponent.status =
+        testComponent.extra =
+          undefined;
       fixture.detectChanges();
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');

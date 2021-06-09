@@ -59,6 +59,7 @@ export class DateHelperByDateFns extends DateHelperService {
 
   /**
    * Format a date
+   *
    * @see https://date-fns.org/docs/format#description
    * @param date Date
    * @param formatStr format string

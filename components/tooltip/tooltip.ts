@@ -26,7 +26,13 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { Directionality } from '@angular/cdk/bidi';
-import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from './base';
+import {
+  isTooltipEmpty,
+  NzTooltipBaseComponent,
+  NzTooltipBaseDirective,
+  NzTooltipTrigger,
+  PropertyMapping
+} from './base';
 
 @Directive({
   selector: '[nz-tooltip]',
@@ -48,7 +54,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipOverlayStyle') overlayStyle?: NgStyleInterface;
   @Input() nzTooltipColor?: string;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);

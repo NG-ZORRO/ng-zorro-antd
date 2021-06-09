@@ -205,7 +205,8 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.total$.next(this.nzTotal);
     }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
-      this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
+      this.showPagination =
+        (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
     }
 
     if (nzSize) {

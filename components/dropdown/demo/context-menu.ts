@@ -4,9 +4,7 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
 @Component({
   selector: 'nz-demo-dropdown-context-menu',
   template: `
-    <div class="context-area" (contextmenu)="contextMenu($event, menu)">
-      Right Click on here
-    </div>
+    <div class="context-area" (contextmenu)="contextMenu($event, menu)">Right Click on here</div>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>

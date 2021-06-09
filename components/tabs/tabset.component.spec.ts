@@ -317,9 +317,7 @@ describe('NzTabSet', () => {
     it('should canDeactivate work', () => {
       const component = fixture.debugElement.componentInstance;
       component.selectedIndex = 0;
-      component.canDeactivate = (_: number, next: number) => {
-        return next !== 2;
-      };
+      component.canDeactivate = (_: number, next: number) => next !== 2;
 
       fixture.detectChanges();
 
@@ -719,7 +717,8 @@ describe('NzTabSet', () => {
 
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       const translateX = getTranslate(tabsList.style.transform).x;
-      const navOperation = fixture.debugElement.query(By.css('nz-tab-nav-operation'))!.componentInstance as NzTabNavOperationComponent;
+      const navOperation = fixture.debugElement.query(By.css('nz-tab-nav-operation'))!
+        .componentInstance as NzTabNavOperationComponent;
 
       navOperation.onSelect(navOperation.items[5]);
 
@@ -733,7 +732,8 @@ describe('NzTabSet', () => {
     }));
 
     it('should set transformX when scroll(mock)', fakeAsync(() => {
-      const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!.componentInstance as NzTabNavBarComponent;
+      const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!
+        .componentInstance as NzTabNavBarComponent;
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       let translateX = getTranslate(tabsList.style.transform).x;
 
@@ -760,7 +760,8 @@ describe('NzTabSet', () => {
       fixture.componentInstance.position = 'left';
       fixture.detectChanges();
 
-      const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!.componentInstance as NzTabNavBarComponent;
+      const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!
+        .componentInstance as NzTabNavBarComponent;
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       let translateY = getTranslate(tabsList.style.transform).y;
 
@@ -789,10 +790,14 @@ describe('NzTabSet', () => {
 
     expect(tabComponent.nzSelectedIndex).toBe(expectedIndex);
 
-    const tabElement = fixture.debugElement.query(By.css(`.ant-tabs-tab:nth-of-type(${expectedIndex + 1})`))!.nativeElement;
+    const tabElement = fixture.debugElement.query(
+      By.css(`.ant-tabs-tab:nth-of-type(${expectedIndex + 1})`)
+    )!.nativeElement;
     expect(tabElement.classList.contains('ant-tabs-tab-active')).toBe(true);
 
-    const tabContentElement = fixture.debugElement.query(By.css(`.ant-tabs-tabpane:nth-of-type(${expectedIndex + 1})`))!.nativeElement;
+    const tabContentElement = fixture.debugElement.query(
+      By.css(`.ant-tabs-tabpane:nth-of-type(${expectedIndex + 1})`)
+    )!.nativeElement;
     expect(tabContentElement.classList.contains('ant-tabs-tabpane-active')).toBe(true);
   }
 });
@@ -968,7 +973,11 @@ class TemplateTabsTestComponent {
 
 @Component({
   template: `
-    <nz-tabset nzType="editable-card" [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="handleSelection($event)">
+    <nz-tabset
+      nzType="editable-card"
+      [(nzSelectedIndex)]="selectedIndex"
+      (nzSelectedIndexChange)="handleSelection($event)"
+    >
       <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
       <nz-tab nzTitle="Tab 1" nzClosable [nzDisabled]="disabled">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2" nzDisabled>Content of Tab Pane 2</nz-tab>
@@ -1098,7 +1107,11 @@ class TabSetWithIndirectDescendantTabsTestComponent {
 
 @Component({
   template: `
-    <nz-tabset nzShowPagination (nzOnNextClick)="handleDeprecatedEvent()" (nzOnPrevClick)="handleDeprecatedEvent()"></nz-tabset>
+    <nz-tabset
+      nzShowPagination
+      (nzOnNextClick)="handleDeprecatedEvent()"
+      (nzOnPrevClick)="handleDeprecatedEvent()"
+    ></nz-tabset>
   `
 })
 class DeprecatedAPITabsTestComponent {

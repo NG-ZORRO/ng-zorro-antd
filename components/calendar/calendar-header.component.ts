@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
@@ -36,7 +45,12 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
         <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
       </nz-select>
 
-      <nz-radio-group class="ant-picker-calendar-mode-switch" [(ngModel)]="mode" (ngModelChange)="modeChange.emit($event)" [nzSize]="size">
+      <nz-radio-group
+        class="ant-picker-calendar-mode-switch"
+        [(ngModel)]="mode"
+        (ngModelChange)="modeChange.emit($event)"
+        [nzSize]="size"
+      >
         <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
         <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
       </nz-radio-group>

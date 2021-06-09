@@ -454,8 +454,7 @@ describe('input number', () => {
       [nzParser]="parser"
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
-    >
-    </nz-input-number>
+    ></nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {

@@ -1,3 +1,4 @@
+import { join } from "path";
 import { normalize } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
@@ -6,7 +7,6 @@ import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-import { join } from "path";
 import { createTestApp } from '../testing/test-app';
 import { createCustomTheme } from '../utils/create-custom-theme';
 

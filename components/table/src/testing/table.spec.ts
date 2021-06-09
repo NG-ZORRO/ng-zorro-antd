@@ -2,10 +2,10 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzTableComponent } from 'ng-zorro-antd/table';
 import en_US from '../../../i18n/languages/en_US';
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { NzTableModule } from '../table.module';
-import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table', () => {
   let injector: Injector;
@@ -14,7 +14,12 @@ describe('nz-table', () => {
     waitForAsync(() => {
       injector = TestBed.configureTestingModule({
         imports: [BidiModule, NzTableModule],
-        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent, NzTestTableRtlComponent]
+        declarations: [
+          NzTestTableBasicComponent,
+          NzTestTableScrollComponent,
+          NzTableSpecCrashComponent,
+          NzTestTableRtlComponent
+        ]
       });
       TestBed.compileComponents();
     })
@@ -439,7 +444,13 @@ export class NzTestTableScrollComponent implements OnInit {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
   template: `
-    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="(pageIndexChange)">
+    <nz-table
+      #nzTable
+      [nzData]="data"
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="(pageIndexChange)"
+    >
       <thead>
         <tr>
           <th>ID</th>

@@ -81,7 +81,12 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {
+  constructor(
+    elementRef: ElementRef,
+    renderer: Renderer2,
+    private parentComp: NzListComponent,
+    private cdr: ChangeDetectorRef
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-list-item');
   }
 

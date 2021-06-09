@@ -17,6 +17,13 @@ import { NzCardComponent } from './card.component';
 @NgModule({
   imports: [CommonModule, NzOutletModule],
   declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
-  exports: [BidiModule, NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
+  exports: [
+    BidiModule,
+    NzCardComponent,
+    NzCardGridDirective,
+    NzCardMetaComponent,
+    NzCardLoadingComponent,
+    NzCardTabComponent
+  ]
 })
 export class NzCardModule {}

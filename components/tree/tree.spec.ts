@@ -16,13 +16,12 @@ import { NzTreeComponent } from './tree.component';
 import { NzTreeModule } from './tree.module';
 import Spy = jasmine.Spy;
 
-const prepareTest = (componentInstance?: NzSafeAny): ComponentBed<NzSafeAny> => {
-  return createComponentBed(componentInstance, {
+const prepareTest = (componentInstance?: NzSafeAny): ComponentBed<NzSafeAny> =>
+  createComponentBed(componentInstance, {
     declarations: [NzTreeNodeBuiltinComponent],
     providers: [],
     imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule]
   });
-};
 
 describe('tree', () => {
   describe('NzTestTreeBasicControlledComponent', () => {
@@ -147,9 +146,7 @@ describe('tree', () => {
 
       it('should match nodes based on nzSearchFunc', fakeAsync(() => {
         const { component, fixture, nativeElement } = testBed;
-        component.searchFunc = (data: NzTreeNodeOptions): boolean => {
-          return data.title === component.searchValue;
-        };
+        component.searchFunc = (data: NzTreeNodeOptions): boolean => data.title === component.searchValue;
         component.searchValue = '0-0';
         fixture.detectChanges();
         let expandedNodes = nativeElement.querySelectorAll('.ant-tree-switcher_open');
@@ -473,11 +470,11 @@ describe('tree', () => {
         const { component, fixture, nativeElement } = testBed;
         const dragNode = nativeElement.querySelector("[title='0-2']") as HTMLElement;
         const dropNode = nativeElement.querySelector("[title='0-0']") as HTMLElement;
-        component.beforeDrop = (): Observable<boolean> => {
-          return of(true);
-        };
+        component.beforeDrop = (): Observable<boolean> => of(true);
         fixture.detectChanges();
-        expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeNull();
+        expect(
+          (nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')
+        ).toBeNull();
         dispatchTouchEvent(dragNode, 'dragstart');
         dispatchTouchEvent(dropNode, 'dragenter');
         dispatchTouchEvent(dropNode, 'dragover');
@@ -485,7 +482,9 @@ describe('tree', () => {
         dispatchTouchEvent(dropNode, 'drop');
         tick(300);
         fixture.detectChanges();
-        expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeDefined();
+        expect(
+          (nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')
+        ).toBeDefined();
       }));
 
       it('should nzBlockNode work', fakeAsync(() => {

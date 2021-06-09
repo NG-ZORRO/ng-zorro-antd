@@ -140,7 +140,7 @@ export class NzSelectTopControlComponent implements OnChanges {
 
   tokenSeparate(inputValue: string, tokenSeparators: string[]): void {
     const includesSeparators = (str: string | string[], separators: string[]): boolean => {
-      // tslint:disable-next-line:prefer-for-of
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < separators.length; ++i) {
         if (str.lastIndexOf(separators[i]) > 0) {
           return true;
@@ -204,15 +204,13 @@ export class NzSelectTopControlComponent implements OnChanges {
       this.updateTemplateVariable();
     }
     if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) {
-      const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, this.maxTagCount).map(o => {
-        return {
-          nzLabel: o.nzLabel,
-          nzValue: o.nzValue,
-          nzDisabled: o.nzDisabled,
-          contentTemplateOutlet: this.customTemplate,
-          contentTemplateOutletContext: o
-        };
-      });
+      const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, this.maxTagCount).map(o => ({
+        nzLabel: o.nzLabel,
+        nzValue: o.nzValue,
+        nzDisabled: o.nzDisabled,
+        contentTemplateOutlet: this.customTemplate,
+        contentTemplateOutletContext: o
+      }));
       if (this.listOfTopItem.length > this.maxTagCount) {
         const exceededLabel = `+ ${this.listOfTopItem.length - this.maxTagCount} ...`;
         const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);

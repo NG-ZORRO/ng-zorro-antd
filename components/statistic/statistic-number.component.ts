@@ -4,7 +4,16 @@
  */
 
 import { getLocaleNumberSymbol, NumberSymbol } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, Input, LOCALE_ID, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzStatisticValueType } from './typings';
 
 @Component({
@@ -15,8 +24,11 @@ import { NzStatisticValueType } from './typings';
   exportAs: 'nzStatisticNumber',
   template: `
     <span class="ant-statistic-content-value">
-      <ng-container *ngIf="nzValueTemplate" [ngTemplateOutlet]="nzValueTemplate" [ngTemplateOutletContext]="{ $implicit: nzValue }">
-      </ng-container>
+      <ng-container
+        *ngIf="nzValueTemplate"
+        [ngTemplateOutlet]="nzValueTemplate"
+        [ngTemplateOutletContext]="{ $implicit: nzValue }"
+      ></ng-container>
       <ng-container *ngIf="!nzValueTemplate">
         <span *ngIf="displayInt" class="ant-statistic-content-value-int">{{ displayInt }}</span>
         <span *ngIf="displayDecimal" class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
@@ -38,7 +50,8 @@ export class NzStatisticNumberComponent implements OnChanges {
   }
 
   private formatNumber(): void {
-    const decimalSeparator: string = typeof this.nzValue === 'number' ? '.' : getLocaleNumberSymbol(this.locale_id, NumberSymbol.Decimal);
+    const decimalSeparator: string =
+      typeof this.nzValue === 'number' ? '.' : getLocaleNumberSymbol(this.locale_id, NumberSymbol.Decimal);
     const value = String(this.nzValue);
     const [int, decimal] = value.split(decimalSeparator);
 

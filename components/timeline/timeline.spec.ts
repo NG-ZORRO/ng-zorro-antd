@@ -78,7 +78,9 @@ describe('nz-timeline', () => {
       testComponent.pending = true;
       testComponent.reverse = true;
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-timeline-item-pending');
+      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain(
+        'ant-timeline-item-pending'
+      );
       expect(items[0].classList).toContain('ant-timeline-item-last');
       expect(items[3].classList).not.toContain('ant-timeline-item-last');
     });
@@ -145,8 +147,12 @@ describe('nz-timeline', () => {
     it('should support custom color', () => {
       fixture.detectChanges();
       expect((items[0].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('cyan');
-      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(200, 0, 0)');
-      expect((items[2].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
+      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe(
+        'rgb(200, 0, 0)'
+      );
+      expect((items[2].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe(
+        'rgb(120, 18, 65)'
+      ); // hex would be converted to rgb()
       expect((items[3].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('');
     });
   });
@@ -207,7 +213,7 @@ describe('nz-timeline', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-timeline',
   template: `
     <ng-template #dotTemplate>template</ng-template>

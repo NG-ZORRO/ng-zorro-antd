@@ -219,7 +219,13 @@ export class NzThTestTableDefaultFilterComponent {
     /** sort data **/
     if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a: DataItem, b: DataItem) =>
-        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
+        this.sortValue === 'ascend'
+          ? a[this.sortName!] > b[this.sortName!]
+            ? 1
+            : -1
+          : b[this.sortName!] > a[this.sortName!]
+          ? 1
+          : -1
       );
     } else {
       this.displayData = data;
@@ -228,8 +234,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  template: `
-    <th class="nz-disable-th"></th>
-  `
+  template: ` <th class="nz-disable-th"></th> `
 })
 export class NzTestDisableThComponent {}

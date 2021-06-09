@@ -10,8 +10,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       [nzCondition]="switchValue"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
-      >Delete a task</a
     >
+      Delete a task
+    </a>
     <br />
     <br />
     Whether directly execute:

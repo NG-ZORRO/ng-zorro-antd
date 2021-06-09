@@ -3,9 +3,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-manual',
-  template: `
-    <button nz-button (click)="success()">Success</button>
-  `
+  template: ` <button nz-button (click)="success()">Success</button> `
 })
 export class NzDemoModalManualComponent {
   constructor(private modalService: NzModalService) {}

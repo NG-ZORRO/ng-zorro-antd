@@ -67,13 +67,17 @@ describe('list', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
+          fixtureTemp.componentInstance.footer as string
+        );
       });
       it('change string to template', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
+          fixtureTemp.componentInstance.footer as string
+        );
         (fixtureTemp.debugElement.query(By.css('#change')).nativeElement as HTMLButtonElement).click();
         fixtureTemp.detectChanges();
         expect(fixtureTemp.debugElement.query(By.css('.list-footer')) != null).toBe(true);
@@ -169,9 +173,9 @@ describe('list', () => {
     });
     it('with string', () => {
       expect(
-        (fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item')).nativeElement as HTMLElement).textContent!.includes(
-          'content'
-        )
+        (
+          fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item')).nativeElement as HTMLElement
+        ).textContent!.includes('content')
       ).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-action')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .extra-logo')) != null).toBe(true);
@@ -230,7 +234,7 @@ describe('list RTL', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-list',
   template: `
     <nz-list
@@ -284,7 +288,7 @@ class TestListComponent {
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.'
   ];
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nzGrid: any = { gutter: 16, span: 12 };
 }
 
@@ -312,7 +316,12 @@ class TestListWithTemplateComponent {
           156
         </ng-template>
         <ng-template #extra>
-          <img width="272" class="extra-logo" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
+          <img
+            width="272"
+            class="extra-logo"
+            alt="logo"
+            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+          />
         </ng-template>
         <nz-list-item-meta
           nzTitle="title"

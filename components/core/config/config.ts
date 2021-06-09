@@ -9,7 +9,14 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ThemeType } from '@ant-design/icons-angular';
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
+import {
+  NzSafeAny,
+  NzShapeSCType,
+  NzSizeDSType,
+  NzSizeLDSType,
+  NzSizeMDSType,
+  NzTSType
+} from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;

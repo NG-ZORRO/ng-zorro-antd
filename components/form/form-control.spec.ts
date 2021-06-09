@@ -185,7 +185,9 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '请输入邮箱/Input is required'
+      );
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
 
       testBed.fixture.detectChanges();
@@ -197,8 +199,12 @@ describe('nz-form-control', () => {
       testBed.fixture.detectChanges();
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(`最小长度为 6`);
-      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('手机号码格式不正确');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入正确的邮箱');
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '手机号码格式不正确'
+      );
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '请输入正确的邮箱'
+      );
 
       testBed.fixture.detectChanges();
 
@@ -222,7 +228,9 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '请输入邮箱/Input is required'
+      );
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
 
       testBed.fixture.detectChanges();
@@ -239,7 +247,9 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '请输入邮箱/Input is required'
+      );
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[4].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
     });
@@ -261,9 +271,15 @@ describe('nz-form-control', () => {
       formGroup.get('email')!.setValue('');
       testBed.fixture.detectChanges();
 
-      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Input is required');
-      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Input is required');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
+      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Input is required'
+      );
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Input is required'
+      );
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        '请输入邮箱/Input is required'
+      );
 
       formGroup.get('userName')!.setValue('12345');
       formGroup.get('mobile')!.setValue('12345');
@@ -271,9 +287,15 @@ describe('nz-form-control', () => {
 
       testBed.fixture.detectChanges();
 
-      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(`MinLength is 6`);
-      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Mobile phone number is not valid');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Please input valid email');
+      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        `MinLength is 6`
+      );
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Mobile phone number is not valid'
+      );
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Please input valid email'
+      );
     });
     it('should nzDisableAutoTips work ', () => {
       formGroup.get('userName')!.markAsDirty();
@@ -293,7 +315,9 @@ describe('nz-form-control', () => {
       formGroup.get('password')!.updateValueAndValidity();
       testBed.fixture.detectChanges();
 
-      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Please input your password!');
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Please input your password!'
+      );
 
       testComponent.formDisableAutoTips = true;
       testBed.fixture.detectChanges();
@@ -316,14 +340,18 @@ describe('nz-form-control', () => {
 
       testBed.fixture.detectChanges();
 
-      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Please input your password!');
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        'Please input your password!'
+      );
 
       const passwordErrorTip = '请输入密码';
       testComponent.passwordErrorTip = passwordErrorTip;
 
       testBed.fixture.detectChanges();
 
-      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(passwordErrorTip);
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
+        passwordErrorTip
+      );
     });
   });
 });
@@ -490,7 +518,9 @@ export class MyValidators extends Validators {
       return null;
     }
 
-    return isMobile(value) ? null : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
+    return isMobile(value)
+      ? null
+      : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
   }
 }
 

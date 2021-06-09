@@ -30,9 +30,7 @@ import { NzMenuModeType } from './menu.types';
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
-  `,
+  template: ` <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template> `,
   host: {
     '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
@@ -48,7 +46,11 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Optional() private directionality: Directionality) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-menu', 'ant-menu-inline', 'ant-menu-sub');
   }

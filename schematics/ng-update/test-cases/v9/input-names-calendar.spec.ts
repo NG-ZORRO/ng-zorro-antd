@@ -41,13 +41,15 @@ describe('calendar migration', () => {
     shx.rm('-r', tmpDirPath);
   });
 
-  function writeFakeAngular(): void { writeFile('/node_modules/@angular/core/index.d.ts', ``); }
+  function writeFakeAngular(): void {
+ writeFile('/node_modules/@angular/core/index.d.ts', ``);
+}
 
   function writeFile(filePath: string, contents: string): void {
     host.sync.write(normalize(filePath), virtualFs.stringToFileBuffer(contents));
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function runMigration(): Promise<any> {
     await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
   }

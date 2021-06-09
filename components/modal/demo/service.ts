@@ -23,7 +23,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
-      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading">Close after submit</button>
+      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading">
+        Close after submit
+      </button>
     </ng-template>
 
     <br />

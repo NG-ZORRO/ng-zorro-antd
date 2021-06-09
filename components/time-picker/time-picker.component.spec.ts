@@ -6,12 +6,12 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
 
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
 describe('time-picker', () => {
@@ -56,7 +56,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe(
+        'autofocus'
+      );
       testComponent.autoFocus = false;
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
@@ -121,7 +123,9 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe('11');
+      expect(overlayContainerElement.querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
+        '11'
+      );
 
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-time-panel-cell')!, 'click');
       fixture.detectChanges();
@@ -144,12 +148,14 @@ describe('time-picker', () => {
       tick(500);
       fixture.detectChanges();
       const date = new Date(testComponent.date);
-      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
-        date.getHours().toString()
-      );
-      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
-        date.getMinutes().toString()
-      );
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selected > div')!
+          .textContent
+      ).toBe(date.getHours().toString());
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!
+          .textContent
+      ).toBe(date.getMinutes().toString());
     }));
     it('should support custom suffixIcon', fakeAsync(() => {
       testComponent.nzSuffixIcon = 'calendar';

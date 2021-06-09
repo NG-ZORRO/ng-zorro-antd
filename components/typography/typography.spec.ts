@@ -4,14 +4,20 @@ import { CommonModule } from '@angular/common';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchMouseEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const viewport: any;
 
 describe('typography', () => {
@@ -523,7 +529,14 @@ export class NzTestTypographyCopyComponent {
 
 @Component({
   template: `
-    <p nz-paragraph nzEditable [nzEditIcon]="icon" [nzEditTooltip]="tooltip" (nzContentChange)="onChange($event)" [nzContent]="str"></p>
+    <p
+      nz-paragraph
+      nzEditable
+      [nzEditIcon]="icon"
+      [nzEditTooltip]="tooltip"
+      (nzContentChange)="onChange($event)"
+      [nzContent]="str"
+    ></p>
   `
 })
 export class NzTestTypographyEditComponent {
@@ -540,17 +553,26 @@ export class NzTestTypographyEditComponent {
 @Component({
   template: `
     <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">
-      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
-      Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team.
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
     </p>
     <br />
-    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" [nzEllipsisRows]="3" (nzExpandChange)="onExpand()" class="multiple">
-      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
-      Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team.
+    <p
+      nz-paragraph
+      nzEllipsis
+      [nzExpandable]="expandable"
+      [nzEllipsisRows]="3"
+      (nzExpandChange)="onExpand()"
+      class="multiple"
+    >
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
     </p>
     <p
       nz-paragraph
@@ -578,5 +600,7 @@ export class NzTestTypographyEllipsisComponent {
   suffix: string | null = null;
   onEllipsis = jasmine.createSpy('ellipsis callback');
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
-  str = new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('');
+  str = new Array(5)
+    .fill('Ant Design, a design language for background applications, is refined by Ant UED Team.')
+    .join('');
 }

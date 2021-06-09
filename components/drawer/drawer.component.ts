@@ -78,11 +78,21 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!nzTitle">
+              <div
+                *ngIf="nzTitle || nzClosable"
+                [class.ant-drawer-header]="!!nzTitle"
+                [class.ant-drawer-header-no-title]="!nzTitle"
+              >
                 <div *ngIf="nzTitle" class="ant-drawer-title">
                   <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
                 </div>
-                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
+                <button
+                  *ngIf="nzClosable"
+                  (click)="closeClick()"
+                  aria-label="Close"
+                  class="ant-drawer-close"
+                  style="--scroll-bar: 0px;"
+                >
                   <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
                     <i nz-icon [nzType]="closeIcon"></i>
                   </ng-container>
@@ -116,7 +126,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent {
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent
+{
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
@@ -161,7 +172,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   @ViewChild('drawerTemplate', { static: true }) drawerTemplate!: TemplateRef<void>;
   @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet?: CdkPortalOutlet;
-  @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef }) contentFromContentChild?: TemplateRef<NzSafeAny>;
+  @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef })
+  contentFromContentChild?: TemplateRef<NzSafeAny>;
 
   private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
@@ -245,7 +257,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   constructor(
     private cdr: ChangeDetectorRef,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,

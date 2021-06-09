@@ -215,6 +215,7 @@ export class NzTreeBaseService {
 
   /**
    * check state
+   *
    * @param isCheckStrictly
    */
   refreshCheckState(isCheckStrictly: boolean = false): void {
@@ -400,9 +401,9 @@ export class NzTreeBaseService {
    */
   formatEvent(eventName: string, node: NzTreeNode | null, event: MouseEvent | DragEvent | null): NzFormatEmitEvent {
     const emitStructure: NzFormatEmitEvent = {
-      eventName: eventName,
-      node: node,
-      event: event
+      eventName,
+      node,
+      event
     };
     switch (eventName) {
       case 'dragstart':
@@ -449,6 +450,7 @@ export class NzTreeBaseService {
   /**
    * Render by nzCheckedKeys
    * When keys equals null, just render with checkStrictly
+   *
    * @param keys
    * @param checkStrictly
    */
@@ -498,8 +500,8 @@ export class NzTreeBaseService {
   conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
-    const calc = (nodes: NzTreeNode[]): boolean => {
-      return nodes.every(node => {
+    const calc = (nodes: NzTreeNode[]): boolean =>
+      nodes.every(node => {
         if (isInArray(node.key, keys)) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
@@ -516,12 +518,12 @@ export class NzTreeBaseService {
         }
         return true;
       });
-    };
     calc(this.rootNodes);
   }
 
   /**
    * Expand parent nodes by child node
+   *
    * @param node
    */
   expandNodeAllParentBySearch(node: NzTreeNode): void {

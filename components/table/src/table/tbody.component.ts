@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 
 import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -37,7 +38,7 @@ export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;
   showEmpty$ = new BehaviorSubject<boolean>(false);
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
-  listOfMeasureColumn$ = new BehaviorSubject<ReadonlyArray<string>>([]);
+  listOfMeasureColumn$ = new BehaviorSubject<readonly string[]>([]);
   private destroy$ = new Subject<void>();
 
   constructor(@Optional() private nzTableStyleService: NzTableStyleService) {

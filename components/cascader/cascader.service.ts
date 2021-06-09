@@ -9,7 +9,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
 
-import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
+import {
+  isShowSearchObject,
+  NzCascaderComponentAsSource,
+  NzCascaderFilter,
+  NzCascaderOption,
+  NzCascaderSearchOption
+} from './typings';
 import { isChildOption, isParentOption } from './utils';
 
 /**
@@ -152,12 +158,18 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Try to set a option as activated.
+   *
    * @param option Cascader option
    * @param columnIndex Of which column this option is in
    * @param performSelect Select
    * @param loadingChildren Try to load children asynchronously.
    */
-  setOptionActivated(option: NzCascaderOption, columnIndex: number, performSelect: boolean = false, loadingChildren: boolean = true): void {
+  setOptionActivated(
+    option: NzCascaderOption,
+    columnIndex: number,
+    performSelect: boolean = false,
+    loadingChildren: boolean = true
+  ): void {
     if (option.disabled) {
       return;
     }
@@ -189,9 +201,8 @@ export class NzCascaderService implements OnDestroy {
 
   setOptionSelected(option: NzCascaderOption, index: number): void {
     const changeOn = this.cascaderComponent.nzChangeOn;
-    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean => {
-      return typeof changeOn === 'function' ? changeOn(o, i) : false;
-    };
+    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean =>
+      typeof changeOn === 'function' ? changeOn(o, i) : false;
 
     if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
       this.selectedOptions = [...this.activatedOptions];
@@ -209,6 +220,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Set a searching option as selected, finishing up things.
+   *
    * @param option
    */
   setSearchOptionSelected(option: NzCascaderSearchOption): void {
@@ -230,17 +242,17 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Filter cascader options to reset `columns`.
+   *
    * @param searchValue The string user wants to search.
    */
   prepareSearchOptions(searchValue: string): void {
     const results: NzCascaderOption[] = []; // Search results only have one layer.
     const path: NzCascaderOption[] = [];
-    const defaultFilter: NzCascaderFilter = (i, p) => {
-      return p.some(o => {
+    const defaultFilter: NzCascaderFilter = (i, p) =>
+      p.some(o => {
         const label = this.getOptionLabel(o);
         return !!label && label.indexOf(i) !== -1;
       });
-    };
     const showSearch = this.cascaderComponent.nzShowSearch;
     const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
     const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
@@ -294,6 +306,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Toggle searching mode by UI. It deals with things not directly related to UI.
+   *
    * @param toSearching If this cascader is entering searching mode
    */
   toggleSearchingMode(toSearching: boolean): void {
@@ -337,6 +350,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Try to insert options into a column.
+   *
    * @param options Options to insert
    * @param columnIndex Position
    */
@@ -373,7 +387,12 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Load children of an option asynchronously.
    */
-  loadChildren(option: NzCascaderOption | NzSafeAny, columnIndex: number, success?: VoidFunction, failure?: VoidFunction): void {
+  loadChildren(
+    option: NzCascaderOption | NzSafeAny,
+    columnIndex: number,
+    success?: VoidFunction,
+    failure?: VoidFunction
+  ): void {
     const loadFn = this.cascaderComponent.nzLoadData;
 
     if (loadFn) {

@@ -9,7 +9,13 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from '../input';
@@ -27,7 +33,14 @@ describe('mention', () => {
     waitForAsync(() => {
       const dir = 'ltr';
       TestBed.configureTestingModule({
-        imports: [NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        imports: [
+          NzMentionModule,
+          NzInputModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          NzIconTestModule
+        ],
         declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -202,7 +215,9 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const mention = fixture.componentInstance.mention;
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
       fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
@@ -218,7 +233,9 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
 
@@ -236,7 +253,9 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
 
@@ -253,7 +272,9 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
 
@@ -273,7 +294,9 @@ describe('mention', () => {
       componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(optionEls[0].classList).not.toContain('focus');
       expect(optionEls[1].classList).toContain('focus');
@@ -289,7 +312,9 @@ describe('mention', () => {
       [1, 2, 3, 4].forEach(() => componentInstance.trigger.onKeydown.emit(RIGHT_EVENT));
       fixture.detectChanges();
 
-      const optionEls = overlayContainerElement.querySelectorAll('.ant-mention-dropdown-item') as NodeListOf<HTMLElement>;
+      const optionEls = overlayContainerElement.querySelectorAll(
+        '.ant-mention-dropdown-item'
+      ) as NodeListOf<HTMLElement>;
 
       expect(optionEls[0].classList).toContain('focus');
       expect(optionEls[1].classList).not.toContain('focus');
@@ -449,7 +474,10 @@ describe('mention', () => {
 
     it('should correct parsing the trigger content', () => {
       fixture.componentInstance.setArrayPrefix();
-      typeInElement('ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello #ng', textarea);
+      typeInElement(
+        'ABC @Angular 123 @ant-design @你好 foo ant@gmail.com @@ng 123 .@.@ /@hello \\@hello #ng',
+        textarea
+      );
       fixture.detectChanges();
       expect(fixture.componentInstance.mention.getMentions().join(',')).toBe('@Angular,@ant-design,@你好,@@ng,#ng');
     });

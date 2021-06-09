@@ -5,7 +5,15 @@
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 
 import { NzTreeVirtualNodeData } from './node';
@@ -64,7 +72,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
 
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>): void {
+  renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
   }
 
@@ -86,7 +94,9 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   ngOnChanges(changes: SimpleChanges): void {
     const { nzNodeWidth, nzItemSize } = changes;
     if (nzNodeWidth) {
-      warnDeprecation('`nzNodeWidth` in nz-tree-virtual-scroll-view will be removed in 12.0.0, please use `nzItemSize` instead.');
+      warnDeprecation(
+        '`nzNodeWidth` in nz-tree-virtual-scroll-view will be removed in 12.0.0, please use `nzItemSize` instead.'
+      );
       this.itemSize = nzNodeWidth.currentValue;
     }
     if (nzItemSize) {

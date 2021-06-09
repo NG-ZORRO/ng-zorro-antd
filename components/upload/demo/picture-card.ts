@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 
-function getBase64(file: File): Promise<string | ArrayBuffer | null> {
-  return new Promise((resolve, reject) => {
+const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
-}
 
 @Component({
   selector: 'nz-demo-upload-picture-card',
@@ -26,7 +25,12 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
           <div style="margin-top: 8px">Upload</div>
         </div>
       </nz-upload>
-      <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
+      <nz-modal
+        [nzVisible]="previewVisible"
+        [nzContent]="modalContent"
+        [nzFooter]="null"
+        (nzOnCancel)="previewVisible = false"
+      >
         <ng-template #modalContent>
           <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
         </ng-template>

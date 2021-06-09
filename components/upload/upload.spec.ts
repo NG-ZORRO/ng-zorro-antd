@@ -1,4 +1,4 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component, DebugElement, Injector, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -10,11 +10,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import en_US from '../i18n/languages/en_US';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzProgressModule } from '../progress/progress.module';
-import { NzToolTipModule } from '../tooltip/tooltip.module';
 
 import {
   NzShowUploadList,
@@ -30,7 +29,9 @@ import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 import { NzUploadComponent } from './upload.component';
 
-const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
+const FILECONTENT = [
+  `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
+];
 const FILE = new File(FILECONTENT, '');
 const PNGSMALL = {
   target: {
@@ -222,7 +223,8 @@ describe('upload', () => {
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
-        const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete').nativeElement as HTMLElement;
+        const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete')
+          .nativeElement as HTMLElement;
         expect(removeFileText.parentElement!.title).toBe(en_US.Upload.removeFile);
       });
     });
@@ -249,9 +251,7 @@ describe('upload', () => {
 
       describe('[nzData]', () => {
         it('should custom form data vis function', () => {
-          instance.nzData = () => {
-            return { a: 1 };
-          };
+          instance.nzData = () => ({ a: 1 });
           fixture.detectChanges();
           pageObject.postSmall();
           const req = httpMock.expectOne(instance.nzAction as string);
@@ -297,9 +297,7 @@ describe('upload', () => {
 
       describe('[nzHeaders]', () => {
         it('should custom form data vis function', () => {
-          instance.nzHeaders = () => {
-            return { a: '1' };
-          };
+          instance.nzHeaders = () => ({ a: '1' });
           fixture.detectChanges();
           pageObject.postSmall();
           const req = httpMock.expectOne(instance.nzAction as string);
@@ -446,9 +444,7 @@ describe('upload', () => {
           });
           it('cancel upload when returan a false value', () => {
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (): Observable<any> => {
-              return of(false);
-            };
+            instance.beforeUpload = (): Observable<any> => of(false);
             fixture.detectChanges();
             pageObject.postSmall();
             expect(instance._nzChange).toBeUndefined();
@@ -457,9 +453,7 @@ describe('upload', () => {
             let warnMsg = '';
             console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
             expect(instance._nzChange).toBeUndefined();
-            instance.beforeUpload = (): Observable<any> => {
-              return throwError('');
-            };
+            instance.beforeUpload = (): Observable<any> => throwError('');
             fixture.detectChanges();
             pageObject.postSmall();
             expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
@@ -513,21 +507,19 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: (fileList: NzUploadFile[]) => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
-                  });
-                }
+                  })
               },
               {
                 name: 'f2',
-                fn: (fileList: NzUploadFile[]) => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
-                  });
-                }
+                  })
               }
             ];
             fixture.detectChanges();
@@ -541,11 +533,10 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: () => {
-                  return new Observable((observer: Observer<NzUploadFile[]>) => {
+                fn: () =>
+                  new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.error('filter error');
-                  });
-                }
+                  })
               }
             ];
             fixture.detectChanges();
@@ -719,7 +710,9 @@ describe('upload', () => {
       private files: any;
 
       constructor() {
-        spyOn(this.btnComp, 'onClick').and.callFake(() => this.btnComp.onChange({ target: { files: this.files } } as any));
+        spyOn(this.btnComp, 'onClick').and.callFake(() =>
+          this.btnComp.onChange({ target: { files: this.files } } as any)
+        );
       }
 
       get btnEl(): DebugElement {
@@ -768,7 +761,15 @@ describe('upload', () => {
     let instance: TestUploadListComponent;
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconTestModule],
+        imports: [
+          CommonModule,
+          FormsModule,
+          NzToolTipModule,
+          NzProgressModule,
+          NzI18nModule,
+          NoopAnimationsModule,
+          NzIconTestModule
+        ],
         declarations: [NzUploadListComponent, TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
@@ -1108,11 +1109,9 @@ describe('upload', () => {
               file: (handle: any) => {
                 handle(new Item(item.name));
               },
-              createReader: () => {
-                return {
-                  readEntries: (handle: any) => handle(item.children!.map(makeFileSystemEntry))
-                };
-              }
+              createReader: () => ({
+                readEntries: (handle: any) => handle(item.children!.map(makeFileSystemEntry))
+              })
             };
             return ret;
           };
@@ -1486,9 +1485,7 @@ class TestUploadListComponent {
 }
 
 @Component({
-  template: `
-    <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div>
-  `
+  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div> `
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;

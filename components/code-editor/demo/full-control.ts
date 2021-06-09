@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { editor } from 'monaco-editor';
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const monaco: any;
 
 @Component({
   selector: 'nz-demo-code-editor-full-control',
-  template: ` <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor> `,
+  template: `
+    <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor>
+  `,
   styles: [
     `
       .editor {

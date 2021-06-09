@@ -45,6 +45,7 @@ export abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
 
   /**
    * Initialize dragging sequences.
+   *
    * @param contents
    */
   withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
@@ -77,6 +78,7 @@ export abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
 
   /**
    * When user drag the carousel component.
+   *
    * @optional
    */
   dragging(_vector: PointerVector): void {}

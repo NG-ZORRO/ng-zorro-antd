@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output
+} from '@angular/core';
 import { select, Selection } from 'd3-selection';
 import { transition as d3Transition } from 'd3-transition';
 import { zoom, ZoomBehavior, zoomIdentity, zoomTransform } from 'd3-zoom';
@@ -103,6 +112,7 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   /**
    * Handle zoom event
+   *
    * @param transform
    */
   private zoomed({ transform }: NzSafeAny): void {
@@ -117,6 +127,7 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   /**
    * Scale with zoom and duration
+   *
    * @param duration
    * @param scale
    * @private

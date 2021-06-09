@@ -114,17 +114,6 @@
             }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "site/doc/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
@@ -211,17 +200,6 @@
               "browserTarget": "ng-zorro-antd-iframe:build:production"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "site/iframe/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -271,6 +249,16 @@
             "polyfills": "components/polyfills.ts",
             "tsConfig": "components/tsconfig.spec.json",
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "fix": true,
+            "lintFilePatterns": [
+              "components/**/*.ts",
+              "components/**/*.html"
+            ]
           }
         }
       }

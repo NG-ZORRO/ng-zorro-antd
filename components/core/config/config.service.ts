@@ -45,15 +45,19 @@ export class NzConfigService {
   }
 }
 
-// tslint:disable:no-invalid-this
+/* eslint-disable no-invalid-this */
 
 /**
  * This decorator is used to decorate properties. If a property is decorated, it would try to load default value from
  * config.
  */
-// tslint:disable-next-line:typedef
+// eslint-disable-next-line
 export function WithConfig<T>() {
-  return function ConfigDecorator(target: NzSafeAny, propName: NzSafeAny, originalDescriptor?: TypedPropertyDescriptor<T>): NzSafeAny {
+  return function ConfigDecorator(
+    target: NzSafeAny,
+    propName: NzSafeAny,
+    originalDescriptor?: TypedPropertyDescriptor<T>
+  ): NzSafeAny {
     const privatePropName = `$$__assignedValue__${propName}`;
 
     Object.defineProperty(target, privatePropName, {

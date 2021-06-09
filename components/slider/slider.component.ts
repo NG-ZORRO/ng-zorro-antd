@@ -255,7 +255,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     let step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
     step = this.dir === 'rtl' ? step * -1 : step;
-    const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
+    const newVal = this.nzRange
+      ? (this.value as number[])[this.activeValueIndex!] + step
+      : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
   }
 
@@ -291,7 +293,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       normalizedValue = this.getValue(true);
     }
 
-    return isValueRange(normalizedValue) ? normalizedValue.map(val => this.valueToOffset(val)) : this.valueToOffset(normalizedValue);
+    return isValueRange(normalizedValue)
+      ? normalizedValue.map(val => this.valueToOffset(val))
+      : this.valueToOffset(normalizedValue);
   }
 
   /**
@@ -336,7 +340,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const valueSorted = this.getValue(true);
     const offsetSorted = this.getValueToOffset(valueSorted);
     const boundParts = isValueRange(valueSorted) ? valueSorted : [0, valueSorted];
-    const trackParts = isValueRange(offsetSorted) ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]] : [0, offsetSorted];
+    const trackParts = isValueRange(offsetSorted)
+      ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]]
+      : [0, offsetSorted];
 
     this.handles.forEach((handle, index) => {
       handle.offset = isValueRange(offset) ? offset[index] : offset;

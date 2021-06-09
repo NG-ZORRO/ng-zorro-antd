@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -11,7 +20,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i nz-icon nzType="close-circle" nzTheme="fill" *ngIf="!clearIcon; else clearIcon" class="ant-select-close-icon"></i>
+    <i
+      nz-icon
+      nzType="close-circle"
+      nzTheme="fill"
+      *ngIf="!clearIcon; else clearIcon"
+      class="ant-select-close-icon"
+    ></i>
   `,
   host: {
     '(click)': 'onClick($event)'

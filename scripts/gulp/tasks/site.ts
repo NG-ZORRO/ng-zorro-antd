@@ -1,7 +1,12 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { join } from 'path';
 import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { debounce } from 'lodash';
-import { join } from 'path';
 import { buildConfig } from '../../build-config';
 import { execNodeTask, execTask } from '../util/task-helpers';
 
@@ -54,18 +59,29 @@ task('serve:site', done => {
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
 task(
   'build:site-doc',
-  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', CI ? '--configuration=pre-production' : ''])
+  execNodeTask('@angular/cli', 'ng', [
+    'build',
+    '--project=ng-zorro-antd-doc',
+    '--prod',
+    CI ? '--configuration=pre-production' : ''
+  ])
 );
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
-task('build:site-doc-es5', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']));
+task(
+  'build:site-doc-es5',
+  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5'])
+);
 
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
-task('build:site-iframe', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']));
+task(
+  'build:site-iframe',
+  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./'])
+);
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tsconfig: any = fs.readJSONSync(tsconfigFile);
   tsconfig.compilerOptions.paths['ng-zorro-antd'] = ['../publish'];
   tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*'];
@@ -78,9 +94,7 @@ task('site:replace-path', () => {
 task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** Build all site projects to the output directory. */
-task(
-  'build:site', series('prerender', 'build:site-iframe', 'build:site-issue-helper')
-);
+task('build:site', series('prerender', 'build:site-iframe', 'build:site-issue-helper'));
 
 /** Init site directory, and start watch and ng-serve */
 task('start:site', series('init:site', parallel('watch:site', 'serve:site')));

@@ -1,5 +1,10 @@
-import { dest, parallel, series, src, task } from 'gulp';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { join } from 'path';
+import { dest, parallel, series, src, task } from 'gulp';
 import { buildConfig } from '../../build-config';
 import { compile as compileLess } from '../../build/compile-styles';
 import { generateLessVars } from '../../build/generate-less-vars';
@@ -25,7 +30,9 @@ task('library:generate-less-vars', done => {
 
 // Copies README.md file to the public directory.
 task('library:copy-resources', () => {
-  return src([join(buildConfig.projectDir, 'README.md'), join(buildConfig.componentsDir)]).pipe(dest(join(buildConfig.publishDir)));
+  return src([join(buildConfig.projectDir, 'README.md'), join(buildConfig.componentsDir)]).pipe(
+    dest(join(buildConfig.publishDir))
+  );
 });
 
 // Copies files without ngcc to lib folder.

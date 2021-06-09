@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-spin-custom-indicator',
   template: `
     <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
-    <nz-spin nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+    <nz-spin nzSimple [nzIndicator]="indicatorTemplate"></nz-spin>
   `,
   styles: [
     `

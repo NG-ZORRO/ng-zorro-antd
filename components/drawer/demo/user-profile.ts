@@ -31,7 +31,9 @@ import { Component } from '@angular/core';
           <nz-descriptions-item nzTitle="Country" [nzSpan]="1">China🇨🇳</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Birthday" [nzSpan]="1">February 2,1900</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Website" [nzSpan]="1">-</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="Message" [nzSpan]="2">Make things as simple as possible but no simpler.</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Message" [nzSpan]="2">
+            Make things as simple as possible but no simpler.
+          </nz-descriptions-item>
         </nz-descriptions>
         <nz-divider></nz-divider>
         <nz-descriptions [nzColumn]="2" nzTitle="Company">
@@ -40,8 +42,9 @@ import { Component } from '@angular/core';
           <nz-descriptions-item nzTitle="Department" [nzSpan]="1">AFX</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Supervisor" [nzSpan]="1">Lin</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Skills" [nzSpan]="2">
-            C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer
-            architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc.
+            C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler
+            theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java,
+            ASP, etc.
           </nz-descriptions-item>
         </nz-descriptions>
         <nz-divider></nz-divider>

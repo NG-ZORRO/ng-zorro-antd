@@ -157,7 +157,9 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      const allDisabledCells = overlayContainerElement.querySelectorAll('.ant-picker-month-panel tr td.ant-picker-cell-disabled');
+      const allDisabledCells = overlayContainerElement.querySelectorAll(
+        '.ant-picker-month-panel tr td.ant-picker-cell-disabled'
+      );
       const disabledCell = allDisabledCells[allDisabledCells.length - 1];
       expect(disabledCell.textContent).toContain('10');
     }));
@@ -380,7 +382,9 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function getFirstMonthCell(): HTMLElement {
-    return queryFromOverlay('.ant-picker-month-panel td.ant-picker-cell:nth-child(1) .ant-picker-cell-inner') as HTMLElement;
+    return queryFromOverlay(
+      '.ant-picker-month-panel td.ant-picker-cell:nth-child(1) .ant-picker-cell-inner'
+    ) as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -441,7 +445,7 @@ class NzTestMonthPickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;

@@ -27,7 +27,10 @@ import { NzNotificationData } from './typings';
       (mouseleave)="onLeave()"
     >
       <div *ngIf="!instance.template" class="ant-notification-notice-content">
-        <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }">
+        <div
+          class="ant-notification-notice-content"
+          [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }"
+        >
           <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
             <ng-container [ngSwitch]="instance.type">
               <i

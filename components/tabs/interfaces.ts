@@ -8,7 +8,10 @@ import { Observable } from 'rxjs';
 
 export type NzTabPosition = 'top' | 'bottom' | 'left' | 'right';
 export type NzTabType = 'line' | 'card' | 'editable-card';
-export type NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
+export type NzTabsCanDeactivateFn = (
+  fromIndex: number,
+  toIndex: number
+) => Observable<boolean> | Promise<boolean> | boolean;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 
 export interface NzAnimatedInterface {

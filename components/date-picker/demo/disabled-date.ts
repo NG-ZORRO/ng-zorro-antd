@@ -44,18 +44,15 @@ export class NzDemoDatePickerDisabledDateComponent {
     return result;
   }
 
-  disabledDate = (current: Date): boolean => {
+  disabledDate = (current: Date): boolean =>
     // Can not select days before today and today
-    return differenceInCalendarDays(current, this.today) > 0;
-  };
+    differenceInCalendarDays(current, this.today) > 0;
 
-  disabledDateTime: DisabledTimeFn = () => {
-    return {
-      nzDisabledHours: () => this.range(0, 24).splice(4, 20),
-      nzDisabledMinutes: () => this.range(30, 60),
-      nzDisabledSeconds: () => [55, 56]
-    };
-  };
+  disabledDateTime: DisabledTimeFn = () => ({
+    nzDisabledHours: () => this.range(0, 24).splice(4, 20),
+    nzDisabledMinutes: () => this.range(30, 60),
+    nzDisabledSeconds: () => [55, 56]
+  });
 
   disabledRangeTime: DisabledTimeFn = (_value, type?: DisabledTimePartial) => {
     if (type === 'start') {

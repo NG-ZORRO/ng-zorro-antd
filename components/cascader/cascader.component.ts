@@ -105,7 +105,10 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
-            <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nzLabelRender"
+              [ngTemplateOutletContext]="labelRenderContext"
+            ></ng-template>
           </ng-template>
         </span>
       </div>
@@ -618,7 +621,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
-    return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
+    return typeof this.nzTriggerAction === 'string'
+      ? this.nzTriggerAction === action
+      : this.nzTriggerAction.indexOf(action) !== -1;
   }
 
   private onEnter(): void {
@@ -760,7 +765,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.dropdownHeightStyle = this.shouldShowEmpty ? 'auto' : '';
 
     if (this.input) {
-      this.dropdownWidthStyle = this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
+      this.dropdownWidthStyle =
+        this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
     }
   }
 

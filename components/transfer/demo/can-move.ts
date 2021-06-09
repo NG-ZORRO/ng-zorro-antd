@@ -6,7 +6,12 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-transfer-can-move',
   template: `
-    <nz-transfer [nzDataSource]="list" [nzCanMove]="canMove" (nzSelectChange)="select($event)" (nzChange)="change($event)"> </nz-transfer>
+    <nz-transfer
+      [nzDataSource]="list"
+      [nzCanMove]="canMove"
+      (nzSelectChange)="select($event)"
+      (nzChange)="change($event)"
+    ></nz-transfer>
   `
 })
 export class NzDemoTransferCanMoveComponent implements OnInit {

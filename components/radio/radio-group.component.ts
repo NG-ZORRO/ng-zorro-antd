@@ -31,9 +31,7 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

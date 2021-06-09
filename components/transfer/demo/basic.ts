@@ -11,8 +11,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       (nzSelectChange)="select($event)"
       [nzSelectedKeys]="['0', '2']"
       (nzChange)="change($event)"
-    >
-    </nz-transfer>
+    ></nz-transfer>
     <div style="margin-top: 8px;">
       <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
       <div></div>

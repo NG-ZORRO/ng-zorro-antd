@@ -9,8 +9,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
       [nzCheckedChildren]="'customize'"
       [(ngModel)]="customize"
       (ngModelChange)="onConfigChange()"
-    >
-    </nz-switch>
+    ></nz-switch>
 
     <nz-divider></nz-divider>
 
@@ -57,7 +56,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
   ]
 })
 export class NzDemoEmptyConfigComponent {
-  @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // tslint:disable-line:no-any
+  @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   customize = false;
 

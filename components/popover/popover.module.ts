@@ -19,6 +19,14 @@ import { NzPopoverComponent, NzPopoverDirective } from './popover';
   exports: [NzPopoverDirective, NzPopoverComponent],
   entryComponents: [NzPopoverComponent],
   declarations: [NzPopoverDirective, NzPopoverComponent],
-  imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
+  imports: [
+    BidiModule,
+    CommonModule,
+    OverlayModule,
+    NzOutletModule,
+    NzOverlayModule,
+    NzNoAnimationModule,
+    NzToolTipModule
+  ]
 })
 export class NzPopoverModule {}

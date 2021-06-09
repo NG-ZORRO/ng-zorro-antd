@@ -88,7 +88,13 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   private updateRouterActive(): void {
-    if (!this.listOfRouterLink || !this.listOfRouterLinkWithHref || !this.router || !this.router.navigated || !this.nzMatchRouter) {
+    if (
+      !this.listOfRouterLink ||
+      !this.listOfRouterLinkWithHref ||
+      !this.router ||
+      !this.router.navigated ||
+      !this.nzMatchRouter
+    ) {
       return;
     }
     Promise.resolve().then(() => {

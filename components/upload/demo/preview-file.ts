@@ -7,8 +7,15 @@ import { map } from 'rxjs/operators';
   selector: 'nz-demo-upload-preview-file',
   template: `
     <div class="clearfix">
-      <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [nzPreviewFile]="previewFile">
-        <button nz-button><i nz-icon nzType="upload"></i> Upload</button>
+      <nz-upload
+        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        nzListType="picture"
+        [nzPreviewFile]="previewFile"
+      >
+        <button nz-button>
+          <i nz-icon nzType="upload"></i>
+          Upload
+        </button>
       </nz-upload>
     </div>
   `

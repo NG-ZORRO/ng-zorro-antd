@@ -10,7 +10,10 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
       [nzHeaders]="{ authorization: 'authorization-text' }"
       (nzChange)="handleChange($event)"
     >
-      <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        Click to Upload
+      </button>
     </nz-upload>
   `
 })

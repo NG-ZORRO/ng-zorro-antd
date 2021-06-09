@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
@@ -34,7 +35,11 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   private closeTimeout?: number;
 
-  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainerComponent) {
+  constructor(
+    private overlayRef: OverlayRef,
+    private config: ModalOptions,
+    public containerInstance: BaseModalContainerComponent
+  ) {
     containerInstance.animationStateChanged
       .pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'enter'),
@@ -68,15 +73,14 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => {
-          return (
+        filter(
+          event =>
             (this.config.nzKeyboard as boolean) &&
             !this.config.nzCancelLoading &&
             !this.config.nzOkLoading &&
             event.keyCode === ESCAPE &&
             !hasModifierKey(event)
-          );
-        })
+        )
       )
       .subscribe(event => {
         event.preventDefault();

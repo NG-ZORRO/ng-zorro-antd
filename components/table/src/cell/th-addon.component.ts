@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,10 +22,17 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, NzTableSortOrder } from '../table.types';
+import {
+  NzTableFilterFn,
+  NzTableFilterList,
+  NzTableFilterValue,
+  NzTableSortFn,
+  NzTableSortOrder
+} from '../table.types';
 
 @Component({
-  selector: 'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
+  selector:
+    'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,7 +54,11 @@ import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, 
       <ng-content select="nz-filter-trigger"></ng-content>
     </ng-template>
     <ng-template #sortTemplate>
-      <nz-table-sorters [sortOrder]="sortOrder" [sortDirections]="sortDirections" [contentTemplate]="contentTemplate"></nz-table-sorters>
+      <nz-table-sorters
+        [sortOrder]="sortOrder"
+        [sortDirections]="sortDirections"
+        [contentTemplate]="contentTemplate"
+      ></nz-table-sorters>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>

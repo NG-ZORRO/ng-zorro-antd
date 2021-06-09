@@ -5,9 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 @Component({
-  template: `
-    {{ diff | nzTimeRange: format }}
-  `
+  template: ` {{ diff | nzTimeRange: format }} `
 })
 export class NzTestTimeRangeComponent {
   diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;

@@ -14,9 +14,8 @@ import { Component } from '@angular/core';
       [nzAllowClear]="false"
       [nzMultiple]="true"
       (ngModelChange)="onChange($event)"
-    >
-    </nz-tree-select>
-    <ng-template #omittedPlaceHolder let-omittedValues> and {{ omittedValues.length }} more... </ng-template>
+    ></nz-tree-select>
+    <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
   `
 })
 export class NzDemoTreeSelectMultipleComponent {

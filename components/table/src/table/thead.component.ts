@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 import {
   AfterContentInit,
   AfterViewInit,
@@ -98,9 +99,9 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
       });
     }
     if (this.nzTableDataService) {
-      const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(startWith(this.listOfNzThAddOnComponent)) as Observable<
-        QueryList<NzThAddOnComponent>
-      >;
+      const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(
+        startWith(this.listOfNzThAddOnComponent)
+      ) as Observable<QueryList<NzThAddOnComponent>>;
       const manualSort$ = listOfColumn$.pipe(
         switchMap(() => merge(...this.listOfNzThAddOnComponent.map(th => th.manualClickOrder$))),
         takeUntil(this.destroy$)
@@ -114,7 +115,9 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
       });
       const listOfCalcOperator$ = listOfColumn$.pipe(
         switchMap(list =>
-          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent) => c.calcOperatorChange$)]).pipe(mergeMap(() => listOfColumn$))
+          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent) => c.calcOperatorChange$)]).pipe(
+            mergeMap(() => listOfColumn$)
+          )
         ),
         map(list =>
           list

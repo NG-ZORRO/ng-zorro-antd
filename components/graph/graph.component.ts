@@ -5,7 +5,6 @@
 
 import {
   AfterContentChecked,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -30,12 +29,12 @@ import { buildGraph } from 'dagre-compound';
 
 import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
-import { calculateTransform } from './core/utils';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { calculateTransform } from './core/utils';
 
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
@@ -132,7 +131,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   }
 })
-export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
+export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   static ngAcceptInputType_nzAutoSize: BooleanInput;
 
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
@@ -184,9 +183,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return `translate(${x}, ${y})`;
   };
 
-  coreTransform = (node: NzGraphGroupNode) => {
-    return `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
-  };
+  coreTransform = (node: NzGraphGroupNode) => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -231,8 +228,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
     this.cdr.markForCheck();
   }
-
-  ngAfterViewInit(): void {}
 
   ngAfterContentChecked(): void {
     if (this.dataSource && !this._dataSubscription) {
@@ -279,6 +274,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * re-Draw graph
+   *
    * @param data
    * @param options
    * @param needResize
@@ -314,6 +310,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Redraw all nodes
+   *
    * @param animate
    */
   drawNodes(animate: boolean = true): Promise<void> {
@@ -410,6 +407,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Get renderInfo and prepare some data
+   *
    * @param data
    * @param options
    * @private
@@ -446,6 +444,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Play with animation
+   *
    * @private
    */
   private makeNodesAnimation(): Observable<void> {
@@ -467,6 +466,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Merge config with user inputs
+   *
    * @param config
    * @private
    */

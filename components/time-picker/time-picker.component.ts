@@ -304,7 +304,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.origin = new CdkOverlayOrigin(this.element);
 
-    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder));
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
+      map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder)
+    );
 
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

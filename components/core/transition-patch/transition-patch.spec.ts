@@ -26,7 +26,9 @@ describe('transition-patch', () => {
     expect(buttonElement.getAttribute('hidden')).toBe('abc');
   });
   it('should work if hidden binding', () => {
-    const testBed = createComponentBed(TestTransitionPatchHiddenBindingComponent, { imports: [NzTransitionPatchModule] });
+    const testBed = createComponentBed(TestTransitionPatchHiddenBindingComponent, {
+      imports: [NzTransitionPatchModule]
+    });
     const buttonElement = testBed.debugElement.query(By.directive(NzTransitionPatchDirective)).nativeElement;
     expect(buttonElement.getAttribute('hidden')).toBeFalsy();
     testBed.component.hidden = true;

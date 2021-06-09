@@ -1,11 +1,14 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Migration, UpgradeData } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 import { isNgZorroImportDeclaration } from "../../../utils/ng-update/module-specifiers";
 
 export abstract class InjectionTokenRule extends Migration<UpgradeData> {
-
   abstract tokens: string[];
-  abstract getFailure(token: string): string;
 
   visitNode(node: ts.Node): void {
     if (ts.isImportDeclaration(node)) {
@@ -36,4 +39,6 @@ export abstract class InjectionTokenRule extends Migration<UpgradeData> {
       }
     });
   }
+
+  abstract getFailure(token: string): string;
 }

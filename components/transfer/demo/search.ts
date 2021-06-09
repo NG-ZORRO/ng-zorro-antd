@@ -12,8 +12,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    >
-    </nz-transfer>
+    ></nz-transfer>
     <div style="margin-top: 8px;">
       <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
       <div></div>
@@ -35,7 +34,7 @@ export class NzDemoTransferSearchComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filterOption(inputValue: string, item: any): boolean {
     return item.description.indexOf(inputValue) > -1;
   }

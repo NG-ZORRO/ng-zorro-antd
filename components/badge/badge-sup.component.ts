@@ -33,7 +33,11 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
       >
         <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-          <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+          <p
+            *ngFor="let p of countSingleArray"
+            class="ant-scroll-number-only-unit"
+            [class.current]="p === countArray[i]"
+          >
             {{ p }}
           </p>
         </ng-container>

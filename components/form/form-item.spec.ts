@@ -22,8 +22,6 @@ describe('nz-form-item', () => {
 });
 
 @Component({
-  template: `
-    <nz-form-item></nz-form-item>
-  `
+  template: ` <nz-form-item></nz-form-item> `
 })
 export class NzTestFormItemComponent {}

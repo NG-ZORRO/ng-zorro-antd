@@ -21,8 +21,6 @@ describe('nz-form-text', () => {
 });
 
 @Component({
-  template: `
-    <nz-form-text></nz-form-text>
-  `
+  template: ` <nz-form-text></nz-form-text> `
 })
 export class NzTestFormTextComponent {}

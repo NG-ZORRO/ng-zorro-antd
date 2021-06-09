@@ -569,14 +569,20 @@ describe('nz-slider', () => {
     });
 
     it('should reverse work', () => {
-      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.right).toBe('0%');
 
-      const rangeTrackElement = (sliderDebugElements[1].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const rangeTrackElement = (sliderDebugElements[1].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.right).toBe('0%');
       expect(rangeTrackElement.style.width).toBe('100%');
 
-      const verticalTrackElement = (sliderDebugElements[2].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const verticalTrackElement = (sliderDebugElements[2].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(verticalTrackElement.style.top).toBe('0%');
     });
 
@@ -591,12 +597,16 @@ describe('nz-slider', () => {
 
       fixture.detectChanges();
 
-      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.width).toBe('1%');
     });
 
     it('should reverse marks', () => {
-      const markList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-mark') as HTMLElement;
+      const markList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-mark'
+      ) as HTMLElement;
       const value0Mark = markList.children[0] as HTMLElement;
       const value100Mark = markList.children[1] as HTMLElement;
 
@@ -605,7 +615,9 @@ describe('nz-slider', () => {
     });
 
     it('should reverse steps', () => {
-      const stepList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-step') as HTMLElement;
+      const stepList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-step'
+      ) as HTMLElement;
       const value0Step = stepList.children[0] as HTMLElement;
       const value100Step = stepList.children[1] as HTMLElement;
 
@@ -704,7 +716,7 @@ describe('nz-slider', () => {
     });
 
     it('should stop at new steps when step=null or dots=true', () => {
-      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // tslint:disable-line:no-any
+      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
       testComponent.step = null;
       fixture.detectChanges();
 
@@ -1018,18 +1030,14 @@ const styles = `
 `;
 
 @Component({
-  template: `
-    <nz-slider [nzDisabled]="disabled"></nz-slider>
-  `,
+  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: `
-    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -1038,26 +1046,20 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="26"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: `
-    <nz-slider [nzMarks]="marks"></nz-slider>
-  `
+  template: ` <nz-slider [nzMarks]="marks"></nz-slider> `
 })
 class SliderWithMarksComponent {
   marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
-  template: `
-    <nz-slider [nzStep]="step"></nz-slider>
-  `,
+  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -1065,33 +1067,25 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueZeroComponent {}
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: `
-    <nz-slider nzVertical></nz-slider>
-  `,
+  template: ` <nz-slider nzVertical></nz-slider> `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -1108,9 +1102,7 @@ class ReverseSliderComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider> `,
   styles: [styles]
 })
 class ReverseSliderWithMinAndMaxComponent {}
@@ -1165,9 +1157,7 @@ class SliderWithFormControlComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
-  `
+  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -1175,9 +1165,7 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider>
-  `
+  template: ` <nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider> `
 })
 class NzTestSliderKeyboardComponent {
   range = false;
@@ -1187,6 +1175,7 @@ class NzTestSliderKeyboardComponent {
 /**
  * Dispatches a click event sequence (consisting of moueseenter, click) from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percentage The percentage of the slider where the click should occur. Used to find the
  * physical location of the click.
@@ -1204,12 +1193,18 @@ function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: numb
 
 /**
  * Dispatches a slide event sequence (consisting of slidestart, slide, slideend) from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param startPercent The percentage of the slider where the slide will begin.
  * @param endPercent The percentage of the slider where the slide will end.
  * @param stick Whether stick on and not mouseup when move at the end
  */
-function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: number, endPercent: number, stick: boolean = false): void {
+function dispatchSlideEventSequence(
+  sliderElement: HTMLElement,
+  startPercent: number,
+  endPercent: number,
+  stick: boolean = false
+): void {
   dispatchMouseenterEvent(sliderElement);
   dispatchSlideStartEvent(sliderElement, startPercent);
   dispatchSlideEvent(sliderElement, startPercent);
@@ -1221,6 +1216,7 @@ function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: nu
 
 /**
  * Dispatches a slide event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will happen.
  */
@@ -1235,6 +1231,7 @@ function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
 
 /**
  * Dispatches a slidestart event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will begin.
  */
@@ -1251,6 +1248,7 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
 
 /**
  * Dispatches a slideend event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will end.
  */
@@ -1266,6 +1264,7 @@ function dispatchSlideEndEvent(sliderElement: HTMLElement, percent: number): voi
 /**
  * Dispatches a mouseenter event from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param element The element from which the event will be dispatched.
  */
 function dispatchMouseenterEvent(element: HTMLElement): void {

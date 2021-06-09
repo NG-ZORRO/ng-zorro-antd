@@ -13,7 +13,9 @@ interface DataItem {
     <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+            {{ column.title }}
+          </th>
         </tr>
       </thead>
       <tbody>

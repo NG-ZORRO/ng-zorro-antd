@@ -84,11 +84,14 @@ const otherOptions = [
 @Component({
   selector: 'nz-demo-cascader-search',
   template: `
-    <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" [nzShowSearch]="true" (ngModelChange)="onChanges($event)"> </nz-cascader>
+    <nz-cascader
+      [nzOptions]="nzOptions"
+      [(ngModel)]="values"
+      [nzShowSearch]="true"
+      (ngModelChange)="onChanges($event)"
+    ></nz-cascader>
     &nbsp;
-    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">
-      Change Options
-    </a>
+    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">Change Options</a>
   `,
   styles: [
     `

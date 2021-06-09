@@ -7,9 +7,7 @@ import { NZ_CONFIG } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
-  template: `
-    <button nz-button nzType="primary" [nzSize]="size">Global Config</button>
-  `
+  template: ` <button nz-button nzType="primary" [nzSize]="size">Global Config</button> `
 })
 export class NzGlobalConfigTestBasicComponent {
   size?: 'large' | 'default' | 'small';
@@ -103,7 +101,7 @@ describe('nz global config', () => {
     // It would fail silently. User cannot input a component name wrong - TypeScript comes to help!
     // it('should raise error when the component with given name is not defined', () => {
     //   expect(() => {
-    //     testComponent.nzConfigService.set('nzNotExist' as any, {}); // tslint:disable-line no-any
+    // eslint-disable-line  @typescript-eslint/no-explicit-any
     //   }).toThrowError();
     // });
   });

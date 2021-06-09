@@ -1,6 +1,11 @@
-import { copySync, emptyDirSync, readdirSync, removeSync } from 'fs-extra';
-import * as minimatch from 'minimatch';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { join } from 'path';
+import { copySync, emptyDirSync, removeSync } from 'fs-extra';
+import * as minimatch from 'minimatch';
 import { buildConfig } from '../build-config';
 import { GitClient } from './git-client';
 

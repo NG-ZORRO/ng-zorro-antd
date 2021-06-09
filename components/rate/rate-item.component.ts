@@ -3,7 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -13,7 +21,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   selector: '[nz-rate-item]',
   exportAs: 'nzRateItem',
   template: `
-    <div class="ant-rate-star-second" (mouseover)="hoverRate(false); $event.stopPropagation()" (click)="clickRate(false)">
+    <div
+      class="ant-rate-star-second"
+      (mouseover)="hoverRate(false); $event.stopPropagation()"
+      (click)="clickRate(false)"
+    >
       <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
     </div>
     <div class="ant-rate-star-first" (mouseover)="hoverRate(true); $event.stopPropagation()" (click)="clickRate(true)">

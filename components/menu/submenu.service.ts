@@ -34,6 +34,7 @@ export class NzSubmenuService implements OnDestroy {
   private destroy$ = new Subject<void>();
   /**
    * menu item inside submenu clicked
+   *
    * @param menu
    */
   onChildMenuItemClick(menu: NzSafeAny): void {

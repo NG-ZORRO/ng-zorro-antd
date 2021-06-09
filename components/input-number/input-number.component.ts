@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
@@ -150,7 +151,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   // '1.' '1x' 'xx' '' => are not complete numbers
   isNotCompleteNumber(num: string | number): boolean {
-    return isNaN(num as number) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
+    return (
+      isNaN(num as number) ||
+      num === '' ||
+      num === null ||
+      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
+    );
   }
 
   getValidValue(value?: string | number): string | number | undefined {
@@ -382,7 +388,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true)
+    this.focusMonitor
+      .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {

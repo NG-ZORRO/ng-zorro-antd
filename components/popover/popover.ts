@@ -25,7 +25,13 @@ import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+import {
+  isTooltipEmpty,
+  NzTooltipBaseDirective,
+  NzToolTipComponent,
+  NzTooltipTrigger,
+  PropertyMapping
+} from 'ng-zorro-antd/tooltip';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
 
@@ -52,7 +58,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverOverlayStyle') overlayStyle?: NgStyleInterface;
   @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);

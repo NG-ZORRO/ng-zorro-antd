@@ -57,7 +57,9 @@ export class NzBreakpointService {
       return this.resizeService.subscribe().pipe(
         map(get),
         startWith(get()),
-        distinctUntilChanged((x: [NzBreakpointEnum, BreakpointBooleanMap], y: [NzBreakpointEnum, BreakpointBooleanMap]) => x[0] === y[0]),
+        distinctUntilChanged(
+          (x: [NzBreakpointEnum, BreakpointBooleanMap], y: [NzBreakpointEnum, BreakpointBooleanMap]) => x[0] === y[0]
+        ),
         map(x => x[1])
       );
     } else {
@@ -68,7 +70,10 @@ export class NzBreakpointService {
 
   private matchMedia(breakpointMap: BreakpointMap): NzBreakpointEnum;
   private matchMedia(breakpointMap: BreakpointMap, fullMap: true): [NzBreakpointEnum, BreakpointBooleanMap];
-  private matchMedia(breakpointMap: BreakpointMap, fullMap?: true): NzBreakpointEnum | [NzBreakpointEnum, BreakpointBooleanMap] {
+  private matchMedia(
+    breakpointMap: BreakpointMap,
+    fullMap?: true
+  ): NzBreakpointEnum | [NzBreakpointEnum, BreakpointBooleanMap] {
     let bp = NzBreakpointEnum.md;
 
     const breakpointBooleanMap: Partial<BreakpointBooleanMap> = {};

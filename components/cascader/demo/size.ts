@@ -46,9 +46,19 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-size',
   template: `
-    <nz-cascader [nzSize]="'large'" [nzOptions]="nzOptions" [(ngModel)]="value1" (ngModelChange)="onChanges($event)"> </nz-cascader>
-    <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="value2" (ngModelChange)="onChanges($event)"> </nz-cascader>
-    <nz-cascader [nzSize]="'small'" [nzOptions]="nzOptions" [(ngModel)]="value3" (ngModelChange)="onChanges($event)"> </nz-cascader>
+    <nz-cascader
+      [nzSize]="'large'"
+      [nzOptions]="nzOptions"
+      [(ngModel)]="value1"
+      (ngModelChange)="onChanges($event)"
+    ></nz-cascader>
+    <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="value2" (ngModelChange)="onChanges($event)"></nz-cascader>
+    <nz-cascader
+      [nzSize]="'small'"
+      [nzOptions]="nzOptions"
+      [(ngModel)]="value3"
+      (ngModelChange)="onChanges($event)"
+    ></nz-cascader>
   `,
   styles: [
     `

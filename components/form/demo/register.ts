@@ -15,7 +15,13 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
-          <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+          <input
+            nz-input
+            type="password"
+            id="password"
+            formControlName="password"
+            (ngModelChange)="updateConfirmValidator()"
+          />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -23,9 +29,7 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
         <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
           <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
           <ng-template #errorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              Please confirm your password!
-            </ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
             <ng-container *ngIf="control.hasError('confirm')">
               Two passwords that you enter is inconsistent!
             </ng-container>
@@ -33,7 +37,13 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired nzTooltipTitle="What do you want other to call you">
+        <nz-form-label
+          [nzSm]="6"
+          [nzXs]="24"
+          nzFor="nickname"
+          nzRequired
+          nzTooltipTitle="What do you want other to call you"
+        >
           <span>Nickname</span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
@@ -135,8 +145,10 @@ export class NzDemoFormRegisterComponent implements OnInit {
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(i)) {
+        this.validateForm.controls[i].markAsDirty();
+        this.validateForm.controls[i].updateValueAndValidity();
+      }
     }
   }
 

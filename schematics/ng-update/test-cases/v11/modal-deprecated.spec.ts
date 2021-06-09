@@ -49,7 +49,7 @@ describe('modal migration', () => {
     host.sync.write(normalize(filePath), virtualFs.stringToFileBuffer(contents));
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function runMigration(): Promise<any> {
     await runner.runSchematicAsync('migration-v11', {}, tree).toPromise();
   }

@@ -27,7 +27,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({ template: '' })
-// tslint:disable-next-line: component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   static ngAcceptInputType_nzDirectoryTree: BooleanInput;
   static ngAcceptInputType_nzBlockNode: BooleanInput;
@@ -73,7 +73,12 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>, dataDiffer?: IterableDiffer<T>, viewContainer?: ViewContainerRef, parentData?: T): void {
+  renderNodeChanges(
+    data: T[] | readonly T[],
+    dataDiffer?: IterableDiffer<T>,
+    viewContainer?: ViewContainerRef,
+    parentData?: T
+  ): void {
     super.renderNodeChanges(data, dataDiffer, viewContainer, parentData);
     this._dataSourceChanged.next();
   }

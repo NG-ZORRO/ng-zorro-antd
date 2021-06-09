@@ -141,7 +141,10 @@ describe('rate', () => {
     });
     it('should hover rate work', () => {
       fixture.detectChanges();
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild, 'mouseover');
+      dispatchFakeEvent(
+        rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild,
+        'mouseover'
+      );
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(testComponent.onHoverChange).toHaveBeenCalledWith(4);
@@ -255,7 +258,7 @@ describe('rate', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-rate',
   template: `
     <nz-rate

@@ -16,7 +16,8 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
         <input nz-input [(ngModel)]="value" />
       </nz-form-item>
     </div>
-    <button nz-button nzType="primary" (click)="openTemplate()">Use Template</button>&nbsp;
+    <button nz-button nzType="primary" (click)="openTemplate()">Use Template</button>
+    &nbsp;
     <button nz-button nzType="primary" (click)="openComponent()">Use Component</button>
   `
 })

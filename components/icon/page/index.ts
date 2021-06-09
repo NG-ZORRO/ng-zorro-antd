@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { manifest, ThemeType } from '@ant-design/icons-angular';
@@ -247,7 +252,9 @@ const newIconNames: string[] = [
         <label nz-radio-button nzValue="fill">
           <i nz-icon>
             <svg>
-              <path d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"></path>
+              <path
+                d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
+              ></path>
             </svg>
           </i>
           Filled
@@ -264,7 +271,12 @@ const newIconNames: string[] = [
         </label>
       </nz-radio-group>
       <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input nz-input [placeholder]="localeObj.search" [(ngModel)]="searchingString" (ngModelChange)="onSearchChange()" />
+        <input
+          nz-input
+          [placeholder]="localeObj.search"
+          [(ngModel)]="searchingString"
+          (ngModelChange)="onSearchChange()"
+        />
       </nz-input-group>
       <ng-template #suffixIconSearch>
         <i nz-icon nzType="search"></i>
@@ -319,13 +331,9 @@ export class NzPageDemoIconComponent implements OnInit {
   localeObj: { [key: string]: string } = locale;
   searchingString = '';
 
-  trackByFn = (_index: number, item: string) => {
-    return `${item}-${this.currentTheme}`;
-  };
+  trackByFn = (_index: number, item: string) => `${item}-${this.currentTheme}`;
 
-  isNewIcon = (name: string) => {
-    return newIconNames.indexOf(name) > -1;
-  };
+  isNewIcon = (name: string) => newIconNames.indexOf(name) > -1;
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
@@ -340,9 +348,9 @@ export class NzPageDemoIconComponent implements OnInit {
 
   private _copy(value: string): Promise<string> {
     const promise = new Promise<string>((resolve): void => {
-      let copyTextArea = (null as any) as HTMLTextAreaElement; // tslint:disable-line:no-any
+      let copyTextArea: HTMLTextAreaElement | null = null;
       try {
-        copyTextArea = this.dom.createElement('textarea');
+        copyTextArea = this.dom.createElement('textarea') as HTMLTextAreaElement;
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
@@ -364,17 +372,19 @@ export class NzPageDemoIconComponent implements OnInit {
   prepareIcons(): void {
     const theme = this.currentTheme;
     // @ts-ignore
-    const currentThemeIcons = (manifest[theme] as string[]).filter((name: string) => !['interation', 'canlendar'].includes(name));
+    const currentThemeIcons = (manifest[theme] as string[]).filter(
+      (name: string) => !['interation', 'canlendar'].includes(name)
+    );
     let notEmptyCategories = Object.keys(categories).map(category => ({
       name: category,
       // @ts-ignore
-      icons: categories[category].filter((name: string) => currentThemeIcons.indexOf(name) > -1 && name.includes(this.searchingString))
+      icons: categories[category].filter(
+        (name: string) => currentThemeIcons.indexOf(name) > -1 && name.includes(this.searchingString)
+      )
     }));
 
     const otherIcons = currentThemeIcons
-      .filter(icon => {
-        return notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon));
-      })
+      .filter(icon => notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon)))
       .filter(name => name.includes(this.searchingString));
 
     notEmptyCategories.push({ name: 'other', icons: otherIcons });
@@ -393,7 +403,7 @@ export class NzPageDemoIconComponent implements OnInit {
     this.prepareIcons();
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(@Inject(DOCUMENT) private dom: any, private _iconService: NzIconService) {
     // This is to test that tree shake works!
     this._iconService.addIcon(AccountBookFill);

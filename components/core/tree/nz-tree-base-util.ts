@@ -28,11 +28,15 @@ export function getKey(key: NzTreeNodeKey, pos: string): NzTreeNodeKey {
 
 /**
  * Flat nest tree data into flatten list. This is used for virtual list render.
+ *
  * @param treeNodeList Origin data node list
  * @param expandedKeys
  * need expanded keys, provides `true` means all expanded (used in `rc-tree-select`).
  */
-export function flattenTreeData(treeNodeList: NzTreeNode[] = [], expandedKeys: NzTreeNodeKey[] | true = []): FlattenNode[] {
+export function flattenTreeData(
+  treeNodeList: NzTreeNode[] = [],
+  expandedKeys: NzTreeNodeKey[] | true = []
+): FlattenNode[] {
   const expandedKeySet = new Set(expandedKeys === true ? [] : expandedKeys);
   const flattenList: FlattenNode[] = [];
 

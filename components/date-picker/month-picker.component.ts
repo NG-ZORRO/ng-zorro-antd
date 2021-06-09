@@ -10,7 +10,7 @@ import { NzDatePickerComponent } from './date-picker.component';
   selector: 'nz-month-picker',
   exportAs: 'nzMonthPicker'
 })
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzMonthPickerComponent {
   constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
     this.datePicker.nzMode = 'month';

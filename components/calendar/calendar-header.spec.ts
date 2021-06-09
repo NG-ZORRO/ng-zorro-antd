@@ -221,9 +221,7 @@ class NzTestCalendarHeaderActiveDateComponent {
 }
 
 @Component({
-  template: `
-    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header>
-  `
+  template: ` <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header> `
 })
 class NzTestCalendarHeaderChangesComponent {
   year: number | null = null;

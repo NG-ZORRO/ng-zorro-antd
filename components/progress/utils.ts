@@ -27,9 +27,10 @@ export const sortGradient = (gradients: NzProgressGradientProgress) => {
   return tempArr;
 };
 
-export const handleCircleGradient = (strokeColor: NzProgressGradientProgress): Array<{ offset: string; color: string }> => {
-  return sortGradient(strokeColor).map(({ key, value }) => ({ offset: `${key}%`, color: value }));
-};
+export const handleCircleGradient = (
+  strokeColor: NzProgressGradientProgress
+): Array<{ offset: string; color: string }> =>
+  sortGradient(strokeColor).map(({ key, value }) => ({ offset: `${key}%`, color: value }));
 
 export const handleLinearGradient = (strokeColor: NzProgressColorGradient) => {
   const { from = '#1890ff', to = '#1890ff', direction = 'to right', ...rest } = strokeColor;

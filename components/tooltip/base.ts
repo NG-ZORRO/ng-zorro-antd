@@ -4,7 +4,12 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -175,15 +180,20 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     this.component = componentRef.instance as NzTooltipBaseComponent;
 
     // Remove the component's DOM because it should be in the overlay container.
-    this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), componentRef.location.nativeElement);
+    this.renderer.removeChild(
+      this.renderer.parentNode(this.elementRef.nativeElement),
+      componentRef.location.nativeElement
+    );
     this.component.setOverlayOrigin({ elementRef: this.origin || this.elementRef });
 
     this.initProperties();
 
-    this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
-      this.internalVisible = visible;
-      this.visibleChange.emit(visible);
-    });
+    this.component.nzVisibleChange
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((visible: boolean) => {
+        this.internalVisible = visible;
+        this.visibleChange.emit(visible);
+      });
   }
 
   protected registerTriggers(): void {
@@ -254,12 +264,14 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       ...this.getProxyPropertyMap()
     };
 
-    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach((property: NzSafeAny) => {
-      if (mappingProperties[property]) {
-        const [name, valueFn] = mappingProperties[property];
-        this.updateComponentValue(name, valueFn());
+    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach(
+      (property: NzSafeAny) => {
+        if (mappingProperties[property]) {
+          const [name, valueFn] = mappingProperties[property];
+          this.updateComponentValue(name, valueFn());
+        }
       }
-    });
+    );
 
     this.component?.updateByDirective();
   }
@@ -304,7 +316,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 }
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
 

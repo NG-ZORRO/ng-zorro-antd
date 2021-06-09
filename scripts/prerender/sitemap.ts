@@ -1,10 +1,15 @@
-import { readFileSync, writeFileSync } from 'fs-extra';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import * as os from 'os';
 import { resolve } from 'path';
+import { readFileSync, writeFileSync } from 'fs-extra';
 import * as sitemap from 'sitemap';
 import { buildConfig } from '../build-config';
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const priorityMap: any = {
   '/docs/introduce/en': 1,
   '/docs/getting-started/en': 0.8,
@@ -23,7 +28,8 @@ function generateUrls(lang: 'zh' | 'en'): sitemap.ISitemapItemOptionsLoose[] {
       url,
       changefreq: sitemap.EnumChangefreq.HOURLY,
       priority: priorityMap[url] || 0.6,
-      lastmodrealtime: true, lastmodISO: new Date().toISOString(),
+      lastmodrealtime: true,
+      lastmodISO: new Date().toISOString(),
       links: [
         { lang: 'en', url: `${r}/en` },
         { lang: 'zh', url: `${r}/zh` },
@@ -38,7 +44,13 @@ export function generateSitemap(): void {
     hostname: 'https://ng.ant.design',
     cacheTime: 600000,
     urls: [
-      { url: '/', changefreq: sitemap.EnumChangefreq.HOURLY, priority: 1, lastmodrealtime: true, lastmodISO: new Date().toISOString() },
+      {
+        url: '/',
+        changefreq: sitemap.EnumChangefreq.HOURLY,
+        priority: 1,
+        lastmodrealtime: true,
+        lastmodISO: new Date().toISOString()
+      },
       ...generateUrls('en'),
       ...generateUrls('zh')
     ]

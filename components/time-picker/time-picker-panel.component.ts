@@ -184,7 +184,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input()
   set nzDisabledHours(value: undefined | (() => number[])) {
     this._disabledHours = value;
-    if (!!this._disabledHours) {
+    if (this._disabledHours) {
       this.buildHours();
     }
   }
@@ -308,12 +308,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       }
       startIndex = 1;
     }
-    this.hourRange = makeRange(hourRanges, this.nzHourStep, startIndex).map(r => {
-      return {
-        index: r,
-        disabled: !!disabledHours && disabledHours.indexOf(r) !== -1
-      };
-    });
+    this.hourRange = makeRange(hourRanges, this.nzHourStep, startIndex).map(r => ({
+      index: r,
+      disabled: !!disabledHours && disabledHours.indexOf(r) !== -1
+    }));
     if (this.nzUse12Hours && this.hourRange[this.hourRange.length - 1].index === 12) {
       const temp = [...this.hourRange];
       temp.unshift(temp[temp.length - 1]);
@@ -323,21 +321,18 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   buildMinutes(): void {
-    this.minuteRange = makeRange(60, this.nzMinuteStep).map(r => {
-      return {
-        index: r,
-        disabled: !!this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!).indexOf(r) !== -1
-      };
-    });
+    this.minuteRange = makeRange(60, this.nzMinuteStep).map(r => ({
+      index: r,
+      disabled: !!this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!).indexOf(r) !== -1
+    }));
   }
 
   buildSeconds(): void {
-    this.secondRange = makeRange(60, this.nzSecondStep).map(r => {
-      return {
-        index: r,
-        disabled: !!this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
-      };
-    });
+    this.secondRange = makeRange(60, this.nzSecondStep).map(r => ({
+      index: r,
+      disabled:
+        !!this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
+    }));
   }
 
   build12Hours(): void {
@@ -380,7 +375,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectHour(hour: { index: number; disabled: boolean }): void {
     this.time.setHours(hour.index, hour.disabled);
-    if (!!this._disabledMinutes) {
+    if (this._disabledMinutes) {
       this.buildMinutes();
     }
     if (this._disabledSeconds || this._disabledMinutes) {
@@ -390,7 +385,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectMinute(minute: { index: number; disabled: boolean }): void {
     this.time.setMinutes(minute.index, minute.disabled);
-    if (!!this._disabledSeconds) {
+    if (this._disabledSeconds) {
       this.buildSeconds();
     }
   }
@@ -401,13 +396,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   select12Hours(value: { index: number; value: string }): void {
     this.time.setSelected12Hours(value.value);
-    if (!!this._disabledHours) {
+    if (this._disabledHours) {
       this.buildHours();
     }
-    if (!!this._disabledMinutes) {
+    if (this._disabledMinutes) {
       this.buildMinutes();
     }
-    if (!!this._disabledSeconds) {
+    if (this._disabledSeconds) {
       this.buildSeconds();
     }
   }
@@ -425,7 +420,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     if (unit === 'hour') {
       return this.calcIndex(this.nzDisabledHours?.(), this.hourRange.map(item => item.index).indexOf(index));
     } else if (unit === 'minute') {
-      return this.calcIndex(this.nzDisabledMinutes?.(this.time.hours!), this.minuteRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(
+        this.nzDisabledMinutes?.(this.time.hours!),
+        this.minuteRange.map(item => item.index).indexOf(index)
+      );
     } else if (unit === 'second') {
       // second
       return this.calcIndex(
@@ -457,12 +455,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   calcIndex(array: number[] | undefined, index: number): number {
     if (array?.length && this.nzHideDisabledOptions) {
-      return (
-        index -
-        array.reduce((pre, value) => {
-          return pre + (value < index ? 1 : 0);
-        }, 0)
-      );
+      return index - array.reduce((pre, value) => pre + (value < index ? 1 : 0), 0);
     } else {
       return index;
     }
@@ -576,6 +569,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   /**
    * Prevent input losing focus when click panel
+   *
    * @param event
    */
   onMousedown(event: MouseEvent): void {

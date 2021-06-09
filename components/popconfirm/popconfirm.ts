@@ -66,14 +66,13 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopconfirmVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
-  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(
-    NzPopconfirmComponent
-  );
+  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> =
+    this.resolver.resolveComponentFactory(NzPopconfirmComponent);
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {

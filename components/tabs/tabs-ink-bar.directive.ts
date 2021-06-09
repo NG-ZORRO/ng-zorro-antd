@@ -53,18 +53,18 @@ export class NzTabsInkBarDirective {
   }
 
   getLeftPosition(element: HTMLElement): string {
-    return element ? (element.offsetLeft || 0) + 'px' : '0';
+    return element ? `${element.offsetLeft || 0}px` : '0';
   }
 
   getElementWidth(element: HTMLElement): string {
-    return element ? (element.offsetWidth || 0) + 'px' : '0';
+    return element ? `${element.offsetWidth || 0}px` : '0';
   }
 
   getTopPosition(element: HTMLElement): string {
-    return element ? (element.offsetTop || 0) + 'px' : '0';
+    return element ? `${element.offsetTop || 0}px` : '0';
   }
 
   getElementHeight(element: HTMLElement): string {
-    return element ? (element.offsetHeight || 0) + 'px' : '0';
+    return element ? `${element.offsetHeight || 0}px` : '0';
   }
 }

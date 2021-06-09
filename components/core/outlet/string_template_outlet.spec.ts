@@ -65,8 +65,14 @@ describe('string template outlet', () => {
     it('should work when context shape change', () => {
       const testBed = createComponentBed(StringTemplateOutletTestComponent, { imports: [NzOutletModule] });
       testBed.component.stringTemplateOutlet = testBed.component.dataTimeTpl;
-      const spyOnUpdateContext = spyOn(testBed.component.nzStringTemplateOutletDirective as NzSafeAny, 'updateContext').and.callThrough();
-      const spyOnRecreateView = spyOn(testBed.component.nzStringTemplateOutletDirective as NzSafeAny, 'recreateView').and.callThrough();
+      const spyOnUpdateContext = spyOn(
+        testBed.component.nzStringTemplateOutletDirective as NzSafeAny,
+        'updateContext'
+      ).and.callThrough();
+      const spyOnRecreateView = spyOn(
+        testBed.component.nzStringTemplateOutletDirective as NzSafeAny,
+        'recreateView'
+      ).and.callThrough();
       testBed.fixture.detectChanges();
       expect(testBed.nativeElement.innerText).toBe('TargetText The data is , The time is');
       testBed.component.context = { $implicit: 'data', time: 'time' };
@@ -80,8 +86,14 @@ describe('string template outlet', () => {
     it('should work when context implicit change', () => {
       const testBed = createComponentBed(StringTemplateOutletTestComponent, { imports: [NzOutletModule] });
       testBed.component.stringTemplateOutlet = testBed.component.stringTpl;
-      const spyOnUpdateContext = spyOn(testBed.component.nzStringTemplateOutletDirective as NzSafeAny, 'updateContext').and.callThrough();
-      const spyOnRecreateView = spyOn(testBed.component.nzStringTemplateOutletDirective as NzSafeAny, 'recreateView').and.callThrough();
+      const spyOnUpdateContext = spyOn(
+        testBed.component.nzStringTemplateOutletDirective as NzSafeAny,
+        'updateContext'
+      ).and.callThrough();
+      const spyOnRecreateView = spyOn(
+        testBed.component.nzStringTemplateOutletDirective as NzSafeAny,
+        'recreateView'
+      ).and.callThrough();
       testBed.fixture.detectChanges();
       expect(testBed.nativeElement.innerText).toBe('TargetText The data is');
       testBed.component.context = { $implicit: 'data' };
@@ -96,9 +108,9 @@ describe('string template outlet', () => {
 @Component({
   template: `
     TargetText
-    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet; context: context; let stringTemplateOutlet">{{
-      stringTemplateOutlet
-    }}</ng-container>
+    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet; context: context; let stringTemplateOutlet">
+      {{ stringTemplateOutlet }}
+    </ng-container>
     <ng-template #stringTpl let-data>The data is {{ data }}</ng-template>
     <ng-template #emptyTpl>Empty Template</ng-template>
     <ng-template #dataTimeTpl let-data let-time="time">The data is {{ data }}, The time is {{ time }}</ng-template>

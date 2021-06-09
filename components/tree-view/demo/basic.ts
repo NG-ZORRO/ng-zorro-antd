@@ -65,14 +65,12 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewBasicComponent {
-  private transformer = (node: TreeNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-      disabled: !!node.disabled
-    };
-  };
+  private transformer = (node: TreeNode, level: number) => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level,
+    disabled: !!node.disabled
+  });
   selectListSelection = new SelectionModel<FlatNode>(true);
 
   treeControl = new FlatTreeControl<FlatNode>(

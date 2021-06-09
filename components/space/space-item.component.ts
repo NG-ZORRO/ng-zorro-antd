@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from '@angular/core';
 
 import { NzSpaceDirection } from './types';
 
@@ -14,14 +14,12 @@ import { NzSpaceDirection } from './types';
 @Component({
   selector: 'nz-space-item, [nz-space-item]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-space-item'
   }
 })
-export class NzSpaceItemLegacyComponent implements OnInit {
+export class NzSpaceItemLegacyComponent {
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
   setDirectionAndSize(direction: NzSpaceDirection, size: number): void {
@@ -33,6 +31,4 @@ export class NzSpaceItemLegacyComponent implements OnInit {
       this.renderer.setStyle(this.elementRef.nativeElement, 'margin-bottom', `${size}px`);
     }
   }
-
-  ngOnInit(): void {}
 }

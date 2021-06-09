@@ -31,9 +31,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   exportAs: 'nzCollapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,

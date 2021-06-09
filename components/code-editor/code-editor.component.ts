@@ -261,9 +261,11 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   }
 
   private setValueEmitter(): void {
-    const model = (this.nzEditorMode === 'normal'
-      ? (this.editorInstance as IStandaloneCodeEditor).getModel()
-      : (this.editorInstance as IStandaloneDiffEditor).getModel()!.modified) as ITextModel;
+    const model = (
+      this.nzEditorMode === 'normal'
+        ? (this.editorInstance as IStandaloneCodeEditor).getModel()
+        : (this.editorInstance as IStandaloneDiffEditor).getModel()!.modified
+    ) as ITextModel;
 
     model.onDidChangeContent(() => {
       this.ngZone.run(() => {

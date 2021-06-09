@@ -87,7 +87,10 @@ describe('button', () => {
   });
   describe('loading icon', () => {
     it('should hide icon when loading correct', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonBindingComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonBindingComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
@@ -108,7 +111,10 @@ describe('button', () => {
   });
   describe('insert span', () => {
     it('should insert span correctly', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonWithIconComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonWithIconComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
       expect(buttonElement.firstElementChild.tagName).toBe('SPAN');
@@ -119,7 +125,10 @@ describe('button', () => {
   });
   describe('icon only', () => {
     it('should icon only works correctly', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonIconOnlyComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonIconOnlyComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
@@ -139,7 +148,10 @@ describe('button', () => {
     let testBed: ComponentBed<TestButtonRtlComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonRtlComponent, { declarations: [NzButtonComponent], imports: [BidiModule] });
+      testBed = createComponentBed(TestButtonRtlComponent, {
+        declarations: [NzButtonComponent],
+        imports: [BidiModule]
+      });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 

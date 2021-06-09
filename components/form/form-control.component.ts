@@ -58,7 +58,9 @@ const iconTypeMap = {
     </div>
     <div [ngClass]="['ant-form-item-explain', 'ant-form-item-explain-' + status]" *ngIf="innerTip">
       <div @helpMotion>
-        <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{ innerTip }}</ng-container>
+        <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
+          innerTip
+        }}</ng-container>
       </div>
     </div>
     <div class="ant-form-item-extra" *ngIf="nzExtra">
@@ -80,7 +82,9 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private autoErrorTip?: string;
 
   private get disableAutoTips(): boolean {
-    return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.nzFormDirective?.nzDisableAutoTips;
+    return this.nzDisableAutoTips !== 'default'
+      ? toBoolean(this.nzDisableAutoTips)
+      : this.nzFormDirective?.nzDisableAutoTips;
   }
 
   status: NzFormControlStatusType = null;
@@ -130,13 +134,15 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     this.validateChanges.unsubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null), takeUntil(this.destroyed$)).subscribe(_ => {
-        if (!this.disableAutoTips) {
-          this.updateAutoErrorTip();
-        }
-        this.setStatus();
-        this.cdr.markForCheck();
-      });
+      this.validateChanges = this.validateControl.statusChanges
+        .pipe(startWith(null), takeUntil(this.destroyed$))
+        .subscribe(_ => {
+          if (!this.disableAutoTips) {
+            this.updateAutoErrorTip();
+          }
+          this.setStatus();
+          this.cdr.markForCheck();
+        });
     }
   }
 
@@ -157,7 +163,11 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
       status = 'warning';
     } else if (validateString === 'error' || this.validateControlStatus('INVALID')) {
       status = 'error';
-    } else if (validateString === 'validating' || validateString === 'pending' || this.validateControlStatus('PENDING')) {
+    } else if (
+      validateString === 'validating' ||
+      validateString === 'pending' ||
+      this.validateControlStatus('PENDING')
+    ) {
       status = 'validating';
     } else if (validateString === 'success' || this.validateControlStatus('VALID')) {
       status = 'success';
@@ -173,11 +183,15 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
       return false;
     } else {
       const { dirty, touched, status } = this.validateControl;
-      return (!!dirty || !!touched) && (statusType ? this.validateControl.hasError(statusType) : status === validStatus);
+      return (
+        (!!dirty || !!touched) && (statusType ? this.validateControl.hasError(statusType) : status === validStatus)
+      );
     }
   }
 
-  private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null {
+  private getInnerTip(
+    status: NzFormControlStatusType
+  ): string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null {
     switch (status) {
       case 'error':
         return (!this.disableAutoTips && this.autoErrorTip) || this.nzErrorTip || null;
@@ -236,7 +250,9 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
     this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
     this.subscribeAutoTips(
-      this.nzFormDirective?.getInputObservable('nzDisableAutoTips').pipe(filter(() => this.nzDisableAutoTips === 'default'))
+      this.nzFormDirective
+        ?.getInputObservable('nzDisableAutoTips')
+        .pipe(filter(() => this.nzDisableAutoTips === 'default'))
     );
   }
 

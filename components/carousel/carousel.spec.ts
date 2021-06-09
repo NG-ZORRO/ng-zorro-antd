@@ -70,7 +70,9 @@ describe('carousel', () => {
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').children.length).toBe(4);
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.innerText).toBe('1');
       expect(carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.innerText).toBe('4');
-      expect(carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName).toBe('A');
+      expect(
+        carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName
+      ).toBe('A');
     });
 
     it('should click content change', () => {
@@ -110,7 +112,9 @@ describe('carousel', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe(
+        'translate3d(0px, 0px, 0px)'
+      );
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       tickMilliseconds(fixture, 700);
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('');
@@ -128,7 +132,9 @@ describe('carousel', () => {
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       tickMilliseconds(fixture, 700);
-      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe('translate3d(0px, 0px, 0px)');
+      expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
+        'translate3d(0px, 0px, 0px)'
+      );
     }));
 
     it('should autoplay work', fakeAsync(() => {
@@ -345,7 +351,7 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-carousel',
   template: `
     <nz-carousel
