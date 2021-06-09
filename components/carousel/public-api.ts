@@ -6,10 +6,10 @@
 export * from './carousel.module';
 export * from './carousel.component';
 export * from './carousel-content.directive';
+export * from './typings';
 
 export * from './strategies/base-strategy';
 export { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 export { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 export { NzCarouselTransformNoLoopStrategy } from './strategies/experimental/transform-no-loop-strategy';
-
-export * from './typings';
+export { NzCarouselFlipStrategy } from './strategies/experimental/flip-strategy';

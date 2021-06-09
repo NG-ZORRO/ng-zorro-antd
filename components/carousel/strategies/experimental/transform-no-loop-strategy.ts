@@ -36,9 +36,9 @@ export class NzCarouselTransformNoLoopStrategy extends NzCarouselBaseStrategy<Nz
   }
 
   public dispose(): void {
-    super.dispose();
-
     this.renderer.setStyle(this.slickTrackEl, 'transform', null);
+
+    super.dispose();
   }
 
   public withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
