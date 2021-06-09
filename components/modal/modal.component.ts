@@ -16,12 +16,10 @@ import {
   SimpleChanges,
   TemplateRef,
   Type,
-  ViewChild,
   ViewContainerRef
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
@@ -39,11 +37,7 @@ import { getConfigFromComponent } from './utils';
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
-  template: `
-    <ng-template>
-      <ng-content></ng-content>
-    </ng-template>
-  `,
+  template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
@@ -106,8 +100,6 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzAfterOpen = new EventEmitter<void>();
   @Output() readonly nzAfterClose = new EventEmitter<R>();
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
-  @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
 
   @ContentChild(NzModalTitleDirective, { static: true, read: TemplateRef })
   set modalTitle(value: TemplateRef<NzSafeAny>) {
@@ -230,14 +222,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   private getConfig(): ModalOptions {
     const componentConfig = getConfigFromComponent(this);
     componentConfig.nzViewContainerRef = this.viewContainerRef;
-    if (!this.nzContent && !this.contentFromContentChild) {
-      componentConfig.nzContent = this.contentTemplateRef;
-      warnDeprecation(
-        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzModalContent></ng-template>` to declare the content of the modal.'
-      );
-    } else {
-      componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
-    }
+    componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
     return componentConfig;
   }
 
