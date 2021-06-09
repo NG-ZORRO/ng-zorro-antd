@@ -348,9 +348,9 @@ export class NzPageDemoIconComponent implements OnInit {
 
   private _copy(value: string): Promise<string> {
     const promise = new Promise<string>((resolve): void => {
-      let copyTextArea = null as any as HTMLTextAreaElement; // eslint-disable-line @typescript-eslint/no-explicit-any
+      let copyTextArea: HTMLTextAreaElement | null = null;
       try {
-        copyTextArea = this.dom.createElement('textarea');
+        copyTextArea = this.dom.createElement('textarea') as HTMLTextAreaElement;
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
