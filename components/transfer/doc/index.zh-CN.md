@@ -33,7 +33,8 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzItemUnit]` | 单数单位 | `string` | `'项目'` |
 | `[nzItemsUnit]` | 复数单位 | `string` | `'项目'` |
-| `[nzRenderList]` | 自定义渲染列表，见示例 | `Array<TemplateRef<void> \| null>` | `[null, null]` |
+| `[nzVirtual]` | 启用虚拟滚动 | `boolean` | `false` |
+| `[nzRenderList]` | 自定义渲染列表，不会启用虚拟滚动, 见示例 | `Array<TemplateRef<void> \| null>` | `[null, null]` |
 | `[nzRender]` | 每行数据渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzFooter]` | 底部渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzShowSearch]` | 是否显示搜索框 | `boolean` | `false` |
@@ -42,6 +43,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzNotFoundContent]` | 当列表为空时显示的内容 | `string` | `'列表为空'` |
 | `[nzCanMove]` | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | `[nzSelectedKeys]` | 设置被选中的 key 集合 | `string[]` | - |
+| `[nzOptionOverflowSize]` | 列表中最多展示的 Option 个数，超出部分滚动 | `number` | `5` |
 | `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |

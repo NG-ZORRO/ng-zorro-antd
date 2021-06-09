@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -41,6 +40,7 @@ import {
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzScrollingComponent } from 'ng-zorro-antd/scrolling';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzTreeService } from './tree.service';
@@ -61,20 +61,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     </div>
     <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode">
       <div>
-        <cdk-virtual-scroll-viewport
+        <nz-scrolling
           *ngIf="nzVirtualHeight"
-          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-          [class.ant-tree-list-holder-inner]="!nzSelectMode"
-          [itemSize]="nzVirtualItemSize"
-          [minBufferPx]="nzVirtualMinBufferPx"
-          [maxBufferPx]="nzVirtualMaxBufferPx"
-          [style.height]="nzVirtualHeight"
-        >
-          <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-            <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-          </ng-container>
-        </cdk-virtual-scroll-viewport>
-
+          nzVirtual
+          [nzViewportClass]="{ 'ant-select-tree-list-holder-inner': nzSelectMode, 'ant-tree-list-holder-inner': !nzSelectMode }"
+          [nzViewportStyle]="{ height: nzVirtualHeight }"
+          [nzData]="nzFlattenNodes"
+          [nzItemTemplate]="nodeTemplate"
+          [nzTrackBy]="trackByFlattenNode"
+          (nzAutoSizeChange)="itemSize = $event"
+        ></nz-scrolling>
         <div
           *ngIf="!nzVirtualHeight"
           [class.ant-select-tree-list-holder-inner]="nzSelectMode"
@@ -190,7 +186,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzDraggable: boolean = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
@@ -203,9 +198,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzSearchValue: string = '';
   @Input() nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
   @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
+  @ViewChild(NzScrollingComponent, { read: NzScrollingComponent }) scrollingComponent!: NzScrollingComponent<NzTreeNode>;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
+  itemSize = 28;
   dir: Direction = 'ltr';
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();

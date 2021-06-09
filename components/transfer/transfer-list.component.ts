@@ -12,8 +12,11 @@ import {
   Input,
   Output,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzScrollingComponent } from 'ng-zorro-antd/scrolling';
 
 import { TransferDirection, TransferItem } from './interface';
 
@@ -24,23 +27,32 @@ import { TransferDirection, TransferItem } from './interface';
   template: `
     <ng-template #defaultRenderList>
       <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
-        <li
-          *ngFor="let item of validData"
-          (click)="onItemSelect(item)"
-          class="ant-transfer-list-content-item"
-          [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
-        >
-          <label
-            nz-checkbox
-            [nzChecked]="item.checked"
-            (nzCheckedChange)="onItemSelect(item)"
-            (click)="$event.stopPropagation()"
-            [nzDisabled]="disabled || item.disabled"
+        <nz-scrolling
+          [nzVirtual]="virtual"
+          [nzData]="validData"
+          [nzViewportStyle]="{ height: validData.length * itemSize + 'px', 'max-height': itemSize * maxItemLength + 'px' }"
+          [nzItemTemplate]="itemTpl"
+          [nzTrackBy]="trackValue"
+          (nzAutoSizeChange)="itemSize = $event"
+        ></nz-scrolling>
+        <ng-template #itemTpl let-item>
+          <li
+            (click)="onItemSelect(item)"
+            class="ant-transfer-list-content-item"
+            [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
           >
-            <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
-          </label>
-        </li>
+            <label
+              nz-checkbox
+              [nzChecked]="item.checked"
+              (nzCheckedChange)="onItemSelect(item)"
+              (click)="$event.stopPropagation()"
+              [nzDisabled]="disabled || item.disabled"
+            >
+              <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
+              <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+            </label>
+          </li>
+        </ng-template>
       </ul>
       <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
         <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
@@ -110,9 +122,11 @@ export class NzTransferListComponent {
   @Input() direction: TransferDirection = 'left';
   @Input() titleText = '';
   @Input() showSelectAll = true;
+  @Input() virtual = false;
 
   @Input() dataSource: TransferItem[] = [];
 
+  @Input() maxItemLength = 5;
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
@@ -131,6 +145,9 @@ export class NzTransferListComponent {
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
+  @ViewChild(NzScrollingComponent, { static: false }) scrollingComponent?: NzScrollingComponent<TransferItem>;
+  itemSize: number = 32;
+
   stat = {
     checkAll: false,
     checkHalf: false,
@@ -140,6 +157,10 @@ export class NzTransferListComponent {
 
   get validData(): TransferItem[] {
     return this.dataSource.filter(w => !w.hide);
+  }
+
+  trackValue(_index: number, option: TransferItem): NzSafeAny {
+    return option.key;
   }
 
   onItemSelect = (item: TransferItem) => {

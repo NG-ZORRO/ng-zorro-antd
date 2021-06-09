@@ -1,0 +1,22 @@
+nz-scrolling .ant-scroll-viewport {
+  display: block;
+  position: relative;
+  overflow: auto;
+  contain: strict;
+  transform: translateZ(0);
+  will-change: scroll-position;
+
+  &.is-hidden {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.cdk-overlay-pane.ant-scroll-overlay-panel {
+  box-sizing: border-box;
+  display: block;
+  z-index: -9999;
+  opacity: 0;
+}

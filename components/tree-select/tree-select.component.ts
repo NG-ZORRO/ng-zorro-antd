@@ -110,7 +110,6 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
           [nzSelectedKeys]="!nzCheckable ? value : []"
           [nzTreeTemplate]="treeTemplate"
           [nzCheckStrictly]="nzCheckStrictly"
-          [nzVirtualItemSize]="nzVirtualItemSize"
           [nzVirtualMaxBufferPx]="nzVirtualMaxBufferPx"
           [nzVirtualMinBufferPx]="nzVirtualMinBufferPx"
           [nzVirtualHeight]="nzVirtualHeight"
@@ -237,7 +236,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;

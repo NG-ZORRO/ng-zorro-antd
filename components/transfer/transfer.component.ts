@@ -39,9 +39,11 @@ import { NzTransferListComponent } from './transfer-list.component';
   template: `
     <nz-transfer-list
       class="ant-transfer-list"
+      [class.is-default]="!(nzRenderList && nzRenderList[0])"
       [ngStyle]="nzListStyle"
       data-direction="left"
       direction="left"
+      [virtual]="nzVirtual"
       [titleText]="nzTitles[0]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="leftDataSource"
@@ -57,6 +59,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemUnit]="nzItemUnit || locale?.itemUnit"
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
+      [maxItemLength]="nzOptionOverflowSize"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
@@ -82,9 +85,11 @@ import { NzTransferListComponent } from './transfer-list.component';
     </div>
     <nz-transfer-list
       class="ant-transfer-list"
+      [class.is-default]="!(nzRenderList && nzRenderList[0])"
       [ngStyle]="nzListStyle"
       data-direction="right"
       direction="right"
+      [virtual]="nzVirtual"
       [titleText]="nzTitles[1]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="rightDataSource"
@@ -100,6 +105,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemUnit]="nzItemUnit || locale?.itemUnit"
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
+      [maxItemLength]="nzOptionOverflowSize"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
     ></nz-transfer-list>
@@ -116,6 +122,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowSelectAll: BooleanInput;
   static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzVirtual: BooleanInput;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -129,6 +136,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   // #region fields
 
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzVirtual = false;
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
@@ -136,6 +144,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowSelectAll = true;
   @Input() nzItemUnit?: string;
   @Input() nzItemsUnit?: string;
+  @Input() nzOptionOverflowSize = 5;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
   @Input() nzRender: TemplateRef<NzSafeAny> | null = null;

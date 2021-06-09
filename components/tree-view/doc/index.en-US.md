@@ -27,9 +27,7 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 ### nz-tree-virtual-scroll-view
 
-The virtual scroll tree view, which can be accessed from
-the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) instance through
-the `virtualScrollViewport` member of the component instance.
+The [NzScrollingComponent](https://ng.ant.design/components/scrolling/en) instance tcan be accessed from the `scrollingComponent` member of the component instance.
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -37,9 +35,6 @@ the `virtualScrollViewport` member of the component instance.
 | [nzDataSource] | The data array to render | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | - |
 | [nzDirectoryTree] | Whether nodes are displayed as directory style | `boolean` | `false` |
 | [nzBlockNode] | Whether tree nodes fill remaining horizontal space| `boolean` | `false` |
-| [nzItemSize] | The size of nodes in the tree (in pixels) | `number` | `28` |
-| [nzMinBufferPx] | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number` | `28 * 5` |
-| [nzMaxBufferPx] |  The amount of buffer required for rendering new nodes (in pixels) | `number` | `28 * 10` |
 
 ### [nzTreeNodeDef]
 
