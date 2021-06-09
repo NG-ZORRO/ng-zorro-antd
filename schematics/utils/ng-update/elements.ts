@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { parseFragment, DefaultTreeDocument, DefaultTreeElement } from 'parse5';
+import { DefaultTreeDocument, DefaultTreeElement, parseFragment } from 'parse5';
 
 const hasClassName = (node: DefaultTreeElement, className: string) => {
   return node.attrs?.find?.(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
