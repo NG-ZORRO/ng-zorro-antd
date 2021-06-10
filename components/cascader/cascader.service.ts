@@ -335,7 +335,6 @@ export class NzCascaderService implements OnDestroy {
     this.selectedOptions = [];
     this.activatedOptions = [];
     this.dropBehindColumns(0);
-    this.prepareEmitValue();
     this.$redraw.next();
     this.$optionSelected.next(null);
   }
