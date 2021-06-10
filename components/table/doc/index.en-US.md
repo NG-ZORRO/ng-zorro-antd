@@ -64,7 +64,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
-| `[nzData]` | Data record array to be rendered | `any[]` | - |
+| `[nzData]` | Data record array to be rendered | `T[]` | - |
 | `[nzFrontPagination]` | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean` | `true` |
 | `[nzTotal]` | Total data count. Should set when `nzServerRender` is `true` | `number` | - |
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
@@ -97,7 +97,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzVirtualForTrackBy]` | The TrackByFunction to be used for tracking changes. | `TrackByFunction<T>` | - |
 | `(nzPageIndexChange)` | Callback when `pageIndex` changes | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | Callback when `pageSize` changes | `EventEmitter<number>` | - |
-| `(nzCurrentPageDataChange)` | Callback when current pageData changes | `EventEmitter<any[]>` | - |
+| `(nzCurrentPageDataChange)` | Callback when current pageData changes | `EventEmitter<T[]>` | - |
 | `(nzQueryParams)` | Callback with params when working with server side pagination, sorting and filtering | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
@@ -123,7 +123,7 @@ Sort property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzSortFn]` | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting  | `((a: any, b: any, sortOrder?: string) => number)` | - |
+| `[nzSortFn]` | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting  | `NzTableSortFn<T> \| boolean` | - |
 | `[nzSortOrder]` | Sort direction | `'ascend' \| 'descend' \| null` | - |
 | `[nzSortDirections]` | Supported sort order, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
 | `(nzSortOrderChange)` | Callback when sort direction changes | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
@@ -134,7 +134,7 @@ Filter property
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzShowFilter]` | Whether to show filter | `boolean` | - |
-| `[nzFilterFn]` | 	Filter function used to filter the data on client side. Set to `true` when using server side filtering | `((value: any, data: any) => boolean;)` | - |
+| `[nzFilterFn]` | 	Filter function used to filter the data on client side. Set to `true` when using server side filtering | `NzTableFilterFn<T> \| boolean` | - |
 | `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | Whether multiple mode filtering is enabled | `boolean` | `true` |
 | `(nzFilterChange)` | Callback when filter `value` changes | `EventEmitter<any[] \| any>` | - |
@@ -219,7 +219,7 @@ Customized filter panel
 
 ### [nz-virtual-scroll]
 
-virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit: any, index: number }>`.
+virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit: T, index: number }>`.
 
 
 ## Note

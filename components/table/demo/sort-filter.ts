@@ -10,9 +10,9 @@ interface DataItem {
 interface ColumnItem {
   name: string;
   sortOrder: NzTableSortOrder | null;
-  sortFn: NzTableSortFn | null;
+  sortFn: NzTableSortFn<DataItem> | null;
   listOfFilter: NzTableFilterList;
-  filterFn: NzTableFilterFn | null;
+  filterFn: NzTableFilterFn<DataItem> | null;
   filterMultiple: boolean;
   sortDirections: NzTableSortOrder[];
 }

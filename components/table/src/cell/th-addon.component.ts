@@ -70,12 +70,12 @@ import {
     '(click)': 'emitNextSortValue()'
   }
 })
-export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
+export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzShowSort: BooleanInput;
   static ngAcceptInputType_nzShowFilter: BooleanInput;
   static ngAcceptInputType_nzCustomFilter: BooleanInput;
 
-  manualClickOrder$ = new Subject<NzThAddOnComponent>();
+  manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject();
   nzFilterValue: NzTableFilterValue = null;
   sortOrder: NzTableSortOrder = null;
@@ -90,8 +90,8 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzSortPriority: number | boolean = false;
   @Input() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
   @Input() nzFilters: NzTableFilterList = [];
-  @Input() nzSortFn: NzTableSortFn | boolean | null = null;
-  @Input() nzFilterFn: NzTableFilterFn | boolean | null = null;
+  @Input() nzSortFn: NzTableSortFn<T> | boolean | null = null;
+  @Input() nzFilterFn: NzTableFilterFn<T> | boolean | null = null;
   @Input() @InputBoolean() nzShowSort = false;
   @Input() @InputBoolean() nzShowFilter = false;
   @Input() @InputBoolean() nzCustomFilter = false;

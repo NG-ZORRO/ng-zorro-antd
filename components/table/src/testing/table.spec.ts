@@ -291,6 +291,15 @@ describe('nz-table', () => {
   });
 });
 
+interface BasicTestDataItem {
+  name?: string;
+  age?: string;
+  address?: string;
+  description?: string;
+  checked?: boolean;
+  expand?: boolean;
+}
+
 @Component({
   template: `
     <nz-table
@@ -340,19 +349,12 @@ describe('nz-table', () => {
   `
 })
 export class NzTestTableBasicComponent implements OnInit {
-  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent;
+  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<BasicTestDataItem>;
   pageIndex = 1;
   pageIndexChange = jasmine.createSpy('pageIndex callback');
   pageSize = 10;
   pageSizeChange = jasmine.createSpy('pageSize callback');
-  dataSet: Array<{
-    name?: string;
-    age?: string;
-    address?: string;
-    description?: string;
-    checked?: boolean;
-    expand?: boolean;
-  }> = [];
+  dataSet: BasicTestDataItem[] = [];
   noResult = '';
   showSizeChanger = false;
   showQuickJumper = false;
@@ -381,6 +383,12 @@ export class NzTestTableBasicComponent implements OnInit {
       });
     }
   }
+}
+
+interface ScrollTestDataItem {
+  name: string;
+  age: number;
+  address: string;
 }
 
 @Component({
@@ -426,8 +434,8 @@ export class NzTestTableBasicComponent implements OnInit {
   styleUrls: ['../../../style/entry.less']
 })
 export class NzTestTableScrollComponent implements OnInit {
-  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent;
-  dataSet: Array<{ name: string; age: number; address: string }> = [];
+  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<ScrollTestDataItem>;
+  dataSet: ScrollTestDataItem[] = [];
   width = 300;
 
   ngOnInit(): void {
@@ -484,6 +492,15 @@ export class NzTableSpecCrashComponent {
   }
 }
 
+interface RtlTestDataItem {
+  name?: string;
+  age?: string;
+  address?: string;
+  description?: string;
+  checked?: boolean;
+  expand?: boolean;
+}
+
 @Component({
   template: `
     <div [dir]="direction">
@@ -517,17 +534,10 @@ export class NzTestTableRtlComponent implements OnInit {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 
-  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent;
+  @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<RtlTestDataItem>;
   pageIndex = 1;
   pageSize = 10;
-  dataSet: Array<{
-    name?: string;
-    age?: string;
-    address?: string;
-    description?: string;
-    checked?: boolean;
-    expand?: boolean;
-  }> = [];
+  dataSet: RtlTestDataItem[] = [];
   header = true;
   simple = false;
 

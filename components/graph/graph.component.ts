@@ -86,7 +86,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
+            <ng-container *ngFor="let edge of $asNzGraphEdges(renderNode.edges); trackBy: edgeTrackByFun">
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -182,6 +182,8 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
     const y = node.y - node.height / 2.0 + node.paddingTop;
     return `translate(${x}, ${y})`;
   };
+
+  $asNzGraphEdges = (data: unknown) => data as NzGraphEdge[];
 
   coreTransform = (node: NzGraphGroupNode) => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 

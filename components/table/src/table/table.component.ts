@@ -35,7 +35,6 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
-  NzTableData,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
@@ -131,7 +130,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
   }
 })
-export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzFrontPagination: BooleanInput;
@@ -155,7 +154,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzVirtualItemSize = 0;
   @Input() nzVirtualMaxBufferPx = 200;
   @Input() nzVirtualMinBufferPx = 100;
-  @Input() nzVirtualForTrackBy: TrackByFunction<NzTableData> = index => index;
+  @Input() nzVirtualForTrackBy: TrackByFunction<T> = index => index;
   @Input() nzLoadingDelay = 0;
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
@@ -180,7 +179,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly NzTableData[]>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
 
   /** public data for ngFor tr */
   public data: readonly T[] = [];
@@ -198,8 +197,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   private templateMode$ = new BehaviorSubject<boolean>(false);
   dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
-  nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
-  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
+  nzVirtualScrollDirective!: NzTableVirtualScrollDirective<T>;
+  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent<T>;
   verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
     this.nzTableDataService.updatePageSize(size);
@@ -215,7 +214,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService,
+    private nzTableDataService: NzTableDataService<T>,
     @Optional() private directionality: Directionality
   ) {
     // TODO: move to host after View Engine deprecation
