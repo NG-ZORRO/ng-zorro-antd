@@ -359,5 +359,19 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         }
       ]
     }
+  ],
+  [ TargetVersion.V12 ]: [
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/6754',
+      changes: [
+        {
+          replace    : 'nzNodeWidth',
+          replaceWith: 'nzItemSize',
+          limitedTo  : {
+            elements: ['nz-tree-virtual-scroll-view']
+          }
+        }
+      ]
+    }
   ]
 };
