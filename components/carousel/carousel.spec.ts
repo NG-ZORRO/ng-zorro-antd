@@ -192,6 +192,7 @@ describe('carousel', () => {
       expect(resizeSpy).toHaveBeenCalledTimes(1);
     }));
 
+    // this test may fail on WSL
     it('should support swiping to switch', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 500);
       tickMilliseconds(fixture, 700);
@@ -334,6 +335,14 @@ describe('carousel custom strategies', () => {
     expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe(
       'translate3d(0px, 0px, 0px)'
     );
+    carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
+      'translate3d(0px, 0px, 0px)'
+    );
+
+    testComponent.dotPosition = 'left';
+    fixture.detectChanges();
     carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
     tickMilliseconds(fixture, 700);
     expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
