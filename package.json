@@ -141,9 +141,8 @@
     "zone.js": "~0.11.4"
   },
   "lint-staged": {
-    "components/**/!(testing)/!(polyfills).{html,ts}": [
-      "eslint . --ext .ts,.html --fix",
-      "git add"
+    "(schematics|scripts|components)/**/!(tslint-rules|testing)/!(polyfills).{html,ts}":  [
+      "eslint --fix"
     ]
   }
 }

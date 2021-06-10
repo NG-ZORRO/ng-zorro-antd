@@ -7,6 +7,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { manifest, ThemeType } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconService } from 'ng-zorro-antd/icon';
 
 export interface Categories {
@@ -17,8 +18,6 @@ export interface Categories {
   edit: string[];
   other?: string[];
 }
-
-export type CategoriesKeys = keyof Categories;
 
 const categories: Categories = {
   direction: [
@@ -232,6 +231,8 @@ const newIconNames: string[] = [
   'code-sandbox',
   'code-sandbox-circle'
 ];
+
+declare const locale: NzSafeAny;
 
 @Component({
   selector: 'nz-page-demo-icon',
