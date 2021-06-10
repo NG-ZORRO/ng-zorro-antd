@@ -35,13 +35,13 @@ export class NzCarouselTransformNoLoopStrategy extends NzCarouselBaseStrategy<Nz
     super(carouselComponent, cdr, renderer, platform, options);
   }
 
-  public dispose(): void {
+  dispose(): void {
     this.renderer.setStyle(this.slickTrackEl, 'transform', null);
 
     super.dispose();
   }
 
-  public withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
+  withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
     super.withCarouselContents(contents);
 
     const carousel = this.carouselComponent!;
@@ -80,7 +80,7 @@ export class NzCarouselTransformNoLoopStrategy extends NzCarouselBaseStrategy<Nz
     }
   }
 
-  public switch(_f: number, _t: number): Observable<void> {
+  switch(_f: number, _t: number): Observable<void> {
     const to = (_t + this.length) % this.length;
     const transitionSpeed = this.carouselComponent!.nzTransitionSpeed;
     const complete$ = new Subject<void>();
