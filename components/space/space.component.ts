@@ -16,14 +16,12 @@ import {
   TemplateRef
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzSpaceItemLegacyComponent } from './space-item.component';
 import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';
 
@@ -82,11 +80,6 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   @Input() @InputBoolean() nzWrap: boolean = false;
   @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
 
-  /**
-   * @deprecated NzSpaceItemLegacyComponent will be removed on 12.0.0, use NzSpaceItemDirective instead.
-   * @breaking-change 12.0.0
-   */
-  @ContentChildren(NzSpaceItemLegacyComponent) nzSpaceItemComponents!: QueryList<NzSpaceItemLegacyComponent>;
   @ContentChildren(NzSpaceItemDirective, { read: TemplateRef }) items!: QueryList<TemplateRef<NzSafeAny>>;
 
   mergedAlign?: NzSpaceAlign;
@@ -98,12 +91,6 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;
     this.spaceSize = numberSize / (this.nzSplit ? 2 : 1);
-    if (this.nzSpaceItemComponents?.length) {
-      warnDeprecation('`nz-space-item` in `nz-space` will be removed in 12.0.0, please use `*nzSpaceItem` instead.');
-      this.nzSpaceItemComponents.forEach(item => {
-        item.setDirectionAndSize(this.nzDirection, this.spaceSize!);
-      });
-    }
     this.cdr.markForCheck();
   }
 
@@ -119,9 +106,6 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
 
   ngAfterContentInit(): void {
     this.updateSpaceItems();
-    this.nzSpaceItemComponents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.updateSpaceItems();
-    });
     this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();
     });
