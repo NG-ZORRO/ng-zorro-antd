@@ -386,9 +386,11 @@ describe('cascader', () => {
       flush();
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
+      spyOn(testComponent, 'onClear');
       cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
+      expect(testComponent.onClear).toHaveBeenCalled();
     }));
 
     it('should clear value work 2', fakeAsync(() => {
@@ -398,9 +400,11 @@ describe('cascader', () => {
       flush();
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
+      spyOn(testComponent, 'onClear');
       testComponent.cascader.clearSelection();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
+      expect(testComponent.onClear).toHaveBeenCalled();
     }));
 
     it('should autofocus work', () => {
@@ -2030,6 +2034,7 @@ const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explici
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzSelect)="onSelect($event)"
+      (nzClear)="onClear()"
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
@@ -2087,6 +2092,7 @@ export class NzDemoCascaderDefaultComponent {
   }
 
   onSelect(_d: { option: NzCascaderOption; index: number }): void {}
+  onClear(): void {}
 }
 
 @Component({
