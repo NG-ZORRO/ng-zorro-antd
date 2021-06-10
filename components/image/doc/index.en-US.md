@@ -28,6 +28,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDisablePreview | Whether to disable the preview | `boolean` | `false` | ✅ |
 | nzCloseOnNavigation | Whether to close the image preview when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `false` | ✅ |
 | nzDirection | Text directionality | `Direction` | `'ltr'` | ✅ |
+| nzPreviewSrc | the different preview image path with `nzSrc` | `string` | - | - |
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
