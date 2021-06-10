@@ -7,7 +7,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
 import {
-  NzTableData,
   NzTableFilterFn,
   NzTableFilterValue,
   NzTableQueryParams,
@@ -16,20 +15,20 @@ import {
 } from './table.types';
 
 @Injectable()
-export class NzTableDataService implements OnDestroy {
+export class NzTableDataService<T> implements OnDestroy {
   private destroy$ = new Subject();
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
-  private listOfData$ = new BehaviorSubject<readonly NzTableData[]>([]);
+  private listOfData$ = new BehaviorSubject<readonly T[]>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());
   listOfCalcOperator$ = new BehaviorSubject<
     Array<{
       key?: string;
-      sortFn: NzTableSortFn | null | boolean;
+      sortFn: NzTableSortFn<T> | null | boolean;
       sortOrder: NzTableSortOrder;
-      filterFn: NzTableFilterFn | null | boolean;
+      filterFn: NzTableFilterFn<T> | null | boolean;
       filterValue: NzTableFilterValue;
       sortPriority: number | boolean;
     }>
@@ -71,7 +70,7 @@ export class NzTableDataService implements OnDestroy {
       });
       for (const item of listOfFilterOperator) {
         const { filterFn, filterValue } = item;
-        listOfDataAfterCalc = listOfDataAfterCalc.filter(data => (filterFn as NzTableFilterFn)(filterValue, data));
+        listOfDataAfterCalc = listOfDataAfterCalc.filter(data => (filterFn as NzTableFilterFn<T>)(filterValue, data));
       }
       const listOfSortOperator = listOfCalcOperator
         .filter(item => item.sortOrder !== null && typeof item.sortFn === 'function')
@@ -81,7 +80,7 @@ export class NzTableDataService implements OnDestroy {
           for (const item of listOfSortOperator) {
             const { sortFn, sortOrder } = item;
             if (sortFn && sortOrder) {
-              const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
+              const compareResult = (sortFn as NzTableSortFn<T>)(record1, record2, sortOrder);
               if (compareResult !== 0) {
                 return sortOrder === 'ascend' ? compareResult : -compareResult;
               }
@@ -124,7 +123,7 @@ export class NzTableDataService implements OnDestroy {
   updatePageIndex(index: number): void {
     this.pageIndex$.next(index);
   }
-  updateListOfData(list: readonly NzTableData[]): void {
+  updateListOfData(list: readonly T[]): void {
     this.listOfData$.next(list);
   }
   constructor() {}

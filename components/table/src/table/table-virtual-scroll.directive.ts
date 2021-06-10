@@ -10,6 +10,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: '[nz-virtual-scroll]',
   exportAs: 'nzVirtualScroll'
 })
-export class NzTableVirtualScrollDirective {
-  constructor(public templateRef: TemplateRef<{ $implicit: NzSafeAny; index: number }>) {}
+export class NzTableVirtualScrollDirective<T> {
+  constructor(public templateRef: TemplateRef<{ $implicit: T; index: number }>) {}
+
+  static ngTemplateContextGuard<T>(
+    _dir: NzTableVirtualScrollDirective<T>,
+    _ctx: NzSafeAny
+  ): _ctx is { $implicit: T; index: number } {
+    return true;
+  }
 }

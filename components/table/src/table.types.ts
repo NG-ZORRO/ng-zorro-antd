@@ -5,20 +5,15 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export type NzTableData =
-  | NzSafeAny
-  | {
-      [key: string]: NzTableData;
-    };
 export type NzTableLayout = 'fixed' | 'auto';
 export type NzTablePaginationPosition = 'top' | 'bottom' | 'both';
 export type NzTablePaginationType = 'default' | 'small';
 export type NzTableSize = 'middle' | 'default' | 'small';
 export type NzTableFilterList = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
 export type NzTableSortOrder = string | 'ascend' | 'descend' | null;
-export type NzTableSortFn = (a: NzTableData, b: NzTableData, sortOrder?: NzTableSortOrder) => number;
+export type NzTableSortFn<T = unknown> = (a: T, b: T, sortOrder?: NzTableSortOrder) => number;
 export type NzTableFilterValue = NzSafeAny[] | NzSafeAny;
-export type NzTableFilterFn = (value: NzTableFilterValue, data: NzTableData) => boolean;
+export type NzTableFilterFn<T = unknown> = (value: NzTableFilterValue, data: T) => boolean;
 
 export interface NzTableQueryParams {
   pageIndex: number;

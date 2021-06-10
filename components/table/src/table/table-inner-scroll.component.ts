@@ -25,7 +25,6 @@ import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzTableData } from '../table.types';
 
 @Component({
   selector: 'nz-table-inner-scroll',
@@ -83,8 +82,8 @@ import { NzTableData } from '../table.types';
     </div>
   `
 })
-export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @Input() data: readonly NzTableData[] = [];
+export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
+  @Input() data: readonly T[] = [];
   @Input() scrollX: string | null = null;
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -96,7 +95,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   @Input() virtualMaxBufferPx = 200;
   @Input() virtualMinBufferPx = 100;
   @Input() tableMainElement?: HTMLDivElement;
-  @Input() virtualForTrackBy: TrackByFunction<NzTableData> = index => index;
+  @Input() virtualForTrackBy: TrackByFunction<T> = index => index;
   @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement!: ElementRef;
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })

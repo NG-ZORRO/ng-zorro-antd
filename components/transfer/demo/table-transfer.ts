@@ -22,7 +22,7 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
         let-onItemSelectAll="onItemSelectAll"
         let-onItemSelect="onItemSelect"
       >
-        <nz-table #t [nzData]="items" nzSize="small">
+        <nz-table #t [nzData]="$asTransferItems(items)" nzSize="small">
           <thead>
             <tr>
               <th
@@ -39,7 +39,7 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
           <tbody>
             <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
               <td
-                [nzChecked]="data.checked"
+                [nzChecked]="!!data.checked"
                 [nzDisabled]="disabled || data.disabled"
                 (nzCheckedChange)="onItemSelect(data)"
               ></td>
@@ -61,6 +61,7 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
 })
 export class NzDemoTransferTableTransferComponent implements OnInit {
   list: TransferItem[] = [];
+  $asTransferItems = (data: unknown) => data as TransferItem[];
   disabled = false;
   showSearch = false;
 
