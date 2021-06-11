@@ -127,7 +127,14 @@ describe('NzSrcLoader', () => {
 
 @Component({
   template: `
-    <nz-image [nzSrc]="src" [nzAutoSrcset]="autoSrc" [nzSrcLoader]="loader" [nzWidth]="width" nzHeight="200" nzAlt="test"></nz-image>
+    <nz-image
+      [nzSrc]="src"
+      [nzAutoSrcset]="autoSrc"
+      [nzSrcLoader]="loader"
+      [nzWidth]="width"
+      nzHeight="200"
+      nzAlt="test"
+    ></nz-image>
   `
 })
 export class TestImageExperimentalBaseComponent {

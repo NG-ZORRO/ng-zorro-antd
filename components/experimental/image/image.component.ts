@@ -80,7 +80,11 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
   private reloadDisposeHandler: PreloadDisposeHandle = () => void 0;
 
-  constructor(private cdr: ChangeDetectorRef, public nzConfigService: NzConfigService, private imagePreloadService: ImagePreloadService) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public nzConfigService: NzConfigService,
+    private imagePreloadService: ImagePreloadService
+  ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
