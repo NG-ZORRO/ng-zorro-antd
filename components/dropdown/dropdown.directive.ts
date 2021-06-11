@@ -61,11 +61,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
   /**
-   * @deprecated Not supported, use `nzHasBackDrop` instead.
-   * @breaking-change 12.0.0
+   * @deprecated Not supported, use `nzBackdrop` instead.
+   * @breaking-change 13.0.0
    */
-  @Input() @InputBoolean() nzBackdrop = false;
   @Input() @InputBoolean() nzHasBackdrop = false;
+  @Input() @InputBoolean() nzBackdrop = false;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
@@ -204,7 +204,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzBackdrop } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzHasBackdrop } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -226,9 +226,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
     }
-    if (nzBackdrop) {
+    if (nzHasBackdrop) {
       warnDeprecation(
-        '`nzBackdrop` in dropdown component will be removed in 12.0.0, please use `nzHasBackdrop` instead.'
+        '`nzHasBackdrop` in dropdown component will be removed in 13.0.0, please use `nzBackdrop` instead.'
       );
     }
   }

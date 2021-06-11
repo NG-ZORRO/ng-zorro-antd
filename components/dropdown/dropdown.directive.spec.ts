@@ -82,7 +82,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
 
-  describe('when nzHasBackdrop=true', () => {
+  describe('when nzBackdrop=true', () => {
     let fixture: ComponentFixture<NzTestDropdownComponent>;
 
     beforeEach(() => {
@@ -191,7 +191,7 @@ describe('dropdown', () => {
       [nzTrigger]="trigger"
       [nzDisabled]="disabled"
       [nzPlacement]="placement"
-      [nzHasBackdrop]="backdrop"
+      [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
     >
