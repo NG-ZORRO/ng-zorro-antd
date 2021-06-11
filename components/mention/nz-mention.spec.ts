@@ -7,8 +7,6 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs';
-
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -17,6 +15,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { Subject } from 'rxjs';
 
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './mention-trigger';

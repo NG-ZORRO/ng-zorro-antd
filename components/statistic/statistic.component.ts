@@ -18,6 +18,7 @@ import {
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzStatisticValueType } from './typings';
 
 @Component({

@@ -1,7 +1,6 @@
 import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -11,7 +10,6 @@ import { NzDemoResizableCustomizeComponent } from './demo/customize';
 import { NzDemoResizableGridComponent } from './demo/grid';
 import { NzDemoResizableLockAspectRatioComponent } from './demo/lock-aspect-ratio';
 import { NzDemoResizablePreviewComponent } from './demo/preview';
-
 import { NzResizableDirective } from './resizable.directive';
 import { NzResizableModule } from './resizable.module';
 import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';

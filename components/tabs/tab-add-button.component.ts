@@ -4,7 +4,6 @@
  */
 
 import { Component, ElementRef, Input, TemplateRef } from '@angular/core';
-
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({

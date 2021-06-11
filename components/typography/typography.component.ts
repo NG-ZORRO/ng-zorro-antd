@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -32,13 +33,10 @@ import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/po
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
-
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
 

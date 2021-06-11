@@ -16,7 +16,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NgClassInterface,

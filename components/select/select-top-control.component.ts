@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
 

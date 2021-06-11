@@ -4,7 +4,9 @@
  */
 
 import { join } from 'path';
+
 import { dest, parallel, series, src, task } from 'gulp';
+
 import { buildConfig } from '../../build-config';
 import { compile as compileLess } from '../../build/compile-styles';
 import { generateLessVars } from '../../build/generate-less-vars';

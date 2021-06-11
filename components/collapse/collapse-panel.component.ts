@@ -19,7 +19,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
-
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput } from 'ng-zorro-antd/core/types';

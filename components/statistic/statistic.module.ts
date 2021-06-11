@@ -7,7 +7,6 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzPipesModule as NzPipesModuleFromCore } from 'ng-zorro-antd/core/pipe';
 

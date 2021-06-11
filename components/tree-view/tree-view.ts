@@ -5,7 +5,6 @@
 
 import { CdkTree } from '@angular/cdk/tree';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
-
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzTreeNodeOutletDirective } from './outlet';

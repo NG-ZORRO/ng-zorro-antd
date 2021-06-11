@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {

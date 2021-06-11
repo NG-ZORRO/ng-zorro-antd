@@ -16,7 +16,6 @@ import {
 import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzProgressFormatter } from 'ng-zorro-antd/progress';
-
 import { Subject } from 'rxjs';
 
 @Component({

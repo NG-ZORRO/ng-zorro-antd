@@ -3,14 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-/* eslint-disable import/no-unassigned-import */
+/* eslint-disable import/order */
 import { series, task } from 'gulp';
+
 import './tasks/clean';
 import './tasks/default';
 import './tasks/schematic';
 import './tasks/unit-test';
 import './tasks/universal';
-
 import './tasks/library';
 import './tasks/site';
 

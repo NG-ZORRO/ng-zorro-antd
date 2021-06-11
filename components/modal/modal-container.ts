@@ -23,8 +23,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 
+import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
 import { getValueWithConfig } from './utils';

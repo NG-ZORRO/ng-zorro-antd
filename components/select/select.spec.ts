@@ -13,6 +13,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';

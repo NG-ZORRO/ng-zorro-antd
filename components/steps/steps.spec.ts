@@ -10,11 +10,10 @@ import {
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzDemoStepsClickableComponent } from './demo/clickable';
 
+import { NzDemoStepsClickableComponent } from './demo/clickable';
 import { NzDemoStepsNavComponent } from './demo/nav';
 import { NzStepComponent } from './step.component';
 import { NzStepsComponent } from './steps.component';

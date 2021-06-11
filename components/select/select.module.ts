@@ -18,6 +18,7 @@ import { ɵNzTransitionPatchModule as NzTransitionPatchModule } from 'ng-zorro-a
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionItemGroupComponent } from './option-item-group.component';

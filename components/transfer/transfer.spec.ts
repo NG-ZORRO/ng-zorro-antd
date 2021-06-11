@@ -4,13 +4,14 @@ import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, View
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { TransferCanMove, TransferDirection, TransferItem } from './interface';
+
 import { NzTransferComponent, NzTransferModule } from './index';
 
 const COUNT = 21;

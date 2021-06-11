@@ -25,6 +25,7 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzMenuItemDirective } from './menu-item.directive';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';

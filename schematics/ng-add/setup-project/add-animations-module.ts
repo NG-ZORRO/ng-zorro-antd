@@ -14,6 +14,7 @@ import {
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const browserAnimationsModuleName = 'BrowserAnimationsModule';

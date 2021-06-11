@@ -6,7 +6,6 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';

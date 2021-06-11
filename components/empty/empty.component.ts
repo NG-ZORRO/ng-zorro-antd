@@ -15,10 +15,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
 type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;

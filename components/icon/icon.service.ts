@@ -12,6 +12,7 @@ import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
 
 export interface NzIconfontOption {

@@ -3,7 +3,6 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
 import { createKeyboardEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzInputNumberComponent } from './input-number.component';

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,7 +16,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Direction } from '@angular/cdk/bidi';
 import { NzCascaderOption } from './typings';
 
 @Component({

@@ -3,7 +3,6 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzListComponent } from './list.component';

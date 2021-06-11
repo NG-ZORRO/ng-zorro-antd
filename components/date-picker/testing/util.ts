@@ -5,6 +5,7 @@
 
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
 import { PREFIX_CLASS } from '../util';
 
 export const ENTER_EVENT = new KeyboardEvent('keyup', { key: 'Enter' });

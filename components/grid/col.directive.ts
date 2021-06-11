@@ -21,6 +21,7 @@ import { NgClassInterface } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzRowDirective } from './row.directive';
 
 export interface EmbeddedProperty {

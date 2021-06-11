@@ -7,6 +7,7 @@ import { Rule } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 import { updateWorkspace } from '@schematics/angular/utility/workspace';
 import { cyan, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const iconPathSegment = '@ant-design/icons-angular';

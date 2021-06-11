@@ -23,11 +23,11 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
-
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { TimeHolder } from './time-holder';
 
 function makeRange(length: number, step: number = 1, start: number = 0): number[] {

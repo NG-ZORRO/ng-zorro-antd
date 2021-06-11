@@ -2,6 +2,7 @@ import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { Style } from '@schematics/angular/ng-new/schema';
 import { getFileContent } from '@schematics/angular/utility/test';
+
 import { createTestApp } from '../../testing/test-app';
 
 describe('side-menu schematic', () => {

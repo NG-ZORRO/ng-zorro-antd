@@ -4,10 +4,12 @@
  */
 
 import { existsSync, statSync as fsStatSync } from 'fs';
+
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+
 import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->

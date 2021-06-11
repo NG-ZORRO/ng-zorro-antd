@@ -20,7 +20,6 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeView } from './tree';

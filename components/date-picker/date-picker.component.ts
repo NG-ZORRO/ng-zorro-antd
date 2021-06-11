@@ -3,6 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair,
+  HorizontalConnectionPos,
+  VerticalConnectionPos
+} from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -29,6 +41,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
@@ -43,22 +56,8 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ESCAPE } from '@angular/cdk/keycodes';
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair,
-  HorizontalConnectionPos,
-  VerticalConnectionPos
-} from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX_CLASS } from './util';
-import { DateRangePopupComponent } from './date-range-popup.component';
 import { DatePickerService } from './date-picker.service';
+import { DateRangePopupComponent } from './date-range-popup.component';
 import {
   CompatibleDate,
   DisabledTimeFn,
@@ -67,6 +66,7 @@ import {
   RangePartType,
   SupportTimeOptions
 } from './standard-types';
+import { PREFIX_CLASS } from './util';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working because the overlay can't get the height/width of it's content)
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';

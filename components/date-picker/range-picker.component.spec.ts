@@ -9,7 +9,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
-
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -26,6 +25,7 @@ import {
   getRangePickerRightInput
 } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
+
 import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);

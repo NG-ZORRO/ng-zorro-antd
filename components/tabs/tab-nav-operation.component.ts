@@ -15,7 +15,6 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabNavItemDirective } from './tab-nav-item.directive';

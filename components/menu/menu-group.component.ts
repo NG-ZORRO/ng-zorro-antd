@@ -17,6 +17,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
 export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {

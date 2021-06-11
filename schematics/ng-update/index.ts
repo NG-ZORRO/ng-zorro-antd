@@ -5,6 +5,7 @@
 
 import { Rule, SchematicContext } from '@angular-devkit/schematics';
 import { createMigrationSchematicRule, NullableDevkitMigration, TargetVersion } from '@angular/cdk/schematics';
+
 import { ClassNamesMigration } from './data/migrations/class-names';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';

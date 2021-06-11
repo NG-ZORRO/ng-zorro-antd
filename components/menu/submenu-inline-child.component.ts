@@ -22,6 +22,7 @@ import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzMenuModeType } from './menu.types';
 
 @Component({

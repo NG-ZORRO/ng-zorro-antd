@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzSwitchComponent } from './switch.component';
 
 @NgModule({

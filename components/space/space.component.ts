@@ -18,7 +18,6 @@ import {
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

@@ -5,8 +5,10 @@
 
 import { execSync, spawnSync } from 'child_process';
 import * as path from 'path';
+
 import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
 import * as fs from 'fs-extra';
+
 import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
 import { releaseSite } from './release-site';

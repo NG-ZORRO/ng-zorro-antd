@@ -18,10 +18,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzTSType } from 'ng-zorro-antd/core/types';
-
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
-
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 

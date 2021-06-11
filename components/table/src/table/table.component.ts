@@ -32,6 +32,7 @@ import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {

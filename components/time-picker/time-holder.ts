@@ -3,9 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Observable, Subject } from 'rxjs';
-
 import { isNil, isNotNil } from 'ng-zorro-antd/core/util';
+import { Observable, Subject } from 'rxjs';
 
 export class TimeHolder {
   selected12Hours: string | undefined = undefined;

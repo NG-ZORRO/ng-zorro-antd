@@ -19,11 +19,9 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
-import { Observable, Subject } from 'rxjs';
-
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({ template: '' })

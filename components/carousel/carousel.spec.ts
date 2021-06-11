@@ -3,7 +3,6 @@ import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';

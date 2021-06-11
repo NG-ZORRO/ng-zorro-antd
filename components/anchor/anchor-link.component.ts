@@ -17,8 +17,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({

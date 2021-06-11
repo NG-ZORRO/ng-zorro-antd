@@ -11,6 +11,7 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzMenuDividerDirective } from './menu-divider.directive';
 import { NzMenuGroupComponent } from './menu-group.component';
 import { NzMenuItemDirective } from './menu-item.directive';

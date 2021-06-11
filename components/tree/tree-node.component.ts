@@ -22,7 +22,6 @@ import {
   TemplateRef
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
 import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,

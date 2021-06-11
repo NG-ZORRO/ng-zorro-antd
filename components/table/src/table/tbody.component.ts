@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, V
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzTableStyleService } from '../table-style.service';
 
 @Component({

@@ -4,7 +4,9 @@
  */
 
 import * as path from 'path';
+
 import * as fs from 'fs-extra';
+
 import { buildConfig } from '../build-config';
 import { compactPaletteLess } from './compact-vars';
 import { darkPaletteLess } from './dark-vars';

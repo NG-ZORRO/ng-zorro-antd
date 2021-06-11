@@ -4,6 +4,7 @@
  */
 
 import { Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+
 import { findElementWithClassName } from '../../../utils/ng-update/elements';
 
 export class IconTemplateRule extends Migration<UpgradeData> {

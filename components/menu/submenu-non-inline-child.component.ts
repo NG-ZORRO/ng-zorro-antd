@@ -23,6 +23,7 @@ import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Component({

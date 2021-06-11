@@ -29,6 +29,7 @@ import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
+
 import ITextModel = editor.ITextModel;
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 import IStandaloneDiffEditor = editor.IStandaloneDiffEditor;

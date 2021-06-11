@@ -3,6 +3,7 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
+
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('secondary entry points checks', () => {

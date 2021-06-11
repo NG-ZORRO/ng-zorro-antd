@@ -5,8 +5,10 @@
 
 import * as child_process from 'child_process';
 import { resolve } from 'path';
+
 import { readFile, readJSON, writeFile, writeJSON } from 'fs-extra';
 import { sync as glob } from 'glob';
+
 import { buildConfig } from '../build-config';
 import { minifyFile } from './minify';
 

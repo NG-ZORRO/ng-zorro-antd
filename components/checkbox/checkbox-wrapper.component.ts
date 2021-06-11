@@ -13,6 +13,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzCheckboxComponent } from './checkbox.component';
 
 @Component({

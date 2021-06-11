@@ -6,6 +6,7 @@
 
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
+
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {

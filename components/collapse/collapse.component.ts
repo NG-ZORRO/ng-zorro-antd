@@ -15,7 +15,6 @@ import {
   Optional,
   ViewEncapsulation
 } from '@angular/core';
-
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';

@@ -8,7 +8,7 @@
  */
 
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
-// eslint-disable-next-line import/no-unassigned-import
+// eslint-disable-next-line import/order
 import 'classlist.js'; // Run `npm install --save classlist.js`.
 
 /**
@@ -45,7 +45,6 @@ import 'classlist.js'; // Run `npm install --save classlist.js`.
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-// eslint-disable-next-line import/no-unassigned-import
 import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************

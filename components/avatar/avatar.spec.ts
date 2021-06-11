@@ -2,7 +2,6 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
-
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';

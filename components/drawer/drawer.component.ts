@@ -31,13 +31,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';

@@ -3,7 +3,6 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';

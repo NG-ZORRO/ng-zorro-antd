@@ -27,10 +27,9 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 

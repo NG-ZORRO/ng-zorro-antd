@@ -4,6 +4,7 @@
  */
 
 import { join } from 'path';
+
 import { logging, normalize } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
@@ -14,6 +15,7 @@ import {
 } from '@angular/cdk/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
+
 import { createCustomTheme } from '../../utils/create-custom-theme';
 import { Schema } from '../schema';
 

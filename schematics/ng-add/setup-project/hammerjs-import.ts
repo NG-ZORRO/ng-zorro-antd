@@ -8,6 +8,7 @@ import { Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, red } from 'chalk';
+
 import { Schema } from '../schema';
 
 const hammerjsImportStatement = `import 'hammerjs';`;

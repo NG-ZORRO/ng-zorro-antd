@@ -13,7 +13,6 @@ import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
 import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
-
 import { NzPageHeaderComponent } from './page-header.component';
 import { NzPageHeaderModule } from './page-header.module';
 

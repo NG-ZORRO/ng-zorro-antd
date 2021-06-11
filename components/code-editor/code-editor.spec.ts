@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 import { NzDemoCodeEditorBasicComponent } from './demo/basic';

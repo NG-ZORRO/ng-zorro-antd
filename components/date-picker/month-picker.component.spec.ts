@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isBefore from 'date-fns/isBefore';
-
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';

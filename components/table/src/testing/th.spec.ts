@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableModule } from '../table.module';
 

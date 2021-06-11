@@ -2,7 +2,6 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 
 import { NzStatisticComponent } from './statistic.component';

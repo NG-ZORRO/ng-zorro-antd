@@ -21,8 +21,8 @@ import {
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Style } from '@schematics/angular/application/schema';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-import { addModule } from '../../utils/root-module';
 
+import { addModule } from '../../utils/root-module';
 import { Schema } from './schema';
 
 export default function(options: Schema): Rule {

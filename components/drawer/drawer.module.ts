@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';

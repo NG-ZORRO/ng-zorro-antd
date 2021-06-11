@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+
 import { NzDatePickerModule } from './date-picker.module';
 
 describe('NzWeekPickerComponent', () => {

@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 

@@ -5,6 +5,7 @@
 
 import * as child_process from 'child_process';
 import * as os from 'os';
+
 import * as gulp from 'gulp';
 
 const gulpClean = require('gulp-clean');

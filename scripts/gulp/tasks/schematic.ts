@@ -4,9 +4,10 @@
  */
 
 import { join } from 'path';
-import { series, task } from 'gulp';
-import { buildConfig } from '../../build-config';
 
+import { series, task } from 'gulp';
+
+import { buildConfig } from '../../build-config';
 import { copyResources } from '../../schematics/copy-resources';
 import { generate as demo2schematics } from '../../schematics/demo2schematics';
 import { setVersion } from '../../schematics/set-version';

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 

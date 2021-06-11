@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+
 import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';

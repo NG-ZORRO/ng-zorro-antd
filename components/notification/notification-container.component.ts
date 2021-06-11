@@ -7,7 +7,6 @@ import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
-
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -10,7 +10,6 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';

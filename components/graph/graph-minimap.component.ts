@@ -6,6 +6,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ZoomBehavior } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { Minimap } from './core/minimap';
 import { NzZoomTransform } from './interface';
 

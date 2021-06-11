@@ -4,7 +4,6 @@
  */
 
 import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
-
 import { warn } from 'ng-zorro-antd/core/logger';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 

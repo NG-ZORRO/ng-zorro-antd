@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 

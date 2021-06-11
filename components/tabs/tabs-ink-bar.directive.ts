@@ -5,8 +5,8 @@
 
 import { Directive, ElementRef, Inject, Input, NgZone, Optional } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
-
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+
 import { NzTabPositionMode } from './interfaces';
 
 @Directive({

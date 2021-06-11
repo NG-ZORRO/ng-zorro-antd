@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
+
 import { NzGraphGroupNode, NzGraphNode } from './interface';
 
 interface Info {

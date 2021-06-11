@@ -29,13 +29,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
-
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
+import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';

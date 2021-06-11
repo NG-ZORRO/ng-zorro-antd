@@ -13,6 +13,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+
 import { AnimationCurves } from './animation-consts';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [

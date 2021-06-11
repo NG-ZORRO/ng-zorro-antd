@@ -4,8 +4,10 @@
  */
 
 import { join } from 'path';
+
 import { copySync, emptyDirSync, removeSync } from 'fs-extra';
 import * as minimatch from 'minimatch';
+
 import { buildConfig } from '../build-config';
 import { GitClient } from './git-client';
 

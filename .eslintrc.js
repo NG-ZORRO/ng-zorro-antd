@@ -112,8 +112,18 @@ module.exports = {
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
         'prefer-arrow/prefer-arrow-functions': 'off',
-        'import/no-unassigned-import': 'error',
-        'import/order': 'error',
+        'import/order': [
+          'error',
+          {
+            groups: ['type', 'builtin', 'external', ['sibling', 'parent']],
+            'newlines-between': 'always',
+            alphabetize: {
+              order: 'asc',
+              caseInsensitive: true
+            },
+            warnOnUnassignedImports: true
+          }
+        ],
         'no-bitwise': 'off',
         'no-duplicate-imports': 'error',
         'no-invalid-this': 'off',

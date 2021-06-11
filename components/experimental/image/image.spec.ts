@@ -5,7 +5,6 @@
 
 import { Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-
 import {
   createAliObjectsLoader,
   createCloudinaryLoader,

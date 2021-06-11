@@ -4,7 +4,6 @@
  */
 
 import { TemplateRef } from '@angular/core';
-
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export function isNotNil<T>(value: T): value is NonNullable<T> {

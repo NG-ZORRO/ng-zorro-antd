@@ -6,6 +6,7 @@
 import { buildConfig } from '../build-config';
 
 const path = require('path');
+
 const fs = require('fs-extra');
 
 export function setVersion(): void {

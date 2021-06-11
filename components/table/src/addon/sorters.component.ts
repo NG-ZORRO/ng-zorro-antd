@@ -14,6 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzTableSortOrder } from '../table.types';
 
 @Component({

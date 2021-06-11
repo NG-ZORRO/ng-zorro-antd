@@ -20,8 +20,8 @@ import {
 } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-import { addModule } from '../../utils/root-module';
 
+import { addModule } from '../../utils/root-module';
 import { Schema } from './schema';
 
 export default function(options: Schema): Rule {

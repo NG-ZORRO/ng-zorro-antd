@@ -4,6 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -33,7 +34,6 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {

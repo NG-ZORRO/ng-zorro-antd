@@ -30,7 +30,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -40,6 +39,7 @@ import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-a
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';

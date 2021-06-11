@@ -6,6 +6,7 @@
 import { Injectable } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Subject } from 'rxjs';
+
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Injectable()

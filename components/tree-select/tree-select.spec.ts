@@ -7,7 +7,6 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import {
   createKeyboardEvent,
   dispatchFakeEvent,

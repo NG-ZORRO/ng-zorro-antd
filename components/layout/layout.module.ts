@@ -9,6 +9,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzContentComponent } from './content.component';
 import { NzFooterComponent } from './footer.component';
 import { NzHeaderComponent } from './header.component';

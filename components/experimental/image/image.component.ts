@@ -23,6 +23,7 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { defaultImageSrcLoader } from './image-loader';
 import { NzImageSrcLoader } from './typings';
 import { isFixedSize } from './utils';

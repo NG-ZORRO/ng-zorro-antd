@@ -5,8 +5,10 @@
 
 import * as os from 'os';
 import { resolve } from 'path';
+
 import { readFileSync, writeFileSync } from 'fs-extra';
 import * as sitemap from 'sitemap';
+
 import { buildConfig } from '../build-config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -4,6 +4,7 @@
  */
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 
 export function isCheckDisabled(node: NzTreeNode): boolean {

@@ -4,7 +4,9 @@
  */
 
 import * as path from 'path';
+
 import * as fs from 'fs-extra';
+
 import { buildConfig } from '../build-config';
 
 const glob = require('glob').sync;

@@ -17,10 +17,10 @@ import {
 } from '@angular/core';
 import { ThemeType } from '@ant-design/icons-angular';
 import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
-
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
 import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
 
 export interface NzFormTooltipIcon {

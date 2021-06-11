@@ -4,8 +4,10 @@
  */
 
 import * as path from 'path';
+
 import * as fs from 'fs-extra';
 import * as less from 'less';
+
 import { buildConfig } from '../build-config';
 
 const lessPluginCleanCSS = require('less-plugin-clean-css');

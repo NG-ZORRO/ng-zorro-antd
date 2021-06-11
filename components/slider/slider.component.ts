@@ -44,7 +44,6 @@ import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/o
 
 import { NzSliderHandleComponent } from './handle.component';
 import { NzSliderService } from './slider.service';
-
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
 
 @Component({

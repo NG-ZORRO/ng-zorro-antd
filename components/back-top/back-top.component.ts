@@ -28,7 +28,6 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
-
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 

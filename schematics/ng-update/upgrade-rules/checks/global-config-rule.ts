@@ -4,6 +4,7 @@
  */
 
 import { TargetVersion } from '@angular/cdk/schematics';
+
 import { InjectionTokenRule } from './injection-token-rule';
 
 export class GlobalConfigRule extends InjectionTokenRule {

@@ -4,10 +4,9 @@
  */
 
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { getEventPosition, isTouchEvent } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';
-
-import { getEventPosition, isTouchEvent } from 'ng-zorro-antd/core/util';
 
 interface Point {
   x: number;
