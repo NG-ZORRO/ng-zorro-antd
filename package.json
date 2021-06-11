@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "engines": {
-    "node": "^12.0.0"
+    "node": "^12.14.1 || ^14.0.0"
   },
   "scripts": {
     "start": "gulp start:dev",
