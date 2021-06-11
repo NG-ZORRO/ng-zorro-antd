@@ -24,7 +24,6 @@ describe('NzTabSet', () => {
       imports: [NzTabsModule, NzIconTestModule, CommonModule, NoopAnimationsModule],
       declarations: [
         SimpleTabsTestComponent,
-        DeprecatedAPITabsTestComponent,
         TemplateTabsTestComponent,
         DisableTabsTestComponent,
         DynamicTabsTestComponent,
@@ -358,15 +357,6 @@ describe('NzTabSet', () => {
 
       expect(fixture.componentInstance.handleClose).toHaveBeenCalledTimes(1);
       expect(fixture.componentInstance.handleClose).toHaveBeenCalledWith(jasmine.objectContaining({ index: 1 }));
-    });
-  });
-
-  describe('deprecated API', () => {
-    it('should not be throw error', () => {
-      expect(() => {
-        const fixture = TestBed.createComponent(DeprecatedAPITabsTestComponent);
-        fixture.detectChanges();
-      }).not.toThrowError();
     });
   });
 
@@ -1103,21 +1093,6 @@ class NestedTabsTestComponent {
 })
 class TabSetWithIndirectDescendantTabsTestComponent {
   @ViewChild(NzTabSetComponent, { static: true }) tabSet!: NzTabSetComponent;
-}
-
-@Component({
-  template: `
-    <nz-tabset
-      nzShowPagination
-      (nzOnNextClick)="handleDeprecatedEvent()"
-      (nzOnPrevClick)="handleDeprecatedEvent()"
-    ></nz-tabset>
-  `
-})
-class DeprecatedAPITabsTestComponent {
-  handleDeprecatedEvent(): void {
-    // noop
-  }
 }
 
 @Component({
