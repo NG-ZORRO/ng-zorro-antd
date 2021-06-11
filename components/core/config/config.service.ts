@@ -4,10 +4,10 @@
  */
 
 import { Inject, Injectable, Optional } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Subject } from 'rxjs';
-
 import { filter, mapTo } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
 

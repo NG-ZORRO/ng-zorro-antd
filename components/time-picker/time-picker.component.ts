@@ -26,16 +26,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isValid } from 'date-fns';
-import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { Observable, of, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
+import { isValid } from 'date-fns';
+
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { Observable, of, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 

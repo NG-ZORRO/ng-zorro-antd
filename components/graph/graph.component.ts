@@ -24,18 +24,17 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-
-import { buildGraph } from 'dagre-compound';
-
 import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
+
+import { buildGraph } from 'dagre-compound';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { calculateTransform } from './core/utils';
 
+import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';

@@ -4,9 +4,11 @@
  */
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzGraphDataDef } from '../interface';
 import { NzGraphBaseSource } from './base-graph-source';
 

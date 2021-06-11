@@ -6,6 +6,7 @@
 import { AfterContentInit, ContentChildren, Directive, OnDestroy, Optional, QueryList } from '@angular/core';
 import { combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
 import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';

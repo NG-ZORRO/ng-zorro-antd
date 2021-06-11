@@ -16,6 +16,7 @@ import {
   tick
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   CloseCircleOutline,
   LeftCircleOutline,
@@ -25,6 +26,7 @@ import {
   ZoomInOutline,
   ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
+
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import {

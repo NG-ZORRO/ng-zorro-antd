@@ -2,8 +2,10 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
 

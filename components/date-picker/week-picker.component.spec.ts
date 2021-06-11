@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+
 import { NzDatePickerModule } from './date-picker.module';
 
 describe('NzWeekPickerComponent', () => {

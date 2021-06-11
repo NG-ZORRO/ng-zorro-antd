@@ -19,9 +19,10 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',

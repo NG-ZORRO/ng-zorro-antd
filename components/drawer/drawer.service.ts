@@ -6,9 +6,11 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';

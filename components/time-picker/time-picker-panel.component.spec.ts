@@ -2,7 +2,9 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation
 import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 

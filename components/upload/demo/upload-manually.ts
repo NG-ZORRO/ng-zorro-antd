@@ -1,8 +1,9 @@
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { filter } from 'rxjs/operators';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-upload-upload-manually',

@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 
 import { NzCardComponent } from './card.component';
 import { NzCardModule } from './card.module';
-
 import { NzDemoCardBasicComponent } from './demo/basic';
 import { NzDemoCardBorderLessComponent } from './demo/border-less';
 import { NzDemoCardFlexibleContentComponent } from './demo/flexible-content';

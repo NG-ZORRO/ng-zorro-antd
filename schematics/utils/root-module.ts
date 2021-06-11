@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
+
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
-import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';

@@ -15,8 +15,10 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { curveBasis, curveLinear, line } from 'd3-shape';
 import { take } from 'rxjs/operators';
+
+import { curveBasis, curveLinear, line } from 'd3-shape';
+
 import { NzGraphEdge, NzGraphEdgeType } from './interface';
 
 @Component({

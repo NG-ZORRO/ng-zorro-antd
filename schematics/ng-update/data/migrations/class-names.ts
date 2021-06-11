@@ -9,7 +9,9 @@ import {
   isNamespaceImportNode,
   Migration, UpgradeData
 } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
+
 import { isNgZorroExportDeclaration, isNgZorroImportDeclaration } from '../../../utils/ng-update/module-specifiers';
 
 export class ClassNamesMigration extends Migration<UpgradeData> {

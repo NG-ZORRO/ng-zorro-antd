@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Observable, Subject, timer } from 'rxjs';
 import { QueryList } from '@angular/core';
+import { Observable, Subject, timer } from 'rxjs';
 
-import { NzCarouselBaseStrategy } from '../base-strategy';
 import { NzCarouselContentDirective } from '../../carousel-content.directive';
+import { NzCarouselBaseStrategy } from '../base-strategy';
 
 export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
   withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {

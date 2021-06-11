@@ -20,6 +20,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import {
   isPresetColor,
   isStatusColor,
@@ -30,8 +33,6 @@ import {
 } from 'ng-zorro-antd/core/color';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-tag',

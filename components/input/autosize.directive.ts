@@ -5,9 +5,10 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
-import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzResizeService } from 'ng-zorro-antd/core/services';
 
 export interface AutoSizeType {
   minRows?: number;

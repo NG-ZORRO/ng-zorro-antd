@@ -7,14 +7,15 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs';
+
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzTabNavBarComponent } from 'ng-zorro-antd/tabs/tab-nav-bar.component';
-import { Observable } from 'rxjs';
+
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
 import { NzTabComponent } from './tab.component';
-
 import { NzTabsModule } from './tabs.module';
 import { NzTabSetComponent } from './tabset.component';
 

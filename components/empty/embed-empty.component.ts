@@ -19,11 +19,12 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './config';
 
 function getEmptySize(componentName: string): NzEmptySize {

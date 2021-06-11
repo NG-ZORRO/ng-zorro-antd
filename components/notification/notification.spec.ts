@@ -2,6 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';

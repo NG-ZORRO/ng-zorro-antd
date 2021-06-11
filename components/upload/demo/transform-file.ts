@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
+
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-transform-file',

@@ -3,17 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { join } from 'path';
-import { logging, normalize } from '@angular-devkit/core';
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
-import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import {
   getProjectFromWorkspace,
   getProjectStyleFile,
   getProjectTargetOptions
 } from '@angular/cdk/schematics';
+
+
+import { logging, normalize } from '@angular-devkit/core';
+import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
+import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
+
+import { join } from 'path';
+
 import { createCustomTheme } from '../../utils/create-custom-theme';
 import { Schema } from '../schema';
 

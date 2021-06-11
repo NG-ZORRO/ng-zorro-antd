@@ -19,13 +19,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { Subject } from 'rxjs';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { TabTemplateContext } from './interfaces';
 
+import { TabTemplateContext } from './interfaces';
 import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
 import { NzTabDirective } from './tab.directive';
 

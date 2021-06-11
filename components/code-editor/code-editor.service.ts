@@ -5,11 +5,13 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+
 import { JoinedEditorOptions, NzCodeEditorLoadingStatus } from './typings';
 
 declare const monaco: NzSafeAny;

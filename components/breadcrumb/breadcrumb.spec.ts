@@ -1,3 +1,4 @@
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
@@ -7,13 +8,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 import { NzBreadCrumbModule } from './breadcrumb.module';
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
+import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
 describe('breadcrumb', () => {

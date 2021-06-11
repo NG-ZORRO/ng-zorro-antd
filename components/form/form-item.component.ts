@@ -12,7 +12,6 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;

@@ -6,9 +6,11 @@
 /* eslint-disable @angular-eslint/component-selector */
 
 import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzTableStyleService } from '../table-style.service';
 
 @Component({

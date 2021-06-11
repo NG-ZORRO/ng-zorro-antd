@@ -23,14 +23,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
-
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 

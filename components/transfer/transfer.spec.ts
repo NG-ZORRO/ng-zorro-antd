@@ -8,10 +8,11 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { TransferCanMove, TransferDirection, TransferItem } from './interface';
 import { NzTransferComponent, NzTransferModule } from './index';
+import { TransferCanMove, TransferDirection, TransferItem } from './interface';
 
 const COUNT = 21;
 const LEFTCOUNT = 2;

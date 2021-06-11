@@ -18,10 +18,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { collapseMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { collapseMotion } from 'ng-zorro-antd/core/animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzMenuModeType } from './menu.types';
 
 @Component({

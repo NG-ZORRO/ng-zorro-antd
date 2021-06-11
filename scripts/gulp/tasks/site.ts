@@ -3,17 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { join } from 'path';
 import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { debounce } from 'lodash';
+
+import { join } from 'path';
+
 import { buildConfig } from '../../build-config';
 import { execNodeTask, execTask } from '../util/task-helpers';
 
 const detectPort = require('detect-port');
+
 const siteGenerate = require('../../site/generate-site');
-const colorGenerate = require('../../site/generateColorLess');
 const themeGenerate = require('../../site/generate-theme');
+const colorGenerate = require('../../site/generateColorLess');
 
 const docsGlob = join(buildConfig.componentsDir, `**/doc/*.+(md|txt)`);
 const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);

@@ -4,6 +4,7 @@
  */
 
 import { task } from 'gulp';
+
 import { execTask } from '../util/task-helpers';
 
 task('test:watch', done => {

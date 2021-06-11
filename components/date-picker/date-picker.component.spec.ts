@@ -8,9 +8,9 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
-
 import { enUS } from 'date-fns/locale';
 
 import {
@@ -21,6 +21,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';

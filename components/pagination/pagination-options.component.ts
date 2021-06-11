@@ -14,6 +14,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 

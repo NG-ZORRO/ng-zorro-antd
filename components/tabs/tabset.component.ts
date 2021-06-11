@@ -3,10 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceNumberProperty } from '@angular/cdk/coercion';
 /** get some code from https://github.com/angular/material2 */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -26,7 +26,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 

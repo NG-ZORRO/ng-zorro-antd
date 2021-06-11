@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NzTableComponent } from 'ng-zorro-antd/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzTableComponent } from 'ng-zorro-antd/table';
 
 export interface VirtualDataInterface {
   index: number;

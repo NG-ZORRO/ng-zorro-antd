@@ -4,8 +4,10 @@ import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzMenuItemDirective } from './menu-item.directive';
 import { NzMenuDirective } from './menu.directive';
 import { NzMenuModule } from './menu.module';

@@ -19,10 +19,11 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';

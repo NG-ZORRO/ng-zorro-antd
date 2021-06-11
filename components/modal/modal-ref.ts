@@ -6,10 +6,11 @@
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isPromise } from 'ng-zorro-antd/core/util';
 
 import { BaseModalContainerComponent } from './modal-container';
 import { NzModalLegacyAPI } from './modal-legacy-api';

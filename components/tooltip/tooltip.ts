@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,12 +21,12 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
-import { Directionality } from '@angular/cdk/bidi';
 import {
   isTooltipEmpty,
   NzTooltipBaseComponent,

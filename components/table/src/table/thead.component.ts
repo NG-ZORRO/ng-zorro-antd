@@ -22,10 +22,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
 import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';

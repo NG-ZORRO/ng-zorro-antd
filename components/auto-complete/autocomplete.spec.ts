@@ -17,7 +17,6 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzInputModule } from 'ng-zorro-antd/input';
 import { Subject } from 'rxjs';
 
 import {
@@ -27,6 +26,7 @@ import {
   MockNgZone,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
 import {

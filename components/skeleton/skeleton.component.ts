@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
+
 import {
   NzSkeletonAvatar,
   NzSkeletonAvatarShape,

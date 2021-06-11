@@ -18,14 +18,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { collapseMotion } from 'ng-zorro-antd/core/animation';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzCollapseComponent } from './collapse.component';
 

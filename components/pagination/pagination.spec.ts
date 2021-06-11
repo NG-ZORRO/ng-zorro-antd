@@ -3,10 +3,11 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzPaginationComponent } from './pagination.component';

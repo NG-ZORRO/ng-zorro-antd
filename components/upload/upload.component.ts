@@ -19,10 +19,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 

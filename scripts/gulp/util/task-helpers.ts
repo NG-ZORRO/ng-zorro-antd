@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import * as gulp from 'gulp';
+
 import * as child_process from 'child_process';
 import * as os from 'os';
-import * as gulp from 'gulp';
 
 const gulpClean = require('gulp-clean');
 const resolveBin = require('resolve-bin');

@@ -6,7 +6,9 @@
 import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzZoomTransform } from '../interface';
 
 const FRAC_VIEWPOINT_AREA = 0.8;

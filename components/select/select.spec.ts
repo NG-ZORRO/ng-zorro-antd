@@ -4,6 +4,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -13,6 +14,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';

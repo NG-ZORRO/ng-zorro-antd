@@ -6,6 +6,7 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import {
   NzSkeletonElementAvatarComponent,
   NzSkeletonElementButtonComponent,

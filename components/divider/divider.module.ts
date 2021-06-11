@@ -6,7 +6,9 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { NzDividerComponent } from './divider.component';
 
 @NgModule({

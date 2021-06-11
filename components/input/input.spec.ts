@@ -2,7 +2,9 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 

@@ -26,6 +26,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -42,8 +45,7 @@ import {
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { NzTreeService } from './tree.service';
 
 export function NzTreeServiceFactory(

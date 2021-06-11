@@ -29,7 +29,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 

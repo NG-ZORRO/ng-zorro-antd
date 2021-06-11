@@ -3,8 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as path from 'path';
 import * as fs from 'fs-extra';
+
+import * as path from 'path';
+
 import { buildConfig } from '../build-config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

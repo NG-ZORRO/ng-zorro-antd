@@ -15,11 +15,11 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';

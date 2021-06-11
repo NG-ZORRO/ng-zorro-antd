@@ -1,12 +1,12 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzModalTitleDirective } from './modal-title.directive';
 
 import { NzModalRef } from './modal-ref';
+import { NzModalTitleDirective } from './modal-title.directive';
 import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
 import { NzModalService } from './modal.service';

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzSpaceAlign } from 'ng-zorro-antd/space';
 import { NzSpaceComponent } from 'ng-zorro-antd/space/space.component';
 

@@ -31,7 +31,6 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

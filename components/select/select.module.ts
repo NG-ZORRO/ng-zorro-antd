@@ -11,6 +11,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -18,6 +19,7 @@ import { ɵNzTransitionPatchModule as NzTransitionPatchModule } from 'ng-zorro-a
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionItemGroupComponent } from './option-item-group.component';

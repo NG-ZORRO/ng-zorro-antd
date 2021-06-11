@@ -2,8 +2,10 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzTableComponent } from 'ng-zorro-antd/table';
+
 import en_US from '../../../i18n/languages/en_US';
 import { NzTableModule } from '../table.module';
 

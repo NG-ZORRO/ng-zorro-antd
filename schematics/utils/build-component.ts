@@ -4,8 +4,9 @@
  */
 
 
-import { readFileSync, statSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
+
+
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import {
@@ -23,7 +24,6 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
-import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {
@@ -37,6 +37,9 @@ import { parseName } from '@schematics/angular/utility/parse-name';
 import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { ProjectType } from '@schematics/angular/utility/workspace-models';
+
+import { readFileSync, statSync } from 'fs';
+import { dirname, join, resolve } from 'path';
 
 function findClassDeclarationParent(node: ts.Node): ts.ClassDeclaration|undefined {
   if (ts.isClassDeclaration(node)) {

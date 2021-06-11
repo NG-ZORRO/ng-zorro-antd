@@ -17,8 +17,8 @@ import {
 import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
 
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
   createKeyboardEvent,
   dispatchEvent,

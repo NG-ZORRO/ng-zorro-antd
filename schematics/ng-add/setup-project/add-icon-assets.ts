@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Rule } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
+
+import { Rule } from '@angular-devkit/schematics';
 import { updateWorkspace } from '@schematics/angular/utility/workspace';
 import { cyan, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const iconPathSegment = '@ant-design/icons-angular';

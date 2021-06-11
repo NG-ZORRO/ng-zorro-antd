@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   createKeyboardEvent,
   dispatchFakeEvent,

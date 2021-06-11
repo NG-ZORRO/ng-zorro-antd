@@ -22,12 +22,12 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
-
-import { Observable, of, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import {
   TransferCanMove,

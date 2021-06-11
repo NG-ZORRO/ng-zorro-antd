@@ -3,11 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { existsSync, statSync as fsStatSync } from 'fs';
+import { getProjectFromWorkspace } from '@angular/cdk/schematics';
+
+
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+
+import { existsSync, statSync as fsStatSync } from 'fs';
+
 import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->

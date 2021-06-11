@@ -3,7 +3,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 

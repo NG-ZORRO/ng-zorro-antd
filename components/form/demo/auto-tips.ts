@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-demo-form-auto-tips',

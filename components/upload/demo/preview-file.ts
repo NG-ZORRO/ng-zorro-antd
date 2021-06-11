@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { map } from 'rxjs/operators';
+
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-preview-file',

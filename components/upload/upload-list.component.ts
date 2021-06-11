@@ -18,8 +18,9 @@ import {
   OnChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 

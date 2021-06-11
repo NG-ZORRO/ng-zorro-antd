@@ -5,6 +5,7 @@
 
 // from https://github.com/hsuanxyz/ng-time-parser
 import { FormStyle, getLocaleDayPeriods, TranslationWidth } from '@angular/common';
+
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
 export interface TimeResult {

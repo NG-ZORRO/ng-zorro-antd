@@ -3,9 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { join } from 'path';
 import { copySync, emptyDirSync, removeSync } from 'fs-extra';
 import * as minimatch from 'minimatch';
+
+import { join } from 'path';
+
 import { buildConfig } from '../build-config';
 import { GitClient } from './git-client';
 

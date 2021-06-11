@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 import { Subscription } from 'rxjs';
+
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {

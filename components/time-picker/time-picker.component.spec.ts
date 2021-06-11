@@ -1,15 +1,16 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
+
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';

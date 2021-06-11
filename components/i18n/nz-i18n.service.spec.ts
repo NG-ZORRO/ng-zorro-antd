@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-
 import { Subscription } from 'rxjs';
+
 import cs_CZ from './languages/cs_CZ';
 import de_DE from './languages/de_DE';
 import en_US from './languages/en_US';

@@ -3,6 +3,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 

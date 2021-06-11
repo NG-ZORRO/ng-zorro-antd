@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { getProjectFromWorkspace } from '@angular/cdk/schematics';
+
 import { strings } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import {
@@ -18,11 +20,10 @@ import {
   Tree,
   url
 } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Style } from '@schematics/angular/application/schema';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-import { addModule } from '../../utils/root-module';
 
+import { addModule } from '../../utils/root-module';
 import { Schema } from './schema';
 
 export default function(options: Schema): Rule {

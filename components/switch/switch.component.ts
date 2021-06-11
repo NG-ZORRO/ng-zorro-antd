@@ -4,6 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
@@ -21,13 +22,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 

@@ -9,6 +9,7 @@ import {
   TargetVersion,
   UpgradeData
 } from '@angular/cdk/schematics';
+
 import { findElementWithTag } from '../../../utils/ng-update/elements';
 
 export class FormTemplateRule extends Migration<UpgradeData> {

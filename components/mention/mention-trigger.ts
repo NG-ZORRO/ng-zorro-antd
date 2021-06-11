@@ -13,9 +13,10 @@ import {
   OnDestroy
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { NZ_MENTION_CONFIG } from './config';
 
+import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+
+import { NZ_MENTION_CONFIG } from './config';
 import { Mention } from './mention.component';
 import { NzMentionService } from './mention.service';
 

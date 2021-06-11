@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as child_process from 'child_process';
-import { resolve } from 'path';
 import { readFile, readJSON, writeFile, writeJSON } from 'fs-extra';
 import { sync as glob } from 'glob';
+
+import * as child_process from 'child_process';
+import { resolve } from 'path';
+
 import { buildConfig } from '../build-config';
 import { minifyFile } from './minify';
 

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,8 +18,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { merge, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Direction } from '@angular/cdk/bidi';
 import {
   CandyDate,
   cloneDate,
@@ -29,8 +31,7 @@ import {
 } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { DatePickerService } from './date-picker.service';
 import {
   CompatibleDate,

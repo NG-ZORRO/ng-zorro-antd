@@ -17,10 +17,12 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import { NgClassInterface } from 'ng-zorro-antd/core/types';
-import { isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NgClassInterface } from 'ng-zorro-antd/core/types';
+import { isNotNil } from 'ng-zorro-antd/core/util';
+
 import { NzRowDirective } from './row.directive';
 
 export interface EmbeddedProperty {

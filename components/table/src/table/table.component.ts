@@ -25,13 +25,15 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {

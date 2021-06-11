@@ -8,9 +8,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
-
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';

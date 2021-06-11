@@ -14,7 +14,9 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
+
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
+
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
