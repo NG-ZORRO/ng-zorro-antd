@@ -55,9 +55,6 @@ describe('button', () => {
       testBed.component.nzType = 'link';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-link');
-      testBed.component.nzType = 'danger';
-      testBed.fixture.detectChanges();
-      expect(buttonElement.classList).toContain('ant-btn-danger');
       testBed.component.nzType = 'dashed';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-dashed');

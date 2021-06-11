@@ -22,7 +22,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -30,13 +29,7 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-/**
- * @deprecated `danger` not supported, use `nzDanger` instead
- * @breaking-change 12.0.0
- */
-type NzLegacyButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
-
-export type NzButtonType = NzLegacyButtonType;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -57,7 +50,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
     '[class.ant-btn-text]': `nzType === 'text'`,
-    '[class.ant-btn-danger]': `nzType === 'danger'`,
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
     '[class.ant-btn-lg]': `nzSize === 'large'`,
@@ -69,7 +61,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-input-search-button]': `nzSearch`,
     '[class.ant-btn-rtl]': `dir === 'rtl'`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
-    '[attr.disabled]': 'disabled || null'
+    '[attr.disabled]': 'disabled || null',
+    '(click)': 'haltDisabledEvents($event)'
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
@@ -95,6 +88,13 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
+
+  haltDisabledEvents(event: MouseEvent): void {
+    if (this.disabled && (event.target as HTMLElement)?.tagName === 'A') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
@@ -145,15 +145,9 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading, nzType } = changes;
+    const { nzLoading } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
-    }
-
-    if (nzType?.currentValue === 'danger') {
-      warnDeprecation(
-        `'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`
-      );
     }
   }
 
