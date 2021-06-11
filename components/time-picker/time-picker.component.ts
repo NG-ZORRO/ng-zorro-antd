@@ -242,6 +242,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onFocus(value: boolean): void {
     this.focused = value;
+    if (!value) {
+      if (this.checkTimeValid(this.value)) {
+        this.setCurrentValueAndClose();
+      } else {
+        this.setValue(this.preValue);
+        this.close();
+      }
+    }
   }
 
   focus(): void {
@@ -377,5 +385,21 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
     this.cdr.markForCheck();
+  }
+
+  private checkTimeValid(value: Date | null): boolean {
+    if (!value) {
+      return true;
+    }
+
+    const disabledHours = this.nzDisabledHours?.();
+    const disabledMinutes = this.nzDisabledMinutes?.(value.getHours());
+    const disabledSeconds = this.nzDisabledSeconds?.(value.getHours(), value.getMinutes());
+
+    return !(
+      disabledHours?.includes(value.getHours()) ||
+      disabledMinutes?.includes(value.getMinutes()) ||
+      disabledSeconds?.includes(value.getSeconds())
+    );
   }
 }

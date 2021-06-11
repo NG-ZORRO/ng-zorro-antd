@@ -1,10 +1,14 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
+
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -170,6 +174,63 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+    it('should open with click and close with tab', fakeAsync(() => {
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      expect(getPickerContainer()).toBeNull();
+    }));
+    it('should set previous value when tabbing out with invalid input', fakeAsync(() => {
+      testComponent.date = new Date('2020-03-27T13:49:54.917');
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('invalid', input);
+      fixture.detectChanges();
+
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      expect(input.value).not.toEqual('invalid');
+    }));
+    it('should set new value when tabbing out with valid input', fakeAsync(() => {
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.date = new Date('2020-03-27T13:49:54.917');
+
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('20:10:30', input);
+      fixture.detectChanges();
+
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getHours()).toEqual(20);
+      expect(result.getMinutes()).toEqual(10);
+      expect(result.getSeconds()).toEqual(30);
+    }));
 
     describe('setup I18n service', () => {
       let srv: NzI18nService;
@@ -197,6 +258,14 @@ describe('time-picker', () => {
   function queryFromOverlay(selector: string): HTMLElement {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
+
+  function getPickerContainer(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-panel-container`) as HTMLElement;
+  }
+
+  function triggerInputBlur(debugElement: DebugElement): void {
+    dispatchFakeEvent(getPickerInput(debugElement), 'blur');
+  }
 });
 
 @Component({
@@ -223,6 +292,6 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon?: string;
   nzBackdrop = false;
-  onChange(): void {}
+  onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }
