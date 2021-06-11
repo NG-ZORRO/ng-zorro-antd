@@ -1,11 +1,13 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
 
 import { NzPopconfirmModule } from './popconfirm.module';
 
@@ -97,6 +99,23 @@ describe('NzPopconfirm', () => {
     expect(getTitleText()).toBeNull();
   }));
 
+  it('should autofocus work', fakeAsync(() => {
+    let focusElement;
+
+    focusElement = fixture.debugElement.query(By.css(':focus'));
+    expect(focusElement).toBeNull();
+
+    component.autoFocus = 'cancel';
+    fixture.detectChanges();
+    focusElement = fixture.debugElement.query(By.css(':focus'));
+    expect(focusElement?.nativeElement).toBe(getTooltipTrigger(0));
+
+    component.autoFocus = 'ok';
+    fixture.detectChanges();
+    focusElement = fixture.debugElement.query(By.css(':focus'));
+    expect(focusElement?.nativeElement).toBe(getTooltipTrigger(1));
+  }));
+
   it('should condition work', fakeAsync(() => {
     expect(component.confirm).toHaveBeenCalledTimes(0);
     expect(component.cancel).toHaveBeenCalledTimes(0);
@@ -144,6 +163,7 @@ describe('NzPopconfirm', () => {
       nzOkText="ok-text"
       nzOkType="default"
       nzCancelText="cancel-text"
+      [nzAutofocus]="autoFocus"
       [nzCondition]="condition"
       [nzPopconfirmShowArrow]="nzPopconfirmShowArrow"
       [nzPopconfirmBackdrop]="nzPopconfirmBackdrop"
@@ -175,6 +195,7 @@ export class NzPopconfirmTestNewComponent {
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
+  autoFocus: NzAutoFocusType = null;
 
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
   @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;

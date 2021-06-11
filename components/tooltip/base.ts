@@ -373,7 +373,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  private destroy$ = new Subject<void>();
+  protected destroy$ = new Subject<void>();
 
   constructor(
     public cdr: ChangeDetectorRef,

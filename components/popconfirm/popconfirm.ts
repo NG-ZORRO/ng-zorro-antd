@@ -4,6 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,12 +15,15 @@ import {
   ElementRef,
   EventEmitter,
   Host,
+  Inject,
   Input,
   OnDestroy,
   Optional,
   Output,
+  QueryList,
   Renderer2,
   TemplateRef,
+  ViewChildren,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -27,12 +31,14 @@ import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+export type NzAutoFocusType = null | 'ok' | 'cancel';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 
@@ -65,6 +71,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() @InputBoolean() nzCondition: boolean = false;
   @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
+  @Input() @WithConfig() nzAutofocus: NzAutoFocusType = null;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopconfirmVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
@@ -83,6 +90,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzIcon: ['nzIcon', () => this.nzIcon],
       nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
       nzPopconfirmBackdrop: ['nzBackdrop', () => this.nzPopconfirmBackdrop],
+      nzAutoFocus: ['nzAutoFocus', () => this.nzAutofocus],
       ...super.getProxyPropertyMap()
     };
   }
@@ -135,6 +143,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayPush]="true"
     >
       <div
+        cdkTrapFocus
+        [cdkTrapFocusAutoCapture]="nzAutoFocus !== null"
         class="ant-popover"
         [ngClass]="_classMap"
         [class.ant-popover-rtl]="dir === 'rtl'"
@@ -157,11 +167,24 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                   </ng-container>
                 </div>
                 <div class="ant-popover-buttons">
-                  <button nz-button [nzSize]="'small'" (click)="onCancel()">
+                  <button
+                    nz-button
+                    #cancelBtn
+                    [nzSize]="'small'"
+                    (click)="onCancel()"
+                    [attr.cdkFocusInitial]="nzAutoFocus === 'cancel' || null"
+                  >
                     <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
                     <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
                   </button>
-                  <button nz-button [nzSize]="'small'" [nzType]="nzOkType" (click)="onConfirm()">
+                  <button
+                    nz-button
+                    #okBtn
+                    [nzSize]="'small'"
+                    [nzType]="nzOkType"
+                    (click)="onConfirm()"
+                    [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
+                  >
                     <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
                     <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
                   </button>
@@ -175,26 +198,35 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
+  @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
+  @ViewChildren('cancelBtn', { read: ElementRef }) cancelBtn!: QueryList<ElementRef>;
+
   nzCancelText?: string;
   nzCondition = false;
   nzPopconfirmShowArrow = true;
   nzIcon?: string | TemplateRef<void>;
   nzOkText?: string;
   nzOkType: NzButtonType = 'primary';
+  nzAutoFocus: NzAutoFocusType = null;
 
   readonly nzOnCancel = new Subject<void>();
   readonly nzOnConfirm = new Subject<void>();
 
   protected _trigger: NzTooltipTrigger = 'click';
+  private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
+  private document: Document;
 
   _prefix = 'ant-popover';
 
   constructor(
     cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
     @Optional() directionality: Directionality,
+    @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(cdr, directionality, noAnimation);
+    this.document = document;
   }
 
   ngOnDestroy(): void {
@@ -209,10 +241,16 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
    */
   show(): void {
     if (!this.nzCondition) {
+      this.capturePreviouslyFocusedElement();
       super.show();
     } else {
       this.onConfirm();
     }
+  }
+
+  hide(): void {
+    super.hide();
+    this.restoreFocus();
   }
 
   onCancel(): void {
@@ -223,5 +261,30 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   onConfirm(): void {
     this.nzOnConfirm.next();
     super.hide();
+  }
+
+  private capturePreviouslyFocusedElement(): void {
+    if (this.document) {
+      this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
+    }
+  }
+
+  private restoreFocus(): void {
+    const toFocus = this.elementFocusedBeforeModalWasOpened as HTMLElement;
+
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
+    if (toFocus && typeof toFocus.focus === 'function') {
+      const activeElement = this.document.activeElement as Element;
+      const element = this.elementRef.nativeElement;
+
+      if (
+        !activeElement ||
+        activeElement === this.document.body ||
+        activeElement === element ||
+        element.contains(activeElement)
+      ) {
+        toFocus.focus();
+      }
+    }
   }
 }
