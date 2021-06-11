@@ -1,7 +1,5 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
