@@ -28,13 +28,13 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
             <i *ngSwitchDefault nz-icon nzType="left"></i>
           </ng-container>
         </button>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
             <i *ngSwitchDefault nz-icon nzType="right"></i>
