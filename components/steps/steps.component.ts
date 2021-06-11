@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -17,6 +18,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -79,7 +81,12 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   classMap: NgClassType = {};
   dir: Direction = 'ltr';
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
     this.setClassMap();
   }
 
@@ -115,8 +122,22 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   ngAfterContentInit(): void {
     if (this.steps) {
       this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+        this.updateHostProgressClass();
         this.updateChildrenSteps();
       });
+    }
+  }
+
+  private updateHostProgressClass(): void {
+    if (this.steps && !this.showProcessDot) {
+      const hasPercent = !!this.steps.toArray().find(step => step.nzPercentage !== null);
+      const className = 'ant-steps-with-progress';
+      const hasClass = this.elementRef.nativeElement.classList.contains(className);
+      if (hasPercent && !hasClass) {
+        this.renderer.addClass(this.elementRef.nativeElement, className);
+      } else if (!hasPercent && hasClass) {
+        this.renderer.removeClass(this.elementRef.nativeElement, className);
+      }
     }
   }
 

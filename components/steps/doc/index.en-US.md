@@ -54,3 +54,4 @@ A single step in the step bar.
 | `[nzTitle]` | title of the step | `string \| TemplateRef<void>` | - |
 | `[nzSubtitle]` | subTitle of the step | `string \| TemplateRef<void>` | - |
 | `[nzDisabled]` | disable click | `boolean` | `false` |
+| `[nzPercentage]` | Progress percentage of the step in `process` status (only works on basic Steps) | `number` | - |
