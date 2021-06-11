@@ -3,9 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './resize';
-export * from './singleton';
-export * from './drag';
-export * from './scroll';
-export * from './breakpoint';
-export * from './image-preload';
+export * from './image.component';
+export * from './image-loader';
+export * from './image.module';
+export * from './typings';
+export * from './utils';

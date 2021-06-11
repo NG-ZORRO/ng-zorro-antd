@@ -161,3 +161,11 @@ components/overview/en
 /docs/universal/zh
 /docs/migration-v10/en
 /docs/migration-v10/zh
+/experimental/resizable/zh
+/experimental/pipes/en
+/experimental/pipes/zh
+/experimental/resizable/en
+/experimental/code-editor/zh
+/experimental/code-editor/en
+/experimental/experimental-image/zh
+/experimental/experimental-image/en

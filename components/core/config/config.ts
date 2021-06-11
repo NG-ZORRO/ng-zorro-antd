@@ -58,6 +58,7 @@ export interface NzConfig {
   image?: ImageConfig;
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
+  imageExperimental?: ImageExperimentalConfig;
 }
 
 export interface SelectConfig {
@@ -310,6 +311,16 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+}
+
+export interface ImageExperimentalConfig {
+  nzFallback?: string;
+  nzPlaceholder?: string;
+  nzDisablePreview?: string;
+  nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
+  nzAutoSrcset?: boolean;
+  nzSrcLoader?(params: { src: string; width: number }): string;
 }
 
 export interface PopConfirmConfig {

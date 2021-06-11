@@ -43,6 +43,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisablePreview: BooleanInput;
 
   @Input() nzSrc = '';
+  @Input() nzSrcset = '';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
@@ -93,13 +94,13 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     if (this.parentGroup) {
       // preview inside image group
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
-      const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc }));
+      const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc, srcset: e.nzSrcset }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
       const previewRef = this.nzImageService.preview(previewImages, { nzDirection: this.dir });
       previewRef.switchTo(previewIndex);
     } else {
       // preview not inside image group
-      const previewImages = [{ src: this.nzSrc }];
+      const previewImages = [{ src: this.nzSrc, srcset: this.nzSrcset }];
       this.nzImageService.preview(previewImages, { nzDirection: this.dir });
     }
   }
@@ -124,27 +125,33 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   private backLoad(): void {
     this.backLoadImage = this.document.createElement('img');
     this.backLoadImage.src = this.nzSrc;
+    this.backLoadImage.srcset = this.nzSrcset;
     this.status = 'loading';
 
     if (this.backLoadImage.complete) {
       this.status = 'normal';
       this.getElement().nativeElement.src = this.nzSrc;
+      this.getElement().nativeElement.srcset = this.nzSrcset;
     } else {
       if (this.nzPlaceholder) {
         this.getElement().nativeElement.src = this.nzPlaceholder;
+        this.getElement().nativeElement.srcset = '';
       } else {
         this.getElement().nativeElement.src = this.nzSrc;
+        this.getElement().nativeElement.srcset = this.nzSrcset;
       }
 
       this.backLoadImage.onload = () => {
         this.status = 'normal';
         this.getElement().nativeElement.src = this.nzSrc;
+        this.getElement().nativeElement.srcset = this.nzSrcset;
       };
 
       this.backLoadImage.onerror = () => {
         this.status = 'error';
         if (this.nzFallback) {
           this.getElement().nativeElement.src = this.nzFallback;
+          this.getElement().nativeElement.srcset = '';
         }
       };
     }
