@@ -474,6 +474,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.inputValue = '';
     this.setMenuVisible(false);
     this.cascaderService.clear();
+    this.nzClear.emit();
   }
 
   getSubmitValue(): NzSafeAny[] {
