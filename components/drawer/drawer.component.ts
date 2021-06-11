@@ -10,7 +10,6 @@ import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -37,7 +36,6 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
@@ -84,7 +82,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 [class.ant-drawer-header-no-title]="!nzTitle"
               >
                 <div *ngIf="nzTitle" class="ant-drawer-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzTitle">
+                    <div [innerHTML]="nzTitle"></div>
+                  </ng-container>
                 </div>
                 <button
                   *ngIf="nzClosable"
@@ -110,10 +110,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                     <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
                   </ng-container>
                 </ng-template>
-                <ng-content *ngIf="!(nzContent || contentFromContentChild)"></ng-content>
               </div>
               <div *ngIf="nzFooter" class="ant-drawer-footer">
-                <ng-container *nzStringTemplateOutlet="nzFooter"><div [innerHTML]="nzFooter"></div></ng-container>
+                <ng-container *nzStringTemplateOutlet="nzFooter">
+                  <div [innerHTML]="nzFooter"></div>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -126,7 +127,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
@@ -291,14 +292,6 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     setTimeout(() => {
       this.nzOnViewInit.emit();
     });
-  }
-
-  ngAfterContentInit(): void {
-    if (!(this.contentFromContentChild || this.nzContent)) {
-      warnDeprecation(
-        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzDrawerContent></ng-template>` to declare the content of the drawer.'
-      );
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
