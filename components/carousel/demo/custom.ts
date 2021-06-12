@@ -36,6 +36,7 @@ import {
       h3 {
         color: #fff;
         margin-bottom: 0;
+        user-select: none;
       }
     `
   ],
