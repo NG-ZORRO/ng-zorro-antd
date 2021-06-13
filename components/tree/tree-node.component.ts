@@ -321,6 +321,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   handleDragDrop(e: DragEvent): void {
+    e.preventDefault();
+    e.stopPropagation();
     this.ngZone.run(() => {
       this.showIndicator = false;
       this.clearDragClass();
