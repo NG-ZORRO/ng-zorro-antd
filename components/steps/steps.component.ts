@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -23,13 +24,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { toBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';

@@ -4,8 +4,9 @@
  */
 
 import { Injectable } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Injectable()
 export class NzRadioService {

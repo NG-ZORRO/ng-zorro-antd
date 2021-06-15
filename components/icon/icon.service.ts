@@ -7,11 +7,14 @@ import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, RendererFactory2, Self } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
+
 import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Subject } from 'rxjs';
+
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
 
 export interface NzIconfontOption {

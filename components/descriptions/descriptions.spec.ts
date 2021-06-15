@@ -2,7 +2,9 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+
 import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
 

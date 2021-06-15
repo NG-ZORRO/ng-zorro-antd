@@ -4,6 +4,7 @@
  */
 
 import { series, task } from 'gulp';
+
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
 import { execNodeTask } from '../util/task-helpers';

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Observable, Observer } from 'rxjs';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'nz-demo-upload-avatar',

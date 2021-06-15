@@ -1,7 +1,6 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
-
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 

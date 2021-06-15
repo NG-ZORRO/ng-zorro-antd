@@ -14,8 +14,10 @@ import {
   Renderer2,
   TemplateRef
 } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
+
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzGraphGroupNode, NzGraphNode } from './interface';
 
 interface Info {

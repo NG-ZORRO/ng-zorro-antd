@@ -13,6 +13,7 @@ import {
   HierarchyGraphOption,
   LayoutConfig
 } from 'dagre-compound';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export enum NzGraphEdgeType {

@@ -15,9 +15,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+
 import { NzStatisticValueType } from './typings';
 
 @Component({

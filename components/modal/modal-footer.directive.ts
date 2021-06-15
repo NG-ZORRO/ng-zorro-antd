@@ -4,6 +4,7 @@
  */
 
 import { Directive, Optional, TemplateRef } from '@angular/core';
+
 import { NzModalRef } from './modal-ref';
 
 @Directive({

@@ -7,6 +7,7 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzBackTopComponent } from './back-top.component';

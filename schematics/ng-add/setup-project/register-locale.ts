@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
@@ -14,6 +13,8 @@ import {
   insertImport,
   parseSourceFile
 } from '@angular/cdk/schematics';
+
+import { Rule, Tree } from '@angular-devkit/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';

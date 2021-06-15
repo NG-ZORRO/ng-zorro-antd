@@ -14,7 +14,6 @@ import {
   OnDestroy,
   Renderer2
 } from '@angular/core';
-
 import { EMPTY, merge, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 

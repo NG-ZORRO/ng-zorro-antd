@@ -21,10 +21,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzResizeService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-table-inner-scroll',

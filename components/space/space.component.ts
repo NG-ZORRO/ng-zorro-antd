@@ -15,12 +15,12 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';

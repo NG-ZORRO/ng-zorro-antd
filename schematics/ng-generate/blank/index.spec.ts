@@ -1,5 +1,6 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+
 import { createTestApp } from '../../testing/test-app';
 
 describe('ng-component schematic', () => {

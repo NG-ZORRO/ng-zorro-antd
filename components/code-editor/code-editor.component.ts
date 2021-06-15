@@ -19,16 +19,19 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-// Import types from monaco editor.
-import { editor } from 'monaco-editor';
-import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
+import { editor } from 'monaco-editor';
+
+import { warn } from 'ng-zorro-antd/core/logger';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
+
+// Import types from monaco editor.
 import ITextModel = editor.ITextModel;
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 import IStandaloneDiffEditor = editor.IStandaloneDiffEditor;

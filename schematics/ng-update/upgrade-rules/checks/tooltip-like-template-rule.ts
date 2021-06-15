@@ -8,6 +8,7 @@ import {
   ResolvedResource,
   UpgradeData
 } from '@angular/cdk/schematics';
+
 import { findElementWithTag } from '../../../utils/ng-update/elements';
 
 export class TooltipLikeTemplateRule extends Migration<UpgradeData> {

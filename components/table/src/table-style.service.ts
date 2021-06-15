@@ -4,9 +4,11 @@
  */
 
 import { Injectable, TemplateRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, merge, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzThMeasureDirective } from './cell/th-measure.directive';
 
 @Injectable()

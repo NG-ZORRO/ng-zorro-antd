@@ -7,10 +7,11 @@ import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
-import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
+import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzSingletonService } from 'ng-zorro-antd/core/services';
 
 import { NzMessageData, NzMessageDataOptions } from './typings';
 

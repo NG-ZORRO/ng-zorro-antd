@@ -16,6 +16,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 

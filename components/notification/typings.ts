@@ -4,9 +4,9 @@
  */
 
 import { TemplateRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { Subject } from 'rxjs';
 
 export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 

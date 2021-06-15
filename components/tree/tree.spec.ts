@@ -2,18 +2,18 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable, of } from 'rxjs';
 
 import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { Observable, of } from 'rxjs';
-import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 
+import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeComponent } from './tree.component';
 import { NzTreeModule } from './tree.module';
+
 import Spy = jasmine.Spy;
 
 const prepareTest = (componentInstance?: NzSafeAny): ComponentBed<NzSafeAny> =>

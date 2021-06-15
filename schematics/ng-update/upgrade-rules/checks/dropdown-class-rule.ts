@@ -4,6 +4,7 @@
  */
 
 import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
 
 export class DropdownClassRule extends Migration<UpgradeData> {

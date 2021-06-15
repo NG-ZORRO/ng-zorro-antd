@@ -18,13 +18,12 @@ import {
   Optional,
   ViewContainerRef
 } from '@angular/core';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
 import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({ template: '' })
 // eslint-disable-next-line @angular-eslint/component-class-suffix

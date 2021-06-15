@@ -5,8 +5,9 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../typings';

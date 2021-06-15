@@ -112,8 +112,30 @@ module.exports = {
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
         'prefer-arrow/prefer-arrow-functions': 'off',
+        'import/no-duplicates': 'error',
+        'import/no-unused-modules': 'error',
         'import/no-unassigned-import': 'error',
-        'import/order': 'error',
+        'import/order': [
+          'error',
+          {
+            alphabetize: { order: 'asc', caseInsensitive: false },
+            'newlines-between': 'always',
+            groups: ['external', 'builtin', 'internal', [ 'parent', 'sibling', 'index']],
+            pathGroups: [
+              {
+                pattern: '{@angular/**,rxjs,rxjs/operators}',
+                group: 'external',
+                position: 'before'
+              },
+              {
+                pattern: 'ng-zorro-antd/**',
+                group: 'internal',
+                position: 'before'
+              }
+            ],
+            "pathGroupsExcludedImportTypes":[]
+          }
+        ],
         'no-bitwise': 'off',
         'no-duplicate-imports': 'error',
         'no-invalid-this': 'off',

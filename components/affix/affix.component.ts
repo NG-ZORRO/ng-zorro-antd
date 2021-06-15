@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -25,15 +26,14 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { auditTime, map, takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
 
-import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { auditTime, map, takeUntil } from 'rxjs/operators';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
 

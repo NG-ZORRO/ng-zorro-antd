@@ -26,6 +26,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
+
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import {
   arraysEqual,
@@ -39,12 +42,9 @@ import {
   MouseTouchObserverConfig,
   silentEvent
 } from 'ng-zorro-antd/core/util';
-import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
 import { NzSliderHandleComponent } from './handle.component';
 import { NzSliderService } from './slider.service';
-
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
 
 @Component({

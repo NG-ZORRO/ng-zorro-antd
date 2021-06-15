@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { getProjectFromWorkspace } from '@angular/cdk/schematics';
+
 import { chain, Rule, schematic, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+
 import { addPackageToPackageJson } from '../utils/package-config';
 import { getProjectStyle } from '../utils/project-style';
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';

@@ -15,11 +15,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';

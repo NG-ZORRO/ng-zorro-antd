@@ -20,14 +20,15 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { merge, Subject } from 'rxjs';
+import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { merge, Subject } from 'rxjs';
-import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 

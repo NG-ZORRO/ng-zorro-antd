@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input, ViewChild, ViewEncapsulation
 
 import { NzTreeVirtualNodeData } from './node';
 import { NzTreeNodeOutletDirective } from './outlet';
-
 import { NzTreeView } from './tree';
 
 const DEFAULT_SIZE = 28;

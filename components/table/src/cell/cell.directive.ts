@@ -4,6 +4,7 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+
 import { NzTableStyleService } from '../table-style.service';
 
 @Directive({

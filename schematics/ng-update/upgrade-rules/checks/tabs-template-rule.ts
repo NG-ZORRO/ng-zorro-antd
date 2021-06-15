@@ -4,6 +4,7 @@
  */
 
 import { Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+
 import { findElementWithoutStructuralDirective } from '../../../utils/ng-update/elements';
 
 export class TabsTemplateRule extends Migration<UpgradeData> {

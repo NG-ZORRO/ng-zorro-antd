@@ -20,12 +20,14 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
+import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 const listOfPositions = [

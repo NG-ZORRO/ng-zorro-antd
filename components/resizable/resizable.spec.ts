@@ -11,7 +11,6 @@ import { NzDemoResizableCustomizeComponent } from './demo/customize';
 import { NzDemoResizableGridComponent } from './demo/grid';
 import { NzDemoResizableLockAspectRatioComponent } from './demo/lock-aspect-ratio';
 import { NzDemoResizablePreviewComponent } from './demo/preview';
-
 import { NzResizableDirective } from './resizable.directive';
 import { NzResizableModule } from './resizable.module';
 import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';

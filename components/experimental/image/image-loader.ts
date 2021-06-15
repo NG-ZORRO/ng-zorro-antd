@@ -4,6 +4,7 @@
  */
 
 import { isNil } from 'ng-zorro-antd/core/util';
+
 import { NzImageSrcLoader } from './typings';
 import { normalizeSrc } from './utils';
 

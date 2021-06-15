@@ -14,6 +14,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { NzStatisticValueType } from './typings';
 
 @Component({

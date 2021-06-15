@@ -6,15 +6,15 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import en_US from '../i18n/languages/en_US';
 
+import en_US from '../i18n/languages/en_US';
 import {
   NzShowUploadList,
   NzUploadChangeParam,

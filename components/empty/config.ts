@@ -9,6 +9,7 @@
  */
 
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzEmptySize = 'normal' | 'small' | '';

@@ -3,17 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
-import { Rule, Tree } from '@angular-devkit/schematics';
 import {
   addModuleImportToRootModule,
   getProjectFromWorkspace,
   getProjectMainFile,
   hasNgModuleImport
 } from '@angular/cdk/schematics';
+
+import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { Rule, Tree } from '@angular-devkit/schematics';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const browserAnimationsModuleName = 'BrowserAnimationsModule';

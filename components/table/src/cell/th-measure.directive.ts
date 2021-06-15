@@ -4,8 +4,9 @@
  */
 
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
-import { isNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
+
+import { isNil } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'th'

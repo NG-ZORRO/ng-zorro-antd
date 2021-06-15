@@ -21,6 +21,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';

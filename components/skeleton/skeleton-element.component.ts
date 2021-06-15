@@ -12,6 +12,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
+
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,

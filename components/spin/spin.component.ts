@@ -16,12 +16,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
+import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-
-import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
-import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 

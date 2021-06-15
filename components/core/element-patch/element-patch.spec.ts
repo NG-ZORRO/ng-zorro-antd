@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync } from '@angular/core/testing';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
+
 import { ComponentBed, createComponentBed } from '../testing/component-bed';
 import { NzElementPatchDirective } from './element-patch.directive';
 import { NzElementPatchModule } from './element-patch.module';

@@ -21,13 +21,13 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter, startWith, takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-
 import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;

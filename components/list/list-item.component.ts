@@ -17,10 +17,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subscription } from 'rxjs';
+
+import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
 

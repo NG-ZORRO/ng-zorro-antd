@@ -5,8 +5,10 @@
 
 import { buildConfig } from '../build-config';
 
-const path = require('path');
 const fs = require('fs-extra');
+
+const path = require('path');
+
 
 export function setVersion(): void {
   fs.outputFileSync(

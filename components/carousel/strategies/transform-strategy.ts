@@ -9,7 +9,6 @@ import { Observable, Subject } from 'rxjs';
 
 import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { NzCarouselComponentAsSource, PointerVector } from '../typings';
-
 import { NzCarouselBaseStrategy } from './base-strategy';
 
 interface NzCarouselTransformStrategyOptions {

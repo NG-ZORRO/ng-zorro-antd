@@ -4,8 +4,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
 
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({

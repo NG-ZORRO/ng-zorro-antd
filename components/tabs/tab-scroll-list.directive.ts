@@ -4,7 +4,6 @@
  */
 
 import { Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
-
 import { fromEvent, Observable, Subscription } from 'rxjs';
 
 import {

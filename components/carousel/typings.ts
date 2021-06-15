@@ -5,6 +5,7 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, QueryList } from '@angular/core';
+
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 

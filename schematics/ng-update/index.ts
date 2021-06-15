@@ -3,8 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Rule, SchematicContext } from '@angular-devkit/schematics';
 import { createMigrationSchematicRule, NullableDevkitMigration, TargetVersion } from '@angular/cdk/schematics';
+
+import { Rule, SchematicContext } from '@angular-devkit/schematics';
+
 import { ClassNamesMigration } from './data/migrations/class-names';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';

@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { join } from 'path';
 import { series, task } from 'gulp';
-import { buildConfig } from '../../build-config';
 
+import { join } from 'path';
+
+import { buildConfig } from '../../build-config';
 import { copyResources } from '../../schematics/copy-resources';
 import { generate as demo2schematics } from '../../schematics/demo2schematics';
 import { setVersion } from '../../schematics/set-version';

@@ -5,6 +5,7 @@
 
 import { PlatformModule } from '@angular/cdk/platform';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+
 import { IconDefinition } from '@ant-design/icons-angular';
 
 import { NzIconDirective } from './icon.directive';

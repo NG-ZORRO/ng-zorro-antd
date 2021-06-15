@@ -4,6 +4,7 @@
  */
 
 import { chain, noop, Rule } from '@angular-devkit/schematics';
+
 import { Schema } from '../schema';
 import { addAnimationsModule } from './add-animations-module';
 import { addIconToAssets } from './add-icon-assets';

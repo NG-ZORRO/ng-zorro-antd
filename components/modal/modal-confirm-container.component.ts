@@ -20,12 +20,11 @@ import {
   ViewChild
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
-
-import { takeUntil } from 'rxjs/operators';
 
 import { nzModalAnimations } from './modal-animations';
 import { BaseModalContainerComponent } from './modal-container';

@@ -4,7 +4,9 @@
  */
 
 import { Migration, UpgradeData } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
+
 import { isNgZorroImportDeclaration } from "../../../utils/ng-update/module-specifiers";
 
 export abstract class InjectionTokenRule extends Migration<UpgradeData> {

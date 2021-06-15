@@ -5,9 +5,10 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
-
 import { SafeUrl } from '@angular/platform-browser';
+
 import { ThemeType } from '@ant-design/icons-angular';
+
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
 import {
   NzSafeAny,

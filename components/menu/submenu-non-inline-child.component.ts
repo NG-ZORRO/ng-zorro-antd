@@ -19,10 +19,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Component({
