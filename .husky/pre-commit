@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-tsc -p components/tsconfig.json --noEmit && npx --no-install lint-staged
+npx --no-install tsc -p components/tsconfig.json --noEmit && npx --no-install lint-staged

@@ -9,7 +9,8 @@ import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/te
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselComponent } from './carousel.component';
 import { NzCarouselModule } from './carousel.module';
-import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
+import { NzCarouselFlipStrategy } from './strategies/experimental/flip-strategy';
+import { NzCarouselTransformNoLoopStrategy } from './strategies/experimental/transform-no-loop-strategy';
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
 
 describe('carousel', () => {
@@ -191,7 +192,7 @@ describe('carousel', () => {
       expect(resizeSpy).toHaveBeenCalledTimes(1);
     }));
 
-    // TODO(wendellhu95): no idea why this stops working with auditTime
+    // this test may fail on WSL
     it('should support swiping to switch', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 500);
       tickMilliseconds(fixture, 700);
@@ -280,7 +281,7 @@ describe('carousel', () => {
       }));
     });
 
-    // Already covered in components specs.
+    // already covered in components specs.
     // describe('opacity strategy', () => {});
   });
 });
@@ -300,8 +301,12 @@ describe('carousel custom strategies', () => {
           provide: NZ_CAROUSEL_CUSTOM_STRATEGIES,
           useValue: [
             {
-              name: 'fade',
-              strategy: NzCarouselOpacityStrategy
+              name: 'flip',
+              strategy: NzCarouselFlipStrategy
+            },
+            {
+              name: 'transform-no-loop',
+              strategy: NzCarouselTransformNoLoopStrategy
             }
           ]
         }
@@ -316,13 +321,33 @@ describe('carousel custom strategies', () => {
     carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));
     carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
 
-    // The custom provided strategy should also do the work.
-    testComponent.effect = 'fade';
+    testComponent.effect = 'flip';
     fixture.detectChanges();
-    expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+    expect(carouselContents[0].nativeElement.style.transform).toBe('rotateY(0deg)');
+    expect(carouselContents[1].nativeElement.style.transform).toBe('rotateY(180deg)');
     carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
     tickMilliseconds(fixture, 700);
-    expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('');
+    expect(carouselContents[0].nativeElement.style.transform).toBe('rotateY(180deg)');
+    expect(carouselContents[3].nativeElement.style.transform).toBe('rotateY(0deg)');
+
+    testComponent.effect = 'transform-no-loop';
+    fixture.detectChanges();
+    expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe(
+      'translate3d(0px, 0px, 0px)'
+    );
+    carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
+      'translate3d(0px, 0px, 0px)'
+    );
+
+    testComponent.dotPosition = 'left';
+    fixture.detectChanges();
+    carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
+      'translate3d(0px, 0px, 0px)'
+    );
   }));
 });
 

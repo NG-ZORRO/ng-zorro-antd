@@ -46,6 +46,9 @@ export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
   dispose(): void {
     this.contents.forEach((content: NzCarouselContentDirective) => {
       this.renderer.setStyle(content.el, 'transition', null);
+      this.renderer.setStyle(content.el, 'opacity', null);
+      this.renderer.setStyle(content.el, 'width', null);
+      this.renderer.setStyle(content.el, 'left', null);
     });
 
     super.dispose();
