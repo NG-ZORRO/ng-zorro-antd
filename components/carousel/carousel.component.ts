@@ -86,7 +86,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
       >
         <li
           *ngFor="let content of carouselContents; let i = index"
-          [class.slick-active]="content.isActive"
+          [class.slick-active]="i === activeIndex"
           (click)="onLiClick(i)"
         >
           <ng-template
@@ -275,6 +275,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.goTo(index);
     }
   };
+
   next(): void {
     this.goTo(this.activeIndex + 1);
   }
