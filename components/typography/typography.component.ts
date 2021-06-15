@@ -115,6 +115,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     '[class.ant-typography-success]': 'nzType === "success"',
     '[class.ant-typography-disabled]': 'nzDisabled',
     '[class.ant-typography-ellipsis]': 'nzEllipsis && !expanded',
+    '[class.ant-typography-single-line]': 'nzEllipsis && nzEllipsisRows === 1',
     '[class.ant-typography-ellipsis-single-line]': 'canCssEllipsis && nzEllipsisRows === 1',
     '[class.ant-typography-ellipsis-multiple-line]': 'canCssEllipsis && nzEllipsisRows > 1',
     '[style.-webkit-line-clamp]': '(canCssEllipsis && nzEllipsisRows > 1) ? nzEllipsisRows : null'
