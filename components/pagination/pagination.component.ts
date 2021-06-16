@@ -132,6 +132,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     if (validIndex !== this.nzPageIndex && !this.nzDisabled) {
       this.nzPageIndex = validIndex;
       this.nzPageIndexChange.emit(this.nzPageIndex);
+      this.cdr.markForCheck();
     }
   }
 
