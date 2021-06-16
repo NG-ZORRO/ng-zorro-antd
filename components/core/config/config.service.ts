@@ -22,10 +22,14 @@ export class NzConfigService {
   private configUpdated$ = new Subject<keyof NzConfig>();
 
   /** Global config holding property. */
-  private config: NzConfig;
+  private readonly config: NzConfig;
 
   constructor(@Optional() @Inject(NZ_CONFIG) defaultConfig?: NzConfig) {
     this.config = defaultConfig || {};
+  }
+
+  getConfig(): NzConfig {
+    return this.config;
   }
 
   getConfigForComponent<T extends NzConfigKey>(componentName: T): NzConfig[T] {
@@ -58,7 +62,7 @@ export function WithConfig<T>() {
     propName: NzSafeAny,
     originalDescriptor?: TypedPropertyDescriptor<T>
   ): NzSafeAny {
-    const privatePropName = `$$__assignedValue__${propName}`;
+    const privatePropName = `$$__zorroConfigDecorator__${propName}`;
 
     Object.defineProperty(target, privatePropName, {
       configurable: true,
@@ -69,22 +73,18 @@ export function WithConfig<T>() {
     return {
       get(): T | undefined {
         const originalValue = originalDescriptor?.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
-        const assignedByUser = ((this.assignmentCount || {})[propName] || 0) > 1;
-
+        const assignedByUser = (this.propertyAssignCounter?.[propName] || 0) > 1;
+        const configValue = this.nzConfigService.getConfigForComponent(this._nzModuleName)?.[propName];
         if (assignedByUser && isDefined(originalValue)) {
           return originalValue;
+        } else {
+          return isDefined(configValue) ? configValue : originalValue;
         }
-
-        const componentConfig = this.nzConfigService.getConfigForComponent(this._nzModuleName) || {};
-        const configValue = componentConfig[propName];
-        const ret = isDefined(configValue) ? configValue : originalValue;
-
-        return ret;
       },
       set(value?: T): void {
         // If the value is assigned, we consider the newly assigned value as 'assigned by user'.
-        this.assignmentCount = this.assignmentCount || {};
-        this.assignmentCount[propName] = (this.assignmentCount[propName] || 0) + 1;
+        this.propertyAssignCounter = this.propertyAssignCounter || {};
+        this.propertyAssignCounter[propName] = (this.propertyAssignCounter[propName] || 0) + 1;
 
         if (originalDescriptor?.set) {
           originalDescriptor.set.bind(this)(value!);

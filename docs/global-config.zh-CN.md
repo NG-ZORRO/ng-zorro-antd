@@ -24,7 +24,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    { provide: NZ_CONFIG, useValue: { ngZorroConfig } }
   ],
   bootstrap: [AppComponent]
 })
@@ -104,9 +104,63 @@ const nzConfigFactory = (
 export class AppModule {}
 ```
 
-## 动态变更全局配置
 
-你可以通过调用 `NzConfigService` 的 `set` 方法来改变某个组件的全局配置项，例如：
+## 局部生效
+
+开发者可以利用 Angular 自带的依赖注入机制，在特定组件内重新设定 `NZ_CONFIG`， 该设定不会影响该组件以外的配置。
+
+```typescript
+@Component({
+  providers: [
+    // 重设本地 NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useValue: {
+        button: {
+          nzSize: 'large'
+        }
+      }
+    }
+  ]
+})
+```
+
+也可以使用 `useFactory` 将全局配置与区域配置合并后生效
+
+> 注意：全局配置在初始化之后修改将不会影响该部分配置结果
+
+```typescript
+@Component({
+  providers: [
+    // 重设本地 NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useFactory: (nzConfigService: NzConfigService) => {
+        const globalConfig = nzConfigService.getConfig();
+        const localConfig = {
+          select: {
+            nzBorderless: true
+          }
+        };
+        // 合并全局配置与本地配置
+        const mergedConfig = {
+          ...globalConfig,
+          ...localConfig
+        };
+        return mergedConfig;
+      },
+      // 获取全局 NzConfigService
+      deps: [[new SkipSelf(), NzConfigService]]
+    }
+  ]
+})
+```
+
+## 动态变更
+
+你可以通过调用 `NzConfigService` 的 `set` 方法来改变某个组件的配置项，例如：
 
 ```typescript
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -118,7 +172,6 @@ export class ChangeZorroConfigComponent {
   constructor(private nzConfigService: NzConfigService) {}
 
   onChangeConfig() {
-    // 爷爷：我就喜欢大号字！
     this.nzConfigService.set('button', { nzSize: 'large' })
   }
 }
@@ -126,7 +179,7 @@ export class ChangeZorroConfigComponent {
 
 所有的组件实例都会响应这些改变（只要它们没有被单独赋值）。
 
-## 全局配置项的优先级
+## 优先级说明
 
 对于任何一个属性来说，各个来源的值的优先级如下：
 
@@ -140,6 +193,6 @@ export class ChangeZorroConfigComponent {
 
 最终该 Notification 将会显示 6000 毫秒。
 
-## 查看所有可用的全局配置项
+## 可配置项
 
 `NzConfig` 接口提供的类型定义信息能够帮助你找到所有支持全局配置项的组件和属性。另外，每个组件的文档都会指出哪些属性可以通过全局配置项的方式指定。

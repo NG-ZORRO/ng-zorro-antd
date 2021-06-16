@@ -40,7 +40,7 @@ function propDecoratorFactory<T, D>(
     propName: string,
     originalDescriptor?: TypedPropertyDescriptor<NzSafeAny>
   ): NzSafeAny {
-    const privatePropName = `$$__${propName}`;
+    const privatePropName = `$$__zorroPropDecorator__${propName}`;
 
     if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
       warn(`The prop "${privatePropName}" is already exist, it will be overrided by ${name} decorator.`);

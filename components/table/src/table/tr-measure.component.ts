@@ -22,7 +22,7 @@ import {
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',

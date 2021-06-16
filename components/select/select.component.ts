@@ -31,13 +31,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -63,6 +64,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   exportAs: 'nzSelect',
   preserveWhitespaces: false,
   providers: [
+    NzDestroyService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),
@@ -162,7 +164,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '(click)': 'onHostClick()'
   }
 })
-export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, AfterContentInit, OnChanges {
+export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -239,7 +241,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   private searchValue: string = '';
   private isReactiveDriven = false;
   private value: NzSafeAny | NzSafeAny[];
-  private destroy$ = new Subject();
   private _nzShowArrow: boolean | undefined;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -504,6 +505,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
   }
 
   constructor(
+    private destroy$: NzDestroyService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
@@ -563,17 +565,19 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     if (nzOptions) {
       this.isReactiveDriven = true;
       const listOfOptions = this.nzOptions || [];
-      const listOfTransformedItem = listOfOptions.map(item => ({
-        template: item.label instanceof TemplateRef ? item.label : null,
-        nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
-        nzValue: item.value,
-        nzDisabled: item.disabled || false,
-        nzHide: item.hide || false,
-        nzCustomContent: item.label instanceof TemplateRef,
-        groupLabel: item.groupLabel || null,
-        type: 'item',
-        key: item.value
-      }));
+      const listOfTransformedItem = listOfOptions.map(item => {
+        return {
+          template: item.label instanceof TemplateRef ? item.label : null,
+          nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
+          nzValue: item.value,
+          nzDisabled: item.disabled || false,
+          nzHide: item.hide || false,
+          nzCustomContent: item.label instanceof TemplateRef,
+          groupLabel: item.groupLabel || null,
+          type: 'item',
+          key: item.value
+        };
+      });
       this.listOfTemplateItem$.next(listOfTransformedItem);
     }
   }
@@ -667,10 +671,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         });
     }
   }
-
   ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.elementRef);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

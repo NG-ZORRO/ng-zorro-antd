@@ -32,8 +32,8 @@ import {
 import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
