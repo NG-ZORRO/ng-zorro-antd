@@ -18,7 +18,8 @@
 
     > .@{table-prefix-cls}-content,
     > .@{table-prefix-cls}-header,
-    > .@{table-prefix-cls}-body {
+    > .@{table-prefix-cls}-body,
+    > .@{table-prefix-cls}-summary {
       > table {
         // ============================= Cell =============================
         > thead > tr > th,
@@ -31,6 +32,12 @@
         > thead {
           > tr:not(:last-child) > th {
             border-bottom: @border-width-base @border-style-base @table-border-color;
+          }
+
+          > tr > th {
+            &::before {
+              background-color: transparent !important;
+            }
           }
         }
 

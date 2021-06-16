@@ -7,7 +7,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -44,10 +43,7 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
     >
       <ng-content></ng-content>
     </span>
-  `,
-  host: {
-    '[class.ant-table-filter-trigger-container-open]': 'nzVisible'
-  }
+  `
 })
 export class NzFilterTriggerComponent implements OnChanges {
   static ngAcceptInputType_nzBackdrop: BooleanInput;
@@ -85,10 +81,7 @@ export class NzFilterTriggerComponent implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-filter-trigger-container');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzHasBackdrop } = changes;
