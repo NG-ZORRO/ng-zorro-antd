@@ -41,14 +41,8 @@ function generate(target) {
       }
     }
     const componentDirPath = path.join(rootPath, componentName);
-    if (
-      componentName === 'style' ||
-      componentName === 'core' ||
-      componentName === 'cdk' ||
-      componentName === 'locale' ||
-      componentName === 'i18n' ||
-      componentName === 'version'
-    ) {
+    const skips = ['style', 'core', 'locale', 'cdk', 'i18n', 'version', 'experimental'];
+    if (skips.indexOf(componentName) !== -1) {
       return;
     }
     if (fs.statSync(componentDirPath).isDirectory()) {

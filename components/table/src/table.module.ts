@@ -11,9 +11,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';

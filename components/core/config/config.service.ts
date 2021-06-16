@@ -4,10 +4,11 @@
  */
 
 import { Inject, Injectable, Optional } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Subject } from 'rxjs';
-
 import { filter, mapTo } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
 
 const isDefined = function (value?: NzSafeAny): boolean {
@@ -56,7 +57,11 @@ export class NzConfigService {
  */
 // eslint-disable-next-line
 export function WithConfig<T>() {
-  return function ConfigDecorator(target: NzSafeAny, propName: NzSafeAny, originalDescriptor?: TypedPropertyDescriptor<T>): NzSafeAny {
+  return function ConfigDecorator(
+    target: NzSafeAny,
+    propName: NzSafeAny,
+    originalDescriptor?: TypedPropertyDescriptor<T>
+  ): NzSafeAny {
     const privatePropName = `$$__zorroConfigDecorator__${propName}`;
 
     Object.defineProperty(target, privatePropName, {
