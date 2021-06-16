@@ -4,6 +4,7 @@
  */
 
 import { NgModule } from '@angular/core';
+
 import { NzResizeObserverDirective } from './resize-observer.directive';
 import { NzResizeObserverFactory } from './resize-observer.service';
 

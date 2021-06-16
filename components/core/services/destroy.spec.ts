@@ -5,6 +5,7 @@
 
 import { of } from 'rxjs';
 import { delay, finalize, takeUntil } from 'rxjs/operators';
+
 import { NzDestroyService } from './destroy';
 
 describe('NzDestroy service', () => {
