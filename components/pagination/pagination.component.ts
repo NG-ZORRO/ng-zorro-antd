@@ -132,7 +132,6 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     if (validIndex !== this.nzPageIndex && !this.nzDisabled) {
       this.nzPageIndex = validIndex;
       this.nzPageIndexChange.emit(this.nzPageIndex);
-      this.cdr.markForCheck();
     }
   }
 
@@ -148,7 +147,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   onTotalChange(total: number): void {
     const lastIndex = this.getLastIndex(total, this.nzPageSize);
     if (this.nzPageIndex > lastIndex) {
-      Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
+      Promise.resolve().then(() => {
+        this.onPageIndexChange(lastIndex);
+        this.cdr.markForCheck();
+      });
     }
   }
 
