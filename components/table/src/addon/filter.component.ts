@@ -39,7 +39,7 @@ interface NzThItemInterface {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span class="ant-table-filter-column-title">
+    <span class="ant-table-column-title">
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </span>
     <ng-container *ngIf="!customFilter; else extraTemplate">
