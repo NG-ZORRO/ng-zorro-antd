@@ -37,7 +37,9 @@ export interface NzConfig {
   datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
+  dropDown?: DropDownConfig;
   empty?: EmptyConfig;
+  filterTrigger?: FilterTriggerConfig;
   form?: FormConfig;
   icon?: IconConfig;
   message?: MessageConfig;
@@ -168,8 +170,16 @@ export interface DrawerConfig {
   nzDirection?: Direction;
 }
 
+export interface DropDownConfig {
+  nzBackdrop?: boolean;
+}
+
 export interface EmptyConfig {
   nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
+}
+
+export interface FilterTriggerConfig {
+  nzBackdrop?: boolean;
 }
 
 export interface FormConfig {
