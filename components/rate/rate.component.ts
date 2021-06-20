@@ -64,6 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
           nz-rate-item
           [allowHalf]="nzAllowHalf"
           [character]="nzCharacter"
+          [index]="i"
           (itemHover)="onItemHover(i, $event)"
           (itemClick)="onItemClick(i, $event)"
         ></div>

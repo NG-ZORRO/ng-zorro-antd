@@ -14,7 +14,12 @@ describe('rate', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [BidiModule, NzRateModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestRateBasicComponent, NzTestRateFormComponent, NzTestRateRtlComponent]
+      declarations: [
+        NzTestRateBasicComponent,
+        NzTestRateFormComponent,
+        NzTestRateRtlComponent,
+        NzTestRateCharacterComponent
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -255,6 +260,26 @@ describe('rate', () => {
       expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
     }));
   });
+
+  describe('rate character', () => {
+    let fixture: ComponentFixture<NzTestRateCharacterComponent>;
+    let rate: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestRateCharacterComponent);
+      fixture.detectChanges();
+      rate = fixture.debugElement.query(By.directive(NzRateComponent));
+    });
+
+    it('should nzCharacter work', () => {
+      fixture.detectChanges();
+      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children) as HTMLElement[];
+      children.forEach((e, index) => {
+        expect(e.querySelector('.ant-rate-star-first')!.textContent).toContain(`${index + 1}`);
+        expect(e.querySelector('.ant-rate-star-second')!.textContent).toContain(`${index + 1}`);
+      });
+    });
+  });
 });
 
 @Component({
@@ -321,4 +346,18 @@ export class NzTestRateFormComponent {
 export class NzTestRateRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  selector: 'nz-test-rate-character',
+  template: `
+    <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>
+    <ng-template #characterTpl let-index>
+      {{ index + 1 }}
+    </ng-template>
+  `
+})
+export class NzTestRateCharacterComponent {
+  @ViewChild(NzRateComponent, { static: false }) nzRateComponent!: NzRateComponent;
+  value = 5;
 }
