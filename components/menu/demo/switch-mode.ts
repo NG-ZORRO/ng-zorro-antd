@@ -10,47 +10,54 @@ import { Component } from '@angular/core';
     Change Theme
     <br />
     <br />
-    <ul nz-menu [nzMode]="mode ? 'vertical' : 'inline'" [nzTheme]="dark ? 'dark' : 'light'">
-      <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
-        <ul>
-          <li nz-menu-group nzTitle="Item 1">
-            <ul>
-              <li nz-menu-item>Option 1</li>
-              <li nz-menu-item>Option 2</li>
-            </ul>
-          </li>
-          <li nz-menu-group nzTitle="Item 2">
-            <ul>
-              <li nz-menu-item>Option 3</li>
-              <li nz-menu-item>Option 4</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
-        <ul>
-          <li nz-menu-item>Option 5</li>
-          <li nz-menu-item>Option 6</li>
-          <li nz-submenu nzTitle="Submenu">
-            <ul>
-              <li nz-menu-item>Option 7</li>
-              <li nz-menu-item>Option 8</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
-        <ul>
-          <li nz-menu-item>Option 9</li>
-          <li nz-menu-item>Option 10</li>
-          <li nz-menu-item>Option 11</li>
-        </ul>
-      </li>
-    </ul>
+    <nz-menu [nzMode]="mode ? 'vertical' : 'inline'" [nzTheme]="dark ? 'dark' : 'light'">
+      <nz-menu-item> Option 0</nz-menu-item>
+      <nz-menu-item [nzMenuTriggerFor]="menuPanel">
+        <i nz-menu-icon nz-icon nzType="mail"></i>
+        Navigation One
+      </nz-menu-item>
+      <nz-menu-item [nzMenuTriggerFor]="menuPanel2">
+        <i nz-menu-icon nz-icon nzType="appstore"></i>
+        Navigation Tow
+      </nz-menu-item>
+      <nz-menu-item [nzMenuTriggerFor]="menuPanel4">
+        <i nz-menu-icon nz-icon nzType="setting"></i>
+        Navigation Three
+      </nz-menu-item>
+    </nz-menu>
+
+    <nz-menu-panel #menuPanel="nzMenuPanel">
+      <nz-menu-group>
+        <ng-container nz-menu-group-title>Item 1</ng-container>
+        <nz-menu-item>Option 1</nz-menu-item>
+        <nz-menu-item>Option 2</nz-menu-item>
+      </nz-menu-group>
+      <nz-menu-group>
+        <ng-container nz-menu-group-title>Item 2</ng-container>
+        <nz-menu-item>Option 3</nz-menu-item>
+        <nz-menu-item>Option 4</nz-menu-item>
+      </nz-menu-group>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel2="nzMenuPanel">
+      <nz-menu-item>Option 5</nz-menu-item>
+      <nz-menu-item>Option 6</nz-menu-item>
+      <nz-menu-item [nzMenuTriggerFor]="menuPanel3">Submenu</nz-menu-item>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel3="nzMenuPanel">
+      <nz-menu-item>Option 7</nz-menu-item>
+      <nz-menu-item>Option 8</nz-menu-item>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel4="nzMenuPanel">
+      <nz-menu-item>Option 9</nz-menu-item>
+      <nz-menu-item>Option 10</nz-menu-item>
+    </nz-menu-panel>
   `,
   styles: [
     `
-      [nz-menu] {
+      nz-menu {
         width: 240px;
       }
     `

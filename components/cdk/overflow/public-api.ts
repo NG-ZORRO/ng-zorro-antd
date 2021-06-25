@@ -4,7 +4,7 @@
  */
 
 export { NzOverflowModule } from './overflow.module';
-export { NzOverflowContainerComponent } from './overflow-container.component';
+export { NzOverflowContainerDirective } from './overflow-container.component';
 export { NzOverflowItemDirective } from './overflow-item.directive';
 export { NzOverflowRestDirective } from './overflow-rest.directive';
 export { NzOverflowSuffixDirective } from './overflow-suffix.directive';

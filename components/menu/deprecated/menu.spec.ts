@@ -10,7 +10,7 @@ import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzMenuItemDirective } from './menu-item.directive';
 import { NzMenuDirective } from './menu.directive';
-import { NzMenuModule } from './menu.module';
+import { NzMenuDeprecatedModule } from './menu.module';
 import { NzSubMenuComponent } from './submenu.component';
 
 describe('menu', () => {
@@ -19,7 +19,7 @@ describe('menu', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+        imports: [BidiModule, NzMenuDeprecatedModule, NoopAnimationsModule, NzIconTestModule],
         declarations: [
           NzTestBasicMenuHorizontalComponent,
           NzTestBasicMenuInlineComponent,

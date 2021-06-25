@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Directive, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, Output, EventEmitter } from '@angular/core';
 import { distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -25,10 +25,14 @@ export class NzOverflowItemDirective {
     })
   );
   itemWidth: number | undefined = undefined;
+  @Output() readonly overflowItemHidden = new EventEmitter();
+
+  private preDisplayState: boolean | null = null;
+
   constructor(
-    private nzResizeObserver: NzResizeObserver,
-    public elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    protected nzResizeObserver: NzResizeObserver,
+    protected elementRef: ElementRef,
+    protected cdr: ChangeDetectorRef
   ) {}
 
   setItemStyle(display: boolean, order: number): void {
@@ -41,6 +45,10 @@ export class NzOverflowItemDirective {
       pointerEvents: mergedHidden ? 'none' : undefined,
       position: mergedHidden ? 'absolute' : undefined
     };
-    this.cdr.detectChanges();
+    if (this.preDisplayState !== display && !display) {
+      this.overflowItemHidden.emit();
+    }
+    this.preDisplayState = display;
+    this.cdr.markForCheck();
   }
 }

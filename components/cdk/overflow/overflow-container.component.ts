@@ -4,18 +4,17 @@
  */
 
 import {
-  Component,
-  ChangeDetectionStrategy,
-  ContentChildren,
   QueryList,
   ElementRef,
   OnInit,
   AfterContentInit,
   OnDestroy,
-  ContentChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Directive,
+  ContentChildren,
+  ContentChild
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, ReplaySubject, Subject } from 'rxjs';
 import { filter, map, pairwise, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -24,18 +23,14 @@ import { NzOverflowItemDirective } from './overflow-item.directive';
 import { NzOverflowRestDirective } from './overflow-rest.directive';
 import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
 
-@Component({
-  selector: 'nz-overflow-container',
-  template: ` <ng-content></ng-content>
-    <ng-content select="[appOverflowRest]"></ng-content>
-    <ng-content select="[appOverflowSuffix]"></ng-content>`,
-  providers: [NzResizeObserver],
-  changeDetection: ChangeDetectionStrategy.OnPush
+@Directive({
+  selector: '[nzOverflowContainer]',
+  providers: [NzResizeObserver]
 })
-export class NzOverflowContainerComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NzOverflowContainerDirective implements OnInit, AfterContentInit, OnDestroy {
   contentInit$ = new Subject<void>();
-  @ContentChildren(NzOverflowItemDirective)
-  overflowItems: QueryList<NzOverflowItemDirective> | undefined = undefined;
+  @ContentChildren(NzOverflowItemDirective, { descendants: true })
+  overflowItems!: QueryList<NzOverflowItemDirective>;
   @ContentChild(NzOverflowSuffixDirective)
   overflowSuffix: NzOverflowSuffixDirective | undefined = undefined;
   @ContentChild(NzOverflowRestDirective) overflowRest: NzOverflowRestDirective | undefined = undefined;
@@ -69,15 +64,15 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
   }
 
   constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    protected nzResizeObserver: NzResizeObserver,
+    protected elementRef: ElementRef,
+    protected cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     const overflowItemsWidth$ = this.overflowItems$.pipe(
-      switchMap(items => combineLatest(items.map(item => item.itemWidth$)))
-    ) as Observable<number[]>;
+      switchMap((items: QueryList<NzOverflowItemDirective>) => combineLatest(items.map(item => item.itemWidth$)))
+    );
     this.overflowItems$.pipe(takeUntil(this.destroy$)).subscribe(overflowItems => {
       if (!overflowItems.length) {
         this.displayCount$.next(0);
@@ -132,7 +127,7 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
           this.suffixFixedStart$.next(null);
         }
 
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       });
     combineLatest([this.suffixFixedStart$, this.displayCount$])
       .pipe(takeUntil(this.destroy$))
@@ -142,7 +137,11 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
     combineLatest([this.displayCount$, this.overflowItems$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([displayCount, overflowItems]) =>
-        overflowItems.forEach((item, index) => item.setItemStyle(index <= displayCount, index))
+        Promise.resolve().then(() => {
+          overflowItems.forEach((item, index) => {
+            item.setItemStyle(index <= displayCount, index);
+          });
+        })
       );
     combineLatest([this.displayRest$, this.displayCount$])
       .pipe(takeUntil(this.destroy$))

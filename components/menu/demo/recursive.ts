@@ -1,111 +1,139 @@
-import { Component } from '@angular/core';
+/* declarations: NestedItemComponent */
+
+import { Component, Input, ViewChild } from '@angular/core';
+
+import { NzMenuPanelComponent } from 'ng-zorro-antd/menu';
+
+interface MenuItem {
+  title: string;
+  icon?: string;
+  children?: MenuItem[];
+}
+
+@Component({
+  selector: 'nz-demo-nested-item',
+  template: `
+    <nz-menu-panel #menuPanel="nzMenuPanel">
+      <ng-container *ngFor="let item of items">
+        <ng-container *ngIf="!item.children">
+          <nz-menu-item>
+            <i *ngIf="item.icon" nz-icon nz-menu-icon [nzType]="item.icon"></i>
+            {{ item.title }}
+          </nz-menu-item>
+        </ng-container>
+
+        <ng-container *ngIf="item.children">
+          <nz-menu-item [nzMenuTriggerFor]="nestedItem.childMenu">
+            <i *ngIf="item.icon" nz-icon nz-menu-icon [nzType]="item.icon"></i>
+            {{ item.title }}
+          </nz-menu-item>
+          <nz-demo-nested-item #nestedItem [items]="item.children"></nz-demo-nested-item>
+        </ng-container>
+      </ng-container>
+    </nz-menu-panel>
+  `
+})
+export class NestedItemComponent {
+  @Input() items: MenuItem[] = [];
+  @ViewChild('menuPanel', { static: true }) childMenu!: NzMenuPanelComponent;
+}
 
 @Component({
   selector: 'nz-demo-menu-recursive',
   template: `
-    <ul nz-menu nzMode="inline" style="width: 240px;">
-      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
-      <ng-template #menuTpl let-menus>
-        <ng-container *ngFor="let menu of menus">
-          <li
-            *ngIf="!menu.children"
-            nz-menu-item
-            [nzPaddingLeft]="menu.level * 24"
-            [nzDisabled]="menu.disabled"
-            [nzSelected]="menu.selected"
-          >
-            <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
-            <span>{{ menu.title }}</span>
-          </li>
-          <li
-            *ngIf="menu.children"
-            nz-submenu
-            [nzPaddingLeft]="menu.level * 24"
-            [nzOpen]="menu.open"
-            [nzTitle]="menu.title"
-            [nzIcon]="menu.icon"
-            [nzDisabled]="menu.disabled"
-          >
-            <ul>
-              <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
-            </ul>
-          </li>
+    <nz-menu>
+      <ng-container *ngFor="let item of menus">
+        <ng-container *ngIf="!item.children">
+          <nz-menu-item>
+            <i *ngIf="item.icon" nz-icon nz-menu-icon [nzType]="item.icon"></i>
+            {{ item.title }}
+          </nz-menu-item>
         </ng-container>
-      </ng-template>
-    </ul>
-  `
+        <ng-container *ngIf="item.children">
+          <nz-menu-item [nzMenuTriggerFor]="nestedItem.childMenu">
+            <i *ngIf="item.icon" nz-icon nz-menu-icon [nzType]="item.icon"></i>
+            {{ item.title }}
+          </nz-menu-item>
+          <nz-demo-nested-item #nestedItem [items]="item.children"></nz-demo-nested-item>
+        </ng-container>
+      </ng-container>
+    </nz-menu>
+  `,
+  styles: [
+    `
+      nz-menu {
+        width: 240px;
+      }
+    `
+  ]
 })
 export class NzDemoMenuRecursiveComponent {
   mode = false;
   dark = false;
-  menus = [
+  menus: MenuItem[] = [
     {
-      level: 1,
-      title: 'Mail Group',
+      title: 'Navigation One',
       icon: 'mail',
-      open: true,
-      selected: false,
-      disabled: false,
       children: [
         {
-          level: 2,
-          title: 'Group 1',
+          title: 'Submenu 1',
           icon: 'bars',
-          open: false,
-          selected: false,
-          disabled: false,
           children: [
             {
-              level: 3,
-              title: 'Option 1',
-              selected: false,
-              disabled: false
+              title: 'Option 1'
             },
             {
-              level: 3,
-              title: 'Option 2',
-              selected: false,
-              disabled: true
+              title: 'Option 2'
             }
           ]
         },
         {
-          level: 2,
-          title: 'Group 2',
+          title: 'Submenu 2',
           icon: 'bars',
-          selected: true,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Group 3',
-          icon: 'bars',
-          selected: false,
-          disabled: false
+          children: [
+            {
+              title: 'Option 3'
+            },
+            {
+              title: 'Option 4'
+            }
+          ]
         }
       ]
     },
     {
-      level: 1,
-      title: 'Team Group',
-      icon: 'team',
-      open: false,
-      selected: false,
-      disabled: false,
+      title: 'Navigation Tow',
+      icon: 'appstore',
       children: [
         {
-          level: 2,
-          title: 'User 1',
-          icon: 'user',
-          selected: false,
-          disabled: false
+          title: 'Option 5'
         },
         {
-          level: 2,
-          title: 'User 2',
-          icon: 'user',
-          selected: false,
-          disabled: false
+          title: 'Option 6'
+        },
+        {
+          title: 'Submenu 3',
+          icon: 'bars',
+          children: [
+            {
+              title: 'Option 7'
+            },
+            {
+              title: 'Option 8'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Navigation Three',
+      icon: 'setting',
+      children: [
+        {
+          title: 'Option 9'
+        },
+        {
+          title: 'Option 10'
         }
       ]
     }

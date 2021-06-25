@@ -3,37 +3,40 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { PlatformModule } from '@angular/cdk/platform';
+import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverflowModule } from 'ng-zorro-antd/cdk/overflow';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzMenuDividerDirective } from './menu-divider.directive';
-import { NzMenuGroupComponent } from './menu-group.component';
-import { NzMenuItemDirective } from './menu-item.directive';
-import { NzMenuDirective } from './menu.directive';
-import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
-import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
-import { NzSubMenuTitleComponent } from './submenu-title.component';
-import { NzSubMenuComponent } from './submenu.component';
+import { NzMenuDeprecatedModule } from './deprecated/menu.module';
+import { NzMenuGroupComponent } from './nz-menu-group.component';
+import { NzMenuIconDirective } from './nz-menu-icon.directive';
+import { NzMenuItemComponent } from './nz-menu-item.component';
+import { NzMenuLazyItemDirective } from './nz-menu-lazy-item.directive';
+import { NzMenuNextPanelDirective } from './nz-menu-next-panel.directive';
+import { NzMenuPanelComponent } from './nz-menu-panel.component';
+import { NzMenuTriggerForDirective } from './nz-menu-trigger-for.directive';
+import { NzMenuComponent } from './nz-menu.component';
+import { NzNavMenuComponent } from './nz-nav-menu.component';
+
+const COMPONENTS = [
+  NzMenuComponent,
+  NzMenuItemComponent,
+  NzMenuLazyItemDirective,
+  NzNavMenuComponent,
+  NzMenuTriggerForDirective,
+  NzMenuPanelComponent,
+  NzMenuGroupComponent,
+  NzMenuNextPanelDirective,
+  NzMenuIconDirective
+];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, PlatformModule, OverlayModule, NzIconModule, NzNoAnimationModule, NzOutletModule],
-  declarations: [
-    NzMenuDirective,
-    NzMenuItemDirective,
-    NzSubMenuComponent,
-    NzMenuDividerDirective,
-    NzMenuGroupComponent,
-    NzSubMenuTitleComponent,
-    NzSubmenuInlineChildComponent,
-    NzSubmenuNoneInlineChildComponent
-  ],
-  exports: [NzMenuDirective, NzMenuItemDirective, NzSubMenuComponent, NzMenuDividerDirective, NzMenuGroupComponent]
+  declarations: [COMPONENTS],
+  exports: [COMPONENTS, NzMenuDeprecatedModule],
+  imports: [CommonModule, NzOverflowModule, OverlayModule, PortalModule, NzIconModule]
 })
 export class NzMenuModule {}
