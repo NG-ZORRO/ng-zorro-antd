@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       [nzFilterOption]="nzFilterOption"
       (nzOnSearch)="search($event)"
     >
-      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"></nz-option>
     </nz-select>
   `,
   styles: [

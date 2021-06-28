@@ -69,13 +69,11 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewLineComponent implements AfterViewInit {
-  private transformer = (node: TreeNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level
-    };
-  };
+  private transformer = (node: TreeNode, level: number) => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level
+  });
 
   treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,

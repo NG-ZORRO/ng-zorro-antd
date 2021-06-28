@@ -19,7 +19,15 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzResizableService } from './resizable.service';
 
-export type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
+export type NzResizeDirection =
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
+  | 'topRight'
+  | 'bottomRight'
+  | 'bottomLeft'
+  | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
   constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
@@ -28,9 +36,7 @@ export class NzResizeHandleMouseDownEvent {
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
@@ -53,7 +59,11 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
   entered = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private nzResizableService: NzResizableService, private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
+  constructor(
+    private nzResizableService: NzResizableService,
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('nz-resizable-handle');
   }

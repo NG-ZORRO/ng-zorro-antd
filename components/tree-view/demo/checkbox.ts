@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 
@@ -71,7 +71,7 @@ interface FlatNode {
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewCheckboxComponent implements AfterViewInit {
+export class NzDemoTreeViewCheckboxComponent {
   private transformer = (node: TreeNode, level: number) => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
@@ -80,7 +80,7 @@ export class NzDemoTreeViewCheckboxComponent implements AfterViewInit {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level,
+            level,
             disabled: !!node.disabled
           };
     this.flatNodeMap.set(flatNode, node);
@@ -111,16 +111,9 @@ export class NzDemoTreeViewCheckboxComponent implements AfterViewInit {
 
   hasChild = (_: number, node: FlatNode) => node.expandable;
 
-  ngAfterViewInit(): void {}
-
   descendantsAllSelected(node: FlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-    return (
-      descendants.length > 0 &&
-      descendants.every(child => {
-        return this.checklistSelection.isSelected(child);
-      })
-    );
+    return descendants.length > 0 && descendants.every(child => this.checklistSelection.isSelected(child));
   }
 
   descendantsPartiallySelected(node: FlatNode): boolean {
@@ -157,10 +150,7 @@ export class NzDemoTreeViewCheckboxComponent implements AfterViewInit {
     const nodeSelected = this.checklistSelection.isSelected(node);
     const descendants = this.treeControl.getDescendants(node);
     const descAllSelected =
-      descendants.length > 0 &&
-      descendants.every(child => {
-        return this.checklistSelection.isSelected(child);
-      });
+      descendants.length > 0 && descendants.every(child => this.checklistSelection.isSelected(child));
     if (nodeSelected && !descAllSelected) {
       this.checklistSelection.deselect(node);
     } else if (!nodeSelected && descAllSelected) {

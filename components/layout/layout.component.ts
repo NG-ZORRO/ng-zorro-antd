@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzSiderComponent } from './sider.component';
 
 @Component({
@@ -25,9 +26,7 @@ import { NzSiderComponent } from './sider.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'

@@ -11,7 +11,13 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   selector: 'nz-empty-default',
   exportAs: 'nzEmptyDefault',
   template: `
-    <svg class="ant-empty-img-default" width="184" height="152" viewBox="0 0 184 152" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      class="ant-empty-img-default"
+      width="184"
+      height="152"
+      viewBox="0 0 184 152"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g fill="none" fill-rule="evenodd">
         <g transform="translate(24 31.67)">
           <ellipse class="ant-empty-img-default-ellipse" cx="67.797" cy="106.89" rx="67.797" ry="12.668" />

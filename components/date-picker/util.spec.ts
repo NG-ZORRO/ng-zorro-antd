@@ -1,4 +1,5 @@
 import { CandyDate } from 'ng-zorro-antd/core/time';
+
 import { isAllowedDate } from './util';
 
 describe('util.ts coverage supplements', () => {
@@ -6,13 +7,11 @@ describe('util.ts coverage supplements', () => {
     const disabledDate = () => true;
     expect(isAllowedDate(new CandyDate(), disabledDate)).toBeFalsy();
 
-    const disabledTime = () => {
-      return {
-        nzDisabledHours: () => [1],
-        nzDisabledMinutes: () => [2],
-        nzDisabledSeconds: () => [3]
-      };
-    };
+    const disabledTime = () => ({
+      nzDisabledHours: () => [1],
+      nzDisabledMinutes: () => [2],
+      nzDisabledSeconds: () => [3]
+    });
     expect(isAllowedDate(new CandyDate('2000-11-11 01:11:11'), undefined, disabledTime)).toBeFalsy();
     expect(isAllowedDate(new CandyDate('2000-11-11 02:02:11'), undefined, disabledTime)).toBeFalsy();
     expect(isAllowedDate(new CandyDate('2000-11-11 02:03:03'), undefined, disabledTime)).toBeFalsy();

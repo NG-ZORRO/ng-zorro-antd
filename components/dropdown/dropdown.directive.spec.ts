@@ -4,8 +4,10 @@ import { Component, Provider, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 import { NzDropDownDirective } from './dropdown.directive';
 import { NzDropDownModule } from './dropdown.module';
 
@@ -15,7 +17,7 @@ describe('dropdown', () => {
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     declarations: any[] = []
   ): ComponentFixture<T> {
     TestBed.configureTestingModule({
@@ -82,7 +84,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
 
-  describe('when nzHasBackdrop=true', () => {
+  describe('when nzBackdrop=true', () => {
     let fixture: ComponentFixture<NzTestDropdownComponent>;
 
     beforeEach(() => {
@@ -191,7 +193,7 @@ describe('dropdown', () => {
       [nzTrigger]="trigger"
       [nzDisabled]="disabled"
       [nzPlacement]="placement"
-      [nzHasBackdrop]="backdrop"
+      [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
     >
@@ -217,7 +219,13 @@ export class NzTestDropdownComponent {
 
 @Component({
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)">
+    <a
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+      [nzClickHide]="false"
+      [(nzVisible)]="visible"
+      (nzVisibleChange)="triggerVisible($event)"
+    >
       Hover me
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">

@@ -13,7 +13,7 @@ import { DateBodyRow, DateCell } from './interface';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'month-table',
   exportAs: 'monthTable',
   templateUrl: 'abstract-table.html'

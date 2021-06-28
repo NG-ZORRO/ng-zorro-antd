@@ -6,7 +6,9 @@
 import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzZoomTransform } from '../interface';
 
 const FRAC_VIEWPOINT_AREA = 0.8;
@@ -117,13 +119,14 @@ export class Minimap {
 
     for (const k of new Array(document.styleSheets.length).keys()) {
       try {
-        const cssRules = (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
+        const cssRules =
+          (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
         if (cssRules == null) {
           continue;
         }
         for (const i of new Array(cssRules.length).keys()) {
           // Remove tf-* selectors from the styles.
-          stylesText += cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '') + '\n';
+          stylesText += `${cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '')}\n`;
         }
       } catch (e) {
         if (e.name !== 'SecurityError') {
@@ -186,7 +189,7 @@ export class Minimap {
 
     zoomGSelection.attr('transform', zoomTransform);
 
-    const image = new Image();
+    const image = document.createElement('img');
     image.onload = () => {
       // Draw the svg content onto the buffer canvas.
       const context = this.canvasBuffer.getContext('2d');
@@ -201,13 +204,14 @@ export class Minimap {
         [this.canvas, this.canvasBuffer] = [this.canvasBuffer, this.canvas];
       });
     };
-    image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXml);
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgXml)}`;
   }
 
   /**
    * Handles changes in zooming/panning. Should be called from the main svg
    * to notify that a zoom/pan was performed and this minimap will update it's
    * viewpoint rectangle.
+   *
    * @param transform
    */
   zoom(transform?: ZoomTransform | NzZoomTransform): void {

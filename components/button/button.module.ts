@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ɵNzTransitionPatchModule as NzTransitionPatchModule } from 'ng-zorro-antd/core/transition-patch';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzButtonGroupComponent } from './button-group.component';
 import { NzButtonComponent } from './button.component';
 

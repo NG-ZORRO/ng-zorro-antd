@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,14 +18,23 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, NzTableSortOrder } from '../table.types';
+
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import {
+  NzTableFilterFn,
+  NzTableFilterList,
+  NzTableFilterValue,
+  NzTableSortFn,
+  NzTableSortOrder
+} from '../table.types';
 
 @Component({
-  selector: 'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
+  selector:
+    'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,7 +56,11 @@ import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, 
       <ng-content select="nz-filter-trigger"></ng-content>
     </ng-template>
     <ng-template #sortTemplate>
-      <nz-table-sorters [sortOrder]="sortOrder" [sortDirections]="sortDirections" [contentTemplate]="contentTemplate"></nz-table-sorters>
+      <nz-table-sorters
+        [sortOrder]="sortOrder"
+        [sortDirections]="sortDirections"
+        [contentTemplate]="contentTemplate"
+      ></nz-table-sorters>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -58,13 +72,13 @@ import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, 
     '(click)': 'emitNextSortValue()'
   }
 })
-export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
+export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzShowSort: BooleanInput;
   static ngAcceptInputType_nzShowFilter: BooleanInput;
   static ngAcceptInputType_nzCustomFilter: BooleanInput;
   static ngAcceptInputType_nzFilterMultiple: BooleanInput;
 
-  manualClickOrder$ = new Subject<NzThAddOnComponent>();
+  manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject();
   nzFilterValue: NzTableFilterValue = null;
   sortOrder: NzTableSortOrder = null;
@@ -79,8 +93,8 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzSortPriority: number | boolean = false;
   @Input() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
   @Input() nzFilters: NzTableFilterList = [];
-  @Input() nzSortFn: NzTableSortFn | boolean | null = null;
-  @Input() nzFilterFn: NzTableFilterFn | boolean | null = null;
+  @Input() nzSortFn: NzTableSortFn<T> | boolean | null = null;
+  @Input() nzFilterFn: NzTableFilterFn<T> | boolean | null = null;
   @Input() @InputBoolean() nzShowSort = false;
   @Input() @InputBoolean() nzShowFilter = false;
   @Input() @InputBoolean() nzCustomFilter = false;

@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
+
 import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
@@ -76,7 +77,7 @@ export class NzDemoCodeEditorComplexComponent {
 console.log(flatten(['1', 2, [[3]]]))`;
   private document: Document;
 
-  // tslint:disable-next-line no-any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
     this.document = document;
   }

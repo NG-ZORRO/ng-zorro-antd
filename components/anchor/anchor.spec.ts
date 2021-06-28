@@ -1,5 +1,5 @@
-// tslint:disable
-// TODO remove tslint:disable @hsuanxyz
+/* eslint-disable */
+// eslint-disable
 import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';

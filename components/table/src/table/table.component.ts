@@ -25,17 +25,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
-  NzTableData,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
@@ -131,7 +132,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
   }
 })
-export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzFrontPagination: BooleanInput;
@@ -158,13 +159,13 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() @InputNumber() nzVirtualItemSize = 0;
   @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
   @Input() @InputNumber() nzVirtualMinBufferPx = 100;
-  @Input() nzVirtualForTrackBy: TrackByFunction<NzTableData> = index => index;
+  @Input() nzVirtualForTrackBy: TrackByFunction<T> = index => index;
   @Input() @InputNumber() nzLoadingDelay = 0;
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
-  @Input() nzData: ReadonlyArray<T> = [];
+  @Input() nzData: readonly T[] = [];
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() nzPaginationType: NzTablePaginationType = 'default';
@@ -183,10 +184,10 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<ReadonlyArray<NzTableData>>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
 
   /** public data for ngFor tr */
-  public data: ReadonlyArray<T> = [];
+  public data: readonly T[] = [];
   public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
@@ -201,8 +202,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   private templateMode$ = new BehaviorSubject<boolean>(false);
   dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
-  nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
-  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
+  nzVirtualScrollDirective!: NzTableVirtualScrollDirective<T>;
+  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent<T>;
   verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
     this.nzTableDataService.updatePageSize(size);
@@ -218,7 +219,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService,
+    private nzTableDataService: NzTableDataService<T>,
     @Optional() private directionality: Directionality
   ) {
     // TODO: move to host after View Engine deprecation
@@ -232,7 +233,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } =
+      this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
@@ -307,7 +309,17 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzLoading, nzTemplateMode } = changes;
+    const {
+      nzScroll,
+      nzPageIndex,
+      nzPageSize,
+      nzFrontPagination,
+      nzData,
+      nzWidthConfig,
+      nzNoResult,
+      nzLoading,
+      nzTemplateMode
+    } = changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }

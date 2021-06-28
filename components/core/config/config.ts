@@ -5,11 +5,19 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
-
 import { SafeUrl } from '@angular/platform-browser';
+
 import { ThemeType } from '@ant-design/icons-angular';
+
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
+import {
+  NzSafeAny,
+  NzShapeSCType,
+  NzSizeDSType,
+  NzSizeLDSType,
+  NzSizeMDSType,
+  NzTSType
+} from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -49,11 +57,15 @@ export interface NzConfig {
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
   image?: ImageConfig;
+  popconfirm?: PopConfirmConfig;
+  popover?: PopoverConfig;
+  imageExperimental?: ImageExperimentalConfig;
 }
 
 export interface SelectConfig {
   nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
+  nzBackdrop?: boolean;
 }
 
 export interface AffixConfig {
@@ -123,6 +135,7 @@ export interface CarouselConfig {
 
 export interface CascaderConfig {
   nzSize?: string;
+  nzBackdrop?: boolean;
 }
 
 export interface CollapseConfig {
@@ -138,6 +151,7 @@ export interface CollapsePanelConfig {
 export interface DatePickerConfig {
   nzSeparator?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+  nzBackdrop?: boolean;
 }
 
 export interface DescriptionsConfig {
@@ -266,6 +280,7 @@ export interface TimePickerConfig {
   nzPopupClassName?: string;
   nzUse12Hours?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+  nzBackdrop?: boolean;
 }
 
 export interface TreeConfig {
@@ -280,6 +295,7 @@ export interface TreeSelectConfig {
   nzDropdownMatchSelectWidth?: boolean;
   nzHideUnMatched?: boolean;
   nzSize?: 'large' | 'small' | 'default';
+  nzBackdrop?: boolean;
 }
 
 export interface TypographyConfig {
@@ -296,6 +312,25 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+}
+
+export interface ImageExperimentalConfig {
+  nzFallback?: string;
+  nzPlaceholder?: string;
+  nzDisablePreview?: string;
+  nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
+  nzAutoSrcset?: boolean;
+  nzSrcLoader?(params: { src: string; width: number }): string;
+}
+
+export interface PopConfirmConfig {
+  nzPopconfirmBackdrop?: boolean;
+  nzAutofocus?: null | 'ok' | 'cancel';
+}
+
+export interface PopoverConfig {
+  nzPopoverBackdrop?: boolean;
 }
 
 export type NzConfigKey = keyof NzConfig;

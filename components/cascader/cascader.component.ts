@@ -28,16 +28,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
+
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassType, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, toArray } from 'ng-zorro-antd/core/util';
-
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
 import {
@@ -105,7 +106,10 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
-            <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nzLabelRender"
+              [ngTemplateOutletContext]="labelRenderContext"
+            ></ng-template>
           </ng-template>
         </span>
       </div>
@@ -114,6 +118,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
@@ -221,6 +226,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig() nzBackdrop = false;
   @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
@@ -471,6 +477,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.inputValue = '';
     this.setMenuVisible(false);
     this.cascaderService.clear();
+    this.nzClear.emit();
   }
 
   getSubmitValue(): NzSafeAny[] {
@@ -618,7 +625,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
-    return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
+    return typeof this.nzTriggerAction === 'string'
+      ? this.nzTriggerAction === action
+      : this.nzTriggerAction.indexOf(action) !== -1;
   }
 
   private onEnter(): void {
@@ -760,7 +769,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.dropdownHeightStyle = this.shouldShowEmpty ? 'auto' : '';
 
     if (this.input) {
-      this.dropdownWidthStyle = this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
+      this.dropdownWidthStyle =
+        this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
     }
   }
 

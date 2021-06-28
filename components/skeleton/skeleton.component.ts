@@ -15,10 +15,17 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
 
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
-import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+
+import {
+  NzSkeletonAvatar,
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonParagraph,
+  NzSkeletonTitle
+} from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +40,11 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size || 'default'" [nzShape]="avatar.shape || 'circle'"></nz-skeleton-element>
+        <nz-skeleton-element
+          nzType="avatar"
+          [nzSize]="avatar.size || 'default'"
+          [nzShape]="avatar.shape || 'circle'"
+        ></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
@@ -74,8 +85,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getTitleProps(): NzSkeletonTitle {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasParagraph: boolean = !!this.nzParagraph;
+    const hasAvatar = !!this.nzAvatar;
+    const hasParagraph = !!this.nzParagraph;
     let width = '';
     if (!hasAvatar && hasParagraph) {
       width = '38%';
@@ -92,8 +103,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getParagraphProps(): NzSkeletonParagraph {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasTitle: boolean = !!this.nzTitle;
+    const hasAvatar = !!this.nzAvatar;
+    const hasTitle = !!this.nzTitle;
     const basicProps: NzSkeletonParagraph = {};
     // Width
     if (!hasAvatar || !hasTitle) {

@@ -11,7 +11,11 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation } fro
   template: `
     <div class="ant-card-loading-content">
       <div class="ant-row" style="margin-left: -4px; margin-right: -4px;" *ngFor="let listOfClassName of listOfLoading">
-        <div *ngFor="let className of listOfClassName" [ngClass]="className" style="padding-left: 4px; padding-right: 4px;">
+        <div
+          *ngFor="let className of listOfClassName"
+          [ngClass]="className"
+          style="padding-left: 4px; padding-right: 4px;"
+        >
           <div class="ant-card-loading-block"></div>
         </div>
       </div>

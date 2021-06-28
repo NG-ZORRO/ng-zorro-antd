@@ -5,7 +5,7 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 @Component({
   selector: 'nz-demo-tag-hot-tags',
   template: `
-    <strong>Categories: </strong>
+    <strong>Categories:</strong>
     <nz-tag
       *ngFor="let tag of hotTags"
       nzMode="checkable"

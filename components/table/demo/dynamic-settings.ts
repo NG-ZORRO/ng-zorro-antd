@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableSize } from 'ng-zorro-antd/table';
 
 interface ItemData {
@@ -91,7 +92,12 @@ interface Setting {
         <ng-container *ngFor="let data of dynamicTable.data">
           <tr>
             <td [nzLeft]="fixedColumn" *ngIf="settingValue.expandable" [(nzExpand)]="data.expand"></td>
-            <td [nzLeft]="fixedColumn" *ngIf="settingValue.checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            <td
+              [nzLeft]="fixedColumn"
+              *ngIf="settingValue.checkbox"
+              [(nzChecked)]="data.checked"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
             <td [nzLeft]="fixedColumn">{{ data.name }}</td>
             <td>{{ data.age }}</td>
             <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td>
@@ -119,8 +125,8 @@ interface Setting {
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   settingForm?: FormGroup;
-  listOfData: ReadonlyArray<ItemData> = [];
-  displayData: ReadonlyArray<ItemData> = [];
+  listOfData: readonly ItemData[] = [];
+  displayData: readonly ItemData[] = [];
   allChecked = false;
   indeterminate = false;
   fixedColumn = false;
@@ -188,7 +194,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     }
   ];
 
-  currentPageDataChange($event: ReadonlyArray<ItemData>): void {
+  currentPageDataChange($event: readonly ItemData[]): void {
     this.displayData = $event;
     this.refreshStatus();
   }
@@ -210,7 +216,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     this.refreshStatus();
   }
 
-  generateData(): ReadonlyArray<ItemData> {
+  generateData(): readonly ItemData[] {
     const data = [];
     for (let i = 1; i <= 100; i++) {
       data.push({

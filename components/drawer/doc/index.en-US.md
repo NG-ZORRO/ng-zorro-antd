@@ -28,7 +28,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzCloseIcon]` | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMask]` | Whether to show mask or not. | `boolean` | `true` | ✅ |
 | `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
-| `[nzCloseOnNavigation]` | Whether to close the drawer when the navigation history changes | `boolean` | `true` | ✅ |
+| `[nzCloseOnNavigation]` | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` | ✅ |
 | `[nzKeyboard]` | Whether support press esc to close | `boolean` | `true` |
 | `[nzMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
 | `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
@@ -53,14 +53,14 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ### NzDrawerOptions
 
 | Params | Description | Type | Default | Global Config |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | - |
 | nzContentParams | The component inputs the param / The Template context. | `D` | - |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
 | nzCloseIcon | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
 | nzOnCancel | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>` | - |
 | nzMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
-| nzCloseOnNavigation    | Whether to close the drawer when the navigation history changes | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` | ✅ |
 | nzMask | Whether to show mask or not. | `boolean` | `true` | ✅ |
 | nzDirection        | Direction of the text in the modal | `'ltr' \| 'rtl'` | - | ✅ |
 | nzKeyboard | Whether support press esc to close | `boolean` | `true` |

@@ -2,8 +2,10 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 
@@ -53,7 +55,9 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
-        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
+        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe(
+          'beforeTemplate'
+        );
       });
       it('should after content string work', () => {
         testComponent.afterContent = 'after';

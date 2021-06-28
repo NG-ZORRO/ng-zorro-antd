@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
@@ -10,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Host,
   OnDestroy,
   OnInit,
@@ -20,12 +22,13 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -48,7 +51,8 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         [class.ant-dropdown-rtl]="dir === 'rtl'"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
-        [@slideMotion]="'enter'"
+        @slideMotion
+        (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         (mouseenter)="setMouseState(true)"
@@ -66,12 +70,17 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
   mouseState$ = new BehaviorSubject<boolean>(false);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
+  animationStateChange$ = new EventEmitter<AnimationEvent>();
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
+
+  onAnimationEvent(event: AnimationEvent): void {
+    this.animationStateChange$.emit(event);
+  }
 
   setMouseState(visible: boolean): void {
     this.mouseState$.next(visible);

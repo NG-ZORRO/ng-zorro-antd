@@ -25,11 +25,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
@@ -64,6 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
           nz-rate-item
           [allowHalf]="nzAllowHalf"
           [character]="nzCharacter"
+          [index]="i"
           (itemHover)="onItemHover(i, $event)"
           (itemClick)="onItemClick(i, $event)"
         ></div>
@@ -85,7 +86,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   static ngAcceptInputType_nzAllowHalf: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzCount: BooleanInput;
+  static ngAcceptInputType_nzCount: NumberInput;
 
   @ViewChild('ulElement', { static: false }) private ulElement?: ElementRef;
 

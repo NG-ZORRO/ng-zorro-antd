@@ -43,8 +43,12 @@ describe('checkbox', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.classList.contains('ant-checkbox-wrapper')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(
+        true
+      );
+      expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(
+        true
+      );
       expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
     });
     it('should click change', () => {
@@ -327,7 +331,7 @@ describe('checkbox', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-single-checkbox',
   template: `
     <label
@@ -352,10 +356,14 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-group-checkbox',
   template: `
-    <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group>
+    <nz-checkbox-group
+      [nzDisabled]="disabled"
+      [ngModel]="options"
+      (ngModelChange)="modelChange($event)"
+    ></nz-checkbox-group>
   `
 })
 export class NzTestCheckboxGroupComponent {

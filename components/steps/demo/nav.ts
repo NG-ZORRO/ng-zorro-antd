@@ -4,9 +4,24 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-steps-nav',
   template: `
     <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
-      <nz-step nzTitle="Step 1" nzSubtitle="00:00:05" nzStatus="finish" nzDescription="This is a description."> </nz-step>
-      <nz-step nzTitle="Step 2" nzSubtitle="00:01:02" nzStatus="process" nzDescription="This is a description."> </nz-step>
-      <nz-step nzTitle="Step 3" nzSubtitle="waiting for long long time" nzStatus="wait" nzDescription="This is a description."> </nz-step>
+      <nz-step
+        nzTitle="Step 1"
+        nzSubtitle="00:00:05"
+        nzStatus="finish"
+        nzDescription="This is a description."
+      ></nz-step>
+      <nz-step
+        nzTitle="Step 2"
+        nzSubtitle="00:01:02"
+        nzStatus="process"
+        nzDescription="This is a description."
+      ></nz-step>
+      <nz-step
+        nzTitle="Step 3"
+        nzSubtitle="waiting for long long time"
+        nzStatus="wait"
+        nzDescription="This is a description."
+      ></nz-step>
     </nz-steps>
     <nz-steps nzType="navigation" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Step 1" nzStatus="finish"></nz-step>

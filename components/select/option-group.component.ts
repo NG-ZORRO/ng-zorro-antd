@@ -4,8 +4,9 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-option-group',
@@ -15,7 +16,7 @@ import { Subject } from 'rxjs';
   template: ` <ng-content></ng-content> `
 })
 export class NzOptionGroupComponent implements OnChanges {
-  @Input() nzLabel: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
   changes = new Subject<void>();
   ngOnChanges(): void {
     this.changes.next();

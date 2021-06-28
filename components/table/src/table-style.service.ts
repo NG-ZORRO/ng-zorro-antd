@@ -4,9 +4,11 @@
  */
 
 import { Injectable, TemplateRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, merge, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzThMeasureDirective } from './cell/th-measure.directive';
 
 @Injectable()
@@ -23,7 +25,7 @@ export class NzTableStyleService {
   manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$]).pipe(
     map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
   );
-  private listOfAutoWidthPx$ = new ReplaySubject<ReadonlyArray<string>>(1);
+  private listOfAutoWidthPx$ = new ReplaySubject<readonly string[]>(1);
   listOfListOfThWidthPx$ = merge(
     /** init with manual width **/
     this.manualWidthConfigPx$,
@@ -44,7 +46,7 @@ export class NzTableStyleService {
       })
     )
   );
-  listOfMeasureColumn$ = new ReplaySubject<ReadonlyArray<string>>(1);
+  listOfMeasureColumn$ = new ReplaySubject<readonly string[]>(1);
   listOfListOfThWidth$ = this.listOfAutoWidthPx$.pipe(map(list => list.map(width => parseInt(width, 10))));
   enableAutoMeasure$ = new ReplaySubject<boolean>(1);
 
@@ -64,7 +66,7 @@ export class NzTableStyleService {
     this.tableWidthConfigPx$.next(widthConfig);
   }
 
-  setListOfTh(listOfTh: ReadonlyArray<NzThMeasureDirective>): void {
+  setListOfTh(listOfTh: readonly NzThMeasureDirective[]): void {
     let columnCount = 0;
     listOfTh.forEach(th => {
       columnCount += (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
@@ -74,7 +76,7 @@ export class NzTableStyleService {
     this.listOfThWidthConfigPx$.next(listOfThPx);
   }
 
-  setListOfMeasureColumn(listOfTh: ReadonlyArray<NzThMeasureDirective>): void {
+  setListOfMeasureColumn(listOfTh: readonly NzThMeasureDirective[]): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
       const length = (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;

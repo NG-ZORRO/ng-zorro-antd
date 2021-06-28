@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/@angular-devkit/schematics/collection-schema.json",
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "migration-v7": {
       "version": "7",
@@ -20,6 +20,11 @@
       "version": "11.0.0-0",
       "description": "Updates NG-ZORRO to v11 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/6217]",
       "factory": "./ng-update/index#updateToV11"
+    },
+    "migration-v12": {
+      "version": "12.0.0-0",
+      "description": "Updates NG-ZORRO to v12 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/#PLACEHOLDER]",
+      "factory": "./ng-update/index#updateToV12"
     },
     "ng-post-update": {
       "description": "Prints out results after ng-update.",

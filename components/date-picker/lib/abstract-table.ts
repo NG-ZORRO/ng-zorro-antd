@@ -11,7 +11,7 @@ import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DateBodyRow, DateCell } from './interface';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractTable implements OnInit, OnChanges {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;

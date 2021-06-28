@@ -27,7 +27,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
-| `[nzCloseOnNavigation]`    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
+| `[nzCloseOnNavigation]`    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzKeyboard]` | 是否支持键盘 esc 关闭 | `boolean` | `true` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
@@ -52,7 +52,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ### NzDrawerOptions
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \|  Type<T>` | - |
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
 | nzOnCancel | 点击遮罩层或右上角叉时执行,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `() => Promise<any>` | - |
@@ -60,7 +60,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzCloseIcon | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | nzMask | 是否展示遮罩 | `boolean` | `true` | ✅ |
-| nzCloseOnNavigation    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
 | nzDirection        | 文字方向 | `'ltr' \| 'rtl'` | - | ✅ |
 | nzKeyboard | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |

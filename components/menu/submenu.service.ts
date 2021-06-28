@@ -4,9 +4,11 @@
  */
 
 import { Inject, Injectable, OnDestroy, Optional, SkipSelf } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap, takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType } from './menu.types';
@@ -34,6 +36,7 @@ export class NzSubmenuService implements OnDestroy {
   private destroy$ = new Subject<void>();
   /**
    * menu item inside submenu clicked
+   *
    * @param menu
    */
   onChildMenuItemClick(menu: NzSafeAny): void {

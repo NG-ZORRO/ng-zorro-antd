@@ -5,11 +5,11 @@
 
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
-import fnsFormat from 'date-fns/format';
-import fnsGetISOWeek from 'date-fns/getISOWeek';
-import fnsParse from 'date-fns/parse';
+
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
+
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
@@ -61,6 +61,7 @@ export class DateHelperByDateFns extends DateHelperService {
 
   /**
    * Format a date
+   *
    * @see https://date-fns.org/docs/format#description
    * @param date Date
    * @param formatStr format string

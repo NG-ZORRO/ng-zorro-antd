@@ -51,6 +51,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `28` |
 | `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `500` |
 | `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `28` |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |`EventEmitter<NzFormatEmitEvent>` | - |
 
 #### Methods

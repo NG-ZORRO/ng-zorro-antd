@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 
 export class GitClient {
@@ -30,5 +35,4 @@ export class GitClient {
   pushBranchToRemote(branchName: string, force: boolean = false, remoteName: string = this.remoteGitUrl): boolean {
     return this.spawnGitProcess(['push', remoteName, branchName, `${force && '-f'}`]).status === 0;
   }
-
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
@@ -60,8 +61,7 @@ const options = [
       [nzShowSearch]="true"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    >
-    </nz-cascader>
+    ></nz-cascader>
   `
 })
 export class NzDemoCascaderCustomFieldNamesComponent {

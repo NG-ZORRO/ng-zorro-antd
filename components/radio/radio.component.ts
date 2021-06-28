@@ -4,6 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -19,12 +20,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
 
@@ -160,14 +161,17 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
     }
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        Promise.resolve().then(() => this.onTouched());
-        if (this.nzRadioService) {
-          this.nzRadioService.touch();
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          Promise.resolve().then(() => this.onTouched());
+          if (this.nzRadioService) {
+            this.nzRadioService.touch();
+          }
         }
-      }
-    });
+      });
 
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;

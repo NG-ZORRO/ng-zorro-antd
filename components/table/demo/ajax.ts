@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
+
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 interface RandomUser {
   gender: string;

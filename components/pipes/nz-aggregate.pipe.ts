@@ -4,6 +4,7 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { sum } from 'ng-zorro-antd/core/util';
 
 export type AggregateMethod = 'sum' | 'max' | 'min' | 'avg';

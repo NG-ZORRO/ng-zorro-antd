@@ -36,6 +36,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | -------- | ----------- | ---- | ------- | - |
 | `[nzAllowClear]` | Whether to show clear button | `boolean` | `true` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` | - |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzDefaultPickerValue]` | default picker date | `Date` \| `Date[]` | - | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
 | `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
@@ -50,6 +51,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
 | `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
 | `[nzBorderless]` | remove the border | `boolean` | `false` | - |
+| `[nzInline]` | inline mode | `boolean` | `false` | - |
 | `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - | - |
 
 ### Common Methods
@@ -95,6 +97,8 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 > Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
-### nzFormat special instructions
+## FAQ
 
-Date formatting currently supports two methods: `DatePipe` (default, [syntax reference](https://angular.io/api/common/DatePipe)) and `date-fns` ([syntax reference](https://date-fns.org/docs/format#description), see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).
+### Why does manual input not take effect after setting `nzFormat="dd/MM/yyyy"`
+
+You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (default, [syntax reference](https://angular.io/api/common/DatePipe)) and `date-fns` (see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO takes the function provided by `date-fns` to implement date deserialization after using it.

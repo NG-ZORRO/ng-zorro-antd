@@ -31,6 +31,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[ngModel]` | 指定选中项 | `any[]` | - |
 | `[nzAllowClear]` | 是否支持清除 | `boolean` | `true` |
 | `[nzAutoFocus]` | 是否自动聚焦，当存在输入框时 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzChangeOn]` | 点击父级菜单选项时，可通过该函数判断是否允许值的变化 | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的演示 | `boolean` | `false` |
 | `[nzColumnClassName]` | 自定义浮层列类名 | `string` | - |
@@ -63,6 +64,28 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | --- | --- | --- | --- |
 | `filter` | 可选，选择是否保留选项的过滤函数，每级菜单的选项都会被匹配 | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
 | `sorter` | 可选，按照到每个最终选项的路径进行排序，默认按照原始数据的顺序 | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
+
+默认的 filter 如下所示：
+
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
+
+如果你想要在搜索时忽略大小写，就可以编写一个这样的 filter 函数：
+
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  })
+}
+```
 
 #### 方法
 

@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 
 import {
   AfterViewInit,
@@ -18,9 +19,10 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',
@@ -37,7 +39,7 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
   `
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
-  @Input() listOfMeasureColumn: ReadonlyArray<string> = [];
+  @Input() listOfMeasureColumn: readonly string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
   private destroy$ = new Subject();
@@ -52,18 +54,19 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
     this.listOfTdElement.changes
       .pipe(startWith(this.listOfTdElement))
       .pipe(
-        switchMap(list => {
-          return combineLatest(
-            list.toArray().map((item: ElementRef) => {
-              return this.nzResizeObserver.observe(item).pipe(
-                map(([entry]) => {
-                  const { width } = entry.target.getBoundingClientRect();
-                  return Math.floor(width);
-                })
-              );
-            })
-          ) as Observable<number[]>;
-        }),
+        switchMap(
+          list =>
+            combineLatest(
+              list.toArray().map((item: ElementRef) =>
+                this.nzResizeObserver.observe(item).pipe(
+                  map(([entry]) => {
+                    const { width } = entry.target.getBoundingClientRect();
+                    return Math.floor(width);
+                  })
+                )
+              )
+            ) as Observable<number[]>
+        ),
         debounceTime(16),
         takeUntil(this.destroy$)
       )

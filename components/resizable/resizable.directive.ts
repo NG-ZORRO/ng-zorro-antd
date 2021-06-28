@@ -4,12 +4,22 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
-
-import { ensureInBounds, InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnDestroy,
+  Output,
+  Renderer2
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { ensureInBounds, InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';

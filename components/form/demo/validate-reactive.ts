@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 
@@ -12,12 +11,8 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
           <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
           <ng-template #userErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              Please input your username!
-            </ng-container>
-            <ng-container *ngIf="control.hasError('duplicated')">
-              The username is redundant!
-            </ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -26,12 +21,8 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
           <input nz-input formControlName="email" placeholder="email" type="email" />
           <ng-template #emailErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('email')">
-              The input is not valid E-mail!
-            </ng-container>
-            <ng-container *ngIf="control.hasError('required')">
-              Please input your E-mail!
-            </ng-container>
+            <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please input your E-mail!</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -46,12 +37,8 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              Please confirm your password!
-            </ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">
-              Password is inconsistent!
-            </ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -87,8 +74,10 @@ export class NzDemoFormValidateReactiveComponent {
 
   submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsDirty();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
     }
     console.log(value);
   }
@@ -97,8 +86,10 @@ export class NzDemoFormValidateReactiveComponent {
     e.preventDefault();
     this.validateForm.reset();
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsPristine();
-      this.validateForm.controls[key].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(key)) {
+        this.validateForm.controls[key].markAsPristine();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
     }
   }
 

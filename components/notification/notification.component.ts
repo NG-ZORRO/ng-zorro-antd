@@ -4,6 +4,7 @@
  */
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzMNComponent } from 'ng-zorro-antd/message';
 
@@ -27,7 +28,10 @@ import { NzNotificationData } from './typings';
       (mouseleave)="onLeave()"
     >
       <div *ngIf="!instance.template" class="ant-notification-notice-content">
-        <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }">
+        <div
+          class="ant-notification-notice-content"
+          [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }"
+        >
           <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
             <ng-container [ngSwitch]="instance.type">
               <i

@@ -19,8 +19,18 @@ import { NzAutocompleteTriggerDirective } from './autocomplete-trigger.directive
 import { NzAutocompleteComponent } from './autocomplete.component';
 
 @NgModule({
-  declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-  exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
+  declarations: [
+    NzAutocompleteComponent,
+    NzAutocompleteOptionComponent,
+    NzAutocompleteTriggerDirective,
+    NzAutocompleteOptgroupComponent
+  ],
+  exports: [
+    NzAutocompleteComponent,
+    NzAutocompleteOptionComponent,
+    NzAutocompleteTriggerDirective,
+    NzAutocompleteOptgroupComponent
+  ],
   imports: [BidiModule, CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
 })
 export class NzAutocompleteModule {}

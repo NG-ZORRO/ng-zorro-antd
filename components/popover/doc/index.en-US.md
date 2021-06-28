@@ -35,6 +35,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverOverlayClassName]` | Class name of the popover card | `string` | - |
 | `[nzPopoverOverlayStyle]` | Style of the popover card | `object` | - |
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
+| `[nzPopoverBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 
 ## Note
 

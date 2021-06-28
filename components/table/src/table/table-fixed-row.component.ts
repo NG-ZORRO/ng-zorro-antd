@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzTableStyleService } from '../table-style.service';
 
 @Component({

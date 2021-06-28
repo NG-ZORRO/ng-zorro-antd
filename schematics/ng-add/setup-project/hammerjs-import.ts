@@ -1,8 +1,15 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
+
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, red } from 'chalk';
+
 import { Schema } from '../schema';
 
 const hammerjsImportStatement = `import 'hammerjs';`;

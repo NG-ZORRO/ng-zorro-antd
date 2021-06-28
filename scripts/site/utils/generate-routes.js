@@ -54,6 +54,7 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
       label: enMeta.title,
       language: 'en',
       order: enMeta.order,
+      hidden: !!enMeta.hidden,
       description: enMeta.description,
       experimental: !!enMeta.experimental
     });
@@ -62,6 +63,7 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
       label: zhMeta.title,
       language: 'zh',
       order: zhMeta.order,
+      hidden: !!zhMeta.hidden,
       description: zhMeta.description,
       experimental: !!zhMeta.experimental
     });

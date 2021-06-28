@@ -65,7 +65,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
-| `[nzData]` | 数据数组 | `any[]` | - |
+| `[nzData]` | 数据数组 | `T[]` | - |
 | `[nzFrontPagination]` | 是否在前端对数据进行分页，如果在服务器分页数据或者需要在前端显示全部数据时传入 false | `boolean` | `true` |
 | `[nzTotal]` | 当前总数据，在服务器渲染时需要传入 | `number` | - |
 | `[nzPageIndex]` | 当前页码，可双向绑定 | `number` | - |
@@ -98,7 +98,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzVirtualForTrackBy]` | 虚拟滚动数据 `TrackByFunction` 函数 | `TrackByFunction<T>` | - |
 | `(nzPageIndexChange)` | 当前页码改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
-| `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<any[]>` | - |
+| `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<T[]>` | - |
 | `(nzQueryParams)` | 当服务端分页、筛选、排序时，用于获得参数，具体见示例 | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
@@ -125,7 +125,7 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzShowSort]` | 是否显示排序 | `boolean` | - |
-| `[nzSortFn]` | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction)，服务端排序时传入 true | `((a: any, b: any, sortOrder?: string) => number) | boolean` | - |
+| `[nzSortFn]` | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction)，服务端排序时传入 true | `NzTableSortFn<T> \| boolean` | - |
 | `[nzSortDirections]` | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
 | `[nzSortOrder]` | 当前排序状态，可双向绑定 | 'descend' \| 'ascend' \| null | null |
 | `(nzSortOrderChange)` | 排序状态改变回调 | `EventEmitter<'descend' \| 'ascend' \| null>` | - |
@@ -135,7 +135,7 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzShowFilter]` | 是否显示过滤 | `boolean` | - |
-| `[nzFilterFn]` | 	前端排序时，确定筛选的运行函数，服务端排序时，传入 true | `((value: any, data: any) => boolean;) | boolean` | - |
+| `[nzFilterFn]` | 	前端排序时，确定筛选的运行函数，服务端排序时，传入 true | `NzTableFilterFn<T> \| boolean` | - |
 | `[nzFilters]` | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | 是否为多选过滤器 | `boolean` | `true` |
 | `(nzFilterChange)` | 过滤器内容选择的 value 数据回调 | `EventEmitter<any[] \| any>` | - |
@@ -220,7 +220,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### [nz-virtual-scroll]
 
-虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: any, index: number }>`.
+虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: T, index: number }>`.
 
 
 

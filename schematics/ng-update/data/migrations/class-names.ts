@@ -1,10 +1,17 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ClassNameUpgradeData,
   getVersionUpgradeData, isExportSpecifierNode, isImportSpecifierNode,
   isNamespaceImportNode,
   Migration, UpgradeData
 } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
+
 import { isNgZorroExportDeclaration, isNgZorroImportDeclaration } from '../../../utils/ng-update/module-specifiers';
 
 export class ClassNamesMigration extends Migration<UpgradeData> {

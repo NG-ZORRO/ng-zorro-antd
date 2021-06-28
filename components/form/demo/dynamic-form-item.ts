@@ -6,11 +6,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item *ngFor="let control of listOfControl; let i = index">
-        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i == 0" [nzFor]="control.controlInstance">Passengers </nz-form-label>
+        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i === 0" [nzFor]="control.controlInstance">
+          Passengers
+        </nz-form-label>
         <nz-form-control
           [nzXs]="24"
           [nzSm]="20"
-          [nzOffset]="i == 0 ? 0 : 4"
+          [nzOffset]="i === 0 ? 0 : 4"
           nzErrorTip="Please input passenger's name or delete this field."
         >
           <input
@@ -85,7 +87,10 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
     };
     const index = this.listOfControl.push(control);
     console.log(this.listOfControl[this.listOfControl.length - 1]);
-    this.validateForm.addControl(this.listOfControl[index - 1].controlInstance, new FormControl(null, Validators.required));
+    this.validateForm.addControl(
+      this.listOfControl[index - 1].controlInstance,
+      new FormControl(null, Validators.required)
+    );
   }
 
   removeField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
@@ -100,8 +105,10 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+      if (this.validateForm.controls.hasOwnProperty(i)) {
+        this.validateForm.controls[i].markAsDirty();
+        this.validateForm.controls[i].updateValueAndValidity();
+      }
     }
     console.log(this.validateForm.value);
   }

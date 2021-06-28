@@ -3,10 +3,23 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional, PLATFORM_ID } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Inject,
+  InjectionToken,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Optional,
+  PLATFORM_ID
+} from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {
@@ -79,7 +92,12 @@ export class NzWaveDirective implements OnInit, OnDestroy {
 
   renderWaveIfEnabled(): void {
     if (!this.waveDisabled && this.elementRef.nativeElement) {
-      this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode, this.platformId);
+      this.waveRenderer = new NzWaveRenderer(
+        this.elementRef.nativeElement,
+        this.ngZone,
+        this.nzWaveExtraNode,
+        this.platformId
+      );
     }
   }
 

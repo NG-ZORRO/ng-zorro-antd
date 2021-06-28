@@ -13,7 +13,7 @@ const MAX_COL = 3;
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'decade-table',
   exportAs: 'decadeTable',
   templateUrl: 'abstract-table.html'

@@ -1,5 +1,11 @@
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { getProjectStyleFile } from '@angular/cdk/schematics';
+
+import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import { Style } from '@schematics/angular/application/schema';
 
 export function getProjectStyle(project: ProjectDefinition): Style {

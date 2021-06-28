@@ -18,8 +18,9 @@ import {
   OnChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
@@ -42,7 +43,10 @@ interface UploadListFile extends NzUploadFile {
   templateUrl: './upload-list.component.html',
   animations: [
     trigger('itemState', [
-      transition(':enter', [style({ height: '0', width: '0', opacity: 0 }), animate(150, style({ height: '*', width: '*', opacity: 1 }))]),
+      transition(':enter', [
+        style({ height: '0', width: '0', opacity: 0 }),
+        animate(150, style({ height: '*', width: '*', opacity: 1 }))
+      ]),
       transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
     ])
   ],
@@ -126,7 +130,7 @@ export class NzUploadListComponent implements OnChanges {
 
   private previewImage(file: File | Blob): Promise<string> {
     return new Promise(resolve => {
-      if (!isImageFileType(file.type)) {
+      if (!isImageFileType(file.type) || !this.platform.isBrowser) {
         resolve('');
         return;
       }
@@ -173,17 +177,25 @@ export class NzUploadListComponent implements OnChanges {
     }
 
     const win = window as NzSafeAny;
-    if (!this.showPic || typeof document === 'undefined' || typeof win === 'undefined' || !win.FileReader || !win.File) {
+    if (
+      !this.showPic ||
+      typeof document === 'undefined' ||
+      typeof win === 'undefined' ||
+      !win.FileReader ||
+      !win.File
+    ) {
       return;
     }
     this.list
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
       .forEach(file => {
         file.thumbUrl = '';
-        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(dataUrl => {
-          file.thumbUrl = dataUrl;
-          this.detectChanges();
-        });
+        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(
+          dataUrl => {
+            file.thumbUrl = dataUrl;
+            this.detectChanges();
+          }
+        );
       });
   }
 

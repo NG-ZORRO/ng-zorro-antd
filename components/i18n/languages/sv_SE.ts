@@ -106,8 +106,8 @@ export default {
   },
   Transfer: {
     searchPlaceholder: 'Sök',
-    itemUnit: 'element',
-    itemsUnit: 'element'
+    itemUnit: 'objekt',
+    itemsUnit: 'objekt'
   },
   Empty: {
     description: 'Ingen information'

@@ -7,12 +7,12 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzSpaceItemComponent } from './space-item.component';
+import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceComponent } from './space.component';
 
 @NgModule({
-  declarations: [NzSpaceComponent, NzSpaceItemComponent],
-  exports: [NzSpaceComponent, NzSpaceItemComponent],
+  declarations: [NzSpaceComponent, NzSpaceItemDirective],
+  exports: [NzSpaceComponent, NzSpaceItemDirective],
   imports: [BidiModule, CommonModule]
 })
 export class NzSpaceModule {}

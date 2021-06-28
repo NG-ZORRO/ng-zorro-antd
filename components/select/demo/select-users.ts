@@ -19,7 +19,8 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
         <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
       </ng-container>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
+        <i nz-icon nzType="loading" class="loading-icon"></i>
+        Loading Data...
       </nz-option>
     </nz-select>
   `,
@@ -50,16 +51,12 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // tslint:disable:no-any
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const getRandomNameList = (name: string) =>
       this.http
         .get(`${this.randomUserUrl}`)
         .pipe(map((res: any) => res.results))
-        .pipe(
-          map((list: any) => {
-            return list.map((item: any) => `${item.name.first} ${name}`);
-          })
-        );
+        .pipe(map((list: any) => list.map((item: any) => `${item.name.first} ${name}`)));
     const optionList$: Observable<string[]> = this.searchChange$
       .asObservable()
       .pipe(debounceTime(500))

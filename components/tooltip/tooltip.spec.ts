@@ -8,7 +8,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTooltipBaseDirective } from './base';
+import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
 import { NzToolTipModule } from './tooltip.module';
 
@@ -156,6 +156,23 @@ describe('nz-tooltip', () => {
       expect(overlayContainerElement.textContent).not.toContain(title);
       expect(component.visibilityTogglingCount).toBe(2);
     }));
+
+    it('should not hide tooltip when `nzTooltipTrigger` is null', fakeAsync(() => {
+      const title = 'always show';
+
+      component.trigger = null;
+      component.visible = true;
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      component.trigger = 'click';
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    }));
   });
 
   describe('content', () => {
@@ -183,7 +200,9 @@ describe('nz-tooltip', () => {
 
       component.style = { color: '#fff' };
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(255, 255, 255)');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe(
+        'rgb(255, 255, 255)'
+      );
 
       component.style = { color: '#000' };
       fixture.detectChanges();
@@ -274,15 +293,19 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain('ant-tooltip-pink');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
+        'ant-tooltip-pink'
+      );
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor).toBe(
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
         'rgb(255, 85, 0)'
       );
+      expect(
+        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
+      ).toBe('rgb(255, 85, 0)');
     }));
   });
 
@@ -333,7 +356,9 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">Click</a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">
+      Click
+    </a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
@@ -346,6 +371,16 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       (nzTooltipVisibleChange)="onVisibleChange()"
     >
       Manually
+    </a>
+
+    <a
+      #alwaysShow
+      nz-tooltip
+      [nzTooltipTrigger]="trigger"
+      [nzTooltipTitle]="'always show'"
+      [nzTooltipVisible]="visible"
+    >
+      Always Show
     </a>
 
     <div>
@@ -367,8 +402,9 @@ export class NzTooltipTestComponent {
   titleTemplateDirective!: NzTooltipDirective;
 
   @ViewChild('focusTooltip', { static: false }) focusTemplate!: ElementRef;
+  @ViewChild('alwaysShow', { static: false }) alwaysShow!: ElementRef;
 
-  trigger: string | null = 'click';
+  trigger: NzTooltipTrigger = 'click';
 
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup!: ElementRef;
 

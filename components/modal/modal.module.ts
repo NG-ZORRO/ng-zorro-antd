@@ -23,6 +23,7 @@ import { NzModalContentDirective } from './modal-content.directive';
 import { NzModalFooterComponent } from './modal-footer.component';
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalTitleComponent } from './modal-title.component';
+import { NzModalTitleDirective } from './modal-title.directive';
 import { NzModalComponent } from './modal.component';
 import { NzModalService } from './modal.service';
 
@@ -40,7 +41,7 @@ import { NzModalService } from './modal.service';
     NzNoAnimationModule,
     NzPipesModule
   ],
-  exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective],
+  exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective, NzModalTitleDirective],
   providers: [NzModalService],
   entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
   declarations: [
@@ -50,6 +51,7 @@ import { NzModalService } from './modal.service';
     NzModalCloseComponent,
     NzModalFooterComponent,
     NzModalTitleComponent,
+    NzModalTitleDirective,
     NzModalContainerComponent,
     NzModalConfirmContainerComponent,
     NzModalComponent

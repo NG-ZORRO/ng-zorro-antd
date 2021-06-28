@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 
 import {
   ChangeDetectionStrategy,
@@ -15,18 +16,25 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 @Component({
-  selector: 'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
+  selector:
+    'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
-      <button nz-row-expand-button [expand]="nzExpand" (expandChange)="onExpandChange($event)" [spaceMode]="!nzShowExpand"></button>
+      <button
+        nz-row-expand-button
+        [expand]="nzExpand"
+        (expandChange)="onExpandChange($event)"
+        [spaceMode]="!nzShowExpand"
+      ></button>
     </ng-container>
     <label
       nz-checkbox

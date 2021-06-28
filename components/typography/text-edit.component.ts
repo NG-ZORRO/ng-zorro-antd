@@ -17,13 +17,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzTSType } from 'ng-zorro-antd/core/types';
-
-import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzAutosizeDirective } from 'ng-zorro-antd/input';
-
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+
+import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-text-edit',
@@ -76,7 +75,12 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   beforeText?: string;
   currentText?: string;
   nativeElement = this.host.nativeElement;
-  constructor(private zone: NgZone, private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(
+    private zone: NgZone,
+    private host: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

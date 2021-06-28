@@ -26,6 +26,8 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 | 参数 | 说明 | 类型 | 默认值 | 支持全局配置 |
 | --------- | -------- | ------------------------------------------ | ------------ | -- |
-| `[nzSize]`      | 间距大小 | `small` \| `middle` \| `large` \| `number` | `small`  | ✅ |
-| `[nzDirection]` | 间距方向 | `vertical` \| `horizontal` | `horizontal` | |
-| `[nzAlign]` | 对齐方式 | `start` \| `end` \| `baseline` \| `horizontal` | - | |
+| `[nzSize]`      | 间距大小 | `'small' \| 'middle' \| 'large' \| number` | `'small'`  | ✅ |
+| `[nzDirection]` | 间距方向 | `'vertical' \| 'horizontal'` | `horizontal` | |
+| `[nzAlign]` | 对齐方式 | `'start' \| 'end' \| 'baseline' \| 'center'` | - | |
+| `[nzWrap]` | 是否自动换行，仅在 `horizontal` 时有效 | `boolean` | `false` | |
+| `[nzSplit]` | 设置分隔符 | `TemplateRef` | - | |

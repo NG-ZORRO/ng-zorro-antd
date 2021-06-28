@@ -22,7 +22,7 @@ export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
-// tslint:disable no-invalid-this
+// eslint-disable  no-invalid-this
 
 /**
  * Get the function-property type's value
@@ -31,9 +31,16 @@ export function valueFunctionProp<T>(prop: FunctionProp<T> | T, ...args: NzSafeA
   return typeof prop === 'function' ? (prop as FunctionProp<T>)(...args) : prop;
 }
 
-function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {
-  function propDecorator(target: NzSafeAny, propName: string, originalDescriptor?: TypedPropertyDescriptor<NzSafeAny>): NzSafeAny {
-    const privatePropName = `$$__${propName}`;
+function propDecoratorFactory<T, D>(
+  name: string,
+  fallback: (v: T) => D
+): (target: NzSafeAny, propName: string) => void {
+  function propDecorator(
+    target: NzSafeAny,
+    propName: string,
+    originalDescriptor?: TypedPropertyDescriptor<NzSafeAny>
+  ): NzSafeAny {
+    const privatePropName = `$$__zorroPropDecorator__${propName}`;
 
     if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
       warn(`The prop "${privatePropName}" is already exist, it will be overrided by ${name} decorator.`);
@@ -46,7 +53,9 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
 
     return {
       get(): string {
-        return originalDescriptor && originalDescriptor.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
+        return originalDescriptor && originalDescriptor.get
+          ? originalDescriptor.get.bind(this)()
+          : this[privatePropName];
       },
       set(value: T): void {
         if (originalDescriptor && originalDescriptor.set) {

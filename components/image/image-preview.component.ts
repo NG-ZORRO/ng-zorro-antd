@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { AnimationEvent } from '@angular/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import {
@@ -14,11 +15,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
@@ -71,6 +73,7 @@ const initialPosition = {
                 #imgRef
                 *ngIf="index === imageIndex"
                 [attr.src]="image.src"
+                [attr.srcset]="image.srcset"
                 [attr.alt]="image.alt"
                 [style.width]="image.width"
                 [style.height]="image.height"

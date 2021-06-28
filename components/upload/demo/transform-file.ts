@@ -1,20 +1,24 @@
 import { Component } from '@angular/core';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
+
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-transform-file',
   template: `
     <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzTransformFile]="transformFile">
-      <button nz-button><i nz-icon nzType="upload"></i> Upload</button>
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        Upload
+      </button>
     </nz-upload>
   `
 })
 export class NzDemoUploadTransformFileComponent {
-  transformFile = (file: NzUploadFile) => {
-    return new Observable((observer: Observer<Blob>) => {
+  transformFile = (file: NzUploadFile) =>
+    new Observable((observer: Observer<Blob>) => {
       const reader = new FileReader();
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       reader.readAsDataURL(file as any);
       reader.onload = () => {
         const canvas = document.createElement('canvas');
@@ -33,5 +37,4 @@ export class NzDemoUploadTransformFileComponent {
         };
       };
     });
-  };
 }

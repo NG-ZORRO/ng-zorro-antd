@@ -30,6 +30,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[ngModel]` | selected value | `any[]` | - |
 | `[nzAllowClear]` | whether allow clear | `boolean` | `true` |
 | `[nzAutoFocus]` | whether auto focus the input box | `boolean` | `false` |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzChangeOn]` | change value on each selection if this function return `true` | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | `boolean` | `false` |
 | `[nzColumnClassName]` | additional className of column in the popup overlay | `string` | - |
@@ -62,6 +63,28 @@ When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 | --- | --- | --- | --- |
 | `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
 | `sorter` | Optional | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
+
+The default filter is like:
+
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
+
+For example, if you would like to ignore lower or upper case, you could use a filter function like this:
+
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  })
+}
+```
 
 #### Methods
 

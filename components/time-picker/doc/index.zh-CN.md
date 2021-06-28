@@ -31,6 +31,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzAddOn]` | 选择框底部显示自定义的内容 | `TemplateRef<void>` | - |
 | `[nzAllowEmpty]` | 是否展示清除按钮 | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
+| `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
 | `[nzClearText]` | 清除按钮的提示文案 | `string` | `'clear'` | ✅ |
 | `[nzNowText]` | 此刻按钮文本 | `string` | `"此刻"` | ✅ |
 | `[nzOkText]` | 确认按钮文本 | `string` | `"确定"` | ✅ |

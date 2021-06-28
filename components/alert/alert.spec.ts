@@ -3,7 +3,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
@@ -134,7 +136,7 @@ describe('alert', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-alert',
   template: `
     <ng-template #template>template</ng-template>
@@ -165,9 +167,7 @@ export class NzDemoTestBasicComponent {
 }
 
 @Component({
-  template: `
-    <nz-alert nzBanner></nz-alert>
-  `
+  template: ` <nz-alert nzBanner></nz-alert> `
 })
 export class NzDemoTestBannerComponent {}
 

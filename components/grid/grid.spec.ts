@@ -2,11 +2,15 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzColDirective } from './col.directive';
 import { NzGridModule } from './grid.module';
 import { NzRowDirective } from './row.directive';
 
+declare const viewport: NzSafeAny;
 const setWindowWidth = (width: number) => {
   viewport.set(width);
   window.dispatchEvent(new Event('resize'));
@@ -143,15 +147,12 @@ describe('grid', () => {
       expect(propertySizeMatch('xxl', 8)).toBe(true);
     });
     it('should apply className according to responsive size object', () => {
-      const batchSizeMatch = (count: number, size: string): boolean => {
-        return (
-          sizeMatch('span', count, size) &&
-          sizeMatch('offset', count, size) &&
-          sizeMatch('order', count, size) &&
-          sizeMatch('pull', count, size) &&
-          sizeMatch('push', count, size)
-        );
-      };
+      const batchSizeMatch = (count: number, size: string): boolean =>
+        sizeMatch('span', count, size) &&
+        sizeMatch('offset', count, size) &&
+        sizeMatch('order', count, size) &&
+        sizeMatch('pull', count, size) &&
+        sizeMatch('push', count, size);
       testBed.component.xs = { span: 1, offset: 1, order: 1, pull: 1, push: 1 };
       testBed.component.sm = { span: 2, offset: 2, order: 2, pull: 2, push: 2 };
       testBed.component.md = { span: 3, offset: 3, order: 3, pull: 3, push: 3 };

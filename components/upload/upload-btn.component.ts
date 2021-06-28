@@ -6,10 +6,11 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, Input, OnDestroy, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
-import { warn } from 'ng-zorro-antd/core/logger';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+
+import { warn } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
@@ -106,15 +107,17 @@ export class NzUploadBtnComponent implements OnDestroy {
   private attrAccept(file: File, acceptedFiles?: string | string[]): boolean {
     if (file && acceptedFiles) {
       const acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
-      const fileName = '' + file.name;
-      const mimeType = '' + file.type;
+      const fileName = `${file.name}`;
+      const mimeType = `${file.type}`;
       const baseMimeType = mimeType.replace(/\/.*$/, '');
 
       return acceptedFilesArray.some(type => {
         const validType = type.trim();
         if (validType.charAt(0) === '.') {
           return (
-            fileName.toLowerCase().indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
+            fileName
+              .toLowerCase()
+              .indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
           );
         } else if (/\/\*$/.test(validType)) {
           // This is something like a image/* mime type
@@ -232,7 +235,9 @@ export class NzUploadBtnComponent implements OnDestroy {
 
     if (typeof transformFile === 'function') {
       const transformResult = transformFile(file);
-      process$ = process$.pipe(switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))));
+      process$ = process$.pipe(
+        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult)))
+      );
     }
 
     if (typeof data === 'function') {

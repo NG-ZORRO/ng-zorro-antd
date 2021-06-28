@@ -2,6 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
@@ -13,9 +14,7 @@ import { NzNotificationModule } from './notification.module';
 import { NzNotificationService } from './notification.service';
 
 @Component({
-  template: `
-    <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
-  `
+  template: ` <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template> `
 })
 export class NzTestNotificationComponent {
   @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
@@ -159,14 +158,14 @@ describe('NzNotification', () => {
       expect(overlayContainerElement.textContent).toContain(content);
       if (id === 3) {
         expect(overlayContainerElement.textContent).not.toContain('SUCCESS-1');
-        expect((notificationService as any).container.instances.length).toBe(2); // tslint:disable-line:no-any
+        expect((notificationService as any).container.instances.length).toBe(2); // eslint-disable-line @typescript-eslint/no-explicit-any
       }
     });
 
     notificationService.remove();
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
-    expect((notificationService as any).container.instances.length).toBe(0); // tslint:disable-line:no-any
+    expect((notificationService as any).container.instances.length).toBe(0); // eslint-disable-line @typescript-eslint/no-explicit-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
@@ -237,7 +236,9 @@ describe('NzNotification', () => {
     nzConfigService.set('notification', { nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
     waitForNotificationToggling();
-    const notificationContainers = overlayContainerElement.querySelectorAll('.ant-notification') as NodeListOf<HTMLDivElement>;
+    const notificationContainers = overlayContainerElement.querySelectorAll(
+      '.ant-notification'
+    ) as NodeListOf<HTMLDivElement>;
     expect(notificationContainers[0].style.top).toBe('48px');
     expect(notificationContainers[0].style.bottom).toBeFalsy();
 

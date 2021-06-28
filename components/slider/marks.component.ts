@@ -4,6 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+
 import { BooleanInput, NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
@@ -110,7 +111,8 @@ export class NzSliderMarksComponent implements OnChanges {
       this.marks.forEach(mark => {
         const value = mark.value;
         const isActive =
-          (!this.included && value === this.upperBound) || (this.included && value <= this.upperBound! && value >= this.lowerBound!);
+          (!this.included && value === this.upperBound) ||
+          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
 
         mark.active = isActive;
       });

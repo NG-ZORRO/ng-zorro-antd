@@ -2,7 +2,10 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableModule } from '../table.module';
 
@@ -111,7 +114,7 @@ describe('nz-th', () => {
   `
 })
 export class NzThTestNzTableComponent {
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent<NzSafeAny>;
   destroy = false;
   left?: string | number;
   right?: string | number;
@@ -196,7 +199,7 @@ export class NzThTestTableDefaultFilterComponent {
   ];
   displayData: DataItem[] = [];
 
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent<DataItem>;
 
   sort(sort: { key: keyof DataItem; value: string }): void {
     this.sortName = sort.key;
@@ -219,7 +222,13 @@ export class NzThTestTableDefaultFilterComponent {
     /** sort data **/
     if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a: DataItem, b: DataItem) =>
-        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
+        this.sortValue === 'ascend'
+          ? a[this.sortName!] > b[this.sortName!]
+            ? 1
+            : -1
+          : b[this.sortName!] > a[this.sortName!]
+          ? 1
+          : -1
       );
     } else {
       this.displayData = data;
@@ -228,8 +237,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  template: `
-    <th class="nz-disable-th"></th>
-  `
+  template: ` <th class="nz-disable-th"></th> `
 })
 export class NzTestDisableThComponent {}

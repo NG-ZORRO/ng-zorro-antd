@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+
 import { NzDatePickerModule } from './date-picker.module';
 
 describe('NzWeekPickerComponent', () => {
@@ -83,9 +84,7 @@ describe('NzWeekPickerComponent', () => {
 });
 
 @Component({
-  template: `
-    <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-date-picker>
-  `
+  template: ` <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-date-picker> `
 })
 export class NzTestWeekPickerComponent {
   nzFormat?: string;

@@ -14,6 +14,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -83,12 +84,10 @@ export class NzPaginationOptionsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { pageSize, pageSizeOptions, locale } = changes;
     if (pageSize || pageSizeOptions || locale) {
-      this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map(item => {
-        return {
-          value: item,
-          label: `${item} ${this.locale.items_per_page}`
-        };
-      });
+      this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map(item => ({
+        value: item,
+        label: `${item} ${this.locale.items_per_page}`
+      }));
     }
   }
 }

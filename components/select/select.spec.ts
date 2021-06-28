@@ -4,6 +4,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -13,6 +14,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';
@@ -26,7 +28,9 @@ describe('select', () => {
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -264,6 +268,14 @@ describe('select', () => {
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
 
+    it('should nzBackdrop works', fakeAsync(() => {
+      component.nzOpen = true;
+      component.nzBackdrop = true;
+      fixture.detectChanges();
+      flush();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
     it('should close dropdown when ESC keydown', fakeAsync(() => {
       component.nzOpen = true;
       fixture.detectChanges();
@@ -394,7 +406,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
 
@@ -415,11 +428,15 @@ describe('select', () => {
       component.value = 0;
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Falsy value'
+      );
       component.value = 'Truthy value';
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Truthy value'
+      );
       ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
@@ -433,7 +450,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -624,7 +643,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -678,7 +699,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveDefaultComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -909,7 +932,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
   });
@@ -919,7 +943,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -1107,7 +1133,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -1176,6 +1204,7 @@ describe('select', () => {
       [nzAutoFocus]="nzAutoFocus"
       [nzServerSearch]="nzServerSearch"
       [nzDisabled]="nzDisabled"
+      [nzBackdrop]="nzBackdrop"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
@@ -1223,7 +1252,7 @@ export class TestSelectTemplateDefaultComponent {
   nzShowArrow = true;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
-      return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+      return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     } else {
       return false;
     }
@@ -1237,6 +1266,7 @@ export class TestSelectTemplateDefaultComponent {
   nzServerSearch = false;
   nzDisabled = false;
   nzOpen = false;
+  nzBackdrop = false;
 }
 
 @Component({
@@ -1365,7 +1395,7 @@ export class TestSelectReactiveDefaultComponent {
   nzShowArrow = true;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
-      return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+      return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     } else {
       return false;
     }

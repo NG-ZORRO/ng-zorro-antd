@@ -5,7 +5,6 @@
 
 import {
   AfterContentChecked,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -25,18 +24,17 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-
-import { buildGraph } from 'dagre-compound';
-
 import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
-import { calculateTransform } from './core/utils';
+
+import { buildGraph } from 'dagre-compound';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
@@ -87,8 +85,14 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            <ng-container *ngFor="let edge of renderNode.edges; trackBy: edgeTrackByFun">
-              <g class="nz-graph-edge" nz-graph-edge [edge]="edge" [customTemplate]="customGraphEdgeTemplate"></g>
+            <ng-container *ngFor="let edge of $asNzGraphEdges(renderNode.edges); trackBy: edgeTrackByFun">
+              <g
+                class="nz-graph-edge"
+                nz-graph-edge
+                [edge]="edge"
+                [edgeType]="nzGraphLayoutConfig?.defaultEdge?.type"
+                [customTemplate]="customGraphEdgeTemplate"
+              ></g>
             </ng-container>
           </svg:g>
 
@@ -126,7 +130,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   }
 })
-export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
+export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   static ngAcceptInputType_nzAutoSize: BooleanInput;
 
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
@@ -178,9 +182,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     return `translate(${x}, ${y})`;
   };
 
-  coreTransform = (node: NzGraphGroupNode) => {
-    return `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
-  };
+  $asNzGraphEdges = (data: unknown) => data as NzGraphEdge[];
+
+  coreTransform = (node: NzGraphGroupNode) => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -203,7 +207,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     const { nzAutoFit, nzRankDirection, nzGraphData, nzGraphLayoutConfig } = changes;
     if (nzGraphLayoutConfig) {
       this.layoutSetting = this.mergeConfig(nzGraphLayoutConfig.currentValue);
-      // Object.assign(this.layoutSetting, this.nzGraphLayoutSetting || {});
     }
 
     if (nzGraphData) {
@@ -226,8 +229,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
     this.cdr.markForCheck();
   }
-
-  ngAfterViewInit(): void {}
 
   ngAfterContentChecked(): void {
     if (this.dataSource && !this._dataSubscription) {
@@ -274,6 +275,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * re-Draw graph
+   *
    * @param data
    * @param options
    * @param needResize
@@ -309,6 +311,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Redraw all nodes
+   *
    * @param animate
    */
   drawNodes(animate: boolean = true): Promise<void> {
@@ -405,6 +408,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Get renderInfo and prepare some data
+   *
    * @param data
    * @param options
    * @private
@@ -414,6 +418,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
     const renderInfo = buildGraph(data, options, this.layoutSetting) as NzGraphGroupNode;
     const dig = (nodes: Array<NzGraphNode | NzGraphGroupNode>): void => {
       nodes.forEach(node => {
+        const { x, y } = node;
+        node.xOffset = x;
+        node.yOffset = y;
         if (node.type === 1 && this.mapOfNodeAttr.hasOwnProperty(node.name)) {
           Object.assign(node, this.mapOfNodeAttr[node.name]);
         } else if (node.type === 0) {
@@ -438,6 +445,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Play with animation
+   *
    * @private
    */
   private makeNodesAnimation(): Observable<void> {
@@ -459,6 +467,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, After
 
   /**
    * Merge config with user inputs
+   *
    * @param config
    * @private
    */

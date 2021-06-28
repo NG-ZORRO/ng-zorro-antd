@@ -4,6 +4,7 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/c
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -13,7 +14,6 @@ import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
 import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
-
 import { NzPageHeaderComponent } from './page-header.component';
 import { NzPageHeaderModule } from './page-header.module';
 

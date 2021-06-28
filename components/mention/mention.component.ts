@@ -14,7 +14,6 @@ import {
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,11 +35,13 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import { fromEvent, merge, Subscription } from 'rxjs';
+
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
-import { fromEvent, merge, Subscription } from 'rxjs';
 
+import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -266,7 +267,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions.filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
+      this.nzValueWith(suggestion).toLowerCase().includes(searchValue)
+    );
   }
 
   private resetDropdown(emit: boolean = true): void {
@@ -305,15 +308,23 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private resetCursorMention(): void {
-    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
+    const value = this.triggerNativeElement.value.replace(/[\r\n]/g, NZ_MENTION_CONFIG.split) || '';
     const selectionStart = this.triggerNativeElement.selectionStart!;
     const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
     let i = prefix.length;
     while (i >= 0) {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
-      const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
+      const endPos =
+        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1
+          ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart)
+          : value.length;
       const mention = value.substring(startPos, endPos);
-      if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
+      if (
+        (startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
+        startPos < 0 ||
+        mention.includes(prefix[i], 1) ||
+        mention.includes(NZ_MENTION_CONFIG.split)
+      ) {
         this.cursorMention = null;
         this.cursorMentionStart = -1;
         this.cursorMentionEnd = -1;
@@ -351,7 +362,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
-      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !this.overlayRef?.overlayElement.contains(clickTarget)) {
+      if (
+        this.isOpen &&
+        clickTarget !== this.trigger.el.nativeElement &&
+        !this.overlayRef?.overlayElement.contains(clickTarget)
+      ) {
         this.closeDropdown();
       }
     });

@@ -103,6 +103,60 @@ const nzConfigFactory = (
 export class AppModule {}
 ```
 
+
+## Overwrite inside Component
+
+Developers can use Dependency Injection to reset `NZ_CONFIG` within a particular component, which will not affect configurations outside it.
+
+```typescript
+@Component({
+  providers: [
+    // reset local NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useValue: {
+        button: {
+          nzSize: 'large'
+        }
+      }
+    }
+  ]
+})
+```
+
+You can also use `useFactory` to combine the global configuration with the local configuration to take effect
+
+> Note: Change global configuration after component initialization won't affect local configuration
+
+```typescript
+@Component({
+  providers: [
+    // reset local NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useFactory: (nzConfigService: NzConfigService) => {
+        const globalConfig = nzConfigService.getConfig();
+        const localConfig = {
+          select: {
+            nzBorderless: true
+          }
+        };
+        // merge local and global config
+        const mergedConfig = {
+          ...globalConfig,
+          ...localConfig
+        };
+        return mergedConfig;
+      },
+      // get global NzConfigService
+      deps: [[new SkipSelf(), NzConfigService]]
+    }
+  ]
+})
+```
+
 ## Dynamically Change Configurations
 
 You can alter the global configuration of a specific component through the `set` method of `NzConfigService`. For example:
@@ -117,13 +171,13 @@ export class ChangeZorroConfigComponent {
   constructor(private nzConfigService: NzConfigService) {}
 
   onChangeConfig() {
-    // Grandpa: Oh, I like that!
     this.nzConfigService.set('button', { nzSize: 'large' })
   }
 }
 ```
 
 All component instances is responsive to this configuration change (as long as they are not configured independently).
+
 
 ## Priority of Global Configurations
 

@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from "ng-zorro-antd/grid";
@@ -15,6 +16,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { GithubButtonComponent } from './github-button.component';
 import { HeaderComponent } from './header.component';
+import { JoinTipComponent } from './join-tip.components';
 import { LogoComponent } from './logo.component';
 import { NavigationComponent } from './navigation.component';
 import { SearchbarComponent } from './searchbar.component';
@@ -32,14 +34,16 @@ import { SearchbarComponent } from './searchbar.component';
     NzSelectModule,
     NzButtonModule,
     NzDropDownModule,
-    NzPopoverModule
+    NzPopoverModule,
+    NzAlertModule
   ],
   declarations: [
     HeaderComponent,
     LogoComponent,
     SearchbarComponent,
     NavigationComponent,
-    GithubButtonComponent
+    GithubButtonComponent,
+    JoinTipComponent
   ],
   exports: [HeaderComponent]
 })

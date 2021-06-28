@@ -18,15 +18,16 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
   exportAs: 'innerPopup',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">
@@ -146,7 +147,7 @@ import { PREFIX_CLASS } from './util';
           [nzUse12Hours]="!!timeOptions.nzUse12Hours"
           [nzAddOn]="$any(timeOptions.nzAddOn)"
         ></nz-time-picker-panel>
-        <!-- use [opened] to trigger time panel \`initPosition()\` -->
+        <!-- use [opened] to trigger time panel 'initPosition()' -->
       </ng-container>
     </div>
   `
@@ -178,18 +179,16 @@ export class InnerPopupComponent implements OnChanges {
   /**
    * Hide "next" arrow in left panel,
    * hide "prev" arrow in right panel
+   *
    * @param direction
    * @param panelMode
    */
   enablePrevNext(direction: 'prev' | 'next', panelMode: NzDateMode): boolean {
-    if (
+    return !(
       !this.showTimePicker &&
       panelMode === this.endPanelMode &&
       ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
-    ) {
-      return false;
-    }
-    return true;
+    );
   }
 
   onSelectTime(date: Date): void {

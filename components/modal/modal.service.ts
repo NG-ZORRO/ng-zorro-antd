@@ -7,12 +7,13 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { defer, Observable, Subject } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
-import { defer, Observable, Subject } from 'rxjs';
-import { startWith } from 'rxjs/operators';
 
 import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
@@ -157,7 +158,11 @@ export class NzModalService implements OnDestroy {
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
           NzModalContainerComponent;
 
-    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(ContainerComponent, config.nzViewContainerRef, injector);
+    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(
+      ContainerComponent,
+      config.nzViewContainerRef,
+      injector
+    );
     const containerRef = overlayRef.attach<BaseModalContainerComponent>(containerPortal);
 
     return containerRef.instance;
@@ -173,7 +178,10 @@ export class NzModalService implements OnDestroy {
 
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
-        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as NzSafeAny)
+        new TemplatePortal<T>(componentOrTemplateRef, null!, {
+          $implicit: config.nzComponentParams,
+          modalRef
+        } as NzSafeAny)
       );
     } else if (isNotNil(componentOrTemplateRef) && typeof componentOrTemplateRef !== 'string') {
       const injector = this.createInjector<T, R>(modalRef, config);

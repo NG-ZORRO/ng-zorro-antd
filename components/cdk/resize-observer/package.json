@@ -3,6 +3,6 @@
     "lib": {
       "entryFile": "public-api.ts"
     },
-    "whitelistedNonPeerDependencies": ["tslib", "resize-observer-polyfill"]
+    "allowedNonPeerDependencies": ["tslib", "resize-observer-polyfill"]
   }
 }

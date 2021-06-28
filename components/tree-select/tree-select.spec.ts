@@ -8,7 +8,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchMouseEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 import { NzTreeSelectComponent } from './tree-select.component';
@@ -309,7 +315,9 @@ describe('tree-select component', () => {
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
-      expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
+      expect(maxTagPlaceholderElement.innerText.trim()).toBe(
+        `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
+      );
     }));
 
     it('should set selectable', fakeAsync(() => {
@@ -330,6 +338,14 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       expect(treeSelectComponent.nzOpen).toBe(true);
+    }));
+
+    it('should nzBackdrop work', fakeAsync(() => {
+      testComponent.hasBackdrop = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
   });
 
@@ -608,6 +624,7 @@ describe('tree-select component', () => {
       [nzMultiple]="multiple"
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
+      [nzBackdrop]="hasBackdrop"
       nzDropdownClassName="class1 class2"
     ></nz-tree-select>
   `
@@ -682,6 +699,7 @@ export class NzTestTreeSelectBasicComponent {
       ]
     }
   ];
+  hasBackdrop = false;
 
   setNull(): void {
     this.value = null;

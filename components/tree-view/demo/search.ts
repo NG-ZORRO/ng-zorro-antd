@@ -1,9 +1,9 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
-
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
+
+import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -116,7 +116,7 @@ export class NzDemoTreeViewSearchComponent {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level
+            level
           };
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);

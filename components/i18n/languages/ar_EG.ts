@@ -145,8 +145,8 @@ export default {
   Text: {
     edit: 'تعديل',
     copy: 'نسخ',
-    copied: 'نقل',
-    expand: 'وسع'
+    copied: 'تم النسخ',
+    expand: 'المزيد'
   },
   PageHeader: {
     back: 'عودة'

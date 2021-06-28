@@ -3,9 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,

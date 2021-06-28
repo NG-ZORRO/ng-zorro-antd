@@ -30,6 +30,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzAddOn]` | called from timepicker panel to render some addon to its bottom | `TemplateRef<void>` | - |
 | `[nzAllowEmpty]` | allow clearing text | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
+| `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
 | `[nzClearText]` | clear tooltip of icon | `string` | `'clear'` | ✅ |
 | `[nzNowText]` | text of the Now button  | `string` | `'Now'` | ✅ |
 | `[nzOkText]` | text of the Ok button | `string` | `'Ok'` | ✅ |

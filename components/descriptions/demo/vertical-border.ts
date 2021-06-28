@@ -7,9 +7,7 @@ import { Component } from '@angular/core';
       <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Order Time">
-        2018-04-24 18:00:00
-      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Order Time">2018-04-24 18:00:00</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
         2018-04-24 18:00:00 To 2019-04-24 18:00:00
       </nz-descriptions-item>
@@ -30,7 +28,8 @@ import { Component } from '@angular/core';
         <br />
         Replication_factor:3
         <br />
-        Region: East China 1<br />
+        Region: East China 1
+        <br />
       </nz-descriptions-item>
     </nz-descriptions>
   `

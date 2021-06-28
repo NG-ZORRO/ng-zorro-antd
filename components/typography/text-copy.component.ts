@@ -18,17 +18,18 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzTSType } from 'ng-zorro-antd/core/types';
-
-import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'nz-text-copy',
   exportAs: 'nzTextCopy',
   template: `
     <button
+      type="button"
       nz-tooltip
       nz-trans-button
       [nzTooltipTitle]="copied ? copedTooltip : copyTooltip"
@@ -62,7 +63,12 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() readonly textCopy = new EventEmitter<string>();
 
-  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}
+  constructor(
+    private host: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private clipboard: Clipboard,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

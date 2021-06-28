@@ -1,10 +1,11 @@
 /**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
+
+import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
+
 
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
@@ -23,12 +24,10 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
-import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {
   addDeclarationToModule,
-  addEntryComponentToModule,
   addExportToModule,
   getDecoratorMetadata
 } from '@schematics/angular/utility/ast-utils';
@@ -38,6 +37,7 @@ import { parseName } from '@schematics/angular/utility/parse-name';
 import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { ProjectType } from '@schematics/angular/utility/workspace-models';
+
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
@@ -73,6 +73,7 @@ export interface ZorroComponentOptions extends ComponentOptions {
 
 /**
  * Build a default project path for generating.
+ *
  * @param project The project to build the path for.
  */
 function buildDefaultPath(project: ProjectDefinition): string {
@@ -91,7 +92,7 @@ function buildDefaultPath(project: ProjectDefinition): string {
  */
 const supportedCssExtensions = [ 'css', 'scss', 'sass', 'less' ];
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readIntoSourceFile(host: Tree, modulePath: string): any {
   const text = host.read(modulePath);
   if (text === null) {
@@ -101,7 +102,7 @@ function readIntoSourceFile(host: Tree, modulePath: string): any {
   return ts.createSourceFile(modulePath, text.toString('utf-8'), ts.ScriptTarget.Latest, true);
 }
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getModuleClassnamePrefix(source: any): string {
   const className = getFirstNgModuleName(source);
   if (className) {
@@ -121,7 +122,7 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
     const modulePath = options.module;
     let source = readIntoSourceFile(host, modulePath);
 
-    const componentPath = `/${options.path}/${options.flat ? '' : strings.dasherize(options.name) + '/'}${strings.dasherize(options.name)}.component`;
+    const componentPath = `/${options.path}/${options.flat ? '' : `${strings.dasherize(options.name)  }/`}${strings.dasherize(options.name)}.component`;
     const relativePath = buildRelativePath(modulePath, componentPath);
     let classifiedName = strings.classify(`${options.name}Component`);
 
@@ -167,25 +168,6 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
       host.commitUpdate(exportRecorder);
     }
 
-    if (options.entryComponent) {
-      // Need to refresh the AST because we overwrote the file in the host.
-      source = readIntoSourceFile(host, modulePath);
-
-      const entryComponentRecorder = host.beginUpdate(modulePath);
-      const entryComponentChanges = addEntryComponentToModule(
-        source,
-        modulePath,
-        strings.classify(`${options.name}Component`),
-        relativePath);
-
-      for (const change of entryComponentChanges) {
-        if (change instanceof InsertChange) {
-          entryComponentRecorder.insertLeft(change.pos, change.toAdd);
-        }
-      }
-      host.commitUpdate(entryComponentRecorder);
-    }
-
     return host;
   };
 }
@@ -194,7 +176,7 @@ function buildSelector(options: ZorroComponentOptions, projectPrefix: string, mo
   let selector = strings.dasherize(options.name);
   let modulePrefix = '';
   if (modulePrefixName) {
-    modulePrefix = strings.dasherize(modulePrefixName) + '-';
+    modulePrefix = `${strings.dasherize(modulePrefixName)  }-`;
   }
   if (options.prefix) {
     selector = `${options.prefix}-${modulePrefix}${selector}`;
@@ -253,7 +235,7 @@ export function buildComponent(options: ZorroComponentOptions,
     if (options.path === undefined) {
       // TODO(jelbourn): figure out if the need for this `as any` is a bug due to two different
       // incompatible `WorkspaceProject` classes in @angular-devkit
-      // tslint:disable-next-line no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options.path = buildDefaultPath(project as any);
     }
 
@@ -312,11 +294,11 @@ export function buildComponent(options: ZorroComponentOptions,
       options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
-      // tslint:disable-next-line no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext } as any),
       // TODO(devversion): figure out why we cannot just remove the first parameter
       // See for example: angular-cli#schematics/angular/component/index.ts#L160
-      // tslint:disable-next-line no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       move(null as any, parsedPath.path)
     ]);
 

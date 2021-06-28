@@ -15,6 +15,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -50,7 +51,7 @@ export class NzOptionItemComponent implements OnChanges {
   @Input() template: TemplateRef<NzSafeAny> | null = null;
   @Input() disabled = false;
   @Input() showState = false;
-  @Input() label: string | null = null;
+  @Input() label: string | number | null = null;
   @Input() value: NzSafeAny | null = null;
   @Input() activatedValue: NzSafeAny | null = null;
   @Input() listOfSelectedValue: NzSafeAny[] = [];

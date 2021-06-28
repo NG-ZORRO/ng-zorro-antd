@@ -22,10 +22,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -37,7 +39,10 @@ import { PaginationItemRenderContext } from './pagination.types';
   template: `
     <ng-template #containerTemplate>
       <li class="ant-pagination-total-text" *ngIf="showTotal">
-        <ng-template [ngTemplateOutlet]="showTotal" [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="showTotal"
+          [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
+        ></ng-template>
       </li>
       <li
         *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"

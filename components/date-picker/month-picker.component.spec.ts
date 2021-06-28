@@ -6,9 +6,10 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import isBefore from 'date-fns/isBefore';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
@@ -56,7 +57,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(document.body, 'click');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -157,7 +158,9 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      const allDisabledCells = overlayContainerElement.querySelectorAll('.ant-picker-month-panel tr td.ant-picker-cell-disabled');
+      const allDisabledCells = overlayContainerElement.querySelectorAll(
+        '.ant-picker-month-panel tr td.ant-picker-cell-disabled'
+      );
       const disabledCell = allDisabledCells[allDisabledCells.length - 1];
       expect(disabledCell.textContent).toContain('10');
     }));
@@ -205,7 +208,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(document.body, 'click');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
@@ -380,7 +383,9 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function getFirstMonthCell(): HTMLElement {
-    return queryFromOverlay('.ant-picker-month-panel td.ant-picker-cell:nth-child(1) .ant-picker-cell-inner') as HTMLElement;
+    return queryFromOverlay(
+      '.ant-picker-month-panel td.ant-picker-cell:nth-child(1) .ant-picker-cell-inner'
+    ) as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -441,7 +446,7 @@ class NzTestMonthPickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;

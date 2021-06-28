@@ -4,6 +4,7 @@
  */
 
 import { editor } from 'monaco-editor';
+
 import IStandAloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 

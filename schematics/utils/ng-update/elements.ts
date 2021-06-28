@@ -1,4 +1,9 @@
-import { parseFragment, DefaultTreeDocument, DefaultTreeElement } from 'parse5';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { DefaultTreeDocument, DefaultTreeElement, parseFragment } from 'parse5';
 
 const hasClassName = (node: DefaultTreeElement, className: string) => {
   return node.attrs?.find?.(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
