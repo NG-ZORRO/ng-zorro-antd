@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-select-select-users',
@@ -55,7 +55,10 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
     const getRandomNameList = (name: string) =>
       this.http
         .get(`${this.randomUserUrl}`)
-        .pipe(map((res: any) => res.results))
+        .pipe(
+          catchError(() => of({ results: [] })),
+          map((res: any) => res.results)
+        )
         .pipe(map((list: any) => list.map((item: any) => `${item.name.first} ${name}`)));
     const optionList$: Observable<string[]> = this.searchChange$
       .asObservable()

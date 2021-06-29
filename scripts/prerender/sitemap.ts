@@ -57,5 +57,5 @@ export function generateSitemap(): void {
       ...generateUrls('zh')
     ]
   });
-  writeFileSync(resolve(buildConfig.outputDir, 'sitemap.xml'), sitemapInstance.toString(true));
+  writeFileSync(resolve(`${buildConfig.outputDir}/browser`, 'sitemap.xml'), sitemapInstance.toString(true));
 }

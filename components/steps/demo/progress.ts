@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { merge, Observable, timer } from 'rxjs';
 import { delay, finalize, map, scan } from 'rxjs/operators';
 
@@ -63,7 +63,7 @@ function mockAsyncStep(): Observable<number> {
     `
   ]
 })
-export class NzDemoStepsProgressComponent implements OnDestroy {
+export class NzDemoStepsProgressComponent {
   steps: Step[] = [
     {
       id: 1,
@@ -87,7 +87,6 @@ export class NzDemoStepsProgressComponent implements OnDestroy {
       percentage: 0
     }
   ];
-  intervalId = -1;
   current = 0;
   processing = false;
 
@@ -128,9 +127,5 @@ export class NzDemoStepsProgressComponent implements OnDestroy {
         this.current += 1;
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.intervalId);
   }
 }

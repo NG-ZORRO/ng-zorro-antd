@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -71,17 +73,23 @@ export class NzDemoListLoadmoreComponent implements OnInit {
   }
 
   getData(callback: (res: any) => void): void {
-    this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
+    this.http
+      .get(fakeDataUrl)
+      .pipe(catchError(() => of({ results: [] })))
+      .subscribe((res: any) => callback(res));
   }
 
   onLoadMore(): void {
     this.loadingMore = true;
     this.list = this.data.concat([...Array(count)].fill({}).map(() => ({ loading: true, name: {} })));
-    this.http.get(fakeDataUrl).subscribe((res: any) => {
-      this.data = this.data.concat(res.results);
-      this.list = [...this.data];
-      this.loadingMore = false;
-    });
+    this.http
+      .get(fakeDataUrl)
+      .pipe(catchError(() => of({ results: [] })))
+      .subscribe((res: any) => {
+        this.data = this.data.concat(res.results);
+        this.list = [...this.data];
+        this.loadingMore = false;
+      });
   }
 
   edit(item: any): void {
