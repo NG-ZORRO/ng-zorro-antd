@@ -14,6 +14,8 @@ import { minifyFile } from './minify';
 
 type Local = 'en' | 'zh';
 
+const browserOutput = `${buildConfig.outputDir}/browser`;
+
 const distFiles: {
   [key: string]: string[];
 } = {
@@ -25,17 +27,17 @@ const distFiles: {
 async function minifyFiles(): Promise<void> {
   for (const type of Object.keys(distFiles)) {
     const paths: string[] = distFiles[type]
-      .map(pattern => glob(pattern, { cwd: buildConfig.outputDir }))
+      .map(pattern => glob(pattern, { cwd: browserOutput }))
       .reduce((a, b) => [...a, ...b], []);
     for (const contentPath of paths) {
-      await minifyFile(resolve(buildConfig.outputDir, contentPath), type);
+      await minifyFile(resolve(browserOutput, contentPath), type);
     }
   }
 }
 
 async function runNGSWConfig(): Promise<void> {
   return new Promise((res, reject) => {
-    const childProcess = child_process.spawn('node_modules/.bin/ngsw-config', ['dist', 'ngsw-config.json'], {
+    const childProcess = child_process.spawn('node_modules/.bin/ngsw-config', [browserOutput, 'ngsw-config.json'], {
       env: { ...process.env },
       cwd: buildConfig.projectDir,
       stdio: ['pipe', 'ignore', 'ignore']
@@ -47,14 +49,14 @@ async function runNGSWConfig(): Promise<void> {
 }
 
 async function setLocalizedIndex(local: Local): Promise<void> {
-  const content = await readFile(resolve(buildConfig.outputDir, 'docs/introduce', local, 'index.html'));
-  await writeFile(resolve(buildConfig.outputDir, 'index.html'), content);
+  const content = await readFile(resolve(browserOutput, 'docs/introduce', local, 'index.html'));
+  await writeFile(resolve(browserOutput, 'index.html'), content);
 }
 
 async function saveAsNGSWConfig(local: Local): Promise<void> {
-  const config = await readJSON(resolve(buildConfig.outputDir, 'ngsw.json'));
+  const config = await readJSON(resolve(browserOutput, 'ngsw.json'));
   config.local = local;
-  await writeJSON(resolve(buildConfig.outputDir, `ngsw.${local}.json`), config);
+  await writeJSON(resolve(browserOutput, `ngsw.${local}.json`), config);
 }
 
 async function rewriteConfig(local: Local): Promise<void> {

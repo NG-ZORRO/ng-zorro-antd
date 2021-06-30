@@ -1,8 +1,8 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -129,6 +129,7 @@ class MyDataSource extends DataSource<ItemData> {
       .get<{ results: ItemData[] }>(
         `https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`
       )
+      .pipe(catchError(() => of({ results: [] })))
       .subscribe(res => {
         this.cachedData.splice(page * this.pageSize, this.pageSize, ...res.results);
         this.dataStream.next(this.cachedData);

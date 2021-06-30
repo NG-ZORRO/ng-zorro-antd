@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -30,11 +31,16 @@ import { Router } from '@angular/router';
 })
 export class JoinTipComponent {
 
-  constructor(private router: Router) {
+  hideJoin = false;
+
+  constructor(private router: Router, private platform: Platform) {
+    if (this.platform.isBrowser) {
+      this.isHideJoin();
+    }
   }
 
-  get hideJoin(): boolean {
-    return localStorage.getItem('hideJoin') === 'true';
+  isHideJoin(): void {
+    this.hideJoin = localStorage.getItem('hideJoin') === 'true';
   }
 
   navigateToJoin(): void {

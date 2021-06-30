@@ -45,11 +45,13 @@ import { Component } from '@angular/core';
       .content {
         display: flex;
       }
+
       .extra > div {
         display: flex;
         width: max-content;
         justify-content: flex-end;
       }
+
       @media (max-width: 576px) {
         .content {
           display: block;

@@ -29,10 +29,10 @@ stages:
         - script: |
             npm run build
             export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
-            echo 'version' >> dist/.surgeignore
-            echo 'issue-helper' >> dist/.surgeignore
-            npx surge --project ./dist --domain $DEPLOY_DOMAIN
-            tar czvf build.tgz lib dist
+            echo 'version' >> dist/browser/.surgeignore
+            echo 'issue-helper' >> dist/browser/.surgeignore
+            npx surge --project ./dist/browser --domain $DEPLOY_DOMAIN
+            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
 
         - task: CopyFiles@2
           inputs:

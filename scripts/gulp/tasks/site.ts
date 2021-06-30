@@ -79,7 +79,13 @@ task(
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
 task(
   'build:site-iframe',
-  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./'])
+  execNodeTask('@angular/cli', 'ng', [
+    'build',
+    '--project=ng-zorro-antd-iframe',
+    '--configuration',
+    'production',
+    '--base-href=./'
+  ])
 );
 
 /** Replace the library paths to publish/ directory */

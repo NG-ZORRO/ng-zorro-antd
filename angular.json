@@ -11,7 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist",
+            "outputPath": "dist/browser",
             "index": "./site/doc/index.html",
             "main": "./site/doc/main.ts",
             "tsConfig": "./site/doc/tsconfig.app.json",
@@ -148,7 +148,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/iframe",
+            "outputPath": "dist/browser/iframe",
             "index": "./site/iframe/index.html",
             "main": "./site/iframe/main.ts",
             "tsConfig": "./site/iframe/tsconfig.app.json",
