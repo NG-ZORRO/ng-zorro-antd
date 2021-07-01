@@ -48,6 +48,7 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
         type="checkbox"
         class="ant-checkbox-input"
         [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
+        [attr.id]="nzId"
         [checked]="nzChecked"
         [ngModel]="nzChecked"
         [disabled]="nzDisabled"
@@ -89,6 +90,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzIndeterminate = false;
   @Input() @InputBoolean() nzChecked = false;
+  @Input() nzId: string | null = null;
 
   hostClick(e: MouseEvent): void {
     e.preventDefault();
