@@ -32,6 +32,9 @@ yarn.lock
 
 # IDE - VSCode
 .vscode/*
+!.vscode/extensions.json
+!.vscode/README.md
+!.vscode/recommended-settings.json
 
 # misc
 /.sass-cache
