@@ -177,6 +177,16 @@ describe('checkbox', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       expect(checkboxs[2].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
+    it('should nzSingle work', () => {
+      testComponent.single = true;
+      fixture.detectChanges();
+      fixture.detectChanges();
+      checkboxs[2].click();
+      fixture.detectChanges();
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
+      expect(checkboxs[0].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxs[2].firstElementChild!.classList).toContain('ant-checkbox-checked');
+    });
     it('should ngModel work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.options[0].checked = false;
@@ -361,6 +371,7 @@ export class NzTestCheckboxSingleComponent {
   template: `
     <nz-checkbox-group
       [nzDisabled]="disabled"
+      [nzSingle]="single"
       [ngModel]="options"
       (ngModelChange)="modelChange($event)"
     ></nz-checkbox-group>
@@ -373,6 +384,7 @@ export class NzTestCheckboxGroupComponent {
     { label: 'Orange', value: 'Orange' }
   ];
   disabled = false;
+  single = false;
   modelChange = jasmine.createSpy('change callback');
 }
 

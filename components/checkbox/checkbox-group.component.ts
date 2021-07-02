@@ -60,13 +60,17 @@ export interface NzCheckBoxOptionInterface {
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzSingle: BooleanInput;
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzSingle = false;
 
   dir: Direction = 'ltr';
+
+  private preCheckedOption?: NzCheckBoxOptionInterface;
 
   private destroy$ = new Subject<void>();
 
@@ -76,6 +80,14 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
 
   onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
     option.checked = checked;
+    if (this.nzSingle) {
+      if (checked) {
+        this.preCheckedOption && (this.preCheckedOption.checked = false);
+        this.preCheckedOption = option;
+      } else {
+        this.preCheckedOption = undefined;
+      }
+    }
     this.onChange(this.options);
   }
 
@@ -115,6 +127,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {
     this.options = value;
+    this.preCheckedOption = this.options?.find(option => option.checked);
     this.cdr.markForCheck();
   }
 

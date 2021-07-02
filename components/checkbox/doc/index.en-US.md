@@ -35,6 +35,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | Specifies options, double binding |  `Array<{ label: string; value: string; checked?: boolean; }>` | `[]` |
 | `[nzDisabled]` | Disable all checkboxes | `boolean` | `false` |
+| `[nzSingle]` | Single choice mode | `boolean` | `false` |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | - |
 
 ### nz-checkbox-wrapper

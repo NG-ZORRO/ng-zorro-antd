@@ -36,6 +36,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | --- | --- | --- | --- |
 | `[ngModel]` | 指定可选项，可双向绑定 | `Array<{ label: string; value: string; checked?: boolean; }>` | `[]` |
 | `[nzDisabled]` | 设定全部 checkbox disable 状态 | `boolean` | `false` |
+| `[nzSingle]` | 单选模式 | `boolean` | `false` |
 | `(ngModelChange)` | 选中数据变化时的回调 | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | - |
 
 
