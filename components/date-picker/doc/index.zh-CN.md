@@ -34,6 +34,7 @@ registerLocaleData(zh);
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | - |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` | - |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` | - |
 | `[nzBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
@@ -66,7 +67,6 @@ registerLocaleData(zh);
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[(ngModel)]` | 日期 | `Date` | - |
-| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 
 ### nz-date-picker[nzMode="date"]
 

@@ -126,6 +126,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     <ng-template #tplRangeInput let-partType="partType">
       <input
         #rangePickerInput
+        [attr.id]="nzId"
         [disabled]="nzDisabled"
         [readOnly]="nzInputReadOnly"
         [size]="inputSize"
