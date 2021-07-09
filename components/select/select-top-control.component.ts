@@ -85,7 +85,8 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
   host: {
-    '(keydown)': 'onHostKeydown($event)'
+    '(keydown)': 'onHostKeydown($event)',
+    '(click)': 'onHostClick($event)'
   }
 })
 export class NzSelectTopControlComponent implements OnChanges {
@@ -117,6 +118,12 @@ export class NzSelectTopControlComponent implements OnChanges {
     if (e.keyCode === BACKSPACE && this.mode !== 'default' && !inputValue && this.listOfTopItem.length > 0) {
       e.preventDefault();
       this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]);
+    }
+  }
+
+  onHostClick(e: MouseEvent): void {
+    if (e.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
+      this.nzSelectSearchComponent.focus();
     }
   }
 
