@@ -20,6 +20,7 @@ import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { ModalTemplateRule } from './upgrade-rules/checks/modal-template-rule';
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
+import { SpaceTemplateRule } from './upgrade-rules/checks/space-template-rule';
 import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
 import { TabsInputRule } from './upgrade-rules/checks/tabs-input-rule';
 import { TabsOutputRule } from './upgrade-rules/checks/tabs-output-rule';
@@ -43,7 +44,8 @@ const migrations: NullableDevkitMigration[] = [
   TableTemplateRule,
   ModalTemplateRule,
   SecondaryEntryPointsRule,
-  ClassNamesMigration
+  ClassNamesMigration,
+  SpaceTemplateRule
 ];
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
