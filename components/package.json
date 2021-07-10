@@ -27,17 +27,17 @@
     "url": "https://github.com/NG-ZORRO/ng-zorro-antd/issues"
   },
   "dependencies": {
-    "@angular/cdk": "^12.0.3",
-    "@ant-design/icons-angular": "^11.0.1",
+    "@angular/cdk": "^12.1.0",
+    "@ant-design/icons-angular": "^12.0.3",
     "date-fns": "^2.10.0",
     "resize-observer-polyfill": "^1.5.1"
   },
   "peerDependencies": {
-    "@angular/animations": "^12.0.3",
-    "@angular/common": "^12.0.3",
-    "@angular/forms": "^12.0.3",
-    "@angular/core": "^12.0.3",
-    "@angular/platform-browser": "^12.0.3",
-    "@angular/router": "^12.0.3"
+    "@angular/animations": "^12.1.0",
+    "@angular/common": "^12.1.0",
+    "@angular/forms": "^12.1.0",
+    "@angular/core": "^12.1.0",
+    "@angular/platform-browser": "^12.1.0",
+    "@angular/router": "^12.1.0"
   }
 }

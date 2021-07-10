@@ -3,7 +3,7 @@ order: 16
 title: 加入我们
 ---
 
-阿里云实时计算部是阿里巴巴大数据技术体系的核心团队，以 Apache Flink 为核心打造的大数据实时计算平台，我们的技术团队围绕开源技术体系构建，包括来自 Apache Flink / Hadoop / HBase / Kafka / Hive / Zeppelin 等顶级开源项目的十几位 PMC / Committer 成员。
+阿里云开源大数据平台前端团队是阿里巴巴大数据技术体系的核心团队，以 Apache Flink 为核心打造的大数据实时计算平台，我们的技术团队围绕开源技术体系构建，包括来自 Apache Flink / Hadoop / HBase / Kafka / Hive / Zeppelin 等顶级开源项目的十几位 PMC / Committer 成员。
 
 ## 高级前端工程师/前端开发专家（P6/P7）
 

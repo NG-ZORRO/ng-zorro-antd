@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^12.1.0",
-    "@ant-design/icons-angular": "^11.0.1",
+    "@ant-design/icons-angular": "^12.0.3",
     "date-fns": "^2.16.1",
     "ngx-hover-preload": "0.0.3",
     "resize-observer-polyfill": "^1.5.1"
