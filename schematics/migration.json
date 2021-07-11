@@ -23,7 +23,7 @@
     },
     "migration-v12": {
       "version": "12.0.0-0",
-      "description": "Updates NG-ZORRO to v12 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/#PLACEHOLDER]",
+      "description": "Updates NG-ZORRO to v12 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/6834]",
       "factory": "./ng-update/index#updateToV12"
     },
     "ng-post-update": {
