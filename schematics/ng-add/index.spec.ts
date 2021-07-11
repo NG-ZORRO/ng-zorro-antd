@@ -201,4 +201,31 @@ describe('ng-add schematic', () => {
     );
   });
 
+  it('should throw an error when the "build" target is not supported', async () => {
+    let message: string;
+    const angularJson = JSON.parse(getFileContent(appTree, '/angular.json'));
+    angularJson.projects['ng-zorro'].architect.build.builder = 'some-unsupported-builder';
+    appTree.overwrite('/angular.json', JSON.stringify(angularJson));
+
+    try {
+      await runner.runSchematicAsync('ng-add', {}, appTree).toPromise();
+    } catch (error) {
+      message = error.message;
+    }
+
+    expect(message).toContain('Your project is not using the default builders for "build".');
+  });
+
+  it('should support the `@angular-builders/custom-webpack:browser` build target', async () => {
+    const angularJson = JSON.parse(getFileContent(appTree, '/angular.json'));
+    angularJson.projects['ng-zorro'].architect.build.builder = '@angular-builders/custom-webpack:browser';
+    appTree.overwrite('/angular.json', JSON.stringify(angularJson));
+
+    appTree = await runner.runSchematicAsync('ng-add', {}, appTree).toPromise();
+    const workspace = await getWorkspace(appTree);
+    const project = getProjectFromWorkspace(workspace);
+
+    expect(getProjectTargetOptions(project, 'build').styles)
+    .toContain('./node_modules/ng-zorro-antd/ng-zorro-antd.min.css');
+  });
 });
