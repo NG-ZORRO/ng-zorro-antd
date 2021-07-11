@@ -25,7 +25,7 @@ export interface TreeNodeInterface {
       <tbody>
         <ng-container *ngFor="let data of expandTable.data">
           <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
-            <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+            <tr *ngIf="item.parent?.expand || !item.parent">
               <td
                 [nzIndentSize]="item.level! * 20"
                 [nzShowExpand]="!!item.children"
@@ -130,7 +130,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     const hashMap = {};
     stack.push({ ...root, level: 0, expand: false });
 
-    while (stack.length !== 0) {
+    while (!!stack.length) {
       const node = stack.pop()!;
       this.visitNode(node, hashMap, array);
       if (node.children) {
