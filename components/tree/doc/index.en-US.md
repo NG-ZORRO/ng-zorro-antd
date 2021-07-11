@@ -17,7 +17,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ### nz-tree
 
-> Tips: According to the current data structure design, you need to ensure that `nzData` is set first, otherwise other attributes will not take effect. After the asynchronous operation returns data, re-assign other attributes to trigger rendering(including `nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`). Please refer to [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152) to track the optimization progress.
+> Tips: Assign `nzData` with a value on the first(array length is greater than 0), assign other attributes to trigger rendering(including `nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`).
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
@@ -134,20 +134,3 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | addChildren | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | - |
 | clearChildren | Clear the treeNode's children | function | - |
 | remove | Clear current node(not root node) | function | - |
-
-## Note
-* Please make sure `nzData` is set before the above mentioned properties:
-```typescript
-// Demo
-this.nzExpandAll = false;
-const nodes = []; // source data
-this.nzData = [...nodes];
-// Reset the above mentioned properties if you have used after setting of nzData
-this.nzExpandedKeys = [...this.nzExpandedKeys];
-// this.nzExpandAll = true;
-this.nzCheckedKeys = [...this.nzCheckedKeys];
-this.nzSelectedKeys = [...this.nzSelectedKeys];
-```
-* `NzTreeNodeOptions` accepts your customized properties，use NzTreeNode.origin to get them.
-* If Tree Methods used with ViewChild, should be used in ngAfterViewInit.
-* Setting NzData with NzTreeNodeOptions[] is better，if you set nzData with NzTreeNode[], it will be deprecated in next major version(8.x).
