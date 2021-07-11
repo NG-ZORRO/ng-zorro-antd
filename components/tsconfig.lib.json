@@ -21,8 +21,5 @@
     "fullTemplateTypeCheck": true,
     "strictTemplates": true,
     "strictInjectionParameters": true
-  },
-  "include": [
-    "**/*.ts"
-  ]
+  }
 }
