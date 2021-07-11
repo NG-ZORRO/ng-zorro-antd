@@ -215,6 +215,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
+    if (this.showTime) {
+      this.buildTimeOptions();
+    }
     this.datePickerService.setActiveDate(
       activeDate,
       this.hasTimePicker,
