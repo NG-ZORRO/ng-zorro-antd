@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { IndexableObject, NgClassInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
 
 export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
@@ -48,8 +48,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
-        [class.ant-dropdown-rtl]="dir === 'rtl'"
-        [ngClass]="nzOverlayClassName"
+        [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
@@ -58,6 +57,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
+        <div *ngIf="arrow" class="ant-dropdown-arrow"></div>
         <ng-content></ng-content>
       </div>
     </ng-template>
@@ -75,8 +75,19 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
   nzOverlayStyle: IndexableObject = {};
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
+  arrow: boolean = false;
   dir: Direction = 'ltr';
+  _prefix: string = 'ant-dropdown';
+  _placement: string = 'bottomLeft';
+  _classMap: NgClassInterface = {};
   private destroy$ = new Subject<void>();
+
+  set placement(value: string) {
+    if (['top', 'bottom', 'right', 'left'].includes(value)) {
+      value = `${value}Center`;
+    }
+    this._placement = value;
+  }
 
   onAnimationEvent(event: AnimationEvent): void {
     this.animationStateChange$.emit(event);
@@ -88,7 +99,17 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
 
   setValue<T extends keyof NzDropdownMenuComponent>(key: T, value: this[T]): void {
     this[key] = value;
+    this.updateStyles();
     this.cdr.markForCheck();
+  }
+
+  updateStyles() {
+    this._classMap = {
+      [this.nzOverlayClassName]: true,
+      'ant-dropdown-rtl': this.dir === 'rtl',
+      [`${this._prefix}-placement-${this._placement}`]: true,
+      [`${this._prefix}-show-arrow`]: this.arrow
+    };
   }
 
   constructor(
@@ -103,10 +124,12 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
+      this.updateStyles();
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
+    this.updateStyles();
   }
 
   ngAfterContentInit(): void {

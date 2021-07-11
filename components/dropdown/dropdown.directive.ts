@@ -24,7 +24,7 @@ import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from
 import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { POSITION_MAP, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -47,6 +47,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   static ngAcceptInputType_nzClickHide: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzArrow: BooleanInput;
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
@@ -71,6 +72,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
+  @Input() @InputBoolean() nzArrow = false;
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
@@ -145,6 +147,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           if (visible) {
             /** set up overlayRef **/
             if (!this.overlayRef) {
+              this.positionStrategy.positionChanges
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(p => this.setDropdownMenuValue('placement', getPlacementName(p)!));
               /** new overlay **/
               this.overlayRef = this.overlay.create({
                 positionStrategy: this.positionStrategy,
@@ -206,7 +211,16 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzHasBackdrop } = changes;
+    const {
+      nzArrow,
+      nzPlacement,
+      nzVisible,
+      nzDisabled,
+      nzOverlayClassName,
+      nzOverlayStyle,
+      nzTrigger,
+      nzHasBackdrop
+    } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -232,6 +246,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       warnDeprecation(
         '`nzHasBackdrop` in dropdown component will be removed in 13.0.0, please use `nzBackdrop` instead.'
       );
+    }
+
+    if (nzArrow) {
+      this.setDropdownMenuValue('arrow', this.nzArrow);
+    }
+
+    if (nzPlacement) {
+      this.setDropdownMenuValue('placement', this.nzPlacement);
     }
   }
 }
