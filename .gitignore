@@ -44,6 +44,7 @@ testem.log
 /typings
 .eslintcache
 yarn-error.log
+report.*.json
 
 # e2e
 /e2e/*.js
