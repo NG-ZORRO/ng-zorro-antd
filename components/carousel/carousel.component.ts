@@ -103,8 +103,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
+    '[style.user-select]': `isDragging ? 'none' : ''`,
     '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir ==='rtl'`
+    '[class.ant-carousel-rtl]': `dir ==='rtl'`,
+    '(mouseenter)': 'isHover = true',
+    '(mouseleave)': 'isHover = false'
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
@@ -162,12 +165,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   vertical = false;
   transitionInProgress: number | null = null;
   dir: Direction = 'ltr';
+  isHover = false;
+  isDragging = false;
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
   private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
-  private isDragging = false;
 
   constructor(
     elementRef: ElementRef,
@@ -324,7 +328,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.clearScheduledTransition();
     if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0 && this.platform.isBrowser) {
       this.transitionInProgress = setTimeout(() => {
-        this.goTo(this.activeIndex + 1);
+        this.goTo(this.activeIndex + (this.isHover ? 0 : 1));
       }, this.nzAutoPlaySpeed);
     }
   }
@@ -365,6 +369,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           this.pointerDelta = delta;
           this.isDragging = true;
           this.strategy?.dragging(this.pointerDelta);
+          this.cdr.detectChanges();
         },
         () => {},
         () => {
@@ -383,6 +388,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           }
 
           this.isDragging = false;
+          this.cdr.detectChanges();
         }
       );
     }
