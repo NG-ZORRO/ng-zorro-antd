@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
@@ -250,6 +250,37 @@ describe('breadcrumb', () => {
         fixture = TestBed.createComponent(NzBreadcrumbAutoGenerateErrorDemoComponent);
         fixture.detectChanges();
       }).toThrowError();
+    }));
+
+    it('should call navigate() within the Angular zone', fakeAsync(() => {
+      let navigateHasBeenCalledWithinTheAngularZone = false;
+
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
+        declarations: [NzBreadcrumbRouteLabelDemoComponent, NzBreadcrumbNullComponent]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(NzBreadcrumbRouteLabelDemoComponent);
+      breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+
+      const navigate = breadcrumb.componentInstance.navigate;
+      const spy = spyOn(breadcrumb.componentInstance, 'navigate').and.callFake((url: string, event: MouseEvent) => {
+        navigateHasBeenCalledWithinTheAngularZone = NgZone.isInAngularZone();
+        return navigate.call(breadcrumb.componentInstance, url, event);
+      });
+
+      router = TestBed.inject(Router);
+      router.initialNavigation();
+      flushFixture(fixture);
+
+      router.navigate(['one', 'two']);
+      flushFixture(fixture);
+
+      fixture.debugElement.query(By.css('a')).nativeElement.click();
+      flushFixture(fixture);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(navigateHasBeenCalledWithinTheAngularZone).toBeTrue();
     }));
   });
 
