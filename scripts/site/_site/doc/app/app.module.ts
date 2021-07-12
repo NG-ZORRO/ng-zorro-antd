@@ -22,6 +22,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { HoverPreloadModule, HoverPreloadStrategy } from 'ngx-hover-preload';
+import { NzResizeObserverFactory } from 'ng-zorro-antd/cdk/resize-observer';
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
@@ -33,6 +34,8 @@ import { NzContributorsListModule } from './share/contributors-list/contributors
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
 import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
 import { SideComponent } from './side/side.component';
+
+import ResizeObserver from 'resize-observer-polyfill';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
 
@@ -71,7 +74,16 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }],
+  providers: [
+    Title,
+    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } },
+    { provide: NzResizeObserverFactory, useValue: {
+        create(callback: ResizeObserverCallback): ResizeObserver | null {
+          return typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(callback);
+        }
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
