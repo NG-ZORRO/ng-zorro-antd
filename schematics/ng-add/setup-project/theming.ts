@@ -27,8 +27,13 @@ const defaultCustomThemeFilename = 'theme.less';
 
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
-  build: '@angular-devkit/build-angular:browser',
-  test : '@angular-devkit/build-angular:karma'
+  build: [
+    '@angular-devkit/build-angular:browser',
+    // The `@angular-builders/custom-webpack:browser` builder is re-using the `@angular-devkit/build-angular:browser`
+    // schema but allows an extra option `customWebpackConfig`, so we're safe bypassing this builder.
+    '@angular-builders/custom-webpack:browser'
+  ],
+  test : ['@angular-devkit/build-angular:karma']
 };
 
 /** Add pre-built styles to the main project style file. */
@@ -139,9 +144,9 @@ function addThemeStyleToTarget(projectName: string, targetName: 'test' | 'build'
  * this function can either throw or just show a warning.
  */
 function validateDefaultTargetBuilder(project: ProjectDefinition, targetName: 'build' | 'test', logger: logging.LoggerApi): boolean {
-  const defaultBuilder = defaultTargetBuilders[ targetName ];
+  const defaultBuilders = defaultTargetBuilders[targetName];
   const targetConfig = project.targets && project.targets.get(targetName);
-  const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
+  const isDefaultBuilder = targetConfig && defaultBuilders.includes(targetConfig.builder);
 
   if (!isDefaultBuilder && targetName === 'build') {
     throw new SchematicsException(`Your project is not using the default builders for ` +
