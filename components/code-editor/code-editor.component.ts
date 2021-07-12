@@ -22,7 +22,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
-import { editor } from 'monaco-editor';
+import { editor, IDisposable } from 'monaco-editor';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -82,9 +82,10 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
   private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
-  private editorInstance?: IStandaloneCodeEditor | IStandaloneDiffEditor;
+  private editorInstance: IStandaloneCodeEditor | IStandaloneDiffEditor | null = null;
   private value = '';
   private modelSet = false;
+  private onDidChangeContentDisposable: IDisposable | null = null;
 
   constructor(
     private nzCodeEditorService: NzCodeEditorService,
@@ -107,8 +108,14 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    if (this.onDidChangeContentDisposable) {
+      this.onDidChangeContentDisposable.dispose();
+      this.onDidChangeContentDisposable = null;
+    }
+
     if (this.editorInstance) {
       this.editorInstance.dispose();
+      this.editorInstance = null;
     }
 
     this.destroy$.next();
@@ -148,7 +155,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         this.setValueEmitter();
       }
 
-      this.nzEditorInitialized.emit(this.editorInstance);
+      this.nzEditorInitialized.emit(this.editorInstance!);
     });
   }
 
@@ -270,7 +277,10 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         : (this.editorInstance as IStandaloneDiffEditor).getModel()!.modified
     ) as ITextModel;
 
-    model.onDidChangeContent(() => {
+    // The `onDidChangeContent` returns a disposable object (an object with `dispose()` method) which will cleanup
+    // the listener. The callback, that we pass to `onDidChangeContent`, captures `this`. This leads to a circular reference
+    // (`nz-code-editor -> monaco -> nz-code-editor`) and prevents the `nz-code-editor` from being GC'd.
+    this.onDidChangeContentDisposable = model.onDidChangeContent(() => {
       this.emitValue(model.getValue());
     });
   }
