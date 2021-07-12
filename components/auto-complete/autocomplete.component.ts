@@ -131,9 +131,9 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @ViewChild('content', { static: false }) content?: ElementRef;
 
   private activeItemIndex: number = -1;
-  private selectionChangeSubscription = Subscription.EMPTY;
-  private optionMouseEnterSubscription = Subscription.EMPTY;
-  private dataSourceChangeSubscription = Subscription.EMPTY;
+  private selectionChangeSubscription: Subscription | null = Subscription.EMPTY;
+  private optionMouseEnterSubscription: Subscription | null = Subscription.EMPTY;
+  private dataSourceChangeSubscription: Subscription | null = Subscription.EMPTY;
   /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
@@ -186,9 +186,13 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   ngOnDestroy(): void {
-    this.dataSourceChangeSubscription.unsubscribe();
-    this.selectionChangeSubscription.unsubscribe();
-    this.optionMouseEnterSubscription.unsubscribe();
+    this.dataSourceChangeSubscription!.unsubscribe();
+    this.selectionChangeSubscription!.unsubscribe();
+    this.optionMouseEnterSubscription!.unsubscribe();
+    // Caretaker note: we have to set these subscriptions to `null` since these will be closed subscriptions, but they
+    // still keep references to destinations (which are `SafeSubscriber`s). Destinations keep referencing `next` functions,
+    // which we pass, for instance, to `this.optionSelectionChanges.subscribe(...)`.
+    this.dataSourceChangeSubscription = this.selectionChangeSubscription = this.optionMouseEnterSubscription = null;
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -263,7 +267,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   private subscribeOptionChanges(): void {
-    this.selectionChangeSubscription.unsubscribe();
+    this.selectionChangeSubscription!.unsubscribe();
     this.selectionChangeSubscription = this.optionSelectionChanges
       .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
       .subscribe((event: NzOptionSelectionChange) => {
@@ -275,7 +279,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
         this.selectionChange.emit(event.source);
       });
 
-    this.optionMouseEnterSubscription.unsubscribe();
+    this.optionMouseEnterSubscription!.unsubscribe();
     this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((event: NzAutocompleteOptionComponent) => {
       event.setActiveStyles();
       this.activeItem = event;
