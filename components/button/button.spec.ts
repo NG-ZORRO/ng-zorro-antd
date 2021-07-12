@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
@@ -163,6 +163,45 @@ describe('button', () => {
       expect(buttonElement.classList).not.toContain('ant-btn-rtl');
     });
   });
+  describe('change detection', () => {
+    let testBed: ComponentBed<TestButtonComponent>;
+    let buttonElement: HTMLButtonElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestButtonComponent, { declarations: [NzButtonComponent] });
+      buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+    });
+
+    it('should not trigger change detection when the button is clicked', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      const spy = spyOn(appRef, 'tick').and.callThrough();
+      buttonElement.dispatchEvent(new MouseEvent('click'));
+      buttonElement.dispatchEvent(new MouseEvent('click'));
+      // Previously, it would've caused `tick()` to be called 2 times, because 2 click events have been triggered.
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+  });
+});
+
+describe('anchor', () => {
+  let testBed: ComponentBed<TestAnchorComponent>;
+  let anchorElement: HTMLAnchorElement;
+
+  beforeEach(() => {
+    testBed = createComponentBed(TestAnchorComponent, { declarations: [NzButtonComponent] });
+    anchorElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+  });
+
+  it('should prevent default and stop propagation when the anchor is disabled', () => {
+    testBed.component.disabled = true;
+    testBed.fixture.detectChanges();
+    const event = new MouseEvent('click');
+    const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+    const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+    anchorElement.dispatchEvent(event);
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+    expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
+  });
 });
 
 @Component({
@@ -264,4 +303,11 @@ export class TestButtonIconOnlyLoadingComponent {}
 export class TestButtonRtlComponent extends TestButtonComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: '<a nz-button [disabled]="disabled"> anchor </a>'
+})
+export class TestAnchorComponent {
+  disabled = false;
 }
