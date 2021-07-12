@@ -14,6 +14,38 @@ timeline: true
 
 ---
 
+## 12.0.1
+
+`2021-07-12`
+
+### Bug Fixes
+
+* **code-editor:** dispose the event listener when the component is destroyed ([#6847](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6847)) ([503c6f9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/503c6f90b81aed268ec08ce301b8c71f3a479617))
+* **code-editor:** resolve memory leak ([#6846](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6846)) ([6d43b6c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d43b6c5a9ccf8603106716285a1c032608912d6))
+* **code-editor:** re-enter the Angular zone only if the value has been changed ([#6845](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6845)) ([5c09948](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5c09948ca5e0e70bf7e4d1b4246225999060a930))
+* **drawer:** trigger change detection only if there are `nzOnViewInit` listeners ([#6841](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6841)) ([c5b5741](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c5b5741a0ffaaf50b4e558faf99691977c967426))
+* **icon:** resolve memory leak ([#6839](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6839)) ([bdc2a55](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bdc2a55e8421b49d80245d3a5a714adf38f58140))
+* remove the default resize observer polyfill ([#6843](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6843)) ([29d44af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/29d44afb058cb5d78f236cdfa57be5018b49dc02)), closes [#6696](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6696)
+
+If you want to support older browsers, you can provide polyfill in the following way.
+
+```ts
+import { NzResizeObserverFactory } from 'ng-zorro-antd/cdk/resize-observer';
+import ResizeObserver from 'resize-observer-polyfill';
+
+@NgModule({
+  providers: [
+    { provide: NzResizeObserverFactory, useValue: {
+        create(callback: ResizeObserverCallback): ResizeObserver | null {
+          return typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(callback);
+        }
+      }
+    }
+  ]
+})
+export class AppModule {}
+```
+
 ## 12.0.0
 
 `2021-07-11`
