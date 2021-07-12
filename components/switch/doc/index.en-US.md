@@ -22,6 +22,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[nzId]` | button id attribute inside the component| `string` | - |
 | `[ngModel]` | determine whether the `nz-switch` is checked, double binding | `boolean` | `false` |
 | `[nzCheckedChildren]` | content to be shown when the state is checked | `string \| TemplateRef<void>` | - |
 | `[nzUnCheckedChildren]` | content to be shown when the state is unchecked | `string \| TemplateRef<void>` | - |
