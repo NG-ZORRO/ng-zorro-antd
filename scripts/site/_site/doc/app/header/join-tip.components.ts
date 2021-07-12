@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
       [nzShowIcon]="false"
     ></nz-alert>
     <ng-template #messageTemplate>
-      🔥阿里云实时计算部前端工程师火热招聘中，<a (click)="navigateToJoin()">点击查看</a>
+      🔥 阿里云开源大数据平台前端工程师火热招聘中，<a (click)="navigateToJoin()">点击查看</a>
     </ng-template>
   `,
   styles: [

@@ -5,4 +5,4 @@
 
 export { NzResizeObserverModule } from './resize-observer.module';
 export { NzResizeObserverDirective } from './resize-observer.directive';
-export { NzResizeObserver, NzResizeObserverFactory as ɵNzResizeObserverFactory } from './resize-observer.service';
+export { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.service';

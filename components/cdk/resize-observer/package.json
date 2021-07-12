@@ -2,7 +2,6 @@
   "ngPackage": {
     "lib": {
       "entryFile": "public-api.ts"
-    },
-    "allowedNonPeerDependencies": ["tslib", "resize-observer-polyfill"]
+    }
   }
 }
