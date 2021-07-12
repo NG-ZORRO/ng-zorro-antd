@@ -288,9 +288,13 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   ngAfterViewInit(): void {
     this.attachBodyContent();
-    setTimeout(() => {
-      this.nzOnViewInit.emit();
-    });
+    // The `setTimeout` triggers change detection. There's no sense to schedule the DOM timer if anyone is
+    // listening to the `nzOnViewInit` event inside the template, for instance `<nz-drawer (nzOnViewInit)="...">`.
+    if (this.nzOnViewInit.observers.length) {
+      setTimeout(() => {
+        this.nzOnViewInit.emit();
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
