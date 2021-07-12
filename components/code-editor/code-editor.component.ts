@@ -271,9 +271,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     ) as ITextModel;
 
     model.onDidChangeContent(() => {
-      this.ngZone.run(() => {
-        this.emitValue(model.getValue());
-      });
+      this.emitValue(model.getValue());
     });
   }
 
@@ -285,7 +283,11 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     }
 
     this.value = value;
-    this.onChange(value);
+    // We're re-entering the Angular zone only if the value has been changed since there's a `return` expression previously.
+    // This won't cause "dead" change detections (basically when the `tick()` has been run, but there's nothing to update).
+    this.ngZone.run(() => {
+      this.onChange(value);
+    });
   }
 
   private updateOptionToMonaco(): void {
