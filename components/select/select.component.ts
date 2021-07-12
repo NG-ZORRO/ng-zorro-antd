@@ -39,8 +39,8 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
@@ -176,17 +176,22 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   static ngAcceptInputType_nzServerSearch: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzDropdownMatchSelectWidth: BooleanInput;
+  static ngAcceptInputType_nzOptionHeightPx: NumberInput;
+  static ngAcceptInputType_nzOptionOverflowSize: NumberInput;
+  static ngAcceptInputType_nzMaxTagCount: NumberInput;
+  static ngAcceptInputType_nzMaxMultipleCount: NumberInput;
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
-  @Input() nzOptionHeightPx = 32;
-  @Input() nzOptionOverflowSize = 8;
+  @Input() @InputNumber() nzOptionHeightPx = 32;
+  @Input() @InputNumber() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string | null = null;
-  @Input() nzDropdownMatchSelectWidth = true;
+  @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
   @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
-  @Input() nzMaxTagCount = Infinity;
+  @Input() @InputNumber() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()
@@ -197,7 +202,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzTokenSeparators: string[] = [];
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }> | null = null;
-  @Input() nzMaxMultipleCount = Infinity;
+  @Input() @InputNumber() nzMaxMultipleCount = Infinity;
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;

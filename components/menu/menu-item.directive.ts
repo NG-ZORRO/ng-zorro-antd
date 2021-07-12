@@ -22,8 +22,8 @@ import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/
 import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
@@ -52,13 +52,14 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   static ngAcceptInputType_nzDanger: BooleanInput;
   static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
   static ngAcceptInputType_nzMatchRouter: BooleanInput;
+  static ngAcceptInputType_nzPaddingLeft: NumberInput;
 
   private destroy$ = new Subject();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
   dir: Direction = 'ltr';
-  @Input() nzPaddingLeft?: number;
+  @Input() @InputNumber() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
   @Input() @InputBoolean() nzDanger = false;

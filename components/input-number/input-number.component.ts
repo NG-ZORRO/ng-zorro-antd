@@ -28,8 +28,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-input-number',
@@ -97,6 +97,10 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzMin: NumberInput;
+  static ngAcceptInputType_nzMax: NumberInput;
+  static ngAcceptInputType_nzPrecision: NumberInput;
+  static ngAcceptInputType_nzStep: NumberInput;
 
   private autoStepTimer?: number;
   private parsedValue?: string | number;
@@ -113,17 +117,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Output() readonly nzFocus = new EventEmitter();
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() nzMin: number = -Infinity;
-  @Input() nzMax: number = Infinity;
+  @Input() @InputNumber() nzMin: number = -Infinity;
+  @Input() @InputNumber() nzMax: number = Infinity;
   @Input() nzParser = (value: string) =>
     value
       .trim()
       .replace(/。/g, '.')
       .replace(/[^\w\.-]+/g, '');
-  @Input() nzPrecision?: number;
+  @Input() @InputNumber() nzPrecision?: number;
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
-  @Input() nzStep = 1;
+  @Input() @InputNumber() nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzDisabled = false;

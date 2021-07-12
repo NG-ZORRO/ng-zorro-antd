@@ -14,6 +14,8 @@ import {
 } from '@angular/core';
 
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: '[nz-sider-trigger]',
@@ -45,12 +47,17 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
   }
 })
 export class NzSiderTriggerComponent implements OnChanges, OnInit {
-  @Input() nzCollapsed = false;
-  @Input() nzReverseArrow = false;
+  static ngAcceptInputType_nzCollapsed: BooleanInput;
+  static ngAcceptInputType_nzReverseArrow: BooleanInput;
+  static ngAcceptInputType_matchBreakPoint: BooleanInput;
+  static ngAcceptInputType_nzCollapsedWidth: NumberInput;
+
+  @Input() @InputBoolean() nzCollapsed = false;
+  @Input() @InputBoolean() nzReverseArrow = false;
   @Input() nzZeroTrigger: TemplateRef<void> | null = null;
   @Input() nzTrigger: TemplateRef<void> | undefined | null = undefined;
-  @Input() matchBreakPoint = false;
-  @Input() nzCollapsedWidth: number | null = null;
+  @Input() @InputBoolean() matchBreakPoint = false;
+  @Input() @InputNumber() nzCollapsedWidth: number | null = null;
   @Input() siderWidth: string | null = null;
   @Input() nzBreakpoint: NzBreakpointKey | null = null;
   isZeroTrigger = false;
