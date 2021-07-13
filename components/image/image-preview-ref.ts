@@ -5,12 +5,15 @@
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { filter, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewComponent } from './image-preview.component';
 
 export class NzImagePreviewRef {
+  private destroy$ = new Subject<void>();
+
   constructor(
     public previewInstance: NzImagePreviewComponent,
     private config: NzImagePreviewOptions,
@@ -28,11 +31,11 @@ export class NzImagePreviewRef {
       this.overlayRef.dispose();
     });
 
-    previewInstance.containerClick.pipe(take(1)).subscribe(() => {
+    previewInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       this.close();
     });
 
-    previewInstance.closeClick.pipe(take(1)).subscribe(() => {
+    previewInstance.closeClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       this.close();
     });
 
@@ -63,6 +66,7 @@ export class NzImagePreviewRef {
   }
 
   private dispose(): void {
+    this.destroy$.next();
     this.overlayRef.dispose();
   }
 }
