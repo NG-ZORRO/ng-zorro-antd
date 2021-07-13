@@ -1,7 +1,7 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -1178,6 +1178,50 @@ describe('select', () => {
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe('and 2 more selected');
+    }));
+  });
+  describe('change detection', () => {
+    let testBed: ComponentBed<TestSelectTemplateDefaultComponent>;
+    let component: TestSelectTemplateDefaultComponent;
+    let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
+    let selectComponent: NzSelectComponent;
+    let overlayContainerElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectComponent = testBed.debugElement.query(By.directive(NzSelectComponent)).componentInstance;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should not run change detection if the `triggerWidth` has not been changed', fakeAsync(() => {
+      const detectChangesSpy = spyOn(selectComponent['cdr'], 'detectChanges').and.callThrough();
+      const requestAnimationFrameSpy = spyOn(window, 'requestAnimationFrame').and.callThrough();
+
+      component.nzOpen = true;
+      fixture.detectChanges();
+      // The `requestAnimationFrame` is simulated as `setTimeout(..., 16)` inside the `fakeAsync`.
+      tick(16);
+
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+      fixture.detectChanges();
+      flush();
+
+      expect(component.nzOpen).toEqual(false);
+
+      component.nzOpen = true;
+      fixture.detectChanges();
+      tick(16);
+
+      // Ensure that the `detectChanges()` have been called only once since the `triggerWidth` hasn't been changed.
+      expect(detectChangesSpy).toHaveBeenCalledTimes(1);
+      expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     }));
   });
 });
