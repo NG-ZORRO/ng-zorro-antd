@@ -180,7 +180,6 @@ describe('radio', () => {
     let radios: DebugElement[];
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupDisabledComponent);
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
     });
@@ -198,14 +197,12 @@ describe('radio', () => {
       expect(testComponent.value).toBe('A');
     }));
     it('should single disable work', fakeAsync(() => {
-      testComponent.disabled = false;
-      fixture.detectChanges();
+      // nz-radio-button [nzDisabled] input is set before nz-radio-group [nzDisabled] property
       testComponent.singleDisabled = true;
+      testComponent.disabled = false;
       fixture.detectChanges();
       expect(testComponent.value).toBe('A');
       radios[2].nativeElement.click();
-      fixture.detectChanges();
-      flush();
       fixture.detectChanges();
       expect(radios[2].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
       expect(testComponent.value).toBe('A');

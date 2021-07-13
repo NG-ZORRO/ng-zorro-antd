@@ -37,10 +37,10 @@ import { NzRadioService } from './radio.service';
     <span
       [class.ant-radio]="!isRadioButton"
       [class.ant-radio-checked]="isChecked && !isRadioButton"
-      [class.ant-radio-disabled]="nzDisabled && !isRadioButton"
+      [class.ant-radio-disabled]="(nzDisabled || isRadioGroupDisabled) && !isRadioButton"
       [class.ant-radio-button]="isRadioButton"
       [class.ant-radio-button-checked]="isChecked && isRadioButton"
-      [class.ant-radio-button-disabled]="nzDisabled && isRadioButton"
+      [class.ant-radio-button-disabled]="(nzDisabled || isRadioGroupDisabled) && isRadioButton"
     >
       <input
         #inputElement
@@ -48,7 +48,7 @@ import { NzRadioService } from './radio.service';
         [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
         [class.ant-radio-input]="!isRadioButton"
         [class.ant-radio-button-input]="isRadioButton"
-        [disabled]="nzDisabled"
+        [disabled]="nzDisabled || isRadioGroupDisabled"
         [checked]="isChecked"
         [attr.name]="name"
       />
@@ -70,8 +70,8 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper]': 'isRadioButton',
     '[class.ant-radio-wrapper-checked]': 'isChecked && !isRadioButton',
     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
-    '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
-    '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
+    '[class.ant-radio-wrapper-disabled]': '(nzDisabled || isRadioGroupDisabled) && !isRadioButton',
+    '[class.ant-radio-button-wrapper-disabled]': '(nzDisabled || isRadioGroupDisabled) && isRadioButton',
     '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
     '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`,
     '(click)': 'onHostClick($event)'
@@ -86,6 +86,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isChecked = false;
   name: string | null = null;
   isRadioButton = !!this.nzRadioButtonDirective;
+  isRadioGroupDisabled = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
@@ -99,7 +100,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     /** prevent label click triggered twice. **/
     event.stopPropagation();
     event.preventDefault();
-    if (!this.nzDisabled && !this.isChecked) {
+    if (!this.nzDisabled && !this.isRadioGroupDisabled && !this.isChecked) {
       if (this.nzRadioService) {
         this.nzRadioService.select(this.nzValue);
       }
@@ -152,8 +153,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.name = name;
         this.cdr.markForCheck();
       });
-      this.nzRadioService.disabled$.pipe(takeUntil(this.destroy$)).subscribe(disabled => {
-        this.nzDisabled = disabled;
+      this.nzRadioService.disabled$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+        this.isRadioGroupDisabled = value;
         this.cdr.markForCheck();
       });
       this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
