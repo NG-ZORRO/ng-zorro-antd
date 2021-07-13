@@ -9,6 +9,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 export const moduleList = [
   NzTableModule,
@@ -21,5 +22,6 @@ export const moduleList = [
   NzButtonModule,
   NzInputModule,
   NzIconModule,
-  NzPopconfirmModule
+  NzPopconfirmModule,
+  NzTypographyModule
 ];
