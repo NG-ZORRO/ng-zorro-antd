@@ -83,8 +83,7 @@ describe('Placeholder', () => {
     fixture.detectChanges();
     tick(300);
     fixture.detectChanges();
-    // @ts-ignore
-    imageComponent.backLoadImage.onload({});
+    imageComponent.backLoadImage.dispatchEvent(new Event('load'));
     fixture.detectChanges();
     expect(imageElement.getAttribute('src')).toBe(QUICK_SRC);
   }));
@@ -114,7 +113,7 @@ describe('Fallback', () => {
     context.src = 'error.png';
     context.fallback = FALLBACK;
     fixture.detectChanges();
-    context.image.backLoadImage.onerror!('');
+    context.image.backLoadImage.dispatchEvent(new ErrorEvent('error'));
     tick();
     fixture.detectChanges();
     const image = debugElement.nativeElement.querySelector('img');
