@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, NgZone, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, NgZone, OnDestroy, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { auditTime, finalize } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ const NOOP = (): void => {};
 @Injectable({
   providedIn: 'root'
 })
-export class NzResizeService {
+export class NzResizeService implements OnDestroy {
   private readonly resizeSource$ = new Subject<void>();
 
   private listeners = 0;
@@ -29,6 +29,12 @@ export class NzResizeService {
 
   constructor(private ngZone: NgZone, private rendererFactory2: RendererFactory2) {
     this.renderer = this.rendererFactory2.createRenderer(null, null);
+  }
+
+  ngOnDestroy(): void {
+    // Caretaker note: the `handler` is an instance property (it's not defined on the class prototype).
+    // The `handler` captures `this` and prevents the `NzResizeService` from being GC'd.
+    this.handler = NOOP;
   }
 
   subscribe(): Observable<void> {
