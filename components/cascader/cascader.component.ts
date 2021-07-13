@@ -34,7 +34,6 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -265,7 +264,22 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   labelRenderContext = {};
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
+  positions: ConnectionPositionPair[] = [
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetX: 0
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+      offsetX: 0
+    }
+  ];
 
   /**
    * Dropdown's with in pixel.
@@ -611,6 +625,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       return;
     }
     this.el.focus();
+    this.reposition();
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
