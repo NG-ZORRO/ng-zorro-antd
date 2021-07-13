@@ -24,7 +24,7 @@ import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from
 import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { POSITION_MAP, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -47,15 +47,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   static ngAcceptInputType_nzClickHide: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzArrow: BooleanInput;
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
-  private positionStrategy = this.overlay
-    .position()
-    .flexibleConnectedTo(this.elementRef.nativeElement)
-    .withLockedPosition()
-    .withTransformOriginOn('.ant-dropdown');
   private inputVisible$ = new BehaviorSubject<boolean>(false);
   private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
@@ -71,6 +67,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
+  @Input() @InputBoolean() nzArrow = false;
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
@@ -80,6 +77,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     if (this.nzDropdownMenu) {
       this.nzDropdownMenu.setValue(key, value);
     }
+  }
+
+  private getPositionStrategy() {
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef.nativeElement)
+      .withLockedPosition()
+      .withTransformOriginOn('.ant-dropdown');
   }
 
   constructor(
@@ -138,6 +143,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
         .subscribe((visible: boolean) => {
           const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : nativeElement;
           const triggerWidth = element.getBoundingClientRect().width;
+          const positionStrategy = this.getPositionStrategy();
           if (this.nzVisible !== visible) {
             this.nzVisibleChange.emit(visible);
           }
@@ -147,7 +153,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
             if (!this.overlayRef) {
               /** new overlay **/
               this.overlayRef = this.overlay.create({
-                positionStrategy: this.positionStrategy,
+                positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
                 hasBackdrop: (this.nzHasBackdrop || this.nzBackdrop) && this.nzTrigger === 'click',
@@ -171,12 +177,16 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
               overlayConfig.minWidth = triggerWidth;
             }
             /** open dropdown with animation **/
-            this.positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
+            positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
+            positionStrategy.positionChanges
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(p => this.setDropdownMenuValue('placement', getPlacementName(p)!));
             /** reset portal if needed **/
             if (!this.portal || this.portal.templateRef !== this.nzDropdownMenu!.templateRef) {
               this.portal = new TemplatePortal(this.nzDropdownMenu!.templateRef, this.viewContainerRef);
             }
             this.overlayRef.attach(this.portal);
+            this.overlayRef.updatePosition();
           } else {
             /** detach overlayRef if needed **/
             if (this.overlayRef) {
@@ -206,7 +216,16 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzHasBackdrop } = changes;
+    const {
+      nzArrow,
+      nzPlacement,
+      nzVisible,
+      nzDisabled,
+      nzOverlayClassName,
+      nzOverlayStyle,
+      nzTrigger,
+      nzHasBackdrop
+    } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -232,6 +251,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       warnDeprecation(
         '`nzHasBackdrop` in dropdown component will be removed in 13.0.0, please use `nzBackdrop` instead.'
       );
+    }
+
+    if (nzArrow) {
+      this.setDropdownMenuValue('arrow', this.nzArrow);
+    }
+
+    if (nzPlacement) {
+      this.setDropdownMenuValue('placement', this.nzPlacement);
     }
   }
 }
