@@ -157,8 +157,8 @@ components/overview/en
 /docs/schematics/zh
 /docs/universal/en
 /docs/universal/zh
-/docs/migration-v10/en
-/docs/migration-v10/zh
+/docs/migration-v12/en
+/docs/migration-v12/zh
 /experimental/resizable/zh
 /experimental/resizable/en
 /experimental/pipes/en
