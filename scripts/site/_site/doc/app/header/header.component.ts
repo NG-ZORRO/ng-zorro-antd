@@ -21,8 +21,6 @@ const RESPONSIVE_SM = 1200;
         [nzPopoverContent]="menu"
       ></i>
 
-      <app-join *ngIf="language === 'zh'"></app-join>
-
       <div nz-row style="flex-flow: nowrap">
         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
           <app-logo></app-logo>
@@ -105,7 +103,8 @@ export class HeaderComponent implements OnChanges {
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 
-  constructor(private nzConfigService: NzConfigService) {}
+  constructor(private nzConfigService: NzConfigService) { }
+
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
   }

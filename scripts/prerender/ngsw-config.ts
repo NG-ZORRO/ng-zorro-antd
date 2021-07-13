@@ -37,7 +37,7 @@ async function minifyFiles(): Promise<void> {
 
 async function runNGSWConfig(): Promise<void> {
   return new Promise((res, reject) => {
-    const childProcess = child_process.spawn('node_modules/.bin/ngsw-config', [browserOutput, 'ngsw-config.json'], {
+    const childProcess = child_process.spawn('node_modules/.bin/ngsw-config', ['dist/browser', 'ngsw-config.json'], {
       env: { ...process.env },
       cwd: buildConfig.projectDir,
       stdio: ['pipe', 'ignore', 'ignore']
