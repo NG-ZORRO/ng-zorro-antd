@@ -42,7 +42,7 @@ registerLocaleData(zh);
 | `[nzDisabled]` | 禁用 | `boolean` | `false` | - |
 | `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - | - |
 | `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - | - |
-| `[nzFormat]` | 展示的日期格式，见`nzFormat特别说明` | `string` | - |
+| `[nzFormat]` | 展示的日期格式，见`nzFormat特别说明` | `string \| string[]` | - |
 | `[nzInputReadOnly]` | 为 input 标签设置只读属性（避免在移动设备上触发小键盘） | `boolean` | `false` | - |
 | `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
 | `[nzMode]` | 选择模式 | `'date'` \| `'week'` \| `'month'` \| `'year'` | `'date'` |
