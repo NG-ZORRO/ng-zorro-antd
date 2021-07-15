@@ -62,7 +62,7 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
 })
 export class NzDemoTransferTableTransferComponent implements OnInit {
   list: TransferItem[] = [];
-  $asTransferItems = (data: unknown) => data as TransferItem[];
+  $asTransferItems = (data: unknown): TransferItem[] => data as TransferItem[];
   disabled = false;
   showSearch = false;
 
@@ -88,7 +88,7 @@ export class NzDemoTransferTableTransferComponent implements OnInit {
   change(ret: TransferChange): void {
     console.log('nzChange', ret);
     const listKeys = ret.list.map(l => l.key);
-    const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
+    const hasOwnKey = (e: TransferItem): boolean => e.hasOwnProperty('key');
     this.list = this.list.map(e => {
       if (listKeys.includes(e.key) && hasOwnKey(e)) {
         if (ret.to === 'left') {

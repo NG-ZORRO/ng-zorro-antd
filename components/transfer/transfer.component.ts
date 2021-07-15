@@ -211,11 +211,11 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     return this[direction === 'left' ? 'leftDataSource' : 'rightDataSource'].filter(w => w.checked);
   }
 
-  handleLeftSelectAll = (checked: boolean) => this.handleSelect('left', checked);
-  handleRightSelectAll = (checked: boolean) => this.handleSelect('right', checked);
+  handleLeftSelectAll = (checked: boolean): void => this.handleSelect('left', checked);
+  handleRightSelectAll = (checked: boolean): void => this.handleSelect('right', checked);
 
-  handleLeftSelect = (item: TransferItem) => this.handleSelect('left', !!item.checked, item);
-  handleRightSelect = (item: TransferItem) => this.handleSelect('right', !!item.checked, item);
+  handleLeftSelect = (item: TransferItem): void => this.handleSelect('left', !!item.checked, item);
+  handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);
@@ -239,8 +239,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
       (typeof count === 'undefined' ? this.getCheckedData(direction).filter(w => !w.disabled).length : count) > 0;
   }
 
-  moveToLeft = () => this.moveTo('left');
-  moveToRight = () => this.moveTo('right');
+  moveToLeft = (): void => this.moveTo('left');
+  moveToRight = (): void => this.moveTo('right');
 
   moveTo(direction: TransferDirection): void {
     const oppositeDirection = direction === 'left' ? 'right' : 'left';
@@ -298,7 +298,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   private handleNzTargetKeys(): void {
     const keys = toArray(this.nzTargetKeys);
-    const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
+    const hasOwnKey = (e: TransferItem): boolean => e.hasOwnProperty('key');
     this.leftDataSource.forEach(e => {
       if (hasOwnKey(e) && keys.indexOf(e.key) !== -1 && !e.disabled) {
         e.checked = true;
@@ -314,7 +314,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
         e.checked = true;
       }
     });
-    const term = (ld: TransferItem) => ld.disabled === false && ld.checked === true;
+    const term = (ld: TransferItem): boolean => ld.disabled === false && ld.checked === true;
     this.rightActive = this.leftDataSource.some(term);
     this.leftActive = this.rightDataSource.some(term);
   }

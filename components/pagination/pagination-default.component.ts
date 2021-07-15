@@ -157,6 +157,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
   }
 
   getListOfPageItem(pageIndex: number, lastIndex: number): Array<Partial<NzPaginationItemComponent>> {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const concatWithPrevNext = (listOfPage: Array<Partial<NzPaginationItemComponent>>) => {
       const prevItem = {
         type: 'prev',
@@ -181,6 +182,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
     if (lastIndex <= 9) {
       return concatWithPrevNext(generatePage(1, lastIndex));
     } else {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const generateRangeItem = (selected: number, last: number) => {
         let listOfRange = [];
         const prevFiveItem = {

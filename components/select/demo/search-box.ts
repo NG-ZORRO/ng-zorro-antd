@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
 export class NzDemoSelectSearchBoxComponent {
   selectedValue = null;
   listOfOption: Array<{ value: string; text: string }> = [];
-  nzFilterOption = () => true;
+  nzFilterOption = (): boolean => true;
 
   constructor(private httpClient: HttpClient) {}
 

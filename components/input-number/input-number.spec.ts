@@ -370,7 +370,7 @@ describe('input number', () => {
       expect(testComponent.value).toBe(-10);
     });
     it('should update value immediately after formatter changed', () => {
-      const newFormatter = (v: number) => `${v} %`;
+      const newFormatter = (v: number): string => `${v} %`;
       const initValue = 1;
       const component = testComponent.nzInputNumberComponent;
       fixture.detectChanges();
@@ -469,8 +469,8 @@ export class NzTestInputNumberBasicComponent {
   step = 1;
   precision?: number = 2;
   precisionMode?: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
-  formatter = (value: number) => (value !== null ? `${value}` : '');
-  parser = (value: number) => value;
+  formatter = (value: number): string => (value !== null ? `${value}` : '');
+  parser = (value: number): number => value;
   modelChange = jasmine.createSpy('change callback');
 }
 

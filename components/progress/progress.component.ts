@@ -202,7 +202,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   dir: Direction = 'ltr';
 
-  trackByFn = (index: number) => `${index}`;
+  trackByFn = (index: number): string => `${index}`;
 
   get formatter(): NzProgressFormatter {
     return this.nzFormat || defaultFormatter;

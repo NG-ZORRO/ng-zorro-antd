@@ -304,7 +304,7 @@ class NzBreadcrumbRouteLabelDemoComponent {}
   `
 })
 class NzBreadcrumbRouteLabelWithCustomFnDemoComponent {
-  labelFn = (label: string) => (label ? `${label} ${label}` : '');
+  labelFn = (label: string): string => (label ? `${label} ${label}` : '');
 }
 
 @Component({

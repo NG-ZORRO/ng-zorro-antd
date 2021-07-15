@@ -38,7 +38,7 @@ export class NzDemoUploadAvatarComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) =>
+  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {

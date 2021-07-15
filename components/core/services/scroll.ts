@@ -113,7 +113,7 @@ export class NzScrollService {
     const scrollTop = this.getScroll(target);
     const startTime = Date.now();
     const { easing, callback, duration = 450 } = options;
-    const frameFunc = () => {
+    const frameFunc = (): void => {
       const timestamp = Date.now();
       const time = timestamp - startTime;
       const nextScrollTop = (easing || easeInOutCubic)(time > duration ? duration : time, scrollTop, y, duration);

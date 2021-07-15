@@ -339,7 +339,7 @@ describe('nz-slider', () => {
 
     // TODO: Pass this testing by increase precision
     xit('should round the value inside the label based on the provided step', () => {
-      const testStep = (step: number, expected: string) => {
+      const testStep = (step: number, expected: string): void => {
         fixture.componentInstance.step = step;
         fixture.detectChanges();
         dispatchSlideEventSequence(sliderNativeElement, 0, 0.333333);

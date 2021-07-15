@@ -81,7 +81,7 @@ export class NzUploadBtnComponent implements OnDestroy {
   }
 
   private traverseFileTree(files: DataTransferItemList): void {
-    const _traverseFileTree = (item: NzSafeAny, path: string) => {
+    const _traverseFileTree = (item: NzSafeAny, path: string): void => {
       if (item.isFile) {
         item.file((file: File) => {
           if (this.attrAccept(file, this.options.accept)) {

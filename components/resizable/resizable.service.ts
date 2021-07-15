@@ -31,10 +31,10 @@ export class NzResizableService implements OnDestroy {
     this.clearListeners();
     const moveEvent = _isTouchEvent ? 'touchmove' : 'mousemove';
     const upEvent = _isTouchEvent ? 'touchend' : 'mouseup';
-    const moveEventHandler = (e: MouseEvent | TouchEvent) => {
+    const moveEventHandler = (e: MouseEvent | TouchEvent): void => {
       this.documentMouseMove$.next(e);
     };
-    const upEventHandler = (e: MouseEvent | TouchEvent) => {
+    const upEventHandler = (e: MouseEvent | TouchEvent): void => {
       this.documentMouseUp$.next(e);
       this.clearListeners();
     };

@@ -30,7 +30,7 @@ export class NzWaveRenderer {
     this.bindTriggerEvent();
   }
 
-  onClick = (event: MouseEvent) => {
+  onClick = (event: MouseEvent): void => {
     if (
       !this.triggerElement ||
       !this.triggerElement.getAttribute ||

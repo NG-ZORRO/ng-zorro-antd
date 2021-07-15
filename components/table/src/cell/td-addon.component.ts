@@ -78,7 +78,8 @@ export class NzTdAddOnComponent implements OnChanges {
     this.nzExpandChange.emit(expand);
   }
   ngOnChanges(changes: SimpleChanges): void {
-    const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
+    const isFirstChange = (value: SimpleChange): boolean =>
+      value && value.firstChange && value.currentValue !== undefined;
     const { nzExpand, nzChecked, nzShowExpand, nzShowCheckbox } = changes;
     if (nzShowExpand) {
       this.isNzShowExpandChanged = true;

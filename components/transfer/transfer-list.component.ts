@@ -147,7 +147,7 @@ export class NzTransferListComponent {
     return this.dataSource.filter(w => !w.hide);
   }
 
-  onItemSelect = (item: TransferItem) => {
+  onItemSelect = (item: TransferItem): void => {
     if (this.disabled || item.disabled) {
       return;
     }
@@ -156,7 +156,7 @@ export class NzTransferListComponent {
     this.handleSelect.emit(item);
   };
 
-  onItemSelectAll = (status: boolean) => {
+  onItemSelectAll = (status: boolean): void => {
     this.dataSource.forEach(item => {
       if (!item.disabled && !item.hide) {
         item.checked = status;

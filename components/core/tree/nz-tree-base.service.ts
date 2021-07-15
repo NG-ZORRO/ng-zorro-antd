@@ -283,7 +283,7 @@ export class NzTreeBaseService {
    */
   afterRemove(nodes: NzTreeNode[]): void {
     // to reset selectedNodeList & expandedNodeList
-    const loopNode = (node: NzTreeNode) => {
+    const loopNode = (node: NzTreeNode): void => {
       // remove selected node
       this.selectedNodeList = this.selectedNodeList.filter(n => n.key !== node.key);
       // remove expanded node
@@ -458,7 +458,7 @@ export class NzTreeBaseService {
   conductCheck(keys: NzTreeNodeKey[] | null, checkStrictly: boolean): void {
     this.checkedNodeList = [];
     this.halfCheckedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
+    const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         if (keys === null) {
           // render tree if no default checked keys found
@@ -484,7 +484,7 @@ export class NzTreeBaseService {
   conductExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
     const expandedKeySet = new Set(keys === true ? [] : keys);
     this.expandedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
+    const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         node.setExpanded(keys === true || expandedKeySet.has(node.key) || node.isExpanded === true);
         if (node.isExpanded) {

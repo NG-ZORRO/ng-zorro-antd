@@ -88,6 +88,7 @@ export class NzDemoFormAutoTipsComponent {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   userNameAsyncValidator = (control: FormControl) =>
     new Observable((observer: Observer<MyValidationErrors | null>) => {
       setTimeout(() => {

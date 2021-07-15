@@ -72,7 +72,7 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewCheckboxComponent {
-  private transformer = (node: TreeNode, level: number) => {
+  private transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
       existingNode && existingNode.name === node.name
@@ -109,7 +109,7 @@ export class NzDemoTreeViewCheckboxComponent {
     this.dataSource.setData(TREE_DATA);
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 
   descendantsAllSelected(node: FlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);

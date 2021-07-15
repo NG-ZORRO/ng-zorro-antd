@@ -81,7 +81,7 @@ interface FlatNode {
   styles: [``]
 })
 export class NzDemoTreeViewEditableComponent {
-  private transformer = (node: TreeNode, level: number) => {
+  private transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
       existingNode && existingNode.key === node.key
@@ -121,9 +121,9 @@ export class NzDemoTreeViewEditableComponent {
     this.treeControl.expandAll();
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
-  hasNoContent = (_: number, node: FlatNode) => node.name === '';
-  trackBy = (_: number, node: FlatNode) => `${node.key}-${node.name}`;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
+  hasNoContent = (_: number, node: FlatNode): boolean => node.name === '';
+  trackBy = (_: number, node: FlatNode): string => `${node.key}-${node.name}`;
 
   delete(node: FlatNode): void {
     const originNode = this.flatNodeMap.get(node);

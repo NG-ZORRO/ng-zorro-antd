@@ -111,6 +111,13 @@ module.exports = {
         '@typescript-eslint/no-this-alias': 'error',
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
+        '@typescript-eslint/explicit-function-return-type': [
+          'error',
+          {
+            allowExpressions: true,
+            allowConciseArrowFunctionExpressionsStartingWithVoid: true
+          }
+        ],
         'prefer-arrow/prefer-arrow-functions': 'off',
         'import/no-duplicates': 'error',
         'import/no-unused-modules': 'error',
@@ -120,7 +127,7 @@ module.exports = {
           {
             alphabetize: { order: 'asc', caseInsensitive: false },
             'newlines-between': 'always',
-            groups: ['external', 'builtin', 'internal', [ 'parent', 'sibling', 'index']],
+            groups: ['external', 'builtin', 'internal', ['parent', 'sibling', 'index']],
             pathGroups: [
               {
                 pattern: '{@angular/**,rxjs,rxjs/operators}',
@@ -133,7 +140,7 @@ module.exports = {
                 position: 'before'
               }
             ],
-            "pathGroupsExcludedImportTypes":[]
+            pathGroupsExcludedImportTypes: []
           }
         ],
         'no-bitwise': 'off',

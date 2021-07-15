@@ -56,7 +56,7 @@ const isBrowser = typeof window !== 'undefined';
 
 const isFirefox = isBrowser && (window as NzSafeAny).mozInnerScreenX != null;
 
-const _parseInt = (str: string) => parseInt(str, 10);
+const _parseInt = (str: string): number => parseInt(str, 10);
 
 export interface Coordinates {
   top: number;

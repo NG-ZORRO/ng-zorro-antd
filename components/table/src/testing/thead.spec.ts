@@ -76,5 +76,5 @@ describe('nz-thead', () => {
 export class NzTheadTestNzTableComponent {
   sortChange = jasmine.createSpy('sort change');
   columns = ['third', 'fourth'];
-  filterFn = () => -1;
+  filterFn = (): number => -1;
 }

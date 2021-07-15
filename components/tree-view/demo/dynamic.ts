@@ -147,5 +147,5 @@ export class NzDemoTreeViewDynamicComponent {
 
   constructor() {}
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

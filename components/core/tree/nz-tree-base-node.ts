@@ -277,7 +277,7 @@ export class NzTreeNode {
   public addChildren(children: NzSafeAny[], childPos: number = -1): void {
     if (!this.isLeaf) {
       children.forEach(node => {
-        const refreshLevel = (n: NzTreeNode) => {
+        const refreshLevel = (n: NzTreeNode): void => {
           n.getChildren().forEach(c => {
             c.level = c.getParentNode()!.level + 1;
             // flush origin

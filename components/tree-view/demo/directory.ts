@@ -71,7 +71,7 @@ interface ExampleFlatNode {
   `
 })
 export class NzDemoTreeViewDirectoryComponent implements AfterViewInit {
-  private transformer = (node: FoodNode, level: number) => ({
+  private transformer = (node: FoodNode, level: number): ExampleFlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level,
@@ -97,7 +97,7 @@ export class NzDemoTreeViewDirectoryComponent implements AfterViewInit {
     this.dataSource.setData(TREE_DATA);
   }
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: ExampleFlatNode): boolean => node.expandable;
 
   ngAfterViewInit(): void {
     setTimeout(() => {

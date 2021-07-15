@@ -52,7 +52,7 @@ import {
 } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
-const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
+const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -4,9 +4,10 @@ import { isAllowedDate } from './util';
 
 describe('util.ts coverage supplements', () => {
   it('should cover untouched branches', () => {
-    const disabledDate = () => true;
+    const disabledDate = (): boolean => true;
     expect(isAllowedDate(new CandyDate(), disabledDate)).toBeFalsy();
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const disabledTime = () => ({
       nzDisabledHours: () => [1],
       nzDisabledMinutes: () => [2],

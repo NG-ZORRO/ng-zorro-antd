@@ -11,7 +11,7 @@ import { NzGridModule } from './grid.module';
 import { NzRowDirective } from './row.directive';
 
 declare const viewport: NzSafeAny;
-const setWindowWidth = (width: number) => {
+const setWindowWidth = (width: number): void => {
   viewport.set(width);
   window.dispatchEvent(new Event('resize'));
   tick(100);

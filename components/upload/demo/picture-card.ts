@@ -81,7 +81,7 @@ export class NzDemoUploadPictureCardComponent {
   previewImage: string | undefined = '';
   previewVisible = false;
 
-  handlePreview = async (file: NzUploadFile) => {
+  handlePreview = async (file: NzUploadFile): Promise<void> => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj!);
     }

@@ -264,7 +264,7 @@ export function buildComponent(options: ZorroComponentOptions,
       options.style = Style.Css;
     }
 
-    const classifyCovered = (name: string) => {
+    const classifyCovered = (name: string): string => {
       return `${modulePrefix}${strings.classify(name)}`
     };
     // Object that will be used as context for the EJS templates.

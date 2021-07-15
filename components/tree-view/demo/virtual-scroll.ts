@@ -60,7 +60,7 @@ interface ExampleFlatNode {
   ]
 })
 export class NzDemoTreeViewVirtualScrollComponent {
-  private transformer = (node: FoodNode, level: number) => ({
+  private transformer = (node: FoodNode, level: number): ExampleFlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level
@@ -85,7 +85,7 @@ export class NzDemoTreeViewVirtualScrollComponent {
     this.treeControl.expandAll();
   }
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: ExampleFlatNode): boolean => node.expandable;
 
   getNode(name: string): ExampleFlatNode | null {
     return this.treeControl.dataNodes.find(n => n.name === name) || null;

@@ -65,7 +65,7 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewBasicComponent {
-  private transformer = (node: TreeNode, level: number) => ({
+  private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level,
@@ -92,5 +92,5 @@ export class NzDemoTreeViewBasicComponent {
     this.treeControl.expandAll();
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }
