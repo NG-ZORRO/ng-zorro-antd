@@ -371,6 +371,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
    */
   pointerDown = (event: TouchEvent | MouseEvent): void => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
+      if (this.platform.IOS && event instanceof TouchEvent) {
+        this.preventIOSSafariNavigation(event);
+      }
+
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
 
@@ -401,6 +405,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       );
     }
   };
+
+  private preventIOSSafariNavigation(event: TouchEvent): void {
+    const navigationGestureMargin = 20;
+    const touch = event.touches[0];
+    if (touch.clientX < navigationGestureMargin) {
+      event.preventDefault();
+    }
+  }
 
   layout(): void {
     if (this.strategy) {
