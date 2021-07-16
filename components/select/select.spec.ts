@@ -286,7 +286,6 @@ describe('select', () => {
 
       expect(component.nzOpen).toBe(false);
     }));
-
     it('should keydown up arrow and down arrow', fakeAsync(() => {
       const flushChanges = () => {
         fixture.detectChanges();
@@ -324,6 +323,26 @@ describe('select', () => {
       flushChanges();
       expect(component.openChange).toHaveBeenCalledWith(false);
       expect(component.openChange).toHaveBeenCalledTimes(3);
+    }));
+    it('should select first option after of disabled item, in case of first item is disabled on return key press', fakeAsync(() => {
+      const flushChanges = () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'test_01', nzLabel: 'test_01', nzDisabled: true },
+        { nzValue: 'test_01_2', nzLabel: 'test_01', nzDisabled: true },
+        { nzValue: 'test_03', nzLabel: 'test_03' },
+        { nzValue: 'test_04', nzLabel: 'test_04' }
+      ];
+
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.value).toBe('test_03');
     }));
     it('should mouseenter activated option work', fakeAsync(() => {
       const flushChanges = () => {
@@ -1159,6 +1178,7 @@ describe('select', () => {
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe('and 2 more selected');
     }));
+
   });
 });
 

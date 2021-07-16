@@ -409,6 +409,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
       case ENTER:
         e.preventDefault();
         if (this.nzOpen) {
+          if(this.listOfContainerItem && this.listOfContainerItem.length > 0 && this.listOfContainerItem[0].key == this.activatedValue && this.listOfContainerItem[0].nzDisabled == true){
+            let firstNotDisabledOption = this.listOfContainerItem.find(item => item.nzDisabled != true);
+            if(firstNotDisabledOption){
+              this.activatedValue = firstNotDisabledOption.key;
+            }
+            // else this.activatedValue = ''; TOCHECK: if is wanted to not be selected any option in case of all options are disabled
+          }
           if (isNotNil(this.activatedValue)) {
             this.onItemClick(this.activatedValue);
           }
