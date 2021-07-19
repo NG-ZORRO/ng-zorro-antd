@@ -407,11 +407,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   };
 
   private preventIOSSafariNavigation(event: TouchEvent): void {
-    const navigationGestureMargin = 20; // TODO@wendellhu: this may change
+    const navigationGestureMargin = 10;
     const touch = event.touches[0];
-    if (touch.clientX < navigationGestureMargin) {
-      event.preventDefault();
+
+    if (touch.pageX > navigationGestureMargin && touch.pageX < window.innerWidth - navigationGestureMargin) {
+      return;
     }
+
+    event.preventDefault();
   }
 
   layout(): void {
