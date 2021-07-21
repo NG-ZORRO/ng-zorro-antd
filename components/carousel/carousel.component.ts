@@ -406,15 +406,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     }
   };
 
+  /**
+   * @link https://github.com/vercel/commerce/pull/132/files
+   */
   private preventIOSSafariNavigation(event: TouchEvent): void {
-    const navigationGestureMargin = 50;
+    const navigationGestureMargin = 10;
     const touch = event.touches[0];
+    const touchCenterX = touch.pageX;
+    const touchRadius = touch.radiusX;
 
-    if (touch.pageX > navigationGestureMargin && touch.pageX < window.innerWidth - navigationGestureMargin) {
-      return;
+    if (touchCenterX - touchRadius < navigationGestureMargin || touchCenterX + touchRadius > window.innerWidth - navigationGestureMargin) {
+      event.preventDefault();
     }
-
-    event.preventDefault();
   }
 
   layout(): void {
