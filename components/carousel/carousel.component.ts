@@ -370,11 +370,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
    * Drag carousel.
    */
   pointerDown = (event: TouchEvent | MouseEvent): void => {
-    if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
-      if (this.platform.IOS && event instanceof TouchEvent) {
+    if (this.nzEnableSwipe && this.platform.IOS && event instanceof TouchEvent) {
         this.preventIOSSafariNavigation(event);
-      }
+    }
 
+    if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
 
