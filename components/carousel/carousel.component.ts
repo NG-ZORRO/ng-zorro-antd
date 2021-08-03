@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -162,6 +161,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   vertical = false;
   transitionInProgress: number | null = null;
   dir: Direction = 'ltr';
+  left = ['Left', 'ArrowLeft'];
+  right = ['Right', 'ArrowRight'];
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
@@ -260,10 +261,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) {
+    if (this.left.includes(e.key)) {
       e.preventDefault();
       this.pre();
-    } else if (e.keyCode === RIGHT_ARROW) {
+    } else if (this.right.includes(e.key)) {
       this.next();
       e.preventDefault();
     }
