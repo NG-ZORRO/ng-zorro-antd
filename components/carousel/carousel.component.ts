@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -260,10 +259,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) {
+    if (e.key === 'ArrowLeft') {
       e.preventDefault();
       this.pre();
-    } else if (e.keyCode === RIGHT_ARROW) {
+    } else if (e.key === 'ArrowRight') {
       this.next();
       e.preventDefault();
     }
