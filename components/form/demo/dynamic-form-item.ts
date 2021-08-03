@@ -104,13 +104,16 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
   }
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      if (this.validateForm.controls.hasOwnProperty(i)) {
-        this.validateForm.controls[i].markAsDirty();
-        this.validateForm.controls[i].updateValueAndValidity();
-      }
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
-    console.log(this.validateForm.value);
   }
 
   constructor(private fb: FormBuilder) {}
