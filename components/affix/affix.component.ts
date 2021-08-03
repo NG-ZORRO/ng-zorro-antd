@@ -27,7 +27,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { auditTime, map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -151,7 +151,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         this.offsetChanged$.pipe(map(() => ({}))),
         this.nzResizeObserver.observe(el)
       )
-        .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME), takeUntil(this.destroy$))
+        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
         .subscribe(e => this.updatePosition(e as Event))
     );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
