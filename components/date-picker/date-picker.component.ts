@@ -155,11 +155,20 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
 
     <ng-template #inlineMode>
       <div
+        *ngIf="!nzInline"
         class="ant-picker-wrapper"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
         [@slideMotion]="'enter'"
         style="position: relative;"
       >
+        <ng-container *ngTemplateOutlet="calendarInside"></ng-container>
+      </div>
+
+      <div *ngIf="nzInline" class="ant-picker-wrapper" style="position: relative;">
+        <ng-container *ngTemplateOutlet="calendarInside"></ng-container>
+      </div>
+
+      <ng-template #calendarInside>
         <div
           class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
           [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
@@ -197,7 +206,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
             (resultOk)="onResultOk()"
           ></date-range-popup>
         </div>
-      </div>
+      </ng-template>
     </ng-template>
 
     <!-- Overlay -->
