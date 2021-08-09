@@ -155,48 +155,37 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
 
     <ng-template #inlineMode>
       <div
-        class="ant-picker-wrapper"
-        [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
-        [@slideMotion]="'enter'"
-        style="position: relative;"
+        class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
+        [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+        [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
+        [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+        [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
+        [class.ant-picker-dropdown-range]="isRange"
+        [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
+        [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
+        [ngStyle]="nzPopupStyle"
       >
-        <div
-          class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
-          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-          [class.ant-picker-dropdown-placement-bottomLeft]="
-            currentPositionY === 'bottom' && currentPositionX === 'start'
-          "
-          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-bottomRight]="
-            currentPositionY === 'bottom' && currentPositionX === 'end'
-          "
-          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
-          [class.ant-picker-dropdown-range]="isRange"
-          [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
-          [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
-          [ngStyle]="nzPopupStyle"
-        >
-          <date-range-popup
-            [isRange]="isRange"
-            [inline]="nzInline"
-            [defaultPickerValue]="nzDefaultPickerValue"
-            [showWeek]="nzMode === 'week'"
-            [panelMode]="panelMode"
-            (panelModeChange)="onPanelModeChange($event)"
-            (calendarChange)="onCalendarChange($event)"
-            [locale]="nzLocale?.lang!"
-            [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
-            [showNow]="nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime"
-            [showTime]="nzShowTime"
-            [dateRender]="nzDateRender"
-            [disabledDate]="nzDisabledDate"
-            [disabledTime]="nzDisabledTime"
-            [extraFooter]="extraFooter"
-            [ranges]="nzRanges"
-            [dir]="dir"
-            (resultOk)="onResultOk()"
-          ></date-range-popup>
-        </div>
+        <date-range-popup
+          [isRange]="isRange"
+          [inline]="nzInline"
+          [defaultPickerValue]="nzDefaultPickerValue"
+          [showWeek]="nzMode === 'week'"
+          [panelMode]="panelMode"
+          (panelModeChange)="onPanelModeChange($event)"
+          (calendarChange)="onCalendarChange($event)"
+          [locale]="nzLocale?.lang!"
+          [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
+          [showNow]="nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime"
+          [showTime]="nzShowTime"
+          [dateRender]="nzDateRender"
+          [disabledDate]="nzDisabledDate"
+          [disabledTime]="nzDisabledTime"
+          [extraFooter]="extraFooter"
+          [ranges]="nzRanges"
+          [dir]="dir"
+          (resultOk)="onResultOk()"
+        ></date-range-popup>
       </div>
     </ng-template>
 
@@ -213,7 +202,14 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       (detach)="close()"
       (overlayKeydown)="onOverlayKeydown($event)"
     >
-      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
+      <div
+        class="ant-picker-wrapper"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
+        [@slideMotion]="'enter'"
+        style="position: relative;"
+      >
+        <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
+      </div>
     </ng-template>
   `,
   host: {
