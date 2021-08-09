@@ -14,7 +14,7 @@ export type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
   name: 'nzBytes'
 })
 export class NzBytesPipe implements PipeTransform {
-  static formats: { [key: string]: { max: number; prev?: ByteUnit } } = {
+  static formats: { [key in ByteUnit]: { max: number; prev?: ByteUnit } } = {
     B: { max: 1024 },
     kB: { max: Math.pow(1024, 2), prev: 'B' },
     KB: { max: Math.pow(1024, 2), prev: 'B' },
@@ -45,7 +45,7 @@ export class NzBytesPipe implements PipeTransform {
 
     for (const key in NzBytesPipe.formats) {
       if (NzBytesPipe.formats.hasOwnProperty(key)) {
-        const format = NzBytesPipe.formats[key];
+        const format = NzBytesPipe.formats[key as ByteUnit];
         if (bytes < format.max) {
           const result = toDecimal(NzBytesPipe.calculateResult(format, bytes), decimal);
 
