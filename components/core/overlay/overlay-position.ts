@@ -5,22 +5,7 @@
 
 import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 
-export type POSITION_TYPE =
-  | 'top'
-  | 'topCenter'
-  | 'topLeft'
-  | 'topRight'
-  | 'right'
-  | 'rightTop'
-  | 'rightBottom'
-  | 'bottom'
-  | 'bottomCenter'
-  | 'bottomLeft'
-  | 'bottomRight'
-  | 'left'
-  | 'leftTop'
-  | 'leftBottom';
-export const POSITION_MAP: { [key in POSITION_TYPE]: ConnectionPositionPair } = {
+export const POSITION_MAP = {
   top: new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),
   topCenter: new ConnectionPositionPair(
     { originX: 'center', originY: 'top' },
@@ -51,6 +36,7 @@ export const POSITION_MAP: { [key in POSITION_TYPE]: ConnectionPositionPair } = 
     { overlayX: 'end', overlayY: 'bottom' }
   )
 };
+export type POSITION_TYPE = keyof typeof POSITION_MAP;
 
 export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
 

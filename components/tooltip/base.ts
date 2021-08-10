@@ -357,8 +357,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string[]) {
-    const preferredPosition = value.map(placement => POSITION_MAP[placement as POSITION_TYPE]);
+  set nzPlacement(value: POSITION_TYPE[]) {
+    const preferredPosition = value.map(placement => POSITION_MAP[placement]);
     this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
 
