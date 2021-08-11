@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTransitionPatchDirective } from './transition-patch.directive';
 import { NzTransitionPatchModule } from './transition-patch.module';
@@ -37,6 +38,16 @@ describe('transition-patch', () => {
     testBed.fixture.detectChanges();
     expect(buttonElement.getAttribute('hidden')).toBe('');
   });
+  it('should work if hidden binding with undefined', () => {
+    const testBed = createComponentBed(TestTransitionPatchHiddenBindingComponent, {
+      imports: [NzTransitionPatchModule]
+    });
+    const buttonElement = testBed.debugElement.query(By.directive(NzTransitionPatchDirective)).nativeElement;
+    expect(buttonElement.getAttribute('hidden')).toBeFalsy();
+    testBed.component.hidden = undefined;
+    testBed.fixture.detectChanges();
+    expect(buttonElement.hasAttribute('hidden')).toBeFalse();
+  });
 });
 
 @Component({
@@ -58,5 +69,5 @@ export class TestTransitionPatchRestoreComponent {}
   template: ` <button nz-button [hidden]="hidden"></button> `
 })
 export class TestTransitionPatchHiddenBindingComponent {
-  hidden = false;
+  hidden: NzSafeAny = false;
 }
