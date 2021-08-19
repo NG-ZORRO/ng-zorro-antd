@@ -1216,6 +1216,13 @@ describe('NzModal', () => {
                   resolve(null);
                 }, 200);
               })
+          },
+          {
+            label: 'Test Button3',
+            onClick: () =>
+              new Promise(() => {
+                throw new Error('Rethrow error');
+              })
           }
         ]
       });
@@ -1227,6 +1234,7 @@ describe('NzModal', () => {
       expect(buttons[0].textContent!.trim()).toBe('Test Button0');
       expect(buttons[1].textContent!.trim()).toBe('Test Button1');
       expect(buttons[2].textContent!.trim()).toBe('Test Button2');
+      expect(buttons[3].textContent!.trim()).toBe('Test Button3');
 
       expect(buttons[1].classList).toContain('ant-btn-loading');
 
@@ -1246,6 +1254,11 @@ describe('NzModal', () => {
       flush();
       fixture.detectChanges();
       expect(buttons[0].classList).not.toContain('ant-btn-loading');
+
+      expect(() => {
+        buttons[3].click();
+        tick();
+      }).toThrowError(/Rethrow error/);
     }));
   });
 

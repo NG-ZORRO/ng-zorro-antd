@@ -117,7 +117,12 @@ export class NzModalFooterComponent implements OnDestroy {
       const result = this.getButtonCallableProp(options, 'onClick');
       if (options.autoLoading && isPromise(result)) {
         options.loading = true;
-        result.then(() => (options.loading = false)).catch(() => (options.loading = false));
+        result
+          .then(() => (options.loading = false))
+          .catch(e => {
+            options.loading = false;
+            throw e;
+          });
       }
     }
   }
