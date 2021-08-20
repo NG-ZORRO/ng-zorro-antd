@@ -195,7 +195,6 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   hasFixRight = false;
   showPagination = true;
   private destroy$ = new Subject<void>();
-  private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
   dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
@@ -285,9 +284,9 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       this.cdr.markForCheck();
     });
 
-    combineLatest([total$, this.loading$, this.templateMode$])
+    combineLatest([total$, this.templateMode$])
       .pipe(
-        map(([total, loading, templateMode]) => total === 0 && !loading && !templateMode),
+        map(([total, templateMode]) => total === 0 && !templateMode),
         takeUntil(this.destroy$)
       )
       .subscribe(empty => {
@@ -306,17 +305,8 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const {
-      nzScroll,
-      nzPageIndex,
-      nzPageSize,
-      nzFrontPagination,
-      nzData,
-      nzWidthConfig,
-      nzNoResult,
-      nzLoading,
-      nzTemplateMode
-    } = changes;
+    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzTemplateMode } =
+      changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }
@@ -335,9 +325,6 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     }
     if (nzWidthConfig) {
       this.nzTableStyleService.setTableWidthConfig(this.nzWidthConfig);
-    }
-    if (nzLoading) {
-      this.loading$.next(this.nzLoading);
     }
     if (nzTemplateMode) {
       this.templateMode$.next(this.nzTemplateMode);
