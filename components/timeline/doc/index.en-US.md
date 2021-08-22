@@ -47,4 +47,4 @@ Node of timeline
 | `[nzColor]` | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'`| `string` | `blue` |
 | `[nzDot]` | Customize timeline dot | `string \| TemplateRef<void>` | - |
 | `[nzPosition]` | Customize position, only works when `nzMode` is `custom` | `'left' \| 'right'` | - |
-| `[NzLabel]` | Set the label |  `string \| TemplateRef<void>` | - |
+| `[nzLabel]` | Set the label |  `string \| TemplateRef<void>` | - |
