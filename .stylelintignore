@@ -12,3 +12,4 @@ coverage-report/
 junit/
 .github/
 .husky/
+components/style/color/

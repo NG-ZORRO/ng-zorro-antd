@@ -19,8 +19,8 @@
     "stage-release": "ts-node --project scripts/release/tsconfig.json scripts/release/release.ts",
     "ng": "ng",
     "gulp": "gulp",
-    "lint": "eslint --cache . --ext .ts,.html",
-    "lint:fix": "eslint --fix --cache . --ext .ts,.html",
+    "lint": "eslint --cache . --ext .ts,.html && stylelint \"components/**/*.less\"",
+    "lint:fix": "eslint --fix --cache . --ext .ts,.html && stylelint \"components/**/*.less\" --fix",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -132,6 +132,11 @@
     "rxjs": "~6.6.3",
     "shelljs": "^0.8.4",
     "sitemap": "^4.1.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-prettier": "^1.2.0",
     "terser": "^5.5.1",
     "ts-node": "~9.1.1",
     "tslib": "^2.0.3",
@@ -142,6 +147,9 @@
   "lint-staged": {
     "(schematics|scripts|components)/**/!(tslint-rules|testing)/!(polyfills).{html,ts}": [
       "eslint --fix"
+    ],
+    "components/**/*.{less}": [
+      "stylelint --fix"
     ]
   }
 }
