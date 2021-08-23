@@ -35,12 +35,12 @@
       // >>>>> Ping shadow
       &::before,
       &::after {
+        content: '';
         position: absolute;
         z-index: 1;
         opacity: 0;
-        transition: opacity @animation-duration-slow;
-        content: '';
         pointer-events: none;
+        transition: opacity @animation-duration-slow;
       }
     }
 
@@ -65,26 +65,26 @@
     .@{tab-prefix-cls}-nav-more {
       position: relative;
       padding: @tabs-card-horizontal-padding;
-      background: transparent;
       border: 0;
+      background: transparent;
 
       &::after {
+        content: '';
         position: absolute;
         right: 0;
         bottom: 0;
         left: 0;
         height: 5px;
         transform: translateY(100%);
-        content: '';
       }
     }
 
     .@{tab-prefix-cls}-nav-add {
       min-width: @tabs-card-height;
       padding: 0 @padding-xs;
-      background: @tabs-card-head-background;
       border: @border-width-base @border-style-base @border-color-split;
       border-radius: @border-radius-base @border-radius-base 0 0;
+      background: @tabs-card-head-background;
       outline: none;
       cursor: pointer;
       transition: all @animation-duration-slow @ease-in-out;
@@ -128,10 +128,10 @@
     display: inline-flex;
     align-items: center;
     padding: @tabs-horizontal-padding;
-    font-size: @tabs-title-font-size;
-    background: transparent;
     border: 0;
+    background: transparent;
     outline: none;
+    font-size: @tabs-title-font-size;
     cursor: pointer;
 
     &-btn,
@@ -151,11 +151,11 @@
       flex: none;
       margin-right: -@margin-xss;
       margin-left: @margin-xs;
-      color: @text-color-secondary;
-      font-size: @font-size-sm;
-      background: transparent;
       border: none;
+      background: transparent;
+      color: @text-color-secondary;
       outline: none;
+      font-size: @font-size-sm;
       cursor: pointer;
       transition: all @animation-duration-slow;
 
@@ -201,14 +201,13 @@
 
   // =========================== TabPanes ===========================
   &-content {
+    display: flex;
+    width: 100%;
     &-holder {
       flex: auto;
       min-width: 0;
       min-height: 0;
     }
-
-    display: flex;
-    width: 100%;
 
     &-animated {
       transition: margin @animation-duration-slow;

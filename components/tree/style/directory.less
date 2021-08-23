@@ -9,14 +9,14 @@
 
     // Hover color
     &::before {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 4px;
       left: 0;
-      transition: background-color 0.3s;
-      content: '';
       pointer-events: none;
+      transition: background-color 0.3s;
     }
 
     &:hover {
@@ -45,8 +45,8 @@
       }
 
       &.@{tree-prefix-cls}-node-selected {
-        color: @tree-directory-selected-color;
         background: transparent;
+        color: @tree-directory-selected-color;
       }
     }
 
@@ -64,8 +64,8 @@
 
       // >>> Title
       .@{tree-prefix-cls}-node-content-wrapper {
-        color: @tree-directory-selected-color;
         background: transparent;
+        color: @tree-directory-selected-color;
       }
     }
   }

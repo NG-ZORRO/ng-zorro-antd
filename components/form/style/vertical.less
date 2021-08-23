@@ -2,13 +2,13 @@
 
 // ================== Label ==================
 .make-vertical-layout-label() {
+  padding: @form-vertical-label-padding;
+  line-height: @line-height-base;
+  text-align: left;
+  white-space: initial;
   & when (@form-vertical-label-margin > 0) {
     margin: @form-vertical-label-margin;
   }
-  padding: @form-vertical-label-padding;
-  line-height: @line-height-base;
-  white-space: initial;
-  text-align: left;
 
   > label {
     margin: 0;

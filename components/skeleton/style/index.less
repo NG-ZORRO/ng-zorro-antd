@@ -16,8 +16,8 @@
 
   &-header {
     display: table-cell;
-    padding-right: @padding-md;
     vertical-align: top;
+    padding-right: @padding-md;
 
     // Avatar
     .@{skeleton-avatar-prefix-cls} {
@@ -27,16 +27,16 @@
 
   &-content {
     display: table-cell;
-    width: 100%;
     vertical-align: top;
+    width: 100%;
 
     // Title
     .@{skeleton-title-prefix-cls} {
       width: 100%;
       height: @skeleton-title-height;
       margin-top: @margin-md;
-      background: @skeleton-color;
       border-radius: @skeleton-block-radius;
+      background: @skeleton-color;
 
       + .@{skeleton-paragraph-prefix-cls} {
         margin-top: @skeleton-title-paragraph-margin-top;
@@ -50,9 +50,9 @@
       > li {
         width: 100%;
         height: @skeleton-paragraph-li-height;
-        list-style: none;
-        background: @skeleton-color;
         border-radius: @skeleton-block-radius;
+        background: @skeleton-color;
+        list-style: none;
 
         &:last-child:not(:first-child):not(:nth-child(2)) {
           width: 61%;
@@ -135,8 +135,8 @@
 .skeleton-element-button() {
   display: inline-block;
   vertical-align: top;
-  background: @skeleton-color;
   border-radius: @border-radius-base;
+  background: @skeleton-color;
 
   .skeleton-element-button-size(@btn-height-base);
 
@@ -185,9 +185,9 @@
 // Image
 .skeleton-element-image() {
   display: flex;
+  vertical-align: top;
   align-items: center;
   justify-content: center;
-  vertical-align: top;
   background: @skeleton-color;
 
   .skeleton-element-image-size(@image-size-base*2);
@@ -198,6 +198,7 @@
 
   &-svg {
     .skeleton-element-image-size(@image-size-base);
+
     max-width: @image-size-base * 4;
     max-height: @image-size-base * 4;
   }
@@ -246,12 +247,7 @@
 }
 
 .skeleton-color() {
-  background: linear-gradient(
-    90deg,
-    @skeleton-color 25%,
-    @skeleton-to-color 37%,
-    @skeleton-color 63%
-  );
+  background: linear-gradient(90deg, @skeleton-color 25%, @skeleton-to-color 37%, @skeleton-color 63%);
   background-size: 400% 100%;
   animation: ~'@{skeleton-prefix-cls}-loading' 1.4s ease infinite;
 }

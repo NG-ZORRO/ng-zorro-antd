@@ -16,30 +16,30 @@
   }
 
   &-menu {
+    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 200px;
     margin: 0;
     padding: @dropdown-edge-child-vertical-padding 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: left;
-    list-style-type: none;
+    border-radius: @border-radius-base;
     background-color: @dropdown-menu-bg;
     background-clip: padding-box;
-    border-radius: @border-radius-base;
-    outline: none;
     box-shadow: @box-shadow-base;
+    outline: none;
+    list-style-type: none;
+    text-align: left;
 
     &-item {
+      overflow: hidden;
       min-width: 120px;
       margin: 0;
       padding: @dropdown-vertical-padding @control-padding-horizontal;
-      overflow: hidden;
       color: @text-color;
       font-weight: normal;
       font-size: @dropdown-font-size;
       line-height: @dropdown-line-height;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
       cursor: pointer;
       transition: all 0.3s;
 
@@ -50,8 +50,8 @@
       &-disabled {
         &,
         &:hover {
-          color: @disabled-color;
           background: transparent;
+          color: @disabled-color;
           cursor: not-allowed;
         }
       }

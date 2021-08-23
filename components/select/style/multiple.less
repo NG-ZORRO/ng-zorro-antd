@@ -4,8 +4,7 @@
 @select-multiple-item-border-width: 1px;
 
 @select-multiple-padding: max(
-  @input-padding-vertical-base - @select-multiple-item-border-width -
-    @select-multiple-item-spacing-half,
+  @input-padding-vertical-base - @select-multiple-item-border-width - @select-multiple-item-spacing-half,
   0
 );
 
@@ -49,11 +48,11 @@
       }
 
       &::after {
+        content: '\a0';
         display: inline-block;
         width: 0;
         margin: @select-multiple-item-spacing-half 0;
         line-height: @select-multiple-item-height;
-        content: '\a0';
       }
     }
 
@@ -69,38 +68,38 @@
       flex: none;
       box-sizing: border-box;
       max-width: 100%;
-
       height: @select-multiple-item-height;
       margin-top: @select-multiple-item-spacing-half;
       margin-bottom: @select-multiple-item-spacing-half;
-      line-height: @select-multiple-item-height - @select-multiple-item-border-width * 2;
-      background: @select-selection-item-bg;
       border: 1px solid @select-selection-item-border-color;
       border-radius: @border-radius-base;
+      background: @select-selection-item-bg;
+      line-height: @select-multiple-item-height - @select-multiple-item-border-width * 2;
       cursor: default;
-      transition: font-size 0.3s, line-height 0.3s, height 0.3s;
       user-select: none;
+      transition: font-size 0.3s, line-height 0.3s, height 0.3s;
       margin-inline-end: @input-padding-vertical-base;
       padding-inline-start: @padding-xs;
       padding-inline-end: (@padding-xs / 2);
 
       .@{select-prefix-cls}-disabled& {
-        color: @select-multiple-item-disabled-color;
         border-color: @select-multiple-item-disabled-border-color;
+        color: @select-multiple-item-disabled-color;
         cursor: not-allowed;
       }
 
       // It's ok not to do this, but 24px makes bottom narrow in view should adjust
       &-content {
         display: inline-block;
-        margin-right: (@padding-xs / 2);
         overflow: hidden;
-        white-space: pre; // fix whitespace wrapping. custom tags display all whitespace within.
+        margin-right: (@padding-xs / 2);
         text-overflow: ellipsis;
+        white-space: pre; // fix whitespace wrapping. custom tags display all whitespace within.
       }
 
       &-remove {
         .iconfont-mixin();
+
         display: inline-block;
         color: @text-color-secondary;
         font-weight: bold;
@@ -161,8 +160,8 @@
       top: 50%;
       right: @input-padding-horizontal;
       left: @input-padding-horizontal;
-      transform: translateY(-50%);
       transition: all 0.3s;
+      transform: translateY(-50%);
     }
 
     // ============================================================

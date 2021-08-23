@@ -15,11 +15,11 @@
   top: 8px;
   height: 22px;
   padding: 0 8px;
+  border-radius: @border-radius-sm;
+  background-color: @primary-color;
   color: @badge-text-color;
   line-height: 22px;
   white-space: nowrap;
-  background-color: @primary-color;
-  border-radius: @border-radius-sm;
 
   &-text {
     color: @white;
@@ -30,20 +30,20 @@
     top: 100%;
     width: 8px;
     height: 8px;
-    color: currentColor;
     border: 4px solid;
+    color: currentColor;
     transform: scaleY(0.75);
     transform-origin: top;
     // If not support IE 11, use filter: brightness(75%) instead
     &::after {
+      content: '';
       position: absolute;
       top: -4px;
       left: -4px;
       width: inherit;
       height: inherit;
-      color: rgba(0, 0, 0, 0.25);
       border: inherit;
-      content: '';
+      color: rgba(0, 0, 0, 0.25);
     }
   }
 
@@ -54,8 +54,8 @@
     @color: extract(@preset-colors, @i);
     @darkColor: '@{color}-6';
     &-color-@{color} {
-      color: @@darkColor;
       background: @@darkColor;
+      color: @@darkColor;
     }
   }
   .make-color-classes();

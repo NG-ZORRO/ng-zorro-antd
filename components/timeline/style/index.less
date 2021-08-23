@@ -14,8 +14,8 @@
     position: relative;
     margin: 0;
     padding-bottom: @timeline-item-padding-bottom;
-    font-size: @font-size-base;
     list-style: none;
+    font-size: @font-size-base;
 
     &-tail {
       position: absolute;
@@ -26,8 +26,8 @@
     }
 
     &-pending &-head {
-      font-size: @font-size-sm;
       background-color: transparent;
+      font-size: @font-size-sm;
     }
 
     &-pending &-tail {
@@ -38,28 +38,28 @@
       position: absolute;
       width: 10px;
       height: 10px;
-      background-color: @timeline-dot-bg;
       border: @timeline-dot-border-width solid transparent;
       border-radius: 100px;
+      background-color: @timeline-dot-bg;
 
       &-blue {
-        color: @primary-color;
         border-color: @primary-color;
+        color: @primary-color;
       }
 
       &-red {
-        color: @error-color;
         border-color: @error-color;
+        color: @error-color;
       }
 
       &-green {
-        color: @success-color;
         border-color: @success-color;
+        color: @success-color;
       }
 
       &-gray {
-        color: @disabled-color;
         border-color: @disabled-color;
+        color: @disabled-color;
       }
     }
 
@@ -71,10 +71,10 @@
       height: auto;
       margin-top: 0;
       padding: 3px 1px;
-      line-height: 1;
-      text-align: center;
       border: 0;
       border-radius: 0;
+      line-height: 1;
+      text-align: center;
       transform: translate(-50%, -50%);
     }
 

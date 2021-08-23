@@ -59,8 +59,8 @@
 .@{form-item-prefix-cls} {
   .reset-component();
 
-  margin-bottom: @form-item-margin-bottom;
   vertical-align: top;
+  margin-bottom: @form-item-margin-bottom;
 
   &-with-help {
     margin-bottom: 0;
@@ -77,11 +77,11 @@
   // ==============================================================
   &-label {
     display: inline-block;
+    vertical-align: middle;
     flex-grow: 0;
     overflow: hidden;
-    white-space: nowrap;
     text-align: right;
-    vertical-align: middle;
+    white-space: nowrap;
 
     &-left {
       text-align: left;
@@ -97,19 +97,19 @@
       font-size: @form-item-label-font-size;
 
       > .@{iconfont-css-prefix} {
-        font-size: @form-item-label-font-size;
         vertical-align: top;
+        font-size: @form-item-label-font-size;
       }
 
       // Required mark
       &.@{form-item-prefix-cls}-required:not(.@{form-item-prefix-cls}-required-mark-optional)::before {
+        content: '*';
         display: inline-block;
         margin-right: 4px;
         color: @label-required-color;
         font-size: @form-item-label-font-size;
         font-family: SimSun, sans-serif;
         line-height: 1;
-        content: '*';
 
         .@{form-prefix-cls}-hide-required-mark & {
           display: none;
@@ -136,16 +136,15 @@
       }
 
       &::after {
+        position: relative;
+        top: -0.5px;
+        margin: 0 @form-item-label-colon-margin-right 0 @form-item-label-colon-margin-left;
         & when (@form-item-trailing-colon=true) {
           content: ':';
         }
         & when not (@form-item-trailing-colon=true) {
           content: ' ';
         }
-
-        position: relative;
-        top: -0.5px;
-        margin: 0 @form-item-label-colon-margin-right 0 @form-item-label-colon-margin-left;
       }
 
       &.@{form-item-prefix-cls}-no-colon::after {
@@ -159,8 +158,8 @@
   // ==============================================================
   &-control {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+    flex-direction: column;
 
     &:first-child:not([class^=~"'@{ant-prefix}-col-'"]):not([class*=~"' @{ant-prefix}-col-'"]) {
       width: 100%;
@@ -214,19 +213,19 @@
 
 @keyframes antShowHelpIn {
   0% {
-    transform: translateY(-5px);
     opacity: 0;
+    transform: translateY(-5px);
   }
   100% {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes antShowHelpOut {
   to {
-    transform: translateY(-5px);
     opacity: 0;
+    transform: translateY(-5px);
   }
 }
 
@@ -234,34 +233,34 @@
 // otherwise won't trigger anim
 @keyframes diffZoomIn1 {
   0% {
-    transform: scale(0);
     opacity: 0;
+    transform: scale(0);
   }
   100% {
-    transform: scale(1);
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes diffZoomIn2 {
   0% {
-    transform: scale(0);
     opacity: 0;
+    transform: scale(0);
   }
   100% {
-    transform: scale(1);
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes diffZoomIn3 {
   0% {
-    transform: scale(0);
     opacity: 0;
+    transform: scale(0);
   }
   100% {
-    transform: scale(1);
     opacity: 1;
+    transform: scale(1);
   }
 }
 

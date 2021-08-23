@@ -26,11 +26,11 @@
       }
 
       .@{steps-prefix-cls}-item-title {
+        overflow: hidden;
         max-width: 100%;
         padding-right: 0;
-        overflow: hidden;
-        white-space: nowrap;
         text-overflow: ellipsis;
+        white-space: nowrap;
 
         &::after {
           display: none;
@@ -55,6 +55,7 @@
     }
 
     &::after {
+      content: '';
       position: absolute;
       top: 50%;
       left: 100%;
@@ -67,10 +68,10 @@
       border-bottom: none;
       border-left: none;
       transform: rotate(45deg);
-      content: '';
     }
 
     &::before {
+      content: '';
       position: absolute;
       bottom: 0;
       left: 50%;
@@ -80,7 +81,6 @@
       background-color: @steps-nav-active-color;
       transition: width 0.3s, left 0.3s;
       transition-timing-function: ease-out;
-      content: '';
     }
   }
 

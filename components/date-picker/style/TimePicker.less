@@ -13,15 +13,15 @@
   &-inner {
     position: relative;
     display: inline-block;
-    width: 100%;
     overflow: hidden;
-    font-size: @font-size-base;
-    line-height: 1.5;
-    text-align: left;
-    list-style: none;
+    width: 100%;
     background-color: @component-background;
     background-clip: padding-box;
     outline: none;
+    list-style: none;
+    font-size: @font-size-base;
+    line-height: 1.5;
+    text-align: left;
   }
   &-combobox {
     width: 100%;
@@ -48,10 +48,10 @@
   &-select {
     position: relative; // Fix chrome weird render bug
     float: left;
-    height: 226px;
     overflow: hidden;
-    font-size: @font-size-base;
+    height: 226px;
     border-right: @border-width-base @border-style-base @border-color-split;
+    font-size: @font-size-base;
 
     &:hover {
       overflow-y: auto;
@@ -78,17 +78,17 @@
       width: 100%;
       height: 24px;
       margin: 0;
+      list-style: none;
       line-height: 24px;
       text-align: center;
-      list-style: none;
       cursor: pointer;
-      transition: all .3s;
       user-select: none;
+      transition: all 0.3s;
 
       &:last-child::after {
+        content: '';
         display: block;
         height: 202px;
-        content: '';
       }
 
       &:hover {
@@ -97,14 +97,14 @@
 
       &:focus {
         color: @primary-color;
-        font-weight: 600;
         outline: none;
+        font-weight: 600;
       }
     }
 
     li&-option-selected {
-      font-weight: 600;
       background: @time-picker-selected-bg;
+      font-weight: 600;
     }
 
     li&-option-disabled {

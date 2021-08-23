@@ -16,15 +16,15 @@
     min-width: @badge-height;
     height: @badge-height;
     padding: 0 6px;
+    border-radius: (@badge-height / 2);
+    background: @badge-color;
     color: @badge-text-color;
+    box-shadow: 0 0 0 1px @shadow-color-inverse;
     font-weight: @badge-font-weight;
     font-size: @badge-font-size;
     line-height: @badge-height;
-    white-space: nowrap;
     text-align: center;
-    background: @badge-color;
-    border-radius: (@badge-height / 2);
-    box-shadow: 0 0 0 1px @shadow-color-inverse;
+    white-space: nowrap;
     a,
     a:hover {
       color: @badge-text-color;
@@ -35,9 +35,9 @@
     min-width: @badge-height-sm;
     height: @badge-height-sm;
     padding: 0;
+    border-radius: (@badge-height-sm / 2);
     font-size: @badge-font-size-sm;
     line-height: @badge-height-sm;
-    border-radius: (@badge-height-sm / 2);
   }
 
   &-multiple-words {
@@ -49,8 +49,8 @@
     width: @badge-dot-size;
     min-width: @badge-dot-size;
     height: @badge-dot-size;
-    background: @highlight-color;
     border-radius: 100%;
+    background: @highlight-color;
     box-shadow: 0 0 0 1px @shadow-color-inverse;
   }
 
@@ -69,16 +69,16 @@
   }
 
   &-status {
-    line-height: inherit;
     vertical-align: baseline;
+    line-height: inherit;
 
     &-dot {
       position: relative;
       top: -1px;
       display: inline-block;
+      vertical-align: middle;
       width: @badge-status-size;
       height: @badge-status-size;
-      vertical-align: middle;
       border-radius: 50%;
     }
     &-success {
@@ -88,6 +88,7 @@
       position: relative;
       background-color: @processing-color;
       &::after {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -96,7 +97,6 @@
         border: 1px solid @processing-color;
         border-radius: 50%;
         animation: antStatusProcessing 1.2s infinite ease-in-out;
-        content: '';
       }
     }
     &-default {
@@ -172,12 +172,12 @@
 
 @keyframes antStatusProcessing {
   0% {
-    transform: scale(0.8);
     opacity: 0.5;
+    transform: scale(0.8);
   }
   100% {
-    transform: scale(2.4);
     opacity: 0;
+    transform: scale(2.4);
   }
 }
 
@@ -210,8 +210,8 @@
 
 @keyframes antZoomBadgeIn {
   0% {
-    transform: scale(0) translate(50%, -50%);
     opacity: 0;
+    transform: scale(0) translate(50%, -50%);
   }
   100% {
     transform: scale(1) translate(50%, -50%);
@@ -223,15 +223,15 @@
     transform: scale(1) translate(50%, -50%);
   }
   100% {
-    transform: scale(0) translate(50%, -50%);
     opacity: 0;
+    transform: scale(0) translate(50%, -50%);
   }
 }
 
 @keyframes antNoWrapperZoomBadgeIn {
   0% {
-    transform: scale(0);
     opacity: 0;
+    transform: scale(0);
   }
   100% {
     transform: scale(1);
@@ -243,8 +243,8 @@
     transform: scale(1);
   }
   100% {
-    transform: scale(0);
     opacity: 0;
+    transform: scale(0);
   }
 }
 

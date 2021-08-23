@@ -10,11 +10,10 @@
   z-index: @zindex-modal;
   width: 0%;
   height: 100%;
-  transition: transform @animation-duration-slow @ease-base-out,
-    height 0s ease @animation-duration-slow, width 0s ease @animation-duration-slow;
+  transition: transform @animation-duration-slow @ease-base-out, height 0s ease @animation-duration-slow,
+    width 0s ease @animation-duration-slow;
   > * {
-    transition: transform @animation-duration-slow @ease-base-out,
-      box-shadow @animation-duration-slow @ease-base-out;
+    transition: transform @animation-duration-slow @ease-base-out, box-shadow @animation-duration-slow @ease-base-out;
   }
 
   &-content-wrapper {
@@ -125,9 +124,9 @@
   &.@{drawer-prefix-cls}-open .@{drawer-prefix-cls}-mask {
     height: 100%;
     opacity: 1;
+    pointer-events: auto;
     transition: none;
     animation: antdDrawerFadeIn @animation-duration-slow @ease-base-out;
-    pointer-events: auto;
   }
 
   &-title {
@@ -142,9 +141,9 @@
     position: relative;
     z-index: 1;
     overflow: auto;
+    border: 0;
     background-color: @drawer-bg;
     background-clip: padding-box;
-    border: 0;
   }
 
   &-close {
@@ -154,17 +153,17 @@
     z-index: @zindex-popup-close;
     display: block;
     padding: @drawer-header-close-padding;
+    border: 0;
+    background: transparent;
     color: @modal-close-color;
+    outline: 0;
     font-weight: 700;
-    font-size: @font-size-lg;
     font-style: normal;
+    font-size: @font-size-lg;
     line-height: 1;
     text-align: center;
-    text-transform: none;
     text-decoration: none;
-    background: transparent;
-    border: 0;
-    outline: 0;
+    text-transform: none;
     cursor: pointer;
     transition: color @animation-duration-slow;
     text-rendering: auto;
@@ -185,15 +184,15 @@
   &-header {
     position: relative;
     padding: @drawer-header-padding;
-    color: @text-color;
-    background: @drawer-bg;
     border-bottom: @border-width-base @border-style-base @border-color-split;
     border-radius: @border-radius-base @border-radius-base 0 0;
+    background: @drawer-bg;
+    color: @text-color;
   }
 
   &-header-no-title {
-    color: @text-color;
     background: @drawer-bg;
+    color: @text-color;
   }
 
   &-wrapper-body {
@@ -206,8 +205,8 @@
 
   &-body {
     flex-grow: 1;
-    padding: @drawer-body-padding;
     overflow: auto;
+    padding: @drawer-body-padding;
     font-size: @font-size-base;
     line-height: @line-height-base;
     word-wrap: break-word;
@@ -228,8 +227,8 @@
     background-color: @modal-mask-bg;
     opacity: 0;
     filter: ~'alpha(opacity=45)';
-    transition: opacity @animation-duration-slow linear, height 0s ease @animation-duration-slow;
     pointer-events: none;
+    transition: opacity @animation-duration-slow linear, height 0s ease @animation-duration-slow;
   }
 
   &-open {

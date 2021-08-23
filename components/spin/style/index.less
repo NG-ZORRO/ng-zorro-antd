@@ -9,9 +9,9 @@
 
   position: absolute;
   display: none;
+  vertical-align: middle;
   color: @primary-color;
   text-align: center;
-  vertical-align: middle;
   opacity: 0;
   transition: transform 0.3s @ease-in-out-circ;
 
@@ -80,6 +80,7 @@
     transition: opacity 0.3s;
 
     &::after {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
@@ -91,9 +92,8 @@
       height: 100%;
       background: @component-background;
       opacity: 0;
-      transition: all 0.3s;
-      content: '';
       pointer-events: none;
+      transition: all 0.3s;
     }
   }
 
@@ -101,8 +101,8 @@
     clear: both;
     overflow: hidden;
     opacity: 0.5;
-    user-select: none;
     pointer-events: none;
+    user-select: none;
 
     &::after {
       opacity: 0.4;
@@ -131,11 +131,11 @@
       display: block;
       width: 9px;
       height: 9px;
-      background-color: @primary-color;
       border-radius: 100%;
+      background-color: @primary-color;
+      opacity: 0.3;
       transform: scale(0.75);
       transform-origin: 50% 50%;
-      opacity: 0.3;
       animation: antSpinMove 1s infinite linear alternate;
 
       &:nth-child(1) {

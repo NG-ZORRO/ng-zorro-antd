@@ -5,8 +5,7 @@
 
 @tooltip-arrow-shadow-width: 3px;
 
-@tooltip-arrow-rotate-width: sqrt(@tooltip-arrow-width * @tooltip-arrow-width * 2) +
-  @tooltip-arrow-shadow-width * 2;
+@tooltip-arrow-rotate-width: sqrt(@tooltip-arrow-width * @tooltip-arrow-width * 2) + @tooltip-arrow-shadow-width * 2;
 
 @tooltip-arrow-offset-vertical: 5px; // 8 - 3px
 @tooltip-arrow-offset-horizontal: 13px; // 16 - 3px
@@ -55,26 +54,27 @@
     min-width: 30px;
     min-height: 32px;
     padding: 6px 8px;
+    border-radius: @border-radius-base;
+    background-color: @tooltip-bg;
     color: @tooltip-color;
+    box-shadow: @box-shadow-base;
     text-align: left;
     text-decoration: none;
     word-wrap: break-word;
-    background-color: @tooltip-bg;
-    border-radius: @border-radius-base;
-    box-shadow: @box-shadow-base;
   }
 
   // Arrows
   &-arrow {
     position: absolute;
     display: block;
+    overflow: hidden;
     width: @tooltip-arrow-rotate-width;
     height: @tooltip-arrow-rotate-width;
-    overflow: hidden;
     background: transparent;
     pointer-events: none;
 
     &-content {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
@@ -85,7 +85,6 @@
       height: @tooltip-arrow-width;
       margin: auto;
       background-color: @tooltip-bg;
-      content: '';
       pointer-events: auto;
     }
   }

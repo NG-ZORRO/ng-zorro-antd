@@ -5,6 +5,7 @@
 
 .@{pageheader-prefix-cls} {
   .reset-component();
+
   position: relative;
   padding: @page-header-padding-vertical @page-header-padding;
   background-color: @component-background;
@@ -28,15 +29,16 @@
 
     &-button {
       .operation-unit();
+
       color: @page-header-back-color;
       cursor: pointer;
     }
   }
 
   .@{ant-prefix}-divider-vertical {
+    vertical-align: middle;
     height: 14px;
     margin: 0 @margin-sm;
-    vertical-align: middle;
   }
 
   .@{ant-prefix}-breadcrumb + &-heading {
@@ -45,8 +47,8 @@
 
   .text-overflow-ellipsis() {
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &-heading {
@@ -56,8 +58,8 @@
     &-left {
       display: flex;
       align-items: center;
-      margin: (@margin-xs / 2) 0;
       overflow: hidden;
+      margin: (@margin-xs / 2) 0;
     }
 
     &-title {

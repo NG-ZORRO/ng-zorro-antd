@@ -10,9 +10,9 @@
   padding-left: @anchor-border-width;
 
   &-wrapper {
+    overflow: auto;
     margin-left: -4px;
     padding-left: 4px;
-    overflow: auto;
     background-color: @anchor-bg;
   }
 
@@ -22,13 +22,13 @@
     left: 0;
     height: 100%;
     &::before {
+      content: ' ';
       position: relative;
       display: block;
       width: @anchor-border-width;
       height: 100%;
       margin: 0 auto;
       background-color: @anchor-border-color;
-      content: ' ';
     }
     &-ball {
       position: absolute;
@@ -36,11 +36,11 @@
       display: none;
       width: 8px;
       height: 8px;
-      background-color: @component-background;
       border: 2px solid @primary-color;
       border-radius: 8px;
-      transform: translateX(-50%);
+      background-color: @component-background;
       transition: top 0.3s ease-in-out;
+      transform: translateX(-50%);
       &.visible {
         display: inline-block;
       }
@@ -58,11 +58,11 @@
     &-title {
       position: relative;
       display: block;
-      margin-bottom: 6px;
       overflow: hidden;
+      margin-bottom: 6px;
       color: @text-color;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
       transition: all 0.3s;
 
       &:only-child {

@@ -73,17 +73,17 @@
     margin-top: -7px;
     font-size: @font-size-sm;
     line-height: 14px;
-    transition: all 0.3s;
     user-select: none;
+    transition: all 0.3s;
   }
 
   &-clear {
     z-index: 2;
+    background: @input-bg;
     color: @disabled-color;
     font-size: @font-size-base;
-    background: @input-bg;
-    cursor: pointer;
     opacity: 0;
+    cursor: pointer;
     pointer-events: none;
     &:hover {
       color: @text-color-secondary;

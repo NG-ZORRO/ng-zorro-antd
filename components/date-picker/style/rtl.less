@@ -111,8 +111,8 @@
       display: inline-block;
       min-width: @picker-panel-cell-height;
       height: @picker-panel-cell-height;
-      line-height: @picker-panel-cell-height;
       border-radius: @border-radius-base;
+      line-height: @picker-panel-cell-height;
       transition: background @animation-duration-slow, border @animation-duration-slow;
     }
 
@@ -137,9 +137,7 @@
       }
     }
 
-    .@{picker-prefix-cls}-date-panel
-      &-in-view&-in-range&-range-hover-start
-      .@{cellClassName}::after {
+    .@{picker-prefix-cls}-date-panel &-in-view&-in-range&-range-hover-start .@{cellClassName}::after {
       .@{picker-prefix-cls}-panel-rtl & {
         right: 0;
         left: -5px - @border-width-base;
@@ -237,8 +235,8 @@
   &-footer {
     &-extra {
       .@{picker-prefix-cls}-dropdown-rtl & {
-        direction: rtl;
         text-align: right;
+        direction: rtl;
       }
     }
   }

@@ -1,14 +1,12 @@
 // mixins for button
 // ------------------------
 .button-size(@height; @padding-horizontal; @font-size; @border-radius) {
-  @padding-vertical: max(
-    (round(((@height - @font-size * @line-height-base) / 2) * 10) / 10) - @border-width-base,
-    0
-  );
+  @padding-vertical: max((round(((@height - @font-size * @line-height-base) / 2) * 10) / 10) - @border-width-base, 0);
+
   height: @height;
   padding: @padding-vertical @padding-horizontal;
-  font-size: @font-size;
   border-radius: @border-radius;
+  font-size: @font-size;
 }
 
 .button-disabled(@color: @btn-disable-color; @background: @btn-disable-bg; @border: @btn-disable-border) {
@@ -19,8 +17,8 @@
     &:active {
       .button-color(@color; @background; @border);
 
-      text-shadow: none;
       box-shadow: none;
+      text-shadow: none;
     }
   }
 }
@@ -28,8 +26,8 @@
 .button-variant-primary(@color; @background) {
   .button-color(@color; @background; @background);
 
-  text-shadow: @btn-text-shadow;
   box-shadow: @btn-primary-shadow;
+  text-shadow: @btn-text-shadow;
 
   &:hover,
   &:focus {
@@ -91,6 +89,7 @@
 }
 .button-variant-ghost(@color; @border: @color) {
   .button-color(@color; transparent; @border);
+
   text-shadow: none;
   &:hover,
   &:focus {
@@ -140,20 +139,20 @@
   .button-disabled();
 }
 .button-color(@color; @background; @border) {
-  color: @color;
-  background: @background;
   border-color: @border; // a inside Button which only work in Chrome
+  background: @background;
+  color: @color;
   // http://stackoverflow.com/a/17253457
   > a:only-child {
     color: currentColor;
     &::after {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
       background: transparent;
-      content: '';
     }
   }
 }
@@ -182,6 +181,7 @@
   }
   &-lg .@{btnClassName}.@{btnClassName}-icon-only {
     .square(@btn-height-lg);
+
     padding-right: 0;
     padding-left: 0;
   }
@@ -194,6 +194,7 @@
   }
   &-sm .@{btnClassName}.@{btnClassName}-icon-only {
     .square(@btn-height-sm);
+
     padding-right: 0;
     padding-left: 0;
   }
@@ -203,15 +204,15 @@
 .btn() {
   position: relative;
   display: inline-block;
-  font-weight: @btn-font-weight;
-  white-space: nowrap;
-  text-align: center;
-  background-image: none;
   border: @btn-border-width @btn-border-style transparent;
+  background-image: none;
   box-shadow: @btn-shadow;
+  font-weight: @btn-font-weight;
+  text-align: center;
+  white-space: nowrap;
   cursor: pointer;
-  transition: all 0.3s @ease-in-out;
   user-select: none;
+  transition: all 0.3s @ease-in-out;
   touch-action: manipulation;
   .button-size(
     @btn-height-base; @btn-padding-horizontal-base; @font-size-base; @btn-border-radius-base
@@ -228,8 +229,8 @@
     text-decoration: none;
   }
   &:not([disabled]):active {
-    outline: 0;
     box-shadow: none;
+    outline: 0;
   }
   &[disabled] {
     cursor: not-allowed;
@@ -258,8 +259,8 @@
   &:hover,
   &:focus,
   &:active {
-    text-decoration: none;
     background: @btn-default-bg;
+    text-decoration: none;
   }
 }
 // ghost button style
@@ -269,6 +270,7 @@
 // dashed button style
 .btn-dashed() {
   .button-variant-other(@btn-default-color, @btn-default-bg, @btn-default-border);
+
   border-style: dashed;
 }
 // danger button style
@@ -312,6 +314,7 @@
 // danger link button style
 .btn-danger-link() {
   .button-variant-other(@error-color, transparent, transparent);
+
   box-shadow: none;
   &:hover,
   &:focus {
@@ -335,6 +338,7 @@
 // link button style
 .btn-link() {
   .button-variant-other(@link-color, transparent, transparent);
+
   box-shadow: none;
   &:hover {
     background: @btn-link-hover-bg;
@@ -349,24 +353,26 @@
 // text button style
 .btn-text() {
   .button-variant-other(@text-color, transparent, transparent);
+
   box-shadow: none;
   &:hover,
   &:focus {
-    color: @text-color;
-    background: @btn-text-hover-bg;
     border-color: transparent;
+    background: @btn-text-hover-bg;
+    color: @text-color;
   }
 
   &:active {
-    color: @text-color;
-    background: fadein(@btn-text-hover-bg, 1%);
     border-color: transparent;
+    background: fadein(@btn-text-hover-bg, 1%);
+    color: @text-color;
   }
 
   .button-disabled(@disabled-color; transparent; transparent);
 }
 .btn-danger-text() {
   .button-variant-other(@error-color, transparent, transparent);
+
   box-shadow: none;
   &:hover,
   &:focus {
@@ -429,8 +435,8 @@
   min-width: @btn-height-base;
   padding-right: 0;
   padding-left: 0;
-  text-align: center;
   border-radius: 50%;
+  text-align: center;
   &.@{btnClassName}-lg {
     min-width: @btn-height-lg;
     border-radius: 50%;

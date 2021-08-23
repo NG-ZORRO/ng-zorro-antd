@@ -28,8 +28,8 @@
 
     position: relative;
     display: inline-block;
-    background-color: @cascader-bg;
     border-radius: @border-radius-base;
+    background-color: @cascader-bg;
     outline: 0;
     cursor: pointer;
     transition: color 0.3s;
@@ -39,8 +39,8 @@
     }
 
     &-disabled {
-      color: @disabled-color;
       background: @input-disabled-bg;
+      color: @disabled-color;
       cursor: not-allowed;
       .@{cascader-prefix-cls}-input {
         cursor: not-allowed;
@@ -64,14 +64,14 @@
       position: absolute;
       top: 50%;
       left: 0;
+      overflow: hidden;
       width: 100%;
       height: 20px;
       margin-top: -10px;
       padding: 0 20px 0 @control-padding-horizontal;
-      overflow: hidden;
       line-height: 20px;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &-clear {
@@ -82,12 +82,12 @@
       width: 12px;
       height: 12px;
       margin-top: -6px;
+      background: @component-background;
       color: @disabled-color;
       font-size: @font-size-sm;
       line-height: 12px;
-      background: @component-background;
-      cursor: pointer;
       opacity: 0;
+      cursor: pointer;
       transition: color 0.3s ease, opacity 0.15s ease;
       &:hover {
         color: @text-color-secondary;
@@ -128,11 +128,11 @@
   &-menus {
     position: absolute;
     z-index: @zindex-dropdown;
+    border-radius: @border-radius-base;
+    background: @cascader-menu-bg;
+    box-shadow: @box-shadow-base;
     font-size: @cascader-dropdown-font-size;
     white-space: nowrap;
-    background: @cascader-menu-bg;
-    border-radius: @border-radius-base;
-    box-shadow: @box-shadow-base;
 
     ul,
     ol {
@@ -164,14 +164,14 @@
   }
   &-menu {
     display: inline-block;
+    vertical-align: top;
+    overflow: auto;
     min-width: 111px;
     height: 180px;
     margin: 0;
     padding: @cascader-dropdown-edge-child-vertical-padding 0;
-    overflow: auto;
-    vertical-align: top;
-    list-style: none;
     border-right: @border-width-base @border-style-base @cascader-menu-border-color-split;
+    list-style: none;
     -ms-overflow-style: -ms-autohiding-scrollbar; // https://github.com/ant-design/ant-design/issues/11857
 
     &:first-child {
@@ -187,11 +187,11 @@
     }
   }
   &-menu-item {
-    padding: @cascader-dropdown-vertical-padding @control-padding-horizontal;
     overflow: hidden;
+    padding: @cascader-dropdown-vertical-padding @control-padding-horizontal;
     line-height: @cascader-dropdown-line-height;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
     transition: all 0.3s;
     &:hover {
@@ -212,8 +212,8 @@
     &-active:not(&-disabled) {
       &,
       &:hover {
-        font-weight: @select-item-selected-font-weight;
         background-color: @cascader-item-selected-bg;
+        font-weight: @select-item-selected-font-weight;
       }
     }
     &-expand {

@@ -14,6 +14,7 @@
   display: block;
 
   &::before {
+    content: ' ';
     position: absolute;
     top: -@popover-distance + @popover-arrow-width;
     right: 0;
@@ -21,7 +22,6 @@
     left: -7px;
     z-index: -9999;
     opacity: 0.0001;
-    content: ' ';
   }
 
   &-wrap {
@@ -70,9 +70,9 @@
     display: block;
     width: sqrt(@popover-arrow-width * @popover-arrow-width * 2);
     height: sqrt(@popover-arrow-width * @popover-arrow-width * 2);
-    background: transparent;
-    border-style: solid;
     border-width: (sqrt(@popover-arrow-width * @popover-arrow-width * 2) / 2);
+    border-style: solid;
+    background: transparent;
     transform: rotate(45deg);
   }
 
@@ -122,13 +122,13 @@
     position: relative;
     margin: 0;
     padding: @dropdown-edge-child-vertical-padding 0;
-    text-align: left;
-    list-style-type: none;
+    border-radius: @border-radius-base;
     background-color: @dropdown-menu-bg;
     background-clip: padding-box;
-    border-radius: @border-radius-base;
-    outline: none;
     box-shadow: @box-shadow-base;
+    outline: none;
+    list-style-type: none;
+    text-align: left;
 
     &-item-group-title {
       padding: 5px @control-padding-horizontal;
@@ -179,12 +179,12 @@
         }
 
         &::after {
+          content: '';
           position: absolute;
           top: 0;
           right: 0;
           bottom: 0;
           left: 0;
-          content: '';
         }
       }
     }
@@ -216,8 +216,8 @@
       }
 
       &-selected {
-        color: @dropdown-selected-color;
         background-color: @item-active-bg;
+        color: @dropdown-selected-color;
       }
 
       &:hover {
@@ -229,8 +229,8 @@
         cursor: not-allowed;
 
         &:hover {
-          color: @disabled-color;
           background-color: @dropdown-menu-submenu-disabled-bg;
+          color: @disabled-color;
           cursor: not-allowed;
         }
 
@@ -240,11 +240,11 @@
       }
 
       &-divider {
+        overflow: hidden;
         height: 1px;
         margin: 4px 0;
-        overflow: hidden;
-        line-height: 0;
         background-color: @border-color-split;
+        line-height: 0;
       }
 
       .@{dropdown-prefix-cls}-menu-submenu-expand-icon {
@@ -254,8 +254,8 @@
         .@{dropdown-prefix-cls}-menu-submenu-arrow-icon {
           margin-right: 0 !important;
           color: @text-color-secondary;
-          font-size: 10px;
           font-style: normal;
+          font-size: 10px;
         }
       }
     }
@@ -286,8 +286,8 @@
     &-submenu&-submenu-disabled .@{dropdown-prefix-cls}-menu-submenu-title {
       &,
       .@{dropdown-prefix-cls}-menu-submenu-arrow-icon {
-        color: @disabled-color;
         background-color: @dropdown-menu-submenu-disabled-bg;
+        color: @disabled-color;
         cursor: not-allowed;
       }
     }
@@ -333,16 +333,15 @@
 .@{dropdown-prefix-cls}-link,
 .@{dropdown-prefix-cls}-button {
   > .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
-    font-size: 10px;
     vertical-align: baseline;
+    font-size: 10px;
   }
 }
 
 .@{dropdown-prefix-cls}-button {
   white-space: nowrap;
 
-  &.@{ant-prefix}-btn-group
-    > .@{ant-prefix}-btn:last-child:not(:first-child):not(.@{ant-prefix}-btn-icon-only) {
+  &.@{ant-prefix}-btn-group > .@{ant-prefix}-btn:last-child:not(:first-child):not(.@{ant-prefix}-btn-icon-only) {
     padding-right: @padding-xs;
     padding-left: @padding-xs;
   }
@@ -363,16 +362,16 @@
       color: @text-color-secondary-dark;
     }
     &:hover {
-      color: @text-color-inverse;
       background: transparent;
+      color: @text-color-inverse;
     }
   }
   .@{dropdown-prefix-cls}-menu-item-selected {
     &,
     &:hover,
     > a {
-      color: @text-color-inverse;
       background: @primary-color;
+      color: @text-color-inverse;
     }
   }
 }

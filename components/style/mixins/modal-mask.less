@@ -5,14 +5,15 @@
 
   &.@{ant-prefix}-zoom-enter,
   &.@{ant-prefix}zoom-appear {
-    transform: none; // reset scale avoid mousePosition bug
     opacity: 0;
-    animation-duration: @animation-duration-slow;
     user-select: none; // https://github.com/ant-design/ant-design/issues/11777
+    transform: none; // reset scale avoid mousePosition bug
+    animation-duration: @animation-duration-slow;
   }
 
   &-mask {
     .box(fixed);
+
     z-index: @zindex-modal-mask;
     height: 100%;
     background-color: @modal-mask-bg;
@@ -24,8 +25,9 @@
 
   &-wrap {
     .box(fixed);
+
     overflow: auto;
-    outline: 0;
     -webkit-overflow-scrolling: touch;
+    outline: 0;
   }
 }

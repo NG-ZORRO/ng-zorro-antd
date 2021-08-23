@@ -2,40 +2,40 @@
 
 // cdk overlay
 .cdk-overlay-container {
-  pointer-events: none;
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
-  position: fixed;
   z-index: 1000;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .cdk-visually-hidden {
-  border: 0;
+  position: absolute;
+  overflow: hidden;
   clip: rect(0 0 0 0);
+  width: 1px;
   height: 1px;
   margin: -1px;
-  overflow: hidden;
   padding: 0;
-  position: absolute;
-  width: 1px;
+  border: 0;
   outline: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
 .cdk-overlay-backdrop {
+  position: absolute;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  -webkit-tap-highlight-color: transparent;
-  transition: opacity .4s cubic-bezier(.25, .8, .25, 1);
-  opacity: 0;
-  position: absolute;
-  pointer-events: auto;
   z-index: 1000;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-tap-highlight-color: transparent;
 
   &.ant-modal-mask {
     opacity: 1;
@@ -44,8 +44,8 @@
 
 .cdk-overlay-pane {
   position: absolute;
-  pointer-events: auto;
   z-index: 1000; // Give an opportunity to the content own to manage their z-index such as Modal
+  pointer-events: auto;
 }
 
 .cdk-overlay-connected-position-bounding-box {
@@ -61,15 +61,15 @@
 .cdk-global-scrollblock {
   position: fixed;
 
-  // Necessary for the content not to lose its width. Note that we're using 100%, instead of
-  // 100vw, because 100vw includes the width plus the scrollbar, whereas 100% is the width
-  // that the element had before we made it `fixed`.
-  width: 100%;
-
   // Note: this will always add a scrollbar to whatever element it is on, which can
   // potentially result in double scrollbars. It shouldn't be an issue, because we won't
   // block scrolling on a page that doesn't have a scrollbar in the first place.
   overflow-y: scroll;
+
+  // Necessary for the content not to lose its width. Note that we're using 100%, instead of
+  // 100vw, because 100vw includes the width plus the scrollbar, whereas 100% is the width
+  // that the element had before we made it `fixed`.
+  width: 100%;
 
   // https://github.com/angular/material2/issues/15051
   body {
@@ -78,7 +78,8 @@
 }
 
 .nz-overlay-transparent-backdrop {
-  &, &.cdk-overlay-backdrop-showing {
+  &,
+  &.cdk-overlay-backdrop-showing {
     opacity: 0;
   }
 }
@@ -86,15 +87,15 @@
 .nz-animate-disabled {
   // badge
   &.ant-scroll-number-only {
-    animation: none;
     transition: none;
+    animation: none;
   }
 
   // drawer
   &.ant-drawer {
     &.ant-drawer-open .ant-drawer-mask {
-      animation: none;
       transition: none;
+      animation: none;
     }
 
     & > * {
@@ -103,14 +104,17 @@
   }
 
   // modal
-  .ant-modal-mask, .ant-modal {
-    animation: none;
+  .ant-modal-mask,
+  .ant-modal {
     transition: none;
+    animation: none;
 
-    &.zoom-enter, &.zoom-leave,
-    &.zoom-enter-active, &.zoom-leave-active {
-      animation: none;
+    &.zoom-enter,
+    &.zoom-leave,
+    &.zoom-enter-active,
+    &.zoom-leave-active {
       transition: none;
+      animation: none;
     }
   }
 
@@ -118,11 +122,13 @@
   &.ant-menu {
     transition: none;
 
-    .ant-menu-item, .ant-menu-submenu-title {
+    .ant-menu-item,
+    .ant-menu-submenu-title {
       transition: none;
     }
 
-    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+    .ant-menu-item .anticon,
+    .ant-menu-submenu-title .anticon {
       transition: none;
 
       & + span {

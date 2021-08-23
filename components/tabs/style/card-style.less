@@ -12,17 +12,17 @@
     margin: 0;
     margin-right: @tabs-card-gutter;
     padding: @tabs-card-horizontal-padding;
-    line-height: 22px;
-    background: @tabs-card-head-background;
     border: @border-width-base @border-style-base @border-color-split;
     border-radius: @border-radius-base @border-radius-base 0 0;
+    background: @tabs-card-head-background;
+    line-height: 22px;
     transition: all 0.3s @ease-in-out;
   }
   &&-card &-card-bar &-tab-active {
-    color: @tabs-card-active-color;
-    background: @component-background;
     border-color: @border-color-split;
     border-bottom: @border-width-base solid @component-background;
+    background: @component-background;
+    color: @tabs-card-active-color;
 
     &::before {
       border-top: @tabs-card-tab-active-border-top;
@@ -41,14 +41,14 @@
     margin-bottom: 0;
   }
   &&-card &-card-bar &-tab &-close-x {
+    vertical-align: middle;
+    overflow: hidden;
     width: 16px;
     height: @font-size-base;
     margin-right: -5px;
     margin-left: 3px;
-    overflow: hidden;
     color: @text-color-secondary;
     font-size: @font-size-sm;
-    vertical-align: middle;
     transition: all 0.3s;
     &:hover {
       color: @heading-color;
@@ -68,24 +68,23 @@
   }
 
   &-extra-content {
-    line-height: @tabs-title-font-size * @line-height-base + extract(@tabs-horizontal-padding, 1) *
-      2;
+    line-height: @tabs-title-font-size * @line-height-base + extract(@tabs-horizontal-padding, 1) * 2;
 
     .@{tab-prefix-cls}-new-tab {
       position: relative;
       width: 20px;
       height: 20px;
+      border: @border-width-base @border-style-base @border-color-split;
+      border-radius: @border-radius-base;
       color: @text-color;
       font-size: 12px;
       line-height: 20px;
       text-align: center;
-      border: @border-width-base @border-style-base @border-color-split;
-      border-radius: @border-radius-base;
       cursor: pointer;
       transition: all 0.3s;
       &:hover {
-        color: @tabs-card-active-color;
         border-color: @tabs-card-active-color;
+        color: @tabs-card-active-color;
       }
       svg {
         position: absolute;
@@ -100,14 +99,12 @@
 
   // https://github.com/ant-design/ant-design/issues/17865
   &&-large &-extra-content {
-    line-height: @tabs-title-font-size-lg * @line-height-base +
-      extract(@tabs-horizontal-padding-lg, 1) * 2;
+    line-height: @tabs-title-font-size-lg * @line-height-base + extract(@tabs-horizontal-padding-lg, 1) * 2;
   }
 
   // https://github.com/ant-design/ant-design/issues/17865
   &&-small &-extra-content {
-    line-height: @tabs-title-font-size-sm * @line-height-base +
-      extract(@tabs-horizontal-padding-sm, 1) * 2;
+    line-height: @tabs-title-font-size-sm * @line-height-base + extract(@tabs-horizontal-padding-sm, 1) * 2;
   }
 
   // https://github.com/ant-design/ant-design/issues/17865
@@ -175,8 +172,8 @@
   }
 
   & &-card-bar&-bottom-bar &-tab-active {
-    color: @primary-color;
     border-top-color: @component-background;
+    color: @primary-color;
   }
 }
 

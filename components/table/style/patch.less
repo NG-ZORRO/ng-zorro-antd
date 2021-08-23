@@ -51,9 +51,7 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
 // virtual scroll border
 .@{table-prefix-cls}.@{table-prefix-cls}-bordered {
-
   > .@{table-prefix-cls}-container {
-
     > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
       > table {
         // ============================= Cell =============================
@@ -86,12 +84,12 @@ cdk-virtual-scroll-viewport.ant-table-body {
           margin: -@table-padding-vertical (-@table-padding-horizontal - @border-width-base);
 
           &::after {
+            content: '';
             position: absolute;
             top: 0;
             right: @border-width-base;
             bottom: 0;
             border-right: @table-border;
-            content: '';
           }
         }
       }
@@ -136,4 +134,3 @@ cdk-virtual-scroll-viewport.ant-table-body {
     }
   }
 }
-

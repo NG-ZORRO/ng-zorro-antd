@@ -19,18 +19,19 @@
 
 .@{table-prefix-cls} {
   .reset-component();
+
   position: relative;
-  font-size: @table-font-size;
-  background: @table-bg;
   border-radius: @table-border-radius-base;
+  background: @table-bg;
+  font-size: @table-font-size;
 
   // https://github.com/ant-design/ant-design/issues/17611
   table {
     width: 100%;
-    text-align: left;
-    border-radius: @table-border-radius-base @table-border-radius-base 0 0;
-    border-collapse: separate;
     border-spacing: 0;
+    border-collapse: separate;
+    border-radius: @table-border-radius-base @table-border-radius-base 0 0;
+    text-align: left;
   }
 
   // ============================= Cell =============================
@@ -45,8 +46,8 @@
 
   &-cell-ellipsis {
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
     word-break: keep-all;
 
     // Fixed first or last should special process
@@ -76,8 +77,8 @@
   // ============================ Footer ============================
   &-footer {
     padding: @table-padding-vertical @table-padding-horizontal;
-    color: @table-footer-color;
     background: @table-footer-bg;
+    color: @table-footer-color;
   }
 
   // ============================ Header ============================
@@ -85,11 +86,11 @@
     > tr {
       > th {
         position: relative;
+        border-bottom: @border-width-base @border-style-base @table-border-color;
+        background: @table-header-bg;
         color: @table-header-color;
         font-weight: 500;
         text-align: left;
-        background: @table-header-bg;
-        border-bottom: @border-width-base @border-style-base @table-border-color;
         transition: background 0.3s ease;
 
         &[colspan]:not([colspan='1']) {
@@ -97,15 +98,15 @@
         }
 
         &:not(:last-child):not(.@{table-prefix-cls}-selection-column):not(.@{table-prefix-cls}-row-expand-icon-cell):not([colspan])::before {
+          content: '';
           position: absolute;
           top: 50%;
           right: 0;
           width: 1px;
           height: 1.6em;
           background-color: @table-header-cell-split-color;
-          transform: translateY(-50%);
           transition: background-color 0.3s;
-          content: '';
+          transform: translateY(-50%);
         }
       }
     }
@@ -151,8 +152,8 @@
 
       &.@{table-prefix-cls}-row-selected {
         > td {
-          background: @table-selected-row-bg;
           border-color: rgba(0, 0, 0, 0.03);
+          background: @table-selected-row-bg;
         }
 
         &:hover {
@@ -256,6 +257,7 @@
     justify-content: space-between;
 
     &::after {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
@@ -263,7 +265,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      content: '';
     }
   }
 
@@ -308,15 +309,15 @@
     align-items: center;
     margin: -4px (-@table-padding-horizontal / 2) -4px 4px;
     padding: 0 4px;
+    border-radius: @border-radius-base;
     color: @table-header-icon-color;
     font-size: @font-size-sm;
-    border-radius: @border-radius-base;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      color: @text-color-secondary;
       background: @table-header-filter-active-bg;
+      color: @text-color-secondary;
     }
 
     &.active {
@@ -328,26 +329,25 @@
   &-filter-dropdown {
     .reset-component();
 
+    min-width: 120px;
+    border-radius: @border-radius-base;
+    background-color: @table-filter-dropdown-bg;
+    box-shadow: @box-shadow-base;
+
     // Reset menu
     .@{dropdown-prefix-cls}-menu {
+      overflow-x: hidden;
       // https://github.com/ant-design/ant-design/issues/4916
       // https://github.com/ant-design/ant-design/issues/19542
       max-height: 264px;
-      overflow-x: hidden;
       border: 0;
       box-shadow: none;
     }
 
-    min-width: 120px;
-    background-color: @table-filter-dropdown-bg;
-
-    border-radius: @border-radius-base;
-    box-shadow: @box-shadow-base;
-
     &-submenu > ul {
-      max-height: calc(100vh - 130px);
       overflow-x: hidden;
       overflow-y: auto;
+      max-height: calc(100vh - 130px);
     }
 
     // Checkbox
@@ -362,10 +362,10 @@
     &-btns {
       display: flex;
       justify-content: space-between;
-      padding: 7px 8px 7px 3px;
       overflow: hidden;
-      background-color: @table-filter-btns-bg;
+      padding: 7px 8px 7px 3px;
       border-top: @border-width-base @border-style-base @table-border-color;
+      background-color: @table-filter-btns-bg;
     }
   }
 
@@ -434,6 +434,7 @@
 
   &-row-expand-icon {
     .operation-unit();
+
     position: relative;
     display: inline-flex;
     float: left;
@@ -441,18 +442,16 @@
     width: @expand-icon-size;
     height: @expand-icon-size;
     padding: 0;
-    color: inherit;
-    line-height: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 + @border-width-base *
-      3;
-    background: @table-expand-icon-bg;
     border: @border-width-base @border-style-base @table-border-color;
     border-radius: @border-radius-base;
+    background: @table-expand-icon-bg;
+    color: inherit;
     outline: none;
-    transform: scale((unit(@checkbox-size) / unit(@expand-icon-size)));
-    transition: all 0.3s;
+    line-height: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 + @border-width-base * 3;
     user-select: none;
-    @expand-icon-size: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 +
-      @border-width-base * 3;
+    transition: all 0.3s;
+    transform: scale((unit(@checkbox-size) / unit(@expand-icon-size)));
+    @expand-icon-size: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 + @border-width-base * 3;
 
     &:focus,
     &:hover,
@@ -462,10 +461,10 @@
 
     &::before,
     &::after {
+      content: '';
       position: absolute;
       background: currentColor;
       transition: transform 0.3s ease-out;
-      content: '';
     }
 
     &::before {
@@ -492,14 +491,14 @@
     }
 
     &-spaced {
+      border: 0;
+      background: transparent;
+      visibility: hidden;
       &::before,
       &::after {
-        display: none;
         content: none;
+        display: none;
       }
-      background: transparent;
-      border: 0;
-      visibility: hidden;
     }
 
     .@{table-prefix-cls}-row-indent + & {
@@ -559,41 +558,41 @@
 
   &-cell-fix-left-first::after,
   &-cell-fix-left-last::after {
+    content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: -1px;
     width: 30px;
-    transform: translateX(100%);
-    transition: box-shadow 0.3s;
-    content: '';
     pointer-events: none;
+    transition: box-shadow 0.3s;
+    transform: translateX(100%);
   }
 
   &-cell-fix-right-first::after,
   &-cell-fix-right-last::after {
+    content: '';
     position: absolute;
     top: 0;
     bottom: -1px;
     left: 0;
     width: 30px;
-    transform: translateX(-100%);
-    transition: box-shadow 0.3s;
-    content: '';
     pointer-events: none;
+    transition: box-shadow 0.3s;
+    transform: translateX(-100%);
   }
 
   .@{table-prefix-cls}-container {
     &::before,
     &::after {
+      content: '';
       position: absolute;
       top: 0;
       bottom: 0;
       z-index: 1;
       width: 30px;
-      transition: box-shadow 0.3s;
-      content: '';
       pointer-events: none;
+      transition: box-shadow 0.3s;
     }
 
     &::before {
@@ -648,16 +647,16 @@
       z-index: @table-sticky-zindex;
       display: flex;
       align-items: center;
-      background: lighten(@table-border-color, 80%);
       border-top: 1px solid @table-border-color;
+      background: lighten(@table-border-color, 80%);
       opacity: 0.6;
       &:hover {
         transform-origin: center bottom;
       }
       &-bar {
         height: 8px;
-        background-color: @table-sticky-scroll-bar-bg;
         border-radius: @table-sticky-scroll-bar-radius;
+        background-color: @table-sticky-scroll-bar-bg;
         &:hover {
           background-color: @table-sticky-scroll-bar-active-bg;
         }

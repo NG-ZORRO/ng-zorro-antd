@@ -11,19 +11,18 @@
       margin: @tabs-bar-margin;
 
       &::before {
+        content: '';
         position: absolute;
         right: 0;
         left: 0;
         border-bottom: @border-width-base @border-style-base @border-color-split;
-        content: '';
       }
 
       .@{tab-prefix-cls}-ink-bar {
         height: 2px;
 
         &-animated {
-          transition: width @animation-duration-slow, left @animation-duration-slow,
-            right @animation-duration-slow;
+          transition: width @animation-duration-slow, left @animation-duration-slow, right @animation-duration-slow;
         }
       }
 

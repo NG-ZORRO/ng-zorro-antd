@@ -12,21 +12,21 @@
 
   position: relative;
   display: inline-block;
+  vertical-align: middle;
   box-sizing: border-box;
   min-width: @switch-min-width;
   height: @switch-height;
-  line-height: @switch-height;
-  vertical-align: middle;
-  background-color: @disabled-color;
   border: 0;
   border-radius: 100px;
+  background-color: @disabled-color;
+  line-height: @switch-height;
   cursor: pointer;
-  transition: all @switch-duration;
   user-select: none;
+  transition: all @switch-duration;
 
   &:focus {
-    outline: 0;
     box-shadow: 0 0 0 2px fade(@disabled-color, 10%);
+    outline: 0;
   }
 
   &-checked:focus {
@@ -43,8 +43,8 @@
 
   &-loading,
   &-disabled {
-    cursor: not-allowed;
     opacity: @switch-disabled-opacity;
+    cursor: not-allowed;
     * {
       box-shadow: none;
       cursor: not-allowed;
@@ -74,16 +74,16 @@
     transition: all @switch-duration ease-in-out;
 
     &::before {
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: @switch-bg;
       border-radius: (@switch-pin-size / 2);
+      background-color: @switch-bg;
       box-shadow: 0 2px 4px 0 @switch-shadow-color;
       transition: all @switch-duration ease-in-out;
-      content: '';
     }
   }
 
@@ -109,8 +109,8 @@
   &-loading-icon {
     position: relative;
     top: ((@switch-pin-size - @font-size-base) / 2);
-    color: rgba(0, 0, 0, 0.65);
     vertical-align: top;
+    color: rgba(0, 0, 0, 0.65);
   }
 
   &-checked &-loading-icon {

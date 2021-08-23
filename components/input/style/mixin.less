@@ -16,15 +16,15 @@
 // input status
 // == when focus or actived
 .active(@color: @outline-color) {
+  border-right-width: @border-width-base !important;
+  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, @outline-fade);
+  outline: 0;
   & when (@theme = dark) {
     border-color: @color;
   }
   & when not (@theme = dark) {
-    border-color: ~`colorPalette('@{color}', 5) `;
+    border-color: ~`colorpalette('@{color}', 5) `;
   }
-  border-right-width: @border-width-base !important;
-  outline: 0;
-  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, @outline-fade);
 }
 
 // == when hoverd
@@ -34,10 +34,10 @@
 }
 
 .disabled() {
-  color: @input-disabled-color;
   background-color: @input-disabled-bg;
-  cursor: not-allowed;
+  color: @input-disabled-color;
   opacity: 1;
+  cursor: not-allowed;
 
   &:hover {
     .hover(@input-border-color);
@@ -51,13 +51,13 @@
   width: 100%;
   min-width: 0;
   padding: @input-padding-vertical-base @input-padding-horizontal-base;
+  border: @border-width-base @border-style-base @input-border-color;
+  border-radius: @border-radius-base;
+  background-color: @input-bg;
+  background-image: none;
   color: @input-color;
   font-size: @font-size-base;
   line-height: @line-height-base;
-  background-color: @input-bg;
-  background-image: none;
-  border: @border-width-base @border-style-base @input-border-color;
-  border-radius: @border-radius-base;
   transition: all 0.3s;
   .placeholder(); // Reset placeholder
 
@@ -85,19 +85,19 @@
     &-focused,
     &-disabled,
     &[disabled] {
-      background-color: transparent;
       border: none;
+      background-color: transparent;
       box-shadow: none;
     }
   }
 
   // Reset height for `textarea`s
   textarea& {
+    vertical-align: bottom;
     max-width: 100%; // prevent textearea resize from coming out of its container
     height: auto;
     min-height: @input-height-base;
     line-height: @line-height-base;
-    vertical-align: bottom;
     transition: all 0.3s, height 0s;
   }
 
@@ -116,8 +116,8 @@
   position: relative;
   display: table;
   width: 100%;
-  border-collapse: separate;
   border-spacing: 0;
+  border-collapse: separate;
 
   // Undo padding and float of grid classes
   &[class*='col-'] {
@@ -146,9 +146,9 @@
 
   &-addon,
   &-wrap {
+    vertical-align: middle;
     width: 1px; // To make addon/wrap as small as possible
     white-space: nowrap;
-    vertical-align: middle;
   }
 
   &-wrap > * {
@@ -178,23 +178,22 @@
   &-addon {
     position: relative;
     padding: 0 @input-padding-horizontal-base;
+    border: @border-width-base @border-style-base @input-border-color;
+    border-radius: @border-radius-base;
+    background-color: @input-addon-bg;
     color: @input-color;
     font-weight: normal;
     font-size: @font-size-base;
     text-align: center;
-    background-color: @input-addon-bg;
-    border: @border-width-base @border-style-base @input-border-color;
-    border-radius: @border-radius-base;
     transition: all 0.3s;
 
     // Reset Select's style in addon
     .@{ant-prefix}-select {
       margin: -(@input-padding-vertical-base + 1px) (-@input-padding-horizontal-base);
 
-      &.@{ant-prefix}-select-single:not(.@{ant-prefix}-select-customize-input)
-        .@{ant-prefix}-select-selector {
-        background-color: inherit;
+      &.@{ant-prefix}-select-single:not(.@{ant-prefix}-select-customize-input) .@{ant-prefix}-select-selector {
         border: @border-width-base @border-style-base transparent;
+        background-color: inherit;
         box-shadow: none;
       }
 
@@ -310,8 +309,8 @@
 
     & > * {
       display: inline-block;
-      float: none;
       vertical-align: top; // https://github.com/ant-design/ant-design-pro/issues/139
+      float: none;
       border-radius: 0;
     }
 

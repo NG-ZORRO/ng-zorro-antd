@@ -10,8 +10,8 @@
   display: flex;
   align-items: center;
   padding: 8px 15px;
-  word-wrap: break-word;
   border-radius: @border-radius-base;
+  word-wrap: break-word;
 
   &-content {
     flex: 1;
@@ -29,32 +29,32 @@
   }
 
   &-success {
-    background-color: @alert-success-bg-color;
     border: @border-width-base @border-style-base @alert-success-border-color;
+    background-color: @alert-success-bg-color;
     .@{alert-prefix-cls}-icon {
       color: @alert-success-icon-color;
     }
   }
 
   &-info {
-    background-color: @alert-info-bg-color;
     border: @border-width-base @border-style-base @alert-info-border-color;
+    background-color: @alert-info-bg-color;
     .@{alert-prefix-cls}-icon {
       color: @alert-info-icon-color;
     }
   }
 
   &-warning {
-    background-color: @alert-warning-bg-color;
     border: @border-width-base @border-style-base @alert-warning-border-color;
+    background-color: @alert-warning-bg-color;
     .@{alert-prefix-cls}-icon {
       color: @alert-warning-icon-color;
     }
   }
 
   &-error {
-    background-color: @alert-error-bg-color;
     border: @border-width-base @border-style-base @alert-error-border-color;
+    background-color: @alert-error-bg-color;
 
     .@{alert-prefix-cls}-icon {
       color: @alert-error-icon-color;
@@ -71,14 +71,14 @@
   }
 
   &-close-icon {
+    overflow: hidden;
     margin-left: @margin-xs;
     padding: 0;
-    overflow: hidden;
+    border: none;
+    background-color: transparent;
+    outline: none;
     font-size: @font-size-sm;
     line-height: @font-size-sm;
-    background-color: transparent;
-    border: none;
-    outline: none;
     cursor: pointer;
 
     .@{iconfont-css-prefix}-close {
@@ -129,9 +129,8 @@
   &&-motion-leave {
     overflow: hidden;
     opacity: 1;
-    transition: max-height 0.3s @ease-in-out-circ, opacity 0.3s @ease-in-out-circ,
-      padding-top 0.3s @ease-in-out-circ, padding-bottom 0.3s @ease-in-out-circ,
-      margin-bottom 0.3s @ease-in-out-circ;
+    transition: max-height 0.3s @ease-in-out-circ, opacity 0.3s @ease-in-out-circ, padding-top 0.3s @ease-in-out-circ,
+      padding-bottom 0.3s @ease-in-out-circ, margin-bottom 0.3s @ease-in-out-circ;
   }
 
   &&-motion-leave-active {

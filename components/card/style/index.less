@@ -12,8 +12,8 @@
   .reset-component();
 
   position: relative;
-  background: @card-background;
   border-radius: @card-radius;
+  background: @card-background;
 
   &-rtl {
     direction: rtl;
@@ -37,12 +37,12 @@
     min-height: @card-head-height;
     margin-bottom: -1px; // Fix card grid overflow bug: https://gw.alipayobjects.com/zos/rmsportal/XonYxBikwpgbqIQBeuhk.png
     padding: 0 @card-padding-base;
+    border-bottom: @border-width-base @border-style-base @border-color-split;
+    border-radius: @card-radius @card-radius 0 0;
+    background: @card-head-background;
     color: @card-head-color;
     font-weight: 500;
     font-size: @card-head-font-size;
-    background: @card-head-background;
-    border-bottom: @border-width-base @border-style-base @border-color-split;
-    border-radius: @card-radius @card-radius 0 0;
     .clearfix();
 
     &-wrapper {
@@ -53,10 +53,10 @@
     &-title {
       display: inline-block;
       flex: 1;
-      padding: @card-head-padding 0;
       overflow: hidden;
-      white-space: nowrap;
+      padding: @card-head-padding 0;
       text-overflow: ellipsis;
+      white-space: nowrap;
 
       > .@{ant-prefix}-typography,
       > .@{ant-prefix}-typography-edit-content {
@@ -110,9 +110,8 @@
     padding: @card-padding-base;
     border: 0;
     border-radius: 0;
-    box-shadow: 1px 0 0 0 @border-color-split, 0 1px 0 0 @border-color-split,
-      1px 1px 0 0 @border-color-split, 1px 0 0 0 @border-color-split inset,
-      0 1px 0 0 @border-color-split inset;
+    box-shadow: 1px 0 0 0 @border-color-split, 0 1px 0 0 @border-color-split, 1px 1px 0 0 @border-color-split,
+      1px 0 0 0 @border-color-split inset, 0 1px 0 0 @border-color-split inset;
     transition: all 0.3s;
 
     .@{card-prefix-cls}-rtl & {
@@ -157,9 +156,9 @@
   &-actions {
     margin: 0;
     padding: 0;
-    list-style: none;
-    background: @card-actions-background;
     border-top: @border-width-base @border-style-base @border-color-split;
+    background: @card-actions-background;
+    list-style: none;
     .clearfix();
 
     & > li {
@@ -260,8 +259,8 @@
       color: @card-head-color;
       font-weight: 500;
       font-size: @font-size-lg;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &-description {
@@ -286,9 +285,9 @@
   &-loading-block {
     height: 14px;
     margin: 4px 0;
+    border-radius: @card-radius;
     background: linear-gradient(90deg, @gradient-min, @gradient-max, @gradient-min);
     background-size: 600% 600%;
-    border-radius: @card-radius;
     animation: card-loading 1.4s ease infinite;
   }
 }

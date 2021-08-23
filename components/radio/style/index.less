@@ -27,6 +27,7 @@
 // 一般状态
 .@{radio-prefix-cls}-wrapper {
   .reset-component();
+
   position: relative;
   display: inline-flex;
   align-items: baseline;
@@ -34,10 +35,10 @@
   cursor: pointer;
 
   &::after {
-    display: inline-block;
-    width: 0;
-    overflow: hidden;
     content: '\a0';
+    display: inline-block;
+    overflow: hidden;
+    width: 0;
   }
 }
 
@@ -61,6 +62,7 @@
   }
 
   &-checked::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -71,7 +73,6 @@
     visibility: hidden;
     animation: antRadioEffect 0.36s ease-in-out;
     animation-fill-mode: both;
-    content: '';
   }
 
   &:hover::after,
@@ -80,35 +81,34 @@
   }
 
   &-inner {
-    &::after {
-      position: absolute;
-      top: ((@radio-size - @radio-dot-size) / 2) - @radio-border-width;
-      left: ((@radio-size - @radio-dot-size) / 2) - @radio-border-width;
-      display: block;
-      width: @radio-dot-size;
-      height: @radio-dot-size;
-      background-color: @radio-dot-color;
-      border-top: 0;
-      border-left: 0;
-      border-radius: @radio-dot-size;
-      transform: scale(0);
-      opacity: 0;
-      transition: all @radio-duration @ease-in-out-circ;
-      content: ' ';
-    }
-
     position: relative;
     top: 0;
     left: 0;
     display: block;
     width: @radio-size;
     height: @radio-size;
-    background-color: @radio-button-bg;
-    border-color: @border-color-base;
-    border-style: solid;
     border-width: @radio-border-width;
+    border-style: solid;
+    border-color: @border-color-base;
     border-radius: 50%;
+    background-color: @radio-button-bg;
     transition: all @radio-duration;
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: ((@radio-size - @radio-dot-size) / 2) - @radio-border-width;
+      left: ((@radio-size - @radio-dot-size) / 2) - @radio-border-width;
+      display: block;
+      width: @radio-dot-size;
+      height: @radio-dot-size;
+      border-top: 0;
+      border-left: 0;
+      border-radius: @radio-dot-size;
+      background-color: @radio-dot-color;
+      opacity: 0;
+      transition: all @radio-duration @ease-in-out-circ;
+      transform: scale(0);
+    }
   }
 
   &-input {
@@ -118,8 +118,8 @@
     bottom: 0;
     left: 0;
     z-index: 1;
-    cursor: pointer;
     opacity: 0;
+    cursor: pointer;
   }
 }
 
@@ -128,9 +128,9 @@
   .@{radio-inner-prefix-cls} {
     border-color: @radio-dot-color;
     &::after {
-      transform: scale(1);
       opacity: 1;
       transition: all @radio-duration @ease-in-out-circ;
+      transform: scale(1);
     }
   }
 }
@@ -139,8 +139,8 @@
   cursor: not-allowed;
 
   .@{radio-inner-prefix-cls} {
-    background-color: @input-disabled-bg;
     border-color: @border-color-base !important;
+    background-color: @input-disabled-bg;
     cursor: not-allowed;
     &::after {
       background-color: @radio-dot-disabled-color;
@@ -168,15 +168,15 @@ span.@{radio-prefix-cls} + * {
   height: @btn-height-base;
   margin: 0;
   padding: 0 @padding-md - 1px;
-  color: @radio-button-color;
-  font-size: @font-size-base;
-  line-height: @btn-height-base - 2px;
-  background: @radio-button-bg;
   border: @border-width-base @border-style-base @border-color-base;
   // strange align fix for chrome but works
   // https://gw.alipayobjects.com/zos/rmsportal/VFTfKXJuogBAXcvfAUWJ.gif
   border-top-width: @border-width-base + 0.02px;
   border-left-width: 0;
+  background: @radio-button-bg;
+  color: @radio-button-color;
+  font-size: @font-size-base;
+  line-height: @btn-height-base - 2px;
   cursor: pointer;
   transition: color 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
 
@@ -207,6 +207,7 @@ span.@{radio-prefix-cls} + * {
 
   &:not(:first-child) {
     &::before {
+      content: '';
       position: absolute;
       top: @border-width-base * -1;
       left: -1px;
@@ -217,7 +218,6 @@ span.@{radio-prefix-cls} + * {
       padding: @border-width-base 0;
       background-color: @border-color-base;
       transition: background-color 0.3s;
-      content: '';
     }
   }
 
@@ -254,9 +254,9 @@ span.@{radio-prefix-cls} + * {
 
   &-checked:not(&-disabled) {
     z-index: 1;
-    color: @radio-dot-color;
-    background: @radio-button-checked-bg;
     border-color: @radio-dot-color;
+    background: @radio-button-checked-bg;
+    color: @radio-dot-color;
 
     &::before {
       background-color: @radio-dot-color;
@@ -267,16 +267,16 @@ span.@{radio-prefix-cls} + * {
     }
 
     &:hover {
-      color: @radio-button-hover-color;
       border-color: @radio-button-hover-color;
+      color: @radio-button-hover-color;
       &::before {
         background-color: @radio-button-hover-color;
       }
     }
 
     &:active {
-      color: @radio-button-active-color;
       border-color: @radio-button-active-color;
+      color: @radio-button-active-color;
       &::before {
         background-color: @radio-button-active-color;
       }
@@ -288,18 +288,18 @@ span.@{radio-prefix-cls} + * {
   }
 
   .@{radio-group-prefix-cls}-solid &-checked:not(&-disabled) {
-    color: @radio-solid-checked-color;
-    background: @radio-dot-color;
     border-color: @radio-dot-color;
+    background: @radio-dot-color;
+    color: @radio-solid-checked-color;
     &:hover {
-      color: @radio-solid-checked-color;
-      background: @radio-button-hover-color;
       border-color: @radio-button-hover-color;
+      background: @radio-button-hover-color;
+      color: @radio-solid-checked-color;
     }
     &:active {
-      color: @radio-solid-checked-color;
-      background: @radio-button-active-color;
       border-color: @radio-button-active-color;
+      background: @radio-button-active-color;
+      color: @radio-solid-checked-color;
     }
     &:focus-within {
       box-shadow: @radio-button-focus-shadow;
@@ -307,16 +307,16 @@ span.@{radio-prefix-cls} + * {
   }
 
   &-disabled {
-    color: @disabled-color;
-    background-color: @input-disabled-bg;
     border-color: @border-color-base;
+    background-color: @input-disabled-bg;
+    color: @disabled-color;
     cursor: not-allowed;
 
     &:first-child,
     &:hover {
-      color: @disabled-color;
-      background-color: @input-disabled-bg;
       border-color: @border-color-base;
+      background-color: @input-disabled-bg;
+      color: @disabled-color;
     }
     &:first-child {
       border-left-color: @border-color-base;
@@ -324,21 +324,21 @@ span.@{radio-prefix-cls} + * {
   }
 
   &-disabled&-checked {
-    color: @radio-disabled-button-checked-color;
-    background-color: @radio-disabled-button-checked-bg;
     border-color: @border-color-base;
+    background-color: @radio-disabled-button-checked-bg;
+    color: @radio-disabled-button-checked-color;
     box-shadow: none;
   }
 }
 
 @keyframes antRadioEffect {
   0% {
-    transform: scale(1);
     opacity: 0.5;
+    transform: scale(1);
   }
   100% {
-    transform: scale(1.6);
     opacity: 0;
+    transform: scale(1.6);
   }
 }
 

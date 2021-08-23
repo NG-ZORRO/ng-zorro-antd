@@ -24,9 +24,9 @@
       height: @steps-dot-size;
       margin-left: 67px;
       padding-right: 0;
-      line-height: @steps-dot-size;
-      background: transparent;
       border: 0;
+      background: transparent;
+      line-height: @steps-dot-size;
 
       .@{steps-prefix-cls}-icon-dot {
         position: relative;
@@ -35,15 +35,16 @@
         height: 100%;
         border-radius: 100px;
         transition: all 0.3s;
+
         /* expand hover area */
         &::after {
+          content: '';
           position: absolute;
           top: -12px;
           left: -26px;
           width: 60px;
           height: 32px;
           background: fade(@black, 0.1%);
-          content: '';
         }
       }
     }
@@ -55,8 +56,8 @@
       top: -1px;
       width: @steps-current-dot-size;
       height: @steps-current-dot-size;
-      line-height: @steps-current-dot-size;
       background: none;
+      line-height: @steps-current-dot-size;
     }
     &-process .@{steps-prefix-cls}-icon {
       &:first-child .@{steps-prefix-cls}-icon-dot {

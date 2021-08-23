@@ -19,9 +19,9 @@
   .slick-list {
     position: relative;
     display: block;
+    overflow: hidden;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 
     &:focus {
       outline: none;
@@ -72,8 +72,8 @@
 
     &::before,
     &::after {
-      display: table;
       content: '';
+      display: table;
     }
 
     &::after {
@@ -130,17 +130,17 @@
     height: 20px;
     margin-top: -10px;
     padding: 0;
+    border: 0;
+    background: transparent;
     color: transparent;
+    outline: none;
     font-size: 0;
     line-height: 0;
-    background: transparent;
-    border: 0;
-    outline: none;
     cursor: pointer;
     &:hover,
     &:focus {
-      color: transparent;
       background: transparent;
+      color: transparent;
       outline: none;
       &::before {
         opacity: 1;
@@ -190,6 +190,7 @@
     li {
       position: relative;
       display: inline-block;
+      vertical-align: top;
       flex: 0 1 auto;
       box-sizing: content-box;
       width: @carousel-dot-width;
@@ -200,21 +201,20 @@
       padding: 0;
       text-align: center;
       text-indent: -999px;
-      vertical-align: top;
       transition: all 0.5s;
       button {
         display: block;
         width: 100%;
         height: @carousel-dot-height;
         padding: 0;
-        color: transparent;
-        font-size: 0;
-        background: @component-background;
         border: 0;
         border-radius: 1px;
+        background: @component-background;
+        color: transparent;
         outline: none;
-        cursor: pointer;
+        font-size: 0;
         opacity: 0.3;
+        cursor: pointer;
         transition: all 0.5s;
         &:hover,
         &:focus {
@@ -255,10 +255,10 @@
       left: auto;
     }
     li {
+      vertical-align: baseline;
       width: @carousel-dot-height;
       height: @carousel-dot-width;
       margin: 4px 2px;
-      vertical-align: baseline;
       button {
         width: @carousel-dot-height;
         height: @carousel-dot-width;

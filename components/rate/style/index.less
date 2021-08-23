@@ -10,10 +10,10 @@
   margin: 0;
   padding: 0;
   color: @rate-star-color;
+  outline: none;
+  list-style: none;
   font-size: @rate-star-size;
   line-height: unset;
-  list-style: none;
-  outline: none;
 
   &-disabled &-star {
     cursor: default;
@@ -48,8 +48,8 @@
     &-first,
     &-second {
       color: @rate-star-bg;
-      transition: all 0.3s;
       user-select: none;
+      transition: all 0.3s;
       .@{iconfont-css-prefix} {
         vertical-align: middle;
       }
@@ -59,9 +59,9 @@
       position: absolute;
       top: 0;
       left: 0;
+      overflow: hidden;
       width: 50%;
       height: 100%;
-      overflow: hidden;
       opacity: 0;
     }
 

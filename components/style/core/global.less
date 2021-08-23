@@ -56,12 +56,12 @@ input::-ms-reveal {
 
 body {
   margin: 0; // 1
+  background-color: @body-background; // 2
   color: @text-color;
+  font-variant: @font-variant-base;
   font-size: @font-size-base;
   font-family: @font-family;
-  font-variant: @font-variant-base;
   line-height: @line-height-base;
-  background-color: @body-background; // 2
   font-feature-settings: @font-feature-settings-base;
 }
 
@@ -80,9 +80,9 @@ body {
 // 2. Show the overflow in Edge and IE.
 
 hr {
+  overflow: visible; // 2
   box-sizing: content-box; // 1
   height: 0; // 1
-  overflow: visible; // 2
 }
 
 //
@@ -123,10 +123,10 @@ p {
 
 abbr[title],
 abbr[data-original-title] {
+  border-bottom: 0; // 1
   // 4
   text-decoration: underline; // 2
   text-decoration: underline dotted; // 2
-  border-bottom: 0; // 1
   cursor: help; // 3
 }
 
@@ -191,9 +191,9 @@ small {
 sub,
 sup {
   position: relative;
+  vertical-align: baseline;
   font-size: 75%;
   line-height: 0;
-  vertical-align: baseline;
 }
 
 sub {
@@ -208,10 +208,10 @@ sup {
 //
 
 a {
-  color: @link-color;
-  text-decoration: @link-decoration;
   background-color: transparent; // remove the gray background on active links in IE 10.
+  color: @link-color;
   outline: none;
+  text-decoration: @link-decoration;
   cursor: pointer;
   transition: color 0.3s;
   -webkit-text-decoration-skip: objects; // remove gaps in links underline in iOS 8+ and Safari 8+.
@@ -226,14 +226,14 @@ a {
 
   &:active,
   &:hover {
-    text-decoration: @link-hover-decoration;
     outline: 0;
+    text-decoration: @link-hover-decoration;
   }
 
   // https://github.com/ant-design/ant-design/issues/22503
   &:focus {
-    text-decoration: @link-focus-decoration;
     outline: @link-focus-outline;
+    text-decoration: @link-focus-decoration;
   }
 
   &[disabled] {
@@ -255,12 +255,12 @@ samp {
 }
 
 pre {
+  // Don't allow content to break outside
+  overflow: auto;
   // remove browser default top margin
   margin-top: 0;
   // Reset browser default of `1em` to use `em`s
   margin-bottom: 1em;
-  // Don't allow content to break outside
-  overflow: auto;
 }
 
 //
@@ -318,8 +318,8 @@ caption {
   padding-top: 0.75em;
   padding-bottom: 0.3em;
   color: @text-color-secondary;
-  text-align: left;
   caption-side: bottom;
+  text-align: left;
 }
 
 //
@@ -484,8 +484,8 @@ mark {
 }
 
 ::selection {
-  color: @text-color-inverse;
   background: @text-selection-bg;
+  color: @text-color-inverse;
 }
 
 // Utility classes

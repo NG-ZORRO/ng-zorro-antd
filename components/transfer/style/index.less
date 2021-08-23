@@ -5,9 +5,7 @@
 
 @transfer-prefix-cls: ~'@{ant-prefix}-transfer';
 
-@transfer-header-vertical-padding: ceil(
-  ((@transfer-header-height - 1px - @font-size-base * @line-height-base) / 2)
-);
+@transfer-header-vertical-padding: ceil(((@transfer-header-height - 1px - @font-size-base * @line-height-base) / 2));
 
 .@{transfer-prefix-cls} {
   .reset-component();
@@ -67,12 +65,11 @@
       align-items: center;
       height: @transfer-header-height;
       // border-top is on the transfer dom. We should minus 1px for this
-      padding: (@transfer-header-vertical-padding - 1px) @control-padding-horizontal
-        @transfer-header-vertical-padding;
-      color: @text-color;
-      background: @component-background;
+      padding: (@transfer-header-vertical-padding - 1px) @control-padding-horizontal @transfer-header-vertical-padding;
       border-bottom: @border-width-base @border-style-base @border-color-split;
       border-radius: @border-radius-base @border-radius-base 0 0;
+      background: @component-background;
+      color: @text-color;
 
       > *:not(:last-child) {
         margin-right: 4px;
@@ -85,15 +82,15 @@
       &-title {
         flex: auto;
         overflow: hidden;
-        white-space: nowrap;
         text-align: right;
         text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &-dropdown {
         font-size: 10px;
-        transform: translateY(10%);
         cursor: pointer;
+        transform: translateY(10%);
 
         &[disabled] {
           cursor: not-allowed;
@@ -117,9 +114,9 @@
 
     &-content {
       flex: auto;
+      overflow: auto;
       margin: 0;
       padding: 0;
-      overflow: auto;
       list-style: none;
 
       &-item {
@@ -141,22 +138,23 @@
         &-text {
           flex: auto;
           overflow: hidden;
-          white-space: nowrap;
           text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         &-remove {
           .operation-unit();
+
           position: relative;
           color: @border-color-base;
 
           &::after {
+            content: '';
             position: absolute;
             top: -@transfer-item-padding-vertical;
             right: -50%;
             bottom: -@transfer-item-padding-vertical;
             left: -50%;
-            content: '';
           }
 
           &:hover {
@@ -194,8 +192,8 @@
 
     &-pagination {
       padding: @padding-xs 0;
-      text-align: right;
       border-top: @border-width-base @border-style-base @border-color-split;
+      text-align: right;
     }
 
     &-body-not-found {
@@ -213,11 +211,11 @@
 
   &-operation {
     display: flex;
+    vertical-align: middle;
     flex: none;
     flex-direction: column;
     align-self: center;
     margin: 0 8px;
-    vertical-align: middle;
 
     .@{ant-prefix}-btn {
       display: block;

@@ -107,8 +107,7 @@
 
 // small
 .@{steps-prefix-cls}-small {
-  &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical)
-    .@{steps-prefix-cls}-item {
+  &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical) .@{steps-prefix-cls}-item {
     .@{steps-prefix-cls}-rtl& {
       padding-right: 12px;
       padding-left: 0;
@@ -141,9 +140,7 @@
     }
   }
 
-  > .@{steps-prefix-cls}-item
-    > .@{steps-prefix-cls}-item-container
-    > .@{steps-prefix-cls}-item-tail {
+  > .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
     .@{steps-prefix-cls}-rtl& {
       right: @steps-vertical-tail-width;
       left: auto;
@@ -203,6 +200,7 @@
         .@{steps-prefix-cls}-rtl& {
           float: right;
         }
+
         /* expand hover area */
         &::after {
           .@{steps-prefix-cls}-rtl& {

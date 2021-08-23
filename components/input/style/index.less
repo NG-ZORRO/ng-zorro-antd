@@ -15,9 +15,9 @@
     .input-group(~'@{ant-prefix}-input');
     &-wrapper {
       display: inline-block;
+      vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
       width: 100%;
       text-align: start;
-      vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
     }
   }
 
@@ -46,10 +46,10 @@
 
   &-textarea {
     &-show-count::after {
+      content: attr(data-count);
       float: right;
       color: @text-color-secondary;
       white-space: nowrap;
-      content: attr(data-count);
       pointer-events: none;
     }
   }

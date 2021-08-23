@@ -1,6 +1,5 @@
 .@{steps-prefix-cls}-small {
-  &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical)
-    .@{steps-prefix-cls}-item {
+  &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical) .@{steps-prefix-cls}-item {
     padding-left: 12px;
 
     &:first-child {
@@ -11,10 +10,10 @@
     width: @steps-small-icon-size;
     height: @steps-small-icon-size;
     margin: @steps-small-icon-margin;
+    border-radius: @steps-small-icon-size;
     font-size: @font-size-sm;
     line-height: @steps-small-icon-size;
     text-align: center;
-    border-radius: @steps-small-icon-size;
   }
   .@{steps-prefix-cls}-item-title {
     padding-right: 12px;
@@ -34,10 +33,10 @@
   .@{steps-prefix-cls}-item-custom .@{steps-prefix-cls}-item-icon {
     width: inherit;
     height: inherit;
-    line-height: inherit;
-    background: none;
     border: 0;
     border-radius: 0;
+    background: none;
+    line-height: inherit;
     > .@{steps-prefix-cls}-icon {
       font-size: @steps-small-icon-size;
       line-height: @steps-small-icon-size;

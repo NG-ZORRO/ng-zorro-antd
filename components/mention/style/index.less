@@ -9,8 +9,8 @@
 
   position: relative;
   display: inline-block;
-  width: 100%;
   vertical-align: middle;
+  width: 100%;
 
   .@{mention-prefix-cls}-editor {
     .input;
@@ -21,8 +21,8 @@
     padding: 0;
     line-height: @line-height-base;
     &-wrapper {
-      height: auto;
       overflow-y: auto;
+      height: auto;
     }
   }
   &.@{mention-prefix-cls}-active:not(.disabled) .@{mention-prefix-cls}-editor {
@@ -38,9 +38,9 @@
       height: auto;
       padding: 5px @control-padding-horizontal - 1px;
       color: @input-placeholder-color;
+      outline: none;
       white-space: pre-wrap;
       word-wrap: break-word;
-      outline: none;
       opacity: 1;
     }
   }
@@ -57,15 +57,15 @@
   top: -9999px;
   left: -9999px;
   z-index: @zindex-dropdown;
+  overflow-x: hidden;
+  overflow-y: auto;
   min-width: 120px;
   max-height: 250px;
   margin-top: 1.5em;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: @component-background;
   border-radius: @border-radius-base;
-  outline: none;
+  background-color: @component-background;
   box-shadow: @box-shadow-base;
+  outline: none;
 
   &-placement-top {
     margin-top: -0.1em;
@@ -83,13 +83,13 @@
   &-item {
     position: relative;
     display: block;
-    padding: 5px @control-padding-horizontal;
     overflow: hidden;
+    padding: 5px @control-padding-horizontal;
     color: @text-color;
     font-weight: normal;
     line-height: 22px;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
     transition: background 0.3s;
 
@@ -107,8 +107,8 @@
       cursor: not-allowed;
 
       &:hover {
-        color: @disabled-color;
         background-color: @component-background;
+        color: @disabled-color;
         cursor: not-allowed;
       }
     }
@@ -116,18 +116,18 @@
     &-selected {
       &,
       &:hover {
+        background-color: @background-color-base;
         color: @text-color;
         font-weight: bold;
-        background-color: @background-color-base;
       }
     }
 
     &-divider {
+      overflow: hidden;
       height: 1px;
       margin: 1px 0;
-      overflow: hidden;
-      line-height: 0;
       background-color: @border-color-split;
+      line-height: 0;
     }
   }
 }

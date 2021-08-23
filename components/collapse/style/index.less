@@ -6,10 +6,10 @@
 .@{collapse-prefix-cls} {
   .reset-component();
 
-  background-color: @collapse-header-bg;
   border: @border-width-base @border-style-base @border-color-base;
   border-bottom: 0;
   border-radius: @collapse-panel-border-radius;
+  background-color: @collapse-header-bg;
 
   & > &-item {
     border-bottom: @border-width-base @border-style-base @border-color-base;
@@ -32,9 +32,9 @@
 
       .@{collapse-prefix-cls}-arrow {
         display: inline-block;
+        vertical-align: -1px;
         margin-right: 12px;
         font-size: @font-size-sm;
-        vertical-align: -1px;
 
         & svg {
           transition: transform 0.24s;
@@ -84,9 +84,9 @@
   }
 
   &-content {
-    color: @text-color;
-    background-color: @collapse-content-bg;
     border-top: @border-width-base @border-style-base @border-color-base;
+    background-color: @collapse-content-bg;
+    color: @text-color;
 
     & > &-box {
       padding: @collapse-content-padding;
@@ -104,8 +104,8 @@
   }
 
   &-borderless {
-    background-color: @collapse-header-bg;
     border: 0;
+    background-color: @collapse-header-bg;
   }
 
   &-borderless > &-item {
@@ -118,8 +118,8 @@
   }
 
   &-borderless > &-item > &-content {
-    background-color: transparent;
     border-top: 0;
+    background-color: transparent;
   }
 
   &-borderless > &-item > &-content > &-content-box {
@@ -127,13 +127,13 @@
   }
 
   &-ghost {
-    background-color: transparent;
     border: 0;
+    background-color: transparent;
     > .@{collapse-prefix-cls}-item {
       border-bottom: 0;
       > .@{collapse-prefix-cls}-content {
-        background-color: transparent;
         border-top: 0;
+        background-color: transparent;
         > .@{collapse-prefix-cls}-content-box {
           padding-top: 12px;
           padding-bottom: 12px;

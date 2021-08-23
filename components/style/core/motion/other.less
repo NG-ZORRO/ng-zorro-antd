@@ -21,6 +21,7 @@ html {
 
 @{click-animating-with-extra-node-true-after},
 .@{ant-prefix}-click-animating-node {
+  content: '';
   position: absolute;
   top: 0;
   right: 0;
@@ -31,10 +32,9 @@ html {
   box-shadow: 0 0 0 0 @primary-color;
   box-shadow: 0 0 0 0 var(--antd-wave-shadow-color);
   opacity: 0.2;
+  pointer-events: none;
   animation: fadeEffect 2s @ease-out-circ, waveEffect 0.4s @ease-out-circ;
   animation-fill-mode: forwards;
-  content: '';
-  pointer-events: none;
 }
 
 @keyframes waveEffect {

@@ -11,8 +11,8 @@
   .@{tree-prefix-cls}-switcher-icon,
   .@{select-tree-prefix-cls}-switcher-icon {
     display: inline-block;
-    font-size: 10px;
     vertical-align: baseline;
+    font-size: 10px;
     svg {
       transition: transform 0.3s;
     }
@@ -25,19 +25,19 @@
     // it should displayed over the following node
     z-index: 1;
     height: 2px;
-    background-color: @primary-color;
     border-radius: 1px;
+    background-color: @primary-color;
     pointer-events: none;
     &::after {
+      content: '';
       position: absolute;
       top: -3px;
       left: -6px;
       width: 8px;
       height: 8px;
-      background-color: transparent;
       border: 2px solid @primary-color;
       border-radius: 50%;
-      content: '';
+      background-color: transparent;
     }
   }
 }
@@ -45,8 +45,9 @@
 .antTreeFn(@custom-tree-prefix-cls) {
   @custom-tree-node-prefix-cls: ~'@{custom-tree-prefix-cls}-treenode';
   .reset-component();
-  background: @tree-bg;
+
   border-radius: @border-radius-base;
+  background: @tree-bg;
   transition: background-color 0.3s;
 
   &-focused:not(:hover):not(&-active-focused) {
@@ -113,6 +114,7 @@
   // >>> Switcher
   &-switcher {
     .antTreeSwitcherIcon();
+
     position: relative;
     flex: none;
     align-self: stretch;
@@ -146,20 +148,20 @@
       width: 100%;
       height: 100%;
       &::before {
+        content: ' ';
         position: absolute;
         top: 0;
         bottom: -@tree-node-padding;
         margin-left: -1px;
         border-left: 1px solid @normal-color;
-        content: ' ';
       }
       &::after {
+        content: ' ';
         position: absolute;
         width: @tree-title-height - 14px;
         height: @tree-title-height - 10px;
         margin-left: -1px;
         border-bottom: 1px solid @normal-color;
-        content: ' ';
       }
     }
   }
@@ -177,10 +179,10 @@
     min-height: @tree-title-height;
     margin: 0;
     padding: 0 4px;
+    border-radius: @border-radius-base;
+    background: transparent;
     color: inherit;
     line-height: @tree-title-height;
-    background: transparent;
-    border-radius: @border-radius-base;
     cursor: pointer;
     transition: all 0.3s, border 0s, line-height 0s, box-shadow 0s;
 
@@ -195,11 +197,11 @@
     // Icon
     .@{custom-tree-prefix-cls}-iconEle {
       display: inline-block;
+      vertical-align: top;
       width: @tree-title-height;
       height: @tree-title-height;
       line-height: @tree-title-height;
       text-align: center;
-      vertical-align: top;
       &:empty {
         display: none;
       }
@@ -234,12 +236,12 @@
         height: 100%;
 
         &::before {
+          content: '';
           position: absolute;
           top: 0;
           right: (@tree-title-height / 2);
           bottom: -@tree-node-padding;
           border-right: 1px solid @border-color-base;
-          content: '';
         }
 
         &-end {

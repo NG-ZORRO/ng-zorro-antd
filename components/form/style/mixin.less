@@ -9,8 +9,8 @@
   .@{ant-prefix}-input-affix-wrapper:not(.@{ant-prefix}-input-affix-wrapper-disabled) {
     &,
     &:hover {
-      background-color: @background-color;
       border-color: @border-color;
+      background-color: @background-color;
     }
 
     &:focus,
@@ -28,8 +28,8 @@
   }
 
   .@{ant-prefix}-input-group-addon {
-    color: @text-color;
     border-color: @border-color;
+    color: @text-color;
   }
 
   .has-feedback {
@@ -46,11 +46,11 @@
     width: 100%;
     margin-bottom: 20px;
     padding: 0;
+    border: 0;
+    border-bottom: @border-width-base @border-style-base @border-color-base;
     color: @text-color-secondary;
     font-size: @font-size-lg;
     line-height: inherit;
-    border: 0;
-    border-bottom: @border-width-base @border-style-base @border-color-base;
   }
 
   label {

@@ -5,8 +5,8 @@
   > .@{steps-prefix-cls}-item {
     display: block;
     flex: 1 0 auto;
-    padding-left: 0;
     overflow: visible;
+    padding-left: 0;
 
     .@{steps-prefix-cls}-item-icon {
       float: left;
@@ -15,8 +15,8 @@
 
     .@{steps-prefix-cls}-item-content {
       display: block;
-      min-height: 48px;
       overflow: hidden;
+      min-height: 48px;
     }
 
     .@{steps-prefix-cls}-item-title {
@@ -28,9 +28,7 @@
     }
   }
 
-  > .@{steps-prefix-cls}-item
-    > .@{steps-prefix-cls}-item-container
-    > .@{steps-prefix-cls}-item-tail {
+  > .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
     position: absolute;
     top: 0;
     left: @steps-vertical-tail-width;
@@ -44,9 +42,7 @@
     }
   }
 
-  > .@{steps-prefix-cls}-item:not(:last-child)
-    > .@{steps-prefix-cls}-item-container
-    > .@{steps-prefix-cls}-item-tail {
+  > .@{steps-prefix-cls}-item:not(:last-child) > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
     display: block;
   }
 
