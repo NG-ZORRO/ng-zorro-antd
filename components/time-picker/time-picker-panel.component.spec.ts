@@ -84,6 +84,18 @@ describe('time-picker-panel', () => {
     //   expect(listOfSelectedLi[1].innerText).toBe('09');
     //   expect(listOfSelectedLi[2].innerText).toBe('10');
     // }));
+    it('should select default open value on list click', fakeAsync(() => {
+      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
+      expect(listOfSelectedLi[0].innerText).toBe('10');
+      expect(listOfSelectedLi[1].innerText).toBe('11');
+      expect(listOfSelectedLi[2].innerText).toBe('12');
+      expect(testComponent.value).toBeUndefined();
+      dispatchFakeEvent(listOfSelectedLi[0], 'click');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.value).not.toBeUndefined();
+    }));
     it('should select scroll work', fakeAsync(() => {
       testComponent.value = new Date(0, 0, 0, 8, 9, 10);
       fixture.detectChanges();

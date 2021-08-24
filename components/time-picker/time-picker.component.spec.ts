@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
-import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
@@ -187,6 +187,44 @@ describe('time-picker', () => {
 
       expect(getPickerContainer()).toBeNull();
     }));
+    it('should set default opening time when clicking ok', fakeAsync(() => {
+      const onChange = spyOn(testComponent, 'onChange');
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getHours()).toEqual(0);
+      expect(result.getMinutes()).toEqual(0);
+      expect(result.getSeconds()).toEqual(0);
+    }));
+    it('should not set time when clicking ok without default opening time', fakeAsync(() => {
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.defaultOpenValue = null;
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result).toBeNull();
+    }));
     it('should set previous value when tabbing out with invalid input', fakeAsync(() => {
       testComponent.date = new Date('2020-03-27T13:49:54.917');
 
@@ -279,6 +317,7 @@ describe('time-picker', () => {
       [nzUse12Hours]="use12Hours"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
+      [nzDefaultOpenValue]="defaultOpenValue"
     ></nz-time-picker>
   `
 })
@@ -291,6 +330,7 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon?: string;
   nzBackdrop = false;
+  defaultOpenValue: Date | null = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }
