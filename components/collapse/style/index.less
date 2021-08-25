@@ -28,6 +28,8 @@
       line-height: @line-height-base;
       cursor: pointer;
       transition: all 0.3s, visibility 0s;
+      display: flex;
+      align-items: center;
       .clearfix();
 
       .@{collapse-prefix-cls}-arrow {
@@ -40,9 +42,8 @@
           transition: transform 0.24s;
         }
       }
-
-      .@{collapse-prefix-cls}-extra {
-        float: right;
+      .@{collapse-prefix-cls}-title {
+        flex-grow: 1;
       }
 
       &:focus {

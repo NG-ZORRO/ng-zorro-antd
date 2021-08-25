@@ -44,7 +44,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
           <i nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
         </ng-container>
       </ng-container>
-      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      <div class="ant-collapse-title">
+        <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      </div>
       <div class="ant-collapse-extra" *ngIf="nzExtra">
         <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
       </div>
