@@ -24,6 +24,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | -------- | ----------- | ---- | ------- |
 | `[nzTooltipArrowPointAtCenter]` | Arrow point at center of the origin | `boolean` | `false` |
 | `[nzTooltipTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
+| `[nzTooltipTitleContext]` | The context of tooltip title | `object` | - |
 | `[nzTooltipTrigger]` | Tooltip trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzTooltipPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'`   |
 | `[nzTooltipColor]` | The background color | `string` | - |
