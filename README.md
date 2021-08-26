@@ -158,7 +158,7 @@ As always, we encourage experienced users to help those who are not familiar wit
 
 - [Alibaba](https://www.alibaba.com/)
 - [Aliyun](https://www.aliyun.com/)
-- [ThoughtWorks](https://www.thoughtworks.com/)
+- [Thoughtworks](https://www.thoughtworks.com/)
 - [China Merchants Bank](http://english.cmbchina.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
