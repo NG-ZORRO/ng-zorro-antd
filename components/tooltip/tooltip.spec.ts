@@ -134,11 +134,11 @@ describe('nz-tooltip', () => {
       const title = 'focus';
       const triggerElement = component.focusTemplate.nativeElement;
 
-      dispatchMouseEvent(triggerElement, 'focus');
+      dispatchMouseEvent(triggerElement, 'focusin');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(triggerElement, 'blur');
+      dispatchMouseEvent(triggerElement, 'focusout');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
