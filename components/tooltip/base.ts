@@ -231,8 +231,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
         })
       );
     } else if (trigger === 'focus') {
-      this.triggerDisposables.push(this.renderer.listen(el, 'focus', () => this.show()));
-      this.triggerDisposables.push(this.renderer.listen(el, 'blur', () => this.hide()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'focusin', () => this.show()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'focusout', () => this.hide()));
     } else if (trigger === 'click') {
       this.triggerDisposables.push(
         this.renderer.listen(el, 'click', (e: MouseEvent) => {
