@@ -95,7 +95,7 @@
     "gulp-clean": "^0.4.0",
     "html-minifier-terser": "^5.1.1",
     "husky": "^6.0.0",
-    "immer": "^8.0.0",
+    "immer": "^9.0.6",
     "intersection-observer": "^0.12.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
