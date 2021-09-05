@@ -36,6 +36,8 @@
 .disabled() {
   color: @input-disabled-color;
   background-color: @input-disabled-bg;
+  border-color: @input-border-color;
+  box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
 
@@ -203,6 +205,17 @@
         .@{ant-prefix}-select-selector {
           color: @primary-color;
         }
+      }
+    }
+
+    // https://github.com/ant-design/ant-design/issues/31333
+    .@{ant-prefix}-cascader-picker {
+      margin: -9px (-@control-padding-horizontal);
+      background-color: transparent;
+      .@{ant-prefix}-cascader-input {
+        text-align: left;
+        border: 0;
+        box-shadow: none;
       }
     }
   }
