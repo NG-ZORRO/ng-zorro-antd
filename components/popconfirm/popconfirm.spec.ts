@@ -4,6 +4,7 @@ import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzButtonType } from 'ng-zorro-antd/button';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -65,6 +66,14 @@ describe('NzPopconfirm', () => {
     expect(getTooltipTrigger(0).textContent).toContain('cancel-text');
     expect(getTooltipTrigger(1).textContent).toContain('ok-text');
     expect(getTooltipTrigger(1).classList).not.toContain('ant-btn-primary');
+  });
+
+  it('should support nzOkType danger case', () => {
+    component.nzOkType = 'danger';
+    fixture.detectChanges();
+
+    expect(getTooltipTrigger(1).classList).toContain('ant-btn-dangerous');
+    expect(getTooltipTrigger(1).classList).toContain('ant-btn-primary');
   });
 
   it('should cancel work', fakeAsync(() => {
@@ -161,7 +170,7 @@ describe('NzPopconfirm', () => {
       #stringTemplate
       nzPopconfirmTitle="title-string"
       nzOkText="ok-text"
-      nzOkType="default"
+      [nzOkType]="nzOkType"
       nzCancelText="cancel-text"
       [nzAutofocus]="autoFocus"
       [nzCondition]="condition"
@@ -192,6 +201,7 @@ export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
+  nzOkType: NzButtonType | 'danger' = 'primary';
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;

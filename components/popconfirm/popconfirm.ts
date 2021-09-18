@@ -183,8 +183,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     nz-button
                     #okBtn
                     [nzSize]="'small'"
-                    [nzType]="nzOkType"
-                    [nzDanger]="nzOkDanger"
+                    [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
+                    [nzDanger]="nzOkDanger || nzOkType === 'danger'"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
@@ -209,7 +209,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzPopconfirmShowArrow = true;
   nzIcon?: string | TemplateRef<void>;
   nzOkText?: string;
-  nzOkType: NzButtonType = 'primary';
+  nzOkType: NzButtonType | 'danger' = 'primary';
   nzOkDanger: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
 
