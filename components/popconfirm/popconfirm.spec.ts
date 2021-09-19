@@ -72,6 +72,10 @@ describe('NzPopconfirm', () => {
     component.nzOkType = 'danger';
     fixture.detectChanges();
 
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+
     expect(getTooltipTrigger(1).classList).toContain('ant-btn-dangerous');
     expect(getTooltipTrigger(1).classList).toContain('ant-btn-primary');
   });
@@ -201,7 +205,7 @@ export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
-  nzOkType: NzButtonType | 'danger' = 'primary';
+  nzOkType: NzButtonType | 'danger' = 'default';
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
