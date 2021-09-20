@@ -28,7 +28,6 @@ export default {
       rangeYearPlaceholder: ['Start year', 'End year'],
       rangeMonthPlaceholder: ['Start month', 'End month'],
       rangeWeekPlaceholder: ['Start week', 'End week'],
-      rangePlaceholder: ['Start date', 'End date'],
       locale: 'en_GB',
       today: 'Today',
       now: 'Now',
