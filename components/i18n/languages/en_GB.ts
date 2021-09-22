@@ -20,7 +20,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Select date',
+      yearPlaceholder: 'Select year',
+      quarterPlaceholder: 'Select quarter',
+      monthPlaceholder: 'Select month',
+      weekPlaceholder: 'Select week',
       rangePlaceholder: ['Start date', 'End date'],
+      rangeYearPlaceholder: ['Start year', 'End year'],
+      rangeMonthPlaceholder: ['Start month', 'End month'],
+      rangeWeekPlaceholder: ['Start week', 'End week'],
       locale: 'en_GB',
       today: 'Today',
       now: 'Now',
@@ -31,6 +38,7 @@ export default {
       year: 'Year',
       timeSelect: 'Select time',
       dateSelect: 'Select date',
+      weekSelect: 'Choose a week',
       monthSelect: 'Choose a month',
       yearSelect: 'Choose a year',
       decadeSelect: 'Choose a decade',
@@ -49,16 +57,25 @@ export default {
       nextCentury: 'Next century'
     },
     timePickerLocale: {
-      placeholder: 'Select time'
+      placeholder: 'Select time',
+      rangePlaceholder: ['Start time', 'End time']
     }
   },
   TimePicker: {
-    placeholder: 'Select time'
+    placeholder: 'Select time',
+    rangePlaceholder: ['Start time', 'End time']
   },
   Calendar: {
     lang: {
       placeholder: 'Select date',
+      yearPlaceholder: 'Select year',
+      quarterPlaceholder: 'Select quarter',
+      monthPlaceholder: 'Select month',
+      weekPlaceholder: 'Select week',
       rangePlaceholder: ['Start date', 'End date'],
+      rangeYearPlaceholder: ['Start year', 'End year'],
+      rangeMonthPlaceholder: ['Start month', 'End month'],
+      rangeWeekPlaceholder: ['Start week', 'End week'],
       locale: 'en_GB',
       today: 'Today',
       now: 'Now',
@@ -69,6 +86,7 @@ export default {
       year: 'Year',
       timeSelect: 'Select time',
       dateSelect: 'Select date',
+      weekSelect: 'Choose a week',
       monthSelect: 'Choose a month',
       yearSelect: 'Choose a year',
       decadeSelect: 'Choose a decade',
@@ -87,15 +105,28 @@ export default {
       nextCentury: 'Next century'
     },
     timePickerLocale: {
-      placeholder: 'Select time'
+      placeholder: 'Select time',
+      rangePlaceholder: ['Start time', 'End time']
     }
+  },
+  global: {
+    placeholder: 'Please select'
   },
   Table: {
     filterTitle: 'Filter menu',
     filterConfirm: 'OK',
     filterReset: 'Reset',
+    filterEmptyText: 'No filters',
+    emptyText: 'No data',
     selectAll: 'Select current page',
-    selectInvert: 'Invert current page'
+    selectInvert: 'Invert current page',
+    selectionAll: 'Select all data',
+    sortTitle: 'Sort',
+    expand: 'Expand row',
+    collapse: 'Collapse row',
+    triggerDesc: 'Click sort by descend',
+    triggerAsc: 'Click sort by ascend',
+    cancelSort: 'Click to cancel sort'
   },
   Modal: {
     okText: 'OK',
@@ -107,9 +138,16 @@ export default {
     cancelText: 'Cancel'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Search here',
     itemUnit: 'item',
-    itemsUnit: 'items'
+    itemsUnit: 'items',
+    remove: 'Remove',
+    selectCurrent: 'Select current page',
+    removeCurrent: 'Remove current page',
+    selectAll: 'Select all data',
+    removeAll: 'Remove all data',
+    selectInvert: 'Invert current page'
   },
   Upload: {
     uploading: 'Uploading...',
@@ -120,5 +158,17 @@ export default {
   },
   Empty: {
     description: 'No data'
+  },
+  Icon: {
+    icon: 'icon'
+  },
+  Text: {
+    edit: 'Edit',
+    copy: 'Copy',
+    copied: 'Copied',
+    expand: 'Expand'
+  },
+  PageHeader: {
+    back: 'Back'
   }
 };
