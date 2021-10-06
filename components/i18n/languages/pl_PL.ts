@@ -46,7 +46,13 @@ export default {
       previousDecade: 'Ostatnia dekada',
       nextDecade: 'Następna dekada',
       previousCentury: 'Ostatni wiek',
-      nextCentury: 'Następny wiek'
+      nextCentury: 'Następny wiek',
+      yearPlaceholder: 'Wybierz rok',
+      monthPlaceholder: 'Wybierz miesiąc',
+      weekPlaceholder: 'Wybierz tydzień', 
+      rangeYearPlaceholder: 'Wybierz zakres lat',
+      rangeMonthPlaceholder: 'Wybierz zakres miesięcy',
+      rangeWeekPlaceholder: 'Wybierz zakres tygodni',
     },
     timePickerLocale: {
       placeholder: 'Wybierz godzinę'
