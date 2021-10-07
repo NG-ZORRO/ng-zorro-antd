@@ -28,6 +28,8 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzValue]` | Value | `string \| number` | - |
 | `[nzValueStyle]` | Value CSS style | `Object` | - |
 | `[nzValueTemplate]` | Custom template to render a number | `TemplateRef<{ $implicit: string \| number }>` | - |
+| `[nzCountUp]` | Animates a numerical value by counting to it | `boolean` | `false` |
+| `(nzCountUpFinish)` | Emit when countup finishes | `void`  | - |
 
 ### nz-countdown
 
