@@ -7,13 +7,22 @@ import { getLocaleNumberSymbol, NumberSymbol } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
+  EventEmitter,
   Inject,
   Input,
+  NgZone,
   LOCALE_ID,
   OnChanges,
+  Output,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
+import { CountUp } from 'countup.js';
+
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzStatisticValueType } from './typings';
 
@@ -40,14 +49,22 @@ import { NzStatisticValueType } from './typings';
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  @Input() @InputBoolean() nzCountUp: boolean = false;
+  @Output() readonly countUpFinish = new EventEmitter<void>();
 
   displayInt = '';
   displayDecimal = '';
+  countUp?: CountUp;
 
-  constructor(@Inject(LOCALE_ID) private locale_id: string) {}
+  constructor(@Inject(LOCALE_ID) private locale_id: string, private el: ElementRef, private zone: NgZone) {}
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.formatNumber();
+    if (this.nzCountUp && changes.nzValue && changes.nzValue.currentValue !== undefined) {
+      this.nzValue = Number(this.nzValue?.toString().replace(/,/g, ''));
+      this.countUp = new CountUp(this.el.nativeElement, this.nzValue);
+      this.animate();
+    }
   }
 
   private formatNumber(): void {
@@ -58,5 +75,16 @@ export class NzStatisticNumberComponent implements OnChanges {
 
     this.displayInt = int;
     this.displayDecimal = decimal ? `${decimalSeparator}${decimal}` : '';
+  }
+
+  private animate() {
+    this.zone.runOutsideAngular(() => {
+      this.countUp?.reset();
+      this.countUp?.start(() => {
+        this.zone.run(() => {
+          this.countUpFinish.emit();
+        });
+      });
+    });
   }
 }

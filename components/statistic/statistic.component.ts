@@ -8,10 +8,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Optional,
+  Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -19,6 +21,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzStatisticValueType } from './typings';
 
@@ -36,7 +39,12 @@ import { NzStatisticValueType } from './typings';
         <span *ngIf="nzPrefix" class="ant-statistic-content-prefix">
           <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
         </span>
-        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"></nz-statistic-number>
+        <nz-statistic-number
+          [nzValue]="nzValue"
+          [nzValueTemplate]="nzValueTemplate"
+          [nzCountUp]="nzCountUp"
+          (countUpFinish)="OnCountUpFinish()"
+        ></nz-statistic-number>
         <span *ngIf="nzSuffix" class="ant-statistic-content-suffix">
           <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
         </span>
@@ -51,6 +59,8 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
   @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueStyle: NgStyleInterface = {};
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  @Input() @InputBoolean() nzCountUp: boolean = false;
+  @Output() readonly nzCountUpFinish = new EventEmitter<void>();
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
@@ -64,6 +74,10 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
     });
 
     this.dir = this.directionality.value;
+  }
+
+  OnCountUpFinish(): void {
+    this.nzCountUpFinish.emit();
   }
 
   ngOnDestroy(): void {
