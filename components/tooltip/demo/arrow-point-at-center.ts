@@ -6,7 +6,13 @@ import { Component } from '@angular/core';
     <button nz-button nzTooltipTitle="prompt text" nzTooltipPlacement="topLeft" nz-tooltip>
       Align edge / 边缘对齐
     </button>
-    <button nz-button nzTooltipTitle="prompt text" nzTooltipPlacement="topCenter" nz-tooltip>
+    <button
+      nz-button
+      nz-tooltip
+      nzTooltipTitle="prompt text"
+      nzTooltipPlacement="topLeft"
+      [nzTooltipArrowPointAtCenter]="true"
+    >
       Arrow points to center / 箭头指向中心
     </button>
   `,

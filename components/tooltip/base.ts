@@ -45,6 +45,7 @@ export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
+  arrowPointAtCenter?: boolean;
   config?: Required<PopoverConfig | PopConfirmConfig>;
   directiveTitle?: NzTSType | null;
   directiveContent?: NzTSType | null;
@@ -262,6 +263,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       mouseLeaveDelay: ['nzMouseLeaveDelay', () => this._mouseLeaveDelay],
       overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
       overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
+      arrowPointAtCenter: ['nzArrowPointAtCenter', () => this.arrowPointAtCenter],
       ...this.getProxyPropertyMap()
     };
 
@@ -320,11 +322,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzArrowPointAtCenter: BooleanInput;
 
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   nzTitle: NzTSType | null = null;
   nzContent: NzTSType | null = null;
+  nzArrowPointAtCenter: boolean = false;
   nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
   nzBackdrop = false;
@@ -381,6 +385,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     @Optional() private directionality: Directionality,
     public noAnimation?: NzNoAnimationDirective
   ) {}
+
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -450,13 +455,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     this.cdr.detectChanges();
   }
 
-  updateStyles(): void {
-    this._classMap = {
-      [this.nzOverlayClassName]: true,
-      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
-    };
-  }
-
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
@@ -475,6 +473,13 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     if (this.isEmpty()) {
       this.hide();
     }
+  }
+
+  protected updateStyles(): void {
+    this._classMap = {
+      [this.nzOverlayClassName]: true,
+      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
+    };
   }
 
   /**
