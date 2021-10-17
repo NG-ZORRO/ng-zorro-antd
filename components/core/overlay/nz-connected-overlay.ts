@@ -5,26 +5,34 @@
 
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Directive, Input } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getPlacementName } from './overlay-position';
 
 @Directive({
   selector: '[cdkConnectedOverlay][nzConnectedOverlay]',
-  exportAs: 'nzConnectedOverlay'
+  exportAs: 'nzConnectedOverlay',
+  providers: [NzDestroyService]
 })
 export class NzConnectedOverlayDirective {
   @Input() @InputBoolean() nzArrowPointAtCenter: boolean = false;
 
-  constructor(private readonly cdkConnectedOverlay: CdkConnectedOverlay) {
+  constructor(
+    private readonly cdkConnectedOverlay: CdkConnectedOverlay,
+    private readonly nzDestroyService: NzDestroyService
+  ) {
     this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
 
-    this.cdkConnectedOverlay.positionChange.subscribe((position: ConnectedOverlayPositionChange) => {
-      if (this.nzArrowPointAtCenter) {
-        this.updateArrowPosition(position);
-      }
-    });
+    this.cdkConnectedOverlay.positionChange
+      .pipe(takeUntil(this.nzDestroyService))
+      .subscribe((position: ConnectedOverlayPositionChange) => {
+        if (this.nzArrowPointAtCenter) {
+          this.updateArrowPosition(position);
+        }
+      });
   }
 
   private updateArrowPosition(position: ConnectedOverlayPositionChange): void {
