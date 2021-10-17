@@ -6,7 +6,8 @@
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Directive, Input } from '@angular/core';
 
-import { InputBoolean } from '../util';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { getPlacementName } from './overlay-position';
 
 @Directive({
