@@ -25,7 +25,7 @@ import {
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import {
@@ -44,6 +44,8 @@ import {
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
+
   @Input('nzTooltipTitle') title?: NzTSType | null;
   @Input('nz-tooltip') directiveTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';

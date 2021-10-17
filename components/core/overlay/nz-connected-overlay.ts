@@ -45,14 +45,10 @@ export class NzConnectedOverlayDirective {
       offsetY = -(originRect.height / 2 - 10);
     }
 
-    if (offsetX !== this.cdkConnectedOverlay.offsetX) {
-      this.cdkConnectedOverlay.offsetX = offsetX;
-    }
-
-    if (offsetY !== this.cdkConnectedOverlay.offsetY) {
+    if (this.cdkConnectedOverlay.offsetX !== offsetX || this.cdkConnectedOverlay.offsetY !== offsetY) {
       this.cdkConnectedOverlay.offsetY = offsetY;
+      this.cdkConnectedOverlay.offsetX = offsetX;
+      this.cdkConnectedOverlay.overlayRef.updatePosition();
     }
-
-    this.cdkConnectedOverlay.overlayRef.updatePosition();
   }
 }

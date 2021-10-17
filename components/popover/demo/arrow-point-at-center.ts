@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
       nzPopoverTitle="Title"
       nzPopoverContent="Content"
       nzPopoverPlacement="topLeft"
+      [nzPopoverArrowPointAtCenter]="true"
       nzNoAnimation
     >
       Arrow points to center / 箭头指向中心

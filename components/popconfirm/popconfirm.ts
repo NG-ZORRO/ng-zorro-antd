@@ -53,7 +53,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzCondition: BooleanInput;
   static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
+  static ngAcceptInputType_nzPopconfirmArrowPointAtCenter: BooleanInput;
 
+  @Input('nzPopconfirmArrowPointAtCenter') @InputBoolean() arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') title?: NzTSType;
   @Input('nz-popconfirm') directiveTitle?: NzTSType | null;
   @Input('nzPopconfirmTrigger') trigger?: NzTooltipTrigger = 'click';
@@ -143,6 +145,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPush]="true"
+      [nzArrowPointAtCenter]="nzArrowPointAtCenter"
     >
       <div
         cdkTrapFocus

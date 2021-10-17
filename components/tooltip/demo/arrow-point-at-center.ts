@@ -12,7 +12,6 @@ import { Component } from '@angular/core';
       nzTooltipTitle="prompt text"
       nzTooltipPlacement="topLeft"
       [nzTooltipArrowPointAtCenter]="true"
-      nzNoAnimation
     >
       Arrow points to center / 箭头指向中心
     </button>

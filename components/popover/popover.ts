@@ -25,7 +25,8 @@ import {
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import {
   isTooltipEmpty,
   NzTooltipBaseDirective,
@@ -44,8 +45,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzPopoverArrowPointAtCenter: BooleanInput;
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
+  @Input('nzPopoverArrowPointAtCenter') @InputBoolean() arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') title?: NzTSType;
   @Input('nzPopoverContent') content?: NzTSType;
   @Input('nz-popover') directiveTitle?: NzTSType | null;
@@ -100,6 +104,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPush]="true"
+      [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
