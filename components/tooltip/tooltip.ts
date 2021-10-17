@@ -74,6 +74,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {
+      ...super.getProxyPropertyMap(),
       nzTooltipColor: ['nzColor', () => this.nzTooltipColor]
     };
   }

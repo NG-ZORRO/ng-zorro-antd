@@ -110,7 +110,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {
-      noAnimation: ['noAnimation', () => this.noAnimation]
+      noAnimation: ['noAnimation', () => !!this.noAnimation]
     };
   }
 
