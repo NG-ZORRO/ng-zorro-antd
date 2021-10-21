@@ -24,7 +24,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue: { ngZorroConfig } }
+    { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
   ],
   bootstrap: [AppComponent]
 })
