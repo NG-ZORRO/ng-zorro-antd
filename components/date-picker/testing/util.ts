@@ -21,3 +21,7 @@ export function getPickerInput(debugElement: DebugElement): HTMLInputElement {
 export function getRangePickerRightInput(debugElement: DebugElement): HTMLInputElement {
   return debugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
 }
+
+export function getPickerOkButton(debugElement: DebugElement): HTMLElement {
+  return debugElement.query(By.css(`.${PREFIX_CLASS}-ok`)).nativeElement.querySelector('button') as HTMLElement;
+}

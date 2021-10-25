@@ -496,6 +496,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   onClickOk(): void {
+    this.time.setValue(this.time.value, this.nzUse12Hours);
+    this.changed();
     this.closePanel.emit();
   }
 
