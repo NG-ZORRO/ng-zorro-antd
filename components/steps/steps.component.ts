@@ -27,8 +27,8 @@ import {
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { toBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassType, NumberInput, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzStepComponent } from './step.component';
 
@@ -49,15 +49,17 @@ export type nzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   static ngAcceptInputType_nzProgressDot: BooleanInput | nzProgressDotTemplate | undefined | null;
+  static ngAcceptInputType_nzCurrent: NumberInput;
+  static ngAcceptInputType_nzStartIndex: NumberInput;
 
   @ContentChildren(NzStepComponent) steps!: QueryList<NzStepComponent>;
 
-  @Input() nzCurrent = 0;
+  @Input() @InputNumber() nzCurrent = 0;
   @Input() nzDirection: NzDirectionType = 'horizontal';
   @Input() nzLabelPlacement: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzType: 'default' | 'navigation' = 'default';
   @Input() nzSize: NzSizeDSType = 'default';
-  @Input() nzStartIndex = 0;
+  @Input() @InputNumber() nzStartIndex = 0;
   @Input() nzStatus: NzStatusType = 'process';
 
   @Input()

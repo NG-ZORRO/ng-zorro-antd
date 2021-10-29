@@ -76,6 +76,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzShowSort: BooleanInput;
   static ngAcceptInputType_nzShowFilter: BooleanInput;
   static ngAcceptInputType_nzCustomFilter: BooleanInput;
+  static ngAcceptInputType_nzFilterMultiple: BooleanInput;
 
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject();
@@ -87,7 +88,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
   @Input() nzColumnKey?: string;
-  @Input() nzFilterMultiple = true;
+  @Input() @InputBoolean() nzFilterMultiple = true;
   @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
   @Input() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];

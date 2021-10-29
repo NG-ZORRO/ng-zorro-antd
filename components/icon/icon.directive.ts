@@ -17,8 +17,8 @@ import {
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
 
@@ -31,6 +31,7 @@ import { NzIconPatchService, NzIconService } from './icon.service';
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
   static ngAcceptInputType_nzSpin: BooleanInput;
+  static ngAcceptInputType_nzRotate: NumberInput;
 
   cacheClassName: string | null = null;
   @Input()
@@ -39,7 +40,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.spin = value;
   }
 
-  @Input() nzRotate: number = 0;
+  @Input() @InputNumber() nzRotate: number = 0;
 
   @Input()
   set nzType(value: string) {

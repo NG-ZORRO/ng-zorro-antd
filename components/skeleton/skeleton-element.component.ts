@@ -13,6 +13,9 @@ import {
   SimpleChanges
 } from '@angular/core';
 
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,
@@ -28,7 +31,9 @@ import {
   }
 })
 export class NzSkeletonElementDirective {
-  @Input() nzActive: boolean = false;
+  static ngAcceptInputType_nzActive: BooleanInput;
+
+  @Input() @InputBoolean() nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
 
   constructor(private elementRef: ElementRef) {

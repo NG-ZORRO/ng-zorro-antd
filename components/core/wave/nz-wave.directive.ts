@@ -17,7 +17,8 @@ import {
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzWaveRenderer } from './nz-wave-renderer';
 
@@ -43,7 +44,9 @@ export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
   exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
-  @Input() nzWaveExtraNode = false;
+  static ngAcceptInputType_nzWaveExtraNode: BooleanInput;
+
+  @Input() @InputBoolean() nzWaveExtraNode = false;
 
   private waveRenderer?: NzWaveRenderer;
   private waveDisabled: boolean = false;
