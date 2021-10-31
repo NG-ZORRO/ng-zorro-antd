@@ -145,7 +145,7 @@ Style property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzWidth]` | Specify the column width, can not used when grouping columns | `string` | - |
+| `[nzWidth]` | Specify the column width (in pixels), can not used when grouping columns | `string` | - |
 | `[nzLeft]` | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
