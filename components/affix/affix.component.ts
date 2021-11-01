@@ -27,8 +27,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { auditTime, map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, throttleTime } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -98,6 +99,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     private ngZone: NgZone,
     private platform: Platform,
     private renderer: Renderer2,
+    private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
   ) {
@@ -142,15 +144,14 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     }
 
     this.removeListeners();
+    const el = this.target === window ? this.document.body : (this.target as Element);
     this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
       merge(
         ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
-        this.offsetChanged$.pipe(
-          takeUntil(this.destroy$),
-          map(() => ({}))
-        )
+        this.offsetChanged$.pipe(map(() => ({}))),
+        this.nzResizeObserver.observe(el)
       )
-        .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
+        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
         .subscribe(e => this.updatePosition(e as Event))
     );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
