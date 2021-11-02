@@ -5,9 +5,19 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnDestroy, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import {
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnInit,
+  OnDestroy,
+  Optional,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -22,7 +32,6 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
     '[class.ant-upload-disabled]': 'options.disabled',
-    '(click)': 'onClick()',
     '(keydown)': 'onKeyDown($event)',
     '(drop)': 'onFileDrop($event)',
     '(dragover)': 'onFileDrop($event)'
@@ -30,16 +39,17 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None
 })
-export class NzUploadBtnComponent implements OnDestroy {
+export class NzUploadBtnComponent implements OnInit, OnDestroy {
   reqs: { [key: string]: Subscription } = {};
   private destroy = false;
-  @ViewChild('file', { static: false }) file!: ElementRef;
+  private destroy$ = new Subject<void>();
+  @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
   @Input() options!: ZipButtonOptions;
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
     }
-    (this.file.nativeElement as HTMLInputElement).click();
+    this.file.nativeElement.click();
   }
 
   onKeyDown(e: KeyboardEvent): void {
@@ -339,7 +349,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
   }
 
-  constructor(@Optional() private http: HttpClient, private elementRef: ElementRef) {
+  constructor(private ngZone: NgZone, @Optional() private http: HttpClient, private elementRef: ElementRef) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-upload');
 
@@ -348,8 +358,19 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    // Caretaker note: `input[type=file].click()` will open a native OS file picker,
+    // it doesn't require Angular to run `ApplicationRef.tick()`.
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.onClick());
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy = true;
+    this.destroy$.next();
     this.abort();
   }
 }

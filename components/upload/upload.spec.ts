@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, DebugElement, Injector, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  Injector,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -998,7 +1006,20 @@ describe('upload', () => {
         fixture.detectChanges();
       });
 
-      describe('should be trigger upload', () => {
+      describe('should trigger upload', () => {
+        describe('change detection', () => {
+          it('should not run change detection when the <input type=file> is being clicked', () => {
+            const appRef = TestBed.inject(ApplicationRef);
+            spyOn(appRef, 'tick');
+            spyOn(instance.comp.file.nativeElement, 'click');
+            expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
+            fixture.debugElement.query(By.css('div')).nativeElement.click();
+            // Caretaker note: previously click events on the `nz-upload-btn` elements did trigger
+            // change detection since they were added via the `host` property.
+            expect(appRef.tick).toHaveBeenCalledTimes(0);
+            expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
+          });
+        });
         describe('via onClick', () => {
           it('', () => {
             spyOn(instance.comp.file.nativeElement, 'click');
