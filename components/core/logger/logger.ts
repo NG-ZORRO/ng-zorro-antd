@@ -30,9 +30,10 @@ function consoleCommonBehavior(consoleFunc: (...args: NzSafeAny) => void, ...arg
 }
 
 // Warning should only be printed in dev mode and only once.
-export const warn = (...args: NzSafeAny[]) =>
+export const warn = (...args: NzSafeAny[]): void =>
   consoleCommonBehavior((...arg: NzSafeAny[]) => console.warn(PREFIX, ...arg), ...args);
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const warnDeprecation = (...args: NzSafeAny[]) => {
   if (!environment.isTestMode) {
     const stack = new Error().stack;
@@ -43,7 +44,7 @@ export const warnDeprecation = (...args: NzSafeAny[]) => {
 };
 
 // Log should only be printed in dev mode.
-export const log = (...args: NzSafeAny[]) => {
+export const log = (...args: NzSafeAny[]): void => {
   if (isDevMode()) {
     console.log(PREFIX, ...args);
   }

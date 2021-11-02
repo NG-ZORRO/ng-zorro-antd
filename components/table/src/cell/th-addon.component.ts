@@ -178,7 +178,8 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
     if (nzShowFilter) {
       this.isNzShowFilterChanged = true;
     }
-    const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
+    const isFirstChange = (value: SimpleChange): boolean =>
+      value && value.firstChange && value.currentValue !== undefined;
     if ((isFirstChange(nzSortOrder) || isFirstChange(nzSortFn)) && !this.isNzShowSortChanged) {
       this.nzShowSort = true;
     }

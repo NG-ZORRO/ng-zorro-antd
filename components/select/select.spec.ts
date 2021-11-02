@@ -292,7 +292,7 @@ describe('select', () => {
     }));
 
     it('should keydown up arrow and down arrow', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -330,7 +330,7 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
     it('should mouseenter activated option work', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -412,7 +412,7 @@ describe('select', () => {
     }));
 
     it('should have selected class if item was selected', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -482,7 +482,7 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -587,7 +587,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzMaxMultipleCount work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -610,7 +610,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -836,7 +836,7 @@ describe('select', () => {
       expect(document.querySelectorAll('nz-option-item').length).toBe(3);
     }));
     it('should keydown up arrow and down arrow', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -874,7 +874,7 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
     it('should mouseenter activated option work', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -972,7 +972,7 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -1077,7 +1077,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzMaxMultipleCount work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -1100,7 +1100,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();

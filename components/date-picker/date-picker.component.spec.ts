@@ -307,7 +307,7 @@ describe('NzDatePickerComponent', () => {
       const disabledCell = queryFromOverlay(`tbody tr td.${PREFIX_CLASS}-cell-disabled div`);
       expect(disabledCell.textContent!.trim()).toBe('15');
       const input = getPickerInput(fixture.debugElement);
-      const submit = (date: string) => {
+      const submit = (date: string): void => {
         input.value = date;
         fixture.detectChanges();
         input.dispatchEvent(ENTER_EVENT);

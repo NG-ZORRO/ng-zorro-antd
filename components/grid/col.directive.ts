@@ -150,7 +150,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       this.nzRowDirective.actualGutter$
         .pipe(takeUntil(this.destroy$))
         .subscribe(([horizontalGutter, verticalGutter]) => {
-          const renderGutter = (name: string, gutter: number | null) => {
+          const renderGutter = (name: string, gutter: number | null): void => {
             const nativeElement = this.elementRef.nativeElement;
             if (gutter !== null) {
               this.renderer.setStyle(nativeElement, name, `${gutter / 2}px`);

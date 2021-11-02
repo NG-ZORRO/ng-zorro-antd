@@ -334,9 +334,9 @@ export class NzPageDemoIconComponent implements OnInit {
   localeObj: { [key: string]: string } = locale;
   searchingString = '';
 
-  trackByFn = (_index: number, item: string) => `${item}-${this.currentTheme}`;
+  trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
 
-  isNewIcon = (name: string) => newIconNames.indexOf(name) > -1;
+  isNewIcon = (name: string): boolean => newIconNames.indexOf(name) > -1;
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;

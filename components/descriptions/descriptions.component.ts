@@ -233,7 +233,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     const items = this.items.toArray();
     const length = items.length;
     const matrix: NzDescriptionsItemRenderProps[][] = [];
-    const flushRow = () => {
+    const flushRow = (): void => {
       matrix.push(currentRow);
       currentRow = [];
       width = 0;

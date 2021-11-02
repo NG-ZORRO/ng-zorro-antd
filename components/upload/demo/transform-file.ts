@@ -15,7 +15,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadTransformFileComponent {
-  transformFile = (file: NzUploadFile) =>
+  transformFile = (file: NzUploadFile): Observable<Blob> =>
     new Observable((observer: Observer<Blob>) => {
       const reader = new FileReader();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -215,7 +215,7 @@ export class NzThTestTableDefaultFilterComponent {
 
   search(): void {
     /** filter data **/
-    const filterFunc = (item: { name: string; address: string; age: number }) =>
+    const filterFunc = (item: { name: string; address: string; age: number }): boolean =>
       (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) &&
       (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));

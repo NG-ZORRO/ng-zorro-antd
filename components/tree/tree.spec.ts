@@ -499,8 +499,8 @@ describe('tree', () => {
   describe('NzTestTreeBasicSearchComponent', () => {
     let testBed: ComponentBed<NzTestTreeBasicSearchComponent>;
 
-    const getVisibleNodes = (title?: string) => {
-      const isNodeVisible = (el: Element) => el.getClientRects().length !== 0;
+    const getVisibleNodes = (title?: string): Element[] => {
+      const isNodeVisible = (el: Element): boolean => el.getClientRects().length !== 0;
       const selector = title ? `[title='${title}']` : '[title]';
       const nodes = testBed.nativeElement.querySelectorAll(selector);
       return Array.from(nodes).filter(isNodeVisible);

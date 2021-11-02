@@ -269,7 +269,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     }
   }
 
-  onLiClick = (index: number) => {
+  onLiClick = (index: number): void => {
     if (this.dir === 'rtl') {
       this.goTo(this.carouselContents.length - 1 - index);
     } else {
@@ -355,7 +355,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   /**
    * Drag carousel.
    */
-  pointerDown = (event: TouchEvent | MouseEvent) => {
+  pointerDown = (event: TouchEvent | MouseEvent): void => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();

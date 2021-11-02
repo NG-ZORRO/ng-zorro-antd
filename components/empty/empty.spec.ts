@@ -138,7 +138,7 @@ describe('nz-empty', () => {
       });
 
       it("should components' prop has priority", fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -175,7 +175,7 @@ describe('nz-empty', () => {
       }));
 
       it('should support string, template and component', fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -240,7 +240,7 @@ describe('nz-empty', () => {
       });
 
       it('should support injection', fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick(100);
           fixture.detectChanges();

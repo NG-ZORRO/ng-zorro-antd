@@ -69,7 +69,7 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewLineComponent implements AfterViewInit {
-  private transformer = (node: TreeNode, level: number) => ({
+  private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level
@@ -94,7 +94,7 @@ export class NzDemoTreeViewLineComponent implements AfterViewInit {
     this.dataSource.setData(TREE_DATA);
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 
   ngAfterViewInit(): void {
     this.treeControl.expandAll();

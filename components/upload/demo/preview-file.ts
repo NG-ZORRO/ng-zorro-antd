@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzUploadFile } from 'ng-zorro-antd/upload';
@@ -24,7 +25,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
 export class NzDemoUploadPreviewFileComponent {
   constructor(private http: HttpClient) {}
 
-  previewFile = (file: NzUploadFile) => {
+  previewFile = (file: NzUploadFile): Observable<string> => {
     console.log('Your upload file:', file);
     return this.http
       .post<{ thumbnail: string }>(`https://next.json-generator.com/api/json/get/4ytyBoLK8`, {

@@ -180,7 +180,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     const dirChange = this.dir ? this.dir.change : of(null);
     const resize = this.viewportRuler.change(150);
 
-    const realign = () => {
+    const realign = (): void => {
       this.updateScrollListPosition();
       this.alignInkBarToSelectedTab();
     };

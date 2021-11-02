@@ -32,7 +32,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     signature: 'ZGFob25nc2hhbw=='
   };
 
-  transformFile = (file: NzUploadFile) => {
+  transformFile = (file: NzUploadFile): NzUploadFile => {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
     file.url = this.mockOSSData.dir + filename;
@@ -40,7 +40,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     return file;
   };
 
-  getExtraData = (file: NzUploadFile) => {
+  getExtraData = (file: NzUploadFile): {} => {
     const { accessId, policy, signature } = this.mockOSSData;
 
     return {

@@ -1145,7 +1145,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  compareFun = (o1: any, o2: any) => {
+  compareFun = (o1: any, o2: any): boolean => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {

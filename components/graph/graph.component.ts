@@ -173,18 +173,18 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private _dataSubscription?: Subscription | null;
   private destroy$ = new Subject<void>();
 
-  nodeTrackByFun = (_: number, node: NzGraphNode | NzGraphGroupNode) => node.name;
-  edgeTrackByFun = (_: number, edge: NzGraphEdge) => `${edge.v}-${edge.w}`;
+  nodeTrackByFun = (_: number, node: NzGraphNode | NzGraphGroupNode): string => node.name;
+  edgeTrackByFun = (_: number, edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
-  subGraphTransform = (node: NzGraphGroupNode) => {
+  subGraphTransform = (node: NzGraphGroupNode): string => {
     const x = node.x - node.coreBox.width / 2.0;
     const y = node.y - node.height / 2.0 + node.paddingTop;
     return `translate(${x}, ${y})`;
   };
 
-  $asNzGraphEdges = (data: unknown) => data as NzGraphEdge[];
+  $asNzGraphEdges = (data: unknown): NzGraphEdge[] => data as NzGraphEdge[];
 
-  coreTransform = (node: NzGraphGroupNode) => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
+  coreTransform = (node: NzGraphGroupNode): string => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
   constructor(
     private cdr: ChangeDetectorRef,

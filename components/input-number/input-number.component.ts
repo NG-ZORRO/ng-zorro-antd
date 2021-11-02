@@ -115,7 +115,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-  @Input() nzParser = (value: string) =>
+  @Input() nzParser = (value: string): string =>
     value
       .trim()
       .replace(/。/g, '.')

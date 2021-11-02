@@ -27,7 +27,7 @@ export class NzDemoAutoCompleteObjectValueComponent {
     { label: 'Jack', value: 'jack', age: 22 }
   ];
 
-  compareFun = (o1: Option | string, o2: Option) => {
+  compareFun = (o1: Option | string, o2: Option): boolean => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {

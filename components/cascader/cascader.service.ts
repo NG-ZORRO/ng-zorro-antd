@@ -87,8 +87,8 @@ export class NzCascaderService implements OnDestroy {
     const values = this.values;
     const hasValue = values && values.length;
     const lastColumnIndex = values.length - 1;
-    const initColumnWithIndex = (columnIndex: number) => {
-      const activatedOptionSetter = () => {
+    const initColumnWithIndex = (columnIndex: number): void => {
+      const activatedOptionSetter = (): void => {
         const currentValue = values[columnIndex];
 
         if (!isNotNil(currentValue)) {
@@ -256,7 +256,7 @@ export class NzCascaderService implements OnDestroy {
     const showSearch = this.cascaderComponent.nzShowSearch;
     const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
     const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
-    const loopChild = (node: NzCascaderOption, forceDisabled = false) => {
+    const loopChild = (node: NzCascaderOption, forceDisabled = false): void => {
       path.push(node);
       const cPath = Array.from(path);
       if (filter(searchValue, cPath)) {
@@ -271,7 +271,7 @@ export class NzCascaderService implements OnDestroy {
       }
       path.pop();
     };
-    const loopParent = (node: NzCascaderOption, forceDisabled = false) => {
+    const loopParent = (node: NzCascaderOption, forceDisabled = false): void => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children!.forEach(sNode => {

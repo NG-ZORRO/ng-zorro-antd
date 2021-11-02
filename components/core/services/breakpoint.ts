@@ -53,6 +53,7 @@ export class NzBreakpointService {
   subscribe(breakpointMap: BreakpointMap, fullMap: true): Observable<BreakpointBooleanMap>;
   subscribe(breakpointMap: BreakpointMap, fullMap?: true): Observable<NzBreakpointEnum | BreakpointBooleanMap> {
     if (fullMap) {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap, true);
       return this.resizeService.subscribe().pipe(
         map(get),
@@ -63,6 +64,7 @@ export class NzBreakpointService {
         map(x => x[1])
       );
     } else {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap);
       return this.resizeService.subscribe().pipe(map(get), startWith(get()), distinctUntilChanged());
     }

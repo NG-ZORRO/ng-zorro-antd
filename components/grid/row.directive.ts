@@ -77,7 +77,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   setGutterStyle(): void {
     const [horizontalGutter, verticalGutter] = this.getGutter();
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
-    const renderGutter = (name: string, gutter: number | null) => {
+    const renderGutter = (name: string, gutter: number | null): void => {
       const nativeElement = this.elementRef.nativeElement;
       if (gutter !== null) {
         this.renderer.setStyle(nativeElement, name, `-${gutter / 2}px`);

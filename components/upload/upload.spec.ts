@@ -1101,6 +1101,7 @@ describe('upload', () => {
           expect(instance.comp.uploadFiles).toHaveBeenCalled();
         });
         describe('via directory', () => {
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
           const makeFileSystemEntry = (item: Item) => {
             const isDirectory = Array.isArray(item.children);
             const ret = {
@@ -1115,6 +1116,7 @@ describe('upload', () => {
             };
             return ret;
           };
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
           const makeDataTransferItem = (item: Item) => ({ webkitGetAsEntry: () => makeFileSystemEntry(item) });
           beforeEach(() => (instance.options.directory = true));
           it('should working', () => {

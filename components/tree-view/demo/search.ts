@@ -45,7 +45,7 @@ class FilteredTreeResult {
  */
 function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
   const needsToExpanded = new Set<TreeNode>();
-  const _filter = (node: TreeNode, result: TreeNode[]) => {
+  const _filter = (node: TreeNode, result: TreeNode[]): TreeNode[] => {
     if (node.name.search(value) !== -1) {
       result.push(node);
       return result;
@@ -108,7 +108,7 @@ export class NzDemoTreeViewSearchComponent {
   originData$ = new BehaviorSubject(TREE_DATA);
   searchValue$ = new BehaviorSubject<string>('');
 
-  transformer = (node: TreeNode, level: number) => {
+  transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
       existingNode && existingNode.name === node.name
@@ -169,5 +169,5 @@ export class NzDemoTreeViewSearchComponent {
     });
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

@@ -52,7 +52,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
 
   ngOnInit(): void {
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    const getRandomNameList = (name: string) =>
+    const getRandomNameList = (name: string): Observable<any> =>
       this.http
         .get(`${this.randomUserUrl}`)
         .pipe(

@@ -534,7 +534,7 @@ class NzTestPropertyMentionComponent {
   ];
   loading = false;
   prefix: string | string[] = '@';
-  valueWith = (data: { name: string; type: string }) => data.name;
+  valueWith = (data: { name: string; type: string }): string => data.name;
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
 
