@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { VERSION } from 'ng-zorro-antd/version';
 
@@ -103,7 +112,7 @@ export class HeaderComponent implements OnChanges {
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 
-  constructor(private nzConfigService: NzConfigService) { }
+  constructor(private nzConfigService: NzConfigService,private cdr:ChangeDetectorRef) { }
 
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
@@ -129,6 +138,7 @@ export class HeaderComponent implements OnChanges {
     } else {
       this.nextDirection = 'rtl';
     }
+    this.cdr.markForCheck();
   }
 
   updateResponsive(): void {
