@@ -19,12 +19,14 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
   @Input() hidden: NzSafeAny = null;
   setHiddenAttribute(): void {
-    if (this.hidden === true) {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
-    } else if (this.hidden === false || this.hidden === null) {
+    if (this.hidden) {
+      if (typeof this.hidden === 'string') {
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', this.hidden);
+      } else {
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
+      }
+    } else {
       this.renderer.removeAttribute(this.elementRef.nativeElement, 'hidden');
-    } else if (typeof this.hidden === 'string') {
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', this.hidden);
     }
   }
 
