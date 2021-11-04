@@ -41,6 +41,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` | - |
 | `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` | - |
 | `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` | - |
+| `[nzOkDanger]` | Danger status of the OK button. <i>Consistent with the `nzDanger` of the `nz-button`.</i> | `boolean` | `false` | - |
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` | - |
 | `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - | - |
 | `[nzAutoFocus]` | Autofocus a button | `null \| 'ok' \| 'cancel'` | `null` | ✅ |

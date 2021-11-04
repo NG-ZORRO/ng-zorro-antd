@@ -66,6 +66,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmVisible') visible?: boolean;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
+  @Input() nzOkDanger?: boolean;
   @Input() nzCancelText?: string;
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean = false;
@@ -85,6 +86,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     return {
       nzOkText: ['nzOkText', () => this.nzOkText],
       nzOkType: ['nzOkType', () => this.nzOkType],
+      nzOkDanger: ['nzOkDanger', () => this.nzOkDanger],
       nzCancelText: ['nzCancelText', () => this.nzCancelText],
       nzCondition: ['nzCondition', () => this.nzCondition],
       nzIcon: ['nzIcon', () => this.nzIcon],
@@ -181,7 +183,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     nz-button
                     #okBtn
                     [nzSize]="'small'"
-                    [nzType]="nzOkType"
+                    [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
+                    [nzDanger]="nzOkDanger || nzOkType === 'danger'"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
@@ -206,7 +209,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzPopconfirmShowArrow = true;
   nzIcon?: string | TemplateRef<void>;
   nzOkText?: string;
-  nzOkType: NzButtonType = 'primary';
+  nzOkType: NzButtonType | 'danger' = 'primary';
+  nzOkDanger: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
 
   readonly nzOnCancel = new Subject<void>();
