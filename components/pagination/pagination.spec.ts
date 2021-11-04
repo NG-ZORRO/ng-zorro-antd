@@ -287,6 +287,22 @@ describe('pagination', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
     });
+    it('should be display one more page when the 4th is selected', () => {
+      testComponent.total = 500;
+      testComponent.pageIndex = 4; // he 4th is selected
+      fixture.detectChanges();
+      expect(paginationElement.children.length).toBe(10);
+      testComponent.pageIndex = 3;
+      fixture.detectChanges();
+      expect(paginationElement.children.length).toBe(9);
+
+      testComponent.pageIndex = 47; // the 4th from last is selected
+      fixture.detectChanges();
+      expect(paginationElement.children.length).toBe(10);
+      testComponent.pageIndex = 48;
+      fixture.detectChanges();
+      expect(paginationElement.children.length).toBe(9);
+    });
   });
 
   describe('pagination render items', () => {

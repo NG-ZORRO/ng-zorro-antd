@@ -193,12 +193,16 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
         };
         const firstPageItem = generatePage(1, 1);
         const lastPageItem = generatePage(lastIndex, lastIndex);
-        if (selected < 4) {
-          listOfRange = [...generatePage(2, 5), nextFiveItem];
+        if (selected < 5) {
+          // If the 4th is selected, one more page will be displayed.
+          const maxLeft = selected === 4 ? 6 : 5;
+          listOfRange = [...generatePage(2, maxLeft), nextFiveItem];
         } else if (selected < last - 3) {
           listOfRange = [prevFiveItem, ...generatePage(selected - 2, selected + 2), nextFiveItem];
         } else {
-          listOfRange = [prevFiveItem, ...generatePage(last - 4, last - 1)];
+          // If the 4th from last is selected, one more page will be displayed.
+          const minRight = selected === last - 3 ? last - 5 : last - 4;
+          listOfRange = [prevFiveItem, ...generatePage(minRight, last - 1)];
         }
         return [...firstPageItem, ...listOfRange, ...lastPageItem];
       };
