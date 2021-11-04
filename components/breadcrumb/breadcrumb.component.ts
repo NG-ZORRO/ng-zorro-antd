@@ -11,7 +11,6 @@ import {
   ElementRef,
   Injector,
   Input,
-  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -63,7 +62,6 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   constructor(
     private injector: Injector,
-    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
@@ -94,8 +92,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   navigate(url: string, e: MouseEvent): void {
     e.preventDefault();
-
-    this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
+    this.injector.get(Router).navigateByUrl(url);
   }
 
   private registerRouterChange(): void {
