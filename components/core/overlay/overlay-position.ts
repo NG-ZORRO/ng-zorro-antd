@@ -5,7 +5,7 @@
 
 import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 
-export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
+export const POSITION_MAP = {
   top: new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),
   topCenter: new ConnectionPositionPair(
     { originX: 'center', originY: 'top' },
@@ -36,6 +36,7 @@ export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
     { overlayX: 'end', overlayY: 'bottom' }
   )
 };
+export type POSITION_TYPE = keyof typeof POSITION_MAP;
 
 export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
 
@@ -59,10 +60,10 @@ export const DEFAULT_MENTION_BOTTOM_POSITIONS = [
 export function getPlacementName(position: ConnectedOverlayPositionChange): string | undefined {
   for (const placement in POSITION_MAP) {
     if (
-      position.connectionPair.originX === POSITION_MAP[placement].originX &&
-      position.connectionPair.originY === POSITION_MAP[placement].originY &&
-      position.connectionPair.overlayX === POSITION_MAP[placement].overlayX &&
-      position.connectionPair.overlayY === POSITION_MAP[placement].overlayY
+      position.connectionPair.originX === POSITION_MAP[placement as POSITION_TYPE].originX &&
+      position.connectionPair.originY === POSITION_MAP[placement as POSITION_TYPE].originY &&
+      position.connectionPair.overlayX === POSITION_MAP[placement as POSITION_TYPE].overlayX &&
+      position.connectionPair.overlayY === POSITION_MAP[placement as POSITION_TYPE].overlayY
     ) {
       return placement;
     }
