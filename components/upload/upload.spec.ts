@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
@@ -17,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
@@ -1037,16 +1039,24 @@ describe('upload', () => {
         });
         describe('via onKeyDown', () => {
           it('normal', () => {
+            const appRef = TestBed.inject(ApplicationRef);
+            spyOn(appRef, 'tick');
             spyOn(instance.comp, 'onClick');
             expect(instance.comp.onClick).not.toHaveBeenCalled();
-            instance.comp.onKeyDown({ key: 'Enter' } as any);
+            const uploadBtn = fixture.debugElement.query(By.css('div')).nativeElement;
+            dispatchKeyboardEvent(uploadBtn, 'keydown', ENTER);
             expect(instance.comp.onClick).toHaveBeenCalled();
+            expect(appRef.tick).toHaveBeenCalledTimes(0);
           });
           it('when expect Enter', () => {
+            const appRef = TestBed.inject(ApplicationRef);
+            spyOn(appRef, 'tick');
             spyOn(instance.comp, 'onClick');
             expect(instance.comp.onClick).not.toHaveBeenCalled();
-            instance.comp.onKeyDown({ key: 'A' } as any);
+            const uploadBtn = fixture.debugElement.query(By.css('div')).nativeElement;
+            dispatchKeyboardEvent(uploadBtn, 'keydown', TAB);
             expect(instance.comp.onClick).not.toHaveBeenCalled();
+            expect(appRef.tick).toHaveBeenCalledTimes(0);
           });
         });
         describe('via Drop', () => {
