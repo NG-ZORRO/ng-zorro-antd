@@ -24,7 +24,7 @@ import { Component } from '@angular/core';
     <ng-template #textAreaClearTpl>
       <i
         nz-icon
-        class="ant-input-textarea-clear-icon"
+        class="ant-input-clear-icon"
         nzTheme="fill"
         nzType="close-circle"
         *ngIf="textValue"
