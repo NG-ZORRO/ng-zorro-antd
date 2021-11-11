@@ -9,8 +9,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -81,8 +81,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
-  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> =
-    this.resolver.resolveComponentFactory(NzPopconfirmComponent);
+  protected readonly componentRef: ComponentRef<NzPopconfirmComponent> =
+    this.hostView.createComponent(NzPopconfirmComponent);
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {
