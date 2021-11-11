@@ -128,7 +128,7 @@ export class Minimap {
           // Remove tf-* selectors from the styles.
           stylesText += `${cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '')}\n`;
         }
-      } catch (e) {
+      } catch (e: NzSafeAny) {
         if (e.name !== 'SecurityError') {
           throw e;
         }

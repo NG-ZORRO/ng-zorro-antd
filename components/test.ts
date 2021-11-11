@@ -15,7 +15,9 @@ declare const require: any;
 
 const tags = __karma__.config.args[0];
 // First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
+    teardown: { destroyAfterEach: false }
+});
 jasmine.getEnv().allowRespy(true);
 
 let filterRegExp: RegExp;

@@ -8,8 +8,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -62,7 +62,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
-  componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
+  componentRef: ComponentRef<NzPopoverComponent> = this.hostView.createComponent(NzPopoverComponent);
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {

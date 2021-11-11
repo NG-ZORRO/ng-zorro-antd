@@ -475,7 +475,15 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
-    return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
+    return (link?: RouterLink | RouterLinkWithHref) =>
+      link
+        ? router.isActive(link.urlTree || '', {
+            paths: this.nzLinkExact ? 'exact' : 'subset',
+            queryParams: this.nzLinkExact ? 'exact' : 'subset',
+            fragment: 'ignored',
+            matrixParams: 'ignored'
+          })
+        : false;
   }
 
   private getTabContentMarginValue(): number {
