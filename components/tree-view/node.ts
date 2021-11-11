@@ -71,7 +71,7 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
     this._elementRef.nativeElement.classList.add('ant-tree-treenode');
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
   }
 
@@ -122,7 +122,7 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
   providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({

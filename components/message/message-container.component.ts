@@ -5,14 +5,12 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from './base';
-import { NzMessageData } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
 
@@ -42,9 +40,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   `
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
-  readonly destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
-  instances: Array<Required<NzMessageData>> = [];
   top?: string | null;
 
   constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {

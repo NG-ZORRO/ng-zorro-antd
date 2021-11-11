@@ -507,7 +507,7 @@ export type MyErrorsOptions = { 'zh-cn': string; en: string } & Record<string, N
 export type MyValidationErrors = Record<string, MyErrorsOptions>;
 
 export class MyValidators extends Validators {
-  static minLength(minLength: number): ValidatorFn {
+  static override minLength(minLength: number): ValidatorFn {
     return (control: AbstractControl): MyValidationErrors | null => {
       if (Validators.minLength(minLength)(control) === null) {
         return null;

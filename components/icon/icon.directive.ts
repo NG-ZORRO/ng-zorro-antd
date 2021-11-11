@@ -91,7 +91,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.el = elementRef.nativeElement;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  override ngOnChanges(changes: SimpleChanges): void {
     const { nzType, nzTwotoneColor, nzSpin, nzTheme, nzRotate } = changes;
 
     if (nzType || nzTwotoneColor || nzSpin || nzTheme) {
