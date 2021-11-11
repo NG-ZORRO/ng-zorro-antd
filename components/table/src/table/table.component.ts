@@ -341,7 +341,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       .observe(this.elementRef)
       .pipe(
         map(([entry]) => {
-          const { width } = entry.target.getBoundingClientRect();
+          const { width } = entry.contentRect;
           const scrollBarWidth = this.scrollY ? this.verticalScrollBarWidth : 0;
           return Math.floor(width - scrollBarWidth);
         }),
