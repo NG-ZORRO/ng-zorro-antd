@@ -10,10 +10,15 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
   Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
@@ -44,12 +49,10 @@ export class NzOptionSelectionChange {
     '[class.ant-select-item-option-disabled]': 'nzDisabled',
     '[attr.aria-selected]': 'selected.toString()',
     '[attr.aria-disabled]': 'nzDisabled.toString()',
-    '(click)': 'selectViaInteraction()',
-    '(mouseenter)': 'onMouseEnter()',
-    '(mousedown)': '$event.preventDefault()'
+    '(click)': 'selectViaInteraction()'
   }
 })
-export class NzAutocompleteOptionComponent {
+export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @Input() nzValue: NzSafeAny;
@@ -61,12 +64,36 @@ export class NzAutocompleteOptionComponent {
   active = false;
   selected = false;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
+    private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef,
+    private element: ElementRef<HTMLElement>,
     @Optional()
     public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
   ) {}
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.element.nativeElement, 'mouseenter')
+        .pipe(
+          filter(() => this.mouseEntered.observers.length > 0),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.ngZone.run(() => this.mouseEntered.emit(this));
+        });
+
+      fromEvent(this.element.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => event.preventDefault());
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
 
   select(emit: boolean = true): void {
     this.selected = true;
@@ -74,10 +101,6 @@ export class NzAutocompleteOptionComponent {
     if (emit) {
       this.emitSelectionChangeEvent();
     }
-  }
-
-  onMouseEnter(): void {
-    this.mouseEntered.emit(this);
   }
 
   deselect(): void {
