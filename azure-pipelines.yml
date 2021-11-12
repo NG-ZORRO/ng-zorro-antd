@@ -82,6 +82,14 @@ stages:
           inputs:
             command: 'install'
         - script: npm run test:schematics
+
+    - job: type check
+      steps:
+        - task: Npm@1
+          inputs:
+            command: 
+        - scripts: npm run type-check
+
   dependsOn: env
 
 - stage: lint
