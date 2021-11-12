@@ -46,25 +46,25 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
 export class NzPopoverDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  @Input('nzPopoverTitle') title?: NzTSType;
-  @Input('nzPopoverContent') content?: NzTSType;
-  @Input('nz-popover') directiveTitle?: NzTSType | null;
-  @Input('nzPopoverTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzPopoverPlacement') placement?: string | string[] = 'top';
-  @Input('nzPopoverOrigin') origin?: ElementRef<HTMLElement>;
-  @Input('nzPopoverVisible') visible?: boolean;
-  @Input('nzPopoverMouseEnterDelay') mouseEnterDelay?: number;
-  @Input('nzPopoverMouseLeaveDelay') mouseLeaveDelay?: number;
-  @Input('nzPopoverOverlayClassName') overlayClassName?: string;
-  @Input('nzPopoverOverlayStyle') overlayStyle?: NgStyleInterface;
+  @Input('nzPopoverTitle') override title?: NzTSType;
+  @Input('nzPopoverContent') override content?: NzTSType;
+  @Input('nz-popover') override directiveTitle?: NzTSType | null;
+  @Input('nzPopoverTrigger') override trigger?: NzTooltipTrigger = 'hover';
+  @Input('nzPopoverPlacement') override placement?: string | string[] = 'top';
+  @Input('nzPopoverOrigin') override origin?: ElementRef<HTMLElement>;
+  @Input('nzPopoverVisible') override visible?: boolean;
+  @Input('nzPopoverMouseEnterDelay') override mouseEnterDelay?: number;
+  @Input('nzPopoverMouseLeaveDelay') override mouseLeaveDelay?: number;
+  @Input('nzPopoverOverlayClassName') override overlayClassName?: string;
+  @Input('nzPopoverOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename
-  @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
+  @Output('nzPopoverVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
-  componentRef: ComponentRef<NzPopoverComponent> = this.hostView.createComponent(NzPopoverComponent);
+  override componentRef: ComponentRef<NzPopoverComponent> = this.hostView.createComponent(NzPopoverComponent);
 
-  protected getProxyPropertyMap(): PropertyMapping {
+  protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
       ...super.getProxyPropertyMap()
@@ -76,7 +76,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Host() @Optional() noAnimation?: NzNoAnimationDirective,
     nzConfigService?: NzConfigService
   ) {
     super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
@@ -133,12 +133,12 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopoverComponent extends NzToolTipComponent {
-  _prefix = 'ant-popover';
+  override _prefix = 'ant-popover';
 
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
     super(cdr, directionality, noAnimation);
   }
@@ -147,7 +147,7 @@ export class NzPopoverComponent extends NzToolTipComponent {
     return this.nzTrigger === 'click' ? this.nzBackdrop : false;
   }
 
-  protected isEmpty(): boolean {
+  protected override isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle) && isTooltipEmpty(this.nzContent);
   }
 }
