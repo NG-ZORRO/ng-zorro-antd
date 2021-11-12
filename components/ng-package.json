@@ -3,7 +3,7 @@
   "dest": "../publish",
   "deleteDestPath": true,
   "lib": {
-    "entryFile": "./public_api"
+    "entryFile": "./public_api.ts"
   },
   "allowedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular"]
 }

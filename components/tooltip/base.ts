@@ -6,7 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   CdkConnectedOverlay,
-  CdkOverlayOrigin,
+  FlexibleConnectedPositionStrategyOrigin,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
@@ -185,7 +185,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.renderer.parentNode(this.elementRef.nativeElement),
       componentRef.location.nativeElement
     );
-    this.component.setOverlayOrigin({ elementRef: this.origin || this.elementRef });
+    this.component.setOverlayOrigin(this.origin || this.elementRef);
 
     this.initProperties();
 
@@ -367,7 +367,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   preferredPlacement: string = 'top';
 
-  origin!: CdkOverlayOrigin;
+  origin!: FlexibleConnectedPositionStrategyOrigin;
 
   public dir: Direction = 'ltr';
 
@@ -460,7 +460,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
+    if (!(this.origin as ElementRef).nativeElement.contains(event.target) && this.nzTrigger !== null) {
       this.hide();
     }
   }
