@@ -19,7 +19,7 @@ let notificationId = 0;
   providedIn: NzNotificationServiceModule
 })
 export class NzNotificationService extends NzMNService {
-  protected container!: NzNotificationContainerComponent;
+  protected override container!: NzNotificationContainerComponent;
   protected componentPrefix = 'notification-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {
