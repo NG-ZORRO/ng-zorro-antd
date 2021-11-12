@@ -15,7 +15,7 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -38,9 +38,7 @@ export interface NzResizeEvent {
   providers: [NzResizableService],
   host: {
     '[class.nz-resizable-resizing]': 'resizing',
-    '[class.nz-resizable-disabled]': 'nzDisabled',
-    '(mouseenter)': 'onMouseenter()',
-    '(mouseleave)': 'onMouseleave()'
+    '[class.nz-resizable-disabled]': 'nzDisabled'
   }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
@@ -107,14 +105,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
         this.resize(event);
       }
     });
-  }
-
-  onMouseenter(): void {
-    this.nzResizableService.mouseEntered$.next(true);
-  }
-
-  onMouseleave(): void {
-    this.nzResizableService.mouseEntered$.next(false);
   }
 
   setPosition(): void {
@@ -252,12 +242,16 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
     const size = this.calcSize(width, height, ratio);
     this.sizeCache = { ...size };
-    this.ngZone.run(() => {
-      this.nzResize.emit({
-        ...size,
-        mouseEvent: event
+    // Re-enter the Angular zone and run the change detection only if there're any `nzResize` listeners,
+    // e.g.: `<div nz-resizable (nzResize)="..."></div>`.
+    if (this.nzResize.observers.length) {
+      this.ngZone.run(() => {
+        this.nzResize.emit({
+          ...size,
+          mouseEvent: event
+        });
       });
-    });
+    }
     if (this.nzPreview) {
       this.previewResize(size);
     }
@@ -273,12 +267,16 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
           width: this.elRect.width,
           height: this.elRect.height
         };
-    this.ngZone.run(() => {
-      this.nzResizeEnd.emit({
-        ...size,
-        mouseEvent: event
+    // Re-enter the Angular zone and run the change detection only if there're any `nzResizeEnd` listeners,
+    // e.g.: `<div nz-resizable (nzResizeEnd)="..."></div>`.
+    if (this.nzResizeEnd.observers.length) {
+      this.ngZone.run(() => {
+        this.nzResizeEnd.emit({
+          ...size,
+          mouseEvent: event
+        });
       });
-    });
+    }
     this.sizeCache = null;
     this.currentHandleEvent = null;
   }
@@ -304,10 +302,26 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.platform.isBrowser) {
-      this.el = this.elementRef.nativeElement;
-      this.setPosition();
+    if (!this.platform.isBrowser) {
+      return;
     }
+
+    this.el = this.elementRef.nativeElement;
+    this.setPosition();
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.el, 'mouseenter')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.nzResizableService.mouseEntered$.next(true);
+        });
+
+      fromEvent(this.el, 'mouseleave')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.nzResizableService.mouseEntered$.next(false);
+        });
+    });
   }
 
   ngOnDestroy(): void {

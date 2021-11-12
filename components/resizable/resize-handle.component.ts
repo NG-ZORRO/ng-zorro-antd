@@ -5,14 +5,14 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output
+  Output,
+  Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -47,7 +47,6 @@ export class NzResizeHandleMouseDownEvent {
     '[class.nz-resizable-handle-bottomRight]': `nzDirection === 'bottomRight'`,
     '[class.nz-resizable-handle-bottomLeft]': `nzDirection === 'bottomLeft'`,
     '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`,
-    '[class.nz-resizable-handle-box-hover]': 'entered',
     '(mousedown)': 'onMousedown($event)',
     '(touchstart)': 'onMousedown($event)'
   }
@@ -56,12 +55,11 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
   @Output() readonly nzMouseDown = new EventEmitter<NzResizeHandleMouseDownEvent>();
 
-  entered = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private nzResizableService: NzResizableService,
-    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
     private elementRef: ElementRef
   ) {
     // TODO: move to host after View Engine deprecation
@@ -69,9 +67,14 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Caretaker note: `mouseEntered$` subject will emit events within the `<root>` zone,
+    // see `NzResizableDirective#ngAfterViewInit`. There're event listeners are added within the `<root>` zone.
     this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
-      this.entered = entered;
-      this.cdr.markForCheck();
+      if (entered) {
+        this.renderer.addClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+      }
     });
   }
 
