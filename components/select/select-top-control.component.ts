@@ -11,7 +11,10 @@ import {
   EventEmitter,
   Host,
   Input,
+  NgZone,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Optional,
   Output,
   SimpleChanges,
@@ -19,6 +22,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -83,13 +88,9 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
       </ng-container>
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
-  `,
-  host: {
-    '(keydown)': 'onHostKeydown($event)',
-    '(click)': 'onHostClick($event)'
-  }
+  `
 })
-export class NzSelectTopControlComponent implements OnChanges {
+export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
@@ -113,19 +114,7 @@ export class NzSelectTopControlComponent implements OnChanges {
   isComposing = false;
   inputValue: string | null = null;
 
-  onHostKeydown(e: KeyboardEvent): void {
-    const inputValue = (e.target as HTMLInputElement).value;
-    if (e.keyCode === BACKSPACE && this.mode !== 'default' && !inputValue && this.listOfTopItem.length > 0) {
-      e.preventDefault();
-      this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]);
-    }
-  }
-
-  onHostClick(e: MouseEvent): void {
-    if (e.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
-      this.nzSelectSearchComponent.focus();
-    }
-  }
+  private destroy$ = new Subject<void>();
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -202,7 +191,11 @@ export class NzSelectTopControlComponent implements OnChanges {
     }
   }
 
-  constructor(private elementRef: ElementRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private ngZone: NgZone,
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective | null
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-select-selector');
   }
@@ -234,5 +227,41 @@ export class NzSelectTopControlComponent implements OnChanges {
       }
       this.listOfSlicedItem = listOfSlicedItem;
     }
+  }
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
+          if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
+            this.nzSelectSearchComponent.focus();
+          }
+        });
+
+      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (event.target instanceof HTMLInputElement) {
+            const inputValue = event.target.value;
+
+            if (
+              event.keyCode === BACKSPACE &&
+              this.mode !== 'default' &&
+              !inputValue &&
+              this.listOfTopItem.length > 0
+            ) {
+              event.preventDefault();
+              // Run change detection only if the user has pressed the `Backspace` key and the following condition is met.
+              this.ngZone.run(() => this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]));
+            }
+          }
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 }

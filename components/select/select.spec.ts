@@ -1,7 +1,7 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -15,6 +15,8 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzSelectSearchComponent } from './select-search.component';
+import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';
@@ -1223,6 +1225,30 @@ describe('select', () => {
       expect(detectChangesSpy).toHaveBeenCalledTimes(1);
       expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     }));
+
+    it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      const nzSelectSearch = fixture.debugElement.query(By.directive(NzSelectSearchComponent));
+      spyOn(nzSelectSearch.componentInstance, 'focus');
+
+      const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      dispatchMouseEvent(nzSelectTopControl.nativeElement, 'click');
+
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+      expect(nzSelectSearch.componentInstance.focus).toHaveBeenCalled();
+    });
+
+    it('should not run change detection when non-backspace button is pressed on the `nz-select-top-control`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      dispatchKeyboardEvent(nzSelectTopControl.nativeElement, 'keydown', TAB, nzSelectTopControl.nativeElement);
+
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+    });
   });
 });
 
