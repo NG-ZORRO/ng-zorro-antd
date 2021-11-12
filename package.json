@@ -21,8 +21,7 @@
     "gulp": "gulp",
     "lint": "eslint --cache . --ext .ts,.html",
     "lint:fix": "eslint --fix --cache . --ext .ts,.html",
-    "prepare": "husky install",
-    "type-check": "tsc -p tsconfig.override.json"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@angular/cdk": "^12.1.0",
