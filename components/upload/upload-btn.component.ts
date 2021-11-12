@@ -32,7 +32,6 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
     '[class.ant-upload-disabled]': 'options.disabled',
-    '(keydown)': 'onKeyDown($event)',
     '(drop)': 'onFileDrop($event)',
     '(dragover)': 'onFileDrop($event)'
   },
@@ -45,20 +44,12 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
   @Input() options!: ZipButtonOptions;
+
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
     }
     this.file.nativeElement.click();
-  }
-
-  onKeyDown(e: KeyboardEvent): void {
-    if (this.options.disabled) {
-      return;
-    }
-    if (e.key === 'Enter' || e.keyCode === ENTER) {
-      this.onClick();
-    }
   }
 
   // skip safari bug
@@ -365,6 +356,17 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
       fromEvent(this.elementRef.nativeElement, 'click')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.onClick());
+
+      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (this.options.disabled) {
+            return;
+          }
+          if (event.key === 'Enter' || event.keyCode === ENTER) {
+            this.onClick();
+          }
+        });
     });
   }
 
