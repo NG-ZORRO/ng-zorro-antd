@@ -8,16 +8,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
-  Output,
+  NgZone,
+  OnDestroy,
+  OnInit,
   Renderer2,
   TemplateRef
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzGraphComponent } from './graph.component';
 import { NzGraphGroupNode, NzGraphNode } from './interface';
 
 interface Info {
@@ -46,30 +49,51 @@ interface Info {
     '[id]': 'node.id || node.name',
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
-    '[class.nz-graph-base-node]': 'node.type===1',
-    '(click)': 'triggerClick($event)'
+    '[class.nz-graph-base-node]': 'node.type===1'
   }
 })
-export class NzGraphNodeComponent {
+export class NzGraphNodeComponent implements OnInit, OnDestroy {
   @Input() node!: NzGraphNode | NzGraphGroupNode;
   @Input() @InputBoolean() noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
   }>;
 
-  @Output() readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
-
-  triggerClick(event: MouseEvent): void {
-    event.preventDefault();
-    this.nodeClick.emit(this.node);
-  }
-
   animationInfo: Info | null = null;
   initialState = true;
 
+  private destroy$ = new Subject<void>();
   private animationPlayer: AnimationPlayer | null = null;
 
-  constructor(private el: ElementRef, private builder: AnimationBuilder, private renderer2: Renderer2) {}
+  constructor(
+    private ngZone: NgZone,
+    private el: ElementRef<HTMLElement>,
+    private builder: AnimationBuilder,
+    private renderer2: Renderer2,
+    private graphComponent: NzGraphComponent
+  ) {}
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<MouseEvent>(this.el.nativeElement, 'click')
+        .pipe(
+          filter(event => {
+            event.preventDefault();
+            return this.graphComponent.nzNodeClick.observers.length > 0;
+          }),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          // Re-enter the Angular zone and run the change detection only if there're any `nzNodeClick` listeners,
+          // e.g.: `<nz-graph (nzNodeClick)="..."></nz-graph>`.
+          this.ngZone.run(() => this.graphComponent.nzNodeClick.emit(this.node));
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
 
   makeAnimation(): Observable<void> {
     const cur = this.getAnimationInfo();
