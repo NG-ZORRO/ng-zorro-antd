@@ -16,6 +16,7 @@ import {
   Host,
   HostListener,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -28,7 +29,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -327,6 +328,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   constructor(
     public cascaderService: NzCascaderService,
     public nzConfigService: NzConfigService,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private i18nService: NzI18nService,
     elementRef: ElementRef,
@@ -392,10 +394,12 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = this.directionality.value;
       srv.$redraw.next();
     });
+
+    this.setupKeydownListener();
   }
 
   ngOnDestroy(): void {
@@ -502,49 +506,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   handleInputFocus(): void {
     this.focus();
-  }
-
-  @HostListener('keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent): void {
-    const keyCode = event.keyCode;
-
-    if (
-      keyCode !== DOWN_ARROW &&
-      keyCode !== UP_ARROW &&
-      keyCode !== LEFT_ARROW &&
-      keyCode !== RIGHT_ARROW &&
-      keyCode !== ENTER &&
-      keyCode !== BACKSPACE &&
-      keyCode !== ESCAPE
-    ) {
-      return;
-    }
-
-    // Press any keys above to reopen menu.
-    if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
-      return this.setMenuVisible(true);
-    }
-
-    // Make these keys work as default in searching mode.
-    if (this.inSearchingMode && (keyCode === BACKSPACE || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW)) {
-      return;
-    }
-
-    // Interact with the component.
-    if (this.menuVisible) {
-      event.preventDefault();
-      if (keyCode === DOWN_ARROW) {
-        this.moveUpOrDown(false);
-      } else if (keyCode === UP_ARROW) {
-        this.moveUpOrDown(true);
-      } else if (keyCode === LEFT_ARROW) {
-        this.moveLeft();
-      } else if (keyCode === RIGHT_ARROW) {
-        this.moveRight();
-      } else if (keyCode === ENTER) {
-        this.onEnter();
-      }
-    }
   }
 
   @HostListener('click')
@@ -778,13 +739,74 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   private scrollToActivatedOptions(): void {
-    // scroll only until option menu view is ready
-    Promise.resolve().then(() => {
-      this.cascaderItems
-        .toArray()
-        .filter(e => e.activated)
-        .forEach(e => {
-          e.nativeElement?.scrollIntoView({ block: 'start', inline: 'nearest' });
+    // The `scrollIntoView` is a native DOM API, which doesn't require Angular to run
+    // a change detection when a promise microtask is resolved.
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve().then(() => {
+        // scroll only until option menu view is ready
+        this.cascaderItems
+          .toArray()
+          .filter(e => e.activated)
+          .forEach(e => {
+            e.nativeElement.scrollIntoView({ block: 'start', inline: 'nearest' });
+          });
+      });
+    });
+  }
+
+  private setupKeydownListener(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<KeyboardEvent>(this.el, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          const keyCode = event.keyCode;
+
+          if (
+            keyCode !== DOWN_ARROW &&
+            keyCode !== UP_ARROW &&
+            keyCode !== LEFT_ARROW &&
+            keyCode !== RIGHT_ARROW &&
+            keyCode !== ENTER &&
+            keyCode !== BACKSPACE &&
+            keyCode !== ESCAPE
+          ) {
+            return;
+          }
+
+          // Press any keys above to reopen menu.
+          if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
+            // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
+            return this.ngZone.run(() => this.setMenuVisible(true));
+          }
+
+          // Make these keys work as default in searching mode.
+          if (this.inSearchingMode && (keyCode === BACKSPACE || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW)) {
+            return;
+          }
+
+          if (!this.menuVisible) {
+            return;
+          }
+
+          event.preventDefault();
+
+          this.ngZone.run(() => {
+            // Interact with the component.
+            if (keyCode === DOWN_ARROW) {
+              this.moveUpOrDown(false);
+            } else if (keyCode === UP_ARROW) {
+              this.moveUpOrDown(true);
+            } else if (keyCode === LEFT_ARROW) {
+              this.moveLeft();
+            } else if (keyCode === RIGHT_ARROW) {
+              this.moveRight();
+            } else if (keyCode === ENTER) {
+              this.onEnter();
+            }
+            // `@HostListener`s run `markForCheck()` internally before calling the actual handler so
+            // we call `markForCheck()` to be backwards-compatible.
+            this.cdr.markForCheck();
+          });
         });
     });
   }
