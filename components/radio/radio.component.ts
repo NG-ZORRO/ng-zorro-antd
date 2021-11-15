@@ -13,6 +13,7 @@ import {
   ElementRef,
   forwardRef,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -20,7 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -73,8 +74,7 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
     '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
-    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`,
-    '(click)': 'onHostClick($event)'
+    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
@@ -95,21 +95,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
 
   dir: Direction = 'ltr';
 
-  onHostClick(event: MouseEvent): void {
-    /** prevent label click triggered twice. **/
-    event.stopPropagation();
-    event.preventDefault();
-    if (!this.nzDisabled && !this.isChecked) {
-      if (this.nzRadioService) {
-        this.nzRadioService.select(this.nzValue);
-      }
-      if (this.isNgModel) {
-        this.isChecked = true;
-        this.onChange(true);
-      }
-    }
-  }
-
   focus(): void {
     this.focusMonitor.focusVia(this.inputElement!, 'keyboard');
   }
@@ -119,6 +104,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   constructor(
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
@@ -173,12 +159,14 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         }
       });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
+
+    this.setupClickListener();
   }
 
   ngAfterViewInit(): void {
@@ -191,5 +179,30 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     this.destroy$.next();
     this.destroy$.complete();
     this.focusMonitor.stopMonitoring(this.elementRef);
+  }
+
+  private setupClickListener(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          /** prevent label click triggered twice. **/
+          event.stopPropagation();
+          event.preventDefault();
+          if (this.nzDisabled || this.isChecked) {
+            return;
+          }
+          this.ngZone.run(() => {
+            if (this.nzRadioService) {
+              this.nzRadioService.select(this.nzValue);
+            }
+            if (this.isNgModel) {
+              this.isChecked = true;
+              this.onChange(true);
+            }
+            this.cdr.markForCheck();
+          });
+        });
+    });
   }
 }
