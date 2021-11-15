@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-inferrable-types, @typescript-eslint/no-explicit-any, prefer-const */
 import { DOCUMENT, PlatformLocation } from '@angular/common';
-import { Injector } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ApplicationRef, Injector, NgZone } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NzScrollService } from './scroll';
 
@@ -102,5 +102,36 @@ describe('NzScrollService', () => {
       const mockEl: any = { scrollTop: 10 };
       expect(scrollService.getScroll(mockEl)).toBe(10);
     });
+  });
+
+  describe('change detection behavior', () => {
+    // The `requestAnimationFrame` is mocked as `setTimeout(fn, 16)`.
+    const tickAnimationFrame = (): void => tick(16);
+
+    it('should not trigger change detection when calling `scrollTo`', fakeAsync(() => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      scrollService.scrollTo();
+
+      tickAnimationFrame();
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+    }));
+
+    it('should call the custom callback within the Angular zone', fakeAsync(() => {
+      let callbackHasBeenCalledWithinTheAngularZone = false;
+
+      scrollService.scrollTo(undefined, undefined, {
+        duration: 0,
+        callback: () => {
+          callbackHasBeenCalledWithinTheAngularZone = NgZone.isInAngularZone();
+        }
+      });
+
+      tickAnimationFrame();
+
+      expect(callbackHasBeenCalledWithinTheAngularZone).toBeTrue();
+    }));
   });
 });
