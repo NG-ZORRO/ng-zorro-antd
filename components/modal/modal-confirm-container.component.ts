@@ -14,6 +14,7 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  NgZone,
   Optional,
   Output,
   Renderer2,
@@ -114,6 +115,7 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
   locale!: NzModalI18nInterface;
 
   constructor(
+    ngZone: NgZone,
     private i18n: NzI18nService,
     elementRef: ElementRef,
     focusTrapFactory: FocusTrapFactory,
@@ -125,7 +127,19 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+    super(
+      ngZone,
+      elementRef,
+      focusTrapFactory,
+      cdr,
+      render,
+      overlayRef,
+      nzConfigService,
+      config,
+      document,
+      animationType
+    );
+
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
