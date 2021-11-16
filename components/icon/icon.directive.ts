@@ -8,12 +8,16 @@ import {
   Directive,
   ElementRef,
   Input,
+  NgZone,
   OnChanges,
+  OnDestroy,
   OnInit,
   Optional,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
+import { from, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
@@ -29,7 +33,7 @@ import { NzIconPatchService, NzIconService } from './icon.service';
     '[class.anticon]': 'true'
   }
 })
-export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
+export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   static ngAcceptInputType_nzSpin: BooleanInput;
 
   cacheClassName: string | null = null;
@@ -67,7 +71,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private iconfont?: string;
   private spin: boolean = false;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
+    private ngZone: NgZone,
     elementRef: ElementRef,
     public iconService: NzIconService,
     public renderer: Renderer2,
@@ -116,17 +123,27 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
   /**
    * Replacement of `changeIcon` for more modifications.
    */
   private changeIcon2(): void {
     this.setClassName();
-    this._changeIcon().then(svgOrRemove => {
-      if (svgOrRemove) {
-        this.setSVGData(svgOrRemove);
-        this.handleSpin(svgOrRemove);
-        this.handleRotate(svgOrRemove);
-      }
+
+    // We don't need to re-enter the Angular zone for adding classes or attributes through the renderer.
+    this.ngZone.runOutsideAngular(() => {
+      from(this._changeIcon())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(svgOrRemove => {
+          if (svgOrRemove) {
+            this.setSVGData(svgOrRemove);
+            this.handleSpin(svgOrRemove);
+            this.handleRotate(svgOrRemove);
+          }
+        });
     });
   }
 
