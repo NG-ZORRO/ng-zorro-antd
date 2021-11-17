@@ -16,7 +16,7 @@ declare const require: any;
 const tags = __karma__.config.args[0];
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
-    teardown: { destroyAfterEach: false }
+  teardown: { destroyAfterEach: false }
 });
 jasmine.getEnv().allowRespy(true);
 
@@ -30,7 +30,7 @@ if (tags && tags.indexOf('--') === -1) {
 }
 
 // Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
+const context = require.context('../components/', true, /\.spec\.ts$/);
 // Filter specify file
 const specFiles = context.keys().filter((path: string) => filterRegExp.test(path));
 // And load the modules.
