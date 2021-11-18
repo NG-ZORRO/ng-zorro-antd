@@ -194,7 +194,6 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     } else if (placement === 'leftTop' || placement === 'leftBottom' || placement === 'left') {
       this.position = 'left';
     }
-    this.cdr.markForCheck();
   }
 
   constructor(
