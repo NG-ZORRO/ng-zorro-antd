@@ -11,8 +11,13 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 import { NzTreeNodeCheckboxComponent } from './checkbox';
-import { NzTreeNodeIndentLineDirective, NzTreeNodeIndentsComponent } from './indent';
-import { NzTreeNodeComponent, NzTreeNodeDefDirective, NzTreeVirtualScrollNodeOutletDirective } from './node';
+import {
+  NzTreeNodeComponent,
+  NzTreeNodeDefDirective,
+  NzTreeNodeIndentLineDirective,
+  NzTreeNodeIndentsComponent,
+  NzTreeVirtualScrollNodeOutletDirective
+} from './node';
 import { NzTreeNodeOptionComponent } from './option';
 import { NzTreeNodeOutletDirective } from './outlet';
 import { NzTreeNodePaddingDirective } from './padding';

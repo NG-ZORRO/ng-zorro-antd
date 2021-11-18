@@ -25,6 +25,7 @@ import { filter, startWith, takeUntil } from 'rxjs/operators';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 export interface BreadcrumbOption {
   label: string;
@@ -163,4 +164,40 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
     }
   }
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-breadcrumb-item',
+  exportAs: 'nzBreadcrumbItem',
+  preserveWhitespaces: false,
+  template: `
+    <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
+      <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
+        <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
+        <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
+      </span>
+    </ng-container>
+
+    <ng-template #noMenuTpl>
+      <span class="ant-breadcrumb-link">
+        <ng-content></ng-content>
+      </span>
+    </ng-template>
+
+    <span class="ant-breadcrumb-separator" *ngIf="nzBreadCrumbComponent.nzSeparator">
+      <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
+        {{ nzBreadCrumbComponent.nzSeparator }}
+      </ng-container>
+    </span>
+  `
+})
+export class NzBreadCrumbItemComponent {
+  /**
+   * Dropdown content of a breadcrumb item.
+   */
+  @Input() nzOverlay?: NzDropdownMenuComponent;
+
+  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
 }
