@@ -104,7 +104,6 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                 nz-graph-node
                 [node]="node"
                 [customTemplate]="nodeTemplate"
-                (nodeClick)="clickNode($event)"
               ></g>
               <g
                 *ngIf="node.type === 0"
@@ -112,7 +111,6 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                 nz-graph-node
                 [node]="node"
                 [customTemplate]="groupNodeTemplate"
-                (nodeClick)="clickNode($event)"
               ></g>
               <ng-container
                 *ngIf="node.expanded"
@@ -249,13 +247,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
       this._dataSubscription = null;
     }
     cancelRequestAnimationFrame(this.requestId);
-  }
-
-  /**
-   * Emit event
-   */
-  clickNode(node: NzGraphNode | NzGraphGroupNode): void {
-    this.nzNodeClick.emit(node);
   }
 
   /**
