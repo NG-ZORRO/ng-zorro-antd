@@ -18,8 +18,9 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 import { NzModalCloseComponent } from './modal-close.component';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
-import { NzModalContainerComponent, NzModalFooterComponent } from './modal-container.component';
+import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalContentDirective } from './modal-content.directive';
+import { NzModalFooterComponent } from './modal-footer.component';
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalTitleComponent } from './modal-title.component';
 import { NzModalTitleDirective } from './modal-title.directive';

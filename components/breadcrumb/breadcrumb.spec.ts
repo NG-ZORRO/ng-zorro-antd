@@ -9,7 +9,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzBreadCrumbComponent, NzBreadCrumbItemComponent } from './breadcrumb.component';
+import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
+import { NzBreadCrumbComponent } from './breadcrumb.component';
 import { NzBreadCrumbModule } from './breadcrumb.module';
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';

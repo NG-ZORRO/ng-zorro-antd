@@ -7,6 +7,7 @@ export * from './tree-view.module';
 export * from './checkbox';
 export * from './utils';
 export * from './data-source';
+export * from './indent';
 export * from './node';
 export * from './option';
 export * from './outlet';

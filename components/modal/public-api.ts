@@ -20,4 +20,5 @@ export * from './modal-title.component';
 export * from './modal-legacy-api';
 export * from './modal-types';
 export * from './modal-animations';
+export * from './modal-footer.component';
 export * from './utils';
