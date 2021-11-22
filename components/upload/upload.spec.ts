@@ -948,11 +948,12 @@ describe('upload', () => {
         width = 1;
         height = 2;
 
-        onload(): void {}
-
-        set src(_: string) {
-          this.onload();
+        addEventListener(_name: string, callback: VoidFunction): void {
+          callback();
         }
+        removeEventListener(): void {}
+
+        set src(_: string) {}
       }
       it('should be generate thumb when is valid image data', fakeAsync(() => {
         spyOn(window as any, 'Image').and.returnValue(new MockImage());
