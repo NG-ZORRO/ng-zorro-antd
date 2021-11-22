@@ -335,6 +335,26 @@ describe('origin', () => {
   });
 });
 
+describe('arrow', () => {
+  let testBed: ComponentBed<NzTestTooltipArrowComponent>;
+  let component: NzTestTooltipArrowComponent;
+
+  beforeEach(fakeAsync(() => {
+    testBed = createComponentBed(NzTestTooltipArrowComponent, {
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    });
+    component = testBed.component;
+  }));
+
+  it('should support arrow pointing at center', () => {
+    const overlayElement = getOverlayElementForTooltip(component.tooltipDirective);
+
+    expect(overlayElement.querySelector('.ant-tooltip-arrow')).toBeTruthy();
+    // just read style.transform wouldn't get us the correct result
+    expect(overlayElement.parentElement!.innerHTML).toContain('transform: translateX');
+  });
+});
+
 function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLElement {
   return tooltip!.component!.overlay.overlayRef.overlayElement;
 }
@@ -436,4 +456,20 @@ export class NzTooltipTestComponent {
 })
 export class NzTestTooltipTargetComponent {
   @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
+}
+
+@Component({
+  template: ` <a
+    #titleString
+    nz-tooltip
+    [nzTooltipVisible]="true"
+    nzTooltipTitle="Title"
+    nzTooltipPlacement="bottomLeft"
+    [nzTooltipArrowPointAtCenter]="true"
+  >
+    Tooltip
+  </a>`
+})
+export class NzTestTooltipArrowComponent {
+  @ViewChild('titleString', { static: false, read: NzTooltipDirective }) tooltipDirective!: NzTooltipDirective;
 }
