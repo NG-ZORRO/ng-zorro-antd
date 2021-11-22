@@ -64,7 +64,7 @@ let nextId = 0;
   ],
   template: `
     <nz-tabs-nav
-      *ngIf="tabs.length"
+      *ngIf="tabs.length || addable"
       [ngStyle]="nzTabBarStyle"
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
