@@ -651,12 +651,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           startWith(true),
           switchMap(() =>
             merge(
-              ...[
-                this.listOfNzOptionComponent.changes,
-                this.listOfNzOptionGroupComponent.changes,
-                ...this.listOfNzOptionComponent.map(option => option.changes),
-                ...this.listOfNzOptionGroupComponent.map(option => option.changes)
-              ]
+              ...this.listOfNzOptionComponent.map(option => option.changes),
+              ...this.listOfNzOptionGroupComponent.map(option => option.changes)
             ).pipe(startWith(true))
           ),
           takeUntil(this.destroy$)
