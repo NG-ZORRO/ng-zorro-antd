@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+
 import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
 
 @Component({
@@ -27,8 +28,6 @@ export class NzDemoMentionAsyncComponent {
 
   fetchSuggestions(value: string, callback: (suggestions: string[]) => void): void {
     const users = ['afc163', 'benjycui', 'yiminghe', 'jljsj33', 'dqaria', 'RaoHai'];
-    setTimeout(() => {
-      return callback(users.filter(item => item.indexOf(value) !== -1));
-    }, 500);
+    setTimeout(() => callback(users.filter(item => item.indexOf(value) !== -1)), 500);
   }
 }

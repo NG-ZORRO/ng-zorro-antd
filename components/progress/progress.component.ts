@@ -16,11 +16,12 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import {
   NzProgressCirclePath,
@@ -72,8 +73,8 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
     <div
       [ngClass]="'ant-progress ant-progress-status-' + status"
-      [class.ant-progress-line]="nzType == 'line'"
-      [class.ant-progress-small]="nzSize == 'small'"
+      [class.ant-progress-line]="nzType === 'line'"
+      [class.ant-progress-small]="nzSize === 'small'"
       [class.ant-progress-show-info]="nzShowInfo"
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"
@@ -201,7 +202,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   dir: Direction = 'ltr';
 
-  trackByFn = (index: number) => `${index}`;
+  trackByFn = (index: number): string => `${index}`;
 
   get formatter(): NzProgressFormatter {
     return this.nzFormat || defaultFormatter;
@@ -389,8 +390,13 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         return {
           stroke: this.isGradient && !isSuccessPercent ? `url(#gradient-${this.gradientId})` : null,
           strokePathStyle: {
-            stroke: !this.isGradient ? (isSuccessPercent ? statusColorMap.get('success') : (this.nzStrokeColor as string)) : null,
-            transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
+            stroke: !this.isGradient
+              ? isSuccessPercent
+                ? statusColorMap.get('success')
+                : (this.nzStrokeColor as string)
+              : null,
+            transition:
+              'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
             strokeDasharray: `${((value || 0) / 100) * (len - gapDegree)}px ${len}px`,
             strokeDashoffset: `-${gapDegree / 2}px`
           }

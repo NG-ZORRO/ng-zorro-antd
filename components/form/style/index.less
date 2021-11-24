@@ -89,9 +89,9 @@
 
     > label {
       position: relative;
-      // display: inline;
       display: inline-flex;
       align-items: center;
+      max-width: 100%;
       height: @form-item-label-height;
       color: @label-color;
       font-size: @form-item-label-font-size;
@@ -235,27 +235,33 @@
 @keyframes diffZoomIn1 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
 @keyframes diffZoomIn2 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
 @keyframes diffZoomIn3 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 

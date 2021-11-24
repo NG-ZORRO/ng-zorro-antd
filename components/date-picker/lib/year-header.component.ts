@@ -10,7 +10,7 @@ import { PanelSelector } from './interface';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'year-header', // tslint:disable-line:component-selector
+  selector: 'year-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'yearHeader',
   templateUrl: './abstract-panel-header.html'
 })

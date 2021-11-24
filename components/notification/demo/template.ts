@@ -1,4 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
@@ -6,7 +7,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   template: `
     <button nz-button [nzType]="'primary'" (click)="ninja()">Open the notification box</button>
     <ng-template let-fruit="data">
-      It's a <nz-tag [nzColor]="fruit.color">{{ fruit.name }}</nz-tag>
+      It's a
+      <nz-tag [nzColor]="fruit.color">{{ fruit.name }}</nz-tag>
       <button nz-button nzSize="small">Cut It!</button>
     </ng-template>
   `,

@@ -139,7 +139,9 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
         viewContainerRef.remove(viewContainerRef.indexOf(this._viewRef));
       }
 
-      this._viewRef = this.data ? viewContainerRef.createEmbeddedView(this.data.nodeDef.template, this.data.context) : null;
+      this._viewRef = this.data
+        ? viewContainerRef.createEmbeddedView(this.data.nodeDef.template, this.data.context)
+        : null;
 
       if (CdkTreeNode.mostRecentTreeNode && this._viewRef) {
         CdkTreeNode.mostRecentTreeNode.data = this.data.data;

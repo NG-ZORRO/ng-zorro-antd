@@ -2,16 +2,18 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { BidiModule } from '@angular/cdk/bidi';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzResizeObserversModule } from 'ng-zorro-antd/core/resize-observers';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -20,6 +22,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 import { NzFilterTriggerComponent } from './addon/filter-trigger.component';
 import { NzTableFilterComponent } from './addon/filter.component';
 import { NzRowExpandButtonDirective } from './addon/row-expand-button.directive';
@@ -109,7 +112,7 @@ import { NzTrDirective } from './table/tr.directive';
     CommonModule,
     PlatformModule,
     NzPaginationModule,
-    NzResizeObserversModule,
+    NzResizeObserverModule,
     NzSpinModule,
     NzI18nModule,
     NzIconModule,

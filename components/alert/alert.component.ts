@@ -19,12 +19,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
 
@@ -60,7 +61,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
           <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
         </span>
       </div>
-      <button type="button" tabindex="0" *ngIf="nzCloseable || nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">
+      <button
+        type="button"
+        tabindex="0"
+        *ngIf="nzCloseable || nzCloseText"
+        class="ant-alert-close-icon"
+        (click)="closeAlert()"
+      >
         <ng-template #closeDefaultTemplate>
           <i nz-icon nzType="close"></i>
         </ng-template>
@@ -101,7 +108,11 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   private isShowIconSet = false;
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

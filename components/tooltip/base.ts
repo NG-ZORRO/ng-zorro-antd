@@ -4,7 +4,12 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -23,13 +28,14 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
-import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
 export interface PropertyMapping {
   [key: string]: [string, () => unknown];
@@ -39,6 +45,7 @@ export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
+  arrowPointAtCenter?: boolean;
   config?: Required<PopoverConfig | PopConfirmConfig>;
   directiveTitle?: NzTSType | null;
   directiveContent?: NzTSType | null;
@@ -103,7 +110,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {
-      noAnimation: ['noAnimation', () => this.noAnimation]
+      noAnimation: ['noAnimation', () => !!this.noAnimation]
     };
   }
 
@@ -175,15 +182,20 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     this.component = componentRef.instance as NzTooltipBaseComponent;
 
     // Remove the component's DOM because it should be in the overlay container.
-    this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), componentRef.location.nativeElement);
+    this.renderer.removeChild(
+      this.renderer.parentNode(this.elementRef.nativeElement),
+      componentRef.location.nativeElement
+    );
     this.component.setOverlayOrigin({ elementRef: this.origin || this.elementRef });
 
     this.initProperties();
 
-    this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
-      this.internalVisible = visible;
-      this.visibleChange.emit(visible);
-    });
+    this.component.nzVisibleChange
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((visible: boolean) => {
+        this.internalVisible = visible;
+        this.visibleChange.emit(visible);
+      });
   }
 
   protected registerTriggers(): void {
@@ -220,8 +232,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
         })
       );
     } else if (trigger === 'focus') {
-      this.triggerDisposables.push(this.renderer.listen(el, 'focus', () => this.show()));
-      this.triggerDisposables.push(this.renderer.listen(el, 'blur', () => this.hide()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'focusin', () => this.show()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'focusout', () => this.hide()));
     } else if (trigger === 'click') {
       this.triggerDisposables.push(
         this.renderer.listen(el, 'click', (e: MouseEvent) => {
@@ -251,15 +263,18 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       mouseLeaveDelay: ['nzMouseLeaveDelay', () => this._mouseLeaveDelay],
       overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
       overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
+      arrowPointAtCenter: ['nzArrowPointAtCenter', () => this.arrowPointAtCenter],
       ...this.getProxyPropertyMap()
     };
 
-    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach((property: NzSafeAny) => {
-      if (mappingProperties[property]) {
-        const [name, valueFn] = mappingProperties[property];
-        this.updateComponentValue(name, valueFn());
+    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach(
+      (property: NzSafeAny) => {
+        if (mappingProperties[property]) {
+          const [name, valueFn] = mappingProperties[property];
+          this.updateComponentValue(name, valueFn());
+        }
       }
-    });
+    );
 
     this.component?.updateByDirective();
   }
@@ -304,14 +319,16 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 }
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzArrowPointAtCenter: BooleanInput;
 
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   nzTitle: NzTSType | null = null;
   nzContent: NzTSType | null = null;
+  nzArrowPointAtCenter: boolean = false;
   nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
   nzBackdrop = false;
@@ -344,7 +361,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string[]) {
+  set nzPlacement(value: POSITION_TYPE[]) {
     const preferredPosition = value.map(placement => POSITION_MAP[placement]);
     this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
@@ -361,13 +378,14 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  private destroy$ = new Subject<void>();
+  protected destroy$ = new Subject<void>();
 
   constructor(
     public cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     public noAnimation?: NzNoAnimationDirective
   ) {}
+
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -437,13 +455,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     this.cdr.detectChanges();
   }
 
-  updateStyles(): void {
-    this._classMap = {
-      [this.nzOverlayClassName]: true,
-      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
-    };
-  }
-
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
@@ -462,6 +473,13 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     if (this.isEmpty()) {
       this.hide();
     }
+  }
+
+  protected updateStyles(): void {
+    this._classMap = {
+      [this.nzOverlayClassName]: true,
+      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
+    };
   }
 
   /**

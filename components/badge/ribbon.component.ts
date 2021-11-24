@@ -13,6 +13,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { badgePresetColors } from './preset-colors';
 
 @Component({

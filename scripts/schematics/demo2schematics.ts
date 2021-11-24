@@ -1,5 +1,13 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import * as fs from 'fs-extra';
+
 import * as path from 'path';
+
+
 import { buildConfig } from '../build-config';
 
 const glob = require('glob').sync;

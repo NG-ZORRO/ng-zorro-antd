@@ -4,8 +4,10 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
@@ -14,7 +16,12 @@ describe('switch', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent, NzTestSwitchRtlComponent]
+        declarations: [
+          NzTestSwitchBasicComponent,
+          NzTestSwitchFormComponent,
+          NzTestSwitchTemplateComponent,
+          NzTestSwitchRtlComponent
+        ]
       });
       TestBed.compileComponents();
     })
@@ -178,12 +185,16 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-close');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain(
+        'anticon-close'
+      );
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-check');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain(
+        'anticon-check'
+      );
     }));
   });
   describe('switch form', () => {
@@ -272,7 +283,10 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="close"></i></ng-template>
-    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"></nz-switch>
+    <nz-switch
+      [nzCheckedChildren]="checkedChildrenTemplate"
+      [nzUnCheckedChildren]="unCheckedChildrenTemplate"
+    ></nz-switch>
   `
 })
 export class NzTestSwitchTemplateComponent {}

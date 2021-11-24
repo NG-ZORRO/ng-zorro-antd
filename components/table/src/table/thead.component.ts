@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 import {
   AfterContentInit,
   AfterViewInit,
@@ -21,10 +22,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
 import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
@@ -43,19 +45,21 @@ import { NzTrDirective } from './tr.directive';
     </ng-container>
   `
 })
-export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
+export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
   private destroy$ = new Subject<void>();
   isInsideTable = false;
   @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
   @ContentChildren(NzTrDirective, { descendants: true }) listOfNzTrDirective!: QueryList<NzTrDirective>;
-  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<NzThAddOnComponent>;
+  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<
+    NzThAddOnComponent<T>
+  >;
   @Output() readonly nzSortOrderChange = new EventEmitter<{ key: NzSafeAny; value: string | null }>();
 
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private nzTableStyleService: NzTableStyleService,
-    @Optional() private nzTableDataService: NzTableDataService
+    @Optional() private nzTableDataService: NzTableDataService<T>
   ) {
     this.isInsideTable = !!this.nzTableStyleService;
   }
@@ -98,14 +102,14 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
       });
     }
     if (this.nzTableDataService) {
-      const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(startWith(this.listOfNzThAddOnComponent)) as Observable<
-        QueryList<NzThAddOnComponent>
-      >;
+      const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(
+        startWith(this.listOfNzThAddOnComponent)
+      ) as Observable<QueryList<NzThAddOnComponent<T>>>;
       const manualSort$ = listOfColumn$.pipe(
         switchMap(() => merge(...this.listOfNzThAddOnComponent.map(th => th.manualClickOrder$))),
         takeUntil(this.destroy$)
       );
-      manualSort$.subscribe((data: NzThAddOnComponent) => {
+      manualSort$.subscribe((data: NzThAddOnComponent<T>) => {
         const emitValue = { key: data.nzColumnKey, value: data.sortOrder };
         this.nzSortOrderChange.emit(emitValue);
         if (data.nzSortFn && data.nzSortPriority === false) {
@@ -114,7 +118,9 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
       });
       const listOfCalcOperator$ = listOfColumn$.pipe(
         switchMap(list =>
-          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent) => c.calcOperatorChange$)]).pipe(mergeMap(() => listOfColumn$))
+          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent<T>) => c.calcOperatorChange$)]).pipe(
+            mergeMap(() => listOfColumn$)
+          )
         ),
         map(list =>
           list

@@ -33,9 +33,7 @@ import { Component } from '@angular/core';
             <nz-breadcrumb-item>User</nz-breadcrumb-item>
             <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <div class="inner-content">
-            Bill is a cat.
-          </div>
+          <div class="inner-content">Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>

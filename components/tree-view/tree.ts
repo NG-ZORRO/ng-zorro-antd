@@ -18,16 +18,15 @@ import {
   Optional,
   ViewContainerRef
 } from '@angular/core';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
 import { Observable, Subject } from 'rxjs';
-
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 @Component({ template: '' })
-// tslint:disable-next-line: component-class-suffix
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   static ngAcceptInputType_nzDirectoryTree: BooleanInput;
   static ngAcceptInputType_nzBlockNode: BooleanInput;
@@ -73,7 +72,12 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>, dataDiffer?: IterableDiffer<T>, viewContainer?: ViewContainerRef, parentData?: T): void {
+  renderNodeChanges(
+    data: T[] | readonly T[],
+    dataDiffer?: IterableDiffer<T>,
+    viewContainer?: ViewContainerRef,
+    parentData?: T
+  ): void {
     super.renderNodeChanges(data, dataDiffer, viewContainer, parentData);
     this._dataSourceChanged.next();
   }

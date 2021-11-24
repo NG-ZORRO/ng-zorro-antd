@@ -13,7 +13,7 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'year-table',
   exportAs: 'yearTable',
   templateUrl: 'abstract-table.html'

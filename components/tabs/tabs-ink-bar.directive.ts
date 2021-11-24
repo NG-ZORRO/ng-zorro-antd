@@ -7,6 +7,7 @@ import { Directive, ElementRef, Inject, Input, NgZone, Optional } from '@angular
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+
 import { NzTabPositionMode } from './interfaces';
 
 @Directive({
@@ -53,18 +54,18 @@ export class NzTabsInkBarDirective {
   }
 
   getLeftPosition(element: HTMLElement): string {
-    return element ? (element.offsetLeft || 0) + 'px' : '0';
+    return element ? `${element.offsetLeft || 0}px` : '0';
   }
 
   getElementWidth(element: HTMLElement): string {
-    return element ? (element.offsetWidth || 0) + 'px' : '0';
+    return element ? `${element.offsetWidth || 0}px` : '0';
   }
 
   getTopPosition(element: HTMLElement): string {
-    return element ? (element.offsetTop || 0) + 'px' : '0';
+    return element ? `${element.offsetTop || 0}px` : '0';
   }
 
   getElementHeight(element: HTMLElement): string {
-    return element ? (element.offsetHeight || 0) + 'px' : '0';
+    return element ? `${element.offsetHeight || 0}px` : '0';
   }
 }

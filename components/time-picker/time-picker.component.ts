@@ -26,16 +26,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isValid } from 'date-fns';
-import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { Observable, of, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
+import { isValid } from 'date-fns';
+
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { Observable, of, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
@@ -77,12 +78,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
-      [cdkConnectedOverlayOffsetY]="-2"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
       (overlayOutsideClick)="onClickOutside($event)"
     >
-      <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
+      <div [@slideMotion]="'enter'" class="ant-picker-dropdown" style="position: relative">
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
@@ -145,13 +145,34 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   i18nPlaceHolder$: Observable<string | undefined> = of(undefined);
   overlayPositions: ConnectionPositionPair[] = [
     {
+      offsetY: 3,
       originX: 'start',
       originY: 'bottom',
       overlayX: 'start',
-      overlayY: 'top',
-      offsetY: 3
+      overlayY: 'top'
+    },
+    {
+      offsetY: -3,
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom'
+    },
+    {
+      offsetY: 3,
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top'
+    },
+    {
+      offsetY: -3,
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'bottom'
     }
-  ];
+  ] as ConnectionPositionPair[];
   dir: Direction = 'ltr';
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
@@ -242,6 +263,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onFocus(value: boolean): void {
     this.focused = value;
+    if (!value) {
+      if (this.checkTimeValid(this.value)) {
+        this.setCurrentValueAndClose();
+      } else {
+        this.setValue(this.preValue);
+        this.close();
+      }
+    }
   }
 
   focus(): void {
@@ -304,7 +333,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.origin = new CdkOverlayOrigin(this.element);
 
-    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder));
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
+      map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder)
+    );
 
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -375,5 +406,21 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
     this.cdr.markForCheck();
+  }
+
+  private checkTimeValid(value: Date | null): boolean {
+    if (!value) {
+      return true;
+    }
+
+    const disabledHours = this.nzDisabledHours?.();
+    const disabledMinutes = this.nzDisabledMinutes?.(value.getHours());
+    const disabledSeconds = this.nzDisabledSeconds?.(value.getHours(), value.getMinutes());
+
+    return !(
+      disabledHours?.includes(value.getHours()) ||
+      disabledMinutes?.includes(value.getMinutes()) ||
+      disabledSeconds?.includes(value.getSeconds())
+    );
   }
 }

@@ -21,17 +21,22 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzMenuItemDirective } from './menu-item.directive';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
-export function MenuServiceFactory(serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService): MenuService {
+export function MenuServiceFactory(
+  serviceInsideDropDown: MenuService,
+  serviceOutsideDropDown: MenuService
+): MenuService {
   return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
 }
 export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean {
@@ -83,7 +88,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
   static ngAcceptInputType_nzSelectable: BooleanInput;
 
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true })
+  listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';

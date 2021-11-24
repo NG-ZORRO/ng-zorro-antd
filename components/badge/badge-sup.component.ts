@@ -14,6 +14,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -27,12 +28,17 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: `
     <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
       <span
+        [nzNoAnimation]="noAnimation"
         *ngFor="let n of maxNumberArray; let i = index"
         class="ant-scroll-number-only"
         [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
       >
         <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-          <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+          <p
+            *ngFor="let p of countSingleArray"
+            class="ant-scroll-number-only-unit"
+            [class.current]="p === countArray[i]"
+          >
             {{ p }}
           </p>
         </ng-container>
@@ -60,6 +66,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
+  @Input() noAnimation = false;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;

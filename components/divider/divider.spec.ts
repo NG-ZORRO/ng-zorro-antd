@@ -74,7 +74,15 @@ describe('divider', () => {
 });
 
 @Component({
-  template: ` <nz-divider #comp [nzDashed]="nzDashed" [nzType]="nzType" [nzText]="nzText" [nzOrientation]="nzOrientation"></nz-divider> `
+  template: `
+    <nz-divider
+      #comp
+      [nzDashed]="nzDashed"
+      [nzType]="nzType"
+      [nzText]="nzText"
+      [nzOrientation]="nzOrientation"
+    ></nz-divider>
+  `
 })
 class TestDividerComponent {
   @ViewChild('comp', { static: false }) comp!: NzDividerComponent;
@@ -87,7 +95,10 @@ class TestDividerComponent {
 @Component({
   template: `
     <nz-divider nzDashed [nzText]="text">
-      <ng-template #text><i nz-icon nzType="plus"></i> Add</ng-template>
+      <ng-template #text>
+        <i nz-icon nzType="plus"></i>
+        Add
+      </ng-template>
     </nz-divider>
   `
 })

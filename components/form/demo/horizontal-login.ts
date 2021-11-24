@@ -31,10 +31,7 @@ export class NzDemoFormHorizontalLoginComponent implements OnInit {
   validateForm!: FormGroup;
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
+    console.log('submit', this.validateForm.value);
   }
 
   constructor(private fb: FormBuilder) {}

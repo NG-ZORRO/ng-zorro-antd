@@ -22,6 +22,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzTooltipArrowPointAtCenter]` | Arrow point at center of the origin | `boolean` | `false` |
 | `[nzTooltipTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
 | `[nzTooltipTrigger]` | Tooltip trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzTooltipPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'`   |
@@ -33,6 +34,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipMouseLeaveDelay]` | Delay in seconds, before tooltip is hidden on mouse leave | `number` | `0.1` |
 | `[nzTooltipOverlayClassName]` | Class name of the tooltip card | `string` | - |
 | `[nzTooltipOverlayStyle]` | Style of the tooltip card | `object` | - |
+
 ### Common API
 
 The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.

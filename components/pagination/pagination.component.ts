@@ -20,13 +20,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -146,7 +147,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   onTotalChange(total: number): void {
     const lastIndex = this.getLastIndex(total, this.nzPageSize);
     if (this.nzPageIndex > lastIndex) {
-      Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
+      Promise.resolve().then(() => {
+        this.onPageIndexChange(lastIndex);
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -205,7 +209,8 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.total$.next(this.nzTotal);
     }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
-      this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
+      this.showPagination =
+        (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
     }
 
     if (nzSize) {

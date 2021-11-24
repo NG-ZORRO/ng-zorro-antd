@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 
 @Component({
@@ -11,7 +12,13 @@ import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
       <label nz-radio nzValue="left">left</label>
     </nz-radio-group>
     <button nz-button nzType="primary" (click)="open()">Open</button>
-    <nz-drawer [nzClosable]="false" [nzVisible]="visible" [nzPlacement]="placement" nzTitle="Basic Drawer" (nzOnClose)="close()">
+    <nz-drawer
+      [nzClosable]="false"
+      [nzVisible]="visible"
+      [nzPlacement]="placement"
+      nzTitle="Basic Drawer"
+      (nzOnClose)="close()"
+    >
       <ng-container *nzDrawerContent>
         <p>Some contents...</p>
         <p>Some contents...</p>

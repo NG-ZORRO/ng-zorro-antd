@@ -1,6 +1,11 @@
-import { parseFragment, DefaultTreeDocument, DefaultTreeElement } from 'parse5';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-const hasClassName = (node: DefaultTreeElement, className: string) => {
+import { Attribute, DefaultTreeDocument, DefaultTreeElement, parseFragment } from "parse5";
+
+const hasClassName = (node: DefaultTreeElement, className: string): Attribute | undefined => {
   return node.attrs?.find?.(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
 };
 
@@ -8,7 +13,7 @@ export function findElementWithoutStructuralDirective(html: string, tagName: str
   const document = parseFragment(html, {sourceCodeLocationInfo: true}) as DefaultTreeDocument;
   const elements: DefaultTreeElement[] = [];
 
-  const visitNodes = nodes => {
+  const visitNodes = (nodes): void => {
     nodes.forEach(node => {
       if (node.childNodes && !(node.tagName === 'ng-template' && !!node.attrs.find(a => a.name!.toLowerCase() === directiveName.toLowerCase()))) {
         visitNodes(node.childNodes);
@@ -31,7 +36,7 @@ export function findElementWithTag(html: string, tagName: string): number[] {
   const document = parseFragment(html, {sourceCodeLocationInfo: true}) as DefaultTreeDocument;
   const elements: DefaultTreeElement[] = [];
 
-  const visitNodes = nodes => {
+  const visitNodes = (nodes): void => {
     nodes.forEach(node => {
       if (node.childNodes) {
         visitNodes(node.childNodes);
@@ -54,7 +59,7 @@ export function findElementWithClassName(html: string, className: string, tagNam
   const document = parseFragment(html, {sourceCodeLocationInfo: true}) as DefaultTreeDocument;
   const elements: DefaultTreeElement[] = [];
 
-  const visitNodes = nodes => {
+  const visitNodes = (nodes): void => {
     nodes.forEach(node => {
       if (node.childNodes) {
         visitNodes(node.childNodes);

@@ -5,7 +5,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
+
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/select.component';
@@ -221,9 +223,7 @@ class NzTestCalendarHeaderActiveDateComponent {
 }
 
 @Component({
-  template: `
-    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header>
-  `
+  template: ` <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header> `
 })
 class NzTestCalendarHeaderChangesComponent {
   year: number | null = null;

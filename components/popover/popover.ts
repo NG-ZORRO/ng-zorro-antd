@@ -21,11 +21,19 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+import {
+  isTooltipEmpty,
+  NzTooltipBaseDirective,
+  NzToolTipComponent,
+  NzTooltipTrigger,
+  PropertyMapping
+} from 'ng-zorro-antd/tooltip';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
 
@@ -37,8 +45,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzPopoverArrowPointAtCenter: BooleanInput;
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
+  @Input('nzPopoverArrowPointAtCenter') @InputBoolean() arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') title?: NzTSType;
   @Input('nzPopoverContent') content?: NzTSType;
   @Input('nz-popover') directiveTitle?: NzTSType | null;
@@ -52,7 +63,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverOverlayStyle') overlayStyle?: NgStyleInterface;
   @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
@@ -93,6 +104,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPush]="true"
+      [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
@@ -107,7 +119,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow"></div>
+          <div class="ant-popover-arrow">
+            <span class="ant-popover-arrow-content"></span>
+          </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
               <div class="ant-popover-title" *ngIf="nzTitle">

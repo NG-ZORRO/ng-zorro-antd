@@ -18,11 +18,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { NzTableFilterList } from '../table.types';
 
 interface NzThItemInterface {
@@ -37,7 +39,7 @@ interface NzThItemInterface {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span class="ant-table-filter-column-title">
+    <span class="ant-table-column-title">
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </span>
     <ng-container *ngIf="!customFilter; else extraTemplate">
@@ -52,14 +54,21 @@ interface NzThItemInterface {
       <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">
           <ul nz-menu>
-            <li nz-menu-item [nzSelected]="f.checked" *ngFor="let f of listOfParsedFilter; trackBy: trackByValue" (click)="check(f)">
+            <li
+              nz-menu-item
+              [nzSelected]="f.checked"
+              *ngFor="let f of listOfParsedFilter; trackBy: trackByValue"
+              (click)="check(f)"
+            >
               <label nz-radio *ngIf="!filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
               <label nz-checkbox *ngIf="filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
               <span>{{ f.text }}</span>
             </li>
           </ul>
           <div class="ant-table-filter-dropdown-btns">
-            <button nz-button nzType="link" nzSize="small" (click)="reset()" [disabled]="!isChecked">{{ locale.filterReset }}</button>
+            <button nz-button nzType="link" nzSize="small" (click)="reset()" [disabled]="!isChecked">
+              {{ locale.filterReset }}
+            </button>
             <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{ locale.filterConfirm }}</button>
           </div>
         </div>
@@ -96,9 +105,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       });
       filter.checked = !filter.checked;
     } else {
-      this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
-        return { ...item, checked: item === filter };
-      });
+      this.listOfParsedFilter = this.listOfParsedFilter.map(item => ({ ...item, checked: item === filter }));
     }
     this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
   }

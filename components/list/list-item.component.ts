@@ -17,10 +17,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subscription } from 'rxjs';
+
+import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
 
@@ -81,7 +82,12 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {
+  constructor(
+    elementRef: ElementRef,
+    renderer: Renderer2,
+    private parentComp: NzListComponent,
+    private cdr: ChangeDetectorRef
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-list-item');
   }
 

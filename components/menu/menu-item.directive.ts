@@ -19,10 +19,12 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzSubmenuService } from './submenu.service';
@@ -88,7 +90,13 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   private updateRouterActive(): void {
-    if (!this.listOfRouterLink || !this.listOfRouterLinkWithHref || !this.router || !this.router.navigated || !this.nzMatchRouter) {
+    if (
+      !this.listOfRouterLink ||
+      !this.listOfRouterLinkWithHref ||
+      !this.router ||
+      !this.router.navigated ||
+      !this.nzMatchRouter
+    ) {
       return;
     }
     Promise.resolve().then(() => {

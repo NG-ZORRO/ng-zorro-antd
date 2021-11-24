@@ -15,27 +15,33 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
+import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
-const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topRight, POSITION_MAP.topLeft];
+const listOfPositions = [
+  POSITION_MAP.bottomLeft,
+  POSITION_MAP.bottomRight,
+  POSITION_MAP.topRight,
+  POSITION_MAP.topLeft
+];
 
 @Directive({
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown'
 })
-export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzBackdrop: BooleanInput;
   static ngAcceptInputType_nzHasBackdrop: BooleanInput;
   static ngAcceptInputType_nzClickHide: BooleanInput;
@@ -57,11 +63,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
   /**
-   * @deprecated Not supported, use `nzHasBackDrop` instead.
-   * @breaking-change 12.0.0
+   * @deprecated Not supported, use `nzBackdrop` instead.
+   * @breaking-change 13.0.0
    */
-  @Input() @InputBoolean() nzBackdrop = false;
   @Input() @InputBoolean() nzHasBackdrop = false;
+  @Input() @InputBoolean() nzBackdrop = false;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
@@ -86,8 +92,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-dropdown-trigger');
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (this.nzDropdownMenu) {
@@ -152,7 +156,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
               merge(
                 this.overlayRef.backdropClick(),
                 this.overlayRef.detachments(),
-                this.overlayRef.outsidePointerEvents().pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
+                this.overlayRef
+                  .outsidePointerEvents()
+                  .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
                 this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
               )
                 .pipe(takeUntil(this.destroy$))
@@ -200,7 +206,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzBackdrop } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzHasBackdrop } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -222,8 +228,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
     }
-    if (nzBackdrop) {
-      warnDeprecation('`nzBackdrop` in dropdown component will be removed in 12.0.0, please use `nzHasBackdrop` instead.');
+    if (nzHasBackdrop) {
+      warnDeprecation(
+        '`nzHasBackdrop` in dropdown component will be removed in 13.0.0, please use `nzBackdrop` instead.'
+      );
     }
   }
 }

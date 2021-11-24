@@ -3,12 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -17,17 +19,17 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { toBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
@@ -79,7 +81,12 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   classMap: NgClassType = {};
   dir: Direction = 'ltr';
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
     this.setClassMap();
   }
 
@@ -115,8 +122,22 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   ngAfterContentInit(): void {
     if (this.steps) {
       this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+        this.updateHostProgressClass();
         this.updateChildrenSteps();
       });
+    }
+  }
+
+  private updateHostProgressClass(): void {
+    if (this.steps && !this.showProcessDot) {
+      const hasPercent = !!this.steps.toArray().find(step => step.nzPercentage !== null);
+      const className = 'ant-steps-with-progress';
+      const hasClass = this.elementRef.nativeElement.classList.contains(className);
+      if (hasPercent && !hasClass) {
+        this.renderer.addClass(this.elementRef.nativeElement, className);
+      } else if (!hasPercent && hasClass) {
+        this.renderer.removeClass(this.elementRef.nativeElement, className);
+      }
     }
   }
 
@@ -141,7 +162,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       if (this.indexChangeSubscription) {
         this.indexChangeSubscription.unsubscribe();
       }
-      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index => this.nzIndexChange.emit(index));
+      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index =>
+        this.nzIndexChange.emit(index)
+      );
     }
   }
 
@@ -149,7 +172,8 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
     this.classMap = {
       [`ant-steps-${this.nzDirection}`]: true,
       [`ant-steps-label-horizontal`]: this.nzDirection === 'horizontal',
-      [`ant-steps-label-vertical`]: (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
+      [`ant-steps-label-vertical`]:
+        (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
       [`ant-steps-dot`]: this.showProcessDot,
       ['ant-steps-small']: this.nzSize === 'small',
       ['ant-steps-navigation']: this.nzType === 'navigation',

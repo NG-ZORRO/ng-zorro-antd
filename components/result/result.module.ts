@@ -10,6 +10,9 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzResultNotFoundComponent } from './partial/not-found';
+import { NzResultServerErrorComponent } from './partial/server-error.component';
+import { NzResultUnauthorizedComponent } from './partial/unauthorized';
 import {
   NzResultContentDirective,
   NzResultExtraDirective,
@@ -18,10 +21,6 @@ import {
   NzResultTitleDirective
 } from './result-cells';
 import { NzResultComponent } from './result.component';
-
-import { NzResultNotFoundComponent } from './partial/not-found';
-import { NzResultServerErrorComponent } from './partial/server-error.component';
-import { NzResultUnauthorizedComponent } from './partial/unauthorized';
 
 const partial = [NzResultNotFoundComponent, NzResultServerErrorComponent, NzResultUnauthorizedComponent];
 

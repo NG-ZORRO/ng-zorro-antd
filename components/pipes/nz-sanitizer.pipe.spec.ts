@@ -1,5 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+
 import { NzSanitizerPipe } from './nz-sanitizer.pipe';
 
 describe('NzSanitizerPipe', () => {

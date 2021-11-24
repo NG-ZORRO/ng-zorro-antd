@@ -23,12 +23,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
@@ -143,7 +144,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef, @Optional() private directionality: Directionality) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    @Optional() private directionality: Directionality
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-picker-calendar');
   }

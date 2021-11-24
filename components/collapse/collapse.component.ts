@@ -15,12 +15,12 @@ import {
   Optional,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -31,9 +31,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   exportAs: 'nzCollapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,

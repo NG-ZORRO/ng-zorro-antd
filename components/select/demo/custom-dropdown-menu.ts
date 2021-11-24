@@ -10,7 +10,10 @@ import { Component } from '@angular/core';
       <nz-divider></nz-divider>
       <div class="container">
         <input type="text" nz-input #inputElement />
-        <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Add item</a>
+        <a class="add-item" (click)="addItem(inputElement)">
+          <i nz-icon nzType="plus"></i>
+          Add item
+        </a>
       </div>
     </ng-template>
   `,

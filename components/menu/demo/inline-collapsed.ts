@@ -8,7 +8,13 @@ import { Component } from '@angular/core';
         <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
       </button>
       <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''" nzSelected>
+        <li
+          nz-menu-item
+          nz-tooltip
+          nzTooltipPlacement="right"
+          [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''"
+          nzSelected
+        >
           <i nz-icon nzType="mail"></i>
           <span>Navigation One</span>
         </li>

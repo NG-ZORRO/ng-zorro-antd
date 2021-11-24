@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { InputNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 const tooltipPrefix = [
@@ -350,6 +355,20 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           replaceWith: 'nzTwoToneColor',
           limitedTo  : {
             attributes: ['nz-icon']
+          }
+        }
+      ]
+    }
+  ],
+  [ TargetVersion.V12 ]: [
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/6754',
+      changes: [
+        {
+          replace    : 'nzNodeWidth',
+          replaceWith: 'nzItemSize',
+          limitedTo  : {
+            elements: ['nz-tree-virtual-scroll-view']
           }
         }
       ]

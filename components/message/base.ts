@@ -7,10 +7,11 @@ import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
-import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
+import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzSingletonService } from 'ng-zorro-antd/core/services';
 
 import { NzMessageData, NzMessageDataOptions } from './typings';
 
@@ -20,7 +21,11 @@ export abstract class NzMNService {
   protected abstract componentPrefix: string;
   protected container?: NzMNContainerComponent;
 
-  constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
+  constructor(
+    protected nzSingletonService: NzSingletonService,
+    protected overlay: Overlay,
+    private injector: Injector
+  ) {}
 
   remove(id?: string): void {
     if (this.container) {
@@ -209,10 +214,10 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
       this.closeTimer = setTimeout(() => {
         this.closeTimer = undefined;
-        this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+        this.destroyed.next({ id: this.instance.messageId, userAction });
       }, 200);
     } else {
-      this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+      this.destroyed.next({ id: this.instance.messageId, userAction });
     }
   }
 

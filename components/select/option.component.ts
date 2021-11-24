@@ -8,18 +8,19 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Optional,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
+
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzOptionGroupComponent } from './option-group.component';
 
 @Component({
@@ -27,18 +28,18 @@ import { NzOptionGroupComponent } from './option-group.component';
   exportAs: 'nzOption',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzDestroyService],
   template: `
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
   `
 })
-export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
+export class NzOptionComponent implements OnChanges, OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzHide: BooleanInput;
   static ngAcceptInputType_nzCustomContent: BooleanInput;
 
-  private destroy$ = new Subject<void>();
   changes = new Subject();
   groupLabel: string | number | TemplateRef<NzSafeAny> | null = null;
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
@@ -48,7 +49,7 @@ export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzHide = false;
   @Input() @InputBoolean() nzCustomContent = false;
 
-  constructor(@Optional() private nzOptionGroupComponent: NzOptionGroupComponent) {}
+  constructor(@Optional() private nzOptionGroupComponent: NzOptionGroupComponent, private destroy$: NzDestroyService) {}
 
   ngOnInit(): void {
     if (this.nzOptionGroupComponent) {
@@ -60,9 +61,5 @@ export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(): void {
     this.changes.next();
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

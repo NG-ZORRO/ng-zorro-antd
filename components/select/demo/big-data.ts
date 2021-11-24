@@ -4,7 +4,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   selector: 'nz-demo-select-big-data',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-select nzMode="multiple" nzPlaceHolder="Please select" [nzOptions]="listOfOption" [(ngModel)]="listOfSelectedValue"> </nz-select>
+    <nz-select
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+      [nzOptions]="listOfOption"
+      [(ngModel)]="listOfSelectedValue"
+    ></nz-select>
   `,
   styles: [
     `
@@ -23,11 +28,9 @@ export class NzDemoSelectBigDataComponent implements OnInit {
     for (let i = 10; i < 10000; i++) {
       children.push(`${i.toString(36)}${i}`);
     }
-    this.listOfOption = children.map(item => {
-      return {
-        value: item,
-        label: item
-      };
-    });
+    this.listOfOption = children.map(item => ({
+      value: item,
+      label: item
+    }));
   }
 }

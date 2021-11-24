@@ -7,6 +7,7 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -21,7 +22,15 @@ import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeComponent } from './tree.component';
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzOutletModule, NzIconModule, NzNoAnimationModule, NzHighlightModule, ScrollingModule],
+  imports: [
+    BidiModule,
+    CommonModule,
+    NzOutletModule,
+    NzIconModule,
+    NzNoAnimationModule,
+    NzHighlightModule,
+    ScrollingModule
+  ],
   declarations: [
     NzTreeComponent,
     NzTreeNodeBuiltinComponent,

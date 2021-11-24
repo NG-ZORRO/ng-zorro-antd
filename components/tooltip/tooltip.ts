@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,13 +21,20 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { Directionality } from '@angular/cdk/bidi';
-import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from './base';
+import {
+  isTooltipEmpty,
+  NzTooltipBaseComponent,
+  NzTooltipBaseDirective,
+  NzTooltipTrigger,
+  PropertyMapping
+} from './base';
 
 @Directive({
   selector: '[nz-tooltip]',
@@ -36,6 +44,8 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
+
   @Input('nzTooltipTitle') title?: NzTSType | null;
   @Input('nz-tooltip') directiveTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';
@@ -46,9 +56,10 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipMouseLeaveDelay') mouseLeaveDelay?: number;
   @Input('nzTooltipOverlayClassName') overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') overlayStyle?: NgStyleInterface;
+  @Input('nzTooltipArrowPointAtCenter') @InputBoolean() arrowPointAtCenter?: boolean;
   @Input() nzTooltipColor?: string;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
@@ -65,6 +76,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
 
   protected getProxyPropertyMap(): PropertyMapping {
     return {
+      ...super.getProxyPropertyMap(),
       nzTooltipColor: ['nzColor', () => this.nzTooltipColor]
     };
   }
@@ -85,6 +97,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayPush]="true"
+      [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
@@ -130,7 +143,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     return isTooltipEmpty(this.nzTitle);
   }
 
-  updateStyles(): void {
+  protected updateStyles(): void {
     const isColorPreset = this.nzColor && isPresetColor(this.nzColor);
 
     this._classMap = {

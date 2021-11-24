@@ -2,19 +2,30 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { AnimationEvent } from '@angular/animations';
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  ComponentRef,
+  Directive,
+  ElementRef,
+  EmbeddedViewRef,
+  EventEmitter,
+  OnDestroy,
+  Renderer2
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 
+import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
 import { getValueWithConfig } from './utils';
@@ -182,7 +193,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       const activeElement = this.document.activeElement as Element;
       const element = this.elementRef.nativeElement;
 
-      if (!activeElement || activeElement === this.document.body || activeElement === element || element.contains(activeElement)) {
+      if (
+        !activeElement ||
+        activeElement === this.document.body ||
+        activeElement === element ||
+        element.contains(activeElement)
+      ) {
         toFocus.focus();
       }
     }

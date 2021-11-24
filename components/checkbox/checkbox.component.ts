@@ -22,10 +22,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 
 @Component({
@@ -46,6 +48,7 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
         type="checkbox"
         class="ant-checkbox-input"
         [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
+        [attr.id]="nzId"
         [checked]="nzChecked"
         [ngModel]="nzChecked"
         [disabled]="nzDisabled"
@@ -87,6 +90,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzIndeterminate = false;
   @Input() @InputBoolean() nzChecked = false;
+  @Input() nzId: string | null = null;
 
   hostClick(e: MouseEvent): void {
     e.preventDefault();
@@ -143,11 +147,14 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   }
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        Promise.resolve().then(() => this.onTouched());
-      }
-    });
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          Promise.resolve().then(() => this.onTouched());
+        }
+      });
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.addCheckbox(this);
     }

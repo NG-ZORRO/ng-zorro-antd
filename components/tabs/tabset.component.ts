@@ -3,10 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceNumberProperty } from '@angular/cdk/coercion';
 /** get some code from https://github.com/angular/material2 */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -26,7 +26,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
@@ -125,7 +124,7 @@ let nextId = 0;
         <div
           nz-tab-body
           *ngFor="let tab of tabs; let i = index"
-          [active]="nzSelectedIndex == i && !nzHideAll"
+          [active]="nzSelectedIndex === i && !nzHideAll"
           [content]="tab.content"
           [forceRender]="tab.nzForceRender"
           [tabPaneAnimated]="tabPaneAnimated"
@@ -209,13 +208,16 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   get tabPaneAnimated(): boolean {
     return (
-      this.position === 'horizontal' && this.line && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
+      this.position === 'horizontal' &&
+      this.line &&
+      (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
     );
   }
 
   // Pick up only direct descendants under ivy rendering engine
   // We filter out only the tabs that belong to this tab set in `tabs`.
-  @ContentChildren(NzTabComponent, { descendants: true }) allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+  @ContentChildren(NzTabComponent, { descendants: true })
+  allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
   @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
@@ -364,7 +366,9 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       this.tabLabelSubscription.unsubscribe();
     }
 
-    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() => this.cdr.markForCheck());
+    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() =>
+      this.cdr.markForCheck()
+    );
   }
 
   private subscribeToAllTabChanges(): void {
@@ -481,7 +485,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginLeft(): string {
     if (this.tabPaneAnimated) {
       if (this.dir !== 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';
@@ -489,7 +493,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginRight(): string {
     if (this.tabPaneAnimated) {
       if (this.dir === 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';

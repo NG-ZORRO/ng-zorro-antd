@@ -69,7 +69,10 @@ interface ChildrenItemData {
                   <td>{{ data.upgradeNum }}</td>
                   <td>
                     <span class="table-operation">
-                      <a nz-dropdown class="operation" [nzDropdownMenu]="menu"> Pause <i nz-icon nzType="down"></i> </a>
+                      <a nz-dropdown class="operation" [nzDropdownMenu]="menu">
+                        Pause
+                        <i nz-icon nzType="down"></i>
+                      </a>
                       <nz-dropdown-menu #menu="nzDropdownMenu">
                         <ul nz-menu>
                           <li nz-menu-item>

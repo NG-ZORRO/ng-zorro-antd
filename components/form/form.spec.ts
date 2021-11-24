@@ -1,7 +1,9 @@
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+
 import { NzFormItemComponent } from './form-item.component';
 import { NzFormLabelComponent } from './form-label.component';
 import { NzFormDirective } from './form.directive';
@@ -60,7 +62,9 @@ describe('nz-form', () => {
     });
 
     it('should set default `NoColon` value', () => {
-      const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>('.ant-form-item-label label');
+      const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>(
+        '.ant-form-item-label label'
+      );
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
 
       testComponent.defaultNoColon = true;
@@ -71,7 +75,9 @@ describe('nz-form', () => {
     });
 
     it('should label have high priority', () => {
-      const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>('.ant-form-item-label label');
+      const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>(
+        '.ant-form-item-label label'
+      );
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
 
       testComponent.defaultNoColon = true;
@@ -109,9 +115,7 @@ describe('nz-form', () => {
 });
 
 @Component({
-  template: `
-    <form nz-form [nzLayout]="layout"></form>
-  `
+  template: ` <form nz-form [nzLayout]="layout"></form> `
 })
 export class NzTestFormDirectiveComponent {
   layout = 'horizontal';

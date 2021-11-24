@@ -1,4 +1,5 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +7,6 @@ import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
@@ -14,7 +14,12 @@ describe('rate', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [BidiModule, NzRateModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestRateBasicComponent, NzTestRateFormComponent, NzTestRateRtlComponent]
+      declarations: [
+        NzTestRateBasicComponent,
+        NzTestRateFormComponent,
+        NzTestRateRtlComponent,
+        NzTestRateCharacterComponent
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -141,7 +146,10 @@ describe('rate', () => {
     });
     it('should hover rate work', () => {
       fixture.detectChanges();
-      dispatchFakeEvent(rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild, 'mouseover');
+      dispatchFakeEvent(
+        rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild,
+        'mouseover'
+      );
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(testComponent.onHoverChange).toHaveBeenCalledWith(4);
@@ -252,10 +260,30 @@ describe('rate', () => {
       expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
     }));
   });
+
+  describe('rate character', () => {
+    let fixture: ComponentFixture<NzTestRateCharacterComponent>;
+    let rate: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestRateCharacterComponent);
+      fixture.detectChanges();
+      rate = fixture.debugElement.query(By.directive(NzRateComponent));
+    });
+
+    it('should nzCharacter work', () => {
+      fixture.detectChanges();
+      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children) as HTMLElement[];
+      children.forEach((e, index) => {
+        expect(e.querySelector('.ant-rate-star-first')!.textContent).toContain(`${index + 1}`);
+        expect(e.querySelector('.ant-rate-star-second')!.textContent).toContain(`${index + 1}`);
+      });
+    });
+  });
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-rate',
   template: `
     <nz-rate
@@ -318,4 +346,18 @@ export class NzTestRateFormComponent {
 export class NzTestRateRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  selector: 'nz-test-rate-character',
+  template: `
+    <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>
+    <ng-template #characterTpl let-index>
+      {{ index + 1 }}
+    </ng-template>
+  `
+})
+export class NzTestRateCharacterComponent {
+  @ViewChild(NzRateComponent, { static: false }) nzRateComponent!: NzRateComponent;
+  value = 5;
 }

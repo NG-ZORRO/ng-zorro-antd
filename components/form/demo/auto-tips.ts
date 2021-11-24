@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Observer } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-demo-form-auto-tips',
   template: `
-    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
@@ -36,12 +37,8 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              Please confirm your password!
-            </ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">
-              Password is inconsistent!
-            </ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -77,18 +74,24 @@ export class NzDemoFormAutoTipsComponent {
     }
   };
 
-  submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
-    for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
-    console.log(value);
   }
 
   validateConfirmPassword(): void {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   userNameAsyncValidator = (control: FormControl) =>
     new Observable((observer: Observer<MyValidationErrors | null>) => {
       setTimeout(() => {
@@ -155,7 +158,9 @@ export class MyValidators extends Validators {
       return null;
     }
 
-    return isMobile(value) ? null : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
+    return isMobile(value)
+      ? null
+      : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
   }
 }
 

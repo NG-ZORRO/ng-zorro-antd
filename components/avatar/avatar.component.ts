@@ -18,7 +18,13 @@ import {
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NgStyleInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import {
+  NgClassInterface,
+  NgStyleInterface,
+  NumberInput,
+  NzShapeSCType,
+  NzSizeLDSType
+} from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';

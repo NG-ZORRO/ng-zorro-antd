@@ -1,5 +1,12 @@
-import { Rule, SchematicContext } from '@angular-devkit/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { createMigrationSchematicRule, NullableDevkitMigration, TargetVersion } from '@angular/cdk/schematics';
+
+import { Rule, SchematicContext } from '@angular-devkit/schematics';
+
 import { ClassNamesMigration } from './data/migrations/class-names';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';
@@ -13,6 +20,7 @@ import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { ModalTemplateRule } from './upgrade-rules/checks/modal-template-rule';
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
+import { SpaceTemplateRule } from './upgrade-rules/checks/space-template-rule';
 import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
 import { TabsInputRule } from './upgrade-rules/checks/tabs-input-rule';
 import { TabsOutputRule } from './upgrade-rules/checks/tabs-output-rule';
@@ -36,7 +44,8 @@ const migrations: NullableDevkitMigration[] = [
   TableTemplateRule,
   ModalTemplateRule,
   SecondaryEntryPointsRule,
-  ClassNamesMigration
+  ClassNamesMigration,
+  SpaceTemplateRule
 ];
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
@@ -57,6 +66,11 @@ export function updateToV10(): Rule {
 /** Entry point for the migration schematics with target of NG-ZORRO v11 */
 export function updateToV11(): Rule {
   return createMigrationSchematicRule(TargetVersion.V11, migrations, ruleUpgradeData, postUpdate);
+}
+
+/** Entry point for the migration schematics with target of NG-ZORRO v12 */
+export function updateToV12(): Rule {
+  return createMigrationSchematicRule(TargetVersion.V12, migrations, ruleUpgradeData, postUpdate);
 }
 
 /** Post-update schematic to be called when update is finished. */

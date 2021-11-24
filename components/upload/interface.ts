@@ -4,8 +4,9 @@
  */
 
 import { TemplateRef } from '@angular/core';
-import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Subscription } from 'rxjs';
+
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';

@@ -23,14 +23,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
-
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
@@ -39,7 +39,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   template: `
-    <div class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
+    <div
+      class="ant-back-top"
+      [class.ant-back-top-rtl]="dir === 'rtl'"
+      (click)="clickBackTop()"
+      @fadeMotion
+      *ngIf="visible"
+    >
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
           <div class="ant-back-top-icon">

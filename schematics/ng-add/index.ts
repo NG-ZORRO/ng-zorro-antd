@@ -1,7 +1,14 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { getProjectFromWorkspace } from '@angular/cdk/schematics';
+
 import { chain, Rule, schematic, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+
 import { addPackageToPackageJson } from '../utils/package-config';
 import { getProjectStyle } from '../utils/project-style';
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
@@ -24,7 +31,7 @@ export default function (options: Schema): Rule {
         const project = getProjectFromWorkspace(workspace, options.project);
         const style = getProjectStyle(project);
 
-        return schematic(options.template, {...options, style: style});
+        return schematic(options.template, {...options, style});
       }
     },
     (_: Tree, context: SchematicContext) => {

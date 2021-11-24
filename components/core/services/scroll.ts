@@ -5,6 +5,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -103,12 +104,16 @@ export class NzScrollService {
    * @param containerEl container, `window` by default
    * @param y Scroll to `top`, 0 by default
    */
-  scrollTo(containerEl?: Element | HTMLElement | Window | Document | null, y: number = 0, options: NzScrollToOptions = {}): void {
+  scrollTo(
+    containerEl?: Element | HTMLElement | Window | Document | null,
+    y: number = 0,
+    options: NzScrollToOptions = {}
+  ): void {
     const target = containerEl ? containerEl : window;
     const scrollTop = this.getScroll(target);
     const startTime = Date.now();
     const { easing, callback, duration = 450 } = options;
-    const frameFunc = () => {
+    const frameFunc = (): void => {
       const timestamp = Date.now();
       const time = timestamp - startTime;
       const nextScrollTop = (easing || easeInOutCubic)(time > duration ? duration : time, scrollTop, y, duration);

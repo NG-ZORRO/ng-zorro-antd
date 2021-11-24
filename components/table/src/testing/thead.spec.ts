@@ -1,7 +1,9 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzTableModule } from '../table.module';
 import { NzTableComponent } from '../table/table.component';
 
@@ -74,5 +76,5 @@ describe('nz-thead', () => {
 export class NzTheadTestNzTableComponent {
   sortChange = jasmine.createSpy('sort change');
   columns = ['third', 'fourth'];
-  filterFn = () => -1;
+  filterFn = (): number => -1;
 }

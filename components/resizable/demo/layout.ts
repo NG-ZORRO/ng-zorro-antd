@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
@@ -7,7 +8,13 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
     <nz-layout>
       <nz-header>Header</nz-header>
       <nz-layout>
-        <nz-sider [nzWidth]="siderWidth" nz-resizable [nzMinWidth]="50" [nzMaxWidth]="300" (nzResize)="onSideResize($event)">
+        <nz-sider
+          [nzWidth]="siderWidth"
+          nz-resizable
+          [nzMinWidth]="50"
+          [nzMaxWidth]="300"
+          (nzResize)="onSideResize($event)"
+        >
           <nz-resize-handle nzDirection="right">
             <div class="sider-resize-line"></div>
           </nz-resize-handle>
@@ -27,9 +34,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
             </nz-resize-handle>
             Content 1
           </div>
-          <div>
-            Content 2
-          </div>
+          <div>Content 2</div>
         </nz-content>
       </nz-layout>
     </nz-layout>

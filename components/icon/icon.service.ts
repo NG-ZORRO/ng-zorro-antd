@@ -5,13 +5,16 @@
 
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken, Optional, RendererFactory2, Self } from '@angular/core';
+import { Inject, Injectable, InjectionToken, OnDestroy, Optional, RendererFactory2, Self } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject, Subscription } from 'rxjs';
+
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
+
 import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Subject } from 'rxjs';
+
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
 
 export interface NzIconfontOption {
@@ -28,10 +31,18 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 @Injectable({
   providedIn: 'root'
 })
-export class NzIconService extends IconService {
+export class NzIconService extends IconService implements OnDestroy {
   configUpdated$ = new Subject<void>();
 
   private iconfontCache = new Set<string>();
+  private subscription: Subscription | null = null;
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
 
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
@@ -78,7 +89,7 @@ export class NzIconService extends IconService {
   }
 
   private onConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
+    this.subscription = this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
       this.configDefaultTwotoneColor();
       this.configDefaultTheme();
       this.configUpdated$.next();
@@ -118,7 +129,10 @@ export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
 export class NzIconPatchService {
   patched = false;
 
-  constructor(@Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {}
+  constructor(
+    @Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[],
+    private rootIconService: NzIconService
+  ) {}
 
   doPatch(): void {
     if (this.patched) {

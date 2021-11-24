@@ -13,7 +13,7 @@ import { transCompatFormat } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'month-header', // tslint:disable-line:component-selector
+  selector: 'month-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'monthHeader',
   templateUrl: './abstract-panel-header.html'
 })

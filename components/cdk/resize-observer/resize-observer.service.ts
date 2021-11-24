@@ -5,7 +5,6 @@
 
 import { coerceElement } from '@angular/cdk/coercion';
 import { ElementRef, Injectable, OnDestroy } from '@angular/core';
-import ResizeObserver from 'resize-observer-polyfill';
 import { Observable, Observer, Subject } from 'rxjs';
 
 /**
@@ -58,7 +57,9 @@ export class NzResizeObserver implements OnDestroy {
   private observeElement(element: Element): Subject<ResizeObserverEntry[]> {
     if (!this.observedElements.has(element)) {
       const stream = new Subject<ResizeObserverEntry[]>();
-      const observer = this.nzResizeObserverFactory.create(mutations => stream.next(mutations));
+      const observer = this.nzResizeObserverFactory.create((mutations: ResizeObserverEntry[]) =>
+        stream.next(mutations)
+      );
       if (observer) {
         observer.observe(element);
       }

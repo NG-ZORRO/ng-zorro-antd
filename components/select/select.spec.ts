@@ -1,9 +1,10 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
+import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -13,6 +14,9 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
+import { NzSelectSearchComponent } from './select-search.component';
+import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';
@@ -26,7 +30,9 @@ describe('select', () => {
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -288,7 +294,7 @@ describe('select', () => {
     }));
 
     it('should keydown up arrow and down arrow', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -326,7 +332,7 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
     it('should mouseenter activated option work', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -402,12 +408,13 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
 
     it('should have selected class if item was selected', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -423,11 +430,15 @@ describe('select', () => {
       component.value = 0;
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Falsy value'
+      );
       component.value = 'Truthy value';
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+        'Truthy value'
+      );
       ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
@@ -441,7 +452,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -471,7 +484,7 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -576,7 +589,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzMaxMultipleCount work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -599,7 +612,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -632,7 +645,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectTemplateTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectTemplateTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectTemplateTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -686,7 +701,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveDefaultComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -821,7 +838,7 @@ describe('select', () => {
       expect(document.querySelectorAll('nz-option-item').length).toBe(3);
     }));
     it('should keydown up arrow and down arrow', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -859,7 +876,7 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
     it('should mouseenter activated option work', fakeAsync(() => {
-      const flushChanges = () => {
+      const flushChanges = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -917,7 +934,8 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent
       ).toBe('label_02');
     }));
   });
@@ -927,7 +945,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveMultipleComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveMultipleComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -954,7 +974,7 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -1059,7 +1079,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzMaxMultipleCount work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -1082,7 +1102,7 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
-      const flushRefresh = () => {
+      const flushRefresh = (): void => {
         fixture.detectChanges();
         flush();
         fixture.detectChanges();
@@ -1115,7 +1135,9 @@ describe('select', () => {
     let fixture: ComponentFixture<TestSelectReactiveTagsComponent>;
     let selectElement!: HTMLElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestSelectReactiveTagsComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
+      testBed = createComponentBed(TestSelectReactiveTagsComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
@@ -1159,6 +1181,74 @@ describe('select', () => {
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe('and 2 more selected');
     }));
+  });
+  describe('change detection', () => {
+    let testBed: ComponentBed<TestSelectTemplateDefaultComponent>;
+    let component: TestSelectTemplateDefaultComponent;
+    let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
+    let selectComponent: NzSelectComponent;
+    let overlayContainerElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectComponent = testBed.debugElement.query(By.directive(NzSelectComponent)).componentInstance;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should not run change detection if the `triggerWidth` has not been changed', fakeAsync(() => {
+      const detectChangesSpy = spyOn(selectComponent['cdr'], 'detectChanges').and.callThrough();
+      const requestAnimationFrameSpy = spyOn(window, 'requestAnimationFrame').and.callThrough();
+
+      component.nzOpen = true;
+      fixture.detectChanges();
+      // The `requestAnimationFrame` is simulated as `setTimeout(..., 16)` inside the `fakeAsync`.
+      tick(16);
+
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+      fixture.detectChanges();
+      flush();
+
+      expect(component.nzOpen).toEqual(false);
+
+      component.nzOpen = true;
+      fixture.detectChanges();
+      tick(16);
+
+      // Ensure that the `detectChanges()` have been called only once since the `triggerWidth` hasn't been changed.
+      expect(detectChangesSpy).toHaveBeenCalledTimes(1);
+      expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
+    }));
+
+    it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      const nzSelectSearch = fixture.debugElement.query(By.directive(NzSelectSearchComponent));
+      spyOn(nzSelectSearch.componentInstance, 'focus');
+
+      const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      dispatchMouseEvent(nzSelectTopControl.nativeElement, 'click');
+
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+      expect(nzSelectSearch.componentInstance.focus).toHaveBeenCalled();
+    });
+
+    it('should not run change detection when non-backspace button is pressed on the `nz-select-top-control`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
+      dispatchKeyboardEvent(nzSelectTopControl.nativeElement, 'keydown', TAB, nzSelectTopControl.nativeElement);
+
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+    });
   });
 });
 

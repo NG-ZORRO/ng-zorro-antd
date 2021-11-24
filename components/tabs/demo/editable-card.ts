@@ -3,7 +3,12 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-tabs-editable-card',
   template: `
-    <nz-tabset [(nzSelectedIndex)]="selectedIndex" nzType="editable-card" (nzAdd)="newTab()" (nzClose)="closeTab($event)">
+    <nz-tabset
+      [(nzSelectedIndex)]="selectedIndex"
+      nzType="editable-card"
+      (nzAdd)="newTab()"
+      (nzClose)="closeTab($event)"
+    >
       <nz-tab *ngFor="let tab of tabs" nzClosable [nzTitle]="tab">Content of {{ tab }}</nz-tab>
     </nz-tabset>
   `

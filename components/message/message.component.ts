@@ -14,6 +14,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+
 import { moveUpMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzMNComponent } from './base';

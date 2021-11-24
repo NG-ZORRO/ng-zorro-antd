@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
@@ -25,6 +26,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -41,11 +45,13 @@ import {
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { NzTreeService } from './tree.service';
 
-export function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, treeService: NzTreeService): NzTreeBaseService {
+export function NzTreeServiceFactory(
+  higherOrderService: NzTreeBaseService,
+  treeService: NzTreeService
+): NzTreeBaseService {
   return higherOrderService ? higherOrderService : treeService;
 }
 
@@ -71,7 +77,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
           [style.height]="nzVirtualHeight"
         >
           <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-            <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
           </ng-container>
         </cdk-virtual-scroll-viewport>
 
@@ -84,7 +93,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
           [@treeCollapseMotion]="nzFlattenNodes.length"
         >
           <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-            <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
           </ng-container>
         </div>
       </div>
@@ -161,7 +173,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.draggable-tree]': `nzDraggable`
   }
 })
-export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit {
+export class NzTreeComponent
+  extends NzTreeBase
+  implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit
+{
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzShowIcon: BooleanInput;
@@ -202,8 +217,12 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzCheckedKeys: NzTreeNodeKey[] = [];
   @Input() nzSearchValue: string = '';
   @Input() nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{
+    $implicit: NzTreeNode;
+    origin: NzTreeNodeOptions;
+  }>;
+  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
+  cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
   dir: Direction = 'ltr';
@@ -254,12 +273,22 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Render all properties of nzTree
+   *
    * @param changes: all changes from @Input
    */
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
     let useDefaultExpandedKeys = false;
     let expandAll = false;
-    const { nzData, nzExpandedKeys, nzSelectedKeys, nzCheckedKeys, nzCheckStrictly, nzExpandAll, nzMultiple, nzSearchValue } = changes;
+    const {
+      nzData,
+      nzExpandedKeys,
+      nzSelectedKeys,
+      nzCheckedKeys,
+      nzCheckStrictly,
+      nzExpandAll,
+      nzMultiple,
+      nzSearchValue
+    } = changes;
 
     if (nzExpandAll) {
       useDefaultExpandedKeys = true;
@@ -315,6 +344,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   // Deal with properties
   /**
    * nzData
+   *
    * @param value
    */
   handleNzData(value: NzSafeAny[]): void {
@@ -364,6 +394,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Handle emit event
+   *
    * @param event
    * handle each event
    */

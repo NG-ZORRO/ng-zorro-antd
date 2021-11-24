@@ -5,11 +5,19 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
-
 import { SafeUrl } from '@angular/platform-browser';
+
 import { ThemeType } from '@ant-design/icons-angular';
+
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
+import {
+  NzSafeAny,
+  NzShapeSCType,
+  NzSizeDSType,
+  NzSizeLDSType,
+  NzSizeMDSType,
+  NzTSType
+} from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -51,6 +59,7 @@ export interface NzConfig {
   image?: ImageConfig;
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
+  imageExperimental?: ImageExperimentalConfig;
 }
 
 export interface SelectConfig {
@@ -305,8 +314,19 @@ export interface ImageConfig {
   nzDirection?: Direction;
 }
 
+export interface ImageExperimentalConfig {
+  nzFallback?: string;
+  nzPlaceholder?: string;
+  nzDisablePreview?: string;
+  nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
+  nzAutoSrcset?: boolean;
+  nzSrcLoader?(params: { src: string; width: number }): string;
+}
+
 export interface PopConfirmConfig {
   nzPopconfirmBackdrop?: boolean;
+  nzAutofocus?: null | 'ok' | 'cancel';
 }
 
 export interface PopoverConfig {

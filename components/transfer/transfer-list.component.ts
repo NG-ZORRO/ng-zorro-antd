@@ -38,7 +38,11 @@ import { TransferDirection, TransferItem } from './interface';
             [nzDisabled]="disabled || item.disabled"
           >
             <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+            <ng-template
+              #renderContainer
+              [ngTemplateOutlet]="render"
+              [ngTemplateOutletContext]="{ $implicit: item }"
+            ></ng-template>
           </label>
         </li>
       </ul>
@@ -53,11 +57,12 @@ import { TransferDirection, TransferItem } from './interface';
         [nzChecked]="stat.checkAll"
         (nzCheckedChange)="onItemSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"
-        [nzDisabled]="stat.shownCount == 0 || disabled"
+        [nzDisabled]="stat.shownCount === 0 || disabled"
       ></label>
       <span class="ant-transfer-list-header-selected">
         <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ validData.length > 1 ? itemsUnit : itemUnit }}
+          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+          {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
         <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
@@ -142,7 +147,7 @@ export class NzTransferListComponent {
     return this.dataSource.filter(w => !w.hide);
   }
 
-  onItemSelect = (item: TransferItem) => {
+  onItemSelect = (item: TransferItem): void => {
     if (this.disabled || item.disabled) {
       return;
     }
@@ -151,7 +156,7 @@ export class NzTransferListComponent {
     this.handleSelect.emit(item);
   };
 
-  onItemSelectAll = (status: boolean) => {
+  onItemSelectAll = (status: boolean): void => {
     this.dataSource.forEach(item => {
       if (!item.disabled && !item.hide) {
         item.checked = status;

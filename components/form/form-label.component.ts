@@ -15,12 +15,14 @@ import {
   SkipSelf,
   ViewEncapsulation
 } from '@angular/core';
-import { ThemeType } from '@ant-design/icons-angular';
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
-
-import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
+import { ThemeType } from '@ant-design/icons-angular';
+
+import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+
 import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
 
 export interface NzFormTooltipIcon {
@@ -73,7 +75,9 @@ export class NzFormLabelComponent implements OnDestroy {
   }
   // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
   get tooltipIcon(): NzFormTooltipIcon {
-    return this._tooltipIcon !== 'default' ? this._tooltipIcon : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
+    return this._tooltipIcon !== 'default'
+      ? this._tooltipIcon
+      : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 

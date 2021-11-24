@@ -11,7 +11,14 @@ import { Component } from '@angular/core';
           Click to Upload
         </button>
       </nz-upload>
-      <button *nzSpaceItem nz-button nz-popconfirm nzOkText="Yes" nzCancelText="No" nzPopconfirmTitle="Are you sure delete this task?">
+      <button
+        *nzSpaceItem
+        nz-button
+        nz-popconfirm
+        nzOkText="Yes"
+        nzCancelText="No"
+        nzPopconfirmTitle="Are you sure delete this task?"
+      >
         Confirm
       </button>
     </nz-space>

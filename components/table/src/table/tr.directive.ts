@@ -6,12 +6,14 @@
 import { AfterContentInit, ContentChildren, Directive, OnDestroy, Optional, QueryList } from '@angular/core';
 import { combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
 import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';
 
 @Directive({
-  selector: 'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
+  selector:
+    'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
   host: {
     '[class.ant-table-row]': 'isInsideTable'
   }
@@ -30,11 +32,17 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
     ),
     takeUntil(this.destroy$)
   );
-  listOfFixedLeftColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzLeft !== false)));
-  listOfFixedRightColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzRight !== false)));
+  listOfFixedLeftColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(
+    map(list => list.filter(item => item.nzLeft !== false))
+  );
+  listOfFixedRightColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(
+    map(list => list.filter(item => item.nzRight !== false))
+  );
   listOfColumnsChanges$: Observable<NzThMeasureDirective[]> = this.listOfColumns$.pipe(
     switchMap(list =>
-      merge(...[this.listOfColumns$, ...list.map((c: NzThMeasureDirective) => c.changes$)]).pipe(mergeMap(() => this.listOfColumns$))
+      merge(...[this.listOfColumns$, ...list.map((c: NzThMeasureDirective) => c.changes$)]).pipe(
+        mergeMap(() => this.listOfColumns$)
+      )
     ),
     takeUntil(this.destroy$)
   );
@@ -49,7 +57,9 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
       this.listOfCellFixedDirective.changes
         .pipe(startWith(this.listOfCellFixedDirective), takeUntil(this.destroy$))
         .subscribe(this.listOfFixedColumns$);
-      this.listOfNzThDirective.changes.pipe(startWith(this.listOfNzThDirective), takeUntil(this.destroy$)).subscribe(this.listOfColumns$);
+      this.listOfNzThDirective.changes
+        .pipe(startWith(this.listOfNzThDirective), takeUntil(this.destroy$))
+        .subscribe(this.listOfColumns$);
       /** set last left and first right **/
       this.listOfFixedLeftColumnChanges$.subscribe(listOfFixedLeft => {
         listOfFixedLeft.forEach(cell => cell.setIsLastLeft(cell === listOfFixedLeft[listOfFixedLeft.length - 1]));
