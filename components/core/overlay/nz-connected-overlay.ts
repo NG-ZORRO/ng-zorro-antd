@@ -4,7 +4,7 @@
  */
 
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
-import { Directive, Input } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -36,7 +36,7 @@ export class NzConnectedOverlayDirective {
   }
 
   private updateArrowPosition(position: ConnectedOverlayPositionChange): void {
-    const originEl = this.cdkConnectedOverlay.origin.elementRef.nativeElement as HTMLElement;
+    const originEl = (this.cdkConnectedOverlay.origin as ElementRef).nativeElement as HTMLElement;
     const originRect = originEl.getBoundingClientRect();
     const placement = getPlacementName(position);
 

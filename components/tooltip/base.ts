@@ -454,7 +454,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     this.cdr.detectChanges();
   }
 
-  setOverlayOrigin(origin: CdkOverlayOrigin): void {
+  setOverlayOrigin(origin: FlexibleConnectedPositionStrategyOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
   }
