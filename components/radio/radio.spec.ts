@@ -1,8 +1,10 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
+import { createMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzRadioGroupComponent } from './radio-group.component';
 import { NzRadioComponent } from './radio.component';
@@ -77,6 +79,19 @@ describe('radio', () => {
       expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
+    }));
+    it('should not run change detection if the radio is disabled', fakeAsync(() => {
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+      const event = createMouseEvent('click');
+      spyOn(event, 'preventDefault');
+      spyOn(event, 'stopPropagation');
+      radio.nativeElement.dispatchEvent(event);
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
+      expect(appRef.tick).not.toHaveBeenCalled();
     }));
     it('should autofocus work', () => {
       fixture.detectChanges();
