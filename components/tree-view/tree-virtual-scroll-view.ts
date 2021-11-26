@@ -24,7 +24,7 @@ const DEFAULT_SIZE = 28;
         [minBufferPx]="nzMinBufferPx"
         [maxBufferPx]="nzMaxBufferPx"
       >
-        <ng-container *cdkVirtualFor="let item of nodes; let i = index">
+        <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: trackBy">
           <ng-template nzTreeVirtualScrollNodeOutlet [data]="item"></ng-template>
         </ng-container>
       </cdk-virtual-scroll-viewport>
@@ -56,6 +56,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> {
 
   renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
+    this._dataSourceChanged.next();
   }
 
   private createNode(nodeData: T, index: number): NzTreeVirtualNodeData<T> {

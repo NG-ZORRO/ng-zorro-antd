@@ -153,7 +153,7 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
 
   private shouldRecreateView(changes: SimpleChanges): boolean {
     const ctxChange = changes.data;
-    return !!changes.data || (ctxChange && this.hasContextShapeChanged(ctxChange));
+    return ctxChange && this.hasContextShapeChanged(ctxChange);
   }
 
   private hasContextShapeChanged(ctxChange: SimpleChange): boolean {
