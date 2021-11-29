@@ -15,6 +15,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  NgZone,
   OnDestroy,
   Renderer2
 } from '@angular/core';
@@ -68,6 +69,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   }
 
   constructor(
+    protected ngZone: NgZone,
     protected elementRef: ElementRef,
     protected focusTrapFactory: FocusTrapFactory,
     public cdr: ChangeDetectorRef,
@@ -167,7 +169,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
       if (this.elementRef.nativeElement.focus) {
-        Promise.resolve().then(() => this.elementRef.nativeElement.focus());
+        this.ngZone.runOutsideAngular(() => Promise.resolve().then(() => this.elementRef.nativeElement.focus()));
       }
     }
   }
@@ -176,7 +178,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     const element = this.elementRef.nativeElement;
 
     if (this.config.nzAutofocus) {
-      this.focusTrap.focusInitialElementWhenReady().then();
+      this.focusTrap.focusInitialElementWhenReady();
     } else {
       const activeElement = this.document.activeElement;
       if (activeElement !== element && !element.contains(activeElement)) {

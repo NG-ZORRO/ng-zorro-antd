@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   Inject,
+  NgZone,
   Optional,
   Renderer2,
   ViewChild
@@ -78,6 +79,7 @@ export class NzModalContainerComponent extends BaseModalContainerComponent {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(
+    ngZone: NgZone,
     elementRef: ElementRef,
     focusTrapFactory: FocusTrapFactory,
     cdr: ChangeDetectorRef,
@@ -88,6 +90,17 @@ export class NzModalContainerComponent extends BaseModalContainerComponent {
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+    super(
+      ngZone,
+      elementRef,
+      focusTrapFactory,
+      cdr,
+      render,
+      overlayRef,
+      nzConfigService,
+      config,
+      document,
+      animationType
+    );
   }
 }
