@@ -15,10 +15,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
 @Component({
   selector: 'nz-filter-trigger',
@@ -46,6 +49,8 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
   `
 })
 export class NzFilterTriggerComponent implements OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzBackdrop: BooleanInput;
   static ngAcceptInputType_nzHasBackdrop: BooleanInput;
 
@@ -58,7 +63,7 @@ export class NzFilterTriggerComponent implements OnChanges {
    * @breaking-change 13.0.0
    */
   @Input() @InputBoolean() nzHasBackdrop = false;
-  @Input() @InputBoolean() nzBackdrop = false;
+  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
@@ -81,7 +86,7 @@ export class NzFilterTriggerComponent implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(public readonly nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzHasBackdrop } = changes;
