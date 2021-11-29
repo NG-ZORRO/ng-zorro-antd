@@ -5,7 +5,16 @@
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TrackByFunction,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzTreeVirtualNodeData } from './node';
 import { NzTreeNodeOutletDirective } from './outlet';
@@ -24,7 +33,7 @@ const DEFAULT_SIZE = 28;
         [minBufferPx]="nzMinBufferPx"
         [maxBufferPx]="nzMaxBufferPx"
       >
-        <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: trackBy">
+        <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: innerTrackBy">
           <ng-template nzTreeVirtualScrollNodeOutlet [data]="item"></ng-template>
         </ng-container>
       </cdk-virtual-scroll-viewport>
@@ -44,15 +53,24 @@ const DEFAULT_SIZE = 28;
     '[class.ant-tree-rtl]': `dir === 'rtl'`
   }
 })
-export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> {
+export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implements OnChanges {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) readonly nodeOutlet!: NzTreeNodeOutletDirective;
   @ViewChild(CdkVirtualScrollViewport, { static: true }) readonly virtualScrollViewport!: CdkVirtualScrollViewport;
 
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
-
+  @Input() trackBy!: TrackByFunction<T>;
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
+  innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.trackBy && typeof changes.trackBy.currentValue === 'function') {
+      this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
+    } else {
+      this.innerTrackBy = i => i;
+    }
+  }
 
   renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
