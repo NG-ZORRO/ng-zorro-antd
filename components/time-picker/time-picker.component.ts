@@ -52,6 +52,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         [attr.id]="nzId"
         type="text"
         [size]="inputSize"
+        autocomplete="off"
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
