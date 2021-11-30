@@ -22,8 +22,32 @@ export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion'
   state('hidden', style({ height: 0, overflow: 'hidden', borderTopWidth: '0' })),
   transition('expanded => collapsed', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
   transition('expanded => hidden', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
-  transition('collapsed => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
-  transition('hidden => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`))
+  transition('collapsed => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`))
+]);
+
+export const inlineMenuCollapseMotion: AnimationTriggerMetadata = trigger('inlineMenuCollapseMotion', [
+  transition('* => *', [
+    query(
+      '.ant-menu-inline:enter',
+      [
+        style({ height: 0, overflow: 'hidden' }),
+        stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: '*' }))])
+      ],
+      {
+        optional: true
+      }
+    ),
+    query(
+      '.ant-menu-inline:leave',
+      [
+        style({ height: '*' }),
+        stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, overflow: 'hidden' }))])
+      ],
+      {
+        optional: true
+      }
+    )
+  ])
 ]);
 
 export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollapseMotion', [

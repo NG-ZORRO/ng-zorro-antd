@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 
 import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
 
-import { NzOverflowContainerComponent } from './overflow-container.component';
+import { NzOverflowContainerDirective } from './overflow-container.component';
 import { NzOverflowItemDirective } from './overflow-item.directive';
 import { NzOverflowRestDirective } from './overflow-rest.directive';
 import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
@@ -15,11 +15,11 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
 @NgModule({
   imports: [NzResizeObserverModule],
   declarations: [
-    NzOverflowContainerComponent,
+    NzOverflowContainerDirective,
     NzOverflowItemDirective,
     NzOverflowRestDirective,
     NzOverflowSuffixDirective
   ],
-  exports: [NzOverflowContainerComponent, NzOverflowItemDirective, NzOverflowRestDirective, NzOverflowSuffixDirective]
+  exports: [NzOverflowContainerDirective, NzOverflowItemDirective, NzOverflowRestDirective, NzOverflowSuffixDirective]
 })
 export class NzOverflowModule {}

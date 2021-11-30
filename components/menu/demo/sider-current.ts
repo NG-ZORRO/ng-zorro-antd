@@ -1,77 +1,82 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+
+import { NzMenuTriggerForDirective } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-menu-sider-current',
   template: `
-    <ul nz-menu nzMode="inline" style="width: 240px;">
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub1"
-        (nzOpenChange)="openHandler('sub1')"
-        nzTitle="Navigation One"
-        nzIcon="mail"
+    <nz-menu nzMode="inline">
+      <nz-menu-item
+        #triggerA="nzMenuTriggerFor"
+        (nzMenuTriggerOpened)="openHandler(triggerA)"
+        [nzMenuTriggerFor]="menuPanel"
       >
-        <ul>
-          <li nz-menu-group nzTitle="Item 1">
-            <ul>
-              <li nz-menu-item>Option 1</li>
-              <li nz-menu-item>Option 2</li>
-            </ul>
-          </li>
-          <li nz-menu-group nzTitle="Item 2">
-            <ul>
-              <li nz-menu-item>Option 3</li>
-              <li nz-menu-item>Option 4</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub2"
-        (nzOpenChange)="openHandler('sub2')"
-        nzTitle="Navigation Two"
-        nzIcon="appstore"
+        <i nz-menu-icon nz-icon nzType="mail"></i>
+        Navigation One
+      </nz-menu-item>
+      <nz-menu-item
+        #triggerB="nzMenuTriggerFor"
+        (nzMenuTriggerOpened)="openHandler(triggerB)"
+        [nzMenuTriggerFor]="menuPanel2"
       >
-        <ul>
-          <li nz-menu-item>Option 5</li>
-          <li nz-menu-item>Option 6</li>
-          <li nz-submenu nzTitle="Submenu">
-            <ul>
-              <li nz-menu-item>Option 7</li>
-              <li nz-menu-item>Option 8</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub3"
-        (nzOpenChange)="openHandler('sub3')"
-        nzTitle="Navigation Three"
-        nzIcon="setting"
+        <i nz-menu-icon nz-icon nzType="appstore"></i>
+        Navigation Tow
+      </nz-menu-item>
+      <nz-menu-item
+        #triggerC="nzMenuTriggerFor"
+        (nzMenuTriggerOpened)="openHandler(triggerC)"
+        [nzMenuTriggerFor]="menuPanel4"
       >
-        <ul>
-          <li nz-menu-item>Option 9</li>
-          <li nz-menu-item>Option 10</li>
-          <li nz-menu-item>Option 11</li>
-        </ul>
-      </li>
-    </ul>
-  `
+        <i nz-menu-icon nz-icon nzType="setting"></i>
+        Navigation Three
+      </nz-menu-item>
+    </nz-menu>
+
+    <nz-menu-panel #menuPanel="nzMenuPanel">
+      <nz-menu-group>
+        <ng-container nz-menu-group-title>Item 1</ng-container>
+        <nz-menu-item>Option 1</nz-menu-item>
+        <nz-menu-item>Option 2</nz-menu-item>
+      </nz-menu-group>
+      <nz-menu-group>
+        <ng-container nz-menu-group-title>Item 2</ng-container>
+        <nz-menu-item>Option 3</nz-menu-item>
+        <nz-menu-item>Option 4</nz-menu-item>
+      </nz-menu-group>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel2="nzMenuPanel">
+      <nz-menu-item>Option 5</nz-menu-item>
+      <nz-menu-item>Option 6</nz-menu-item>
+      <nz-menu-item [nzMenuTriggerFor]="menuPanel3">Submenu</nz-menu-item>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel3="nzMenuPanel">
+      <nz-menu-item>Option 7</nz-menu-item>
+      <nz-menu-item>Option 8</nz-menu-item>
+    </nz-menu-panel>
+
+    <nz-menu-panel #menuPanel4="nzMenuPanel">
+      <nz-menu-item>Option 9</nz-menu-item>
+      <nz-menu-item>Option 10</nz-menu-item>
+    </nz-menu-panel>
+  `,
+  styles: [
+    `
+      nz-menu {
+        width: 240px;
+      }
+    `
+  ]
 })
 export class NzDemoMenuSiderCurrentComponent {
-  openMap: { [name: string]: boolean } = {
-    sub1: true,
-    sub2: false,
-    sub3: false
-  };
+  @ViewChildren(NzMenuTriggerForDirective) triggers!: QueryList<NzMenuTriggerForDirective>;
 
-  openHandler(value: string): void {
-    for (const key in this.openMap) {
-      if (key !== value) {
-        this.openMap[key] = false;
+  openHandler(curTrigger: NzMenuTriggerForDirective): void {
+    this.triggers.forEach(trigger => {
+      if (trigger !== curTrigger) {
+        trigger.close();
       }
-    }
+    });
   }
 }
