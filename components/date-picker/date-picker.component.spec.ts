@@ -3,7 +3,7 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -488,6 +488,22 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     }));
+
+    it('should not run change detection when inline mode is enabled and the `date-range-popup` is clicked', () => {
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('mousedown');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'preventDefault').and.callThrough();
+
+      debugElement.nativeElement.querySelector('date-range-popup').dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
 
     it('should support nzBackdrop', fakeAsync(() => {
       fixtureInstance.nzBackdrop = true;
