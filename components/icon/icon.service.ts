@@ -115,7 +115,7 @@ export class NzIconService extends IconService implements OnDestroy {
     if (defaultTwotoneColor) {
       if (defaultTwotoneColor.startsWith('#')) {
         primaryColor = defaultTwotoneColor;
-      } else {
+      } else if (typeof ngDevMode === 'undefined' || ngDevMode) {
         warn('Twotone color must be a hex color!');
       }
     }

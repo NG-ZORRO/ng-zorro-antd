@@ -9,7 +9,8 @@
       "ng-zorro-antd/*": ["./*"]
     },
     "alwaysStrict": true,
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "types": ["jasmine", "../typings/ng-dev-mode"]
   },
   "angularCompilerOptions": {
     "strictInputAccessModifiers": true,

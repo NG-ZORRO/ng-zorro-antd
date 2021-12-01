@@ -132,11 +132,15 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
         return false;
       }
       if (this.nzSrc.endsWith('.svg')) {
-        warn(`SVG does not need to be optimized`);
+        if (typeof ngDevMode === 'undefined' || ngDevMode) {
+          warn(`SVG does not need to be optimized`);
+        }
         return false;
       }
       if (this.nzSrc.startsWith('data:')) {
-        warn(`Data URLs cannot be optimized`);
+        if (typeof ngDevMode === 'undefined' || ngDevMode) {
+          warn(`Data URLs cannot be optimized`);
+        }
         return false;
       }
       return true;

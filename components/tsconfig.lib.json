@@ -8,6 +8,7 @@
     "inlineSources": true,
     "declarationMap": true,
     "lib": ["es2018", "dom"],
+    "types": ["../typings/ng-dev-mode"],
     "sourceMap": true,
     "strictFunctionTypes": true,
     "stripInternal": true,
@@ -22,7 +23,5 @@
     "strictTemplates": true,
     "strictInjectionParameters": true
   },
-  "include": [
-    "**/*.ts"
-  ]
+  "include": ["**/*.ts"]
 }

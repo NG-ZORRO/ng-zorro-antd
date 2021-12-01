@@ -386,7 +386,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     } else if (isNil(time)) {
       result = null;
     } else {
-      warn('Non-Date type is not recommended for time-picker, use "Date" type.');
+      if (typeof ngDevMode === 'undefined' || ngDevMode) {
+        warn('Non-Date type is not recommended for time-picker, use "Date" type.');
+      }
       result = new Date(time);
     }
 

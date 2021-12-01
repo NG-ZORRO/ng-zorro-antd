@@ -249,7 +249,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       // item should take all the space left. This logic is implemented in the template.
       // Warn user about that.
       if (width >= column) {
-        if (width > column) {
+        if ((typeof ngDevMode === 'undefined' || ngDevMode) && width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
         currentRow.push({ title, content, span: column - (width - span) });

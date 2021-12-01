@@ -88,7 +88,7 @@ export class NzI18nService {
   getLocaleData(path: string, defaultValue?: NzSafeAny): NzSafeAny {
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
 
-    if (!result && !defaultValue) {
+    if ((typeof ngDevMode === 'undefined' || ngDevMode) && !result && !defaultValue) {
       warn(`Missing translations for "${path}" in language "${this._locale.locale}".
 You can use "NzI18nService.setLocale" as a temporary fix.
 Welcome to submit a pull request to help us optimize the translations!

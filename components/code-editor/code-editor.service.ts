@@ -85,11 +85,13 @@ export class NzCodeEditorService implements OnDestroy {
 
     if (loadingStatus === NzCodeEditorLoadingStatus.UNLOAD) {
       if (this.config.useStaticLoading && typeof monaco === 'undefined') {
-        warn(
-          'You choose to use static loading but it seems that you forget ' +
-            'to config webpack plugin correctly. Please refer to our official website' +
-            'for more details about static loading.'
-        );
+        if (typeof ngDevMode === 'undefined' || ngDevMode) {
+          warn(
+            'You choose to use static loading but it seems that you forget ' +
+              'to config webpack plugin correctly. Please refer to our official website' +
+              'for more details about static loading.'
+          );
+        }
       } else {
         this.loadMonacoScript();
       }

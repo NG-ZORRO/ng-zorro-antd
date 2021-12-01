@@ -158,7 +158,9 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
         });
       },
       e => {
-        warn(`Unhandled upload filter error`, e);
+        if (typeof ngDevMode === 'undefined' || ngDevMode) {
+          warn(`Unhandled upload filter error`, e);
+        }
       }
     );
   }
@@ -180,7 +182,9 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
           }
         },
         e => {
-          warn(`Unhandled upload beforeUpload error`, e);
+          if (typeof ngDevMode === 'undefined' || ngDevMode) {
+            warn(`Unhandled upload beforeUpload error`, e);
+          }
         }
       );
     } else if (before !== false) {
@@ -277,7 +281,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     process$.subscribe(newFile => {
       args.postFile = newFile;
       const req$ = (opt.customRequest || this.xhr).call(this, args);
-      if (!(req$ instanceof Subscription)) {
+      if ((typeof ngDevMode === 'undefined' || ngDevMode) && !(req$ instanceof Subscription)) {
         warn(`Must return Subscription type in '[nzCustomRequest]' property`);
       }
       this.reqs[uid] = req$;
