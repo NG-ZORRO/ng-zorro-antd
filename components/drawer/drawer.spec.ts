@@ -256,7 +256,7 @@ describe('NzDrawerComponent', () => {
       fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
-      expect(overlayContainerElement.querySelector('.ant-drawer-header-no-title')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-drawer-header-close-only')).toBeTruthy();
       expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
     });
 

@@ -62,11 +62,27 @@ export async function compile(): Promise<void | void[]> {
       const buildFilePath = `${sourcePath}/${dir}/style/entry.less`;
       const componentLess = await fs.readFile(buildFilePath, { encoding: 'utf8' });
       if (await fs.pathExists(buildFilePath)) {
+        // Rewrite `entry.less` file with `root-entry-name`
+        const entryLessFileContent = needTransformStyle(componentLess)
+          ? `@root-entry-name: default;\n${componentLess}`
+          : componentLess;
         promiseList.push(
-          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.css`), false, true, buildFilePath)
+          compileLess(
+            entryLessFileContent,
+            path.join(targetPath, dir, 'style', `index.css`),
+            false,
+            true,
+            buildFilePath
+          )
         );
         promiseList.push(
-          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.min.css`), true, true, buildFilePath)
+          compileLess(
+            entryLessFileContent,
+            path.join(targetPath, dir, 'style', `index.min.css`),
+            true,
+            true,
+            buildFilePath
+          )
         );
       }
     }
@@ -112,7 +128,20 @@ export async function compile(): Promise<void | void[]> {
   // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
   const cssIndex = await fs.readFile(cssIndexPath, { encoding: 'utf8' });
-  promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath));
-  promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath));
+  // Rewrite `entry.less` file with `root-entry-name`
+  const entryLessInStyle = needTransformStyle(cssIndex) ? `@root-entry-name: default;\n${cssIndex}` : cssIndex;
+
+  promiseList.push(
+    compileLess(entryLessInStyle, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath)
+  );
+  promiseList.push(
+    compileLess(entryLessInStyle, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath)
+  );
   return Promise.all(promiseList).catch(e => console.log(e));
+}
+
+function needTransformStyle(content: string): boolean {
+  return (
+    content.includes('../../style/index.less') || content.includes('./index.less') || content.includes('/entry.less')
+  );
 }
