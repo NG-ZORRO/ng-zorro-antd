@@ -10,7 +10,7 @@ jobs:
   preview:
     runs-on: ubuntu-latest
     steps:
-      - uses: hsuanxyz/antd-styles-sync-action@v1.1.3
+      - uses: hsuanxyz/antd-styles-sync-action@v1.1.4
         with:
           account_token: ${{ secrets.BOT_TOKEN }}
           version: ${{ github.event.inputs.version }}
