@@ -88,12 +88,20 @@ describe('cascader', () => {
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderDefaultComponent;
 
+    // function getLabelText(): string {
+    //   return cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText;
+    // }
+
     function getLabelText(): string {
-      return cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText;
+      return cascader.nativeElement.querySelector('.ant-select-selection-item').innerText;
     }
 
     function getInputEl(): HTMLElement {
       return cascader.nativeElement.querySelector('input')!;
+    }
+
+    function getPlaceholderEl(): HTMLElement {
+      return cascader.nativeElement.querySelector('.ant-select-selection-placeholder');
     }
 
     beforeEach(() => {
@@ -109,22 +117,13 @@ describe('cascader', () => {
 
     it('should have input', () => {
       fixture.detectChanges();
-      expect(getInputEl()).toBeDefined();
-      expect(getInputEl().getAttribute('placeholder')).toBe('please select');
-    });
-
-    it('should input change event stopPropagation', () => {
-      fixture.detectChanges();
-      const fakeInputChangeEvent = createFakeEvent('change', true, true);
-      spyOn(fakeInputChangeEvent, 'stopPropagation');
-      getInputEl().dispatchEvent(fakeInputChangeEvent);
-      fixture.detectChanges();
-      expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
+      expect(getPlaceholderEl()).toBeDefined();
+      expect(getPlaceholderEl().innerText).toBe('please select');
     });
 
     it('should have EMPTY label', () => {
       fixture.detectChanges();
-      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-picker-label');
+      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
       expect(label).toBeDefined();
       expect(label.innerText).toBe('');
     });
@@ -133,16 +132,16 @@ describe('cascader', () => {
       const placeholder = 'placeholder test';
       testComponent.nzPlaceHolder = placeholder;
       fixture.detectChanges();
-      expect(getInputEl().getAttribute('placeholder')).toBe(placeholder);
+      expect(getPlaceholderEl().innerText).toBe(placeholder);
     });
 
     it('should size work', () => {
       testComponent.nzSize = 'small';
       fixture.detectChanges();
-      expect(getInputEl().classList).toContain('ant-input-sm');
+      expect(cascader.nativeElement.classList).toContain('ant-select-sm');
       testComponent.nzSize = 'large';
       fixture.detectChanges();
-      expect(getInputEl().classList).toContain('ant-input-lg');
+      expect(cascader.nativeElement.classList).toContain('ant-select-lg');
     });
 
     it('should value and label property work', fakeAsync(() => {
@@ -177,11 +176,13 @@ describe('cascader', () => {
     it('should showArrow work', () => {
       testComponent.nzShowArrow = true;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeDefined();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow').classList).toContain('anticon-down');
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeDefined();
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow').querySelector('.anticon').classList).toContain(
+        'anticon-down'
+      );
       testComponent.nzShowArrow = false;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeNull();
     });
 
     it('should allowClear work', () => {
@@ -196,10 +197,11 @@ describe('cascader', () => {
 
     it('should open work', () => {
       fixture.detectChanges();
+      // Don't have ant-cascader-picker-open class yet
       expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-open');
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-open');
+      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-open');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
       expect(testComponent.cascader.nzOptions).toBe(options1);
     });
@@ -304,10 +306,10 @@ describe('cascader', () => {
 
     it('should disabled work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');
       testComponent.nzDisabled = true;
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
@@ -319,20 +321,22 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
+      flush();
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
     }));
 
     it('should disabled state work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');
       testComponent.cascader.setDisabledState(true);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
       tick();
+      flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
@@ -388,7 +392,7 @@ describe('cascader', () => {
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
       spyOn(testComponent, 'onClear');
-      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      cascader.nativeElement.querySelector('.ant-select-clear').click();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
       expect(testComponent.onClear).toHaveBeenCalled();
@@ -419,25 +423,30 @@ describe('cascader', () => {
     });
 
     it('should input focus and blur work', fakeAsync(() => {
-      const fakeInputFocusEvent = createFakeEvent('focus', false, true);
-      const fakeInputBlurEvent = createFakeEvent('blur', false, true);
+      const fakeInputFocusEvent = createFakeEvent('focus', true, true);
+      const fakeInputBlurEvent = createFakeEvent('blur', true, true);
 
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
+      flush();
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      flush();
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
+      flush();
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
 
       testComponent.cascader.setMenuVisible(true);
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      flush();
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      flush();
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
     }));
 
     it('should focus and blur function work', () => {
@@ -508,7 +517,8 @@ describe('cascader', () => {
       expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-with-value');
       testComponent.cascader.inputValue = '12345';
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-with-value');
+      // No Need this class
+      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-with-value');
     }));
 
     it('should create label work', fakeAsync(() => {
@@ -582,7 +592,7 @@ describe('cascader', () => {
       expect(values2[0]).toBe('zhejiang');
       expect(values2[1]).toBe('hangzhou');
       expect(values2[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
 
       testComponent.nzOptions = []; // empty collection
       fixture.detectChanges();
@@ -593,7 +603,7 @@ describe('cascader', () => {
       expect(values3[0]).toBe('zhejiang');
       expect(values3[1]).toBe('hangzhou');
       expect(values3[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
+      expect(getLabelText()).toBe('zhejiang / hangzhou / xihu');
 
       control.writeValue([
         { value: 'zhejiang', label: 'ZJ' },
@@ -606,7 +616,7 @@ describe('cascader', () => {
       expect(values4[0]).toBe('zhejiang');
       expect(values4[1]).toBe('hangzhou');
       expect(values4[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('ZJ / HZ / XH');
+      expect(getLabelText()).toBe('ZJ / HZ / XH');
     }));
 
     it('should write value work on setting `nzOptions` asyn', fakeAsync(() => {
@@ -633,12 +643,12 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
-      expect(control.labelRenderText).toBe('zhejiang');
+      expect(getLabelText()).toBe('zhejiang');
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
-      expect(control.labelRenderText).toBe('Zhejiang');
+      expect(getLabelText()).toBe('Zhejiang');
     }));
 
     it('should write value work on setting `nzOptions` async (match)', fakeAsync(() => {
@@ -649,14 +659,14 @@ describe('cascader', () => {
       flush(); // force value to be write
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
-      expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
+      expect(getLabelText()).toBe('zhejiang / hangzhou / xihu');
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges();
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang');
       expect(values![1]).toBe('hangzhou');
       expect(values![2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
     }));
 
     it('should write value work on setting `nzOptions` async (not match)', fakeAsync(() => {
@@ -667,14 +677,14 @@ describe('cascader', () => {
       flush(); // force value to be write
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
-      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
+      expect(getLabelText()).toBe('zhejiang2 / hangzhou2 / xihu2');
       testComponent.nzOptions = options1; // update the nzOptions like asyn
       fixture.detectChanges(); // but still the values is not match
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang2');
       expect(values![1]).toBe('hangzhou2');
       expect(values![2]).toBe('xihu2');
-      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
+      expect(getLabelText()).toBe('zhejiang2 / hangzhou2 / xihu2');
     }));
 
     it('should click option to expand', () => {
@@ -791,6 +801,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
+      flush();
       const optionEl1 = getItemAtColumnAndRow(1, 1)!;
       const optionEl2 = getItemAtColumnAndRow(1, 2)!;
 
@@ -798,10 +809,12 @@ describe('cascader', () => {
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
       optionEl1.click();
       fixture.detectChanges();
+      flush();
       expect(optionEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
       optionEl2.click();
       fixture.detectChanges();
+      flush();
       expect(optionEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
     }));
@@ -833,7 +846,9 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
       tick(200);
+      flush();
       fixture.detectChanges();
+      flush();
       expect(testComponent.cascader.menuVisible).toBe(true);
     }));
 
@@ -871,17 +886,20 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
+      flush();
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:last-child'
       ) as HTMLElement; // The last of the fisrt column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       const itemEl2 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
     }));
@@ -894,6 +912,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
     }));
 
@@ -901,16 +920,20 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
+      flush();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
+      flush();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
+      flush();
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       let itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
+      flush();
 
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -938,16 +961,19 @@ describe('cascader', () => {
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      flush();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1001,11 +1027,13 @@ describe('cascader', () => {
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW); // active 1
       fixture.detectChanges();
+      flush();
       expect(optionEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges(); // should NOT active the disabled option2
+      flush();
       expect(optionEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
@@ -1020,6 +1048,7 @@ describe('cascader', () => {
 
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW); // active 2
       fixture.detectChanges();
+      flush();
       expect(optionEl11.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl12.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl13.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1027,6 +1056,7 @@ describe('cascader', () => {
 
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
+      flush();
       expect(optionEl11.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl12.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl13.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1034,6 +1064,7 @@ describe('cascader', () => {
 
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
+      flush();
       expect(optionEl11.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl12.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl13.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1056,6 +1087,7 @@ describe('cascader', () => {
         expect(testComponent.cascader.menuVisible).toBe(false);
         dispatchKeyboardEvent(cascader.nativeElement, 'keydown', key);
         fixture.detectChanges();
+        flush();
         expect(testComponent.cascader.menuVisible).toBe(false);
       });
     }));
@@ -1601,7 +1633,9 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1);
       expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')!.classList).toContain('anticon-home');
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow').querySelector('.anticon')!.classList).toContain(
+        'anticon-home'
+      );
     });
   });
 
@@ -1735,9 +1769,10 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      cascader.nativeElement.querySelector('.ant-select-clear').click();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
+      flush();
       expect(testComponent.values!.length).toBe(0);
     }));
   });
@@ -1755,11 +1790,11 @@ describe('cascader', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+      expect(cascader.nativeElement.className).toContain('ant-select-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
+      expect(cascader.nativeElement.className).not.toContain('ant-select-rtl');
     });
 
     it('should menu class work', fakeAsync(() => {
@@ -1789,6 +1824,41 @@ describe('cascader', () => {
       const itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
     }));
+  });
+
+  describe('multiple', () => {
+    let fixture: ComponentFixture<NzDemoCascaderMultipleComponent>;
+    let cascader: DebugElement;
+    // @ts-ignore
+    let testComponent: NzDemoCascaderMultipleComponent;
+
+    // function getLabelText(): string {
+    //   return cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText;
+    // }
+    // @ts-ignore
+    function getLabelText(): string {
+      return cascader.nativeElement.querySelector('.ant-select-selection-item').innerText;
+    }
+    // @ts-ignore
+    function getInputEl(): HTMLElement {
+      return cascader.nativeElement.querySelector('input')!;
+    }
+    // @ts-ignore
+    function getPlaceholderEl(): HTMLElement {
+      return cascader.nativeElement.querySelector('.ant-select-selection-placeholder');
+    }
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderMultipleComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+    // TODO: Multiple test case
+    it('should maxTagCount work', fakeAsync(() => {}));
+    it('should remove item work', fakeAsync(() => {}));
+    it('should check parent and conduct down', fakeAsync(() => {}));
+    it('should check children and conduct up', fakeAsync(() => {}));
+    it('should check half check item and conduct', fakeAsync(() => {}));
   });
 });
 
@@ -2174,4 +2244,86 @@ export class NzDemoCascaderRtlComponent {
   public nzOptions: any[] | null = options1;
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+const multiOptions = [
+  {
+    value: 'zhejiang',
+    label: 'Zhejiang',
+    children: [
+      {
+        value: 'hangzhou',
+        label: 'Hangzhou',
+        children: [
+          {
+            value: 'xihu',
+            label: 'West Lake',
+            children: [
+              {
+                value: 'duanqiao',
+                label: 'Duan Bridge',
+                isLeaf: true
+              }
+            ]
+          },
+          {
+            value: 'lingyinsi',
+            label: 'Lingyin Temple',
+            isLeaf: true
+          }
+        ]
+      },
+      {
+        value: 'ningbo',
+        label: 'Ningbo',
+        isLeaf: true,
+        disabled: true
+      }
+    ]
+  },
+  {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+    children: [
+      {
+        value: 'nanjing',
+        label: 'Nanjing',
+        children: [
+          {
+            value: 'zhonghuamen',
+            label: 'Zhong Hua Men',
+            isLeaf: true
+          }
+        ]
+      }
+    ]
+  }
+];
+
+@Component({
+  selector: 'nz-demo-cascader-multiple',
+  template: `
+    <nz-cascader
+      [nzOptions]="nzOptions"
+      [(ngModel)]="values"
+      [nzMultiple]="true"
+      [nzShowSearch]="true"
+      [nzMaxTagCount]="2"
+      (ngModelChange)="onChanges($event)"
+      nzExpandTrigger="hover"
+      style="width: 100%;"
+    ></nz-cascader>
+  `,
+  styles: [
+    `
+      .change-options {
+        display: inline-block;
+        font-size: 12px;
+        margin-top: 8px;
+      }
+    `
+  ]
+})
+export class NzDemoCascaderMultipleComponent {
+  nzOptions: NzCascaderOption[] | null = multiOptions;
+  values: string[] | string[][] | null = null;
 }

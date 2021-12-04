@@ -1,10 +1,14 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
 @import '../../input/style/mixin';
+@import '../../checkbox/style/mixin';
 
 @cascader-prefix-cls: ~'@{ant-prefix}-cascader';
 
+.antCheckboxFn(@checkbox-prefix-cls: ~'@{cascader-prefix-cls}-option-checkbox');
+
 .@{cascader-prefix-cls} {
+  width: 200px;
   .reset-component();
 
   &-input.@{ant-prefix}-input {
@@ -18,7 +22,7 @@
     background-color: transparent !important;
     cursor: pointer;
   }
-
+  
   &-picker-show-search &-input.@{ant-prefix}-input {
     position: relative;
   }
@@ -220,7 +224,10 @@
       position: relative;
       padding-right: 24px;
     }
-
+    &-checkable {
+      display: flex;
+      align-items: flex-start;
+    }
     &-expand &-expand-icon,
     &-loading-icon {
       position: absolute;

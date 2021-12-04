@@ -12,6 +12,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -42,7 +43,7 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
   `,
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
 })
-export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
+export class NzSelectSearchComponent implements AfterViewInit, OnChanges, OnInit {
   @Input() nzId: string | null = null;
   @Input() disabled = false;
   @Input() mirrorSync = false;
@@ -113,12 +114,15 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  ngOnInit(): void {
+    if (this.autofocus) {
+      this.focus();
+    }
+  }
+
   ngAfterViewInit(): void {
     if (this.mirrorSync) {
       this.syncMirrorWidth();
-    }
-    if (this.autofocus) {
-      this.focus();
     }
   }
 }

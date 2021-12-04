@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
+
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -13,6 +14,17 @@ const options = [
           {
             value: 'xihu',
             label: 'West Lake',
+            children: [
+              {
+                value: 'duanqiao',
+                label: 'Duan Bridge',
+                isLeaf: true
+              }
+            ]
+          },
+          {
+            value: 'lingyinsi',
+            label: 'Lingyin Temple',
             isLeaf: true
           }
         ]
@@ -20,7 +32,8 @@ const options = [
       {
         value: 'ningbo',
         label: 'Ningbo',
-        isLeaf: true
+        isLeaf: true,
+        disabled: true
       }
     ]
   },
@@ -43,54 +56,19 @@ const options = [
   }
 ];
 
-const otherOptions = [
-  {
-    value: 'fujian',
-    label: 'Fujian',
-    children: [
-      {
-        value: 'xiamen',
-        label: 'Xiamen',
-        children: [
-          {
-            value: 'Kulangsu',
-            label: 'Kulangsu',
-            isLeaf: true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: 'guangxi',
-    label: 'Guangxi',
-    children: [
-      {
-        value: 'guilin',
-        label: 'Guilin',
-        children: [
-          {
-            value: 'Lijiang',
-            label: 'Li Jiang River',
-            isLeaf: true
-          }
-        ]
-      }
-    ]
-  }
-];
-
 @Component({
-  selector: 'nz-demo-cascader-basic',
+  selector: 'nz-demo-cascader-multiple',
   template: `
     <nz-cascader
-      nzAutoFocus
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
+      [nzMultiple]="true"
+      [nzShowSearch]="true"
+      [nzMaxTagCount]="2"
       (ngModelChange)="onChanges($event)"
+      nzExpandTrigger="hover"
+      style="width: 100%;"
     ></nz-cascader>
-    &nbsp;
-    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">Change Options</a>
   `,
   styles: [
     `
@@ -102,9 +80,9 @@ const otherOptions = [
     `
   ]
 })
-export class NzDemoCascaderBasicComponent implements OnInit {
-  nzOptions: any[] | null = null;
-  values: any[] | null = null;
+export class NzDemoCascaderMultipleComponent implements OnInit {
+  nzOptions: NzCascaderOption[] | null = null;
+  values: string[] | string[][] | null = null;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -112,15 +90,7 @@ export class NzDemoCascaderBasicComponent implements OnInit {
     }, 100);
   }
 
-  changeNzOptions(): void {
-    if (this.nzOptions === options) {
-      this.nzOptions = otherOptions;
-    } else {
-      this.nzOptions = options;
-    }
-  }
-
-  onChanges(values: any): void {
+  onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 }
