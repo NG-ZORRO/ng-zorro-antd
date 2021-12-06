@@ -151,6 +151,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
       this.hasLabelItem = hasLabelItem;
+    } else {
+      this.timelineItems = [];
+      this.hasLabelItem = false;
     }
 
     this.cdr.markForCheck();
