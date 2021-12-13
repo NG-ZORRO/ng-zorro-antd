@@ -114,7 +114,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   }
 }
 
-
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
