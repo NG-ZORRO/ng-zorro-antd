@@ -193,7 +193,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
     '[class.ant-cascader-focused]': 'isFocused',
-    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
+    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`,
+    '[class.ant-cascader-picker-borderless]': 'nzBorderless'
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
@@ -202,6 +203,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   static ngAcceptInputType_nzShowArrow: BooleanInput;
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
   static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
@@ -211,6 +213,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
+  @Input() @WithConfig<boolean>() @InputBoolean() nzBorderless = false;
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() @InputBoolean() nzAllowClear = true;

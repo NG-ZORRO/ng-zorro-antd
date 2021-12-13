@@ -145,6 +145,12 @@ describe('cascader', () => {
       expect(getInputEl().classList).toContain('ant-input-lg');
     });
 
+    it('should borderless work', () => {
+      testComponent.nzBorderless = true;
+      fixture.detectChanges();
+      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-borderless');
+    });
+
     it('should value and label property work', fakeAsync(() => {
       testComponent.nzOptions = ID_NAME_LIST;
       testComponent.nzValueProperty = 'id';
@@ -2010,6 +2016,7 @@ const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explici
       [(ngModel)]="values"
       [nzAllowClear]="nzAllowClear"
       [nzAutoFocus]="nzAutoFocus"
+      [nzBorderless]="nzBorderless"
       [nzChangeOn]="nzChangeOn"
       [nzChangeOnSelect]="nzChangeOnSelect"
       [nzColumnClassName]="nzColumnClassName"
@@ -2061,6 +2068,7 @@ export class NzDemoCascaderDefaultComponent {
 
   nzAllowClear = true;
   nzAutoFocus = false;
+  nzBorderless = false;
   nzMenuClassName = 'menu-classA menu-classB';
   nzColumnClassName = 'column-classA column-classB';
   nzMenuStyle = { height: '120px' };

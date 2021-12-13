@@ -31,6 +31,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzAllowClear]` | whether allow clear | `boolean` | `true` |
 | `[nzAutoFocus]` | whether auto focus the input box | `boolean` | `false` |
 | `[nzBackdrop]` | whether or not the overlay should attach a backdrop | `boolean` | `false` |
+| `[nzBorderless]` | whether has borderless style | `boolean` | `false`| ✅ |
 | `[nzChangeOn]` | change value on each selection if this function return `true` | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | `boolean` | `false` |
 | `[nzColumnClassName]` | additional className of column in the popup overlay | `string` | - |
