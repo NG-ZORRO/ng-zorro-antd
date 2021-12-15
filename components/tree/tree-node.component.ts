@@ -108,6 +108,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-treenode-checkbox-indeterminate]': `!nzSelectMode && isHalfChecked`,
     '[class.ant-tree-treenode-selected]': `!nzSelectMode && isSelected`,
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
+    '[class.dragging]': `draggingKey===nzTreeNode.key`,
     '[style.display]': 'displayStyle',
     '(mousedown)': 'onMousedown($event)'
   }
@@ -176,6 +177,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     1: 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
   };
+  draggingKey: string | null = null;
   showIndicator = false;
   /**
    * default set
@@ -281,6 +283,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       // empty
     }
     this.nzTreeService.setSelectedNode(this.nzTreeNode);
+    this.draggingKey = this.nzTreeNode.key;
     const eventNext = this.nzTreeService.formatEvent('dragstart', this.nzTreeNode, e);
     this.nzOnDragStart.emit(eventNext);
   }
@@ -357,6 +360,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     this.ngZone.run(() => {
       // if user do not custom beforeDrop
       if (!this.nzBeforeDrop) {
+        // clear dragging state
+        this.draggingKey = null;
         const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
         this.nzOnDragEnd.emit(eventNext);
       }
