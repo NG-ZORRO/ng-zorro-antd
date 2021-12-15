@@ -298,7 +298,7 @@ declare const locale: NzSafeAny;
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
         <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <i nz-icon [nzType]="icon" [nzTheme]="currentTheme"></i>
+          <i nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></i>
           <span class="anticon-class">
             <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
               {{ icon }}
@@ -345,11 +345,13 @@ export class NzPageDemoIconComponent implements OnInit {
 
   trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
 
+  kebabCase = (str: string): string => kebabCase(str);
+
   isNewIcon = (name: string): boolean => newIconNames.indexOf(name) > -1;
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
-    const copiedString = `<i nz-icon nzType="${icon}" nzTheme="${this.currentTheme}"></i>`;
+    const copiedString = `<i nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}"></i>`;
     target.classList.add('copied');
     this._copy(copiedString).then(() => {
       setTimeout(() => {
@@ -383,21 +385,22 @@ export class NzPageDemoIconComponent implements OnInit {
 
   prepareIcons(): void {
     const theme = this.currentTheme;
-    // @ts-ignore
-    const currentThemeIcons = (manifest[theme] as string[]).filter(
-      (name: string) => !['interation', 'canlendar'].includes(name)
-    );
+
+    const currentThemeIcons = (manifest[theme] as string[])
+      .filter((name: string) => !['interation', 'canlendar'].includes(name))
+      .map(name => upperCamelCase(name));
+
     let notEmptyCategories = Object.keys(categories).map(category => ({
       name: category,
-      // @ts-ignore
-      icons: categories[category].filter(
-        (name: string) => currentThemeIcons.indexOf(name) > -1 && name.includes(this.searchingString)
+      icons: categories[category as keyof Categories]!.filter(
+        (name: string) =>
+          currentThemeIcons.indexOf(name) > -1 && name.toLowerCase().includes(this.searchingString.toLowerCase())
       )
     }));
 
     const otherIcons = currentThemeIcons
       .filter(icon => notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon)))
-      .filter(name => name.includes(this.searchingString));
+      .filter(name => name.toLowerCase().includes(this.searchingString.toLocaleLowerCase()));
 
     notEmptyCategories.push({ name: 'other', icons: otherIcons });
     notEmptyCategories = notEmptyCategories.filter(({ icons }) => Boolean(icons.length));
@@ -424,4 +427,20 @@ export class NzPageDemoIconComponent implements OnInit {
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
   }
+}
+
+function camelCase(value: string): string {
+  return value.replace(/-\w/g, (_r, i) => value.charAt(i + 1).toUpperCase());
+}
+
+function upperCamelCase(value: string): string {
+  const camelCased = camelCase(value);
+  return camelCased.charAt(0).toUpperCase() + camelCased.slice(1);
+}
+
+function kebabCase(value: string): string {
+  return value
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase();
 }
