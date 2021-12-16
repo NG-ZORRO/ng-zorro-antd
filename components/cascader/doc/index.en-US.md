@@ -40,8 +40,10 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
 | `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
 | `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
+| `[nzMaxTagCount]` | Max tag count to show | `number` | - |
 | `[nzMenuClassName]` | additional className of popup overlay | `string` | - |
 | `[nzMenuStyle]` | additional css style of popup overlay | `object` | - |
+| `[nzMultiple]` | Support multiple or not | `boolean` | false |
 | `[nzNotFoundContent]` | Specify content to show when no result matches. | `string\|TemplateRef<void>` | - |
 | `[nzOptionRender]` | render template of cascader options | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>` | |
 | `[nzOptions]` | data options of cascade | `object[]` | - |

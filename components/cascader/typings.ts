@@ -53,3 +53,8 @@ export interface NzCascaderComponentAsSource {
 
   nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny>;
 }
+
+export interface NzCascaderLabelRenderContext {
+  labels?: string[];
+  selectedOptions?: NzCascaderOption[];
+}
