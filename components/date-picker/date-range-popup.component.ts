@@ -8,8 +8,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -18,7 +20,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { fromEvent, merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -139,10 +141,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
       </li>
     </ng-template>
-  `,
-  host: {
-    '(mousedown)': 'onMousedown($event)'
-  }
+  `
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
@@ -180,7 +179,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
   }
 
-  constructor(public datePickerService: DatePickerService, public cdr: ChangeDetectorRef) {}
+  constructor(
+    public datePickerService: DatePickerService,
+    public cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private host: ElementRef<HTMLElement>
+  ) {}
 
   ngOnInit(): void {
     merge(this.datePickerService.valueChange$, this.datePickerService.inputPartChange$)
@@ -189,6 +193,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.updateActiveDate();
         this.cdr.markForCheck();
       });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.host.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => event.preventDefault());
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -220,15 +230,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       this.hasTimePicker,
       this.getPanelMode(this.endPanelMode) as NormalizedMode
     );
-  }
-
-  /**
-   * Prevent input losing focus when click panel
-   *
-   * @param event
-   */
-  onMousedown(event: MouseEvent): void {
-    event.preventDefault();
   }
 
   onClickOk(): void {
