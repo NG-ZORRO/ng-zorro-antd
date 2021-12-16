@@ -51,6 +51,7 @@ const options = [
   selector: 'nz-demo-cascader-custom-render',
   template: `
     <nz-cascader
+      style="width: 100%;"
       [nzLabelRender]="renderTpl"
       [nzOptions]="nzOptions"
       [(ngModel)]="values"

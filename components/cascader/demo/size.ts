@@ -63,7 +63,7 @@ const options = [
   `,
   styles: [
     `
-      .ant-cascader-picker {
+      .ant-cascader {
         width: 300px;
         margin-bottom: 8px;
       }
