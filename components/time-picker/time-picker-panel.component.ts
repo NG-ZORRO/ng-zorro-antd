@@ -11,6 +11,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -445,12 +446,14 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     const difference = to - element.scrollTop;
     const perTick = (difference / duration) * 10;
 
-    reqAnimFrame(() => {
-      element.scrollTop = element.scrollTop + perTick;
-      if (element.scrollTop === to) {
-        return;
-      }
-      this.scrollTo(element, to, duration - 10);
+    this.ngZone.runOutsideAngular(() => {
+      reqAnimFrame(() => {
+        element.scrollTop = element.scrollTop + perTick;
+        if (element.scrollTop === to) {
+          return;
+        }
+        this.scrollTo(element, to, duration - 10);
+      });
     });
   }
 
@@ -517,7 +520,12 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     return value.value.toUpperCase() === this.time.selected12Hours;
   }
 
-  constructor(private cdr: ChangeDetectorRef, public dateHelper: DateHelperService, private elementRef: ElementRef) {
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    public dateHelper: DateHelperService,
+    private elementRef: ElementRef
+  ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-picker-time-panel');
   }
