@@ -124,7 +124,8 @@ export class NzCodeEditorService implements OnDestroy {
     const onLoad = (): void => {
       cleanup();
       windowAsAny.require.config({
-        paths: { vs }
+        paths: { vs },
+        ...this.config.extraConfig
       });
       windowAsAny.require(['vs/editor/editor.main'], () => {
         this.onLoad();
