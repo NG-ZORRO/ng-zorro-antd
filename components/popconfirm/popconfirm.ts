@@ -159,7 +159,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow"></div>
+          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow">
+            <span class="ant-popover-arrow-content"></span>
+          </div>
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
