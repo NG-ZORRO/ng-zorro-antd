@@ -312,7 +312,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   document: Document;
   inputSize: number = 12;
   inputWidth?: number;
-  destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   inputValue!: NzSafeAny;
   activeBarStyle: object = {};
@@ -363,13 +362,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (this.isRange && this.platform.isBrowser) {
       this.nzResizeObserver
         .observe(this.elementRef)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(() => {
           this.updateInputWidthAndArrowLeft();
         });
     }
 
-    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
+    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroyed$)).subscribe(partType => {
       if (partType) {
         this.datePickerService.activeInput = partType;
       }
@@ -641,7 +640,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.datePickerService.valueChange$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.updateInputValue();
     });
   }
