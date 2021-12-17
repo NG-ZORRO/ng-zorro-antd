@@ -108,8 +108,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-treenode-checkbox-indeterminate]': `!nzSelectMode && isHalfChecked`,
     '[class.ant-tree-treenode-selected]': `!nzSelectMode && isSelected`,
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
-    '[style.display]': 'displayStyle',
-    '(mousedown)': 'onMousedown($event)'
+    '[style.display]': 'displayStyle'
   }
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
@@ -193,12 +192,6 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   get isSwitcherClose(): boolean {
     return !this.isExpanded && !this.isLeaf;
-  }
-
-  onMousedown(event: MouseEvent): void {
-    if (this.nzSelectMode) {
-      event.preventDefault();
-    }
   }
 
   /**
@@ -404,13 +397,23 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     public nzTreeService: NzTreeBaseService,
     private ngZone: NgZone,
     private renderer: Renderer2,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
   ngOnInit(): void {
     this.nzTreeNode.component = this;
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (this.nzSelectMode) {
+            event.preventDefault();
+          }
+        });
+    });
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
