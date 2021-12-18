@@ -1,3 +1,28 @@
+## [12.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...12.1.1) (2021-12-18)
+
+
+### Bug Fixes
+
+* **date-picker,time-picker:** disable autocomplete completely ([#7088](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7088)) ([bddc537](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bddc537f6f64b6697f95ef421c634045656e4903)), closes [#6718](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6718)
+* **date-picker:** resolve memory leaks ([#7113](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7113)) ([fe9070a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fe9070aaf486b50b231b19ee55bfc0b4907a98a2))
+* **popconfirm:** missing arrow ([#7086](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7086)) ([3f4a704](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3f4a704fc126a3c1ccfe92ae0f045062f00fd1e8))
+* **timeline:** when the data clear. reset items ([#7109](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7109)) ([0ece612](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0ece6123a586c96a6178e2ba939b9451c031bc14))
+
+
+### Performance Improvements
+
+* **carousel:** do not run change detection on non-handled `keydown` events ([#7097](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7097)) ([ca3299e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ca3299ea5b00c7075d93871ec418e1527d390f8b))
+* **cascader:** do not run change detections on non-handled `keydown` events ([#7060](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7060)) ([9a37718](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9a37718d42ac05288393d7c7d9db4204ba7e640e))
+* **date-picker:** do not run change detection when the `date-range-popup` is clicked ([#7096](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7096)) ([8f8c71b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8f8c71b1aedd10ecd50c48d802835bd235f0f2ee))
+* **icon:** do not run change detection when changing icon ([#7071](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7071)) ([e998e4a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e998e4abef73f34783aa63e88e9f0adadc8301e7))
+* **mention:** do not run change detections on `mousedown` events ([#7094](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7094)) ([0d4ad23](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0d4ad23a1722a01974c29c4b9f13eeff70c40df5))
+* **switch:** reduce change detection cycles ([#7105](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7105)) ([6d9b1ff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d9b1fff55bcb3d8a6c5ef2b9250cfcee6ce6039))
+* **table:** do not run change detections on click events for the `nz-filter-trigger` ([#7095](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7095)) ([346c50d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/346c50d0a5b19160d51c8c6a3e61a389b4b92a52))
+* **time-picker:** do not run change detection when scrolling ([#7063](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7063)) ([baf7f0a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/baf7f0a85ef386a4ebe9bef553e532e501129f6e))
+* **time-picker:** do not run change detection when the time picker panel is clicked ([#7126](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7126)) ([76da3ff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/76da3ff9f6a64fb854999f3ef30c45980c3b6b7b))
+* **tree:** do not run change detection when the tree node is clicked ([#7128](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7128)) ([55f1e04](https://github.com/NG-ZORRO/ng-zorro-antd/commit/55f1e047b32597397c42c779409beff7ab13b1f7))
+
+
 # [12.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.0.2...12.1.0) (2021-11-29)
 
 
