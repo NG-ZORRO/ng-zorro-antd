@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -124,8 +124,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-column-2]': `enabledColumns === 2 && !nzInDatePicker`,
     '[class.ant-picker-time-panel-column-3]': `enabledColumns === 3 && !nzInDatePicker`,
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
-    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`,
-    '(mousedown)': 'onMousedown($event)'
+    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })
@@ -524,7 +523,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     public dateHelper: DateHelperService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef<HTMLElement>
   ) {
     // TODO: move to host after View Engine deprecation
     this.elementRef.nativeElement.classList.add('ant-picker-time-panel');
@@ -540,6 +539,14 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     setTimeout(() => {
       this.scrollToTime();
       this.firstScrolled = true;
+    });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(event => {
+          event.preventDefault();
+        });
     });
   }
 
@@ -576,14 +583,5 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
-  }
-
-  /**
-   * Prevent input losing focus when click panel
-   *
-   * @param event
-   */
-  onMousedown(event: MouseEvent): void {
-    event.preventDefault();
   }
 }

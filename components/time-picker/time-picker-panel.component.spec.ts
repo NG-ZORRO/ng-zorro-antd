@@ -1,4 +1,4 @@
-import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -158,6 +158,21 @@ describe('time-picker-panel', () => {
       const listOfSelectedLi = panelElement.nativeElement.querySelector('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi.offsetTop).toBe(0);
     }));
+
+    describe('change detection behavior', () => {
+      it('should not run change detection when the timer picker panel is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('mousedown');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        fixture.nativeElement.querySelector('nz-time-picker-panel').dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
+    });
   });
   describe('disabled time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelDisabledComponent>;
