@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -181,6 +181,26 @@ describe('tree', () => {
         const hiddenNodes = nativeElement.querySelectorAll('nz-tree-node[builtin][style*="display: none;"]');
         expect(hiddenNodes.length).toEqual(2);
       }));
+
+      describe('change detection behavior', () => {
+        it('should not run change detection when the `nz-tree-node` is clicked', () => {
+          const { component, fixture, nativeElement } = testBed;
+          component.selectMode = true;
+          fixture.detectChanges();
+
+          const appRef = TestBed.inject(ApplicationRef);
+          const event = new MouseEvent('mousedown');
+
+          spyOn(appRef, 'tick');
+          spyOn(event, 'preventDefault').and.callThrough();
+
+          const treeNode = nativeElement.querySelector('nz-tree-node')!;
+          treeNode.dispatchEvent(event);
+
+          expect(appRef.tick).not.toHaveBeenCalled();
+          expect(event.preventDefault).toHaveBeenCalled();
+        });
+      });
     });
 
     describe('basic style of tree', () => {
@@ -577,6 +597,7 @@ describe('tree', () => {
       [nzExpandAll]="expandAll"
       [nzExpandedIcon]="expandedIcon"
       [nzAsyncData]="asyncData"
+      [nzSelectMode]="selectMode"
       (nzSearchValueChange)="nzEvent($event)"
       (nzClick)="nzEvent($event)"
       (nzDblClick)="nzEvent($event)"
@@ -595,6 +616,7 @@ export class NzTestTreeBasicControlledComponent {
   multiple = true;
   expandAll = false;
   asyncData = false;
+  selectMode = false;
   checkStrictly = false;
   showLine = false;
   defaultCheckedKeys: string[] = [];
