@@ -15,6 +15,7 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
+import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
@@ -23,7 +24,7 @@ import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconService } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadFile, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
 
 export interface Categories {
   direction: string[];
@@ -377,10 +378,9 @@ declare const locale: NzSafeAny;
             nzType="drag"
             nzAccept="image/jpeg, image/png"
             nzListType="picture"
-            nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            [nzCustomRequest]="customRequestUploadFile"
             [nzFileList]="fileList"
             [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: false }"
-            (nzChange)="handleChange($event)"
           >
             <p class="ant-upload-drag-icon">
               <i nz-icon nzType="inbox" nzTheme="outline"></i>
@@ -604,14 +604,21 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     if (file) this.uploadFile(file);
   };
 
-  private uploadFile = (file: File): void => {
+  // We don't need to upload it, so just fake api here
+  customRequestUploadFile = (o: NzUploadXHRArgs): Subscription => {
+    return of(true).subscribe(() => {
+      this.uploadFile(o.file);
+    });
+  };
+
+  private uploadFile = (file: File | NzUploadFile): void => {
     this.loading = true;
     const reader: FileReader = new FileReader();
     reader.onload = () => {
       this.toImage(reader.result as string).then(this.predict);
       this.fileList = [{ uid: '1', name: file.name, status: 'done', url: reader.result as string }];
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file as File);
   };
 
   private toImage(url: string): Promise<HTMLImageElement> {
@@ -678,7 +685,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    document.removeEventListener('paste', this.onPaste as EventListener);
+    this.dom.removeEventListener('paste', this.onPaste as EventListener);
     this.viewContainerRef.clear();
   }
 }
