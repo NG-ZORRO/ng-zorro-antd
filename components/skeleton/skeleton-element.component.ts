@@ -13,6 +13,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,
@@ -24,12 +26,14 @@ import {
 @Directive({
   selector: 'nz-skeleton-element',
   host: {
-    '[class.ant-skeleton-active]': 'nzActive'
+    '[class.ant-skeleton-active]': 'nzActive',
+    '[class.ant-skeleton-block]': 'nzBlock'
   }
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
+  @Input() @InputBoolean() nzBlock: boolean = false;
 
   constructor(private elementRef: ElementRef) {
     // TODO: move to host after View Engine deprecation

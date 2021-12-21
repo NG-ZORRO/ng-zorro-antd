@@ -56,8 +56,8 @@ const iconTypeMap = {
         <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
       </span>
     </div>
-    <div [ngClass]="['ant-form-item-explain', 'ant-form-item-explain-' + status]" *ngIf="innerTip">
-      <div @helpMotion>
+    <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected" *ngIf="innerTip">
+      <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
         <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
           innerTip
         }}</ng-container>

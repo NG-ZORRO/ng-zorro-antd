@@ -78,7 +78,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
               <div
                 *ngIf="nzTitle || nzClosable"
                 [class.ant-drawer-header]="!!nzTitle"
-                [class.ant-drawer-header-no-title]="!nzTitle"
+                [class.ant-drawer-header-close-only]="!nzTitle"
               >
                 <div *ngIf="nzTitle" class="ant-drawer-title">
                   <ng-container *nzStringTemplateOutlet="nzTitle">

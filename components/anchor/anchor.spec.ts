@@ -140,13 +140,13 @@ describe('anchor', () => {
         context.nzShowInkInFixed = false;
         fixture.detectChanges();
         scrollTo();
-        expect(dl.query(By.css('.fixed')) == null).toBe(false);
+        expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(false);
       });
       it('should be hide ink when [true]', () => {
         context.nzShowInkInFixed = true;
         fixture.detectChanges();
         scrollTo();
-        expect(dl.query(By.css('.fixed')) == null).toBe(true);
+        expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(true);
       });
     });
 

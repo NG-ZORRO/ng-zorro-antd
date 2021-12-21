@@ -58,6 +58,7 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
     '[class.ant-layout-sider-dark]': `nzTheme === 'dark'`,
     '[class.ant-layout-sider-collapsed]': `nzCollapsed`,
+    '[class.ant-layout-sider-has-trigger]': `nzCollapsible && nzTrigger !== null`,
     '[style.flex]': 'flexSetting',
     '[style.maxWidth]': 'widthSetting',
     '[style.minWidth]': 'widthSetting',

@@ -53,6 +53,7 @@ import { TransferDirection, TransferItem } from './interface';
     <div class="ant-transfer-list-header">
       <label
         *ngIf="showSelectAll"
+        class="ant-transfer-list-checkbox"
         nz-checkbox
         [nzChecked]="stat.checkAll"
         (nzCheckedChange)="onItemSelectAll($event)"
@@ -64,22 +65,23 @@ import { TransferDirection, TransferItem } from './interface';
           {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
           {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
-        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
+      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
       [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
     >
       <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
-        <div
+        <span
           nz-transfer-search
+          class="ant-input-affix-wrapper ant-transfer-list-search"
           (valueChanged)="handleFilter($event)"
           (valueClear)="handleClear()"
           [placeholder]="searchPlaceholder"
           [disabled]="disabled"
           [value]="filter"
-        ></div>
+        ></span>
       </div>
       <ng-container *ngIf="renderList; else defaultRenderList">
         <div class="ant-transfer-list-body-customize-wrapper">
