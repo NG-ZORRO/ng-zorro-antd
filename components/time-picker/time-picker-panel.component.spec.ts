@@ -359,7 +359,7 @@ describe('time-picker-panel', () => {
       [nzHourStep]="hourStep"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styleUrls: ['../ng-zorro-antd.less']
 })
 export class NzTestTimePanelComponent {
   secondStep = 1;
@@ -388,7 +388,7 @@ export class NzTestTimePanelComponent {
       [nzHourStep]="hourStep"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styleUrls: ['../ng-zorro-antd.less']
 })
 export class NzTestTimePanelDisabledComponent {
   inDatePicker = false;
@@ -432,7 +432,7 @@ export class NzTestTimePanelDisabledComponent {
       [format]="format"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styleUrls: ['../ng-zorro-antd.less']
 })
 export class NzTest12HourTimePanelComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
@@ -453,7 +453,7 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledSeconds]="disabledSeconds"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styleUrls: ['../ng-zorro-antd.less']
 })
 export class NzTest12HourTimePanelDisabeledComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;

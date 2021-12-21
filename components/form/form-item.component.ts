@@ -29,8 +29,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-error]': 'status === "error"',
     '[class.ant-form-item-is-validating]': 'status === "validating"',
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
-    '[class.ant-form-item-with-help]': 'withHelpClass',
-    '[style.transition]': `'none'` // Force disable css override transition in index.less configured since we use animations instead
+    '[class.ant-form-item-with-help]': 'withHelpClass'
   },
   template: ` <ng-content></ng-content> `
 })

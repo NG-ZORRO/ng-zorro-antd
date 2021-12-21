@@ -229,11 +229,8 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "customWebpackConfig": {
-              "path": "./ut-webpack.config.js"
-            },
             "fileReplacements": [
               {
                 "replace": "components/core/environments/environment.ts",

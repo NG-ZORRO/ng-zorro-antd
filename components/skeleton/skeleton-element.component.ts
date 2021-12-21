@@ -27,7 +27,7 @@ import {
   selector: 'nz-skeleton-element',
   host: {
     '[class.ant-skeleton-active]': 'nzActive',
-    '[class.ant-skeleton-block]': '!!nzBlock'
+    '[class.ant-skeleton-block]': 'nzBlock'
   }
 })
 export class NzSkeletonElementDirective {

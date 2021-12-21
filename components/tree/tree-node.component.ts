@@ -108,7 +108,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-treenode-checkbox-indeterminate]': `!nzSelectMode && isHalfChecked`,
     '[class.ant-tree-treenode-selected]': `!nzSelectMode && isSelected`,
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
-    '[class.dragging]': `draggingKey===nzTreeNode.key`,
+    '[class.dragging]': `draggingKey === nzTreeNode.key`,
     '[style.display]': 'displayStyle'
   }
 })

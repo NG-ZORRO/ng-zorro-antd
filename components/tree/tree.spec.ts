@@ -430,13 +430,6 @@ describe('tree', () => {
 
       it('should trigger drag over event', fakeAsync(() => {
         //  ============ over with different position in next test ==============
-        // clientY, top, bottom, height, des;
-        // pipeline: 353, 557, 573, 16, 4
-        // I don't know how to test dragover in pipeline
-        // locally top / bottom / des : 335, 357, 5.5
-        // drag-over(0): 340.5 ~ 352.5 561~569
-        // drag-over-gap-bottom(1): > 352.5 569
-        // drag-over-gap-top(-1): < 340.5 561
         /**
          * nzTreeService#calcDropPosition
          * if (clientY <= top + des) {
@@ -449,8 +442,8 @@ describe('tree', () => {
 
         const { fixture, nativeElement } = testBed;
         let elementNode;
-        const dragNode = nativeElement.querySelector("[title='0-2']") as HTMLElement;
-        const passedNode = nativeElement.querySelector("[title='0-1']") as HTMLElement;
+        const dragNode = nativeElement.querySelector("[title='0-2']") as HTMLElement; // sixth node
+        const passedNode = nativeElement.querySelector("[title='0-1']") as HTMLElement; // fifth node
         //  ============ dragstart ==============
         dispatchMouseEvent(dragNode, 'dragstart');
         fixture.detectChanges();
@@ -463,21 +456,23 @@ describe('tree', () => {
         dispatchMouseEvent(passedNode, 'dragenter');
 
         // =========== dragover with different position ===========
+        // Each node's height with 24px + 4px padding, use getBoundingClientRect to get target node position
         // drag-over-gap-top
-        dispatchMouseEvent(passedNode, 'dragover', 300, 340);
+        const { x, y } = passedNode.getBoundingClientRect();
+        dispatchMouseEvent(passedNode, 'dragover', x + 50, y - 6);
         elementNode = nativeElement.querySelector('nz-tree-node[builtin]:nth-child(2)') as HTMLElement;
         expect(elementNode.classList).toContain('drag-over-gap-top');
-
+        tick(150);
         // drag-over
-        dispatchMouseEvent(passedNode, 'dragover', 300, 566);
-        // elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2) .ant-tree-treenode') as HTMLElement;
-        // expect(elementNode.classList).toContain('drag-over');
-
+        dispatchMouseEvent(passedNode, 'dragover', x + 50, y + 12);
+        elementNode = nativeElement.querySelector('nz-tree-node[builtin]:nth-child(2)') as HTMLElement;
+        expect(elementNode.classList).toContain('drag-over');
+        tick(150);
         // drag-over-gap-bottom
-        dispatchMouseEvent(passedNode, 'dragover', 300, 570);
+        dispatchMouseEvent(passedNode, 'dragover', x + 50, y + 18);
         elementNode = nativeElement.querySelector('nz-tree-node[builtin]:nth-child(2)') as HTMLElement;
         expect(elementNode.classList).toContain('drag-over-gap-bottom');
-
+        tick(150);
         // ======= enter check, expand passing nodes ========
         expect(dragEnterSpy).toHaveBeenCalledTimes(1);
         expect(dragOverSpy).toHaveBeenCalledTimes(3);

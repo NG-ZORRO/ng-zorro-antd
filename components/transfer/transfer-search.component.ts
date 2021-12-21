@@ -34,10 +34,6 @@ import {
       <i nz-icon nzType="close-circle" class="ant-input-clear-icon"></i>
     </span>
   `,
-  host: {
-    '[class.ant-input-affix-wrapper]': `true`,
-    '[class.ant-transfer-list-search]': `true`
-  },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

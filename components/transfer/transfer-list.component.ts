@@ -75,6 +75,7 @@ import { TransferDirection, TransferItem } from './interface';
       <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
         <span
           nz-transfer-search
+          class="ant-input-affix-wrapper ant-transfer-list-search"
           (valueChanged)="handleFilter($event)"
           (valueClear)="handleClear()"
           [placeholder]="searchPlaceholder"
