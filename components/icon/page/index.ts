@@ -441,6 +441,7 @@ function upperCamelCase(value: string): string {
 function kebabCase(value: string): string {
   return value
     .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([0-9])([a-zA-Z]+)$/g, '-$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase();
 }
