@@ -6,25 +6,31 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-option-item',
   template: `
     <div class="ant-select-item-option-content">
-      <ng-container *ngIf="!customContent">{{ label }}</ng-container>
-      <ng-container *ngIf="customContent">
+      <ng-template [ngIf]="customContent" [ngIfElse]="noCustomContent">
         <ng-template [ngTemplateOutlet]="template"></ng-template>
-      </ng-container>
+      </ng-template>
+      <ng-template #noCustomContent>{{ label }}</ng-template>
     </div>
     <div *ngIf="showState && selected" class="ant-select-item-option-state" style="user-select: none" unselectable="on">
       <i nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></i>
@@ -38,12 +44,11 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[class.ant-select-item-option-grouped]': 'grouped',
     '[class.ant-select-item-option-selected]': 'selected && !disabled',
     '[class.ant-select-item-option-disabled]': 'disabled',
-    '[class.ant-select-item-option-active]': 'activated && !disabled',
-    '(mouseenter)': 'onHostMouseEnter()',
-    '(click)': 'onHostClick()'
-  }
+    '[class.ant-select-item-option-active]': 'activated && !disabled'
+  },
+  providers: [NzDestroyService]
 })
-export class NzOptionItemComponent implements OnChanges {
+export class NzOptionItemComponent implements OnChanges, OnInit {
   selected = false;
   activated = false;
   @Input() grouped = false;
@@ -60,18 +65,12 @@ export class NzOptionItemComponent implements OnChanges {
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
 
-  constructor() {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private ngZone: NgZone,
+    private destroy$: NzDestroyService
+  ) {}
 
-  onHostMouseEnter(): void {
-    if (!this.disabled) {
-      this.itemHover.next(this.value);
-    }
-  }
-  onHostClick(): void {
-    if (!this.disabled) {
-      this.itemClick.next(this.value);
-    }
-  }
   ngOnChanges(changes: SimpleChanges): void {
     const { value, activatedValue, listOfSelectedValue } = changes;
     if (value || listOfSelectedValue) {
@@ -80,5 +79,25 @@ export class NzOptionItemComponent implements OnChanges {
     if (value || activatedValue) {
       this.activated = this.compareWith(this.activatedValue, this.value);
     }
+  }
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if (!this.disabled) {
+            this.ngZone.run(() => this.itemClick.emit(this.value));
+          }
+        });
+
+      fromEvent(this.elementRef.nativeElement, 'mouseenter')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if (!this.disabled) {
+            this.ngZone.run(() => this.itemHover.emit(this.value));
+          }
+        });
+    });
   }
 }
