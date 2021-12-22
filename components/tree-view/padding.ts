@@ -23,10 +23,10 @@ export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
   }
 
   @Input('nzTreeNodePaddingIndent')
-  override get indent(): number | string {
+  get indent(): number | string {
     return this._indent;
   }
-  override set indent(indent: number | string) {
+  set indent(indent: number | string) {
     this._setIndentInput(indent);
   }
 }

@@ -4,12 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  CdkConnectedOverlay,
-  FlexibleConnectedPositionStrategyOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -367,7 +362,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   preferredPlacement: string = 'top';
 
-  origin!: FlexibleConnectedPositionStrategyOrigin;
+  origin!: ElementRef<NzSafeAny>;
 
   public dir: Direction = 'ltr';
 
@@ -454,13 +449,13 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     this.cdr.detectChanges();
   }
 
-  setOverlayOrigin(origin: FlexibleConnectedPositionStrategyOrigin): void {
+  setOverlayOrigin(origin: ElementRef<HTMLElement>): void {
     this.origin = origin;
     this.cdr.markForCheck();
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!(this.origin as ElementRef).nativeElement.contains(event.target) && this.nzTrigger !== null) {
+    if (!this.origin.nativeElement.contains(event.target) && this.nzTrigger !== null) {
       this.hide();
     }
   }

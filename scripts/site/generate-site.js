@@ -41,7 +41,7 @@ function generate(target) {
       }
     }
     const componentDirPath = path.join(rootPath, componentName);
-    const skips = ['style', 'core', 'locale', 'cdk', 'i18n', 'version', 'experimental', 'node_modules'];
+    const skips = ['style', 'core', 'locale', 'cdk', 'i18n', 'version', 'experimental'];
     if (skips.indexOf(componentName) !== -1) {
       return;
     }
