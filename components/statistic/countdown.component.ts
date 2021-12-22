@@ -115,7 +115,10 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
 
     if (this.diff === 0) {
       this.stopTimer();
-      this.nzCountdownFinish.emit();
+
+      if (this.nzCountdownFinish.observers.length) {
+        this.ngZone.run(() => this.nzCountdownFinish.emit());
+      }
     }
   }
 }
