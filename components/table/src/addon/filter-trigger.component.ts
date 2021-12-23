@@ -11,10 +11,8 @@ import {
   EventEmitter,
   Input,
   NgZone,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -22,7 +20,6 @@ import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -42,7 +39,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       class="ant-table-filter-trigger"
       nzTrigger="click"
       nzPlacement="bottomRight"
-      [nzBackdrop]="nzBackdrop || nzHasBackdrop"
+      [nzBackdrop]="nzBackdrop"
       [nzClickHide]="false"
       [nzDropdownMenu]="nzDropdownMenu"
       [class.active]="nzActive"
@@ -55,21 +52,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
   `,
   providers: [NzDestroyService]
 })
-export class NzFilterTriggerComponent implements OnChanges, OnInit {
+export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzBackdrop: BooleanInput;
-  static ngAcceptInputType_nzHasBackdrop: BooleanInput;
 
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
 
-  /**
-   * @deprecated Not supported, use `nzBackdrop` instead.
-   * @breaking-change 13.0.0
-   */
-  @Input() @InputBoolean() nzHasBackdrop = false;
   @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
@@ -97,15 +88,6 @@ export class NzFilterTriggerComponent implements OnChanges, OnInit {
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService
   ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzHasBackdrop } = changes;
-    if (nzHasBackdrop) {
-      warnDeprecation(
-        '`nzHasBackdrop` in nz-filter-trigger component will be removed in 13.0.0, please use `nzBackdrop` instead.'
-      );
-    }
-  }
 
   ngOnInit(): void {
     this.ngZone.runOutsideAngular(() => {
