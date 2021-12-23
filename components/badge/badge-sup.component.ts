@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
@@ -47,6 +46,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
   `,
   host: {
+    class: 'ant-scroll-number',
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
@@ -72,10 +72,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-scroll-number');
-  }
+  constructor() {}
 
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');

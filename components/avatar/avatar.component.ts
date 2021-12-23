@@ -38,6 +38,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
     <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
   `,
   host: {
+    class: 'ant-avatar',
     '[class.ant-avatar-lg]': `nzSize === 'large'`,
     '[class.ant-avatar-sm]': `nzSize === 'small'`,
     '[class.ant-avatar-square]': `nzShape === 'square'`,
@@ -84,10 +85,7 @@ export class NzAvatarComponent implements OnChanges {
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private platform: Platform
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-avatar');
-  }
+  ) {}
 
   imgError($event: Event): void {
     this.nzError.emit($event);

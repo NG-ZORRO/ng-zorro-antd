@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   Output,
@@ -30,6 +29,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     ></i>
   `,
   host: {
+    class: 'ant-select-clear',
     '(click)': 'onClick($event)'
   }
 })
@@ -37,10 +37,7 @@ export class NzSelectClearComponent {
   @Input() clearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly clear = new EventEmitter<MouseEvent>();
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select-clear');
-  }
+  constructor() {}
 
   onClick(e: MouseEvent): void {
     e.preventDefault();

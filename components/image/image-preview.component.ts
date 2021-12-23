@@ -106,9 +106,9 @@ const initialPosition = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-image-preview-wrap',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
-    '[class.ant-image-preview-wrap]': 'true',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@fadeMotion]': 'animationState',
     '(@fadeMotion.start)': 'onAnimationStart($event)',
@@ -193,7 +193,6 @@ export class NzImagePreviewComponent implements OnDestroy {
     public config: NzImagePreviewOptions,
     private overlayRef: OverlayRef
   ) {
-    // TODO: move to host after View Engine deprecation
     this.zoom = this.config.nzZoom ?? 1;
     this.rotate = this.config.nzRotate ?? 0;
     this.updateZoomOutDisabled();

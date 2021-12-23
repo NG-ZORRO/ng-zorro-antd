@@ -88,7 +88,8 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
       </ng-container>
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
-  `
+  `,
+  host: { class: 'ant-select-selector' }
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;
@@ -195,10 +196,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     private elementRef: ElementRef<HTMLElement>,
     private ngZone: NgZone,
     @Host() @Optional() public noAnimation: NzNoAnimationDirective | null
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select-selector');
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;

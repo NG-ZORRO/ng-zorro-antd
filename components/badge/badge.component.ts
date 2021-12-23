@@ -68,6 +68,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     </ng-container>
   `,
   host: {
+    class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
@@ -102,10 +103,7 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
     private elementRef: ElementRef,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-badge');
-  }
+  ) {}
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
