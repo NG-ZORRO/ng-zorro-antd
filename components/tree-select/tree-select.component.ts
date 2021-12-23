@@ -193,6 +193,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     }
   ],
   host: {
+    class: 'ant-select',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
@@ -321,8 +322,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select');
+
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
   }

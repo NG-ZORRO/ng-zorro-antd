@@ -7,7 +7,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -62,6 +61,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   `,
 
   host: {
+    class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'nzActive',
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
@@ -95,11 +95,8 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     @Host() private nzCollapseComponent: NzCollapseComponent,
-    private elementRef: ElementRef,
     @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-collapse-item');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

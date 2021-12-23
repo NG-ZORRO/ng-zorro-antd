@@ -7,7 +7,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   Output,
@@ -108,6 +107,7 @@ import { TransferDirection, TransferItem } from './interface';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   }
 })
@@ -203,10 +203,7 @@ export class NzTransferListComponent {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-transfer-list');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

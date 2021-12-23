@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -42,7 +34,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         </ul>
       </nz-dropdown-menu>
     </div>
-  `
+  `,
+  host: { class: 'ant-table-selection' }
 })
 export class NzTableSelectionComponent {
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
@@ -53,10 +46,7 @@ export class NzTableSelectionComponent {
   @Input() showRowSelection = false;
   @Output() readonly checkedChange = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-selection');
-  }
+  constructor() {}
 
   onCheckedChange(checked: boolean): void {
     this.checked = checked;

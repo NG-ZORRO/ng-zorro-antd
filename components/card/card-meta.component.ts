@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-card-meta',
@@ -23,15 +23,13 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, Vie
         <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
       </div>
     </div>
-  `
+  `,
+  host: { class: 'ant-card-meta' }
 })
 export class NzCardMetaComponent {
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzAvatar: TemplateRef<void> | null = null;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-card-meta');
-  }
+  constructor() {}
 }
