@@ -5,7 +5,9 @@
 
 @transfer-prefix-cls: ~'@{ant-prefix}-transfer';
 
-@transfer-header-vertical-padding: ceil(((@transfer-header-height - 1px - @font-size-base * @line-height-base) / 2));
+@transfer-header-vertical-padding: ceil(
+  ((@transfer-header-height - 1px - @font-size-base * @line-height-base) / 2)
+);
 
 .@{transfer-prefix-cls} {
   .reset-component();
@@ -45,7 +47,8 @@
       align-items: center;
       height: @transfer-header-height;
       // border-top is on the transfer dom. We should minus 1px for this
-      padding: (@transfer-header-vertical-padding - 1px) @control-padding-horizontal @transfer-header-vertical-padding;
+      padding: (@transfer-header-vertical-padding - 1px) @control-padding-horizontal
+        @transfer-header-vertical-padding;
       color: @text-color;
       background: @component-background;
       border-bottom: @border-width-base @border-style-base @border-color-split;
