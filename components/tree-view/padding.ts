@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NumberInput } from '@angular/cdk/coercion';
 import { CdkTreeNodePadding } from '@angular/cdk/tree';
 import { Directive, Input } from '@angular/core';
 
