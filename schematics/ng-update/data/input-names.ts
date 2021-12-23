@@ -348,7 +348,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
       ]
     },
     {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/7141',
       changes: [
         {
           replace    : 'twoToneColor',
@@ -369,6 +369,21 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           replaceWith: 'nzItemSize',
           limitedTo  : {
             elements: ['nz-tree-virtual-scroll-view']
+          }
+        }
+      ]
+    }
+  ],
+  [ TargetVersion.V13 ]: [
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/7141',
+      changes: [
+        {
+          replace    : 'nzHasBackdrop',
+          replaceWith: 'nzBackdrop',
+          limitedTo  : {
+            elements: ['nz-filter-trigger'],
+            attributes: ['nz-dropdown']
           }
         }
       ]

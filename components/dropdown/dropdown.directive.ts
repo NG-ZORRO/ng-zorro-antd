@@ -24,7 +24,6 @@ import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from
 import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -48,7 +47,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzBackdrop: BooleanInput;
-  static ngAcceptInputType_nzHasBackdrop: BooleanInput;
   static ngAcceptInputType_nzClickHide: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
@@ -67,11 +65,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
-  /**
-   * @deprecated Not supported, use `nzBackdrop` instead.
-   * @breaking-change 13.0.0
-   */
-  @Input() @InputBoolean() nzHasBackdrop = false;
   @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
@@ -156,7 +149,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
                 positionStrategy: this.positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
-                hasBackdrop: (this.nzHasBackdrop || this.nzBackdrop) && this.nzTrigger === 'click',
+                hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
                 scrollStrategy: this.overlay.scrollStrategies.reposition()
               });
               merge(
@@ -212,7 +205,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzHasBackdrop } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -233,11 +226,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
-    }
-    if (nzHasBackdrop) {
-      warnDeprecation(
-        '`nzHasBackdrop` in dropdown component will be removed in 13.0.0, please use `nzBackdrop` instead.'
-      );
     }
   }
 }
