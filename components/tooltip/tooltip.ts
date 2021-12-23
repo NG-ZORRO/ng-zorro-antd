@@ -8,8 +8,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -63,7 +63,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
-  componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
+  componentRef: ComponentRef<NzToolTipComponent> = this.hostView.createComponent(NzToolTipComponent);
 
   constructor(
     elementRef: ElementRef,

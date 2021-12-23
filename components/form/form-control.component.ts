@@ -134,7 +134,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     this.validateChanges.unsubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges
+      this.validateChanges = (this.validateControl.statusChanges as Observable<NzSafeAny>)
         .pipe(startWith(null), takeUntil(this.destroyed$))
         .subscribe(_ => {
           if (!this.disableAutoTips) {

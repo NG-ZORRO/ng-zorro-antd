@@ -21,201 +21,210 @@ export interface Categories {
   other?: string[];
 }
 
+const direction = [
+  'StepBackward',
+  'StepForward',
+  'FastBackward',
+  'FastForward',
+  'Shrink',
+  'ArrowsAlt',
+  'Down',
+  'Up',
+  'Left',
+  'Right',
+  'CaretUp',
+  'CaretDown',
+  'CaretLeft',
+  'CaretRight',
+  'UpCircle',
+  'DownCircle',
+  'LeftCircle',
+  'RightCircle',
+  'DoubleRight',
+  'DoubleLeft',
+  'VerticalLeft',
+  'VerticalRight',
+  'VerticalAlignTop',
+  'VerticalAlignMiddle',
+  'VerticalAlignBottom',
+  'Forward',
+  'Backward',
+  'Rollback',
+  'Enter',
+  'Retweet',
+  'Swap',
+  'SwapLeft',
+  'SwapRight',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'PlayCircle',
+  'UpSquare',
+  'DownSquare',
+  'LeftSquare',
+  'RightSquare',
+  'Login',
+  'Logout',
+  'MenuFold',
+  'MenuUnfold',
+  'BorderBottom',
+  'BorderHorizontal',
+  'BorderInner',
+  'BorderOuter',
+  'BorderLeft',
+  'BorderRight',
+  'BorderTop',
+  'BorderVerticle',
+  'PicCenter',
+  'PicLeft',
+  'PicRight',
+  'RadiusBottomleft',
+  'RadiusBottomright',
+  'RadiusUpleft',
+  'RadiusUpright',
+  'Fullscreen',
+  'FullscreenExit'
+];
+
+const suggestion = [
+  'Question',
+  'QuestionCircle',
+  'Plus',
+  'PlusCircle',
+  'Pause',
+  'PauseCircle',
+  'Minus',
+  'MinusCircle',
+  'PlusSquare',
+  'MinusSquare',
+  'Info',
+  'InfoCircle',
+  'Exclamation',
+  'ExclamationCircle',
+  'Close',
+  'CloseCircle',
+  'CloseSquare',
+  'Check',
+  'CheckCircle',
+  'CheckSquare',
+  'ClockCircle',
+  'Warning',
+  'IssuesClose',
+  'Stop'
+];
+
+const edit = [
+  'Edit',
+  'Form',
+  'Copy',
+  'Scissor',
+  'Delete',
+  'Snippets',
+  'Diff',
+  'Highlight',
+  'AlignCenter',
+  'AlignLeft',
+  'AlignRight',
+  'BgColors',
+  'Bold',
+  'Italic',
+  'Underline',
+  'Strikethrough',
+  'Redo',
+  'Undo',
+  'ZoomIn',
+  'ZoomOut',
+  'FontColors',
+  'FontSize',
+  'LineHeight',
+  'Dash',
+  'SmallDash',
+  'SortAscending',
+  'SortDescending',
+  'Drag',
+  'OrderedList',
+  'UnorderedList',
+  'RadiusSetting',
+  'ColumnWidth',
+  'ColumnHeight'
+];
+
+const data = [
+  'AreaChart',
+  'PieChart',
+  'BarChart',
+  'DotChart',
+  'LineChart',
+  'RadarChart',
+  'HeatMap',
+  'Fall',
+  'Rise',
+  'Stock',
+  'BoxPlot',
+  'Fund',
+  'Sliders'
+];
+
+const logo = [
+  'Android',
+  'Apple',
+  'Windows',
+  'Ie',
+  'Chrome',
+  'Github',
+  'Aliwangwang',
+  'Dingding',
+  'WeiboSquare',
+  'WeiboCircle',
+  'TaobaoCircle',
+  'Html5',
+  'Weibo',
+  'Twitter',
+  'Wechat',
+  'Youtube',
+  'AlipayCircle',
+  'Taobao',
+  'Skype',
+  'Qq',
+  'MediumWorkmark',
+  'Gitlab',
+  'Medium',
+  'Linkedin',
+  'GooglePlus',
+  'Dropbox',
+  'Facebook',
+  'Codepen',
+  'CodeSandbox',
+  'CodeSandboxCircle',
+  'Amazon',
+  'Google',
+  'CodepenCircle',
+  'Alipay',
+  'AntDesign',
+  'AntCloud',
+  'Aliyun',
+  'Zhihu',
+  'Slack',
+  'SlackSquare',
+  'Behance',
+  'BehanceSquare',
+  'Dribbble',
+  'DribbbleSquare',
+  'Instagram',
+  'Yuque',
+  'Alibaba',
+  'Yahoo',
+  'Reddit',
+  'Sketch'
+];
+
 const categories: Categories = {
-  direction: [
-    'step-backward',
-    'step-forward',
-    'fast-backward',
-    'fast-forward',
-    'shrink',
-    'arrows-alt',
-    'down',
-    'up',
-    'left',
-    'right',
-    'caret-up',
-    'caret-down',
-    'caret-left',
-    'caret-right',
-    'up-circle',
-    'down-circle',
-    'left-circle',
-    'right-circle',
-    'double-right',
-    'double-left',
-    'vertical-left',
-    'vertical-right',
-    'vertical-align-top',
-    'vertical-align-middle',
-    'vertical-align-bottom',
-    'forward',
-    'backward',
-    'rollback',
-    'enter',
-    'retweet',
-    'swap',
-    'swap-left',
-    'swap-right',
-    'arrow-up',
-    'arrow-down',
-    'arrow-left',
-    'arrow-right',
-    'play-circle',
-    'up-square',
-    'down-square',
-    'left-square',
-    'right-square',
-    'login',
-    'logout',
-    'menu-fold',
-    'menu-unfold',
-    'border-bottom',
-    'border-horizontal',
-    'border-inner',
-    'border-outer',
-    'border-left',
-    'border-right',
-    'border-top',
-    'border-verticle',
-    'pic-center',
-    'pic-left',
-    'pic-right',
-    'radius-bottomleft',
-    'radius-bottomright',
-    'radius-upleft',
-    'radius-upright',
-    'fullscreen',
-    'fullscreen-exit'
-  ],
-  suggestion: [
-    'question',
-    'question-circle',
-    'plus',
-    'plus-circle',
-    'pause',
-    'pause-circle',
-    'minus',
-    'minus-circle',
-    'plus-square',
-    'minus-square',
-    'info',
-    'info-circle',
-    'exclamation',
-    'exclamation-circle',
-    'close',
-    'close-circle',
-    'close-square',
-    'check',
-    'check-circle',
-    'check-square',
-    'clock-circle',
-    'warning',
-    'issues-close',
-    'stop'
-  ],
-  edit: [
-    'edit',
-    'form',
-    'copy',
-    'scissor',
-    'delete',
-    'snippets',
-    'diff',
-    'highlight',
-    'align-center',
-    'align-left',
-    'align-right',
-    'bg-colors',
-    'bold',
-    'italic',
-    'underline',
-    'strikethrough',
-    'redo',
-    'undo',
-    'zoom-in',
-    'zoom-out',
-    'font-colors',
-    'font-size',
-    'line-height',
-    'colum-height',
-    'colum-width',
-    'dash',
-    'small-dash',
-    'sort-ascending',
-    'sort-descending',
-    'drag',
-    'ordered-list',
-    'unordered-list',
-    'radius-setting',
-    'column-width'
-  ],
-  data: [
-    'area-chart',
-    'pie-chart',
-    'bar-chart',
-    'dot-chart',
-    'line-chart',
-    'radar-chart',
-    'heat-map',
-    'fall',
-    'rise',
-    'stock',
-    'box-plot',
-    'fund',
-    'sliders'
-  ],
-  logo: [
-    'android',
-    'apple',
-    'windows',
-    'ie',
-    'chrome',
-    'github',
-    'aliwangwang',
-    'dingding',
-    'weibo-square',
-    'weibo-circle',
-    'taobao-circle',
-    'html5',
-    'weibo',
-    'twitter',
-    'wechat',
-    'youtube',
-    'alipay-circle',
-    'taobao',
-    'skype',
-    'qq',
-    'medium-workmark',
-    'gitlab',
-    'medium',
-    'linkedin',
-    'google-plus',
-    'dropbox',
-    'facebook',
-    'codepen',
-    'code-sandbox',
-    'code-sandbox-circle',
-    'amazon',
-    'google',
-    'codepen-circle',
-    'alipay',
-    'ant-design',
-    'ant-cloud',
-    'aliyun',
-    'zhihu',
-    'slack',
-    'slack-square',
-    'behance',
-    'behance-square',
-    'dribbble',
-    'dribbble-square',
-    'instagram',
-    'yuque',
-    'alibaba',
-    'yahoo',
-    'reddit',
-    'sketch'
-  ]
+  direction,
+  suggestion,
+  edit,
+  data,
+  logo
 };
 
 const newIconNames: string[] = [
@@ -289,7 +298,7 @@ declare const locale: NzSafeAny;
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
         <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <i nz-icon [nzType]="icon" [nzTheme]="currentTheme"></i>
+          <i nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></i>
           <span class="anticon-class">
             <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
               {{ icon }}
@@ -336,11 +345,13 @@ export class NzPageDemoIconComponent implements OnInit {
 
   trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
 
+  kebabCase = (str: string): string => kebabCase(str);
+
   isNewIcon = (name: string): boolean => newIconNames.indexOf(name) > -1;
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
-    const copiedString = `<i nz-icon nzType="${icon}" nzTheme="${this.currentTheme}"></i>`;
+    const copiedString = `<i nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}"></i>`;
     target.classList.add('copied');
     this._copy(copiedString).then(() => {
       setTimeout(() => {
@@ -374,21 +385,22 @@ export class NzPageDemoIconComponent implements OnInit {
 
   prepareIcons(): void {
     const theme = this.currentTheme;
-    // @ts-ignore
-    const currentThemeIcons = (manifest[theme] as string[]).filter(
-      (name: string) => !['interation', 'canlendar'].includes(name)
-    );
+
+    const currentThemeIcons = (manifest[theme] as string[])
+      .filter((name: string) => !['interation', 'canlendar'].includes(name))
+      .map(name => upperCamelCase(name));
+
     let notEmptyCategories = Object.keys(categories).map(category => ({
       name: category,
-      // @ts-ignore
-      icons: categories[category].filter(
-        (name: string) => currentThemeIcons.indexOf(name) > -1 && name.includes(this.searchingString)
+      icons: categories[category as keyof Categories]!.filter(
+        (name: string) =>
+          currentThemeIcons.indexOf(name) > -1 && name.toLowerCase().includes(this.searchingString.toLowerCase())
       )
     }));
 
     const otherIcons = currentThemeIcons
       .filter(icon => notEmptyCategories.filter(({ name }) => name !== 'all').every(item => !item.icons.includes(icon)))
-      .filter(name => name.includes(this.searchingString));
+      .filter(name => name.toLowerCase().includes(this.searchingString.toLocaleLowerCase()));
 
     notEmptyCategories.push({ name: 'other', icons: otherIcons });
     notEmptyCategories = notEmptyCategories.filter(({ icons }) => Boolean(icons.length));
@@ -415,4 +427,21 @@ export class NzPageDemoIconComponent implements OnInit {
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
   }
+}
+
+function camelCase(value: string): string {
+  return value.replace(/-\w/g, (_r, i) => value.charAt(i + 1).toUpperCase());
+}
+
+function upperCamelCase(value: string): string {
+  const camelCased = camelCase(value);
+  return camelCased.charAt(0).toUpperCase() + camelCased.slice(1);
+}
+
+function kebabCase(value: string): string {
+  return value
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([0-9])([a-zA-Z]+)$/g, '-$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase();
 }

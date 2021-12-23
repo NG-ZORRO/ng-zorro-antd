@@ -4,17 +4,12 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -64,7 +59,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   /**
    * For create tooltip dynamically. This should be override for each different component.
    */
-  protected componentFactory!: ComponentFactory<NzTooltipBaseComponent>;
+  protected componentRef!: ComponentRef<NzTooltipBaseComponent>;
 
   /**
    * This true title that would be used in other parts on this component.
@@ -177,8 +172,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
    * Create a dynamic tooltip component. This method can be override.
    */
   protected createComponent(): void {
-    const componentRef = this.hostView.createComponent(this.componentFactory);
-
+    const componentRef = this.componentRef;
     this.component = componentRef.instance as NzTooltipBaseComponent;
 
     // Remove the component's DOM because it should be in the overlay container.
@@ -186,7 +180,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.renderer.parentNode(this.elementRef.nativeElement),
       componentRef.location.nativeElement
     );
-    this.component.setOverlayOrigin({ elementRef: this.origin || this.elementRef });
+    this.component.setOverlayOrigin(this.origin || this.elementRef);
 
     this.initProperties();
 
@@ -368,7 +362,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   preferredPlacement: string = 'top';
 
-  origin!: CdkOverlayOrigin;
+  origin!: ElementRef<NzSafeAny>;
 
   public dir: Direction = 'ltr';
 
@@ -455,13 +449,13 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     this.cdr.detectChanges();
   }
 
-  setOverlayOrigin(origin: CdkOverlayOrigin): void {
+  setOverlayOrigin(origin: ElementRef<HTMLElement>): void {
     this.origin = origin;
     this.cdr.markForCheck();
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
+    if (!this.origin.nativeElement.contains(event.target) && this.nzTrigger !== null) {
       this.hide();
     }
   }
