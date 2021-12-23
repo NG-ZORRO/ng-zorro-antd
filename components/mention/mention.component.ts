@@ -381,19 +381,30 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   private subscribeOverlayOutsideClick(): Subscription {
-    return merge<MouseEvent | TouchEvent>(
-      this.overlayRef!.outsidePointerEvents(),
-      fromEvent<TouchEvent>(this.ngDocument, 'touchend')
-    ).subscribe((event: MouseEvent | TouchEvent) => {
+    const canCloseDropdown = (event: MouseEvent | TouchEvent): boolean => {
       const clickTarget = event.target as HTMLElement;
-      if (
+      return (
         this.isOpen &&
         clickTarget !== this.trigger.el.nativeElement &&
         !this.overlayRef?.overlayElement.contains(clickTarget)
-      ) {
-        this.closeDropdown();
-      }
-    });
+      );
+    };
+
+    const subscription = new Subscription();
+
+    subscription.add(
+      this.overlayRef!.outsidePointerEvents().subscribe(event => canCloseDropdown(event) && this.closeDropdown())
+    );
+
+    subscription.add(
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<TouchEvent>(this.ngDocument, 'touchend').subscribe(
+          event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
+        )
+      )
+    );
+
+    return subscription;
   }
 
   private attachOverlay(): void {
