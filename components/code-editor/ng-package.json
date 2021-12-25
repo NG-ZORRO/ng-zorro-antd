@@ -2,5 +2,6 @@
   "lib": {
     "flatModuleFile": "nzCodeEditor",
     "entryFile": "public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["monaco-editor"]
 }

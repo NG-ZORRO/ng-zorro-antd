@@ -2,5 +2,6 @@
   "lib": {
     "flatModuleFile": "nzDatePicker",
     "entryFile": "public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["tslib", "date-fns"]
 }

@@ -2,5 +2,6 @@
   "lib": {
     "flatModuleFile": "nzIcon",
     "entryFile": "public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["tslib", "@ant-design/icons-angular"]
 }

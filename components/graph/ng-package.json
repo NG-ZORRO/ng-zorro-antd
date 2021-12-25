@@ -2,5 +2,6 @@
   "lib": {
     "flatModuleFile": "nzGraph",
     "entryFile": "public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["dagre-compound", "d3"]
 }
