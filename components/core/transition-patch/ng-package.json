@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "NzTransitionPatch",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzLogger",
+    "entryFile": "public-api.ts"
+  }
+}

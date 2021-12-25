@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzDropdown",
+    "entryFile": "public-api.ts"
+  }
+}

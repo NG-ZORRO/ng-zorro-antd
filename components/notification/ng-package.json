@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzNotification",
+    "entryFile": "public-api.ts"
+  }
+}

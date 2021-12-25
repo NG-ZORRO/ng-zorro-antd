@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "NzSpace",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTimeline",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzBackTop",
+    "entryFile": "public-api.ts"
+  }
+}

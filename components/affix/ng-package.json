@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzAffix",
+    "entryFile": "public-api.ts"
+  }
+}

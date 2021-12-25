@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTooltip",
+    "entryFile": "public-api.ts"
+  }
+}

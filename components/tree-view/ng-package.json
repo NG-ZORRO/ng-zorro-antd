@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTreeView",
+    "entryFile": "public-api.ts"
+  }
+}

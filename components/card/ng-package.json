@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzCard",
+    "entryFile": "public-api.ts"
+  }
+}

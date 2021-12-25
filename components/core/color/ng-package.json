@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzColor",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzAvatar",
+    "entryFile": "public-api.ts"
+  }
+}

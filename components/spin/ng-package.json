@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzSpin",
+    "entryFile": "public-api.ts"
+  }
+}

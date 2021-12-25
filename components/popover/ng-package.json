@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzPopover",
+    "entryFile": "public-api.ts"
+  }
+}

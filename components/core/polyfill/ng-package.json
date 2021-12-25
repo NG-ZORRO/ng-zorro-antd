@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzPolyfill",
+    "entryFile": "public-api.ts"
+  }
+}

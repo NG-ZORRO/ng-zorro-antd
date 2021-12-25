@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTreeSelect",
+    "entryFile": "public-api.ts"
+  }
+}

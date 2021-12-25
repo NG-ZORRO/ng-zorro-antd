@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzMessage",
+    "entryFile": "public-api.ts"
+  }
+}

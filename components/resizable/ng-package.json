@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzResizable",
+    "entryFile": "public-api.ts"
+  }
+}

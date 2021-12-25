@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzCodeEditor",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzLayout",
+    "entryFile": "public-api.ts"
+  }
+}

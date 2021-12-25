@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzResizeObserver",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzOverflow",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "NzTransButton",
+    "entryFile": "public-api.ts"
+  }
+}

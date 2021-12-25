@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTag",
+    "entryFile": "public-api.ts"
+  }
+}

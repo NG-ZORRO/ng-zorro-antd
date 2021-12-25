@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzWave",
+    "entryFile": "public-api.ts"
+  }
+}

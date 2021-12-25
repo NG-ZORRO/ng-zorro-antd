@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzIconTesting",
+    "entryFile": "public-api.ts"
+  }
+}

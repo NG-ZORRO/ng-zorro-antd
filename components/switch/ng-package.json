@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzSwitch",
+    "entryFile": "public-api.ts"
+  }
+}

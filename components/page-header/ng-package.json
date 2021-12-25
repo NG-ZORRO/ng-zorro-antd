@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzPageHeader",
+    "entryFile": "public-api.ts"
+  }
+}

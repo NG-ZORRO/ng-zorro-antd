@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzAutocomplete",
+    "entryFile": "public-api.ts"
+  }
+}

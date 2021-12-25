@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzPipes",
+    "entryFile": "public-api.ts"
+  }
+}

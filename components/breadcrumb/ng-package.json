@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzBreadcrumb",
+    "entryFile": "public-api.ts"
+  }
+}

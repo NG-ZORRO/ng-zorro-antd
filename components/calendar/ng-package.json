@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzCalendar",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzCollapse",
+    "entryFile": "public-api.ts"
+  }
+}

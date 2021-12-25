@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzProgress",
+    "entryFile": "public-api.ts"
+  }
+}

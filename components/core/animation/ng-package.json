@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzAnimation",
+    "entryFile": "public-api.ts"
+  }
+}

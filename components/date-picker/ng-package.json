@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzDatePicker",
+    "entryFile": "public-api.ts"
+  }
+}

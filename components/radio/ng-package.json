@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzRadio",
+    "entryFile": "public-api.ts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzTable",
+    "entryFile": "public-api.ts"
+  }
+}

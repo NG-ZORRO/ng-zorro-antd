@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "flatModuleFile": "nzComment",
+    "entryFile": "public-api.ts"
+  }
+}
