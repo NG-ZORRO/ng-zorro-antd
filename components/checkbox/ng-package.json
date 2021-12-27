@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzCheckbox",
     "entryFile": "public-api.ts"
   }
 }

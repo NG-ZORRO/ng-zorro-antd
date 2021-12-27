@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzDivider",
     "entryFile": "public-api.ts"
   }
 }

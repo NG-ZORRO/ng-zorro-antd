@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzConnectedOverlay",
     "entryFile": "public-api.ts"
   }
 }

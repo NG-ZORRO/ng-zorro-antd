@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzTimePicker",
     "entryFile": "public-api.ts"
   }
 }

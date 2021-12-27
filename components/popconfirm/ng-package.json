@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzPopconfirm",
     "entryFile": "public-api.ts"
   }
 }

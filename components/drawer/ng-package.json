@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzDrawer",
     "entryFile": "public-api.ts"
   }
 }

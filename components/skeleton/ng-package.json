@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzSkeleton",
     "entryFile": "public-api.ts"
   }
 }

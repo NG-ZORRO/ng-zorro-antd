@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzBadge",
     "entryFile": "public-api.ts"
   }
 }

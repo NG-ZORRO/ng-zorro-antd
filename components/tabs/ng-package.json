@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzTabs",
     "entryFile": "public-api.ts"
   }
 }

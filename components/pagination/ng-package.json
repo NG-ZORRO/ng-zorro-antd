@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzPagination",
     "entryFile": "public-api.ts"
   }
 }

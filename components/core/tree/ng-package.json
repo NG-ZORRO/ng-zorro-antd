@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzTreeBase",
     "entryFile": "public-api.ts"
   }
 }

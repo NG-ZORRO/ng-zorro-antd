@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzCarousel",
     "entryFile": "public-api.ts"
   }
 }

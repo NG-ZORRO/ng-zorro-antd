@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzSlider",
     "entryFile": "public-api.ts"
   }
 }

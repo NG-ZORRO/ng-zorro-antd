@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "NzImageService",
     "entryFile": "public-api.ts"
   }
 }

@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzGrid",
     "entryFile": "public-api.ts"
   }
 }

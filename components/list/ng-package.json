@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzList",
     "entryFile": "public-api.ts"
   }
 }

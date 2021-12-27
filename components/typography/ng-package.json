@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzTypography",
     "entryFile": "public-api.ts"
   }
 }

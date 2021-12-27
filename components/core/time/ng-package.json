@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzTime",
     "entryFile": "public-api.ts"
   }
 }

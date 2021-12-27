@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzNoAnimation",
     "entryFile": "public-api.ts"
   }
 }

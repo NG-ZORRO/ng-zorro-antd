@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzCascader",
     "entryFile": "public-api.ts"
   }
 }

@@ -1,6 +1,5 @@
 {
   "lib": {
-    "flatModuleFile": "nzAnchor",
     "entryFile": "public-api.ts"
   }
 }
