@@ -28,7 +28,7 @@
     },
     "migration-v13": {
       "version": "13.0.0-0",
-      "description": "Updates NG-ZORRO to v13 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/TODO]",
+      "description": "Updates NG-ZORRO to v13 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7157]",
       "factory": "./ng-update/index#updateToV13"
     },
     "ng-post-update": {
