@@ -55,7 +55,7 @@ module.exports = function (config) {
       }
     },
     singleRun: false,
-    browserDisconnectTimeout: 1000 * 60, // (Default: 2000)
+    browserDisconnectTimeout: 1000 * 60 * 10, // (Default: 2000)
     browserNoActivityTimeout: 1000 * 60 // (Default: 10000)
   });
 };

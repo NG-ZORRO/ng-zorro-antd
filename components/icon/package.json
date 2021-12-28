@@ -1,8 +1,0 @@
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "public-api.ts"
-    },
-    "allowedNonPeerDependencies": ["tslib", "@ant-design/icons-angular"]
-  }
-}
