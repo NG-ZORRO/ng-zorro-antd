@@ -13,6 +13,18 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 13.0.0
+
+`2021-12-28`
+
+### BREAKING CHANGES
+**dropdown**
+- `[nz-dropdown][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-dropdown][nzBackdrop]` instead.
+
+**table**
+- `[nz-filter-trigger][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-filter-trigger][nzBackdrop]` instead.
+
+
 ## 12.1.1
 
 `2021-12-18`

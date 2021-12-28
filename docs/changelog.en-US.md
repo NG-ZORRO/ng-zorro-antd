@@ -13,6 +13,18 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 13.0.0
+
+`2021-12-28`
+
+### BREAKING CHANGES
+**dropdown**
+- `[nz-dropdown][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-dropdown][nzBackdrop]` instead.
+
+**table**
+- `[nz-filter-trigger][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-filter-trigger][nzBackdrop]` instead.
+
+
 ## 12.1.1
 
 `2021-12-18`
