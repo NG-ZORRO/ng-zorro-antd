@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NumberInput } from '@angular/cdk/coercion';
 import { CdkTreeNodePadding } from '@angular/cdk/tree';
 import { Directive, Input } from '@angular/core';
 
@@ -17,7 +18,7 @@ export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
   get level(): number {
     return this._level;
   }
-  set level(value: number) {
+  set level(value: NumberInput) {
     this._setLevelInput(value);
   }
 
