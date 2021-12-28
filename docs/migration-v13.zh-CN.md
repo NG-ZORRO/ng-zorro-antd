@@ -8,7 +8,7 @@ toc: false
 
 ## 开始之前
 
-1. 首先确保你 `Node.js` >= `12.20`, `Typescript` >= `4.4`
+1. 首先确保你 `Node.js` >= `12.20`
 2. 创建新的分支，或者使用其他方式备份当前项目
 3. 删除项目下 package-lock.json 文件
 

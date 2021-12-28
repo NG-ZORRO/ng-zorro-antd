@@ -8,7 +8,7 @@ This document will help you upgrade from `ng-zorro-antd` 12.x version to 13.x ve
 
 ## Before upgrade
 
-1. Make sure `Node.js` >= `12.20`, `Typescript` >= `4.4`.
+1. Make sure `Node.js` >= `12.20`.
 2. Create a new branch, or use other methods to back up the current project.
 3. Delete the package-lock.json file.
 
