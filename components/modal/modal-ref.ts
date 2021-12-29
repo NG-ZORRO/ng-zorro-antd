@@ -12,7 +12,7 @@ import { filter, take } from 'rxjs/operators';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isPromise } from 'ng-zorro-antd/core/util';
 
-import { BaseModalContainerComponent } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 

@@ -23,6 +23,7 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
@@ -35,7 +36,10 @@ export interface NzTreeVirtualNodeData<T> {
   selector: 'nz-tree-node:not([builtin])',
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CdkTreeNode, useExisting: NzTreeNodeComponent }],
+  providers: [
+    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
+    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+  ],
   template: `
     <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
@@ -51,7 +55,7 @@ export interface NzTreeVirtualNodeData<T> {
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
   }
 })
-export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy, OnInit {
+export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
   disabled = false;
   selected = false;

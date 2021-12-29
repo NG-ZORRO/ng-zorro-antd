@@ -24,7 +24,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
-import { BaseModalContainerComponent } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { ModalOptions } from './modal-types';
 
 @Component({
