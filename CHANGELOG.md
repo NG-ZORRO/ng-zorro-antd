@@ -3,10 +3,7 @@
 
 ### BREAKING CHANGES
 **dropdown**
-- `[nz-dropdown][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-dropdown][nzBackdrop]` instead.
-
-**table**
-- `[nz-filter-trigger][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-filter-trigger][nzBackdrop]` instead.
+- `[nzHasBackdrop]` input value are no longer supported, please use `[nzBackdrop]` instead.
 
 
 ## [12.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...12.1.1) (2021-12-18)

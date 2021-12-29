@@ -15,48 +15,28 @@ timeline: true
 ---
 ## 13.0.0
 
-`2021-12-28`
+`2021-12-29`
 
-### Intro
-Welcome to the `13.0.0` version of `ng-zorro-antd`,some APIs were deprecated in version 12.x, and warning message was given under dev mode. All deprecated APIs is removed in 13.0.0, if you have fixed all warnings in the 12.x version, you can follow these steps to upgrade your version.
+#### Removal of View Engine Support
 
-## Before upgrade
+`ng-zorro-antd@13` remove support for View Engine and use Ivy library for distribution, you will get faster building and smaller bundle size.
 
-1. Make sure `Node.js` >= `12.20`.
-2. Create a new branch, or use other methods to back up the current project.
-3. Delete the package-lock.json file.
+See [Angular Ivy](https://angular.io/guide/ivy).
 
-### 1.Upgrade dependencies
-
-- Upgrade Angular to 13.x version, ref [https://update.angular.io/](https://update.angular.io/).
-- Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
-
-### 2.Upgrade NG-ZORRO
-
-- Run `ng update ng-zorro-antd`.
-- If any warning messages appear in the console, follow the prompts to modify the corresponding code.
-
-### Changes in V13
-#### Angular Ivy Supported
-View Engine is no longer available in Angular as of v13. This is great news because Angular can continue to create Ivy-based features that bolster your productivity with the platform.
-
-More help go to [Angular Ivy](https://angular.io/guide/ivy) and [Template type](https://angular.io/guide/template-typecheck) checking.
-
-#### End of IE11 support
+#### Removal of IE11 Support
 - Removing IE11 support allows Angular to leverage modern browser features such as CSS variables and web animations via native web APIs
 - What’s more is that apps will be smaller and load faster because we can remove IE specific polyfills and code paths
-- It also removes the need for differential loading
-- Running ng update will automatically drop these IE-specific polyfills and reduce bundle size during project migration
 
-#### Enhanced Performance and Usability
-- Optimization for multiple components to eliminate possible memory leaks
+See [Issue #41840](https://github.com/angular/angular/issues/41840).
+
+
+#### Enhanced Performance
+
+Fix the problems that may cause memory leak.
 
 ### BREAKING CHANGES
 **dropdown**
-- `[nz-dropdown][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-dropdown][nzBackdrop]` instead.
-
-**table**
-- `[nz-filter-trigger][nzHasBackdrop="true""]` input value are no longer supported, please use `[nz-filter-trigger][nzBackdrop]` instead.
+- `[nzHasBackdrop]` input value are no longer supported, please use `[nzBackdrop]` instead.
 
 
 ## Old Versions
