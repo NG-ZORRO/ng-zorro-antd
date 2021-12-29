@@ -1,14 +1,14 @@
 ---
 order: 15
-title: v12 升级指南
+title: v13 升级指南
 toc: false
 ---
 
-本文档将帮助你从 `ng-zorro-antd` 11.x 版本升级到 12.x 版本。
+本文档将帮助你从 `ng-zorro-antd` 12.x 版本升级到 13.x 版本。
 
 ## 开始之前
 
-1. 首先确保你 `Node.js` >= `10.13`
+1. 首先确保你 `Node.js` >= `12.20`
 2. 创建新的分支，或者使用其他方式备份当前项目
 3. 删除项目下 package-lock.json 文件
 
@@ -16,7 +16,7 @@ toc: false
 
 ### 1. 升级相关依赖
 
-- 前往 [https://update.angular.io/](https://update.angular.io/) 将项目升级到 Angular 12
+- 前往 [https://update.angular.io/](https://update.angular.io/) 将项目升级到 Angular 13
 - 如果你有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
 
 ### 升级 NG-ZORRO

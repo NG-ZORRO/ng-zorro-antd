@@ -35,7 +35,12 @@ const RESPONSIVE_SM = 1200;
           <app-logo></app-logo>
         </div>
         <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="18" [nzLg]="18" [nzXl]="19" [nzXXl]="20" class="menu-row">
-          <div app-searchbar [language]="language" [responsive]="responsive" (focusChange)="onFocusChange($event)"></div>
+          <div
+            app-searchbar
+            [language]="language"
+            [responsive]="responsive"
+            (focusChange)="onFocusChange($event)"
+          ></div>
           <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"></ng-container>
         </div>
       </div>
@@ -87,7 +92,13 @@ const RESPONSIVE_SM = 1200;
           >
             {{ language == 'zh' ? 'English' : '中文' }}
           </button>
-          <button nz-button nzGhost nzSize="small" class="header-button header-direction-button" (click)="toggleDirection()">
+          <button
+            nz-button
+            nzGhost
+            nzSize="small"
+            class="header-button header-direction-button"
+            (click)="toggleDirection()"
+          >
             {{ nextDirection | uppercase }}
           </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
@@ -108,11 +119,11 @@ export class HeaderComponent implements OnChanges {
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['11.4.x', '10.2.x', '9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
+  oldVersionList = ['12.1.x', '11.4.x', '10.2.x', '9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 
-  constructor(private nzConfigService: NzConfigService,private cdr:ChangeDetectorRef) { }
+  constructor(private nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
