@@ -1,4 +1,4 @@
-# [13.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...13.0.0) (2021-12-28)
+# [13.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...13.0.0) (2021-12-29)
 
 
 ### BREAKING CHANGES
