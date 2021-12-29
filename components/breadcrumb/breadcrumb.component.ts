@@ -26,6 +26,8 @@ import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzBreadcrumb } from './breadcrumb';
+
 export interface BreadcrumbOption {
   label: string;
   params: Params;
@@ -38,6 +40,7 @@ export interface BreadcrumbOption {
   selector: 'nz-breadcrumb',
   exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
+  providers: [{ provide: NzBreadcrumb, useExisting: NzBreadCrumbComponent }],
   template: `
     <ng-content></ng-content>
     <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
@@ -47,7 +50,7 @@ export interface BreadcrumbOption {
     </ng-container>
   `
 })
-export class NzBreadCrumbComponent implements OnInit, OnDestroy {
+export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   static ngAcceptInputType_nzAutoGenerate: BooleanInput;
 
   @Input() @InputBoolean() nzAutoGenerate = false;

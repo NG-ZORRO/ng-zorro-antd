@@ -20,7 +20,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzGraphComponent } from './graph.component';
+import { NzGraph } from './graph';
 import { NzGraphGroupNode, NzGraphNode } from './interface';
 
 interface Info {
@@ -70,7 +70,7 @@ export class NzGraphNodeComponent implements OnInit, OnDestroy {
     private el: ElementRef<HTMLElement>,
     private builder: AnimationBuilder,
     private renderer2: Renderer2,
-    private graphComponent: NzGraphComponent
+    private graphComponent: NzGraph
   ) {}
 
   ngOnInit(): void {
