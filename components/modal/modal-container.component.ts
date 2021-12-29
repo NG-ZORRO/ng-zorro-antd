@@ -14,6 +14,7 @@ import {
   ElementRef,
   Inject,
   NgZone,
+  OnInit,
   Optional,
   Renderer2,
   ViewChild
@@ -35,7 +36,6 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      (mousedown)="onMousedown()"
       [ngClass]="config.nzClassName!"
       [ngStyle]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
@@ -71,16 +71,16 @@ import { ModalOptions } from './modal-types';
     '[@modalContainer]': 'state',
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
-    '(click)': 'onContainerClick($event)',
-    '(mouseup)': 'onMouseup()'
+    '(click)': 'onContainerClick($event)'
   }
 })
-export class NzModalContainerComponent extends BaseModalContainerComponent {
+export class NzModalContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
+
   constructor(
     ngZone: NgZone,
-    elementRef: ElementRef,
+    host: ElementRef<HTMLElement>,
     focusTrapFactory: FocusTrapFactory,
     cdr: ChangeDetectorRef,
     render: Renderer2,
@@ -90,17 +90,10 @@ export class NzModalContainerComponent extends BaseModalContainerComponent {
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(
-      ngZone,
-      elementRef,
-      focusTrapFactory,
-      cdr,
-      render,
-      overlayRef,
-      nzConfigService,
-      config,
-      document,
-      animationType
-    );
+    super(ngZone, host, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+  }
+
+  ngOnInit(): void {
+    this.setupMouseListeners(this.modalElementRef);
   }
 }

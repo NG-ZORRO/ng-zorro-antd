@@ -19,7 +19,7 @@ import {
   OnDestroy,
   Renderer2
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -70,7 +70,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
 
   constructor(
     protected ngZone: NgZone,
-    protected elementRef: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected focusTrapFactory: FocusTrapFactory,
     public cdr: ChangeDetectorRef,
     protected render: Renderer2,
@@ -95,18 +95,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   onContainerClick(e: MouseEvent): void {
     if (e.target === e.currentTarget && !this.mouseDown && this.showMask && this.maskClosable) {
       this.containerClick.emit();
-    }
-  }
-
-  onMousedown(): void {
-    this.mouseDown = true;
-  }
-
-  onMouseup(): void {
-    if (this.mouseDown) {
-      setTimeout(() => {
-        this.mouseDown = false;
-      });
     }
   }
 
@@ -142,7 +130,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   }
 
   getNativeElement(): HTMLElement {
-    return this.elementRef.nativeElement;
+    return this.host.nativeElement;
   }
 
   private animationDisabled(): boolean {
@@ -163,19 +151,19 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
 
   private savePreviouslyFocusedElement(): void {
     if (!this.focusTrap) {
-      this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+      this.focusTrap = this.focusTrapFactory.create(this.host.nativeElement);
     }
 
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
-      if (this.elementRef.nativeElement.focus) {
-        this.ngZone.runOutsideAngular(() => Promise.resolve().then(() => this.elementRef.nativeElement.focus()));
+      if (this.host.nativeElement.focus) {
+        this.ngZone.runOutsideAngular(() => Promise.resolve().then(() => this.host.nativeElement.focus()));
       }
     }
   }
 
   private trapFocus(): void {
-    const element = this.elementRef.nativeElement;
+    const element = this.host.nativeElement;
 
     if (this.config.nzAutofocus) {
       this.focusTrap.focusInitialElementWhenReady();
@@ -193,7 +181,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     // We need the extra check, because IE can set the `activeElement` to null in some cases.
     if (toFocus && typeof toFocus.focus === 'function') {
       const activeElement = this.document.activeElement as Element;
-      const element = this.elementRef.nativeElement;
+      const element = this.host.nativeElement;
 
       if (
         !activeElement ||
@@ -336,5 +324,25 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     this.setMaskExitAnimationClass(true);
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.host.nativeElement, 'mouseup')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if (this.mouseDown) {
+            setTimeout(() => {
+              this.mouseDown = false;
+            });
+          }
+        });
+
+      fromEvent(modalContainer.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.mouseDown = true;
+        });
+    });
   }
 }
