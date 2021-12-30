@@ -24,7 +24,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzNodeBase } from './node-base';
-import { NzTreeView } from './tree';
+import { NzTreeView } from './tree.component';
 
 export interface NzTreeVirtualNodeData<T> {
   data: T;

@@ -8,8 +8,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, ViewEncap
 
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 
-import { NzTreeNodeOutletDirective } from './outlet';
-import { NzTreeView } from './tree';
+import { NzTreeNodeOutletDirective } from './outlet.directive';
+import { NzTreeView } from './tree.component';
 
 @Component({
   selector: 'nz-tree-view',

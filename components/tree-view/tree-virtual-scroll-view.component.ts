@@ -16,9 +16,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzTreeVirtualNodeData } from './node';
-import { NzTreeNodeOutletDirective } from './outlet';
-import { NzTreeView } from './tree';
+import { NzTreeVirtualNodeData } from './node.component';
+import { NzTreeNodeOutletDirective } from './outlet.directive';
+import { NzTreeView } from './tree.component';
 
 const DEFAULT_SIZE = 28;
 
