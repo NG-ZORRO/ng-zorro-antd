@@ -4,15 +4,15 @@
  */
 
 export * from './tree-view.module';
-export * from './checkbox';
+export * from './checkbox.component';
 export * from './utils';
 export * from './data-source';
-export * from './indent';
-export * from './node';
-export * from './option';
-export * from './outlet';
-export * from './padding';
-export * from './toggle';
-export * from './tree-view';
-export * from './tree';
-export * from './tree-virtual-scroll-view';
+export * from './indent.component';
+export * from './node.component';
+export * from './option.component';
+export * from './outlet.directive';
+export * from './padding.directive';
+export * from './toggle.component';
+export * from './tree-view.component';
+export * from './tree.component';
+export * from './tree-virtual-scroll-view.component';

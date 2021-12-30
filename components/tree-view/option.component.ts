@@ -16,7 +16,7 @@ import {
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzTreeNodeComponent } from './node';
+import { NzTreeNodeComponent } from './node.component';
 
 @Component({
   selector: 'nz-tree-node-option',

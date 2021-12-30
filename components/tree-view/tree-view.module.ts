@@ -10,21 +10,21 @@ import { NgModule } from '@angular/core';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
-import { NzTreeNodeCheckboxComponent } from './checkbox';
-import { NzTreeNodeIndentLineDirective, NzTreeNodeIndentsComponent } from './indent';
-import { NzTreeNodeComponent, NzTreeNodeDefDirective, NzTreeVirtualScrollNodeOutletDirective } from './node';
-import { NzTreeNodeOptionComponent } from './option';
-import { NzTreeNodeOutletDirective } from './outlet';
-import { NzTreeNodePaddingDirective } from './padding';
+import { NzTreeNodeCheckboxComponent } from './checkbox.component';
+import { NzTreeNodeIndentLineDirective, NzTreeNodeIndentsComponent } from './indent.component';
+import { NzTreeNodeComponent, NzTreeNodeDefDirective, NzTreeVirtualScrollNodeOutletDirective } from './node.component';
+import { NzTreeNodeOptionComponent } from './option.component';
+import { NzTreeNodeOutletDirective } from './outlet.directive';
+import { NzTreeNodePaddingDirective } from './padding.directive';
 import {
   NzTreeNodeNoopToggleDirective,
   NzTreeNodeToggleActiveIconDirective,
   NzTreeNodeToggleDirective,
   NzTreeNodeToggleRotateIconDirective
-} from './toggle';
-import { NzTreeView } from './tree';
-import { NzTreeViewComponent } from './tree-view';
-import { NzTreeVirtualScrollViewComponent } from './tree-virtual-scroll-view';
+} from './toggle.component';
+import { NzTreeViewComponent } from './tree-view.component';
+import { NzTreeVirtualScrollViewComponent } from './tree-virtual-scroll-view.component';
+import { NzTreeView } from './tree.component';
 
 const treeWithControlComponents = [
   NzTreeView,

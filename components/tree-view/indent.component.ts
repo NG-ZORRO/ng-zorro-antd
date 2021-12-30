@@ -8,7 +8,7 @@ import { animationFrameScheduler, asapScheduler, merge, Subscription } from 'rxj
 import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';
-import { NzTreeView } from './tree';
+import { NzTreeView } from './tree.component';
 import { getNextSibling, getParent } from './utils';
 
 /**
