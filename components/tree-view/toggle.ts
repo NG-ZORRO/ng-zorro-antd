@@ -27,7 +27,7 @@ export class NzTreeNodeNoopToggleDirective {}
   }
 })
 export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
-  static override ngAcceptInputType_recursive: BooleanInput;
+  static ngAcceptInputType_recursive: BooleanInput;
 
   @Input('nzTreeNodeToggleRecursive')
   override get recursive(): boolean {

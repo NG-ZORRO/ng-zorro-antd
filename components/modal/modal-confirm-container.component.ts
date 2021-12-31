@@ -106,7 +106,7 @@ import { ModalOptions } from './modal-types';
     '(click)': 'onContainerClick($event)'
   }
 })
-export class NzModalConfirmContainerComponent extends BaseModalContainerComponent {
+export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
