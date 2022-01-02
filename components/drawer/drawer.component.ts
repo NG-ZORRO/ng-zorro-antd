@@ -75,7 +75,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header-close-only]="!nzTitle">
+              <div
+                *ngIf="nzTitle || nzClosable"
+                class="ant-drawer-header"
+                [class.ant-drawer-header-close-only]="!nzTitle"
+              >
                 <div *ngIf="nzTitle" class="ant-drawer-title">
                   <ng-container *nzStringTemplateOutlet="nzTitle">
                     <div [innerHTML]="nzTitle"></div>
