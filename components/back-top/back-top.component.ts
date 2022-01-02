@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Inject,
   Input,
@@ -21,14 +22,15 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent, Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 
@@ -39,13 +41,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   template: `
-    <div
-      class="ant-back-top"
-      [class.ant-back-top-rtl]="dir === 'rtl'"
-      (click)="clickBackTop()"
-      @fadeMotion
-      *ngIf="visible"
-    >
+    <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
           <div class="ant-back-top-icon">
@@ -58,7 +54,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  providers: [NzDestroyService]
 })
 export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -66,7 +63,6 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzDuration: NumberInput;
 
   private scrollListenerDestroy$ = new Subject();
-  private destroy$ = new Subject();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
@@ -78,6 +74,26 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   @Input() @InputNumber() nzDuration: number = 450;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
+  @ViewChild('backTop', { static: false })
+  set backTop(backTop: ElementRef<HTMLElement> | undefined) {
+    if (backTop) {
+      this.backTopClickSubscription.unsubscribe();
+
+      this.backTopClickSubscription = this.zone.runOutsideAngular(() =>
+        fromEvent(backTop.nativeElement, 'click')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
+            if (this.nzClick.observers.length) {
+              this.zone.run(() => this.nzClick.emit(true));
+            }
+          })
+      );
+    }
+  }
+
+  private backTopClickSubscription = Subscription.EMPTY;
+
   constructor(
     @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
@@ -86,6 +102,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     private cd: ChangeDetectorRef,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
+    private destroy$: NzDestroyService,
     @Optional() private directionality: Directionality
   ) {
     this.dir = this.directionality.value;
@@ -100,11 +117,6 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.dir = this.directionality.value;
-  }
-
-  clickBackTop(): void {
-    this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
-    this.nzClick.emit(true);
   }
 
   private getTarget(): HTMLElement | Window {
@@ -135,8 +147,6 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.scrollListenerDestroy$.next();
     this.scrollListenerDestroy$.complete();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
