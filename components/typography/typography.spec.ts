@@ -1,13 +1,15 @@
-import { ENTER } from '@angular/cdk/keycodes';
+import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
+  dispatchKeyboardEvent,
   dispatchMouseEvent,
   MockNgZone,
   typeInElement
@@ -15,6 +17,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzTextEditComponent } from '.';
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
@@ -477,6 +480,67 @@ describe('typography', () => {
       tick(32);
       fixture.detectChanges();
     }));
+  });
+});
+
+// Caretaker note: this is moved to a separate `describe` block because the first `describe` block
+// mocks the `NgZone` with `MockNgZone`.
+describe('change detection behavior', () => {
+  let componentElement: HTMLElement;
+  let fixture: ComponentFixture<NzTestTypographyEditComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      declarations: [NzTestTypographyEditComponent]
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestTypographyEditComponent);
+    componentElement = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should not run change detection on `input` event', () => {
+    componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!.click();
+    fixture.detectChanges();
+
+    const appRef = TestBed.inject(ApplicationRef);
+    spyOn(appRef, 'tick');
+
+    const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
+    const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
+
+    textarea.value = 'some-value';
+    dispatchFakeEvent(textarea, 'input');
+
+    expect(appRef.tick).not.toHaveBeenCalled();
+    expect(nzTextEdit.componentInstance.currentText).toEqual('some-value');
+  });
+
+  it('should not run change detection on non-handled keydown events', done => {
+    componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!.click();
+    fixture.detectChanges();
+
+    const ngZone = TestBed.inject(NgZone);
+    const appRef = TestBed.inject(ApplicationRef);
+    const spy = spyOn(appRef, 'tick');
+
+    const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
+    const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
+
+    dispatchKeyboardEvent(textarea, 'keydown', TAB);
+    dispatchKeyboardEvent(textarea, 'keydown', CAPS_LOCK);
+
+    expect(spy).not.toHaveBeenCalled();
+
+    dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
+
+    ngZone.onMicrotaskEmpty.subscribe(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
   });
 });
 
