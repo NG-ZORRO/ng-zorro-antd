@@ -80,22 +80,24 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 class="ant-drawer-header"
                 [class.ant-drawer-header-close-only]="!nzTitle"
               >
-                <div *ngIf="nzTitle" class="ant-drawer-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle">
-                    <div [innerHTML]="nzTitle"></div>
-                  </ng-container>
+                <div class="ant-drawer-header-title">
+                  <button
+                    *ngIf="nzClosable"
+                    (click)="closeClick()"
+                    aria-label="Close"
+                    class="ant-drawer-close"
+                    style="--scroll-bar: 0px;"
+                  >
+                    <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
+                      <i nz-icon [nzType]="closeIcon"></i>
+                    </ng-container>
+                  </button>
+                  <div *ngIf="nzTitle" class="ant-drawer-title">
+                    <ng-container *nzStringTemplateOutlet="nzTitle">
+                      <div [innerHTML]="nzTitle"></div>
+                    </ng-container>
+                  </div>
                 </div>
-                <button
-                  *ngIf="nzClosable"
-                  (click)="closeClick()"
-                  aria-label="Close"
-                  class="ant-drawer-close"
-                  style="--scroll-bar: 0px;"
-                >
-                  <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
-                    <i nz-icon [nzType]="closeIcon"></i>
-                  </ng-container>
-                </button>
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
