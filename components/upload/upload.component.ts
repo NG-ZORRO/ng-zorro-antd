@@ -11,6 +11,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  AfterViewInit,
   OnDestroy,
   OnInit,
   Optional,
@@ -52,7 +53,7 @@ import { NzUploadListComponent } from './upload-list.component';
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
   }
 })
-export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
+export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzLimit: NumberInput;
   static ngAcceptInputType_nzSize: NumberInput;
   static ngAcceptInputType_nzDirectory: BooleanInput;
@@ -328,6 +329,12 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  // fix firefox drop open new tab
+  private handleDropOpenNewTab(e: DragEvent){
+    e.preventDefault();
+    e.stopPropagation()
+  }
+
   // #endregion
 
   ngOnInit(): void {
@@ -344,6 +351,10 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    document.body.addEventListener('drop', this.handleDropOpenNewTab);
+  }
+
   ngOnChanges(): void {
     this.zipOptions().setClassMap();
   }
@@ -351,5 +362,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    document.body.removeEventListener('drop', this.handleDropOpenNewTab)
   }
 }
