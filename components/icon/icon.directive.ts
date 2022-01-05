@@ -140,7 +140,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       from(this._changeIcon())
         .pipe(takeUntil(this.destroy$))
         .subscribe(svgOrRemove => {
-          // The _changeIcon method would call Renderer to removed node, which would call `markElementAsRemoved` eventually,
+          // The _changeIcon method would call Renderer to remove the element of the old icon,
+          // which would call `markElementAsRemoved` eventually,
           // so we should call `detectChanges` to tell Angular remove the DOM node.
           // #7186
           this.changeDetectorRef.detectChanges();
