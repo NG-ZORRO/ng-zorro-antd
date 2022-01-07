@@ -18,9 +18,12 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  NgZone,
+  Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
+import { Observable, of, Subject, Subscription, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -176,6 +179,8 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // #endregion
 
   constructor(
+    private ngZone: NgZone, 
+    @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
     @Optional() private directionality: Directionality
@@ -329,12 +334,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     this.cdr.detectChanges();
   }
 
-  // fix firefox drop open new tab
-  private handleDropOpenNewTab(e: DragEvent){
-    e.preventDefault();
-    e.stopPropagation()
-  }
-
   // #endregion
 
   ngOnInit(): void {
@@ -352,7 +351,11 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngAfterViewInit(): void {
-    document.body.addEventListener('drop', this.handleDropOpenNewTab);
+    // fix firefox drop open new tab
+    this.ngZone.runOutsideAngular(() => fromEvent(this.document.body, 'drop').pipe(takeUntil(this.destroy$)).subscribe((event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    }));
   }
 
   ngOnChanges(): void {
@@ -362,6 +365,5 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    document.body.removeEventListener('drop', this.handleDropOpenNewTab)
   }
 }
