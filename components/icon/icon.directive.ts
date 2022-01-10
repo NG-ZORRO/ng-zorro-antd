@@ -5,6 +5,7 @@
 
 import {
   AfterContentChecked,
+  ChangeDetectorRef,
   Directive,
   ElementRef,
   Input,
@@ -74,7 +75,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private destroy$ = new Subject<void>();
 
   constructor(
-    private ngZone: NgZone,
+    private readonly ngZone: NgZone,
+    private readonly changeDetectorRef: ChangeDetectorRef,
     elementRef: ElementRef,
     public iconService: NzIconService,
     public renderer: Renderer2,
@@ -138,6 +140,12 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       from(this._changeIcon())
         .pipe(takeUntil(this.destroy$))
         .subscribe(svgOrRemove => {
+          // The _changeIcon method would call Renderer to remove the element of the old icon,
+          // which would call `markElementAsRemoved` eventually,
+          // so we should call `detectChanges` to tell Angular remove the DOM node.
+          // #7186
+          this.changeDetectorRef.detectChanges();
+
           if (svgOrRemove) {
             this.setSVGData(svgOrRemove);
             this.handleSpin(svgOrRemove);
