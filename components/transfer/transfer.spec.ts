@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  Injector,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -280,6 +289,23 @@ describe('transfer', () => {
         tempFixture.debugElement.query(By.css('.ant-transfer-list-search input')).nativeElement as HTMLElement
       ).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
+    });
+
+    describe('change detection behavior', () => {
+      it('should not trigger change detection when the `ant-transfer-list-content-item label` is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'stopPropagation').and.callThrough();
+
+        const [label] = fixture.nativeElement.querySelectorAll('.ant-transfer-list-content-item label');
+
+        label.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
     });
   });
 

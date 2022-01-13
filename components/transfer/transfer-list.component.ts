@@ -4,15 +4,22 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
+  QueryList,
   TemplateRef,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, Observable } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 import { TransferDirection, TransferItem } from './interface';
 
@@ -30,10 +37,10 @@ import { TransferDirection, TransferItem } from './interface';
           [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
         >
           <label
+            #checkboxes
             nz-checkbox
             [nzChecked]="item.checked"
             (nzCheckedChange)="onItemSelect(item)"
-            (click)="$event.stopPropagation()"
             [nzDisabled]="disabled || item.disabled"
           >
             <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
@@ -111,7 +118,7 @@ import { TransferDirection, TransferItem } from './interface';
     '[class.ant-transfer-list-with-footer]': '!!footer'
   }
 })
-export class NzTransferListComponent {
+export class NzTransferListComponent implements AfterViewInit {
   // #region fields
 
   @Input() direction: TransferDirection = 'left';
@@ -137,6 +144,8 @@ export class NzTransferListComponent {
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
+
+  @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
 
   stat = {
     checkAll: false,
@@ -203,10 +212,33 @@ export class NzTransferListComponent {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();
     this.cdr.markForCheck();
+  }
+
+  ngAfterViewInit(): void {
+    this.checkboxes.changes
+      .pipe(
+        startWith(this.checkboxes),
+        switchMap(() => {
+          const checkboxes = this.checkboxes.toArray();
+          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+          // but `addEventListener` is called when the `fromEvent` is subscribed.
+          return new Observable<MouseEvent>(subscriber =>
+            this.ngZone.runOutsideAngular(() =>
+              merge(...checkboxes.map(checkbox => fromEvent<MouseEvent>(checkbox.nativeElement, 'click'))).subscribe(
+                subscriber
+              )
+            )
+          );
+        })
+      )
+      .subscribe(event => {
+        event.stopPropagation();
+      });
   }
 }
