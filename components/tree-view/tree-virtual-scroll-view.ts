@@ -65,10 +65,12 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.trackBy && typeof changes.trackBy.currentValue === 'function') {
-      this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
-    } else {
-      this.innerTrackBy = i => i;
+    if (changes.trackBy) {
+      if (typeof changes.trackBy.currentValue === 'function') {
+        this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
+      } else {
+        this.innerTrackBy = i => i;
+      }
     }
   }
 

@@ -170,7 +170,7 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
           return true;
         }
       }
-      return false;
+      return ctxChange.previousValue?.data !== ctxChange.currentValue?.data;
     }
     return true;
   }
