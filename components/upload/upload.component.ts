@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,7 +23,6 @@ import {
   Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { Observable, of, Subject, Subscription, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -179,7 +179,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // #endregion
 
   constructor(
-    private ngZone: NgZone, 
+    private ngZone: NgZone,
     @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
@@ -352,10 +352,14 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngAfterViewInit(): void {
     // fix firefox drop open new tab
-    this.ngZone.runOutsideAngular(() => fromEvent(this.document.body, 'drop').pipe(takeUntil(this.destroy$)).subscribe((event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    }));
+    this.ngZone.runOutsideAngular(() =>
+      fromEvent(this.document.body, 'drop')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          event.preventDefault();
+          event.stopPropagation();
+        })
+    );
   }
 
   ngOnChanges(): void {
