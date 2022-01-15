@@ -21,7 +21,7 @@ import { transCompatFormat } from './util';
   templateUrl: './abstract-table.html'
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() locale!: NzCalendarI18nInterface;
+  @Input() override locale!: NzCalendarI18nInterface;
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
     super();
@@ -146,7 +146,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     cell.classMap = this.getClassMap(cell);
   }
 
-  getClassMap(cell: DateCell): { [key: string]: boolean } {
+  override getClassMap(cell: DateCell): { [key: string]: boolean } {
     const date = new CandyDate(cell.value);
     return {
       ...super.getClassMap(cell),

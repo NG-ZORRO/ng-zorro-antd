@@ -23,11 +23,11 @@ export class YearHeaderComponent extends AbstractPanelHeader {
     return this.startYear + 9;
   }
 
-  superPrevious(): void {
+  override superPrevious(): void {
     this.changeValue(this.value.addYears(-10));
   }
 
-  superNext(): void {
+  override superNext(): void {
     this.changeValue(this.value.addYears(10));
   }
 
