@@ -162,10 +162,10 @@ describe('Component:nz-back-top', () => {
     }));
 
     it('element scroll shows the button', fakeAsync(() => {
-      const throttleTime = 50;
+      const time = 50;
 
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(throttleTime + 1);
+      tick(time + 1);
       fixture.detectChanges();
 
       expect(componentObject.backTopButton() === null).toBe(false);
@@ -174,10 +174,10 @@ describe('Component:nz-back-top', () => {
     it('element (use string id) scroll shows the button', fakeAsync(() => {
       component.nzTarget = '#fakeTarget';
 
-      const throttleTime = 50;
+      const time = 50;
 
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(throttleTime + 1);
+      tick(time + 1);
       fixture.detectChanges();
 
       expect(componentObject.backTopButton() === null).toBe(false);

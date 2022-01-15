@@ -24,7 +24,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -127,7 +127,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     this.handleScroll();
     this.zone.runOutsideAngular(() => {
       fromEvent(this.getTarget(), 'scroll')
-        .pipe(throttleTime(50), takeUntil(this.scrollListenerDestroy$))
+        .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
         .subscribe(() => this.handleScroll());
     });
   }
