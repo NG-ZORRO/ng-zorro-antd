@@ -141,7 +141,7 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Procurar',
     itemUnit: 'item',
-    itemsUnit: 'items',
+    itemsUnit: 'itens',
     remove: 'Remove',
     selectCurrent: 'Selecione a página atual',
     removeCurrent: 'Remover página atual',
