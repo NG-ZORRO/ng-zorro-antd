@@ -75,7 +75,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
     return decades;
   }
 
-  getClassMap(cell: DecadeCell): { [key: string]: boolean } {
+  override getClassMap(cell: DecadeCell): { [key: string]: boolean } {
     return {
       [`${this.prefixCls}-cell`]: true,
       [`${this.prefixCls}-cell-in-view`]: !cell.isBiggerThanEnd && !cell.isLowerThanStart,

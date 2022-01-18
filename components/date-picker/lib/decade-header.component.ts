@@ -15,8 +15,8 @@ import { PanelSelector } from './interface';
   templateUrl: './abstract-panel-header.html'
 })
 export class DecadeHeaderComponent extends AbstractPanelHeader {
-  previous(): void {}
-  next(): void {}
+  override previous(): void {}
+  override next(): void {}
 
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 100}`, 10) * 100;
@@ -26,11 +26,11 @@ export class DecadeHeaderComponent extends AbstractPanelHeader {
     return this.startYear + 99;
   }
 
-  superPrevious(): void {
+  override superPrevious(): void {
     this.changeValue(this.value.addYears(-100));
   }
 
-  superNext(): void {
+  override superNext(): void {
     this.changeValue(this.value.addYears(100));
   }
 

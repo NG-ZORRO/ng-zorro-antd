@@ -1,5 +1,5 @@
 const YFM = require('yaml-front-matter');
-const MD = require('marked');
+const {parse} = require('marked');
 const parse5 = require('parse5');
 
 /**
@@ -22,7 +22,7 @@ function findNodeByName(fragment, name, result = []) {
 
 module.exports = function getMeta(file) {
   const meta = YFM.loadFront(file);
-  const content = MD(meta.__content);
+  const content = parse(meta.__content);
   const fragment = parse5.parseFragment(content);
   const paragraphs = [];
   findNodeByName(fragment, ['p', 'li'], paragraphs);

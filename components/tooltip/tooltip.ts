@@ -46,24 +46,24 @@ import {
 export class NzTooltipDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
 
-  @Input('nzTooltipTitle') title?: NzTSType | null;
+  @Input('nzTooltipTitle') override title?: NzTSType | null;
   @Input('nzTooltipTitleContext') titleContext?: Object | null = null;
-  @Input('nz-tooltip') directiveTitle?: NzTSType | null;
-  @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzTooltipPlacement') placement?: string | string[] = 'top';
-  @Input('nzTooltipOrigin') origin?: ElementRef<HTMLElement>;
-  @Input('nzTooltipVisible') visible?: boolean;
-  @Input('nzTooltipMouseEnterDelay') mouseEnterDelay?: number;
-  @Input('nzTooltipMouseLeaveDelay') mouseLeaveDelay?: number;
-  @Input('nzTooltipOverlayClassName') overlayClassName?: string;
-  @Input('nzTooltipOverlayStyle') overlayStyle?: NgStyleInterface;
-  @Input('nzTooltipArrowPointAtCenter') @InputBoolean() arrowPointAtCenter?: boolean;
+  @Input('nz-tooltip') override directiveTitle?: NzTSType | null;
+  @Input('nzTooltipTrigger') override trigger?: NzTooltipTrigger = 'hover';
+  @Input('nzTooltipPlacement') override placement?: string | string[] = 'top';
+  @Input('nzTooltipOrigin') override origin?: ElementRef<HTMLElement>;
+  @Input('nzTooltipVisible') override visible?: boolean;
+  @Input('nzTooltipMouseEnterDelay') override mouseEnterDelay?: number;
+  @Input('nzTooltipMouseLeaveDelay') override mouseLeaveDelay?: number;
+  @Input('nzTooltipOverlayClassName') override overlayClassName?: string;
+  @Input('nzTooltipOverlayStyle') override overlayStyle?: NgStyleInterface;
+  @Input('nzTooltipArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
   @Input() nzTooltipColor?: string;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename
-  @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
+  @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
-  componentRef: ComponentRef<NzToolTipComponent> = this.hostView.createComponent(NzToolTipComponent);
+  override componentRef: ComponentRef<NzToolTipComponent> = this.hostView.createComponent(NzToolTipComponent);
 
   constructor(
     elementRef: ElementRef,
@@ -75,7 +75,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 
-  protected getProxyPropertyMap(): PropertyMapping {
+  protected override getProxyPropertyMap(): PropertyMapping {
     return {
       ...super.getProxyPropertyMap(),
       nzTooltipColor: ['nzColor', () => this.nzTooltipColor],
@@ -127,7 +127,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
-  nzTitle: NzTSType | null = null;
+  override nzTitle: NzTSType | null = null;
   nzTitleContext: Object | null = null;
 
   nzColor?: string | NzPresetColor;
@@ -137,7 +137,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
     super(cdr, directionality, noAnimation);
   }
@@ -146,7 +146,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     return isTooltipEmpty(this.nzTitle);
   }
 
-  protected updateStyles(): void {
+  protected override updateStyles(): void {
     const isColorPreset = this.nzColor && isPresetColor(this.nzColor);
 
     this._classMap = {

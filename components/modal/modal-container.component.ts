@@ -75,9 +75,8 @@ import { ModalOptions } from './modal-types';
   }
 })
 export class NzModalContainerComponent extends BaseModalContainerComponent implements OnInit {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
-
+  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(
     ngZone: NgZone,
     host: ElementRef<HTMLElement>,
@@ -86,7 +85,7 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
     render: Renderer2,
     overlayRef: OverlayRef,
     nzConfigService: NzConfigService,
-    public config: ModalOptions,
+    public override config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {

@@ -10,7 +10,7 @@ import { NzCarouselContentDirective } from '../../carousel-content.directive';
 import { NzCarouselBaseStrategy } from '../base-strategy';
 
 export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
-  withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
+  override withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
     super.withCarouselContents(contents);
 
     if (this.contents) {
@@ -59,7 +59,7 @@ export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
     return complete$.asObservable();
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.contents.forEach((content: NzCarouselContentDirective) => {
       this.renderer.setStyle(content.el, 'transition', null);
       this.renderer.setStyle(content.el, 'transform', null);
