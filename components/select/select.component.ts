@@ -400,6 +400,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item =>
       this.compareWith(item.nzValue, this.activatedValue)
     );
+    // check option value is exist
+    if (!listOfFilteredOptionNotDisabled.length) {
+      return;
+    }
     switch (e.keyCode) {
       case UP_ARROW:
         e.preventDefault();
