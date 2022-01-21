@@ -10,7 +10,10 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzDrawerRef } from './drawer-ref';
 
+export const DRAWER_DEFAULT_SIZE = 378;
+export const DRAWER_LARGE_SIZE = 736;
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
+export type NzDrawerSize = 'default' | 'large';
 
 export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzClosable?: boolean;
@@ -21,12 +24,14 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzKeyboard?: boolean;
   nzNoAnimation?: boolean;
   nzTitle?: string | TemplateRef<{}>;
+  nzExtra?: string | TemplateRef<{}>;
   nzFooter?: string | TemplateRef<{}>;
   nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
   nzContentParams?: Partial<T & D>;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
   nzWrapClassName?: string;
+  nzSize?: NzDrawerSize;
   nzWidth?: number | string;
   nzHeight?: number | string;
   nzPlacement?: NzDrawerPlacement;

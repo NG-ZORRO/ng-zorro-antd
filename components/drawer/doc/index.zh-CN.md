@@ -23,8 +23,9 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
-| `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
+| `[nzClosable]` | 是否显示左上角的关闭按钮 | `boolean` | `true` |
 | `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
+| `[nzExtra]` | 抽屉右上角的操作区域 | `string \| TemplateRef<void> \| null` | - |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | `[nzCloseOnNavigation]`    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
@@ -35,8 +36,9 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzFooter]` | 抽屉的页脚 | `string \| TemplateRef<void>` | - |
 | `[nzVisible]` | Drawer 是否可见，可以使用 `[(nzVisible)]` 双向绑定 | `boolean` | - |
 | `[nzPlacement]` | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
-| `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number \| string` | `256` |
-| `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` | `256` |
+| `[nzSize]` | 预设抽屉宽度（或高度），default `378px` 和 large `736px`  | `'default' \| 'large'` | `'default'` |
+| `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效，优先级高于 `nzSize` | `number \| string` | - |
+| `[nzHeight]` | 高度, 只在方向为 `'top'`或`'bottom'` 时生效，优先级高于 `nzSize` | `number \| string` | - |
 | `[nzOffsetX]` | x 坐标移量(px), 只在方向为 `'right'`或`'left'` 时生效 | `number` | `0` |
 | `[nzOffsetY]` | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
 | `[nzWrapClassName]` | 对话框外层容器的类名 | `string` | - |
@@ -56,8 +58,9 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \|  Type<T>` | - |
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
 | nzOnCancel | 点击遮罩层或右上角叉时执行,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `() => Promise<any>` | - |
-| nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
+| nzClosable | 是否显示左上角的关闭按钮 | `boolean` | `true` |
 | nzCloseIcon | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
+| nzExtra | 抽屉右上角的操作区域 | `string \| TemplateRef<void> \| null` | - |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | nzMask | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | nzCloseOnNavigation    | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` | ✅ |
@@ -67,8 +70,9 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
 | nzTitle | 标题 | `string \| TemplateRef<void>` | - |
 | nzFooter | 页脚 | `string \| TemplateRef<void>` | - |
-| nzWidth | 宽度 | `number \| string` | `256` |
-| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` | `256` |
+| nzSize | 预设抽屉宽度（或高度），default `378px` 和 large `736px`  | `'default' \| 'large'` | `'default'` |
+| nzWidth | 宽度, 只在方向为 `'right'`或`'left'` 时生效，优先级高于 `nzSize` | `number \| string` | - |
+| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效，优先级高于 `nzSize` | `number \| string` | - |
 | nzWrapClassName | 对话框外层容器的类名 | `string` | - |
 | nzZIndex| 设置 Drawer 的 `z-index` | `number` | `1000` |
 | nzPlacement | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
