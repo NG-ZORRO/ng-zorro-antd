@@ -22,6 +22,7 @@ Component Lib|[ngx-datatable](https://github.com/swimlane/ngx-datatable) | Swiml
 Component Lib|[ngx-charts](https://swimlane.github.io/ngx-charts/) | Charts based on D3
 Component Lib|[ngx-graph](https://swimlane.github.io/ngx-graph/) | Graph based on dagre.js
 Component Lib|[ngx-formly](https://github.com/ngx-formly/ngx-formly) | Form based on JSON schema
+Component Lib|[ng-ant-admin](https://github.com/huajian123/ng-ant-admin) | The Admin Template imitating Ant Design Pro
 Dev Kit |[Component Dev Kit](https://material.angular.io/cdk/categories) | Component Developer Kit
 Dev Kit |[Spectator](https://github.com/ngneat/spectator) | A Powerful Tool to Simplify Your Angular Tests
 Dev Kit |[Scully](https://github.com/scullyio/scully) | The Static Site Generator for Angular apps
