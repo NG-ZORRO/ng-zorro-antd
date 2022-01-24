@@ -79,6 +79,22 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-sm');
     });
+    it('should nzBorderless work', () => {
+      testComponent.borderless = true;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-borderless');
+      testComponent.borderless = false;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-borderless');
+    });
+    it('should nzControls work', () => {
+      testComponent.controls = false;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.querySelector('.ant-input-number-handler-wrap')).toBe(null);
+      testComponent.controls = true;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.querySelector('.ant-input-number-handler-wrap')).not.toBe(null);
+    });
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autofocus = true;
@@ -476,6 +492,8 @@ describe('input number', () => {
       (ngModelChange)="modelChange($event)"
       [nzDisabled]="disabled"
       [nzAutoFocus]="autofocus"
+      [nzBorderless]="borderless"
+      [nzControls]="controls"
       [nzSize]="size"
       [nzMin]="min"
       [nzMax]="max"
@@ -493,6 +511,8 @@ export class NzTestInputNumberBasicComponent {
   value?: number | string;
   autofocus = false;
   disabled = false;
+  borderless = false;
+  controls = true;
   min = -1;
   max = 1;
   size = 'default';

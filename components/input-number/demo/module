@@ -1,4 +1,6 @@
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from "ng-zorro-antd/cascader";
 
-export const moduleList = [ NzInputNumberModule, NzButtonModule ];
+export const moduleList = [ NzInputNumberModule, NzButtonModule, NzSelectModule, NzCascaderModule ];

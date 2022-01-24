@@ -36,7 +36,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   selector: 'nz-input-number',
   exportAs: 'nzInputNumber',
   template: `
-    <div class="ant-input-number-handler-wrap">
+    <div *ngIf="nzControls" class="ant-input-number-handler-wrap">
       <span
         unselectable="unselectable"
         class="ant-input-number-handler ant-input-number-handler-up"
@@ -87,6 +87,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-input-number',
+    '[class.ant-input-number-borderless]': 'nzBorderless',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -97,6 +98,8 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
+  static ngAcceptInputType_nzControls: BooleanInput;
 
   private autoStepTimer?: number;
   private parsedValue?: string | number;
@@ -106,6 +109,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   isFocused = false;
   disabledUp = false;
   disabledDown = false;
+  disabled$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -126,6 +130,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
+  @Input() @InputBoolean() nzControls = true;
+  @Input() @InputBoolean() nzBorderless = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
@@ -426,6 +432,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { disabled } = changes;
+    if (disabled) {
+      this.disabled$.next(this.nzDisabled);
+    }
     if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
@@ -443,5 +453,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.focusMonitor.stopMonitoring(this.elementRef);
     this.destroy$.next();
     this.destroy$.complete();
+    this.disabled$.complete();
   }
 }
