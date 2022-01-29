@@ -3,25 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
-  selector: 'nz-demo-transfer-one-way',
+  selector: 'nz-demo-transfer-large-data',
   template: `
     <nz-transfer
       [nzDataSource]="list"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
       [nzOneWay]="oneWay"
+      nzPagination
     ></nz-transfer>
     <div style="margin-top: 8px;">
       <nz-switch [(ngModel)]="oneWay" nzCheckedChildren="oneWay" nzUnCheckedChildren="oneWay"></nz-switch>
     </div>
   `
 })
-export class NzDemoTransferOneWayComponent implements OnInit {
+export class NzDemoTransferLargeDataComponent implements OnInit {
   list: TransferItem[] = [];
   oneWay = false;
 
   ngOnInit(): void {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 2000; i++) {
       this.list.push({
         key: i.toString(),
         title: `content${i + 1}`,

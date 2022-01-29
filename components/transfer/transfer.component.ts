@@ -24,15 +24,17 @@ import {
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
-import {
+import type {
   TransferCanMove,
   TransferChange,
   TransferDirection,
   TransferItem,
+  TransferPaginationType,
   TransferSearchChange,
   TransferSelectChange
 } from './interface';
@@ -63,6 +65,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemUnit]="nzItemUnit || locale?.itemUnit"
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
+      [pagination]="pagination"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
@@ -104,6 +107,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
       [showRemove]="nzOneWay"
+      [pagination]="pagination"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
       (itemRemove)="handleRightItemRemove($event)"
@@ -123,6 +127,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowSelectAll: BooleanInput;
   static ngAcceptInputType_nzShowSearch: BooleanInput;
   static ngAcceptInputType_nzOneWay: BooleanInput;
+  static ngAcceptInputType_nzPagination: BooleanInput | TransferPaginationType;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -132,6 +137,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   leftFilter = '';
   rightFilter = '';
   dir: Direction = 'ltr';
+  pagination?: TransferPaginationType;
 
   // #region fields
 
@@ -155,6 +161,20 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
   @Input() @InputBoolean() nzOneWay = false;
+  @Input() set nzPagination(value: boolean | TransferPaginationType | null | undefined) {
+    if (value == null) return;
+
+    const defaultPaginatio: TransferPaginationType = {
+      pageSize: 10
+    };
+    this.pagination =
+      typeof value === 'object'
+        ? {
+            ...defaultPaginatio,
+            ...value
+          }
+        : defaultPaginatio;
+  }
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -191,10 +211,10 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
   handleRightSelectAll = (checked: boolean): void => this.handleSelect('right', checked);
-  handleRightItemRemove(item: TransferItem): void {
+  handleRightItemRemove(items: TransferItem[]): void {
     const list = this.getCheckedData('right');
     list.forEach(i => (i.checked = false));
-    item.checked = true;
+    items.forEach(i => (i.checked = true));
     this.moveToLeft();
   }
 
@@ -325,6 +345,10 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (changes.nzSelectedKeys) {
       this.handleNzSelectedKeys();
+    }
+
+    if (this.pagination && this.nzRenderList) {
+      warn('`nzPagination` not support customize render list.');
     }
   }
 

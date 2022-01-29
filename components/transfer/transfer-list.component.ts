@@ -14,7 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { TransferDirection, TransferItem } from './interface';
+import type { TransferDirection, TransferItem, TransferPaginationType } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -37,18 +37,28 @@ import { TransferDirection, TransferItem } from './interface';
           [render]="render"
           (itemSelect)="onItemSelect(item)"
           [showRemove]="showRemove"
-          (remove)="itemRemove.emit(item)"
+          (remove)="itemRemove.emit([item])"
         >
         </li>
       </ul>
       <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
         <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
       </div>
+      <nz-pagination
+        *ngIf="pagination"
+        [nzPageIndex]="pi"
+        [nzTotal]="fullData.length"
+        nzSimple
+        nzSize="small"
+        [nzDisabled]="disabled"
+        (nzPageIndexChange)="pageChange($event)"
+        class="ant-transfer-list-pagination"
+      ></nz-pagination>
     </ng-template>
     <div class="ant-transfer-list-header">
       <ng-container *ngIf="showSelectAll">
         <label
-          *ngIf="!showRemove"
+          *ngIf="!showRemove && !pagination"
           class="ant-transfer-list-checkbox"
           nz-checkbox
           [nzChecked]="stat.checkAll"
@@ -110,10 +120,13 @@ import { TransferDirection, TransferItem } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-transfer-list',
+    '[class.ant-transfer-list-with-pagination]': '!!pagination',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   }
 })
 export class NzTransferListComponent {
+  pi = 1;
+
   // #region fields
 
   @Input() direction: TransferDirection = 'left';
@@ -131,6 +144,7 @@ export class NzTransferListComponent {
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
   @Input() showRemove: boolean = false;
+  @Input() pagination?: TransferPaginationType;
 
   @Input() renderList: TemplateRef<void> | null = null;
   @Input() render: TemplateRef<void> | null = null;
@@ -140,7 +154,7 @@ export class NzTransferListComponent {
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
-  @Output() readonly itemRemove: EventEmitter<TransferItem> = new EventEmitter();
+  @Output() readonly itemRemove: EventEmitter<TransferItem[]> = new EventEmitter();
 
   stat = {
     checkAll: false,
@@ -149,8 +163,17 @@ export class NzTransferListComponent {
     shownCount: 0
   };
 
-  get validData(): TransferItem[] {
+  get fullData(): TransferItem[] {
     return this.dataSource.filter(w => !w.hide);
+  }
+
+  get validData(): TransferItem[] {
+    let items = this.fullData;
+    if (this.pagination != null) {
+      const ps = this.pagination.pageSize!;
+      items = items.slice((this.pi - 1) * ps, this.pi * ps);
+    }
+    return items;
   }
 
   onItemSelect = (item: TransferItem): void => {
@@ -172,6 +195,11 @@ export class NzTransferListComponent {
     this.updateCheckStatus();
     this.handleSelectAll.emit(status);
   };
+
+  pageChange(pi: number): void {
+    this.pi = pi;
+    this.cdr.detectChanges();
+  }
 
   private updateCheckStatus(): void {
     const validCount = this.dataSource.filter(w => !w.disabled).length;

@@ -38,3 +38,7 @@ export interface TransferSelectChange {
   list: TransferItem[];
   item?: TransferItem;
 }
+
+export interface TransferPaginationType {
+  pageSize?: number;
+}

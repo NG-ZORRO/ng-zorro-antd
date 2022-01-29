@@ -15,6 +15,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 import { NzTransferListItemComponent } from './transfer-list-item.component';
 import { NzTransferListComponent } from './transfer-list.component';
@@ -32,7 +33,8 @@ import { NzTransferComponent } from './transfer.component';
     NzI18nModule,
     NzIconModule,
     NzEmptyModule,
-    NzOutletModule
+    NzOutletModule,
+    NzPaginationModule
   ],
   declarations: [NzTransferComponent, NzTransferListComponent, NzTransferListItemComponent, NzTransferSearchComponent],
   exports: [NzTransferComponent]

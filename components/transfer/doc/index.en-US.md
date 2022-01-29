@@ -43,6 +43,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzSelectedKeys]` | A set of keys of selected items. | `string[]` | - |
 | `[nzTargetKeys]` | A set of keys of elements that are listed on the right column. | `string[]` | - |
 | `[nzOneWay]` | Display as single direction style | `boolean` | `false` |
+| `[nzPagination]` | Use pagination. **Not work in `render` props** | `boolean \| TransferPaginationType` | `false` |
 | `(nzChange)` | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | A callback function which is executed when selected items are changed. | `EventEmitter<TransferSearchChange>` | - |

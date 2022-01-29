@@ -45,6 +45,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzSelectedKeys]` | 设置被选中的 key 集合 | `string[]` | - |
 | `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
 | `[nzOneWay]` | 展示为单向样式 | `boolean` | `false` |
+| `[nzPagination]` | 使用分页样式，**自定义渲染列表下无效** | `boolean \| TransferPaginationType` | `false` |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
