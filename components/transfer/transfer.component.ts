@@ -53,6 +53,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [locale]="locale"
       [titleText]="nzTitles[0]"
       [showSelectAll]="nzShowSelectAll"
+      [selectAllLabel]="nzSelectAllLabels[0]"
       [dataSource]="leftDataSource"
       [filter]="leftFilter"
       [filterOption]="nzFilterOption"
@@ -95,6 +96,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [locale]="locale"
       [titleText]="nzTitles[1]"
       [showSelectAll]="nzShowSelectAll"
+      [selectAllLabel]="nzSelectAllLabels[1]"
       [dataSource]="rightDataSource"
       [filter]="rightFilter"
       [filterOption]="nzFilterOption"
@@ -181,6 +183,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
           }
         : defaultPaginatio;
   }
+  @Input() nzSelectAllLabels: Array<string | ((info: { selectedCount: number; totalCount: number }) => string) | null> =
+    [null, null];
+  // A set of customized labels for select all checkboxs on the header
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();

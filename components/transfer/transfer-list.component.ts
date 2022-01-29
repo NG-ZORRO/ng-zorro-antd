@@ -87,10 +87,7 @@ import type { TransferDirection, TransferItem, TransferPaginationType } from './
         </nz-dropdown-menu>
       </ng-container>
       <span class="ant-transfer-list-header-selected">
-        <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
-          {{ renderData.length > 1 ? itemsUnit : itemUnit }}
-        </span>
+        {{ selectedText }}
       </span>
       <span *ngIf="titleText" class="ant-transfer-list-header-title">
         <ng-container *nzStringTemplateOutlet="titleText; context: { $implicit: direction }">
@@ -151,6 +148,7 @@ export class NzTransferListComponent {
   @Input() direction: TransferDirection = 'left';
   @Input() titleText: TemplateRef<{ $implicit: TransferDirection }> | string = '';
   @Input() showSelectAll = true;
+  @Input() selectAllLabel: string | ((info: { selectedCount: number; totalCount: number }) => string) | null = null;
 
   @Input() dataSource: TransferItem[] = [];
 
@@ -193,6 +191,18 @@ export class NzTransferListComponent {
       items = items.slice((this.pi - 1) * ps, this.pi * ps);
     }
     return items;
+  }
+
+  get selectedText(): string {
+    const totalCount = this.stat.shownCount;
+    const selectedCount = this.stat.checkCount;
+    if (this.selectAllLabel) {
+      return typeof this.selectAllLabel === 'function'
+        ? this.selectAllLabel({ selectedCount, totalCount })
+        : this.selectAllLabel;
+    }
+    const unit = totalCount > 1 ? this.itemsUnit : this.itemUnit;
+    return `${selectedCount > 0 ? `${selectedCount}/` : ''}${totalCount} ${unit}`;
   }
 
   onItemSelect = (item: TransferItem): void => {

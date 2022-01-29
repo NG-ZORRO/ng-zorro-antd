@@ -380,6 +380,21 @@ describe('transfer', () => {
         expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(1);
       });
     });
+
+    it('#nzSelectAllLabels', () => {
+      instance.nzSelectAllLabels = [
+        'Select All',
+        ({ selectedCount, totalCount }: { selectedCount: number; totalCount: number }) =>
+          `${selectedCount}/${totalCount}`
+      ];
+      fixture.detectChanges();
+      expect(pageObject.leftList.querySelector('.ant-transfer-list-header-selected')?.textContent?.trim()).toBe(
+        `Select All`
+      );
+      expect(pageObject.rightList.querySelector('.ant-transfer-list-header-selected')?.textContent?.trim()).toBe(
+        `0/${COUNT - LEFTCOUNT}`
+      );
+    });
   });
 
   describe('#canMove', () => {
@@ -514,6 +529,7 @@ describe('transfer', () => {
       [nzDataSource]="nzDataSource"
       [nzRenderList]="nzRenderList"
       [nzShowSelectAll]="nzShowSelectAll"
+      [nzSelectAllLabels]="nzSelectAllLabels"
       [nzDisabled]="nzDisabled"
       [nzTitles]="nzTitles"
       [nzOperations]="['to right', 'to left']"
@@ -554,6 +570,10 @@ class TestTransferComponent implements OnInit {
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
   nzShowSelectAll = true;
+  nzSelectAllLabels: Array<string | ((info: { selectedCount: number; totalCount: number }) => string) | null> = [
+    null,
+    null
+  ];
   nzTitles: Array<TemplateRef<{ $implicit: TransferDirection }> | string> = ['Source', 'Target'];
   nzSelectedKeys = ['0', '1', '2'];
   nzTargetKeys: string[] = [];

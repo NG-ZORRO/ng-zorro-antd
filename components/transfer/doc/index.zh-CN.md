@@ -29,6 +29,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中或使用 `nzTargetKeys` | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzTitles]` | 标题集合，顺序从左至右 | `Array<TemplateRef<{ $implicit: 'left' \| 'right' }> \| string>` | `['', '']` |
+| `[nzSelectAllLabels]` | 自定义顶部多选框标题的集合，顺序从左至右 | `Array<string \| ((info: { selectedCount: number; totalCount: number }) => string) \| null>` | - |
 | `[nzOperations]` | 操作文案集合，顺序从下至上 | `string[]` | `['', '']` |
 | `[nzOperationStyle]` | 操作栏的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | `object` | - |
