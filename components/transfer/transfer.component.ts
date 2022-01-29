@@ -137,7 +137,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzDataSource: TransferItem[] = [];
-  @Input() nzTitles: string[] = ['', ''];
+  @Input() nzTitles: Array<TemplateRef<{ $implicit: TransferDirection }> | string> = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzOperationStyle: NgStyleInterface = {};
   @Input() nzListStyle: NgStyleInterface = {};
@@ -189,7 +189,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     return this[direction === 'left' ? 'leftDataSource' : 'rightDataSource'].filter(w => w.checked);
   }
 
-  handleLeftSelectAll = (checked: boolean): void => this.handleSelect('left', checked);
+  handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
   handleRightSelectAll = (checked: boolean): void => this.handleSelect('right', checked);
   handleRightItemRemove(item: TransferItem): void {
     const list = this.getCheckedData('right');
@@ -198,8 +198,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.moveToLeft();
   }
 
+  handleLeftSelectAll = (checked: boolean): void => this.handleSelect('left', checked);
   handleLeftSelect = (item: TransferItem): void => this.handleSelect('left', !!item.checked, item);
-  handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);

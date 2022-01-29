@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -30,7 +31,8 @@ import { NzTransferComponent } from './transfer.component';
     NzInputModule,
     NzI18nModule,
     NzIconModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzOutletModule
   ],
   declarations: [NzTransferComponent, NzTransferListComponent, NzTransferListItemComponent, NzTransferSearchComponent],
   exports: [NzTransferComponent]

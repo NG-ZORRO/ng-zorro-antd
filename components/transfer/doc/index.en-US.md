@@ -26,7 +26,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | -------- | ----------- | ---- | ------- |
 | `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop , or using `nzTargetKeys` prop. | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | Whether disabled transfer | `boolean` | `false` |
-| `[nzTitles]` | A set of titles that are sorted from left to right. | `string[]` | `['', '']` |
+| `[nzTitles]` | A set of titles that are sorted from left to right. | `Array<TemplateRef<{ $implicit: 'left' \| 'right' }> \| string>` | `['', '']` |
 | `[nzOperations]` | A set of operations that are sorted from bottom to top. | `string[]` | `['', '']` |
 | `[nzOperationStyle]` | A custom CSS style used for rendering the operations column. equal `ngStyle` | `object` | - |
 | `[nzListStyle]` | A custom CSS style used for rendering the transfer columns. equal `ngStyle` | `object` | - |

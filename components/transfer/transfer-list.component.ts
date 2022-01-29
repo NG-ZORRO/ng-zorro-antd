@@ -32,7 +32,8 @@ import { TransferDirection, TransferItem } from './interface';
           #checkboxes
           nz-transfer-list-item
           [item]="item"
-          [disabled]="disabled"
+          [checked]="item.checked"
+          [disabled]="disabled || item.disabled"
           [render]="render"
           (itemSelect)="onItemSelect(item)"
           [showRemove]="showRemove"
@@ -62,7 +63,11 @@ import { TransferDirection, TransferItem } from './interface';
           {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
       </span>
-      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
+      <span *ngIf="titleText" class="ant-transfer-list-header-title">
+        <ng-container *nzStringTemplateOutlet="titleText; context: { $implicit: direction }">
+          {{ titleText }}
+        </ng-container>
+      </span>
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
@@ -112,7 +117,7 @@ export class NzTransferListComponent {
   // #region fields
 
   @Input() direction: TransferDirection = 'left';
-  @Input() titleText = '';
+  @Input() titleText: TemplateRef<{ $implicit: TransferDirection }> | string = '';
   @Input() showSelectAll = true;
 
   @Input() dataSource: TransferItem[] = [];

@@ -29,10 +29,10 @@ import type { TransferItem } from './interface';
     <ng-template #renderDefault>
       <label
         nz-checkbox
-        [nzChecked]="item.checked"
+        [nzChecked]="checked"
         (click)="clickEvt($event)"
         (nzCheckedChange)="handleItemSelect()"
-        [nzDisabled]="_disabled"
+        [nzDisabled]="disabled"
       >
         <ng-container *ngIf="!render; else renderContainer">
           <div class="ant-transfer-list-content-item-text">{{ item.title }}</div>
@@ -43,7 +43,7 @@ import type { TransferItem } from './interface';
       <div class="ant-transfer-list-content-item-text">{{ item.title }}</div>
       <div
         class="ant-transfer-list-content-item-remove"
-        [style.pointer-events]="_disabled ? 'none' : null"
+        [style.pointer-events]="disabled ? 'none' : null"
         (click)="remove.emit()"
       >
         <i nz-icon nzType="delete"></i>
@@ -54,22 +54,19 @@ import type { TransferItem } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-transfer-list-content-item',
-    '[class.ant-transfer-list-content-item-disabled]': '_disabled',
-    '[class.ant-transfer-list-content-item-checked]': 'item.checked',
+    '[class.ant-transfer-list-content-item-disabled]': 'disabled',
+    '[class.ant-transfer-list-content-item-checked]': 'checked',
     '(click)': 'handleItemSelect()'
   }
 })
 export class NzTransferListItemComponent {
   @Input() item!: TransferItem;
+  @Input() checked?: boolean = false;
   @Input() disabled?: boolean = false;
   @Input() render: TemplateRef<void> | null = null;
   @Input() showRemove: boolean = false;
   @Output() readonly itemSelect = new EventEmitter<void>();
   @Output() readonly remove = new EventEmitter<void>();
-
-  get _disabled(): boolean {
-    return this.disabled || this.item.disabled || false;
-  }
 
   constructor(private ngZone: NgZone) {}
 

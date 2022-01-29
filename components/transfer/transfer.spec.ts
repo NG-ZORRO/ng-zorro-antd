@@ -307,6 +307,24 @@ describe('transfer', () => {
         expect(event.stopPropagation).toHaveBeenCalled();
       });
     });
+
+    it('#nzTitles', () => {
+      instance.nzTitles = ['Left', instance.titTpl];
+      fixture.detectChanges();
+      expect(pageObject.getEl(`#transfer-tit`).textContent?.trim()).toBe(`tit-right`);
+    });
+
+    it('#nzOneWay', () => {
+      instance.nzOneWay = true;
+      fixture.detectChanges();
+
+      const firstKey = instance.comp.rightDataSource[0].key;
+      const remove = pageObject.getEl('.ant-transfer-list-content-item-remove');
+      remove.click();
+      fixture.detectChanges();
+
+      expect(instance.comp.rightDataSource[0].key).not.toBe(firstKey);
+    });
   });
 
   describe('#canMove', () => {
@@ -457,7 +475,7 @@ describe('transfer', () => {
       [nzRenderList]="nzRenderList"
       [nzShowSelectAll]="nzShowSelectAll"
       [nzDisabled]="nzDisabled"
-      [nzTitles]="['Source', 'Target']"
+      [nzTitles]="nzTitles"
       [nzOperations]="['to right', 'to left']"
       [nzItemUnit]="nzItemUnit"
       [nzItemsUnit]="nzItemsUnit"
@@ -469,6 +487,7 @@ describe('transfer', () => {
       [nzCanMove]="canMove"
       [nzFooter]="footer"
       [nzTargetKeys]="nzTargetKeys"
+      [nzOneWay]="nzOneWay"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
@@ -479,6 +498,9 @@ describe('transfer', () => {
     <ng-template #footer>
       <p id="transfer-footer">footer</p>
     </ng-template>
+    <ng-template #tit let-dir>
+      <p id="transfer-tit">tit-{{ dir }}</p>
+    </ng-template>
   `,
   styleUrls: ['../ng-zorro-antd.less'],
   encapsulation: ViewEncapsulation.None
@@ -486,11 +508,12 @@ describe('transfer', () => {
 class TestTransferComponent implements OnInit {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
   @ViewChild('renderList', { static: false }) renderListTpl!: TemplateRef<void>;
+  @ViewChild('tit', { static: false }) titTpl!: TemplateRef<{ $implicit: TransferDirection }>;
   nzDataSource: any[] = [];
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
   nzShowSelectAll = true;
-  nzTitles = ['Source', 'Target'];
+  nzTitles: Array<TemplateRef<{ $implicit: TransferDirection }> | string> = ['Source', 'Target'];
   nzSelectedKeys = ['0', '1', '2'];
   nzTargetKeys: string[] = [];
   nzOperations = ['to right', 'to left'];
@@ -501,6 +524,7 @@ class TestTransferComponent implements OnInit {
   nzFilterOption: null | ((inputValue: string, item: any) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
+  nzOneWay = false;
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     // if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
