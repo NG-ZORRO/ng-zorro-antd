@@ -53,7 +53,7 @@ describe('transfer', () => {
   });
 
   describe('[default]', () => {
-    xit('should be from left to right when via nzTargetKeys property', () => {
+    it('should be from left to right when via nzTargetKeys property', () => {
       instance.nzTargetKeys = ['0', '1'];
       fixture.detectChanges();
 
@@ -67,7 +67,7 @@ describe('transfer', () => {
       expect(leftKeys).not.toContain('1');
     });
 
-    xit('should be from left to right when via nzSelectedKeys property', () => {
+    it('should be from left to right when via nzSelectedKeys property', () => {
       instance.nzSelectedKeys = ['0', '1', '2'];
       fixture.detectChanges();
 
@@ -79,7 +79,7 @@ describe('transfer', () => {
       ).toBe(true);
     });
 
-    xit('should be from left to right', () => {
+    it('should be from left to right', () => {
       pageObject
         .expectLeft(LEFTCOUNT)
         .transfer('right', 0)
@@ -87,7 +87,7 @@ describe('transfer', () => {
         .expectRight(COUNT - LEFTCOUNT + 1);
     });
 
-    xit('should be from right to left', () => {
+    it('should be from right to left', () => {
       pageObject
         .expectRight(COUNT - LEFTCOUNT)
         .transfer('left', [0, 1])
@@ -95,7 +95,7 @@ describe('transfer', () => {
         .expectLeft(LEFTCOUNT + 2);
     });
 
-    xit('should be from left to right when via search found items', () => {
+    it('should be from left to right when via search found items', () => {
       pageObject
         .expectLeft(LEFTCOUNT)
         .search('left', '1')
@@ -105,7 +105,7 @@ describe('transfer', () => {
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(0);
     });
 
-    xit('should be from right to left when via search found items', () => {
+    it('should be from right to left when via search found items', () => {
       pageObject
         .expectRight(COUNT - LEFTCOUNT)
         .search('right', '2')
@@ -115,14 +115,14 @@ describe('transfer', () => {
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
-    xit('should be forced to display when the original item is hidden', () => {
+    it('should be forced to display when the original item is hidden', () => {
       pageObject.checkItem('left', 0).search('left', '1');
       pageObject.rightBtn.click();
       fixture.detectChanges();
       expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFTCOUNT + 1);
     });
 
-    xit('should be custom filter option', () => {
+    it('should be custom filter option', () => {
       instance.nzFilterOption = (inputValue: string, item: any): boolean => item.description.indexOf(inputValue) > -1;
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
@@ -132,7 +132,7 @@ describe('transfer', () => {
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
 
-    xit('should be clear search keywords', () => {
+    it('should be clear search keywords', () => {
       pageObject.expectLeft(LEFTCOUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
@@ -140,7 +140,7 @@ describe('transfer', () => {
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
 
-    xit('should be checkbox is toggle select', () => {
+    it('should be checkbox is toggle select', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       pageObject.checkItem('left', 0);
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(1);
@@ -148,13 +148,13 @@ describe('transfer', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
     });
 
-    xit('should be checkbox is toggle select by blank area', () => {
+    it('should be checkbox is toggle select by blank area', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       pageObject.checkItem('left', 0, '.ant-transfer-list-content-item');
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(1);
     });
 
-    xit('should be checkbox is disabled toggle select when setting disabled prop', () => {
+    it('should be checkbox is disabled toggle select when setting disabled prop', () => {
       instance.nzDataSource = [{ title: `content`, disabled: true }];
       fixture.detectChanges();
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
@@ -164,7 +164,7 @@ describe('transfer', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
     });
 
-    xit('should be checkbox is toggle select via checkbox all in left', () => {
+    it('should be checkbox is toggle select via checkbox all in left', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       const btn = pageObject.leftList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
@@ -173,7 +173,7 @@ describe('transfer', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
     });
 
-    xit('should be checkbox is toggle select via checkbox all in right', () => {
+    it('should be checkbox is toggle select via checkbox all in right', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
       const btn = pageObject.rightList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
@@ -183,25 +183,25 @@ describe('transfer', () => {
     });
 
     describe('#notFoundContent', () => {
-      xit('should be the left and right list have data', () => {
+      it('should be the left and right list have data', () => {
         instance.nzDataSource = [{ title: `content0`, direction: 'right' }, { title: `content1` }];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
-      xit('should be the right list is no data', () => {
+      it('should be the right list is no data', () => {
         instance.nzDataSource = [{ title: `content0` }, { title: `content1` }];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeTruthy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
-      xit('should be the left list is no data', () => {
+      it('should be the left list is no data', () => {
         instance.nzDataSource = [{ title: `content0`, direction: 'right' }];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeTruthy();
       });
-      xit('should be the left and right list is no data', () => {
+      it('should be the left and right list is no data', () => {
         instance.nzDataSource = [];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeTruthy();
@@ -210,7 +210,7 @@ describe('transfer', () => {
     });
 
     describe('#nzDisabled', () => {
-      xit('should working', () => {
+      it('should working', () => {
         instance.nzDisabled = true;
         fixture.detectChanges();
         expect(dl.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
@@ -223,7 +223,7 @@ describe('transfer', () => {
         // All checkbox (include 2 checkall) muse be disabled
         expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
       });
-      xit('should be disabled clear', () => {
+      it('should be disabled clear', () => {
         pageObject.expectLeft(LEFTCOUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled = true;
@@ -232,14 +232,14 @@ describe('transfer', () => {
         fixture.detectChanges();
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
-      xit('should be disabled check all when search result is empty', () => {
+      it('should be disabled check all when search result is empty', () => {
         pageObject.expectLeft(LEFTCOUNT).search('left', '模拟');
         const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
         expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
       });
     });
 
-    xit('#nzShowSelectAll', () => {
+    it('#nzShowSelectAll', () => {
       const cls = `[data-direction="left"] .ant-transfer-list-header .ant-checkbox`;
       expect(dl.queryAll(By.css(cls)).length).toBe(1);
       instance.nzShowSelectAll = false;
@@ -247,14 +247,14 @@ describe('transfer', () => {
       expect(dl.queryAll(By.css(cls)).length).toBe(0);
     });
 
-    xit('#nzRenderList', () => {
+    it('#nzRenderList', () => {
       instance.nzRenderList = [instance.renderListTpl, instance.renderListTpl];
       fixture.detectChanges();
       expect(dl.queryAll(By.css('.ant-transfer-customize-list')).length).toBe(1);
       expect(dl.queryAll(By.css('.transfer-renderList')).length).toBe(2);
     });
 
-    xit('should be uncheck all when two verification error', () => {
+    it('should be uncheck all when two verification error', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> =>
         of(arg.list).pipe(
           map(() => {
@@ -269,18 +269,18 @@ describe('transfer', () => {
         .expectRight(COUNT - LEFTCOUNT);
     });
 
-    xit('should be custom render item', () => {
+    it('should be custom render item', () => {
       const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       tempFixture.detectChanges();
       const leftList = tempFixture.debugElement.query(By.css('[data-direction="left"]')).nativeElement as HTMLElement;
       expect(leftList.querySelectorAll('.anticon-frown-o').length).toBe(LEFTCOUNT);
     });
 
-    xit('should be custom footer', () => {
+    it('should be custom footer', () => {
       expect(pageObject.leftList.querySelector('#transfer-footer') != null).toBe(true);
     });
 
-    xit('#i18n', () => {
+    it('#i18n', () => {
       const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
@@ -292,7 +292,7 @@ describe('transfer', () => {
     });
 
     describe('change detection behavior', () => {
-      xit('should not trigger change detection when the `ant-transfer-list-content-item label` is clicked', () => {
+      it('should not trigger change detection when the `ant-transfer-list-content-item label` is clicked', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
@@ -308,13 +308,13 @@ describe('transfer', () => {
       });
     });
 
-    xit('#nzTitles', () => {
+    it('#nzTitles', () => {
       instance.nzTitles = ['Left', instance.titTpl];
       fixture.detectChanges();
       expect(pageObject.getEl(`#transfer-tit`).textContent?.trim()).toBe(`tit-right`);
     });
 
-    xit('#nzOneWay', () => {
+    it('#nzOneWay', () => {
       instance.nzOneWay = true;
       fixture.detectChanges();
 
@@ -327,7 +327,7 @@ describe('transfer', () => {
     });
 
     describe('#nzPagination', () => {
-      xit('should be warn when not support customize render list', () => {
+      it('should be warn when not support customize render list', () => {
         const warnSpy = spyOn(console, 'warn');
         instance.nzPagination = true;
         instance.nzRenderList = [instance.renderListTpl, instance.renderListTpl];
@@ -335,7 +335,7 @@ describe('transfer', () => {
         expect(warnSpy).toHaveBeenCalled();
         expect(warnSpy.calls.first().args[1]).toContain(`not support customize render list`);
       });
-      xit('should be ignore when is null', () => {
+      it('should be ignore when is null', () => {
         instance.nzPagination = undefined;
         fixture.detectChanges();
 
@@ -352,7 +352,7 @@ describe('transfer', () => {
   });
 
   describe('#canMove', () => {
-    xit('default', () => {
+    it('default', () => {
       fixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       dl = fixture.debugElement;
       instance = dl.componentInstance;
@@ -364,7 +364,7 @@ describe('transfer', () => {
         .expectLeft(LEFTCOUNT - 1)
         .expectRight(COUNT - LEFTCOUNT + 1);
     });
-    xit('should be from left to right when two verification', () => {
+    it('should be from left to right when two verification', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
         if (arg.direction === 'right' && arg.list.length > 0) {
           arg.list.splice(0, 1);
@@ -381,7 +381,7 @@ describe('transfer', () => {
   });
 
   describe('#issues', () => {
-    xit('#996', fakeAsync(() => {
+    it('#996', fakeAsync(() => {
       fixture = TestBed.createComponent(Test996Component);
       dl = fixture.debugElement;
       instance = dl.componentInstance;
@@ -408,7 +408,7 @@ describe('transfer', () => {
       fixture.detectChanges();
     });
 
-    xit('should className correct on dir change', fakeAsync(() => {
+    it('should className correct on dir change', fakeAsync(() => {
       expect(componentElement.classList).toContain('ant-transfer-rtl');
       fixture.debugElement.componentInstance.direction = 'ltr';
       fixture.detectChanges();
