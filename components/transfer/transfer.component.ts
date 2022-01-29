@@ -50,6 +50,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [ngStyle]="nzListStyle"
       data-direction="left"
       direction="left"
+      [locale]="locale"
       [titleText]="nzTitles[0]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="leftDataSource"
@@ -91,6 +92,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [ngStyle]="nzListStyle"
       data-direction="right"
       direction="right"
+      [locale]="locale"
       [titleText]="nzTitles[1]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="rightDataSource"
@@ -138,6 +140,10 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   rightFilter = '';
   dir: Direction = 'ltr';
   pagination?: TransferPaginationType;
+
+  getListComp(direction: TransferDirection): NzTransferListComponent {
+    return direction === 'left' ? this.lists.first : this.lists.last;
+  }
 
   // #region fields
 
@@ -210,7 +216,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
-  handleRightSelectAll = (checked: boolean): void => this.handleSelect('right', checked);
+  handleRightSelectAll = (data: { status: boolean; current?: number }): void =>
+    this.handleSelect('right', data.status, undefined, data.current);
   handleRightItemRemove(items: TransferItem[]): void {
     const list = this.getCheckedData('right');
     list.forEach(i => (i.checked = false));
@@ -218,13 +225,14 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.moveToLeft();
   }
 
-  handleLeftSelectAll = (checked: boolean): void => this.handleSelect('left', checked);
+  handleLeftSelectAll = (data: { status: boolean; current?: number }): void =>
+    this.handleSelect('left', data.status, undefined, data.current);
   handleLeftSelect = (item: TransferItem): void => this.handleSelect('left', !!item.checked, item);
 
-  handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
+  handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem, current?: number): void {
     const list = this.getCheckedData(direction);
     this.updateOperationStatus(direction, list.length);
-    this.nzSelectChange.emit({ direction, checked, list, item });
+    this.nzSelectChange.emit({ direction, checked, list, item, current });
   }
 
   handleFilterChange(ret: { direction: TransferDirection; value: string }): void {
@@ -276,7 +284,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.nzChange.emit({
       from: oppositeDirection,
       to: direction,
-      list
+      list,
+      current: this.getListComp(direction).pi
     });
     this.markForCheckAllList();
   }

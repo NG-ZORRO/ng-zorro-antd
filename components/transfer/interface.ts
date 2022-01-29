@@ -25,6 +25,7 @@ export interface TransferChange {
   from: TransferDirection;
   to: TransferDirection;
   list: TransferItem[];
+  current: number;
 }
 
 export interface TransferSearchChange {
@@ -37,6 +38,7 @@ export interface TransferSelectChange {
   checked: boolean;
   list: TransferItem[];
   item?: TransferItem;
+  current?: number;
 }
 
 export interface TransferPaginationType {

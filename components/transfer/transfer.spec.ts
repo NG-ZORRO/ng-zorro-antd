@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -349,6 +349,37 @@ describe('transfer', () => {
         expect(el.title).toBe(`1/1`);
       });
     });
+
+    describe('selection', () => {
+      it('should be select all', () => {
+        instance.comp.getListComp('left').onItemSelectAll(true);
+        fixture.detectChanges();
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(LEFTCOUNT);
+
+        instance.comp.getListComp('left').onItemSelectAll(false);
+        fixture.detectChanges();
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(0);
+      });
+      it('should be select current page', () => {
+        instance.nzPagination = { pageSize: 1 };
+        fixture.detectChanges();
+
+        const comp = instance.comp.getListComp('left');
+        comp.onItemSelectAll(true, comp.renderData);
+        fixture.detectChanges();
+
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(1);
+      });
+      it('should be invert', () => {
+        pageObject.checkItem('left', 0);
+
+        const comp = instance.comp.getListComp('left');
+        comp.onItemSelectAll('invert');
+        fixture.detectChanges();
+
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(1);
+      });
+    });
   });
 
   describe('#canMove', () => {
@@ -380,25 +411,6 @@ describe('transfer', () => {
     });
   });
 
-  describe('#issues', () => {
-    it('#996', fakeAsync(() => {
-      fixture = TestBed.createComponent(Test996Component);
-      dl = fixture.debugElement;
-      instance = dl.componentInstance;
-      pageObject = new TransferPageObject();
-      fixture.detectChanges();
-      expect(
-        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
-      ).not.toContain('ant-checkbox-checked');
-      pageObject.checkItem('right', 1);
-      tick(50);
-      fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain(
-        'ant-checkbox-checked'
-      );
-    }));
-  });
-
   describe('RTL', () => {
     let componentElement: HTMLElement;
 
@@ -421,6 +433,10 @@ describe('transfer', () => {
 
     getEl(cls: string): HTMLElement {
       return dl.query(By.css(cls)).nativeElement as HTMLElement;
+    }
+
+    getEls(cls: string): DebugElement[] {
+      return dl.queryAll(By.css(cls));
     }
 
     get leftBtn(): HTMLButtonElement {

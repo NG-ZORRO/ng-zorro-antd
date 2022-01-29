@@ -9,7 +9,6 @@ import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-ant
       [nzDataSource]="list"
       [nzDisabled]="disabled"
       [nzShowSearch]="showSearch"
-      [nzShowSelectAll]="false"
       [nzRenderList]="[renderList, renderList]"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"

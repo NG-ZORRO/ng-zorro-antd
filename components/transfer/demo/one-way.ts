@@ -18,7 +18,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
 })
 export class NzDemoTransferOneWayComponent implements OnInit {
   list: TransferItem[] = [];
-  oneWay = false;
+  oneWay = true;
 
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {

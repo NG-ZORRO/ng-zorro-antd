@@ -110,6 +110,12 @@ export interface NzTransferI18nInterface {
   searchPlaceholder?: string;
   itemUnit?: string;
   itemsUnit?: string;
+  remove?: string;
+  selectCurrent?: string;
+  removeCurrent?: string;
+  selectAll?: string;
+  removeAll?: string;
+  selectInvert?: string;
 }
 
 export interface NzUploadI18nInterface {
