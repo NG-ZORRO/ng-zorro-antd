@@ -66,47 +66,20 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
-    <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        (click)="moveToLeft()"
-        [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <i nz-icon nzType="left"></i>
-        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-      <button
-        nz-button
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <i nz-icon nzType="right"></i>
-        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-    </div>
-    <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <i nz-icon nzType="left"></i>
+    <div class="ant-transfer-operation" [ngStyle]="nzOperationStyle">
+      <button nz-button nzType="primary" nzSize="small" (click)="moveToRight()" [disabled]="nzDisabled || !rightActive">
+        <i nz-icon [nzType]="dir !== 'rtl' ? 'right' : 'left'"></i>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
       <button
+        *ngIf="!nzOneWay"
         nz-button
+        nzType="primary"
+        nzSize="small"
         (click)="moveToLeft()"
         [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
       >
-        <i nz-icon nzType="right"></i>
+        <i nz-icon [nzType]="dir !== 'rtl' ? 'left' : 'right'"></i>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
     </div>
@@ -130,8 +103,10 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemUnit]="nzItemUnit || locale?.itemUnit"
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
+      [showRemove]="nzOneWay"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
+      (itemRemove)="handleRightItemRemove($event)"
     ></nz-transfer-list>
   `,
   host: {
@@ -147,6 +122,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowSelectAll: BooleanInput;
   static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzOneWay: BooleanInput;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -163,6 +139,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
+  @Input() nzOperationStyle: NgStyleInterface = {};
   @Input() nzListStyle: NgStyleInterface = {};
   @Input() @InputBoolean() nzShowSelectAll = true;
   @Input() nzItemUnit?: string;
@@ -177,6 +154,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
+  @Input() @InputBoolean() nzOneWay = false;
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -213,6 +191,12 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleLeftSelectAll = (checked: boolean): void => this.handleSelect('left', checked);
   handleRightSelectAll = (checked: boolean): void => this.handleSelect('right', checked);
+  handleRightItemRemove(item: TransferItem): void {
+    const list = this.getCheckedData('right');
+    list.forEach(i => (i.checked = false));
+    item.checked = true;
+    this.moveToLeft();
+  }
 
   handleLeftSelect = (item: TransferItem): void => this.handleSelect('left', !!item.checked, item);
   handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);

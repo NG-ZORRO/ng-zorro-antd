@@ -30,6 +30,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzTitles]` | 标题集合，顺序从左至右 | `string[]` | `['', '']` |
 | `[nzOperations]` | 操作文案集合，顺序从下至上 | `string[]` | `['', '']` |
+| `[nzOperationStyle]` | 操作栏的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzItemUnit]` | 单数单位 | `string` | `'项目'` |
 | `[nzItemsUnit]` | 复数单位 | `string` | `'项目'` |
@@ -43,6 +44,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzCanMove]` | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | `[nzSelectedKeys]` | 设置被选中的 key 集合 | `string[]` | - |
 | `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
+| `[nzOneWay]` | 展示为单向样式 | `boolean` | `false` |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
