@@ -185,7 +185,6 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
   @Input() nzSelectAllLabels: Array<string | ((info: { selectedCount: number; totalCount: number }) => string) | null> =
     [null, null];
-  // A set of customized labels for select all checkboxs on the header
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
