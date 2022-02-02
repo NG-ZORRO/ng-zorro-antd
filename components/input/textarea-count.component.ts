@@ -11,8 +11,10 @@ import {
   ElementRef,
   Input,
   isDevMode,
+  OnChanges,
   OnDestroy,
-  Renderer2
+  Renderer2,
+  SimpleChanges
 } from '@angular/core';
 import { EMPTY, merge, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -29,7 +31,7 @@ import { NzInputDirective } from './input.directive';
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
+export class NzTextareaCountComponent implements AfterContentInit, OnDestroy, OnChanges {
   @ContentChild(NzInputDirective, { static: true }) nzInputDirective!: NzInputDirective;
   @Input() nzMaxCharacterCount: number = 0;
   @Input() nzComputeCharacterCount: (v: string) => number = v => v.length;
@@ -57,6 +59,10 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
           this.setDataCount(value);
         });
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.configChange$.next();
   }
 
   setDataCount(value: string): void {
