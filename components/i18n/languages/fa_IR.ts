@@ -21,6 +21,13 @@ export default {
     lang: {
       placeholder: 'انتخاب تاریخ',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      yearPlaceholder: 'انتخاب سال',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
+      rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['شروع هفته', 'پایان هفته'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
