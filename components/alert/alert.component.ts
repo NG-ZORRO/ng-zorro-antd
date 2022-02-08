@@ -61,6 +61,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
           <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
         </span>
       </div>
+      <div class="ant-alert-action" *ngIf="nzAction">
+        <ng-container *nzStringTemplateOutlet="nzAction">{{ nzAction }}</ng-container>
+      </div>
       <button
         type="button"
         tabindex="0"
@@ -90,6 +93,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzBanner: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
+  @Input() nzAction: string | TemplateRef<void> | null = null;
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
   @Input() nzIconType: string | null = null;
   @Input() nzMessage: string | TemplateRef<void> | null = null;
