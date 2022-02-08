@@ -34,6 +34,7 @@ export abstract class DateHelperService {
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
+  abstract getDateFormat(): string;
   abstract format(date: Date | null, formatStr: string): string;
   abstract parseDate(text: string, formatStr?: string): Date;
   abstract parseTime(text: string, formatStr?: string): Date | undefined;
@@ -57,6 +58,17 @@ export class DateHelperByDateFns extends DateHelperService {
       defaultWeekStartsOn = 1;
     }
     return this.config.firstDayOfWeek == null ? defaultWeekStartsOn : this.config.firstDayOfWeek;
+  }
+  
+  // support Customize the date format globally
+  getDateFormat(): string {
+    let defaultDateFormat = '';
+    try {
+      defaultDateFormat = this.i18n.getLocale().dateFormat!;
+    } catch (e) {
+      defaultDateFormat = 'YYYY-MM-DD';
+    }
+    return this.config.dateFormat == null ? defaultDateFormat : this.config.dateFormat;
   }
 
   /**
