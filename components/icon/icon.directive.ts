@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
+import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -139,19 +140,22 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.ngZone.runOutsideAngular(() => {
       from(this._changeIcon())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(svgOrRemove => {
-          // The _changeIcon method would call Renderer to remove the element of the old icon,
-          // which would call `markElementAsRemoved` eventually,
-          // so we should call `detectChanges` to tell Angular remove the DOM node.
-          // #7186
-          this.changeDetectorRef.detectChanges();
+        .subscribe(
+          svgOrRemove => {
+            // The _changeIcon method would call Renderer to remove the element of the old icon,
+            // which would call `markElementAsRemoved` eventually,
+            // so we should call `detectChanges` to tell Angular remove the DOM node.
+            // #7186
+            this.changeDetectorRef.detectChanges();
 
-          if (svgOrRemove) {
-            this.setSVGData(svgOrRemove);
-            this.handleSpin(svgOrRemove);
-            this.handleRotate(svgOrRemove);
-          }
-        });
+            if (svgOrRemove) {
+              this.setSVGData(svgOrRemove);
+              this.handleSpin(svgOrRemove);
+              this.handleRotate(svgOrRemove);
+            }
+          },
+          err => warn(err)
+        );
     });
   }
 
