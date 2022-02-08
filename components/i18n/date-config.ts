@@ -10,12 +10,15 @@ import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 export interface NzDateConfig {
   /** Customize the first day of a week */
   firstDayOfWeek?: WeekDayIndex;
+  /** Customize the date Format Globally */
+  dateFormat?: string;
 }
 
 export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config');
 
 export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
-  firstDayOfWeek: undefined
+  firstDayOfWeek: undefined,
+  dateFormat: undefined
 };
 
 export function mergeDateConfig(config: NzDateConfig): NzDateConfig {
