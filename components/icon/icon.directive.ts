@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentChecked,
   ChangeDetectorRef,
@@ -81,8 +80,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     elementRef: ElementRef,
     public readonly iconService: NzIconService,
     public readonly renderer: Renderer2,
-    @Optional() iconPatch: NzIconPatchService,
-    private readonly platform: Platform
+    @Optional() iconPatch: NzIconPatchService
   ) {
     super(iconService, elementRef, renderer);
 
@@ -136,14 +134,6 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
    */
   private changeIcon2(): void {
     this.setClassName();
-
-    // First of all, we can't render the SVG on the server and send it to the browser for now,
-    // so the browser doesn't have to re-render it. Second, the `IconDirective` will still re-load
-    // this SVG, so we'll have an unnecessary HTTP request on the server-side. There's no sense to
-    // call `_changeIcon()` when running the code on the Node.js side.
-    if (!this.platform.isBrowser) {
-      return;
-    }
 
     // We don't need to re-enter the Angular zone for adding classes or attributes through the renderer.
     this.ngZone.runOutsideAngular(() => {
