@@ -6,13 +6,21 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   NgZone,
+  OnInit,
   Output,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+
+import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import type { TransferItem } from './interface';
 
@@ -27,13 +35,7 @@ import type { TransferItem } from './interface';
       </div>
     </ng-template>
     <ng-template #renderDefault>
-      <label
-        nz-checkbox
-        [nzChecked]="checked"
-        (click)="clickEvt($event)"
-        (nzCheckedChange)="handleItemSelect()"
-        [nzDisabled]="disabled"
-      >
+      <label nz-checkbox [nzChecked]="checked" (nzCheckedChange)="handleItemSelect()" [nzDisabled]="disabled">
         <ng-container *ngIf="!render; else renderContainer">
           <div class="ant-transfer-list-content-item-text">{{ item.title }}</div>
         </ng-container>
@@ -59,7 +61,7 @@ import type { TransferItem } from './interface';
     '(click)': 'handleItemSelect()'
   }
 })
-export class NzTransferListItemComponent {
+export class NzTransferListItemComponent implements OnInit {
   @Input() item!: TransferItem;
   @Input() checked?: boolean = false;
   @Input() disabled?: boolean = false;
@@ -68,10 +70,37 @@ export class NzTransferListItemComponent {
   @Output() readonly itemSelect = new EventEmitter<void>();
   @Output() readonly remove = new EventEmitter<void>();
 
-  constructor(private ngZone: NgZone) {}
+  private label$ = new BehaviorSubject<null | ElementRef<HTMLElement>>(null);
+  @ViewChild(NzCheckboxComponent, { read: ElementRef, static: false })
+  set label(label: ElementRef<HTMLElement> | undefined) {
+    // The label will equal `undefined` on the first change detection cycle if there's no element
+    // in the DOM.
+    if (label) {
+      this.label$.next(label);
+    }
+  }
 
-  clickEvt(ev: Event): void {
-    this.ngZone.runOutsideAngular(() => ev.stopPropagation());
+  constructor(private ngZone: NgZone, private destroy$: NzDestroyService) {}
+
+  ngOnInit(): void {
+    this.label$
+      .pipe(
+        switchMap(label => {
+          if (label) {
+            return new Observable<MouseEvent>(subscriber =>
+              this.ngZone.runOutsideAngular(() =>
+                fromEvent<MouseEvent>(label.nativeElement, 'click').subscribe(subscriber)
+              )
+            );
+          } else {
+            // Do not emit anything and just remove the event listener if label has been removed
+            // from the DOM.
+            return EMPTY;
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => event.stopPropagation());
   }
 
   handleItemSelect(): void {
