@@ -1,6 +1,5 @@
-import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, NgModule, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, NgModule } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -103,26 +102,6 @@ describe('nz-icon', () => {
       tick(1000);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
-    }));
-
-    it('should not try to load the SVG if the platform is not browser', fakeAsync(() => {
-      const platform = TestBed.inject(Platform);
-      platform.isBrowser = false;
-
-      // `changeIcon2` and `_changeIcon` are private methods.
-      const icon = testComponent.icon as unknown as {
-        changeIcon2: VoidFunction;
-        _changeIcon: VoidFunction;
-      };
-
-      spyOn(icon, 'changeIcon2').and.callThrough();
-      spyOn(icon, '_changeIcon').and.callThrough();
-
-      testComponent.type = 'question-circle';
-      fixture.detectChanges();
-
-      expect(icon.changeIcon2).toHaveBeenCalled();
-      expect(icon._changeIcon).not.toHaveBeenCalled();
     }));
   });
 
@@ -266,7 +245,7 @@ describe('nz-icon', () => {
   // eslint-disable-next-line
   selector: 'nz-test-icon-extensions',
   template: `
-    <i nz-icon #icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>
+    <i nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>
     <i nz-icon [nzType]="'loading'" [nzTheme]="theme"></i>
   `
 })
@@ -275,7 +254,6 @@ export class NzTestIconExtensionsComponent {
   theme = 'outline';
   spin = true;
   rotate = 0;
-  @ViewChild('icon', { static: true, read: NzIconDirective }) icon!: NzIconDirective;
 
   constructor(public iconService: NzIconService) {}
 }
