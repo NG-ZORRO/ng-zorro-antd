@@ -259,6 +259,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       ? (this.value as number[])[this.activeValueIndex!] + step
       : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
+    this.nzOnAfterChange.emit(this.getValue(true));
   }
 
   onHandleFocusIn(index: number): void {
@@ -272,9 +273,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     } else if (!valuesEqual(this.value!, value!)) {
       this.value = value;
       this.updateTrackAndHandles();
-      const sliderValue = this.getValue(true);
-      this.nzOnAfterChange.emit(sliderValue);
-      this.onValueChange(sliderValue);
+      this.onValueChange(this.getValue(true));
     }
   }
 
@@ -385,6 +384,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private onDragEnd(): void {
+    console.log('onDragEnd');
     this.nzOnAfterChange.emit(this.getValue(true));
     this.toggleDragMoving(false);
     this.cacheSliderProperty(true);
