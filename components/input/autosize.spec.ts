@@ -219,11 +219,10 @@ describe('autoresize', () => {
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
-      textarea.cdk-textarea-autosize-measuring {
+      textarea.nz-textarea-autosize-measuring {
         height: auto !important;
         overflow: hidden !important;
         padding: 2px 0 !important;
-        box-sizing: content-box !important;
       }
     `
   ]
@@ -237,11 +236,10 @@ export class NzTestInputWithTextAreaAutoSizeStringComponent {
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
-      textarea.cdk-textarea-autosize-measuring {
+      textarea.nz-textarea-autosize-measuring {
         height: auto !important;
         overflow: hidden !important;
         padding: 2px 0 !important;
-        box-sizing: content-box !important;
       }
     `
   ]
@@ -256,11 +254,10 @@ export class NzTestInputWithTextAreaAutoSizeObjectComponent {
   encapsulation: ViewEncapsulation.None,
   styles: [
     `
-      textarea.cdk-textarea-autosize-measuring {
+      textarea.nz-textarea-autosize-measuring {
         height: auto !important;
         overflow: hidden !important;
         padding: 2px 0 !important;
-        box-sizing: content-box !important;
       }
     `
   ]
