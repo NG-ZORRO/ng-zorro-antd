@@ -1,0 +1,9 @@
+@btn-prefix-cls: ~'@{ant-prefix}-btn';
+
+.@{btn-prefix-cls} {
+  &&-loading {
+    &:not([disabled]) {
+      pointer-events: none;
+    }
+  }
+}
