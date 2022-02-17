@@ -84,7 +84,7 @@ describe('button', () => {
       expect(buttonElement.className).toBe('ant-btn');
     });
   });
-  describe('loading icon', () => {
+  describe('loading state', () => {
     it('should hide icon when loading correct', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonBindingComponent, {
         imports: [NzIconTestModule],
@@ -180,6 +180,18 @@ describe('button', () => {
       // Previously, it would've caused `tick()` to be called 2 times, because 2 click events have been triggered.
       expect(spy).toHaveBeenCalledTimes(0);
     });
+
+    it('prevent default and stop propagation when the button state is loading', fakeAsync(() => {
+      testBed.component.nzLoading = true;
+      testBed.fixture.detectChanges();
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      const event = new MouseEvent('click');
+      const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+      const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+      buttonElement.dispatchEvent(event);
+      expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+      expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
+    }));
   });
 });
 
