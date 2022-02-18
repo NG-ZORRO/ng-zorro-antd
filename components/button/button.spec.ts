@@ -84,7 +84,7 @@ describe('button', () => {
       expect(buttonElement.className).toBe('ant-btn');
     });
   });
-  describe('loading state', () => {
+  describe('loading icon', () => {
     it('should hide icon when loading correct', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonBindingComponent, {
         imports: [NzIconTestModule],
