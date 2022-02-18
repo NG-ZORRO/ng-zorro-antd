@@ -20,7 +20,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Selecionar data',
+      yearPlaceholder: 'Selecionar ano',
+      quarterPlaceholder: 'Selecionar trimestre',
+      monthPlaceholder: 'Selecionar mês',
+      weekPlaceholder: 'Selecionar semana',
       rangePlaceholder: ['Data inicial', 'Data final'],
+      rangeYearPlaceholder: ['Ano inicial', 'Ano Final'],
+      rangeMonthPlaceholder: ['Mês inicial', 'Mês final'],
+      rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
       locale: 'pt_BR',
       today: 'Hoje',
       now: 'Agora',
@@ -31,6 +38,7 @@ export default {
       year: 'Ano',
       timeSelect: 'Selecionar hora',
       dateSelect: 'Selecionar data',
+      weekSelect: 'Escolher semana',
       monthSelect: 'Escolher mês',
       yearSelect: 'Escolher ano',
       decadeSelect: 'Escolher década',
@@ -49,16 +57,25 @@ export default {
       nextCentury: 'Próximo século'
     },
     timePickerLocale: {
-      placeholder: 'Hora'
+      placeholder: 'Hora',
+      rangePlaceholder: ['Hora inicial', 'Hora final']
     }
   },
   TimePicker: {
-    placeholder: 'Hora'
+    placeholder: 'Hora',
+    rangePlaceholder: ['Hora inicial', 'Hora final']
   },
   Calendar: {
     lang: {
       placeholder: 'Selecionar data',
+      yearPlaceholder: 'Selecionar ano',
+      quarterPlaceholder: 'Selecionar trimestre',
+      monthPlaceholder: 'Selecionar mês',
+      weekPlaceholder: 'Selecionar semana',
       rangePlaceholder: ['Data inicial', 'Data final'],
+      rangeYearPlaceholder: ['Ano inicial', 'Ano Final'],
+      rangeMonthPlaceholder: ['Mês inicial', 'Mês final'],
+      rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
       locale: 'pt_BR',
       today: 'Hoje',
       now: 'Agora',
@@ -69,6 +86,7 @@ export default {
       year: 'Ano',
       timeSelect: 'Selecionar hora',
       dateSelect: 'Selecionar data',
+      weekSelect: 'Escolher semana',
       monthSelect: 'Escolher mês',
       yearSelect: 'Escolher ano',
       decadeSelect: 'Escolher década',
@@ -87,7 +105,8 @@ export default {
       nextCentury: 'Próximo século'
     },
     timePickerLocale: {
-      placeholder: 'Hora'
+      placeholder: 'Hora',
+      rangePlaceholder: ['Hora inicial', 'Hora final']
     }
   },
   global: {
@@ -97,6 +116,8 @@ export default {
     filterTitle: 'Menu de Filtro',
     filterConfirm: 'OK',
     filterReset: 'Resetar',
+    filterEmptyText: 'Não há filtros',
+    emptyText: 'Não há dados',
     selectAll: 'Selecionar página atual',
     selectInvert: 'Inverter seleção',
     selectionAll: 'Selecionar todo o conteúdo',
@@ -117,9 +138,16 @@ export default {
     cancelText: 'Cancelar'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Procurar',
     itemUnit: 'item',
-    itemsUnit: 'items'
+    itemsUnit: 'itens',
+    remove: 'Remove',
+    selectCurrent: 'Selecione a página atual',
+    removeCurrent: 'Remover página atual',
+    selectAll: 'Selecionar todos os dados',
+    removeAll: 'Remover todos os dados',
+    selectInvert: 'Inverter a página atual'
   },
   Upload: {
     uploading: 'Enviando...',
