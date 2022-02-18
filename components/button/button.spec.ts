@@ -184,11 +184,12 @@ describe('button', () => {
     it('prevent default and stop propagation when the button state is loading', fakeAsync(() => {
       testBed.component.nzLoading = true;
       testBed.fixture.detectChanges();
-      buttonElement.click();
-      testBed.fixture.detectChanges();
-      buttonElement.click();
-      testBed.fixture.detectChanges();
-      expect(testBed.component.buttonClick).toHaveBeenCalledTimes(0);
+      const event = new MouseEvent('click');
+      const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+      const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+      buttonElement.dispatchEvent(event);
+      expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+      expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
     }));
   });
 });
@@ -226,7 +227,6 @@ describe('anchor', () => {
       [nzShape]="nzShape"
       [nzBlock]="nzBlock"
       [nzSize]="nzSize"
-      (click)="buttonClick()"
     >
       button
     </button>
@@ -241,7 +241,6 @@ export class TestButtonComponent {
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() nzSize: NzButtonSize = 'default';
-  buttonClick = jasmine.createSpy('buttonClick');
 }
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
@@ -292,6 +291,13 @@ export class TestButtonIconOnlyComponent {}
   `
 })
 export class TestButtonIconOnlyLoadingComponent {}
+
+@Component({
+  template: `<button nz-button [nzLoading]="nzLoading" (click)="buttonClick()">click me</button> `
+})
+export class TestButtonWithLoadingComponent {
+  @Input() nzLoading: boolean = false;
+}
 
 @Component({
   template: `
