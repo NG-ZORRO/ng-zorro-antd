@@ -1,4 +1,4 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -142,6 +142,22 @@ describe('Component:nz-back-top', () => {
 
         componentObject.clickBackTop();
       }));
+    });
+
+    describe('change detection behavior', () => {
+      it('should not run change detection if there are no `nzClick` listeners', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+
+        const backTopButton = componentObject.backTopButton().nativeElement;
+        backTopButton.dispatchEvent(new MouseEvent('click'));
+        expect(appRef.tick).not.toHaveBeenCalled();
+
+        component.nzClick.subscribe();
+
+        backTopButton.dispatchEvent(new MouseEvent('click'));
+        expect(appRef.tick).toHaveBeenCalled();
+      });
     });
   });
 
