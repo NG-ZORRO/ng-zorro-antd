@@ -15,7 +15,8 @@ export default {
     prev_5: 'Папярэднія 5',
     next_5: 'Наступныя 5',
     prev_3: 'Папярэднія 3',
-    next_3: 'Наступныя 3'
+    next_3: 'Наступныя 3',
+    page_size: 'памер старонкі'
   },
   DatePicker: {
     lang: {

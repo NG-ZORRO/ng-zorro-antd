@@ -15,7 +15,8 @@ export default {
     prev_5: '۵ صفحه قبلی',
     next_5: '۵ صفحه بعدی',
     prev_3: '۳ صفحه قبلی',
-    next_3: '۳ صفحه بعدی'
+    next_3: '۳ صفحه بعدی',
+    page_size: 'اندازه صفحه'
   },
   DatePicker: {
     lang: {
@@ -26,7 +27,7 @@ export default {
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
       rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
       rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
-      rangeWeekPlaceholder: ['شروع هفته', 'پایان هفته'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
@@ -52,14 +53,17 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد'
+      nextCentury: 'قرن بعد',
+      quarterPlaceholder: 'انتخاب فصل'
     },
     timePickerLocale: {
-      placeholder: 'انتخاب زمان'
+      placeholder: 'انتخاب زمان',
+      rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
   },
   TimePicker: {
-    placeholder: 'انتخاب زمان'
+    placeholder: 'انتخاب زمان',
+    rangePlaceholder: ['زمان شروع', 'زمان پایان']
   },
   Calendar: {
     lang: {
@@ -90,10 +94,18 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد'
+      nextCentury: 'قرن بعد',
+      yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان']
     },
     timePickerLocale: {
-      placeholder: 'انتخاب زمان'
+      placeholder: 'انتخاب زمان',
+      rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
   },
   Table: {
@@ -108,7 +120,10 @@ export default {
     collapse: 'بستن ردیف',
     triggerDesc: 'ترتیب نزولی',
     triggerAsc: 'ترتیب صعودی',
-    cancelSort: 'لغوِ ترتیبِ داده شده'
+    cancelSort: 'لغوِ ترتیبِ داده شده',
+    filterEmptyText: 'بدون فیلتر',
+    emptyText: 'بدون داده',
+    selectNone: 'انتخاب هیچکدام'
   },
   Modal: {
     okText: 'تایید',
@@ -122,8 +137,14 @@ export default {
   Transfer: {
     titles: ['', ''],
     searchPlaceholder: 'جستجو',
-    itemUnit: '',
-    itemsUnit: ''
+    itemUnit: 'عدد',
+    itemsUnit: 'عدد',
+    remove: 'حذف',
+    selectCurrent: 'انتخاب صفحه فعلی',
+    removeCurrent: 'پاک کردن انتخاب‌های صفحه فعلی',
+    selectAll: 'انتخاب همه',
+    removeAll: 'پاک کردن همه انتخاب‌ها',
+    selectInvert: 'معکوس کردن انتخاب‌ها در صفحه ی کنونی'
   },
   Upload: {
     uploading: 'در حال آپلود...',
@@ -140,11 +161,17 @@ export default {
   },
   Text: {
     edit: 'ویرایش',
-    copy: 'کپس',
+    copy: 'کپی',
     copied: 'کپی شد',
     expand: 'توسعه'
   },
   PageHeader: {
     back: 'برگشت'
+  },
+  global: {
+    placeholder: 'لطفاً انتخاب کنید'
+  },
+  Image: {
+    preview: 'نمایش'
   }
 };
