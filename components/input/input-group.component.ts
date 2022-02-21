@@ -56,6 +56,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       <span
         *ngIf="isAffix; else contentTemplate"
         class="ant-input-affix-wrapper"
+        [class.ant-input-affix-wrapper-disabled]="disabled"
         [attr.disabled]="disabled || null"
         [class.ant-input-affix-wrapper-sm]="isSmall"
         [class.ant-input-affix-wrapper-lg]="isLarge"
