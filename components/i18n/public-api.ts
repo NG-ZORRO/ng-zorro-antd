@@ -40,6 +40,7 @@ export { default as is_IS } from './languages/is_IS';
 export { default as it_IT } from './languages/it_IT';
 export { default as ja_JP } from './languages/ja_JP';
 export { default as ka_GE } from './languages/ka_GE';
+export { default as km_KH } from './languages/km_KH';
 export { default as kk_KZ } from './languages/kk_KZ';
 export { default as kmr_IQ } from './languages/kmr_IQ';
 export { default as kn_IN } from './languages/kn_IN';
