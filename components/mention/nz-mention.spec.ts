@@ -2,7 +2,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -155,6 +155,26 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(false);
       expect(overlayContainerElement.textContent).toEqual('');
       expect(textarea.value).toEqual('@angular ');
+    }));
+
+    it('should prevent default on the mousedown event when an option is clicked and should not run change detection', fakeAsync(() => {
+      textarea.value = '@a';
+      fixture.detectChanges();
+      dispatchFakeEvent(textarea, 'click');
+      fixture.detectChanges();
+      flush();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const event = new MouseEvent('mousedown');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'preventDefault').and.callThrough();
+
+      option.dispatchEvent(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(appRef.tick).not.toHaveBeenCalled();
     }));
 
     it('should support switch trigger', fakeAsync(() => {

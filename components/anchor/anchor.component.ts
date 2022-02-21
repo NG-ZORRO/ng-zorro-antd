@@ -52,7 +52,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
     </nz-affix>
     <ng-template #content>
       <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
-        <div class="ant-anchor" [ngClass]="{ fixed: !nzAffix && !nzShowInkInFixed }">
+        <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
           </div>

@@ -36,17 +36,15 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
       style="padding: 0px; border: 0px; height: 0px;"
       *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
     ></td>
-  `
+  `,
+  host: { class: 'ant-table-measure-now' }
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Input() listOfMeasureColumn: readonly string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
   private destroy$ = new Subject();
-  constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-measure-now');
-  }
+  constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone) {}
   trackByFunc(_: number, key: string): string {
     return key;
   }

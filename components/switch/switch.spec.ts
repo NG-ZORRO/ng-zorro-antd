@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -171,6 +171,48 @@ describe('switch', () => {
       testComponent.nzSwitchComponent.blur();
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(false);
+    });
+    describe('change detection behavior', () => {
+      it('should not run change detection on `click` events if the switch is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        switchElement.nativeElement.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
+      it('should not run change detection on `keydown` events if the switch is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const switchButton = switchElement.nativeElement.querySelector('.ant-switch');
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new KeyboardEvent('keydown', {
+          keyCode: SPACE
+        });
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        switchButton.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).not.toHaveBeenCalled();
+
+        testComponent.disabled = false;
+        fixture.detectChanges();
+
+        switchButton.dispatchEvent(event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
     });
   });
   describe('template switch', () => {

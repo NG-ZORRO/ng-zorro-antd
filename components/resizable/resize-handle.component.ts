@@ -39,6 +39,7 @@ export class NzResizeHandleMouseDownEvent {
   template: ` <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'nz-resizable-handle',
     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
     '[class.nz-resizable-handle-right]': `nzDirection === 'right'`,
     '[class.nz-resizable-handle-bottom]': `nzDirection === 'bottom'`,
@@ -61,10 +62,7 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
     private nzResizableService: NzResizableService,
     private renderer: Renderer2,
     private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-resizable-handle');
-  }
+  ) {}
 
   ngOnInit(): void {
     // Caretaker note: `mouseEntered$` subject will emit events within the `<root>` zone,

@@ -7,7 +7,6 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
   OnInit,
@@ -25,6 +24,7 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-btn-group',
     '[class.ant-btn-group-lg]': `nzSize === 'large'`,
     '[class.ant-btn-group-sm]': `nzSize === 'small'`,
     '[class.ant-btn-group-rtl]': `dir === 'rtl'`
@@ -39,10 +39,7 @@ export class NzButtonGroupComponent implements OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-btn-group');
-  }
+  constructor(@Optional() private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

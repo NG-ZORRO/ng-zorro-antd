@@ -22,20 +22,20 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-- 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）
+- 现代浏览器，[浏览器支持](https://angular.io/guide/browser-support)
 - 支持服务端渲染
 - [Electron](https://electron.atom.io/)
 
 | [<img src="https://img.alicdn.com/tfs/TB1G5ewZuL2gK0jSZPhXXahvXXa-48-48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges//)<br>IE / Edge | [<img src="https://img.alicdn.com/tfs/TB1Dx73o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://img.alicdn.com/tfs/TB1mY9FZrr1gK0jSZFDXXb9yVXa-48-48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://img.alicdn.com/tfs/TB1Vas5o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://img.alicdn.com/tfs/TB12EmNZET1gK0jSZFrXXcNCXXa-48-48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://img.alicdn.com/tfs/TB1TMW8paNj0u4jSZFyXXXgMVXa-48-48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
 | --- | --- | --- | --- | --- | --- |
-| IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+| Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
 ## 当前版本
 
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 ## 支持 Angular 版本
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^12.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^13.0.0` 版本。
 
 ## 设计规范
 

@@ -8,17 +8,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
-  OnDestroy,
   OnInit,
   Optional,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -33,14 +31,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   encapsulation: ViewEncapsulation.None,
   template: ` <ng-content></ng-content> `,
   host: {
+    class: 'ant-collapse',
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
     '[class.ant-collapse-rtl]': "dir === 'rtl'"
-  }
+  },
+  providers: [NzDestroyService]
 })
-export class NzCollapseComponent implements OnDestroy, OnInit {
+export class NzCollapseComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzAccordion: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
@@ -54,16 +54,13 @@ export class NzCollapseComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
-  private destroy$ = new Subject();
+
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    private destroy$: NzDestroyService
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-collapse');
-
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -103,9 +100,5 @@ export class NzCollapseComponent implements OnDestroy, OnInit {
     }
     collapse.nzActive = !collapse.nzActive;
     collapse.nzActiveChange.emit(collapse.nzActive);
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

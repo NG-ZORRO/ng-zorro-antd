@@ -15,6 +15,7 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -25,7 +26,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -70,8 +71,6 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
         [attr.inputmode]="nzInputMode"
-        (keydown)="onKeyDown($event)"
-        (keyup)="stop()"
         [ngModel]="displayValue"
         (ngModelChange)="onModelChange($event)"
       />
@@ -87,6 +86,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-input-number',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -335,20 +335,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.value = `${displayValue}`;
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === UP_ARROW) {
-      const ratio = this.getRatio(e);
-      this.up(e, ratio);
-      this.stop();
-    } else if (e.keyCode === DOWN_ARROW) {
-      const ratio = this.getRatio(e);
-      this.down(e, ratio);
-      this.stop();
-    } else if (e.keyCode === ENTER) {
-      this.updateDisplayValue(this.value!);
-    }
-  }
-
   writeValue(value: number): void {
     this.value = value;
     this.setValue(value);
@@ -378,14 +364,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   constructor(
-    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-input-number');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor
@@ -404,8 +388,40 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
+    });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.inputElement.nativeElement, 'keyup')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.stop());
+
+      fromEvent<KeyboardEvent>(this.inputElement.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          const { keyCode } = event;
+
+          if (keyCode !== UP_ARROW && keyCode !== DOWN_ARROW && keyCode !== ENTER) {
+            return;
+          }
+
+          this.ngZone.run(() => {
+            if (keyCode === UP_ARROW) {
+              const ratio = this.getRatio(event);
+              this.up(event, ratio);
+              this.stop();
+            } else if (keyCode === DOWN_ARROW) {
+              const ratio = this.getRatio(event);
+              this.down(event, ratio);
+              this.stop();
+            } else {
+              this.updateDisplayValue(this.value!);
+            }
+
+            this.cdr.markForCheck();
+          });
+        });
     });
   }
 

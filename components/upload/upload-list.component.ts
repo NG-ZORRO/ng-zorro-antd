@@ -11,7 +11,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
   Input,
   NgZone,
@@ -53,6 +52,7 @@ interface UploadListFile extends NzUploadFile {
     ])
   ],
   host: {
+    class: 'ant-upload-list',
     '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
     '[class.ant-upload-list-text]': `listType === 'text'`,
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
@@ -257,12 +257,8 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private doc: NzSafeAny,
     private ngZone: NgZone,
-    private platform: Platform,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-upload-list');
-  }
+    private platform: Platform
+  ) {}
 
   detectChanges(): void {
     this.fixData();

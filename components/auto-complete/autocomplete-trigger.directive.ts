@@ -111,6 +111,8 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.destroyPanel();
   }
 

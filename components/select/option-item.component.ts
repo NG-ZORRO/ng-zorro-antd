@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -34,6 +33,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-select-item ant-select-item-option',
     '[attr.title]': 'label',
     '[class.ant-select-item-option-grouped]': 'grouped',
     '[class.ant-select-item-option-selected]': 'selected && !disabled',
@@ -60,10 +60,7 @@ export class NzOptionItemComponent implements OnChanges {
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select-item', 'ant-select-item-option');
-  }
+  constructor() {}
 
   onHostMouseEnter(): void {
     if (!this.disabled) {

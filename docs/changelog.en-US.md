@@ -13,143 +13,59 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
-## 12.1.0
+## 13.0.1
 
-`2021-11-30`
+`2022-01-18`
 
 ### Bug Fixes
 
-* **tabs:** tabs add btn disappear after all tab closed  ([#7076](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7076)) ([3709b73](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3709b735094edf2960b5bec8f2a565619d6f5361)), closes [#7077](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7077)
-* **tree-view:** incorrect type of `trackBy` ([#7085](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7085)) ([891a622](https://github.com/NG-ZORRO/ng-zorro-antd/commit/891a622ef54b52bdffad894258824926ce25d28d))
-* **tree-view:** not updates when datasource data changes [#7040](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7040) ([#7083](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7083)) ([cad8ca0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cad8ca038067b9c2874a8c3c6e351f46e13c4609))
-
-
-### Features
-
-* **core,dropdown,table:** add config for backdrop ([#6783](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6783)) ([2f7c44d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f7c44dc1445d9a88c501e6e114507ed28ae33ae))
-* **tooltip:** add arrow point at center ([#7010](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7010)) ([7fac8eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7fac8eb5b1e1c17dbfbf940827f1ca53dae8d5e4))
-* **tooltip:** support tooltip template context ([#6948](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6948)) ([fec40a8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fec40a8a1bba792e5722f4facda56412f200f6b2)), closes [#6607](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6607)
-
+* **back-top:** fix more reliable scrolling listener ([#7208](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7208)) ([3bcd343](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3bcd343e38aefc35af1c2386a539d19a1d0ca279)), closes [#7199](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7199)
+* **drawer:** fix close icon position without `nzTitle` property ([#7176](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7176)) ([a6195b9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a6195b991a531e914faef2237dadf7226b8d6390)), closes [#7164](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7164)
+* **icon:** fix old icon element not removed ([#7188](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7188)) ([67ac573](https://github.com/NG-ZORRO/ng-zorro-antd/commit/67ac573d2e0a9b19263c600f020842532844566a)), closes [#7186](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7186)
+* **statistic:** re-enter the Angular zone when the `nzCountdownFinish` emits ([#7137](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7137)) ([6835544](https://github.com/NG-ZORRO/ng-zorro-antd/commit/68355448198b31d9a064710cfc4d790739909616))
+* **tree-view:** fix innerTrackBy function ([#7150](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7150)) ([4484674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4484674e212f67dea3aad8b56f27e9de61e6d21e)), closes [#7118](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7118)
 
 ### Performance Improvements
 
-* **auto-complete:** do not run change detection on `mousedown` and `mouseenter` for `nz-auto-option` ([#7048](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7048)) ([d6ca43e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d6ca43e4f78b5b4f6b1407a0012cd806865e9e4d))
-* **core:** do not run change detection when scrolling ([#7062](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7062)) ([a972d7b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a972d7b3986dae613e35dda13667c672878d75b4))
-* **graph:** reduce change detections on click events ([#7056](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7056)) ([1e2960a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e2960a855991a380e44a52c31255781830c7043))
-* **graph:** resolve minimap memory leaks ([#7052](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7052)) ([f93960c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f93960c62cd5598882a98a4e6c6b78f6dbf9f77b))
-* **modal:** do not run change detection when focusing element ([#7070](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7070)) ([ffcb709](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ffcb7095873a87243ff44edd3719ce2c04c6957e))
-* **radio:** reduce change detection cycles ([#7068](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7068)) ([b8cc94f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b8cc94feeb8517337d4df12f4bf737a7848aa04a))
-* **resizable:** reduce change detection cycles ([#7036](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7036)) ([5cad154](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5cad154496851e390296830dce7d2321092fd2fc))
-* **select:** reduce change detections for `nz-select-top-control` ([#7038](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7038)) ([d45f0ab](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d45f0abc4993002f1058c3f8753930591d886c9b))
-* **upload:** do not trigger change detection for `nz-upload-btn` ([#7037](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7037)) ([7e587d1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7e587d13b382150f8f98c5f58dead14dc3ba24a7))
-* **upload:** previewing images should be cancellable when the component gets destroyed ([#7067](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7067)) ([8f21ef1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8f21ef1d79e3545d01ebb877f9e1a094f06f1a01))
+* **auto-complete:** memory leak ([#7112](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7112)) ([3806250](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38062508fb7e0df13e528e1c9d5bf3720bd76200))
+* **cdk:** resolve leak ([#7139](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7139)) ([2a93d05](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2a93d05c48ebba1a1f6a3add74b71f4049907337))
+* **checkbox:** reduce change detection cycles ([#7127](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7127)) ([15abe33](https://github.com/NG-ZORRO/ng-zorro-antd/commit/15abe33053ee888e31c1ad629fd5a5ecae79db43))
+* **code-editor:** always initialize outside of the Angular zone ([#7151](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7151)) ([f73be80](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f73be80ca8e55604a683827f0693455c20978214))
+* **core:** remove `resize` listener when the app is destroyed ([#7125](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7125)) ([8437111](https://github.com/NG-ZORRO/ng-zorro-antd/commit/843711117a8bd7b6feb6410b4b824bd9741147a7))
+* **image:** unsubscribe old src ([#7102](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7102)) ([87a3e27](https://github.com/NG-ZORRO/ng-zorro-antd/commit/87a3e276fc1f1a50ecc6da9edc28dd4f77ac8482))
+* **input-number:** reduce change detection cycles ([#7129](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7129)) ([9971faa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9971faa7d9c54db40c19fa6333dce8a65d38ccd4))
+* **modal:** do not run change detection on mouse events ([#7169](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7169)) ([c20bb80](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c20bb8076b9d0e5e63880921cdfc738de12fc5a0))
+* **modal:** resolve memory leaks ([#7123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7123)) ([3664efe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3664efe1d6e9f5a93ed85e958652f8a898c0b987))
+* **graph:** do not run change detection on animation frame ([#7132](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7132)) ([1ceaf70](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ceaf70e215ab854a94897aebbf6acb4bd5c2006))
+* **rate:** do not run change detection on `focus` and `blur` events if there are no output listeners ([#7182](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7182)) ([3e9e035](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3e9e035d0273427f47eb4c0200930e549711d5d4))
+* **steps:** do not run change detection if there are no `nzIndexChange` listeners ([#7183](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7183)) ([cbfc558](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cbfc558c255e7f70e2b931f751c800501474a791))
+* **transfer:** do not trigger change detection when the checkbox is clicked ([#7124](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7124)) ([b12f43a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b12f43afe78d03687000471f164ff1f5d2631d3b))
 
 
-## 12.0.2
+## 13.0.0
 
-`2021-11-04`
+`2021-12-29`
 
-### Bug Fixes
+#### Removal of View Engine Support
 
-* **core:** correct hidden behavior ([#6919](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6919)) ([987b1ca](https://github.com/NG-ZORRO/ng-zorro-antd/commit/987b1ca675282febb274991f4d8d52f58c623e8d)), closes [#6918](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6918)
-* **pagination:** pre-ellipsis show in the wrong position ([#6793](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6793)) ([9700e89](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9700e89690f2a2a28e84a35f3e800f60d5d72ab1))
-* **affix:** fix update position when target resize ([#6896](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6896)) ([d18a8ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d18a8ae24a0a088de06101b1d0d060e84df29b15)), closes [#6764](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6764)
-* **date-picker:** added missing type attributes for buttons ([#7013](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7013)) ([d69d374](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d69d37469bb260b1375d6005acb217ca4ec4215f)), closes [#7012](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7012)
-* **datepicker:** fixed opacity 0 on inline datepicker reopen ([#6910](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6910)) ([d392b2e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d392b2e95365a0ffec0fa5dcef39ba7f611b2432))
-* **i18n:** update en_GB.ts translations ([#6982](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6982)) ([f89cb38](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f89cb38a1c2a5b99460b837f001a39005212352d)), closes [#6979](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6979)
-* **modal:** footer `onClick` re-throw error in promise catch ([#6928](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6928)) ([3277d22](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3277d22ec3368d7f28a5143a5cec44357dedcdb3))
-* **popconfirm:** add nzOkDanger option for nz-popconfirm ([#6866](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6866)) ([d889e98](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d889e98e935f7e7c66e10068fd2665181a9e9975))
-* **table:** show empty state regardless of loading value ([#6934](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6934)) ([013beda](https://github.com/NG-ZORRO/ng-zorro-antd/commit/013bedaf9856931b37c01e9aa24cf63cdb1be9b8))
-* **timepicker:** fix ok button + selection of default open value ([#6941](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6941)) ([daf9f57](https://github.com/NG-ZORRO/ng-zorro-antd/commit/daf9f5712c11a4b4fdbb1da1eab23c2667398e96))
-* **timepicker:** fixed auto positioning picker ([#6939](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6939)) ([65fdbc8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/65fdbc8a5442fed0d4b131ff8147b5b8f10f9f38))
-* **tooltip:** fix tooltip for deeply wrapped focusable elements ([#6965](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6965)) ([78c16a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/78c16a2794f5e5c2f5098c83ea540c88dd9d6d98)), closes [#6955](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6955)
+`ng-zorro-antd@13` remove support for View Engine and use Ivy library for distribution, you will get faster building and smaller bundle size.
 
-### Performance Improvements
+See [Angular Ivy](https://angular.io/guide/ivy).
 
-* **autocomplete:** resolve memory leak ([#6851](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6851)) ([e61e350](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e61e350874d380cdc68bd6c8dee0f5de358c4c79))
-* **breadcrumb:** do not re-enter the Angular zone when calling `navigate` ([#6850](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6850)) ([830a1f2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/830a1f259e4b51ffcfb82f98974fc9ae52dbfef7))
-* **button:** do not trigger change detections on click events ([#6849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6849)) ([85c79f6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/85c79f652a022dee5c6f57042c856280cc6f23db))
-* **core:** resolve memory leak ([#6852](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6852)) ([25eb0fe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/25eb0fe90cf981c0ddddceac8f98dfcef6f60f8f))
-* **code-editor:** load Monaco only once ([#7033](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7033)) ([e1eafec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e1eafecaba7235faa8819cae2ab5607c41572b3c))
-* **image:** resolve memory leak ([#6856](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6856)) ([6744eb1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6744eb1ac836637563c8ffea1b864502721711d6))
-* **select:** do not run change detection if the `triggerWidth` has not been changed ([#6858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6858)) ([055f4a1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/055f4a12679a1538ada58d7d9460694f67b156f5))
-* **table:** resolve leak within the `nz-table-fixed-row` ([#7034](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7034)) ([cfa1ecd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cfa1ecdb419ec619a196f69cca50fbc92aa61134))
-* **upload:** do not trigger change detection for `nz-upload-btn` ([#7032](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7032)) ([47f91c7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/47f91c77a79ad85e36eb318617b12f548bb56b1f))
+#### Removal of IE11 Support
+- Removing IE11 support allows Angular to leverage modern browser features such as CSS variables and web animations via native web APIs
+- What’s more is that apps will be smaller and load faster because we can remove IE specific polyfills and code paths
 
-## 12.0.1
-
-`2021-07-12`
-
-### Bug Fixes
-
-* **code-editor:** dispose the event listener when the component is destroyed ([#6847](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6847)) ([503c6f9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/503c6f90b81aed268ec08ce301b8c71f3a479617))
-* **code-editor:** resolve memory leak ([#6846](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6846)) ([6d43b6c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d43b6c5a9ccf8603106716285a1c032608912d6))
-* **code-editor:** re-enter the Angular zone only if the value has been changed ([#6845](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6845)) ([5c09948](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5c09948ca5e0e70bf7e4d1b4246225999060a930))
-* **drawer:** trigger change detection only if there are `nzOnViewInit` listeners ([#6841](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6841)) ([c5b5741](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c5b5741a0ffaaf50b4e558faf99691977c967426))
-* **icon:** resolve memory leak ([#6839](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6839)) ([bdc2a55](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bdc2a55e8421b49d80245d3a5a714adf38f58140))
-* remove the default resize observer polyfill ([#6843](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6843)) ([29d44af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/29d44afb058cb5d78f236cdfa57be5018b49dc02)), closes [#6696](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6696)
-
-If you want to support older browsers, you can provide polyfill in the following way.
-
-```ts
-import { NzResizeObserverFactory } from 'ng-zorro-antd/cdk/resize-observer';
-import ResizeObserver from 'resize-observer-polyfill';
-
-@NgModule({
-  providers: [
-    { provide: NzResizeObserverFactory, useValue: {
-        create(callback: ResizeObserverCallback): ResizeObserver | null {
-          return typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(callback);
-        }
-      }
-    }
-  ]
-})
-export class AppModule {}
-```
-
-## 12.0.0
-
-`2021-07-11`
-
-### Bug Fixes
-
-* **pagination:** mark for check when the total number of pages changes ([#6780](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6780)) ([2f1f8dc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f1f8dcb1c7eb4f89b1ff21bf8c64d7f8a75f344))
-* **pagination:** pagination in form will trigger submit ([#6744](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6744)) ([f77ab28](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f77ab28341489e9df7f757294a6a5ad6030700f4))
-* **cascader:** add nzClear functionality to cascader ([#6761](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6761)) ([3dd9534](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3dd9534d8059985dba3389fc52ea463bbf3381c5)), closes [#6751](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6751)
-* **select:** focus input when selector is clicked ([#6786](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6786)) ([1c9331a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c9331a4f8a32a91eaaf6128bdb335f26bd6fcab))
-* **time-picker:** close time-picker after tabbing out ([#6602](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6602)) ([0e53053](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0e530538ee954ce6ccc5891c0556cfb338f00b56))
-* **tree:** stop change url in firefox ([#6771](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6771)) ([be20114](https://github.com/NG-ZORRO/ng-zorro-antd/commit/be20114f6b83f326045dd98b5ad3aa9fab61af03))
-* **typography:** single line ellipsis style ([#6776](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6776)) ([e192a70](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e192a70aa034913d87b00f863e27e0f6acc280de))
+See [Issue #41840](https://github.com/angular/angular/issues/41840).
 
 
-### Features
+#### Enhanced Performance
 
-* **checkbox:** add nzId input ([#6813](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6813)) ([52235c9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/52235c97aaf75802cca9e81c9071fa2bdfe0208e))
-* **core:** support reset NZ_CONFIG inside component & overflow component ([#6601](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6601)) ([edd410a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/edd410ac8426c2fde490192125a66b0074227a87))
-* **date-picker:** nz-range-picker support nzId ([#6814](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6814)) ([28074e1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/28074e1749a38a19cc64bd52aefc85d3e6f1a53b))
-* **experimental/image:** add experimental image component ([#6590](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6590)) ([7e2fba3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7e2fba39354de78219be1237eea8edf19b5799e7))
-* **popconfirm:** support `nzAutoFocus` ([#6256](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6256)) ([91e5d49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91e5d49f83c8e833e70400c65b69a2e4787fc91d)), closes [#6249](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6249)
-* **rate:** support customize character ([#6787](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6787)) ([7163e36](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7163e360fc97d48cd718c65ffa301c0253801851))
-* **steps:** steps support circular progress bar ([#6132](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6132)) ([466a093](https://github.com/NG-ZORRO/ng-zorro-antd/commit/466a093d10da6d8996adc636447be3531c5d1d76)), closes [#5684](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5684)
-* **timeline:** support `nzLabel` ([#6687](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6687)) ([86c587d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/86c587d7be4b7b6e936cf50e2cafa4499d735407)), closes [#6682](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6682)
+Fix the problems that may cause memory leak.
 
 ### BREAKING CHANGES
-
-**button**
-- `[nz-button][nzType="danger"]` input value are no longer supported, please use `[nz-button][nzDanger]` instead.
-
-**modal**
-- usage of `ng-content` has been removed, please use `<ng-template nzModalContent></ng-template>` instead.
-
-**drawer**
-- usage of `ng-content` has been removed, please use `<ng-template nzDrawerContent></ng-template>` instead.
-
-**tree-view**
-- `[nzNodeWidth]` has been removed, please use `[nzItemSize]` instead.
-
-**nz-space-item**
-- `nz-space-item, [nz-space-item]` has been removed, please use `<ng-template nzSpaceItem></ng-template>` instead.
+**dropdown**
+- `[nzHasBackdrop]` input value are no longer supported, please use `[nzBackdrop]` instead.
 
 
 ## Old Versions

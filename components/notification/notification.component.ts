@@ -85,16 +85,17 @@ import { NzNotificationData } from './typings';
   `
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() instance!: Required<NzNotificationData>;
+  @Input() override instance!: Required<NzNotificationData>;
+  @Input() override index!: number;
   @Input() placement?: string;
-  @Input() index!: number;
-  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+
+  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {
     super(cdr);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.instance.onClick.complete();
   }

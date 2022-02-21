@@ -31,19 +31,19 @@ import { NzCascaderOption } from './typings';
       ></ng-template>
     </ng-container>
     <ng-template #defaultOptionTemplate>
-      <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
+      <div
+        class="ant-cascader-menu-item-content"
+        [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"
+      ></div>
     </ng-template>
-    <span
-      *ngIf="!option.isLeaf || option.children?.length || option.loading"
-      class="ant-cascader-menu-item-expand-icon"
-    >
+    <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
       <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
       <ng-template #icon>
         <ng-container *nzStringTemplateOutlet="expandIcon">
           <i nz-icon [nzType]="$any(expandIcon)"></i>
         </ng-container>
       </ng-template>
-    </span>
+    </div>
   `,
   host: {
     '[attr.title]': 'option.title || optionLabel',
@@ -66,6 +66,7 @@ export class NzCascaderOptionComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item-expanded');
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

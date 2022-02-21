@@ -17,6 +17,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -29,7 +30,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -67,7 +68,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         #slickList
         class="slick-list"
         tabindex="-1"
-        (keydown)="onKeyDown($event)"
         (mousedown)="pointerDown($event)"
         (touchstart)="pointerDown($event)"
       >
@@ -117,8 +117,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList', { static: false }) slickList?: ElementRef;
-  @ViewChild('slickTrack', { static: false }) slickTrack?: ElementRef;
+  @ViewChild('slickList', { static: true }) slickList!: ElementRef<HTMLElement>;
+  @ViewChild('slickTrack', { static: true }) slickTrack!: ElementRef<HTMLElement>;
 
   @Input() nzDotRender?: TemplateRef<{ $implicit: number }>;
   @Input() @WithConfig() nzEffect: NzCarouselEffects = 'scrollx';
@@ -172,6 +172,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   constructor(
     elementRef: ElementRef,
     public readonly nzConfigService: NzConfigService,
+    private readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
     private readonly cdr: ChangeDetectorRef,
     private readonly platform: Platform,
@@ -186,12 +187,38 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.el = elementRef.nativeElement;
   }
   ngOnInit(): void {
+    this.slickListEl = this.slickList!.nativeElement;
+    this.slickTrackEl = this.slickTrack!.nativeElement;
+
     this.dir = this.directionality.value;
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.markContentActive(this.activeIndex);
       this.cdr.detectChanges();
+    });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<KeyboardEvent>(this.slickListEl, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          const { keyCode } = event;
+
+          if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW) {
+            return;
+          }
+
+          event.preventDefault();
+
+          this.ngZone.run(() => {
+            if (keyCode === LEFT_ARROW) {
+              this.pre();
+            } else {
+              this.next();
+            }
+            this.cdr.markForCheck();
+          });
+        });
     });
   }
 
@@ -200,10 +227,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit(): void {
-    this.slickListEl = this.slickList!.nativeElement;
-    this.slickTrackEl = this.slickTrack!.nativeElement;
-
-    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.carouselContents.changes.subscribe(() => {
       this.markContentActive(0);
       this.layout();
     });
@@ -257,16 +281,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) {
-      e.preventDefault();
-      this.pre();
-    } else if (e.keyCode === RIGHT_ARROW) {
-      this.next();
-      e.preventDefault();
-    }
   }
 
   onLiClick = (index: number): void => {

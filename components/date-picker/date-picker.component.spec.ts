@@ -3,7 +3,7 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -489,6 +489,22 @@ describe('NzDatePickerComponent', () => {
       expect(result.getDate()).toBe(+cellText);
     }));
 
+    it('should not run change detection when inline mode is enabled and the `date-range-popup` is clicked', () => {
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('mousedown');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'preventDefault').and.callThrough();
+
+      debugElement.nativeElement.querySelector('date-range-popup').dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
     it('should support nzBackdrop', fakeAsync(() => {
       fixtureInstance.nzBackdrop = true;
       fixture.detectChanges();
@@ -847,6 +863,46 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).value).toBe('');
+    }));
+
+    it('should support updating the disabledtime state when the current time changes', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = (current: Date) => ({
+        nzDisabledHours: () => {
+          if (current) {
+            if (current.getMonth() === 2) {
+              return [0, 1, 2];
+            } else {
+              return [4, 5, 6];
+            }
+          } else {
+            return [7, 8, 9];
+          }
+        },
+        nzDisabledMinutes: () => [],
+        nzDisabledSeconds: () => []
+      });
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      // input disabled value
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('2020-03-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+
+      // input disabled value
+      typeInElement('2020-04-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(5)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
     }));
 
     it('should support nzRenderExtraFooter', fakeAsync(() => {

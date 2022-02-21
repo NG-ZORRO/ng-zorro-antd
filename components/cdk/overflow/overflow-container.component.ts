@@ -152,8 +152,8 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
   }
   ngAfterContentInit(): void {
     this.overflowItems?.changes.pipe(startWith(this.overflowItems)).subscribe(this.overflowItems$);
-    this.overflowSuffix?.suffixWidth$.subscribe(this.suffixWidth$);
-    this.overflowRest?.restWidth$.subscribe(this.restWidth$);
+    this.overflowSuffix?.suffixWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.suffixWidth$);
+    this.overflowRest?.restWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.restWidth$);
     this.contentInit$.next();
   }
   ngOnDestroy(): void {

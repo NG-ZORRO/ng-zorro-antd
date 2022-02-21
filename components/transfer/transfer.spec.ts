@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  Injector,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -118,7 +127,7 @@ describe('transfer', () => {
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
@@ -126,7 +135,7 @@ describe('transfer', () => {
     it('should be clear search keywords', () => {
       pageObject.expectLeft(LEFTCOUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
@@ -219,7 +228,7 @@ describe('transfer', () => {
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled = true;
         fixture.detectChanges();
-        (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+        (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
         fixture.detectChanges();
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
@@ -277,9 +286,26 @@ describe('transfer', () => {
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
       const searchPhText = (
-        tempFixture.debugElement.query(By.css('.ant-transfer-list-search')).nativeElement as HTMLElement
+        tempFixture.debugElement.query(By.css('.ant-transfer-list-search input')).nativeElement as HTMLElement
       ).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
+    });
+
+    describe('change detection behavior', () => {
+      it('should not trigger change detection when the `ant-transfer-list-content-item label` is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'stopPropagation').and.callThrough();
+
+        const [label] = fixture.nativeElement.querySelectorAll('.ant-transfer-list-content-item label');
+
+        label.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
     });
   });
 
@@ -399,8 +425,9 @@ describe('transfer', () => {
     }
 
     search(direction: TransferDirection, value: string): this {
+      // .ant-transfer-list-search has been moved to the host
       const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector(
-        '.ant-transfer-list-search'
+        '.ant-transfer-list-search input'
       ) as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
@@ -453,7 +480,7 @@ describe('transfer', () => {
       <p id="transfer-footer">footer</p>
     </ng-template>
   `,
-  styleUrls: ['./style/index.less'],
+  styleUrls: ['../ng-zorro-antd.less'],
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {

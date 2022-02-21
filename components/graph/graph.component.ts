@@ -36,6 +36,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
+import { NzGraph } from './graph';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
@@ -69,6 +70,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-graph',
   exportAs: 'nzGraph',
+  providers: [{ provide: NzGraph, useExisting: NzGraphComponent }],
   template: `
     <ng-content></ng-content>
     <svg width="100%" height="100%">
@@ -128,7 +130,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   }
 })
-export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
+export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
   static ngAcceptInputType_nzAutoSize: BooleanInput;
 
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;

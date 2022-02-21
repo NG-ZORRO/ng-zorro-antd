@@ -259,6 +259,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       ? (this.value as number[])[this.activeValueIndex!] + step
       : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
+    this.nzOnAfterChange.emit(this.getValue(true));
   }
 
   onHandleFocusIn(index: number): void {

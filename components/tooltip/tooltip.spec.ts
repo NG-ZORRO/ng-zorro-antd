@@ -331,7 +331,7 @@ describe('origin', () => {
   }));
 
   it('should target work', () => {
-    expect((component.tooltip!.component!.origin!.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+    expect((component.tooltip!.component!.origin!.nativeElement as HTMLElement).tagName).toBe('BUTTON');
   });
 });
 

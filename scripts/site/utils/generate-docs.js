@@ -1,4 +1,4 @@
-const MD = require('marked');
+const { parse } = require('marked');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 const fs = require('fs');
@@ -56,7 +56,7 @@ function baseInfo(file, path) {
   return {
     meta   : meta,
     path   : path,
-    content: MD(content),
+    content: parse(content),
     raw    : content
   }
 }

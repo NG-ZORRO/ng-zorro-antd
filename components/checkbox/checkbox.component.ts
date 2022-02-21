@@ -14,6 +14,7 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -22,7 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -53,7 +54,6 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
         [ngModel]="nzChecked"
         [disabled]="nzDisabled"
         (ngModelChange)="innerCheckedChange($event)"
-        (click)="$event.stopPropagation()"
       />
       <span class="ant-checkbox-inner"></span>
     </span>
@@ -67,9 +67,9 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
     }
   ],
   host: {
+    class: 'ant-checkbox-wrapper',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
-    '[class.ant-checkbox-rtl]': `dir === 'rtl'`,
-    '(click)': 'hostClick($event)'
+    '[class.ant-checkbox-rtl]': `dir === 'rtl'`
   }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
@@ -83,7 +83,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('inputElement', { static: true }) private inputElement!: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzAutoFocus = false;
@@ -91,12 +91,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   @Input() @InputBoolean() nzIndeterminate = false;
   @Input() @InputBoolean() nzChecked = false;
   @Input() nzId: string | null = null;
-
-  hostClick(e: MouseEvent): void {
-    e.preventDefault();
-    this.focus();
-    this.innerCheckedChange(!this.nzChecked);
-  }
 
   innerCheckedChange(checked: boolean): void {
     if (!this.nzDisabled) {
@@ -136,15 +130,13 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   }
 
   constructor(
+    private ngZone: NgZone,
     private elementRef: ElementRef<HTMLElement>,
     @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-checkbox-wrapper');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor
@@ -159,13 +151,34 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
       this.nzCheckboxWrapperComponent.addCheckbox(this);
     }
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          event.preventDefault();
+          this.focus();
+          if (this.nzDisabled) {
+            return;
+          }
+          this.ngZone.run(() => {
+            this.innerCheckedChange(!this.nzChecked);
+            this.cdr.markForCheck();
+          });
+        });
+
+      fromEvent(this.inputElement.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => event.stopPropagation());
+    });
   }
+
   ngAfterViewInit(): void {
     if (this.nzAutoFocus) {
       this.focus();

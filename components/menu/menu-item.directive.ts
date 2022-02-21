@@ -120,7 +120,13 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   private isLinkActive(router: Router): (link: RouterLink | RouterLinkWithHref) => boolean {
-    return (link: RouterLink | RouterLinkWithHref) => router.isActive(link.urlTree, this.nzMatchRouterExact);
+    return (link: RouterLink | RouterLinkWithHref) =>
+      router.isActive(link.urlTree || '', {
+        paths: this.nzMatchRouterExact ? 'exact' : 'subset',
+        queryParams: this.nzMatchRouterExact ? 'exact' : 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      });
   }
 
   constructor(

@@ -7,14 +7,18 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
-  OnDestroy,
+  NgZone,
+  OnInit,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzProgressFormatter } from 'ng-zorro-antd/progress';
@@ -27,10 +31,10 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
   preserveWhitespaces: false,
   template: `
     <div
+      #itemContainer
       class="ant-steps-item-container"
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
-      (click)="onClick()"
     >
       <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
       <div class="ant-steps-item-icon">
@@ -94,12 +98,14 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
     '[class.ant-steps-item-disabled]': 'nzDisabled',
     '[class.ant-steps-item-custom]': '!!nzIcon',
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
-  }
+  },
+  providers: [NzDestroyService]
 })
-export class NzStepComponent implements OnDestroy {
+export class NzStepComponent implements OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
+  @ViewChild('itemContainer', { static: true }) itemContainer!: ElementRef<HTMLElement>;
 
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
@@ -143,7 +149,8 @@ export class NzStepComponent implements OnDestroy {
   outStatus = 'process';
   showProcessDot = false;
   clickable = false;
-  click$ = new Subject<number>();
+
+  clickOutsideAngular$ = new Subject<number>();
 
   readonly nullProcessFormat: NzProgressFormatter = () => null;
 
@@ -170,12 +177,19 @@ export class NzStepComponent implements OnDestroy {
 
   private _currentIndex = 0;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private destroy$: NzDestroyService) {}
 
-  onClick(): void {
-    if (this.clickable && this.currentIndex !== this.index && !this.nzDisabled) {
-      this.click$.next(this.index);
-    }
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() =>
+      fromEvent(this.itemContainer.nativeElement, 'click')
+        .pipe(
+          filter(() => this.clickable && this.currentIndex !== this.index && !this.nzDisabled),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.clickOutsideAngular$.next(this.index);
+        })
+    );
   }
 
   enable(): void {
@@ -190,9 +204,5 @@ export class NzStepComponent implements OnDestroy {
 
   markForCheck(): void {
     this.cdr.markForCheck();
-  }
-
-  ngOnDestroy(): void {
-    this.click$.complete();
   }
 }

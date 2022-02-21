@@ -60,19 +60,21 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
-  @Input() trackBy!: TrackByFunction<T>;
+  @Input() override trackBy!: TrackByFunction<T>;
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.trackBy && typeof changes.trackBy.currentValue === 'function') {
-      this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
-    } else {
-      this.innerTrackBy = i => i;
+    if (changes.trackBy) {
+      if (typeof changes.trackBy.currentValue === 'function') {
+        this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
+      } else {
+        this.innerTrackBy = i => i;
+      }
     }
   }
 
-  renderNodeChanges(data: T[] | readonly T[]): void {
+  override renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
     this._dataSourceChanged.next();
   }

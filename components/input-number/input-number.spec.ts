@@ -1,8 +1,9 @@
-import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { take } from 'rxjs/operators';
 
 import { createKeyboardEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
@@ -394,6 +395,36 @@ describe('input number', () => {
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+    });
+    describe('change detection behavior', () => {
+      it('should not run change detection on keyup and keydown events', done => {
+        const ngZone = TestBed.inject(NgZone);
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        spyOn(inputNumber.componentInstance, 'stop').and.callThrough();
+
+        inputElement.dispatchEvent(new KeyboardEvent('keyup'));
+        expect(appRef.tick).toHaveBeenCalledTimes(0);
+        expect(inputNumber.componentInstance.stop).toHaveBeenCalled();
+
+        inputElement.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            keyCode: TAB
+          })
+        );
+        expect(appRef.tick).toHaveBeenCalledTimes(0);
+
+        inputElement.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            keyCode: ENTER
+          })
+        );
+
+        ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
+          expect(appRef.tick).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
     });
   });
 

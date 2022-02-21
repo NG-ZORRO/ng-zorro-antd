@@ -37,6 +37,7 @@ export interface NzResizeEvent {
   exportAs: 'nzResizable',
   providers: [NzResizableService],
   host: {
+    class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
     '[class.nz-resizable-disabled]': 'nzDisabled'
   }
@@ -76,8 +77,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     private platform: Platform,
     private ngZone: NgZone
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-resizable');
     this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.nzDisabled) {
         return;

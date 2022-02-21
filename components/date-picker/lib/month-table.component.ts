@@ -19,8 +19,8 @@ import { DateBodyRow, DateCell } from './interface';
   templateUrl: 'abstract-table.html'
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
-  MAX_ROW = 4;
-  MAX_COL = 3;
+  override MAX_ROW = 4;
+  override MAX_COL = 3;
 
   constructor(private dateHelper: DateHelperService) {
     super();

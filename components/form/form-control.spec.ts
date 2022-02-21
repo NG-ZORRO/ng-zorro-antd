@@ -1,4 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 import {
   AbstractControl,
   FormBuilder,
@@ -299,7 +300,7 @@ describe('nz-form-control', () => {
         'Please input valid email'
       );
     });
-    it('should nzDisableAutoTips work ', () => {
+    it('should nzDisableAutoTips work ', fakeAsync(() => {
       formGroup.get('userName')!.markAsDirty();
       formGroup.get('mobile')!.markAsDirty();
       formGroup.get('email')!.markAsDirty();
@@ -329,11 +330,13 @@ describe('nz-form-control', () => {
       formGroup.get('email')!.setValue('12345');
 
       testBed.fixture.detectChanges();
+      tick(300 + 50);
+      testBed.fixture.detectChanges();
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
-    });
+    }));
     it('should nzErrorTip change work', () => {
       testComponent.passwordDisableAutoTips = true;
 
@@ -504,7 +507,7 @@ export type MyErrorsOptions = { 'zh-cn': string; en: string } & Record<string, N
 export type MyValidationErrors = Record<string, MyErrorsOptions>;
 
 export class MyValidators extends Validators {
-  static minLength(minLength: number): ValidatorFn {
+  static override minLength(minLength: number): ValidatorFn {
     return (control: AbstractControl): MyValidationErrors | null => {
       if (Validators.minLength(minLength)(control) === null) {
         return null;

@@ -1,5 +1,5 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -125,6 +125,37 @@ describe('checkbox', () => {
       testComponent.nzCheckboxComponent.blur();
       fixture.detectChanges();
       expect(checkbox.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+    });
+    describe('change detection behavior', () => {
+      it('should not run change detection when the `input` is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'stopPropagation').and.callThrough();
+
+        const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+        nzCheckbox.nativeElement.querySelector('.ant-checkbox-input').dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+      it('should not run change detection when the `nz-checkbox` is clicked and it is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+        nzCheckbox.nativeElement.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
     });
   });
   describe('checkbox group basic', () => {

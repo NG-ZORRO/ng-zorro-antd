@@ -3,14 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
-import { Directive, Input } from '@angular/core';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  FlexibleConnectedPositionStrategyOrigin
+} from '@angular/cdk/overlay';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getPlacementName } from './overlay-position';
+
+/** Equivalent of `ClientRect` without some of the properties we don't care about. */
+type Dimensions = Omit<ClientRect, 'x' | 'y' | 'toJSON'>;
 
 @Directive({
   selector: '[cdkConnectedOverlay][nzConnectedOverlay]',
@@ -36,8 +44,7 @@ export class NzConnectedOverlayDirective {
   }
 
   private updateArrowPosition(position: ConnectedOverlayPositionChange): void {
-    const originEl = this.cdkConnectedOverlay.origin.elementRef.nativeElement as HTMLElement;
-    const originRect = originEl.getBoundingClientRect();
+    const originRect = this.getOriginRect();
     const placement = getPlacementName(position);
 
     let offsetX: number | undefined = 0;
@@ -58,5 +65,39 @@ export class NzConnectedOverlayDirective {
       this.cdkConnectedOverlay.offsetX = offsetX;
       this.cdkConnectedOverlay.overlayRef.updatePosition();
     }
+  }
+
+  private getFlexibleConnectedPositionStrategyOrigin(): FlexibleConnectedPositionStrategyOrigin {
+    if (this.cdkConnectedOverlay.origin instanceof CdkOverlayOrigin) {
+      return this.cdkConnectedOverlay.origin.elementRef;
+    } else {
+      return this.cdkConnectedOverlay.origin;
+    }
+  }
+
+  private getOriginRect(): Dimensions {
+    const origin = this.getFlexibleConnectedPositionStrategyOrigin();
+
+    if (origin instanceof ElementRef) {
+      return origin.nativeElement.getBoundingClientRect();
+    }
+
+    // Check for Element so SVG elements are also supported.
+    if (origin instanceof Element) {
+      return origin.getBoundingClientRect();
+    }
+
+    const width = origin.width || 0;
+    const height = origin.height || 0;
+
+    // If the origin is a point, return a client rect as if it was a 0x0 element at the point.
+    return {
+      top: origin.y,
+      bottom: origin.y + height,
+      left: origin.x,
+      right: origin.x + width,
+      height,
+      width
+    };
   }
 }

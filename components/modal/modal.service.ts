@@ -17,8 +17,8 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 
 import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
-import { BaseModalContainerComponent } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
 import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';

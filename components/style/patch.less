@@ -31,7 +31,7 @@
   left: 0;
   right: 0;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity .4s cubic-bezier(.25, .8, .25, 1);
+  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   opacity: 0;
   position: absolute;
   pointer-events: auto;
@@ -78,7 +78,8 @@
 }
 
 .nz-overlay-transparent-backdrop {
-  &, &.cdk-overlay-backdrop-showing {
+  &,
+  &.cdk-overlay-backdrop-showing {
     opacity: 0;
   }
 }
@@ -103,12 +104,15 @@
   }
 
   // modal
-  .ant-modal-mask, .ant-modal {
+  .ant-modal-mask,
+  .ant-modal {
     animation: none;
     transition: none;
 
-    &.zoom-enter, &.zoom-leave,
-    &.zoom-enter-active, &.zoom-leave-active {
+    &.zoom-enter,
+    &.zoom-leave,
+    &.zoom-enter-active,
+    &.zoom-leave-active {
       animation: none;
       transition: none;
     }
@@ -118,11 +122,13 @@
   &.ant-menu {
     transition: none;
 
-    .ant-menu-item, .ant-menu-submenu-title {
+    .ant-menu-item,
+    .ant-menu-submenu-title {
       transition: none;
     }
 
-    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+    .ant-menu-item .anticon,
+    .ant-menu-submenu-title .anticon {
       transition: none;
 
       & + span {

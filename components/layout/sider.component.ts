@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -54,10 +53,12 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     ></div>
   `,
   host: {
+    class: 'ant-layout-sider',
     '[class.ant-layout-sider-zero-width]': `nzCollapsed && nzCollapsedWidth === 0`,
     '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
     '[class.ant-layout-sider-dark]': `nzTheme === 'dark'`,
     '[class.ant-layout-sider-collapsed]': `nzCollapsed`,
+    '[class.ant-layout-sider-has-trigger]': `nzCollapsible && nzTrigger !== null`,
     '[style.flex]': 'flexSetting',
     '[style.maxWidth]': 'widthSetting',
     '[style.minWidth]': 'widthSetting',
@@ -110,12 +111,8 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   constructor(
     private platform: Platform,
     private cdr: ChangeDetectorRef,
-    private breakpointService: NzBreakpointService,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-layout-sider');
-  }
+    private breakpointService: NzBreakpointService
+  ) {}
 
   ngOnInit(): void {
     this.updateStyleMap();

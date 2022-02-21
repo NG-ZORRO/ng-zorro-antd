@@ -433,7 +433,7 @@ interface ScrollTestDataItem {
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../../../style/entry.less']
+  styleUrls: ['../../../ng-zorro-antd.less']
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<ScrollTestDataItem>;
