@@ -10,6 +10,7 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
     <ng-template #drawerTemplate let-data let-drawerRef="drawerRef">
       value: {{ data?.value }}
       <br />
+      <br />
       <button nz-button nzType="primary" (click)="drawerRef.close()">close</button>
     </ng-template>
     <div nz-form>
@@ -35,6 +36,7 @@ export class NzDemoDrawerServiceComponent {
     const drawerRef = this.drawerService.create({
       nzTitle: 'Template',
       nzFooter: 'Footer',
+      nzExtra: 'Extra',
       nzContent: this.drawerTemplate,
       nzContentParams: {
         value: this.value
@@ -53,6 +55,8 @@ export class NzDemoDrawerServiceComponent {
   openComponent(): void {
     const drawerRef = this.drawerService.create<NzDrawerCustomComponent, { value: string }, string>({
       nzTitle: 'Component',
+      nzFooter: 'Footer',
+      nzExtra: 'Extra',
       nzContent: NzDrawerCustomComponent,
       nzContentParams: {
         value: this.value

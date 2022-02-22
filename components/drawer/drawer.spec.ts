@@ -260,6 +260,34 @@ describe('NzDrawerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
     });
 
+    it('should not render title even with nzExtra', () => {
+      component.extra = 'test';
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
+    });
+
+    it('should support string extra', () => {
+      component.closable = true;
+      component.extra = component.stringTitle;
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(
+        (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-extra') as HTMLElement).innerText.trim()
+      ).toBe('test');
+    });
+
+    it('should support TemplateRef extra', () => {
+      component.closable = true;
+      component.extra = component.titleTemplateRef;
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-extra .custom-title')).not.toBe(null);
+    });
+
     it('should support string title', () => {
       component.title = component.stringTitle;
       component.open();
@@ -336,6 +364,62 @@ describe('NzDrawerComponent', () => {
     });
 
     it('should support custom number type height', () => {
+      component.height = 520;
+      component.placement = 'top';
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(
+        (
+          overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement
+        ).getBoundingClientRect().height
+      ).toBe(520);
+      component.placement = 'left';
+      fixture.detectChanges();
+    });
+
+    it('should support large size width', () => {
+      component.size = 'large';
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(
+        (
+          overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content') as HTMLElement
+        ).getBoundingClientRect().width
+      ).toBe(736);
+    });
+
+    it('should custom width priority higher than size', () => {
+      component.size = 'large';
+      component.width = 520;
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(
+        (
+          overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content') as HTMLElement
+        ).getBoundingClientRect().width
+      ).toBe(520);
+    });
+
+    it('should support large size height', () => {
+      component.size = 'large';
+      component.placement = 'top';
+      component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+      expect(
+        (
+          overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement
+        ).getBoundingClientRect().height
+      ).toBe(736);
+      component.placement = 'left';
+      fixture.detectChanges();
+    });
+
+    it('should custom height priority higher than size', () => {
+      component.size = 'large';
       component.height = 520;
       component.placement = 'top';
       component.open();
@@ -700,11 +784,13 @@ describe('NzDrawerService', () => {
       [nzClosable]="closable"
       [nzMask]="showMask"
       [nzVisible]="visible"
+      [nzSize]="size"
       [nzWidth]="width"
       [nzHeight]="height"
       [nzPlacement]="placement"
       [nzNoAnimation]="noAnimation"
       [nzTitle]="title"
+      [nzExtra]="extra"
       [nzFooter]="footer"
       [nzOffsetX]="offsetX"
       [nzOffsetY]="offsetY"
@@ -725,10 +811,12 @@ class NzTestDrawerComponent {
   maskClosable = true;
   showMask = true;
   title: string | TemplateRef<void> = '';
+  extra: string | TemplateRef<void> = '';
   footer: string | TemplateRef<void> = '';
   stringTitle = 'test';
-  width: string | number = '300px';
-  height: string | number = '300px';
+  size: 'large' | 'default' = 'default';
+  width?: string | number;
+  height?: string | number;
   placement = 'left';
   noAnimation = false;
   closeIcon?: TemplateRef<void> | string;

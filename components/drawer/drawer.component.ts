@@ -39,7 +39,13 @@ import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/ty
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
-import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
+import {
+  DRAWER_DEFAULT_SIZE,
+  DRAWER_LARGE_SIZE,
+  NzDrawerOptionsOfComponent,
+  NzDrawerPlacement,
+  NzDrawerSize
+} from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
@@ -98,6 +104,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                     </ng-container>
                   </div>
                 </div>
+                <div *ngIf="nzExtra" class="ant-drawer-extra">
+                  <ng-container *nzStringTemplateOutlet="nzExtra">
+                    <div [innerHTML]="nzExtra"></div>
+                  </ng-container>
+                </div>
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
@@ -147,13 +158,15 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
+  @Input() nzExtra?: string | TemplateRef<{}>;
   @Input() nzFooter?: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
+  @Input() nzSize: NzDrawerSize = 'default';
   @Input() nzMaskStyle: NgStyleInterface = {};
   @Input() nzBodyStyle: NgStyleInterface = {};
   @Input() nzWrapClassName?: string;
-  @Input() nzWidth: number | string = 256;
-  @Input() nzHeight: number | string = 256;
+  @Input() nzWidth?: number | string;
+  @Input() nzHeight?: number | string;
   @Input() nzZIndex = 1000;
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
@@ -226,11 +239,19 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   }
 
   get width(): string | null {
-    return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
+    if (this.isLeftOrRight) {
+      const defaultWidth = this.nzSize === 'large' ? DRAWER_LARGE_SIZE : DRAWER_DEFAULT_SIZE;
+      return this.nzWidth === undefined ? toCssPixel(defaultWidth) : toCssPixel(this.nzWidth);
+    }
+    return null;
   }
 
   get height(): string | null {
-    return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
+    if (!this.isLeftOrRight) {
+      const defaultHeight = this.nzSize === 'large' ? DRAWER_LARGE_SIZE : DRAWER_DEFAULT_SIZE;
+      return this.nzHeight === undefined ? toCssPixel(defaultHeight) : toCssPixel(this.nzHeight);
+    }
+    return null;
   }
 
   get isLeftOrRight(): boolean {
