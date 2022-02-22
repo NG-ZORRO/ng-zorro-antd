@@ -16,6 +16,7 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -234,6 +235,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   constructor(
     public nzConfigService: NzConfigService,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     @Optional() private router: Router
@@ -259,9 +261,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngAfterContentInit(): void {
-    Promise.resolve().then(() => {
-      this.setUpRouter();
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve().then(() => this.setUpRouter());
     });
+
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
 
