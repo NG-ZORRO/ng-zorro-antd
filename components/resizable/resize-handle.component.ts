@@ -9,13 +9,15 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
+  NgZone,
   OnInit,
   Output,
   Renderer2
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzResizableService } from './resizable.service';
 
@@ -47,41 +49,42 @@ export class NzResizeHandleMouseDownEvent {
     '[class.nz-resizable-handle-topRight]': `nzDirection === 'topRight'`,
     '[class.nz-resizable-handle-bottomRight]': `nzDirection === 'bottomRight'`,
     '[class.nz-resizable-handle-bottomLeft]': `nzDirection === 'bottomLeft'`,
-    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`,
-    '(mousedown)': 'onMousedown($event)',
-    '(touchstart)': 'onMousedown($event)'
-  }
+    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`
+  },
+  providers: [NzDestroyService]
 })
-export class NzResizeHandleComponent implements OnInit, OnDestroy {
+export class NzResizeHandleComponent implements OnInit {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
   @Output() readonly nzMouseDown = new EventEmitter<NzResizeHandleMouseDownEvent>();
 
-  private destroy$ = new Subject<void>();
-
   constructor(
+    private ngZone: NgZone,
     private nzResizableService: NzResizableService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
+    private host: ElementRef<HTMLElement>,
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
-    // Caretaker note: `mouseEntered$` subject will emit events within the `<root>` zone,
-    // see `NzResizableDirective#ngAfterViewInit`. There're event listeners are added within the `<root>` zone.
-    this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
+    this.nzResizableService.mouseEnteredOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
       if (entered) {
-        this.renderer.addClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+        this.renderer.addClass(this.host.nativeElement, 'nz-resizable-handle-box-hover');
       } else {
-        this.renderer.removeClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+        this.renderer.removeClass(this.host.nativeElement, 'nz-resizable-handle-box-hover');
       }
     });
-  }
 
-  onMousedown(event: MouseEvent | TouchEvent): void {
-    this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, event));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.ngZone.runOutsideAngular(() => {
+      merge(
+        fromEvent<MouseEvent>(this.host.nativeElement, 'mousedown'),
+        fromEvent<TouchEvent>(this.host.nativeElement, 'touchstart')
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: MouseEvent | TouchEvent) => {
+          this.nzResizableService.handleMouseDownOutsideAngular$.next(
+            new NzResizeHandleMouseDownEvent(this.nzDirection, event)
+          );
+        });
+    });
   }
 }
