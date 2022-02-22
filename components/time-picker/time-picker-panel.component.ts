@@ -534,12 +534,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
       this.scrollToTime(120);
     });
     this.buildTimes();
-    setTimeout(() => {
-      this.scrollToTime();
-      this.firstScrolled = true;
-    });
 
     this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.scrollToTime();
+        this.firstScrolled = true;
+      });
+
       fromEvent(this.elementRef.nativeElement, 'mousedown')
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(event => {
