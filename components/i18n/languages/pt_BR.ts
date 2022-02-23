@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ página',
     jump_to: 'Vá até',
     jump_to_confirm: 'confirme',
-    page: '',
+    page: 'Página',
     prev_page: 'Página anterior',
     next_page: 'Próxima página',
     prev_5: '5 páginas anteriores',
     next_5: '5 próximas páginas',
     prev_3: '3 páginas anteriores',
-    next_3: '3 próximas páginas'
+    next_3: '3 próximas páginas',
+    page_size: 'tamanho da página'
   },
   DatePicker: {
     lang: {
@@ -54,7 +55,9 @@ export default {
       previousDecade: 'Década anterior',
       nextDecade: 'Próxima década',
       previousCentury: 'Século anterior',
-      nextCentury: 'Próximo século'
+      nextCentury: 'Próximo século',
+      shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     },
     timePickerLocale: {
       placeholder: 'Hora',
@@ -102,7 +105,9 @@ export default {
       previousDecade: 'Década anterior',
       nextDecade: 'Próxima década',
       previousCentury: 'Século anterior',
-      nextCentury: 'Próximo século'
+      nextCentury: 'Próximo século',
+      shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     },
     timePickerLocale: {
       placeholder: 'Hora',
@@ -116,8 +121,8 @@ export default {
     filterTitle: 'Menu de Filtro',
     filterConfirm: 'OK',
     filterReset: 'Resetar',
-    filterEmptyText: 'Não há filtros',
-    emptyText: 'Não há dados',
+    filterEmptyText: 'Sem filtros',
+    emptyText: 'Sem conteúdo',
     selectAll: 'Selecionar página atual',
     selectInvert: 'Inverter seleção',
     selectionAll: 'Selecionar todo o conteúdo',
@@ -126,7 +131,8 @@ export default {
     collapse: 'Colapsar linha',
     triggerDesc: 'Clique organiza por descendente',
     triggerAsc: 'Clique organiza por ascendente',
-    cancelSort: 'Clique para cancelar organização'
+    cancelSort: 'Clique para cancelar organização',
+    selectNone: 'Apagar todo o conteúdo'
   },
   Modal: {
     okText: 'OK',
@@ -141,13 +147,13 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Procurar',
     itemUnit: 'item',
-    itemsUnit: 'itens',
-    remove: 'Remove',
-    selectCurrent: 'Selecione a página atual',
+    itemsUnit: 'items',
+    remove: 'Remover',
+    selectCurrent: 'Selecionar página atual',
     removeCurrent: 'Remover página atual',
-    selectAll: 'Selecionar todos os dados',
-    removeAll: 'Remover todos os dados',
-    selectInvert: 'Inverter a página atual'
+    selectAll: 'Selecionar todos',
+    removeAll: 'Remover todos',
+    selectInvert: 'Inverter seleção atual'
   },
   Upload: {
     uploading: 'Enviando...',
@@ -170,5 +176,8 @@ export default {
   },
   PageHeader: {
     back: 'Retornar'
+  },
+  Image: {
+    preview: 'Pré-visualização'
   }
 };

@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ الصفحة',
     jump_to: 'الذهاب إلى',
     jump_to_confirm: 'تأكيد',
-    page: '',
+    page: 'الصفحة',
     prev_page: 'الصفحة السابقة',
     next_page: 'الصفحة التالية',
     prev_5: 'خمس صفحات سابقة',
     next_5: 'خمس صفحات تالية',
     prev_3: 'ثلاث صفحات سابقة',
-    next_3: 'ثلاث صفحات تالية'
+    next_3: 'ثلاث صفحات تالية',
+    page_size: 'مقاس الصفحه'
   },
   DatePicker: {
     lang: {
@@ -145,8 +146,8 @@ export default {
   Text: {
     edit: 'تعديل',
     copy: 'نسخ',
-    copied: 'تم النسخ',
-    expand: 'المزيد'
+    copied: 'نقل',
+    expand: 'وسع'
   },
   PageHeader: {
     back: 'عودة'

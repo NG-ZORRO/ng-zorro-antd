@@ -9,20 +9,27 @@ export default {
     items_per_page: '/ page',
     jump_to: 'Aller à',
     jump_to_confirm: 'confirmer',
-    page: '',
+    page: 'Page',
     prev_page: 'Page précédente',
     next_page: 'Page suivante',
     prev_5: '5 Pages précédentes',
     next_5: '5 Pages suivantes',
     prev_3: '3 Pages précédentes',
     next_3: '3 Pages suivantes',
-    page_size: 'Page Size'
+    page_size: 'taille de la page'
   },
   DatePicker: {
     lang: {
       placeholder: 'Sélectionner une date',
+      yearPlaceholder: 'Sélectionner une année',
+      quarterPlaceholder: 'Sélectionner un trimestre',
+      monthPlaceholder: 'Sélectionner un mois',
+      weekPlaceholder: 'Sélectionner une semaine',
       rangePlaceholder: ['Date de début', 'Date de fin'],
-      locale: 'fr_BE',
+      rangeYearPlaceholder: ['Année de début', 'Année de fin'],
+      rangeMonthPlaceholder: ['Mois de début', 'Mois de fin'],
+      rangeWeekPlaceholder: ['Semaine de début', 'Semaine de fin'],
+      locale: 'fr_CA',
       today: "Aujourd'hui",
       now: 'Maintenant',
       backToToday: "Aujourd'hui",
@@ -31,14 +38,14 @@ export default {
       month: 'Mois',
       year: 'Année',
       timeSelect: "Sélectionner l'heure",
-      dateSelect: "Sélectionner l'heure",
+      dateSelect: 'Sélectionner la date',
       monthSelect: 'Choisissez un mois',
       yearSelect: 'Choisissez une année',
       decadeSelect: 'Choisissez une décennie',
       yearFormat: 'YYYY',
-      dateFormat: 'D/M/YYYY',
-      dayFormat: 'D',
-      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      dateFormat: 'DD/MM/YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
       monthBeforeYear: true,
       previousMonth: 'Mois précédent (PageUp)',
       nextMonth: 'Mois suivant (PageDown)',
@@ -50,17 +57,26 @@ export default {
       nextCentury: 'Siècle suivant'
     },
     timePickerLocale: {
-      placeholder: "Sélectionner l'heure"
+      placeholder: "Sélectionner l'heure",
+      rangePlaceholder: ['Heure de début', 'Heure de fin']
     }
   },
   TimePicker: {
-    placeholder: "Sélectionner l'heure"
+    placeholder: "Sélectionner l'heure",
+    rangePlaceholder: ['Heure de début', 'Heure de fin']
   },
   Calendar: {
     lang: {
       placeholder: 'Sélectionner une date',
+      yearPlaceholder: 'Sélectionner une année',
+      quarterPlaceholder: 'Sélectionner un trimestre',
+      monthPlaceholder: 'Sélectionner un mois',
+      weekPlaceholder: 'Sélectionner une semaine',
       rangePlaceholder: ['Date de début', 'Date de fin'],
-      locale: 'fr_BE',
+      rangeYearPlaceholder: ['Année de début', 'Année de fin'],
+      rangeMonthPlaceholder: ['Mois de début', 'Mois de fin'],
+      rangeWeekPlaceholder: ['Semaine de début', 'Semaine de fin'],
+      locale: 'fr_CA',
       today: "Aujourd'hui",
       now: 'Maintenant',
       backToToday: "Aujourd'hui",
@@ -69,14 +85,14 @@ export default {
       month: 'Mois',
       year: 'Année',
       timeSelect: "Sélectionner l'heure",
-      dateSelect: "Sélectionner l'heure",
+      dateSelect: 'Sélectionner la date',
       monthSelect: 'Choisissez un mois',
       yearSelect: 'Choisissez une année',
       decadeSelect: 'Choisissez une décennie',
       yearFormat: 'YYYY',
-      dateFormat: 'D/M/YYYY',
-      dayFormat: 'D',
-      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      dateFormat: 'DD/MM/YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
       monthBeforeYear: true,
       previousMonth: 'Mois précédent (PageUp)',
       nextMonth: 'Mois suivant (PageDown)',
@@ -88,13 +104,23 @@ export default {
       nextCentury: 'Siècle suivant'
     },
     timePickerLocale: {
-      placeholder: "Sélectionner l'heure"
+      placeholder: "Sélectionner l'heure",
+      rangePlaceholder: ['Heure de début', 'Heure de fin']
     }
   },
   Table: {
     filterTitle: 'Filtrer',
     filterConfirm: 'OK',
-    filterReset: 'Réinitialiser'
+    filterReset: 'Réinitialiser',
+    selectAll: 'Sélectionner la page actuelle',
+    selectInvert: 'Inverser la sélection de la page actuelle',
+    selectionAll: 'Sélectionner toutes les données',
+    sortTitle: 'Trier',
+    expand: 'Développer la ligne',
+    collapse: 'Réduire la ligne',
+    triggerDesc: 'Trier par ordre décroissant',
+    triggerAsc: 'Trier par ordre croissant',
+    cancelSort: 'Annuler le tri'
   },
   Modal: {
     okText: 'OK',
@@ -106,9 +132,12 @@ export default {
     cancelText: 'Annuler'
   },
   Transfer: {
-    searchPlaceholder: 'Recherche',
+    searchPlaceholder: 'Rechercher',
     itemUnit: 'élément',
     itemsUnit: 'éléments'
+  },
+  Empty: {
+    description: 'Aucune donnée'
   },
   Upload: {
     uploading: 'Téléchargement...',
@@ -117,13 +146,13 @@ export default {
     previewFile: 'Fichier de prévisualisation',
     downloadFile: 'Télécharger un fichier'
   },
-  Empty: {
-    description: 'Aucune donnée'
-  },
   Text: {
-    edit: 'éditer',
-    copy: 'copier',
-    copied: 'copie effectuée',
-    expand: 'développer'
+    edit: 'Éditer',
+    copy: 'Copier',
+    copied: 'Copie effectuée',
+    expand: 'Développer'
+  },
+  PageHeader: {
+    back: 'Retour'
   }
 };

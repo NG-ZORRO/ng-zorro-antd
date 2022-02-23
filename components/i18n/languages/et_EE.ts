@@ -15,7 +15,8 @@ export default {
     prev_5: 'Eelmised 5 lehekülge',
     next_5: 'Järgmised 5 lehekülge',
     prev_3: 'Eelmised 3 lehekülge',
-    next_3: 'Järgmised 3 lehekülge'
+    next_3: 'Järgmised 3 lehekülge',
+    page_size: 'lehe suurus'
   },
   DatePicker: {
     lang: {
@@ -95,7 +96,19 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Nulli',
     selectAll: 'Vali kõik',
-    selectInvert: 'Inverteeri valik'
+    selectInvert: 'Inverteeri valik',
+    filterEmptyText: 'Filtreid pole',
+    filterCheckall: 'Vali kõik',
+    filterSearchPlaceholder: 'Otsi filtritest',
+    emptyText: 'Andmed puuduvad',
+    selectNone: 'Kustuta kõik andmed',
+    selectionAll: 'Vali kõik andmed',
+    sortTitle: 'Sorteeri',
+    expand: 'Laienda rida',
+    collapse: 'Ahenda rida',
+    triggerDesc: 'Klõpsa kahanevalt sortimiseks',
+    triggerAsc: 'Klõpsa kasvavalt sortimiseks',
+    cancelSort: 'Klõpsa sortimise tühistamiseks'
   },
   Modal: {
     okText: 'OK',
@@ -109,16 +122,41 @@ export default {
   Transfer: {
     searchPlaceholder: 'Otsi siit',
     itemUnit: 'kogus',
-    itemsUnit: 'kogus'
+    itemsUnit: 'kogused',
+    titles: ['', ''],
+    remove: 'Eemalda',
+    selectCurrent: 'Vali praegune leht',
+    removeCurrent: 'Eemalda praegune leht',
+    selectAll: 'Vali kõik',
+    removeAll: 'Eemalda kõik andmed',
+    selectInvert: 'Inverteeri valik'
   },
   Upload: {
     uploading: 'Üleslaadimine...',
     removeFile: 'Eemalda fail',
     uploadError: 'Üleslaadimise tõrge',
     previewFile: 'Faili eelvaade',
-    downloadFile: 'Laadige fail alla'
+    downloadFile: 'Lae fail alla'
   },
   Empty: {
     description: 'Andmed puuduvad'
+  },
+  global: {
+    placeholder: 'Palun vali'
+  },
+  Icon: {
+    icon: 'ikoon'
+  },
+  Text: {
+    edit: 'Muuda',
+    copy: 'Kopeeri',
+    copied: 'Kopeeritud',
+    expand: 'Laienda'
+  },
+  PageHeader: {
+    back: 'Tagasi'
+  },
+  Image: {
+    preview: 'Eelvaade'
   }
 };
