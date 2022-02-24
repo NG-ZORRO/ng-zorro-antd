@@ -69,9 +69,17 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(data => {
-        this.ngZone.run(() => {
+        // Caretaker note: we don't have to re-enter the Angular zone each time the stream emits.
+        // The below check is necessary to be sure that zone is not nooped through `BootstrapOptions`
+        // (`bootstrapModule(AppModule, { ngZone: 'noop' }))`. The `ngZone instanceof NgZone` may return
+        // `false` if zone is nooped, since `ngZone` will be an instance of the `NoopNgZone`.
+        // The `ResizeObserver` might be also patched through `zone.js/dist/zone-patch-resize-observer`,
+        // thus calling `ngZone.run` again will cause another change detection.
+        if (this.ngZone instanceof NgZone && NgZone.isInAngularZone()) {
           this.listOfAutoWidth.next(data);
-        });
+        } else {
+          this.ngZone.run(() => this.listOfAutoWidth.next(data));
+        }
       });
   }
   ngOnDestroy(): void {
