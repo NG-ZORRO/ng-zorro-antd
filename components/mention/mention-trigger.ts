@@ -115,7 +115,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
     this.setupEventListener('focusin', this.onFocusin);
     this.setupEventListener('input', this.onInput, true);
     this.setupEventListener('click', this.onClick, true);
-    this.setupEventListener('keydown', this.onInput, true);
+    this.setupEventListener('keydown', this.onKeydown, true);
   }
 
   ngOnDestroy(): void {
