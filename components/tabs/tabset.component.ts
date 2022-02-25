@@ -79,6 +79,7 @@ let nextId = 0;
     >
       <div
         class="ant-tabs-tab"
+        nzTabHover
         [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
         [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
