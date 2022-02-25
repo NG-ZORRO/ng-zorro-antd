@@ -21,6 +21,7 @@
     "gulp": "gulp",
     "lint": "eslint --cache . --ext .ts,.html",
     "lint:fix": "eslint --fix --cache . --ext .ts,.html",
+    "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
     "prepare": "husky install"
   },
   "dependencies": {
