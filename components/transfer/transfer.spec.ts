@@ -480,7 +480,7 @@ describe('transfer', () => {
       <p id="transfer-footer">footer</p>
     </ng-template>
   `,
-  styleUrls: ['../ng-zorro-antd.less'],
+  styleUrls: ['./style/index.less'],
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {

@@ -1039,7 +1039,7 @@ class DynamicTabsTestComponent {
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../ng-zorro-antd.less']
+  styleUrls: ['../style/entry.less', './style/entry.less']
 })
 class ScrollableTabsTestComponent {
   selectedIndex = 0;

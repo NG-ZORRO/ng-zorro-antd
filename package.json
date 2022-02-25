@@ -30,6 +30,7 @@
     "ngx-hover-preload": "0.0.3"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^13.0.2",
     "@angular-devkit/core": "^13.0.2",
     "@angular-devkit/schematics": "^13.0.2",

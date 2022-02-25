@@ -280,7 +280,7 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzAlt]="nzAlt"
     ></nz-avatar>
   `,
-  styleUrls: ['../ng-zorro-antd.less']
+  styleUrls: ['./style/index.less']
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
