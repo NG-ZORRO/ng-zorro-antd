@@ -11,6 +11,7 @@ export { NzTabBodyComponent as ɵNzTabBodyComponent } from './tab-body.component
 export { NzTabNavOperationComponent as ɵNzTabNavOperationComponent } from './tab-nav-operation.component';
 export { NzTabScrollListDirective as ɵNzTabScrollListDirective } from './tab-scroll-list.directive';
 export { NzTabCloseButtonComponent as ɵNzTabCloseButtonComponent } from './tab-close-button.component';
+export { NzTabHoverDirective as ɵNzTabHoverDirective } from './tab-hover.directive';
 export * from './tab.component';
 export * from './tab.directive';
 export * from './tab-link.directive';
