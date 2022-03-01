@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
     `
       .space-align-container {
         display: flex;
-        align-item: flex-start;
+        align-items: flex-start;
         flex-wrap: wrap;
       }
       .space-align-block {
