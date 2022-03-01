@@ -118,7 +118,10 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$)
         )
         .subscribe(() => {
-          this.ngZone.run(() => this.nzCollapseComponent.click(this));
+          this.ngZone.run(() => {
+            this.nzCollapseComponent.click(this);
+            this.cdr.markForCheck();
+          });
         })
     );
   }
