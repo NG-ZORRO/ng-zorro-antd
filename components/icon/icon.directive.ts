@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
+import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -78,8 +79,8 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     private readonly ngZone: NgZone,
     private readonly changeDetectorRef: ChangeDetectorRef,
     elementRef: ElementRef,
-    public iconService: NzIconService,
-    public renderer: Renderer2,
+    public readonly iconService: NzIconService,
+    public readonly renderer: Renderer2,
     @Optional() iconPatch: NzIconPatchService
   ) {
     super(iconService, elementRef, renderer);
@@ -139,18 +140,21 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.ngZone.runOutsideAngular(() => {
       from(this._changeIcon())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(svgOrRemove => {
-          // The _changeIcon method would call Renderer to remove the element of the old icon,
-          // which would call `markElementAsRemoved` eventually,
-          // so we should call `detectChanges` to tell Angular remove the DOM node.
-          // #7186
-          this.changeDetectorRef.detectChanges();
+        .subscribe({
+          next: svgOrRemove => {
+            // The _changeIcon method would call Renderer to remove the element of the old icon,
+            // which would call `markElementAsRemoved` eventually,
+            // so we should call `detectChanges` to tell Angular remove the DOM node.
+            // #7186
+            this.changeDetectorRef.detectChanges();
 
-          if (svgOrRemove) {
-            this.setSVGData(svgOrRemove);
-            this.handleSpin(svgOrRemove);
-            this.handleRotate(svgOrRemove);
-          }
+            if (svgOrRemove) {
+              this.setSVGData(svgOrRemove);
+              this.handleSpin(svgOrRemove);
+              this.handleRotate(svgOrRemove);
+            }
+          },
+          error: warn
         });
     });
   }
