@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, OnDestroy, Optional, RendererFactory2, Self } from '@angular/core';
@@ -33,6 +34,10 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 })
 export class NzIconService extends IconService implements OnDestroy {
   configUpdated$ = new Subject<void>();
+
+  protected override get _disableDynamicLoading(): boolean {
+    return !this.platform.isBrowser;
+  }
 
   private iconfontCache = new Set<string>();
   private subscription: Subscription | null = null;
@@ -76,14 +81,14 @@ export class NzIconService extends IconService implements OnDestroy {
     rendererFactory: RendererFactory2,
     sanitizer: DomSanitizer,
     protected nzConfigService: NzConfigService,
+    private platform: Platform,
     @Optional() handler: HttpBackend,
     @Optional() @Inject(DOCUMENT) _document: NzSafeAny,
     @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[]
   ) {
-    super(rendererFactory, handler, _document, sanitizer);
+    super(rendererFactory, handler, _document, sanitizer, [...NZ_ICONS_USED_BY_ZORRO, ...(icons || [])]);
 
     this.onConfigChange();
-    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
   }
