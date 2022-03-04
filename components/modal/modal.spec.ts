@@ -1095,7 +1095,7 @@ describe('NzModal', () => {
       });
 
       fixture.detectChanges();
-      flushMicrotasks();
+      tick(16);
 
       expect(document.activeElement!.tagName).toBe('NZ-MODAL-CONTAINER', 'Expected modal container to be focused.');
     }));
