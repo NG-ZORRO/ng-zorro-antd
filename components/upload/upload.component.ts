@@ -180,7 +180,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   constructor(
     private ngZone: NgZone,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private document: NzSafeAny,
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
     @Optional() private directionality: Directionality
@@ -353,7 +353,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   ngAfterViewInit(): void {
     // fix firefox drop open new tab
     this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.document.body, 'drop')
+      fromEvent<MouseEvent>(this.document.body, 'drop')
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           event.preventDefault();
