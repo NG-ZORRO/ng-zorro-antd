@@ -23,6 +23,7 @@ describe('radio', () => {
           NzTestRadioGroupFormComponent,
           NzTestRadioGroupDisabledComponent,
           NzTestRadioGroupDisabledFormComponent,
+          NzTestRadioGroupLabelNgModelComponent,
           NzTestRadioSingleRtlComponent,
           NzTestRadioGroupRtlComponent,
           NzTestRadioButtonRtlComponent
@@ -322,6 +323,30 @@ describe('radio', () => {
       }).not.toThrow();
     }));
   });
+  describe('ngModel on the `nz-radio` button', () => {
+    it('`onChange` of each `nz-radio` should emit correct values', () => {
+      const fixture = TestBed.createComponent(NzTestRadioGroupLabelNgModelComponent);
+      fixture.detectChanges();
+
+      const radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
+
+      radios[0].nativeElement.click();
+      expect(fixture.componentInstance.items).toEqual([
+        { label: 'A', checked: true },
+        { label: 'B', checked: false },
+        { label: 'C', checked: false },
+        { label: 'D', checked: false }
+      ]);
+
+      radios[1].nativeElement.click();
+      expect(fixture.componentInstance.items).toEqual([
+        { label: 'A', checked: false },
+        { label: 'B', checked: true },
+        { label: 'C', checked: false },
+        { label: 'D', checked: false }
+      ]);
+    });
+  });
   describe('RTL', () => {
     it('should single radio className correct', () => {
       const fixture = TestBed.createComponent(NzTestRadioSingleRtlComponent);
@@ -518,6 +543,37 @@ export class NzTestRadioGroupDisabledFormComponent implements OnInit {
 export class NzTestRadioGroupSolidComponent {
   value = 'A';
   singleDisabled = false;
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/7254 */
+@Component({
+  template: `
+    <nz-radio-group>
+      <label nz-radio *ngFor="let item of items" [nzValue]="item.label" [(ngModel)]="item.checked">
+        {{ item.label }}
+      </label>
+    </nz-radio-group>
+  `
+})
+export class NzTestRadioGroupLabelNgModelComponent {
+  items = [
+    {
+      label: 'A',
+      checked: false
+    },
+    {
+      label: 'B',
+      checked: false
+    },
+    {
+      label: 'C',
+      checked: false
+    },
+    {
+      label: 'D',
+      checked: false
+    }
+  ];
 }
 
 @Component({

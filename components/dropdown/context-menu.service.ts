@@ -5,8 +5,8 @@
 
 import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
@@ -26,7 +26,7 @@ export class NzContextMenuService {
   private overlayRef: OverlayRef | null = null;
   private closeSubscription = Subscription.EMPTY;
 
-  constructor(private overlay: Overlay) {}
+  constructor(private ngZone: NgZone, private overlay: Overlay) {}
 
   create($event: MouseEvent | { x: number; y: number }, nzDropdownMenuComponent: NzDropdownMenuComponent): void {
     this.close(true);
@@ -44,17 +44,24 @@ export class NzContextMenuService {
       disposeOnNavigation: true,
       scrollStrategy: this.overlay.scrollStrategies.close()
     });
-    this.closeSubscription = merge(
-      nzDropdownMenuComponent.descendantMenuItemClick$,
-      fromEvent<MouseEvent>(document, 'click').pipe(
-        filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
-        /** handle firefox contextmenu event **/
-        filter(event => event.button !== 2),
-        take(1)
+
+    this.closeSubscription = new Subscription();
+
+    this.closeSubscription.add(nzDropdownMenuComponent.descendantMenuItemClick$.subscribe(() => this.close()));
+
+    this.closeSubscription.add(
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<MouseEvent>(document, 'click')
+          .pipe(
+            filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+            /** handle firefox contextmenu event **/
+            filter(event => event.button !== 2),
+            take(1)
+          )
+          .subscribe(() => this.ngZone.run(() => this.close()))
       )
-    ).subscribe(() => {
-      this.close();
-    });
+    );
+
     this.overlayRef.attach(
       new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef)
     );

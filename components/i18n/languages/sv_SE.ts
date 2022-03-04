@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ sida',
     jump_to: 'Gå till',
     jump_to_confirm: 'bekräfta',
-    page: '',
+    page: 'Sida',
     prev_page: 'Föreg sida',
     next_page: 'Nästa sida',
     prev_5: 'Föreg 5 sidor',
     next_5: 'Nästa 5 sidor',
     prev_3: 'Föreg 3 sidor',
-    next_3: 'Nästa 3 sidor'
+    next_3: 'Nästa 3 sidor',
+    page_size: 'sidstorlek'
   },
   DatePicker: {
     lang: {
@@ -46,7 +47,14 @@ export default {
       previousDecade: 'Föreg årtionde',
       nextDecade: 'Nästa årtionde',
       previousCentury: 'Föreg århundrade',
-      nextCentury: 'Nästa århundrade'
+      nextCentury: 'Nästa århundrade',
+      yearPlaceholder: 'Välj år',
+      quarterPlaceholder: 'Välj kvartal',
+      monthPlaceholder: 'Välj månad',
+      weekPlaceholder: 'Välj vecka',
+      rangeYearPlaceholder: ['Startår', 'Slutår'],
+      rangeMonthPlaceholder: ['Startmånad', 'Slutmånad'],
+      rangeWeekPlaceholder: ['Startvecka', 'Slutvecka']
     },
     timePickerLocale: {
       placeholder: 'Välj tid'
@@ -84,7 +92,14 @@ export default {
       previousDecade: 'Föreg årtionde',
       nextDecade: 'Nästa årtionde',
       previousCentury: 'Föreg århundrade',
-      nextCentury: 'Nästa århundrade'
+      nextCentury: 'Nästa århundrade',
+      yearPlaceholder: 'Välj år',
+      quarterPlaceholder: 'Välj kvartal',
+      monthPlaceholder: 'Välj månad',
+      weekPlaceholder: 'Välj vecka',
+      rangeYearPlaceholder: ['Startår', 'Slutår'],
+      rangeMonthPlaceholder: ['Startmånad', 'Slutmånad'],
+      rangeWeekPlaceholder: ['Startvecka', 'Slutvecka']
     },
     timePickerLocale: {
       placeholder: 'Välj tid'
@@ -93,7 +108,19 @@ export default {
   Table: {
     filterTitle: 'Filtermeny',
     filterConfirm: 'OK',
-    filterReset: 'Rensa'
+    filterReset: 'Återställ',
+    filterEmptyText: 'Inga filter',
+    emptyText: 'Ingen data',
+    selectAll: 'Markera nuvarande sida',
+    selectInvert: 'Invertera nuvarande sida',
+    selectNone: 'Avmarkera all data',
+    selectionAll: 'Markera all data',
+    sortTitle: 'Sortera',
+    expand: 'Expandera rad',
+    collapse: 'Komprimera rad',
+    triggerDesc: 'Klicka för att sortera i fallande ordning',
+    triggerAsc: 'Klicka för att sortera i stigande ordning',
+    cancelSort: 'Klicka för att avbryta sortering'
   },
   Modal: {
     okText: 'OK',
@@ -105,24 +132,43 @@ export default {
     cancelText: 'Avbryt'
   },
   Transfer: {
-    searchPlaceholder: 'Sök',
+    searchPlaceholder: 'Sök här',
     itemUnit: 'objekt',
-    itemsUnit: 'objekt'
+    itemsUnit: 'objekt',
+    titles: ['', ''],
+    remove: 'Ta bort',
+    selectCurrent: 'Markera nuvarande sida',
+    removeCurrent: 'Ta bort nuvarande sida',
+    selectAll: 'Markera all data',
+    removeAll: 'Ta bort all data',
+    selectInvert: 'Invertera nuvarande sida'
   },
   Empty: {
-    description: 'Ingen information'
+    description: 'Ingen data'
   },
   Text: {
-    edit: 'editera',
-    copy: 'kopiera',
-    copied: 'kopierad',
-    expand: 'expandera'
+    edit: 'Redigera',
+    copy: 'Kopiera',
+    copied: 'Kopierad',
+    expand: 'Expandera'
   },
   Upload: {
-    uploading: 'Uppladdning...',
+    uploading: 'Laddar upp...',
     removeFile: 'Ta bort fil',
     uploadError: 'Uppladdningsfel',
-    previewFile: 'Förhandsgranska filen',
-    downloadFile: 'Nedladdning fil'
+    previewFile: 'Förhandsgranska fil',
+    downloadFile: 'Ladda ned fil'
+  },
+  global: {
+    placeholder: 'Vänligen välj'
+  },
+  Icon: {
+    icon: 'ikon'
+  },
+  PageHeader: {
+    back: 'Tillbaka'
+  },
+  Image: {
+    preview: 'Förhandsgranska'
   }
 };

@@ -172,7 +172,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   constructor(
     elementRef: ElementRef,
     public readonly nzConfigService: NzConfigService,
-    private readonly ngZone: NgZone,
+    public readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
     private readonly cdr: ChangeDetectorRef,
     private readonly platform: Platform,

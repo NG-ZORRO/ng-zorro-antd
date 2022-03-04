@@ -8,19 +8,21 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -68,11 +70,11 @@ import {
   `,
   host: {
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
-    '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`,
-    '(click)': 'emitNextSortValue()'
-  }
+    '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
+  },
+  providers: [NzDestroyService]
 })
-export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
+export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   static ngAcceptInputType_nzShowSort: BooleanInput;
   static ngAcceptInputType_nzShowFilter: BooleanInput;
   static ngAcceptInputType_nzCustomFilter: BooleanInput;
@@ -83,7 +85,6 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
   sortOrder: NzTableSortOrder = null;
   sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
   private sortOrderChange$ = new Subject<NzTableSortOrder>();
-  private destroy$ = new Subject();
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
   @Input() nzColumnKey?: string;
@@ -110,14 +111,6 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  emitNextSortValue(): void {
-    if (this.nzShowSort) {
-      const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
-      this.setSortOrder(nextOrder);
-      this.manualClickOrder$.next(this);
-    }
-  }
-
   setSortOrder(order: NzTableSortOrder): void {
     this.sortOrderChange$.next(order);
   }
@@ -138,9 +131,29 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
     this.calcOperatorChange$.next();
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private host: ElementRef<HTMLElement>,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() =>
+      fromEvent(this.host.nativeElement, 'click')
+        .pipe(
+          filter(() => this.nzShowSort),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
+          this.ngZone.run(() => {
+            this.setSortOrder(nextOrder);
+            this.manualClickOrder$.next(this);
+          });
+        })
+    );
+
     this.sortOrderChange$.pipe(takeUntil(this.destroy$)).subscribe(order => {
       if (this.sortOrder !== order) {
         this.sortOrder = order;
@@ -193,9 +206,5 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
     if (nzSortFn || nzFilterFn || nzSortPriority || nzFilters) {
       this.updateCalcOperator();
     }
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

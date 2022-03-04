@@ -5,15 +5,21 @@
 
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
   ExistingProvider,
   forwardRef,
-  OnDestroy
+  NgZone,
+  OnDestroy,
+  Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NZ_MENTION_CONFIG } from './config';
@@ -29,28 +35,34 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
 @Directive({
   selector: 'input[nzMentionTrigger], textarea[nzMentionTrigger]',
   exportAs: 'nzMentionTrigger',
-  providers: [NZ_MENTION_TRIGGER_ACCESSOR],
+  providers: [NzDestroyService, NZ_MENTION_TRIGGER_ACCESSOR],
   host: {
-    autocomplete: 'off',
-    '(focusin)': 'onFocusin.emit()',
-    '(blur)': 'onBlur.emit()',
-    '(input)': 'onInput.emit($event)',
-    '(keydown)': 'onKeydown.emit($event)',
-    '(click)': 'onClick.emit($event)'
+    autocomplete: 'off'
   }
 })
 export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
 
-  readonly onFocusin: EventEmitter<void> = new EventEmitter();
-  readonly onBlur: EventEmitter<void> = new EventEmitter();
-  readonly onInput: EventEmitter<KeyboardEvent> = new EventEmitter();
-  readonly onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
-  readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onFocusin: EventEmitter<void> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onBlur: EventEmitter<void> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onInput: EventEmitter<KeyboardEvent> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
   value?: string;
 
-  constructor(public el: ElementRef, private nzMentionService: NzMentionService) {}
+  constructor(
+    public el: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
+    private ngZone: NgZone,
+    private ref: ChangeDetectorRef,
+    private destroy$: NzDestroyService,
+    private nzMentionService: NzMentionService
+  ) {}
 
   completeEvents(): void {
     this.onFocusin.complete();
@@ -60,7 +72,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
     this.onClick.complete();
   }
 
-  focus(caretPos?: number): void {
+  focus(caretPos: number | null = null): void {
     this.el.nativeElement.focus();
     this.el.nativeElement.setSelectionRange(caretPos, caretPos);
   }
@@ -98,9 +110,30 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
 
   ngAfterViewInit(): void {
     this.nzMentionService.registerTrigger(this);
+
+    this.setupEventListener('blur', this.onBlur);
+    this.setupEventListener('focusin', this.onFocusin);
+    this.setupEventListener('input', this.onInput, true);
+    this.setupEventListener('click', this.onClick, true);
+    this.setupEventListener('keydown', this.onKeydown, true);
   }
 
   ngOnDestroy(): void {
     this.completeEvents();
+  }
+
+  private setupEventListener<T>(eventName: string, eventEmitter: EventEmitter<T>, shouldPassEvent = false): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<T>(this.el.nativeElement, eventName)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (eventEmitter.observers.length) {
+            this.ngZone.run(() => {
+              eventEmitter.emit(shouldPassEvent ? event : undefined);
+              this.ref.markForCheck();
+            });
+          }
+        });
+    });
   }
 }

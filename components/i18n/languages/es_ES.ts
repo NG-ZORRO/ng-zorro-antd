@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ página',
     jump_to: 'Ir a',
     jump_to_confirm: 'confirmar',
-    page: '',
+    page: 'Página',
     prev_page: 'Página anterior',
     next_page: 'Página siguiente',
     prev_5: '5 páginas previas',
     next_5: '5 páginas siguientes',
     prev_3: '3 páginas previas',
-    next_3: '3 páginas siguientes'
+    next_3: '3 páginas siguientes',
+    page_size: 'tamaño de página'
   },
   DatePicker: {
     lang: {
@@ -123,10 +124,11 @@ export default {
     selectionAll: 'Seleccionar todos los datos',
     sortTitle: 'Ordenar',
     expand: 'Expandir fila',
-    collapse: 'Ocultar fila',
-    triggerDesc: 'Clic para ordenar descendentemente',
-    triggerAsc: 'Clic para ordenar ascedentemente',
-    cancelSort: 'Clic para cancelar ordenación'
+    collapse: 'Colapsar fila',
+    triggerDesc: 'Click para ordenar en orden descendente',
+    triggerAsc: 'Click para ordenar en orden ascendente',
+    cancelSort: 'Click para cancelar ordenamiento',
+    selectNone: 'Vacíe todo'
   },
   Modal: {
     okText: 'Aceptar',
@@ -144,7 +146,7 @@ export default {
     itemsUnit: 'elementos',
     remove: 'Eliminar',
     selectCurrent: 'Seleccionar página actual',
-    removeCurrent: 'Quitar página actual',
+    removeCurrent: 'Remover página actual',
     selectAll: 'Seleccionar todos los datos',
     removeAll: 'Eliminar todos los datos',
     selectInvert: 'Invertir página actual'
@@ -163,12 +165,15 @@ export default {
     icon: 'ícono'
   },
   Text: {
-    edit: 'editar',
-    copy: 'copiar',
-    copied: 'copiado',
-    expand: 'expandir'
+    edit: 'Editar',
+    copy: 'Copiar',
+    copied: 'Copiado',
+    expand: 'Expandir'
   },
   PageHeader: {
-    back: 'volver'
+    back: 'Volver'
+  },
+  Image: {
+    preview: 'Previsualización'
   }
 };

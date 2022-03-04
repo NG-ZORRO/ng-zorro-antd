@@ -24,6 +24,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzBanner]` | 是否用作顶部公告 | `boolean` | `false` |
+| `[nzAction]` | 自定义操作项 | `string \| TemplateRef<void>` | - |
 | `[nzCloseable]` | 默认不显示关闭按钮 | `boolean` | - | ✅ |
 | `[nzCloseText]` | 自定义关闭按钮 | `string \| TemplateRef<void>` | - |
 | `[nzDescription]` | 警告提示的辅助性文字介绍 | `string \| TemplateRef<void>` | - |

@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "engines": {
-    "node": "^12.20.0 || ^14.0.0"
+    "node": "^12.20.0 || ^14.15.0 || >=16.10.0"
   },
   "scripts": {
     "start": "gulp start:dev",
@@ -21,15 +21,17 @@
     "gulp": "gulp",
     "lint": "eslint --cache . --ext .ts,.html",
     "lint:fix": "eslint --fix --cache . --ext .ts,.html",
+    "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
     "prepare": "husky install"
   },
   "dependencies": {
     "@angular/cdk": "^13.0.1",
-    "@ant-design/icons-angular": "^13.0.1",
+    "@ant-design/icons-angular": "^13.1.0",
     "date-fns": "^2.16.1",
     "ngx-hover-preload": "0.0.3"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^13.0.0",
     "@angular-devkit/build-angular": "^13.0.2",
     "@angular-devkit/core": "^13.0.2",
     "@angular-devkit/schematics": "^13.0.2",

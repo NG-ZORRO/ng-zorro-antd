@@ -559,7 +559,7 @@ describe('transfer', () => {
       <p id="transfer-tit">tit-{{ dir }}</p>
     </ng-template>
   `,
-  styleUrls: ['../ng-zorro-antd.less'],
+  styleUrls: ['./style/index.less'],
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {

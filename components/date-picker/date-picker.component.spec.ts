@@ -865,6 +865,46 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).value).toBe('');
     }));
 
+    it('should support updating the disabledtime state when the current time changes', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = (current: Date) => ({
+        nzDisabledHours: () => {
+          if (current) {
+            if (current.getMonth() === 2) {
+              return [0, 1, 2];
+            } else {
+              return [4, 5, 6];
+            }
+          } else {
+            return [7, 8, 9];
+          }
+        },
+        nzDisabledMinutes: () => [],
+        nzDisabledSeconds: () => []
+      });
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      // input disabled value
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('2020-03-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+
+      // input disabled value
+      typeInElement('2020-04-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(5)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+    }));
+
     it('should support nzRenderExtraFooter', fakeAsync(() => {
       fixtureInstance.nzRenderExtraFooter = () => fixtureInstance.tplExtraFooter;
       fixture.detectChanges();

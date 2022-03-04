@@ -149,10 +149,13 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
         overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
-      this.scroll$.next();
+      // Caretaker note: we have to emit the value outside of the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
+      // event listener will be also added outside of the Angular zone.
+      this.ngZone.runOutsideAngular(() => this.scroll$.next());
     }
     if (data) {
-      this.data$.next();
+      // See the comment above.
+      this.ngZone.runOutsideAngular(() => this.data$.next());
     }
   }
   ngAfterViewInit(): void {

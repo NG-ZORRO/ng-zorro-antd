@@ -17,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -193,6 +193,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
       return;
     }
     let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
+    let transformedFile: string | Blob | File | NzUploadFile | undefined;
     const opt = this.options;
     const { uid } = file;
     const { action, data, headers, transformFile } = opt;
@@ -238,7 +239,8 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     if (typeof transformFile === 'function') {
       const transformResult = transformFile(file);
       process$ = process$.pipe(
-        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult)))
+        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))),
+        tap(newFile => (transformedFile = newFile))
       );
     }
 
@@ -249,7 +251,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
           switchMap(() => dataResult),
           map(res => {
             args.data = res;
-            return file;
+            return transformedFile ?? file;
           })
         );
       } else {
@@ -264,7 +266,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
           switchMap(() => headersResult),
           map(res => {
             args.headers = res;
-            return file;
+            return transformedFile ?? file;
           })
         );
       } else {

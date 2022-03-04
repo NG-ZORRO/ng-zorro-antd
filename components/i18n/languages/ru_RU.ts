@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ стр.',
     jump_to: 'Перейти',
     jump_to_confirm: 'подтвердить',
-    page: '',
+    page: 'Страница',
     prev_page: 'Назад',
     next_page: 'Вперед',
     prev_5: 'Предыдущие 5',
     next_5: 'Следующие 5',
     prev_3: 'Предыдущие 3',
-    next_3: 'Следующие 3'
+    next_3: 'Следующие 3',
+    page_size: 'размер страницы'
   },
   DatePicker: {
     lang: {
@@ -32,7 +33,7 @@ export default {
       today: 'Сегодня',
       now: 'Сейчас',
       backToToday: 'Текущая дата',
-      ok: 'Ok',
+      ok: 'ОК',
       clear: 'Очистить',
       month: 'Месяц',
       year: 'Год',
@@ -79,7 +80,7 @@ export default {
       today: 'Сегодня',
       now: 'Сейчас',
       backToToday: 'Текущая дата',
-      ok: 'Ok',
+      ok: 'ОК',
       clear: 'Очистить',
       month: 'Месяц',
       year: 'Год',
@@ -124,7 +125,8 @@ export default {
     collapse: 'Свернуть строку',
     triggerDesc: 'Нажмите для сортировки по убыванию',
     triggerAsc: 'Нажмите для сортировки по возрастанию',
-    cancelSort: 'Нажмите, чтобы отменить сортировку'
+    cancelSort: 'Нажмите, чтобы отменить сортировку',
+    selectNone: 'Очистить все данные'
   },
   Modal: {
     okText: 'OK',
@@ -168,5 +170,8 @@ export default {
   },
   PageHeader: {
     back: 'Назад'
+  },
+  Image: {
+    preview: 'Предпросмотр'
   }
 };

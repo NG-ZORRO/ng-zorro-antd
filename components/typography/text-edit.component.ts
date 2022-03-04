@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,15 +12,15 @@ import {
   EventEmitter,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
+import { filter, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
@@ -28,58 +29,64 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
   template: `
-    <button
-      *ngIf="!editing"
-      nz-tooltip
-      nz-trans-button
-      class="ant-typography-edit"
-      [nzTooltipTitle]="tooltip === null ? null : tooltip || locale?.edit"
-      (click)="onClick()"
-    >
-      <ng-container *nzStringTemplateOutlet="icon; let icon">
-        <i nz-icon [nzType]="icon"></i>
-      </ng-container>
-    </button>
-    <ng-container *ngIf="editing">
-      <textarea
-        #textarea
-        nz-input
-        nzAutosize
-        (input)="onInput($event)"
-        (blur)="confirm()"
-        (keydown.esc)="onCancel()"
-        (keydown.enter)="onEnter($event)"
-      ></textarea>
+    <ng-template [ngIf]="editing" [ngIfElse]="notEditing">
+      <textarea #textarea nz-input nzAutosize (blur)="confirm()"></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
         <i nz-icon nzType="enter"></i>
       </button>
-    </ng-container>
+    </ng-template>
+
+    <ng-template #notEditing>
+      <button
+        nz-tooltip
+        nz-trans-button
+        class="ant-typography-edit"
+        [nzTooltipTitle]="tooltip === null ? null : tooltip || locale?.edit"
+        (click)="onClick()"
+      >
+        <ng-container *nzStringTemplateOutlet="icon; let icon">
+          <i nz-icon [nzType]="icon"></i>
+        </ng-container>
+      </button>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  providers: [NzDestroyService]
 })
-export class NzTextEditComponent implements OnInit, OnDestroy {
+export class NzTextEditComponent implements OnInit {
   editing = false;
   locale!: NzTextI18nInterface;
-  private destroy$ = new Subject();
 
   @Input() text?: string;
   @Input() icon: NzTSType = 'edit';
   @Input() tooltip?: null | NzTSType;
   @Output() readonly startEditing = new EventEmitter<void>();
   @Output() readonly endEditing = new EventEmitter<string>(true);
-  @ViewChild('textarea', { static: false }) textarea!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('textarea', { static: false })
+  set textarea(textarea: ElementRef<HTMLTextAreaElement> | undefined) {
+    if (textarea) {
+      this.textarea$.next(textarea);
+    }
+  }
   @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective!: NzAutosizeDirective;
 
   beforeText?: string;
   currentText?: string;
   nativeElement = this.host.nativeElement;
+
+  // We could've saved the textarea within some private property (e.g. `_textarea`) and have a getter,
+  // but having subject makes the code more reactive and cancellable (e.g. event listeners will be
+  // automatically removed and re-added through the `switchMap` below).
+  private textarea$ = new BehaviorSubject<ElementRef<HTMLTextAreaElement> | null>(null);
+
   constructor(
-    private zone: NgZone,
-    private host: ElementRef,
+    private ngZone: NgZone,
+    private host: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService
+    private i18n: NzI18nService,
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
@@ -87,11 +94,60 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
-  }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    const textarea$: Observable<ElementRef<HTMLTextAreaElement>> = this.textarea$.pipe(
+      filter((textarea): textarea is ElementRef<HTMLTextAreaElement> => textarea !== null)
+    );
+
+    textarea$
+      .pipe(
+        switchMap(
+          textarea =>
+            // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+            // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+            // but `addEventListener` is called when the `fromEvent` is subscribed.
+            new Observable<KeyboardEvent>(subscriber =>
+              this.ngZone.runOutsideAngular(() =>
+                fromEvent<KeyboardEvent>(textarea.nativeElement, 'keydown').subscribe(subscriber)
+              )
+            )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => {
+        // Caretaker note: adding modifier at the end (for instance `(keydown.esc)`) will tell Angular to add
+        // an event listener through the `KeyEventsPlugin`, which always runs `ngZone.runGuarded()` internally.
+        // We're interested only in escape and enter keyboard buttons, otherwise Angular will run change detection
+        // on any `keydown` event.
+        if (event.keyCode !== ESCAPE && event.keyCode !== ENTER) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          if (event.keyCode === ESCAPE) {
+            this.onCancel();
+          } else {
+            this.onEnter(event);
+          }
+          this.cdr.markForCheck();
+        });
+      });
+
+    textarea$
+      .pipe(
+        switchMap(
+          textarea =>
+            new Observable<KeyboardEvent>(subscriber =>
+              this.ngZone.runOutsideAngular(() =>
+                fromEvent<KeyboardEvent>(textarea.nativeElement, 'input').subscribe(subscriber)
+              )
+            )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => {
+        this.currentText = (event.target as HTMLTextAreaElement).value;
+      });
   }
 
   onClick(): void {
@@ -107,11 +163,6 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
     this.endEditing.emit(this.currentText);
   }
 
-  onInput(event: Event): void {
-    const target = event.target as HTMLTextAreaElement;
-    this.currentText = target.value;
-  }
-
   onEnter(event: Event): void {
     event.stopPropagation();
     event.preventDefault();
@@ -124,13 +175,15 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   }
 
   focusAndSetValue(): void {
-    this.zone.onStable.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
-      if (this.textarea?.nativeElement) {
-        this.textarea.nativeElement.focus();
-        this.textarea.nativeElement.value = this.currentText || '';
-        this.autosizeDirective.resizeToFitContent();
-        this.cdr.markForCheck();
-      }
-    });
+    this.ngZone.onStable
+      .pipe(take(1), withLatestFrom(this.textarea$), takeUntil(this.destroy$))
+      .subscribe(([, textarea]) => {
+        if (textarea) {
+          textarea.nativeElement.focus();
+          textarea.nativeElement.value = this.currentText || '';
+          this.autosizeDirective.resizeToFitContent();
+          this.cdr.markForCheck();
+        }
+      });
   }
 }

@@ -28,8 +28,11 @@ export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
         this.renderer.setStyle(content.el, 'backface-visibility', 'hidden');
       });
 
-      timer(this.carouselComponent!.nzTransitionSpeed).subscribe(() => {
-        this.contents.forEach(c => this.renderer.setStyle(c.el, 'transition', ['transform 500ms ease 0s']));
+      const { carouselComponent } = this;
+      carouselComponent!.ngZone.runOutsideAngular(() => {
+        timer(carouselComponent!.nzTransitionSpeed).subscribe(() => {
+          this.contents.forEach(c => this.renderer.setStyle(c.el, 'transition', ['transform 500ms ease 0s']));
+        });
       });
     }
   }

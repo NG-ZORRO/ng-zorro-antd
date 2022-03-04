@@ -12,6 +12,7 @@ import {
   Component,
   ElementRef,
   forwardRef,
+  Inject,
   Input,
   NgZone,
   OnDestroy,
@@ -88,7 +89,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isRadioButton = !!this.nzRadioButtonDirective;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
@@ -109,8 +110,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
-    @Optional() private nzRadioService: NzRadioService,
-    @Optional() private nzRadioButtonDirective: NzRadioButtonDirective
+    @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
+    @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null
   ) {}
 
   setDisabledState(disabled: boolean): void {
@@ -143,7 +144,21 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
       this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+        const isChecked = this.isChecked;
         this.isChecked = this.nzValue === value;
+        // We don't have to run `onChange()` on each `nz-radio` button whenever the `selected$` emits.
+        // If we have 8 `nz-radio` buttons within the `nz-radio-group` and they're all connected with
+        // `ngModel` or `formControl` then `onChange()` will be called 8 times for each `nz-radio` button.
+        // We prevent this by checking if `isChecked` has been changed or not.
+        if (
+          this.isNgModel &&
+          isChecked !== this.isChecked &&
+          // We're only intereted if `isChecked` has been changed to `false` value to emit `false` to the ascendant form,
+          // since we already emit `true` within the `setupClickListener`.
+          this.isChecked === false
+        ) {
+          this.onChange(false);
+        }
         this.cdr.markForCheck();
       });
     }
@@ -193,9 +208,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
             return;
           }
           this.ngZone.run(() => {
-            if (this.nzRadioService) {
-              this.nzRadioService.select(this.nzValue);
-            }
+            this.nzRadioService?.select(this.nzValue);
             if (this.isNgModel) {
               this.isChecked = true;
               this.onChange(true);

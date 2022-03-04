@@ -362,6 +362,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.datePickerService.emitValue$.next();
       }
     }
+
+    this.buildTimeOptions();
   }
 
   reversedPart(part: RangePartType): RangePartType {

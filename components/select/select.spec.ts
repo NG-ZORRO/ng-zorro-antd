@@ -331,6 +331,24 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledWith(false);
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
+
+    it('should not throw error with keydown up arrow and down arrow event when listOfOption is empty', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [];
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', UP_ARROW, inputElement);
+      flushChanges();
+      dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
+      flushChanges();
+      expect(component.valueChange).toHaveBeenCalledTimes(0);
+    }));
+
     it('should mouseenter activated option work', fakeAsync(() => {
       const flushChanges = (): void => {
         fixture.detectChanges();
