@@ -52,6 +52,7 @@ import type { TransferItem } from './interface';
       </div>
     </ng-container>
   `,
+  providers: [NzDestroyService],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

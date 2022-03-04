@@ -11,7 +11,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -21,10 +20,11 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
@@ -117,6 +117,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (itemRemove)="handleRightItemRemove($event)"
     ></nz-transfer-list>
   `,
+  providers: [NzDestroyService],
   host: {
     class: 'ant-transfer',
     '[class.ant-transfer-rtl]': `dir === 'rtl'`,
@@ -126,14 +127,12 @@ import { NzTransferListComponent } from './transfer-list.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
+export class NzTransferComponent implements OnInit, OnChanges {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowSelectAll: BooleanInput;
   static ngAcceptInputType_nzShowSearch: BooleanInput;
   static ngAcceptInputType_nzOneWay: BooleanInput;
   static ngAcceptInputType_nzPagination: BooleanInput | TransferPaginationType;
-
-  private unsubscribe$ = new Subject<void>();
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
   locale!: NzTransferI18nInterface;
@@ -299,7 +298,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    private destroy$: NzDestroyService
   ) {}
 
   private markForCheckAllList(): void {
@@ -333,13 +333,13 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -363,10 +363,5 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     if (this.pagination && this.nzRenderList) {
       warn('`nzPagination` not support customize render list.');
     }
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }
