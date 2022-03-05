@@ -371,7 +371,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
    */
   pointerDown = (event: TouchEvent | MouseEvent): void => {
     if (this.nzEnableSwipe && this.platform.IOS && event instanceof TouchEvent) {
-        this.preventIOSSafariNavigation(event);
+      this.preventIOSSafariNavigation(event);
     }
 
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
@@ -415,7 +415,10 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     const touchCenterX = touch.pageX;
     const touchRadius = touch.radiusX;
 
-    if (touchCenterX - touchRadius < navigationGestureMargin || touchCenterX + touchRadius > window.innerWidth - navigationGestureMargin) {
+    if (
+      touchCenterX - touchRadius < navigationGestureMargin ||
+      touchCenterX + touchRadius > window.innerWidth - navigationGestureMargin
+    ) {
       event.preventDefault();
     }
   }
