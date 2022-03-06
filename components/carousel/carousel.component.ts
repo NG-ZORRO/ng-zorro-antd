@@ -370,6 +370,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
    * Drag carousel.
    */
   pointerDown = (event: TouchEvent | MouseEvent): void => {
+    /* istanbul ignore if  */
     if (this.nzEnableSwipe && this.platform.IOS && event instanceof TouchEvent) {
       this.preventIOSSafariNavigation(event);
     }
@@ -409,6 +410,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   /**
    * @link https://github.com/vercel/commerce/pull/132/files
    */
+  /* istanbul ignore next */
   private preventIOSSafariNavigation(event: TouchEvent): void {
     const navigationGestureMargin = 10;
     const touch = event.touches[0];
