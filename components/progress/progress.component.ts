@@ -20,7 +20,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -248,10 +247,6 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       nzSuccessStrokeColor,
       nzStrokeWidth
     } = changes;
-
-    if (nzSuccessPercent) {
-      warnDeprecation('nzSuccessPercent would be removed in v11. Please use `nzSuccess` instead.');
-    }
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
