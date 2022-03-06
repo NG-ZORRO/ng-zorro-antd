@@ -402,7 +402,7 @@ describe('progress', () => {
     it('should success percent and stroke color work', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe(
-        'rgb(135, 208, 104)'
+        'rgb(255, 77, 244)'
       );
     });
   });
