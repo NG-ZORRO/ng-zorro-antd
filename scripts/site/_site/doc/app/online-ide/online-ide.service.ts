@@ -7,7 +7,6 @@ import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
 import appModuleTS from './files/app.module';
-import dotAngularCliJSON from './files/dot_angular-cli.json';
 import environmentTS from './files/environment';
 import mainTS from './files/main';
 import nzModuleTS from './files/ng-zorro-antd.module';
@@ -77,8 +76,8 @@ export class OnlineIdeService {
           ),
           isBinary: false
         },
-        '.angular-cli.json': {
-          content: dotAngularCliJSON,
+        'angular.json': {
+          content: `${JSON.stringify(angularJSON, null, 2)}`,
           isBinary: false
         },
         'src/index.html': {
@@ -117,6 +116,23 @@ export class OnlineIdeService {
         },
         'environments/environment.ts': {
           content: environmentTS,
+          isBinary: false
+        },
+        'sandbox.config.json': {
+          content: JSON.stringify(
+            {
+              infiniteLoopProtection: true,
+              hardReloadOnChange: false,
+              view: 'browser',
+              template: 'node',
+              container: {
+                node: '14',
+                port: 4200
+              }
+            },
+            null,
+            2
+          ),
           isBinary: false
         }
       }
