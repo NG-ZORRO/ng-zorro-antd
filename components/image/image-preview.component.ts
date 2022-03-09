@@ -63,10 +63,10 @@ const initialPosition = {
           </ul>
           <div
             class="ant-image-preview-img-wrapper"
+            #imagePreviewWrapper
             cdkDrag
             [style.transform]="previewImageWrapperTransform"
             [cdkDragFreeDragPosition]="position"
-            (mousedown)="onDragStarted()"
             (cdkDragReleased)="onDragReleased()"
           >
             <ng-container *ngFor="let image of images; index as imageIndex">
@@ -176,6 +176,7 @@ export class NzImagePreviewComponent implements OnInit {
   closeClick = new EventEmitter<void>();
 
   @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
+  @ViewChild('imagePreviewWrapper', { static: true }) imagePreviewWrapper!: ElementRef<HTMLElement>;
 
   private zoom: number;
   private rotate: number;
@@ -213,6 +214,12 @@ export class NzImagePreviewComponent implements OnInit {
           if (event.target === event.currentTarget && this.maskClosable && this.containerClick.observers.length) {
             this.ngZone.run(() => this.containerClick.emit());
           }
+        });
+
+      fromEvent(this.imagePreviewWrapper.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.isDragging = true;
         });
     });
   }
@@ -317,10 +324,6 @@ export class NzImagePreviewComponent implements OnInit {
   startLeaveAnimation(): void {
     this.animationState = 'leave';
     this.cdr.markForCheck();
-  }
-
-  onDragStarted(): void {
-    this.isDragging = true;
   }
 
   onDragReleased(): void {
