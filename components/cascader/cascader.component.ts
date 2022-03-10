@@ -365,10 +365,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       // These operations would not mutate data.
       this.checkChildren();
       this.setDisplayLabel();
+      this.cdr.detectChanges();
       this.reposition();
       this.setDropdownStyles();
-
-      this.cdr.markForCheck();
     });
 
     srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
@@ -589,13 +588,10 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
 
     this.el.focus();
+    console.log(this.inSearchingMode);
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
-
-    setTimeout(() => {
-      this.reposition();
-    }, 10);
   }
 
   onClickOutside(event: MouseEvent): void {
