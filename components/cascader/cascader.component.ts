@@ -581,16 +581,25 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   onOptionClick(option: NzCascaderOption, columnIndex: number, event: Event): void {
+    // console.log(this.overlay.overlayRef.updatePosition());
+    console.log(this.positions);
+
     if (event) {
       event.preventDefault();
     }
     if (option && option.disabled) {
       return;
     }
+
     this.el.focus();
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
+    setTimeout(() => {
+      // 每次点击，等渲染完成（过渡时间），重新定位
+      this.positions = [...this.positions];
+      this.overlay.overlayRef.updatePosition();
+    }, 10);
   }
 
   onClickOutside(event: MouseEvent): void {
