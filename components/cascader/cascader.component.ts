@@ -592,9 +592,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
+
     setTimeout(() => {
-      // 每次点击，等渲染完成（过渡时间），重新定位
-      this.overlay.overlayRef.updatePosition();
+      this.reposition();
     }, 10);
   }
 
@@ -716,6 +716,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
       Promise.resolve().then(() => {
         this.overlay.overlayRef.updatePosition();
+        this.cdr.markForCheck();
       });
     }
   }
