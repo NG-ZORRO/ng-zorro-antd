@@ -514,11 +514,14 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   updateInputValue(): void {
     const newValue = this.datePickerService.value;
     if (this.isRange) {
-      this.inputValue = newValue ? (newValue as CandyDate[]).map(v => this.formatValue(v)) : ['', ''];
+      this.inputValue =
+        Array.isArray(newValue) && newValue.length > 0
+          ? (newValue as CandyDate[]).map(v => this.formatValue(v))
+          : ['', ''];
     } else {
       this.inputValue = this.formatValue(newValue as CandyDate);
     }
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   formatValue(value: CandyDate): string {
