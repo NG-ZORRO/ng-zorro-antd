@@ -588,7 +588,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
 
     this.el.focus();
-    console.log(this.inSearchingMode);
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
