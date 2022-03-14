@@ -60,6 +60,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzZIndex      | 设置预览层的 z-index | `number` | 1000 |
 | nzZoom      | 缩放比例 | `number` | 1 |
 | nzRotate      | 旋转角度 | `number` | 0 |
+| nzEnableLeftRightArrow      | 是否支持键盘方向键切换图片 | `boolean` | `true` |
 
 ### NzImagePreviewRef
 

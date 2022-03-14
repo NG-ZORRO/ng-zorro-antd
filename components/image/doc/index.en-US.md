@@ -60,6 +60,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | nzZIndex      | The z-index of the image preview | `number` | 1000 |
 | nzZoom      | Zoom rate | `number` | 1 |
 | nzRotate      | Rotate rate | `number` | 0 |
+| nzEnableLeftRightArrow      | Whether support press `left` or `right` to switch image | `boolean` | `true` |
 
 ### NzImagePreviewRef
 
