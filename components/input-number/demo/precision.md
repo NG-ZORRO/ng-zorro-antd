@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 7
 title:
     zh-CN: 精度
     en-US: Precision

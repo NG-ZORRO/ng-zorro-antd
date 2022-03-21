@@ -24,6 +24,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzDisabled]` | disable the input | `boolean` | `false` |
+| `[nzBorderless]` | hide the border style or not | `boolean` | `false` |
+| `[nzControls]` | show `+-` controls or not | `boolean` | `true` |
 | `[nzMax]` | max value | `number` | `Infinity` |
 | `[nzMin]` | min value | `number` | `-Infinity` |
 | `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |
@@ -38,6 +40,18 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
 | `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
+
+### nz-input-number-group
+
+| property | description | type | default |
+| --- | --- | --- | --- |
+| `[nzSize]` | set the sizes of all `nz-input-number` inside `nz-input-number-group` | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzAddOnAfter]` | the label text displayed after (on the right side of) the input field | `string \| TemplateRef<void>` | - |
+| `[nzAddOnBefore]` | the label text displayed before (on the left side of) the input field | `string \| TemplateRef<void>` | - |
+| `[nzAddOnAfterIcon]` | define the `outline` Icon type inside `nzAddonAfter` | `string` | - |
+| `[nzAddOnBeforeIcon]` | define the `outline` Icon type inside `nzAddonBefore` | `string` | - |
+| `[nzPrefix]` | define the prefix label | `string \| TemplateRef<void>` | - |
+| `[nzPrefixIcon]` | define the `outline` Icon type of the prefix label | `string` | - |
 
 #### Methods
 

@@ -25,6 +25,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[ngModel]` | 当前值，可双向绑定 | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` |
+| `[nzBorderless]` | 是否隐藏边框 | `boolean` | `false` |
+| `[nzControls]` | 是否显示增减按钮 | `boolean` | `true` |
 | `[nzMax]` | 最大值 | `number` | `Infinity` |
 | `[nzMin]` | 最小值 | `number` | `-Infinity` |
 | `[nzFormatter]` | 指定输入框展示值的格式 | `(value: number \| string) => string \| number` | - |
@@ -39,6 +41,18 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
 | `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
+
+### nz-input-number-group
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzSize]` | `nz-input-number-group` 中所有的 `nz-input-number` 的大小 | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzAddOnAfter]` | 带标签的 input，设置后置标签，可以与 `nzAddOnBefore` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzAddOnBefore]` | 带标签的 input，设置前置标签，可以与 `nzAddOnAfter` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzAddOnAfterIcon]` | 设置后置标签的 Icon，支持 `outline` 类型 | `string` | - |
+| `[nzAddOnBeforeIcon]` | 设置前置标签的 Icon，支持 `outline` 类型 | `string` | - |
+| `[nzPrefix]` | 带有前缀图标的 input | `string \| TemplateRef<void>` | - |
+| `[nzPrefixIcon]` | 设置前缀的 Icon，支持 `outline` 类型 | `string` | - |
 
 #### 方法
 
