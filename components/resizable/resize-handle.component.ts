@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,6 +35,8 @@ export type NzResizeDirection =
 export class NzResizeHandleMouseDownEvent {
   constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
 }
+
+const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveListenerOptions({ passive: true });
 
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
@@ -75,9 +78,12 @@ export class NzResizeHandleComponent implements OnInit {
     });
 
     this.ngZone.runOutsideAngular(() => {
+      // Note: since Chrome 56 defaults document level `touchstart` listener to passive.
+      // The element `touchstart` listener is not passive by default
+      // We never call `preventDefault()` on it, so we're safe making it passive too.
       merge(
-        fromEvent<MouseEvent>(this.host.nativeElement, 'mousedown'),
-        fromEvent<TouchEvent>(this.host.nativeElement, 'touchstart')
+        fromEvent<MouseEvent>(this.host.nativeElement, 'mousedown', passiveEventListenerOptions),
+        fromEvent<TouchEvent>(this.host.nativeElement, 'touchstart', passiveEventListenerOptions)
       )
         .pipe(takeUntil(this.destroy$))
         .subscribe((event: MouseEvent | TouchEvent) => {
