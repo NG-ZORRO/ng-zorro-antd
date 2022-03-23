@@ -54,13 +54,12 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| nzKeyboard      | Whether support press `esc` to close | `boolean` | `true` |
+| nzKeyboard      | Whether support press `esc` to close, press `left` or `right` to switch image | `boolean` | `true` |
 | nzMaskClosable      | Whether to close the image preview when the mask (area outside the image) is clicked | `boolean` | `true` |
 | nzCloseOnNavigation      | Whether to close the image preview when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean` | `true` |
 | nzZIndex      | The z-index of the image preview | `number` | 1000 |
 | nzZoom      | Zoom rate | `number` | 1 |
 | nzRotate      | Rotate rate | `number` | 0 |
-| nzEnableLeftRightArrow      | Whether support press `left` or `right` to switch image | `boolean` | `true` |
 
 ### NzImagePreviewRef
 

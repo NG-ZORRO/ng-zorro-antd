@@ -21,25 +21,25 @@ export class NzImagePreviewRef {
   ) {
     overlayRef
       .keydownEvents()
-      .pipe(filter(event => (this.config.nzKeyboard as boolean) && event.keyCode === ESCAPE && !hasModifierKey(event)))
-      .subscribe(event => {
-        event.preventDefault();
-        this.close();
-      });
-
-    overlayRef
-      .keydownEvents()
       .pipe(
         filter(
           event =>
-            (this.config.nzEnableLeftRightArrow as boolean) &&
-            (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
+            (this.config.nzKeyboard as boolean) &&
+            (event.keyCode === ESCAPE || event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
             !hasModifierKey(event)
         )
       )
       .subscribe(event => {
         event.preventDefault();
-        event.keyCode === LEFT_ARROW ? this.prev() : this.next();
+        if (event.keyCode === ESCAPE) {
+          this.close();
+        }
+        if (event.keyCode === LEFT_ARROW) {
+          this.prev();
+        }
+        if (event.keyCode === RIGHT_ARROW) {
+          this.next();
+        }
       });
 
     overlayRef.detachments().subscribe(() => {
