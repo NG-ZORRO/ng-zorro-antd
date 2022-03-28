@@ -11,7 +11,7 @@ To trigger an operation.
 
 A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
 
-In Ant Design we provide 4 types of button.
+In Ant Design, we provide 4 types of buttons.
 
 - Primary button: indicate the main action, one primary button at most in one section.
 - Default button: indicate a series of actions without priority.
@@ -21,10 +21,10 @@ In Ant Design we provide 4 types of button.
 
 And 4 other properties additionally.
 
-- `danger`: used for actions of risk, like deletion or authorization.
-- `ghost`: used in situations with complex background, home pages usually.
-- `disabled`: when actions is not available.
-- `loading`: add loading spinner in button, avoiding multiple submits too.
+- `danger`: used for risk actions, like deletion or authorization.
+- `ghost`: usually used in situations with a complex background, home pages.
+- `disabled`: when actions are not available.
+- `loading`: add loading spinner in button, avoiding multiple submit.
 
 ```ts
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -34,13 +34,13 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 ### [nz-button]
 
-> Note：nz-button is Directive, it accepts all props which native button [support](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button).
+> Note：nz-button is a Directive, it accepts all props which are supported by [native button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button).
 
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
-| `[disabled]` | prevents user from interacting with the button | `boolean` | `false` |
+| `[disabled]` | prevents a user from interacting with the button | `boolean` | `false` |
 | `[nzGhost]` | make background transparent and invert text and border colors | `boolean` | `false` |
 | `[nzLoading]` | set the loading status of button | `boolean` | `false` |
 | `[nzShape]` | can be set to `circle` `round` or omitted | `'circle'\|'round'` | - | |
