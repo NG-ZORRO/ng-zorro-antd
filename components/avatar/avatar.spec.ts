@@ -47,6 +47,11 @@ describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
   let dl: DebugElement;
+
+  function getImageElement(): HTMLImageElement {
+    return dl.query(By.css('img')).nativeElement;
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
@@ -102,13 +107,13 @@ describe('avatar', () => {
     it('#nzSrcSet', () => {
       context.nzSrcSet = '1.png';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.srcset).toBe(context.nzSrcSet);
     });
     it('#nzAlt', () => {
       context.nzAlt = 'alt';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.alt).toBe(context.nzAlt);
     });
   });
@@ -278,6 +283,30 @@ describe('avatar', () => {
     }));
   });
 
+  describe('[nzLoading]', () => {
+    it('should set `loading` attribute to `eager` by default', () => {
+      expect(getImageElement().loading).toEqual('eager');
+    });
+
+    it('should allow providing a binding for the `loading` attribute', () => {
+      context.nzLoading = 'lazy';
+      fixture.detectChanges();
+      expect(getImageElement().loading).toEqual('lazy');
+    });
+  });
+
+  describe('[nzFetchPriority]', () => {
+    it('should set `fetchpriority` attribute to `auto` by default', () => {
+      expect(getImageElement().fetchPriority).toEqual('auto');
+    });
+
+    it('should allow providing a binding for the `fetchpriority` attribute', () => {
+      context.nzFetchPriority = 'high';
+      fixture.detectChanges();
+      expect(getImageElement().fetchPriority).toEqual('high');
+    });
+  });
+
   describe('order: image > icon > text', () => {
     it('image priority', () => {
       expect(getType(dl)).toBe('image');
@@ -331,6 +360,8 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzSrc]="nzSrc"
       [nzSrcSet]="nzSrcSet"
       [nzAlt]="nzAlt"
+      [nzLoading]="nzLoading"
+      [nzFetchPriority]="nzFetchPriority"
     ></nz-avatar>
   `,
   styles: `
@@ -348,6 +379,8 @@ class TestAvatarComponent {
   nzSrc: string | null = imageBase64;
   nzSrcSet?: string;
   nzAlt?: string;
+  nzLoading?: 'eager' | 'lazy';
+  nzFetchPriority?: 'high' | 'low' | 'auto';
 }
 
 @Component({
