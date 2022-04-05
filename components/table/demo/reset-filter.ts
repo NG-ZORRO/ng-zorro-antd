@@ -80,7 +80,7 @@ export class NzDemoTableResetFilterComponent {
     },
     {
       name: 'Address',
-      sortFn: null,
+      sortFn: (a: DataItem, b: DataItem) => a.address.localeCompare(b.address),
       sortOrder: null,
       listOfFilter: [
         { text: 'London', value: 'London' },
