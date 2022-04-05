@@ -33,7 +33,7 @@ export class NzDemoTableMultipleSorterComponent {
   listOfColumn = [
     {
       title: 'Name',
-      compare: null,
+      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
       priority: false
     },
     {
