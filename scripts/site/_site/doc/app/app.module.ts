@@ -77,7 +77,16 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
   ],
   providers: [
     Title,
-    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }
+    {
+      provide: NZ_CONFIG,
+      useValue: {
+        codeEditor: {
+          monacoEnvironment: { globalAPI: true }
+        },
+        icon: { nzTwotoneColor: '#1890ff' },
+        global: { nzDirection: 'ltr' }
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })
