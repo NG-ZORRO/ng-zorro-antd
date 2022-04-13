@@ -146,6 +146,9 @@ export default {
     removeAll: 'Désélectionner toutes les données',
     selectInvert: 'Inverser la sélection de la page actuelle'
   },
+  global: {
+    placeholder: 'Sélectionner'
+  },
   Empty: {
     description: 'Aucune donnée'
   },
