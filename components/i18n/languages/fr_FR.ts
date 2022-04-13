@@ -108,6 +108,9 @@ export default {
       rangePlaceholder: ['Heure de début', 'Heure de fin']
     }
   },
+  global: {
+    placeholder: 'Sélectionner'
+  },
   Table: {
     filterTitle: 'Filtrer',
     filterConfirm: 'OK',

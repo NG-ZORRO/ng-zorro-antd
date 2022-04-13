@@ -91,6 +91,9 @@ export default {
       placeholder: "Sélectionner l'heure"
     }
   },
+  global: {
+    placeholder: 'Sélectionner'
+  },
   Table: {
     filterTitle: 'Filtrer',
     filterConfirm: 'OK',
