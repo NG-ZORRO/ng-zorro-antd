@@ -394,7 +394,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
       case UP_ARROW:
         e.preventDefault();
         if (this.nzOpen && listOfFilteredOptionNotDisabledCount) {
-          const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabled.length - 1;
+          const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabledCount - 1;
           this.activatedValue = listOfFilteredOptionNotDisabled[preIndex].nzValue;
         }
         break;
@@ -402,7 +402,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
         e.preventDefault();
         if (this.nzOpen) {
           if (listOfFilteredOptionNotDisabledCount) {
-            const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
+            const nextIndex = activatedIndex < listOfFilteredOptionNotDisabledCount - 1 ? activatedIndex + 1 : 0;
             this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
           }
         } else {
