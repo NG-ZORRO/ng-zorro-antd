@@ -381,8 +381,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     if (this.nzDisabled) {
       return;
     }
-    const listOfFilteredOptionNotDisabled = this.listOfContainerItem.filter(item => item.type === 'item').filter(item => !item.nzDisabled);
-    const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item => this.compareWith(item.nzValue, this.activatedValue));
+    const listOfFilteredOptionNotDisabled = this.listOfContainerItem
+      .filter(item => item.type === 'item')
+      .filter(item => !item.nzDisabled);
+    const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item =>
+      this.compareWith(item.nzValue, this.activatedValue)
+    );
     const listOfFilteredOptionNotDisabledCount: number = listOfFilteredOptionNotDisabled.length;
     switch (e.keyCode) {
       case UP_ARROW:
