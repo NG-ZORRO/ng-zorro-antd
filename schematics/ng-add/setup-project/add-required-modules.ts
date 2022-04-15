@@ -1,14 +1,21 @@
-import { ProjectDefinition, WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
-import { Rule, Tree } from '@angular-devkit/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   addModuleImportToRootModule,
   getProjectFromWorkspace,
   getProjectMainFile,
   hasNgModuleImport
 } from '@angular/cdk/schematics';
+
+import { ProjectDefinition, WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
+import { Rule, Tree } from '@angular-devkit/schematics';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const modulesMap = {
@@ -23,8 +30,10 @@ export function addRequiredModules(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
 
     for (const module in modulesMap) {
-      addModuleImportToApptModule(host, module, modulesMap[module],
-        project, appModulePath, options);
+      if (modulesMap.hasOwnProperty(module)) {
+        addModuleImportToApptModule(host, module, modulesMap[module],
+          project, appModulePath, options);
+      }
     }
 
     return;

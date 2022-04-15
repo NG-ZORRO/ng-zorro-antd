@@ -31,7 +31,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `[nzLoading]` | 为 `true` 时，显示占位图。反之则直接展示子组件 | `boolean` | - |
 | `[nzParagraph]` | 是否显示段落占位图 | `boolean \| NzSkeletonParagraph` | `true` |
 | `[nzTitle]` | 是否显示标题占位图 | `boolean \| NzSkeletonTitle` | `true` |
-| `[nzRound]` | 为 true 时，段落和标题显示圆角 | `boolean` | `false` |
+| `[nzRound]` | 为 `true` 时，段落和标题显示圆角 | `boolean` | `false` |
 
 ### NzSkeletonAvatar
 

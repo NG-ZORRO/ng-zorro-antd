@@ -3,6 +3,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes'
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
+  ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -17,13 +18,24 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzInputModule } from 'ng-zorro-antd/input';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
-import { NzAutocompleteComponent, NzAutocompleteModule, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective } from './index';
+import {
+  NzAutocompleteComponent,
+  NzAutocompleteModule,
+  NzAutocompleteOptionComponent,
+  NzAutocompleteTriggerDirective
+} from './index';
 
 describe('auto-complete', () => {
   let overlayContainer: OverlayContainer;
@@ -240,6 +252,25 @@ describe('auto-complete', () => {
 
       expect(panel.classList).toContain('ant-select-dropdown-hidden');
     }));
+
+    it('should not run change detection on `mouseenter` and `mousedown` events for `nz-auto-option`', fakeAsync(() => {
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+      flush();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+
+      const option = overlayContainerElement.querySelector('nz-auto-option') as HTMLElement;
+      const event = new MouseEvent('mousedown');
+      spyOn(event, 'preventDefault');
+
+      option.dispatchEvent(event);
+      option.dispatchEvent(new MouseEvent('mouseenter'));
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(appRef.tick).not.toHaveBeenCalled();
+    }));
   });
 
   describe('property', () => {
@@ -298,36 +329,38 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(input.value).toBe('Burns Bay Road');
+      expect(input.value).toBe(componentInstance.options[0]);
 
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
       flush();
 
-      expect(input.value).not.toBe('Burns Bay Road');
+      expect(input.value).toBe('');
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
       flush();
 
+      componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       componentInstance.trigger.handleKeydown(ENTER_EVENT);
       fixture.detectChanges();
       flush();
+      fixture.detectChanges();
 
-      expect(input.value).toBe('Downing Street');
+      expect(input.value).toBe(componentInstance.options[1]);
 
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
-      flush();
+      tick();
+      fixture.detectChanges();
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
+      fixture.detectChanges();
+      expect(input.value).toBe(componentInstance.options[2]);
       componentInstance.trigger.handleKeydown(TAB_EVENT);
       fixture.detectChanges();
-      tick(500);
-      flush();
-      fixture.detectChanges();
-      expect(input.value).toBe('Downing Street');
+      expect(input.value).toBe(componentInstance.options[1]);
     }));
 
     it('should overlayClassName & overlayStyle work', () => {
@@ -529,7 +562,9 @@ describe('auto-complete', () => {
       flush();
       differentValueWithFormFixture.detectChanges();
 
-      const differentValueWithFormInput = differentValueWithFormFixture.debugElement.query(By.css('input')).nativeElement;
+      const differentValueWithFormInput = differentValueWithFormFixture.debugElement.query(
+        By.css('input')
+      ).nativeElement;
 
       expect(differentValueWithFormInput.value).toBe('Lucy');
       expect(differentValueWithFormFixture.componentInstance.form.get('formControl')?.value).toBe('lucy');
@@ -861,7 +896,8 @@ describe('auto-complete', () => {
     }));
 
     it(
-      'should show the panel when the options are initialized later within a component with ' + 'OnPush change detection',
+      'should show the panel when the options are initialized later within a component with ' +
+        'OnPush change detection',
       fakeAsync(() => {
         fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
         fixture.detectChanges();
@@ -899,7 +935,7 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((componentInstance.trigger as any).getConnectedElement().nativeElement).toEqual(
         componentInstance.inputGroupComponent.nativeElement
       );
@@ -910,7 +946,13 @@ describe('auto-complete', () => {
 @Component({
   template: `
     <div>
-      <input class="input" nz-input [formControl]="inputControl" [nzAutocomplete]="auto" (input)="onInput($event.target?.value)" />
+      <input
+        class="input"
+        nz-input
+        [formControl]="inputControl"
+        [nzAutocomplete]="auto"
+        (input)="onInput($event.target?.value)"
+      />
       <nz-autocomplete #auto>
         <nz-auto-option *ngFor="let option of filteredOptions" [nzValue]="option">{{ option }}</nz-auto-option>
       </nz-autocomplete>
@@ -965,9 +1007,7 @@ class NzTestAutocompletePropertyComponent {
 }
 
 @Component({
-  template: `
-    <input [nzAutocomplete]="auto" />
-  `
+  template: ` <input [nzAutocomplete]="auto" /> `
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
@@ -1109,7 +1149,9 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
     <form [formGroup]="form">
       <input formControlName="formControl" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto [compareWith]="compareFun">
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">{{ option.label }}</nz-auto-option>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">
+          {{ option.label }}
+        </nz-auto-option>
       </nz-autocomplete>
     </form>
   `
@@ -1122,8 +1164,8 @@ class NzTestAutocompleteWithObjectOptionComponent {
   ];
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
-  // tslint:disable-next-line: no-any
-  compareFun = (o1: any, o2: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  compareFun = (o1: any, o2: any): boolean => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {

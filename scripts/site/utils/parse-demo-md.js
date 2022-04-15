@@ -1,4 +1,4 @@
-const MD = require('./marked');
+const { parse } = require('./marked');
 const YFM = require('yaml-front-matter');
 const angularNonBindAble = require('./angular-nonbindable');
 module.exports = function parseDemoMd(file) {
@@ -23,9 +23,9 @@ module.exports = function parseDemoMd(file) {
     }
     if (!(child.type === 'heading' && child.depth === 2)) {
       if (!isAfterENHeading) {
-        zhPart += MD(remark.stringify(child));
+        zhPart += parse(remark.stringify(child));
       } else {
-        enPart += MD(remark.stringify(child));
+        enPart += parse(remark.stringify(child));
       }
     }
   }

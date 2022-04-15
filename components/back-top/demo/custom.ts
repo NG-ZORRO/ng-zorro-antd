@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       </ng-template>
     </nz-back-top>
     Scroll down to see the bottom-right
-    <strong> blue </strong>
+    <strong>blue</strong>
     button.
   `,
   styles: [

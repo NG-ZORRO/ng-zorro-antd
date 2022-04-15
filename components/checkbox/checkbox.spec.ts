@@ -1,5 +1,5 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -43,8 +43,12 @@ describe('checkbox', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.classList.contains('ant-checkbox-wrapper')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(true);
-      expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(true);
+      expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(
+        true
+      );
+      expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(
+        true
+      );
       expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
     });
     it('should click change', () => {
@@ -121,6 +125,37 @@ describe('checkbox', () => {
       testComponent.nzCheckboxComponent.blur();
       fixture.detectChanges();
       expect(checkbox.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+    });
+    describe('change detection behavior', () => {
+      it('should not run change detection when the `input` is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'stopPropagation').and.callThrough();
+
+        const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+        nzCheckbox.nativeElement.querySelector('.ant-checkbox-input').dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+      it('should not run change detection when the `nz-checkbox` is clicked and it is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+        nzCheckbox.nativeElement.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
     });
   });
   describe('checkbox group basic', () => {
@@ -327,7 +362,7 @@ describe('checkbox', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-single-checkbox',
   template: `
     <label
@@ -352,10 +387,14 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-group-checkbox',
   template: `
-    <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group>
+    <nz-checkbox-group
+      [nzDisabled]="disabled"
+      [ngModel]="options"
+      (ngModelChange)="modelChange($event)"
+    ></nz-checkbox-group>
   `
 })
 export class NzTestCheckboxGroupComponent {

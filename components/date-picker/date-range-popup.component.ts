@@ -3,12 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -17,13 +20,20 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Direction } from '@angular/cdk/bidi';
-import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, SingleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import {
+  CandyDate,
+  cloneDate,
+  CompatibleValue,
+  NormalizedMode,
+  SingleValue,
+  wrongSortOrder
+} from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { DatePickerService } from './date-picker.service';
 import {
   CompatibleDate,
@@ -40,7 +50,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-range-popup',
   exportAs: 'dateRangePopup',
   template: `
@@ -50,7 +60,9 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngIf="hasTimePicker; else noTimePicker">
-              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: datePickerService.activeInput }"></ng-container>
+              <ng-container
+                *ngTemplateOutlet="tplInnerPopup; context: { partType: datePickerService.activeInput }"
+              ></ng-container>
             </ng-container>
             <ng-template #noTimePicker>
               <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
@@ -129,10 +141,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
       </li>
     </ng-template>
-  `,
-  host: {
-    '(mousedown)': 'onMousedown($event)'
-  }
+  `
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
@@ -170,7 +179,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
   }
 
-  constructor(public datePickerService: DatePickerService, public cdr: ChangeDetectorRef) {}
+  constructor(
+    public datePickerService: DatePickerService,
+    public cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private host: ElementRef<HTMLElement>
+  ) {}
 
   ngOnInit(): void {
     merge(this.datePickerService.valueChange$, this.datePickerService.inputPartChange$)
@@ -179,6 +193,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.updateActiveDate();
         this.cdr.markForCheck();
       });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.host.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => event.preventDefault());
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -205,22 +225,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
-    this.datePickerService.setActiveDate(activeDate, this.hasTimePicker, this.getPanelMode(this.endPanelMode) as NormalizedMode);
-  }
-
-  init(): void {
-    this.checkedPartArr = [false, false];
-    this.updateActiveDate();
-    // trigger timepicker to reset
-    this.datePickerService.setValue(cloneDate(this.datePickerService.value));
-  }
-
-  /**
-   * Prevent input losing focus when click panel
-   * @param event
-   */
-  onMousedown(event: MouseEvent): void {
-    event.preventDefault();
+    this.datePickerService.setActiveDate(
+      activeDate,
+      this.hasTimePicker,
+      this.getPanelMode(this.endPanelMode) as NormalizedMode
+    );
   }
 
   onClickOk(): void {
@@ -353,6 +362,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.datePickerService.emitValue$.next();
       }
     }
+
+    this.buildTimeOptions();
   }
 
   reversedPart(part: RangePartType): RangePartType {
@@ -384,13 +395,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => {
-    return this.disabledTime && this.disabledTime(value, 'start');
-  };
+  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => this.disabledTime && this.disabledTime(value, 'start');
 
-  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => {
-    return this.disabledTime && this.disabledTime(value, 'end');
-  };
+  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => this.disabledTime && this.disabledTime(value, 'end');
 
   isOneAllowed(selectedValue: SingleValue[]): boolean {
     const index = this.datePickerService.getActiveIndex();
@@ -415,7 +422,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   getTimeOptions(partType?: RangePartType): SupportTimeOptions | null {
     if (this.showTime && this.timeOptions) {
-      return this.timeOptions instanceof Array ? this.timeOptions[this.datePickerService.getActiveIndex(partType)] : this.timeOptions;
+      return this.timeOptions instanceof Array
+        ? this.timeOptions[this.datePickerService.getActiveIndex(partType)]
+        : this.timeOptions;
     }
     return null;
   }
@@ -456,7 +465,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       const showTime = typeof this.showTime === 'object' ? this.showTime : {};
       if (this.isRange) {
         const value = this.datePickerService.value as CandyDate[];
-        this.timeOptions = [this.overrideTimeOptions(showTime, value[0], 'start'), this.overrideTimeOptions(showTime, value[1], 'end')];
+        this.timeOptions = [
+          this.overrideTimeOptions(showTime, value[0], 'start'),
+          this.overrideTimeOptions(showTime, value[1], 'end')
+        ];
       } else {
         this.timeOptions = this.overrideTimeOptions(showTime, this.datePickerService.value as CandyDate);
       }
@@ -465,7 +477,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private overrideTimeOptions(origin: SupportTimeOptions, value: CandyDate, partial?: DisabledTimePartial): SupportTimeOptions {
+  private overrideTimeOptions(
+    origin: SupportTimeOptions,
+    value: CandyDate,
+    partial?: DisabledTimePartial
+  ): SupportTimeOptions {
     let disabledTimeFn;
     if (partial) {
       disabledTimeFn = partial === 'start' ? this.disabledStartTime : this.disabledEndTime;
@@ -476,9 +492,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private overrideHms(newValue: CandyDate | null, oldValue: CandyDate | null): CandyDate {
-    // tslint:disable-next-line:no-parameter-reassignment
     newValue = newValue || new CandyDate();
-    // tslint:disable-next-line:no-parameter-reassignment
     oldValue = oldValue || new CandyDate();
     return oldValue.setHms(newValue.getHours(), newValue.getMinutes(), newValue.getSeconds());
   }

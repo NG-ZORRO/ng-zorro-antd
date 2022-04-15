@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
@@ -14,6 +15,7 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -24,11 +26,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-input-number',
@@ -69,8 +71,6 @@ import { takeUntil } from 'rxjs/operators';
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
         [attr.inputmode]="nzInputMode"
-        (keydown)="onKeyDown($event)"
-        (keyup)="stop()"
         [ngModel]="displayValue"
         (ngModelChange)="onModelChange($event)"
       />
@@ -86,6 +86,7 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-input-number',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -114,7 +115,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-  @Input() nzParser = (value: string) =>
+  @Input() nzParser = (value: string): string =>
     value
       .trim()
       .replace(/。/g, '.')
@@ -150,7 +151,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   // '1.' '1x' 'xx' '' => are not complete numbers
   isNotCompleteNumber(num: string | number): boolean {
-    return isNaN(num as number) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
+    return (
+      isNaN(num as number) ||
+      num === '' ||
+      num === null ||
+      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
+    );
   }
 
   getValidValue(value?: string | number): string | number | undefined {
@@ -329,20 +335,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.value = `${displayValue}`;
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === UP_ARROW) {
-      const ratio = this.getRatio(e);
-      this.up(e, ratio);
-      this.stop();
-    } else if (e.keyCode === DOWN_ARROW) {
-      const ratio = this.getRatio(e);
-      this.down(e, ratio);
-      this.stop();
-    } else if (e.keyCode === ENTER) {
-      this.updateDisplayValue(this.value!);
-    }
-  }
-
   writeValue(value: number): void {
     this.value = value;
     this.setValue(value);
@@ -372,31 +364,64 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   constructor(
-    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-input-number');
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        this.isFocused = false;
-        this.updateDisplayValue(this.value!);
-        this.nzBlur.emit();
-        Promise.resolve().then(() => this.onTouched());
-      } else {
-        this.isFocused = true;
-        this.nzFocus.emit();
-      }
-    });
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.isFocused = false;
+          this.updateDisplayValue(this.value!);
+          this.nzBlur.emit();
+          Promise.resolve().then(() => this.onTouched());
+        } else {
+          this.isFocused = true;
+          this.nzFocus.emit();
+        }
+      });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
+    });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.inputElement.nativeElement, 'keyup')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.stop());
+
+      fromEvent<KeyboardEvent>(this.inputElement.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          const { keyCode } = event;
+
+          if (keyCode !== UP_ARROW && keyCode !== DOWN_ARROW && keyCode !== ENTER) {
+            return;
+          }
+
+          this.ngZone.run(() => {
+            if (keyCode === UP_ARROW) {
+              const ratio = this.getRatio(event);
+              this.up(event, ratio);
+              this.stop();
+            } else if (keyCode === DOWN_ARROW) {
+              const ratio = this.getRatio(event);
+              this.down(event, ratio);
+              this.stop();
+            } else {
+              this.updateDisplayValue(this.value!);
+            }
+
+            this.cdr.markForCheck();
+          });
+        });
     });
   }
 

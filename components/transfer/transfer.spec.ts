@@ -1,6 +1,15 @@
-// tslint:disable:no-any no-parameter-reassignment
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  Injector,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,6 +17,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTransferComponent, NzTransferModule } from './index';
@@ -19,14 +29,21 @@ const DISABLED = 1;
 
 describe('transfer', () => {
   let injector: Injector;
-  let fixture: ComponentFixture<TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent>;
+  let fixture: ComponentFixture<
+    TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent
+  >;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
       imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule],
-      declarations: [TestTransferComponent, TestTransferCustomRenderComponent, Test996Component, NzTestTransferRtlComponent]
+      declarations: [
+        TestTransferComponent,
+        TestTransferCustomRenderComponent,
+        Test996Component,
+        NzTestTransferRtlComponent
+      ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     dl = fixture.debugElement;
@@ -106,13 +123,11 @@ describe('transfer', () => {
     });
 
     it('should be custom filter option', () => {
-      instance.nzFilterOption = (inputValue: string, item: any): boolean => {
-        return item.description.indexOf(inputValue) > -1;
-      };
+      instance.nzFilterOption = (inputValue: string, item: any): boolean => item.description.indexOf(inputValue) > -1;
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
@@ -120,7 +135,7 @@ describe('transfer', () => {
     it('should be clear search keywords', () => {
       pageObject.expectLeft(LEFTCOUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
     });
@@ -213,7 +228,7 @@ describe('transfer', () => {
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled = true;
         fixture.detectChanges();
-        (pageObject.leftList.querySelector('.ant-transfer-list-search-action') as HTMLElement).click();
+        (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
         fixture.detectChanges();
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
@@ -240,13 +255,12 @@ describe('transfer', () => {
     });
 
     it('should be uncheck all when two verification error', () => {
-      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
-        return of(arg.list).pipe(
+      instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> =>
+        of(arg.list).pipe(
           map(() => {
             throw new Error('error');
           })
         );
-      };
       fixture.detectChanges();
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -271,9 +285,27 @@ describe('transfer', () => {
       tempFixture.detectChanges();
       injector.get(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
-      const searchPhText = (tempFixture.debugElement.query(By.css('.ant-transfer-list-search'))
-        .nativeElement as HTMLElement).attributes.getNamedItem('placeholder')!.textContent;
+      const searchPhText = (
+        tempFixture.debugElement.query(By.css('.ant-transfer-list-search input')).nativeElement as HTMLElement
+      ).attributes.getNamedItem('placeholder')!.textContent;
       expect(searchPhText).toBe(en_US.Transfer.searchPlaceholder);
+    });
+
+    describe('change detection behavior', () => {
+      it('should not trigger change detection when the `ant-transfer-list-content-item label` is clicked', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'stopPropagation').and.callThrough();
+
+        const [label] = fixture.nativeElement.querySelectorAll('.ant-transfer-list-content-item label');
+
+        label.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
     });
   });
 
@@ -313,9 +345,9 @@ describe('transfer', () => {
       instance = dl.componentInstance;
       pageObject = new TransferPageObject();
       fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain(
-        'ant-checkbox-checked'
-      );
+      expect(
+        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
+      ).not.toContain('ant-checkbox-checked');
       pageObject.checkItem('right', 1);
       tick(50);
       fixture.detectChanges();
@@ -375,7 +407,11 @@ describe('transfer', () => {
       return this;
     }
 
-    checkItem(direction: TransferDirection, index: number | number[], cls: string = '.ant-transfer-list-content-item label'): this {
+    checkItem(
+      direction: TransferDirection,
+      index: number | number[],
+      cls: string = '.ant-transfer-list-content-item label'
+    ): this {
       if (!Array.isArray(index)) {
         index = [index];
       }
@@ -389,7 +425,10 @@ describe('transfer', () => {
     }
 
     search(direction: TransferDirection, value: string): this {
-      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector('.ant-transfer-list-search') as HTMLInputElement;
+      // .ant-transfer-list-search has been moved to the host
+      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector(
+        '.ant-transfer-list-search input'
+      ) as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
       fixture.detectChanges();
@@ -409,7 +448,7 @@ describe('transfer', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-transfer',
   template: `
     <nz-transfer
@@ -541,12 +580,10 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-transfer [nzDataSource]="list"></nz-transfer>
-  `
+  template: ` <nz-transfer [nzDataSource]="list"></nz-transfer> `
 })
 class Test996Component implements OnInit {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   list: any[] = [];
 
   ngOnInit(): void {

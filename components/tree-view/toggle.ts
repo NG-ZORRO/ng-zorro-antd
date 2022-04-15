@@ -6,6 +6,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkTreeNodeToggle } from '@angular/cdk/tree';
 import { Directive, Input } from '@angular/core';
+
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 @Directive({
@@ -27,11 +28,12 @@ export class NzTreeNodeNoopToggleDirective {}
 })
 export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
   static ngAcceptInputType_recursive: BooleanInput;
+
   @Input('nzTreeNodeToggleRecursive')
-  get recursive(): boolean {
+  override get recursive(): boolean {
     return this._recursive;
   }
-  set recursive(value: boolean) {
+  override set recursive(value: boolean) {
     this._recursive = coerceBooleanProperty(value);
   }
 

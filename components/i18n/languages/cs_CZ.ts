@@ -15,7 +15,8 @@ export default {
     prev_5: 'Předchozích 5 stran',
     next_5: 'Následujících 5 stran',
     prev_3: 'Předchozí 3 strany',
-    next_3: 'Následující 3 strany'
+    next_3: 'Následující 3 strany',
+    page_size: 'velikost stránky'
   },
   DatePicker: {
     lang: {
@@ -98,7 +99,7 @@ export default {
     filterConfirm: 'Potvrdit',
     filterReset: 'Obnovit',
     filterEmptyText: 'Žádné filtry',
-    selectAll: 'Vybrat všehchny řádky na současné stránce',
+    selectAll: 'Vybrat všechny řádky na současné stránce',
     selectInvert: 'Invertovat výběr na současné stránce',
     selectionAll: 'Vybrat všechny řádky',
     sortTitle: 'Řadit',
@@ -109,12 +110,12 @@ export default {
     cancelSort: 'Klikni pro zrušení řazení'
   },
   Modal: {
-    okText: 'Ok',
+    okText: 'OK',
     cancelText: 'Storno',
-    justOkText: 'Ok'
+    justOkText: 'OK'
   },
   Popconfirm: {
-    okText: 'Ok',
+    okText: 'OK',
     cancelText: 'Storno'
   },
   Transfer: {

@@ -14,6 +14,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+
 import { moveUpMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzMNComponent } from './base';
@@ -52,8 +53,8 @@ import { NzMessageData } from './typings';
   `
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
-  @Input() instance!: Required<NzMessageData>;
-  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  @Input() override instance!: Required<NzMessageData>;
+  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {
     super(cdr);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -27,13 +28,13 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
             <i *ngSwitchDefault nz-icon nzType="left"></i>
           </ng-container>
         </button>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
+        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
           <ng-container [ngSwitch]="direction">
             <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
             <i *ngSwitchDefault nz-icon nzType="right"></i>
@@ -91,32 +92,38 @@ export class NzPaginationItemComponent implements OnChanges {
   @Output() readonly diffIndex = new EventEmitter<number>();
   @Output() readonly gotoIndex = new EventEmitter<number>();
   title: string | null = null;
+
   clickItem(): void {
     if (!this.disabled) {
       if (this.type === 'page') {
         this.gotoIndex.emit(this.index!);
       } else {
         this.diffIndex.emit(
-          ({
-            next: 1,
-            prev: -1,
-            prev_5: -5,
-            next_5: 5
-          } as NzSafeAny)[this.type!]
+          (
+            {
+              next: 1,
+              prev: -1,
+              prev_5: -5,
+              next_5: 5
+            } as NzSafeAny
+          )[this.type!]
         );
       }
     }
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { locale, index, type } = changes;
     if (locale || index || type) {
-      this.title = ({
-        page: `${this.index}`,
-        next: this.locale?.next_page,
-        prev: this.locale?.prev_page,
-        prev_5: this.locale?.prev_5,
-        next_5: this.locale?.next_5
-      } as NzSafeAny)[this.type!];
+      this.title = (
+        {
+          page: `${this.index}`,
+          next: this.locale?.next_page,
+          prev: this.locale?.prev_page,
+          prev_5: this.locale?.prev_5,
+          next_5: this.locale?.next_5
+        } as NzSafeAny
+      )[this.type!];
     }
   }
 }

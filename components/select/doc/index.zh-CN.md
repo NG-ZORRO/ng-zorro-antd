@@ -42,7 +42,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzDropdownClassName]` | 下拉菜单的 className 属性 | `string` | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` |
 | `[nzDropdownStyle]` | 下拉菜单的 style 属性 | `object` | - |
-| `[nzCustomTemplate]` | 自定义选择框的Template内容 | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
+| `[nzCustomTemplate]` | 自定义选择框的 Template 内容 | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
 | `[nzServerSearch]` | 是否使用服务端搜索，当为 true 时，将不再在前端对 nz-option 进行过滤 | `boolean` | `false` |
 | `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` | 最多选中多少个标签| `number` | `Infinity` |
@@ -77,8 +77,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string  \| number` | - |
 | `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
-| `[nzHide]` | 是否在选项列表中隐藏改选项 | `boolean` | `false` |
-| `[nzCustomContent]` | 是否自定义在下拉菜单中的Template内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
+| `[nzHide]` | 是否在选项列表中隐藏该选项 | `boolean` | `false` |
+| `[nzCustomContent]` | 是否自定义在下拉菜单中的 Template 内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
 
 ### nz-option-group
 

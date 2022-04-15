@@ -16,15 +16,14 @@ import {
   SimpleChanges,
   TemplateRef,
   Type,
-  ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Observable } from 'rxjs';
 
 import { NzModalContentDirective } from './modal-content.directive';
 import { NzModalFooterDirective } from './modal-footer.directive';
@@ -38,9 +37,7 @@ import { getConfigFromComponent } from './utils';
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
-  template: `
-    <ng-template><ng-content></ng-content></ng-template>
-  `,
+  template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
@@ -104,15 +101,16 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzAfterClose = new EventEmitter<R>();
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
   @ContentChild(NzModalTitleDirective, { static: true, read: TemplateRef })
   set modalTitle(value: TemplateRef<NzSafeAny>) {
     if (value) {
       this.setTitleWithTemplate(value);
     }
   }
+
   @ContentChild(NzModalContentDirective, { static: true, read: TemplateRef })
   contentFromContentChild!: TemplateRef<NzSafeAny>;
+
   @ContentChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   set modalFooter(value: TemplateRef<NzSafeAny>) {
     if (value) {
@@ -121,6 +119,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   }
 
   private modalRef: NzModalRef | null = null;
+  private destroy$ = new Subject<void>();
 
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
@@ -132,7 +131,11 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   open(): void {
     if (!this.nzVisible) {
@@ -143,6 +146,14 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     if (!this.modalRef) {
       const config = this.getConfig();
       this.modalRef = this.modal.create(config);
+
+      // When the modal is implicitly closed (e.g. closeAll) the nzVisible needs to be set to the correct value and emit.
+      this.modalRef.afterClose
+        .asObservable()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.close();
+        });
     }
   }
 
@@ -211,14 +222,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   private getConfig(): ModalOptions {
     const componentConfig = getConfigFromComponent(this);
     componentConfig.nzViewContainerRef = this.viewContainerRef;
-    if (!this.nzContent && !this.contentFromContentChild) {
-      componentConfig.nzContent = this.contentTemplateRef;
-      warnDeprecation(
-        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzModalContent></ng-template>` to declare the content of the modal.'
-      );
-    } else {
-      componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
-    }
+    componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
     return componentConfig;
   }
 
@@ -240,5 +244,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
 
   ngOnDestroy(): void {
     this.modalRef?._finishDialogClose();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

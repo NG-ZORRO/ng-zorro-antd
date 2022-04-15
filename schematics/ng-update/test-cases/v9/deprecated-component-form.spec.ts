@@ -3,6 +3,7 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
+
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('v9 form components migration', () => {
@@ -41,13 +42,15 @@ describe('v9 form components migration', () => {
     shx.rm('-r', tmpDirPath);
   });
 
-  function writeFakeAngular(): void { writeFile('/node_modules/@angular/core/index.d.ts', ``); }
+  function writeFakeAngular(): void {
+ writeFile('/node_modules/@angular/core/index.d.ts', ``);
+}
 
   function writeFile(filePath: string, contents: string): void {
     host.sync.write(normalize(filePath), virtualFs.stringToFileBuffer(contents));
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function runMigration(): Promise<any> {
     await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
   }

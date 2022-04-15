@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "PLACEHOLDER_SCHEMATICS_ID",
+  "$id": "PLACEHOLDER_SCHEMATICS_ID",
   "title": "PLACEHOLDER_SCHEMATICS_TITLE",
   "type": "object",
   "properties": {

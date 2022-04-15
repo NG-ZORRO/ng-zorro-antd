@@ -17,7 +17,12 @@ import {
 } from './comment-cells';
 import { NzCommentComponent } from './comment.component';
 
-const NZ_COMMENT_CELLS = [NzCommentAvatarDirective, NzCommentContentDirective, NzCommentActionComponent, NzCommentActionHostDirective];
+const NZ_COMMENT_CELLS = [
+  NzCommentAvatarDirective,
+  NzCommentContentDirective,
+  NzCommentActionComponent,
+  NzCommentActionHostDirective
+];
 
 @NgModule({
   imports: [BidiModule, CommonModule, NzOutletModule],

@@ -37,11 +37,13 @@ export default {
       nextCentury: 'Næste århundrede'
     },
     timePickerLocale: {
-      placeholder: 'Vælg tid'
+      placeholder: 'Vælg tid',
+      rangePlaceholder: ['Starttidspunkt', 'Sluttidspunkt']
     }
   },
   TimePicker: {
-    placeholder: 'Vælg tid'
+    placeholder: 'Vælg tid',
+    rangePlaceholder: ['Starttidspunkt', 'Sluttidspunkt']
   },
   Calendar: {
     lang: {
@@ -75,27 +77,39 @@ export default {
       nextCentury: 'Næste århundrede'
     },
     timePickerLocale: {
-      placeholder: 'Vælg tid'
+      placeholder: 'Vælg tid',
+      rangePlaceholder: ['Starttidspunkt', 'Sluttidspunkt']
     }
   },
   Pagination: {
     items_per_page: '/ side',
     jump_to: 'Gå til',
     jump_to_confirm: 'bekræft',
-    page: '',
+    page: 'Side',
     prev_page: 'Forrige Side',
     next_page: 'Næste Side',
     prev_5: 'Forrige 5 Sider',
     next_5: 'Næste 5 Sider',
     prev_3: 'Forrige 3 Sider',
-    next_3: 'Næste 3 Sider'
+    next_3: 'Næste 3 Sider',
+    page_size: 'sidestørrelse'
   },
   Table: {
     filterTitle: 'Filtermenu',
     filterConfirm: 'OK',
     filterReset: 'Nulstil',
     selectAll: 'Vælg alle',
-    selectInvert: 'Inverter valg'
+    selectInvert: 'Invertér valg',
+    filterEmptyText: 'Ingen filtre',
+    emptyText: 'Ingen data',
+    selectNone: 'Ryd alt data',
+    selectionAll: 'Vælg alt data',
+    sortTitle: 'Sortér',
+    expand: 'Udvid række',
+    collapse: 'Flet række',
+    triggerDesc: 'Klik for at sortere faldende',
+    triggerAsc: 'Klik for at sortere stigende',
+    cancelSort: 'Klik for at annullere sortering'
   },
   Modal: {
     okText: 'OK',

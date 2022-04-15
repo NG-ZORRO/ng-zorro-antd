@@ -3,7 +3,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
@@ -102,6 +104,12 @@ describe('alert', () => {
         expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-${type}`);
       });
     });
+    it('should action work', () => {
+      fixture.detectChanges();
+      testComponent.action = testComponent.template;
+      fixture.detectChanges();
+      expect(alert.nativeElement.querySelector('.ant-alert-action').classList).not.toBeNull();
+    });
   });
   describe('banner alert', () => {
     let fixture: ComponentFixture<NzDemoTestBannerComponent>;
@@ -134,7 +142,7 @@ describe('alert', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-alert',
   template: `
     <ng-template #template>template</ng-template>
@@ -147,12 +155,14 @@ describe('alert', () => {
       [nzShowIcon]="showIcon"
       [nzIconType]="iconType"
       [nzType]="type"
+      [nzAction]="action"
       (nzOnClose)="onClose($event)"
     ></nz-alert>
   `
 })
 export class NzDemoTestBasicComponent {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
+  action?: string | TemplateRef<void>;
   banner = false;
   closeable = false;
   closeText?: string | TemplateRef<void>;
@@ -165,9 +175,7 @@ export class NzDemoTestBasicComponent {
 }
 
 @Component({
-  template: `
-    <nz-alert nzBanner></nz-alert>
-  `
+  template: ` <nz-alert nzBanner></nz-alert> `
 })
 export class NzDemoTestBannerComponent {}
 

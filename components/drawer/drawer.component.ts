@@ -10,7 +10,6 @@ import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,17 +31,21 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
-import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
+import {
+  DRAWER_DEFAULT_SIZE,
+  DRAWER_LARGE_SIZE,
+  NzDrawerOptionsOfComponent,
+  NzDrawerPlacement,
+  NzDrawerSize
+} from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
@@ -78,15 +81,34 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!nzTitle">
-                <div *ngIf="nzTitle" class="ant-drawer-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
+              <div
+                *ngIf="nzTitle || nzClosable"
+                class="ant-drawer-header"
+                [class.ant-drawer-header-close-only]="!nzTitle"
+              >
+                <div class="ant-drawer-header-title">
+                  <button
+                    *ngIf="nzClosable"
+                    (click)="closeClick()"
+                    aria-label="Close"
+                    class="ant-drawer-close"
+                    style="--scroll-bar: 0px;"
+                  >
+                    <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
+                      <i nz-icon [nzType]="closeIcon"></i>
+                    </ng-container>
+                  </button>
+                  <div *ngIf="nzTitle" class="ant-drawer-title">
+                    <ng-container *nzStringTemplateOutlet="nzTitle">
+                      <div [innerHTML]="nzTitle"></div>
+                    </ng-container>
+                  </div>
                 </div>
-                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
-                  <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
-                    <i nz-icon [nzType]="closeIcon"></i>
+                <div *ngIf="nzExtra" class="ant-drawer-extra">
+                  <ng-container *nzStringTemplateOutlet="nzExtra">
+                    <div [innerHTML]="nzExtra"></div>
                   </ng-container>
-                </button>
+                </div>
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
@@ -100,10 +122,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                     <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
                   </ng-container>
                 </ng-template>
-                <ng-content *ngIf="!(nzContent || contentFromContentChild)"></ng-content>
               </div>
               <div *ngIf="nzFooter" class="ant-drawer-footer">
-                <ng-container *nzStringTemplateOutlet="nzFooter"><div [innerHTML]="nzFooter"></div></ng-container>
+                <ng-container *nzStringTemplateOutlet="nzFooter">
+                  <div [innerHTML]="nzFooter"></div>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -116,7 +139,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent {
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
+{
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
@@ -134,13 +158,15 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
+  @Input() nzExtra?: string | TemplateRef<{}>;
   @Input() nzFooter?: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
+  @Input() nzSize: NzDrawerSize = 'default';
   @Input() nzMaskStyle: NgStyleInterface = {};
   @Input() nzBodyStyle: NgStyleInterface = {};
   @Input() nzWrapClassName?: string;
-  @Input() nzWidth: number | string = 256;
-  @Input() nzHeight: number | string = 256;
+  @Input() nzWidth?: number | string;
+  @Input() nzHeight?: number | string;
   @Input() nzZIndex = 1000;
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
@@ -161,7 +187,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   @ViewChild('drawerTemplate', { static: true }) drawerTemplate!: TemplateRef<void>;
   @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet?: CdkPortalOutlet;
-  @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef }) contentFromContentChild?: TemplateRef<NzSafeAny>;
+  @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef })
+  contentFromContentChild?: TemplateRef<NzSafeAny>;
 
   private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
@@ -212,11 +239,19 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   }
 
   get width(): string | null {
-    return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
+    if (this.isLeftOrRight) {
+      const defaultWidth = this.nzSize === 'large' ? DRAWER_LARGE_SIZE : DRAWER_DEFAULT_SIZE;
+      return this.nzWidth === undefined ? toCssPixel(defaultWidth) : toCssPixel(this.nzWidth);
+    }
+    return null;
   }
 
   get height(): string | null {
-    return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
+    if (!this.isLeftOrRight) {
+      const defaultHeight = this.nzSize === 'large' ? DRAWER_LARGE_SIZE : DRAWER_DEFAULT_SIZE;
+      return this.nzHeight === undefined ? toCssPixel(defaultHeight) : toCssPixel(this.nzHeight);
+    }
+    return null;
   }
 
   get isLeftOrRight(): boolean {
@@ -245,7 +280,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   constructor(
     private cdr: ChangeDetectorRef,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
@@ -276,16 +311,12 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
 
   ngAfterViewInit(): void {
     this.attachBodyContent();
-    setTimeout(() => {
-      this.nzOnViewInit.emit();
-    });
-  }
-
-  ngAfterContentInit(): void {
-    if (!(this.contentFromContentChild || this.nzContent)) {
-      warnDeprecation(
-        'Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzDrawerContent></ng-template>` to declare the content of the drawer.'
-      );
+    // The `setTimeout` triggers change detection. There's no sense to schedule the DOM timer if anyone is
+    // listening to the `nzOnViewInit` event inside the template, for instance `<nz-drawer (nzOnViewInit)="...">`.
+    if (this.nzOnViewInit.observers.length) {
+      setTimeout(() => {
+        this.nzOnViewInit.emit();
+      });
     }
   }
 

@@ -1,24 +1,33 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+
+import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { TransferChange } from 'ng-zorro-antd/transfer';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-transfer-tree-transfer',
   template: `
-    <nz-transfer [nzDataSource]="list" [nzShowSelectAll]="false" [nzRenderList]="[leftRenderList, null]" (nzChange)="change($event)">
+    <nz-transfer
+      [nzDataSource]="list"
+      [nzShowSelectAll]="false"
+      [nzRenderList]="[leftRenderList, null]"
+      (nzChange)="change($event)"
+    >
       <ng-template #leftRenderList let-items let-onItemSelectAll="onItemSelectAll" let-onItemSelect="onItemSelect">
-        <nz-tree #tree [nzData]="treeData" nzExpandAll nzBlockNode>
+        <nz-tree
+          #tree
+          [nzData]="treeData"
+          nzExpandAll
+          nzBlockNode
+          nzCheckable
+          nzCheckStrictly
+          (nzCheckBoxChange)="treeCheckBoxChange($event, onItemSelect)"
+        >
           <ng-template #nzTreeTemplate let-node>
             <span
-              class="ant-tree-checkbox"
-              [class.ant-tree-checkbox-disabled]="node.isDisabled"
-              [class.ant-tree-checkbox-checked]="node.isChecked"
               (click)="checkBoxChange(node, onItemSelect)"
+              class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open"
             >
-              <span class="ant-tree-checkbox-inner"></span>
-            </span>
-            <span (click)="checkBoxChange(node, onItemSelect)" class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open">
               {{ node.title }}
             </span>
           </ng-template>
@@ -31,16 +40,18 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
 export class NzDemoTransferTreeTransferComponent {
   @ViewChild('tree', { static: true }) tree!: NzTreeComponent;
   list: NzTreeNodeOptions[] = [
-    { key: '1', id: 1, parentid: 0, title: 'parent 1' },
-    { key: '2', id: 2, parentid: 1, title: 'leaf 1-1', disabled: true, isLeaf: true },
-    { key: '3', id: 3, parentid: 1, title: 'leaf 1-2', isLeaf: true }
+    { key: '0', id: 0, title: '0-0', isLeaf: true },
+    { key: '1', id: 1, parentid: 0, title: '0-1' },
+    { key: '2', id: 2, parentid: 1, title: '0-1-0', isLeaf: true },
+    { key: '3', id: 3, parentid: 1, title: '0-1-1', isLeaf: true },
+    { key: '4', id: 4, title: '0-3', isLeaf: true }
   ];
   treeData = this.generateTree(this.list);
   checkedNodeList: NzTreeNode[] = [];
 
   private generateTree(arr: NzTreeNodeOptions[]): NzTreeNodeOptions[] {
     const tree: NzTreeNodeOptions[] = [];
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedArr: any = {};
     let arrElem: NzTreeNodeOptions;
     let mappedElem: NzTreeNodeOptions;
@@ -64,11 +75,15 @@ export class NzDemoTransferTreeTransferComponent {
     return tree;
   }
 
+  treeCheckBoxChange(event: NzFormatEmitEvent, onItemSelect: (item: NzTreeNodeOptions) => void): void {
+    this.checkBoxChange(event.node!, onItemSelect);
+  }
+
   checkBoxChange(node: NzTreeNode, onItemSelect: (item: NzTreeNodeOptions) => void): void {
     if (node.isDisabled) {
       return;
     }
-    node.isChecked = !node.isChecked;
+
     if (node.isChecked) {
       this.checkedNodeList.push(node);
     } else {

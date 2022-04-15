@@ -64,6 +64,28 @@ When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 | `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
 | `sorter` | Optional | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
 
+The default filter is like:
+
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
+
+For example, if you would like to ignore lower or upper case, you could use a filter function like this:
+
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  })
+}
+```
+
 #### Methods
 
 | Name | Description |

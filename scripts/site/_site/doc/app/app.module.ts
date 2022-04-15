@@ -66,12 +66,19 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     RouterModule.forRoot(
       routes,
       environment.production
-        ? { preloadingStrategy: HoverPreloadStrategy, scrollPositionRestoration: 'enabled', initialNavigation: 'enabledBlocking' }
+        ? {
+            preloadingStrategy: HoverPreloadStrategy,
+            scrollPositionRestoration: 'enabled',
+            initialNavigation: 'enabledBlocking'
+          }
         : {}
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }],
+  providers: [
+    Title,
+    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

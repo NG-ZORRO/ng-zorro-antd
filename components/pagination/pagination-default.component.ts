@@ -22,10 +22,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -37,7 +39,10 @@ import { PaginationItemRenderContext } from './pagination.types';
   template: `
     <ng-template #containerTemplate>
       <li class="ant-pagination-total-text" *ngIf="showTotal">
-        <ng-template [ngTemplateOutlet]="showTotal" [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="showTotal"
+          [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
+        ></ng-template>
       </li>
       <li
         *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
@@ -152,6 +157,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
   }
 
   getListOfPageItem(pageIndex: number, lastIndex: number): Array<Partial<NzPaginationItemComponent>> {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const concatWithPrevNext = (listOfPage: Array<Partial<NzPaginationItemComponent>>) => {
       const prevItem = {
         type: 'prev',
@@ -176,6 +182,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
     if (lastIndex <= 9) {
       return concatWithPrevNext(generatePage(1, lastIndex));
     } else {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const generateRangeItem = (selected: number, last: number) => {
         let listOfRange = [];
         const prevFiveItem = {
@@ -186,12 +193,16 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
         };
         const firstPageItem = generatePage(1, 1);
         const lastPageItem = generatePage(lastIndex, lastIndex);
-        if (selected < 4) {
-          listOfRange = [...generatePage(2, 5), nextFiveItem];
+        if (selected < 5) {
+          // If the 4th is selected, one more page will be displayed.
+          const maxLeft = selected === 4 ? 6 : 5;
+          listOfRange = [...generatePage(2, maxLeft), nextFiveItem];
         } else if (selected < last - 3) {
           listOfRange = [prevFiveItem, ...generatePage(selected - 2, selected + 2), nextFiveItem];
         } else {
-          listOfRange = [prevFiveItem, ...generatePage(last - 4, last - 1)];
+          // If the 4th from last is selected, one more page will be displayed.
+          const minRight = selected === last - 3 ? last - 5 : last - 4;
+          listOfRange = [prevFiveItem, ...generatePage(minRight, last - 1)];
         }
         return [...firstPageItem, ...listOfRange, ...lastPageItem];
       };

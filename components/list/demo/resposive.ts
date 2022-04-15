@@ -7,9 +7,7 @@ import { Component } from '@angular/core';
       <div nz-row [nzGutter]="16">
         <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
           <nz-list-item>
-            <nz-card [nzTitle]="item.title">
-              Card content
-            </nz-card>
+            <nz-card [nzTitle]="item.title">Card content</nz-card>
           </nz-list-item>
         </div>
       </div>

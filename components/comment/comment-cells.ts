@@ -43,11 +43,11 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
     super(componentFactoryResolver, viewContainerRef);
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
   }
 

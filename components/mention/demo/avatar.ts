@@ -32,7 +32,7 @@ export class NzDemoMentionAvatarComponent {
     { name: 'Flask', type: 'Python', icon: 'https://zos.alipayobjects.com/rmsportal/xaypBUijfnpAlXE.png' }
   ];
 
-  valueWith = (data: { name: string; type: string; icon: string }) => data.name;
+  valueWith = (data: { name: string; type: string; icon: string }): string => data.name;
 
   onSelect(value: string): void {
     console.log(value);

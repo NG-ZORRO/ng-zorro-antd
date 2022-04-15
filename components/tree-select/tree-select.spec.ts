@@ -8,7 +8,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchMouseEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 import { NzTreeSelectComponent } from './tree-select.component';
@@ -309,7 +315,9 @@ describe('tree-select component', () => {
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
-      expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
+      expect(maxTagPlaceholderElement.innerText.trim()).toBe(
+        `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
+      );
     }));
 
     it('should set selectable', fakeAsync(() => {

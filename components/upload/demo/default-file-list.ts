@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
+
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-default-file-list',
   template: `
     <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzFileList]="fileList">
-      <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        Upload
+      </button>
     </nz-upload>
   `
 })

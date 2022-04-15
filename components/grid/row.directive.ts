@@ -19,10 +19,11 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
@@ -31,6 +32,7 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
   selector: '[nz-row],nz-row,nz-form-item',
   exportAs: 'nzRow',
   host: {
+    class: 'ant-row',
     '[class.ant-row-top]': `nzAlign === 'top'`,
     '[class.ant-row-middle]': `nzAlign === 'middle'`,
     '[class.ant-row-bottom]': `nzAlign === 'bottom'`,
@@ -45,7 +47,8 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
-  @Input() nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
+  @Input() nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null =
+    null;
 
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
@@ -75,7 +78,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   setGutterStyle(): void {
     const [horizontalGutter, verticalGutter] = this.getGutter();
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
-    const renderGutter = (name: string, gutter: number | null) => {
+    const renderGutter = (name: string, gutter: number | null): void => {
       const nativeElement = this.elementRef.nativeElement;
       if (gutter !== null) {
         this.renderer.setStyle(nativeElement, name, `-${gutter / 2}px`);
@@ -94,10 +97,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public platform: Platform,
     private breakpointService: NzBreakpointService,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-row');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;

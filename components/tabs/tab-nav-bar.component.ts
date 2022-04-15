@@ -21,7 +21,6 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -30,12 +29,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
@@ -62,7 +60,13 @@ const CSS_TRANSFORM_TIME = 150;
       [class.ant-tabs-nav-wrap-ping-bottom]="pingBottom"
       #navWarp
     >
-      <div class="ant-tabs-nav-list" #navList nzTabScrollList (offsetChange)="onOffsetChange($event)" (tabScroll)="tabScroll.emit($event)">
+      <div
+        class="ant-tabs-nav-list"
+        #navList
+        nzTabScrollList
+        (offsetChange)="onOffsetChange($event)"
+        (tabScroll)="tabScroll.emit($event)"
+      >
         <ng-content></ng-content>
         <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
@@ -85,7 +89,7 @@ const CSS_TRANSFORM_TIME = 150;
     '(keydown)': 'handleKeydown($event)'
   }
 })
-export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
   static ngAcceptInputType_selectedIndex: NumberInput;
 
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
@@ -172,13 +176,11 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     @Optional() private dir: Directionality
   ) {}
 
-  ngOnInit(): void {}
-
   ngAfterViewInit(): void {
     const dirChange = this.dir ? this.dir.change : of(null);
     const resize = this.viewportRuler.change(150);
 
-    const realign = () => {
+    const realign = (): void => {
       this.updateScrollListPosition();
       this.alignInkBarToSelectedTab();
     };

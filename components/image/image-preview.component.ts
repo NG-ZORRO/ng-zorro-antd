@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { AnimationEvent } from '@angular/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import {
@@ -10,15 +11,19 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  OnDestroy,
+  NgZone,
+  OnInit,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
@@ -71,6 +76,7 @@ const initialPosition = {
                 #imgRef
                 *ngIf="index === imageIndex"
                 [attr.src]="image.src"
+                [attr.srcset]="image.srcset"
                 [attr.alt]="image.alt"
                 [style.width]="image.width"
                 [style.height]="image.height"
@@ -103,19 +109,19 @@ const initialPosition = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-image-preview-wrap',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
-    '[class.ant-image-preview-wrap]': 'true',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@fadeMotion]': 'animationState',
     '(@fadeMotion.start)': 'onAnimationStart($event)',
     '(@fadeMotion.done)': 'onAnimationDone($event)',
-    '(click)': 'onContainerClick($event)',
     tabindex: '-1',
     role: 'document'
-  }
+  },
+  providers: [NzDestroyService]
 })
-export class NzImagePreviewComponent implements OnDestroy {
+export class NzImagePreviewComponent implements OnInit {
   images: NzImage[] = [];
   index = 0;
   isDragging = false;
@@ -173,7 +179,6 @@ export class NzImagePreviewComponent implements OnDestroy {
 
   private zoom: number;
   private rotate: number;
-  private destroy$ = new Subject();
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -185,17 +190,31 @@ export class NzImagePreviewComponent implements OnDestroy {
   }
 
   constructor(
+    private ngZone: NgZone,
+    private host: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     public nzConfigService: NzConfigService,
     public config: NzImagePreviewOptions,
-    private overlayRef: OverlayRef
+    private overlayRef: OverlayRef,
+    private destroy$: NzDestroyService
   ) {
-    // TODO: move to host after View Engine deprecation
     this.zoom = this.config.nzZoom ?? 1;
     this.rotate = this.config.nzRotate ?? 0;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
+  }
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.host.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (event.target === event.currentTarget && this.maskClosable && this.containerClick.observers.length) {
+            this.ngZone.run(() => this.containerClick.emit());
+          }
+        });
+    });
   }
 
   setImages(images: NzImage[]): void {
@@ -276,12 +295,6 @@ export class NzImagePreviewComponent implements OnDestroy {
     this.next();
   }
 
-  onContainerClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget && this.maskClosable) {
-      this.containerClick.emit();
-    }
-  }
-
   onAnimationStart(event: AnimationEvent): void {
     if (event.toState === 'enter') {
       this.setEnterAnimationClass();
@@ -329,11 +342,6 @@ export class NzImagePreviewComponent implements OnDestroy {
     if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
       this.position = { ...this.position, ...fitContentPos };
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private updatePreviewImageTransform(): void {

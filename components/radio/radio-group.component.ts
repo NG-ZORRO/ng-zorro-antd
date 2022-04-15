@@ -8,7 +8,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   forwardRef,
   Input,
   OnChanges,
@@ -19,10 +18,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzRadioService } from './radio.service';
 
 export type NzRadioButtonStyle = 'outline' | 'solid';
@@ -31,9 +32,7 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -45,6 +44,7 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     }
   ],
   host: {
+    class: 'ant-radio-group',
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
@@ -68,12 +68,8 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   constructor(
     private cdr: ChangeDetectorRef,
     private nzRadioService: NzRadioService,
-    private elementRef: ElementRef,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-radio-group');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {

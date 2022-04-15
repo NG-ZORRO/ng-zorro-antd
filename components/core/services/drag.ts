@@ -61,12 +61,10 @@ export class NzDragService {
     this.currentDraggingSequence = new Subject<MouseEvent | Touch>();
 
     return this.currentDraggingSequence.pipe(
-      map((e: MouseEvent | Touch) => {
-        return {
-          x: e.pageX - this.currentStartingPoint!.x,
-          y: e.pageY - this.currentStartingPoint!.y
-        };
-      }),
+      map((e: MouseEvent | Touch) => ({
+        x: e.pageX - this.currentStartingPoint!.x,
+        y: e.pageY - this.currentStartingPoint!.y
+      })),
       filter((e: Delta) => Math.abs(e.x) > this.draggingThreshold || Math.abs(e.y) > this.draggingThreshold),
       finalize(() => this.teardownDraggingSequence())
     );

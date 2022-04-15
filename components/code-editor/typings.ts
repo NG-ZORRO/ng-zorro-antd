@@ -4,6 +4,7 @@
  */
 
 import { editor } from 'monaco-editor';
+
 import IStandAloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 
@@ -13,7 +14,7 @@ export type JoinedEditorOptions = EditorOptions | DiffEditorOptions;
 
 export type NzEditorMode = 'normal' | 'diff';
 
-export enum NzCodeEditorLoadingStatus {
+export const enum NzCodeEditorLoadingStatus {
   UNLOAD = 'unload',
   LOADING = 'loading',
   LOADED = 'LOADED'

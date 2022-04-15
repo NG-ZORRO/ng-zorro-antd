@@ -23,6 +23,7 @@ import { Component } from '@angular/core';
       h3 {
         color: #fff;
         margin-bottom: 0;
+        user-select: none;
       }
     `
   ]

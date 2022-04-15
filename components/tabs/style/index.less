@@ -47,14 +47,12 @@
     .@{tab-prefix-cls}-nav-list {
       position: relative;
       display: flex;
-      flex: 1 0 auto; // fix safari scroll problem
       transition: transform @animation-duration-slow;
     }
 
     // >>>>>>>> Operations
     .@{tab-prefix-cls}-nav-operations {
       display: flex;
-      flex: 1 0 auto; // fix safari scroll problem
       align-self: stretch;
 
       &-hidden {
@@ -83,6 +81,7 @@
 
     .@{tab-prefix-cls}-nav-add {
       min-width: @tabs-card-height;
+      margin-left: @tabs-card-gutter;
       padding: 0 @padding-xs;
       background: @tabs-card-head-background;
       border: @border-width-base @border-style-base @border-color-split;

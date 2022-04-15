@@ -2,11 +2,13 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+
 import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const viewport: any;
 
 describe('nz descriptions', () => {
@@ -148,11 +150,15 @@ describe('nz descriptions', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="itemTitle + i" [nzSpan]="col"></nz-descriptions-item>
+      <nz-descriptions-item
+        *ngFor="let col of colspanArray; let i = index"
+        [nzTitle]="itemTitle + i"
+        [nzSpan]="col"
+      ></nz-descriptions-item>
     </nz-descriptions>
   `
 })

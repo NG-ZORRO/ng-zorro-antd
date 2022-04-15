@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Location } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -19,14 +21,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Location } from '@angular/common';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
+
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
@@ -88,8 +89,10 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() @WithConfig() nzGhost: boolean = true;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
-  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
+  @ContentChild(NzPageHeaderFooterDirective, { static: false })
+  nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false })
+  nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
   destroy$ = new Subject<void>();
@@ -131,7 +134,9 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nzBack.emit();
     } else {
       if (!this.location) {
-        throw new Error(`${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`);
+        throw new Error(
+          `${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`
+        );
       }
       this.location.back();
     }

@@ -15,10 +15,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
 import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+
 import { NzSliderService } from './slider.service';
 import { NzSliderShowTooltip } from './typings';
 
@@ -91,7 +92,7 @@ export class NzSliderHandleComponent implements OnChanges {
     }
   }
 
-  enterHandle = () => {
+  enterHandle = (): void => {
     if (!this.sliderService.isDragging) {
       this.toggleTooltip(true);
       this.updateTooltipPosition();
@@ -99,7 +100,7 @@ export class NzSliderHandleComponent implements OnChanges {
     }
   };
 
-  leaveHandle = () => {
+  leaveHandle = (): void => {
     if (!this.sliderService.isDragging) {
       this.toggleTooltip(false);
       this.cdr.detectChanges();

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzButtonSize } from 'ng-zorro-antd/button';
 
 @Component({
@@ -19,12 +20,24 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
     <button nz-button nzType="primary" [nzSize]="size"><i nz-icon nzType="download"></i></button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon nzType="download"></i></button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon nzType="download"></i></button>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon nzType="download"></i>Download</button>
-    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon nzType="download"></i>Download</button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="round">
+      <i nz-icon nzType="download"></i>
+      Download
+    </button>
+    <button nz-button nzType="primary" [nzSize]="size">
+      <i nz-icon nzType="download"></i>
+      Download
+    </button>
     <br />
     <nz-button-group [nzSize]="size">
-      <button nz-button nzType="primary"><i nz-icon nzType="left"></i>Backward</button>
-      <button nz-button nzType="primary">Forward<i nz-icon nzType="right"></i></button>
+      <button nz-button nzType="primary">
+        <i nz-icon nzType="left"></i>
+        Backward
+      </button>
+      <button nz-button nzType="primary">
+        Forward
+        <i nz-icon nzType="right"></i>
+      </button>
     </nz-button-group>
   `,
   styles: [

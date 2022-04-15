@@ -9,7 +9,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
-  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,10 +18,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzListGrid } from './interface';
 import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';
 
@@ -33,7 +34,10 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     <ng-template #itemsTpl>
       <div class="ant-list-items">
         <ng-container *ngFor="let item of nzDataSource; let index = index">
-          <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="nzRenderItem"
+            [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+          ></ng-template>
         </ng-container>
         <ng-content></ng-content>
       </div>
@@ -59,10 +63,16 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
             [nzXXl]="nzGrid.xxl || null"
             *ngFor="let item of nzDataSource; let index = index"
           >
-            <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+            <ng-template
+              [ngTemplateOutlet]="nzRenderItem"
+              [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+            ></ng-template>
           </div>
         </div>
-        <nz-list-empty *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0" [nzNoResult]="nzNoResult"></nz-list-empty>
+        <nz-list-empty
+          *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0"
+          [nzNoResult]="nzNoResult"
+        ></nz-list-empty>
       </ng-container>
     </nz-spin>
 
@@ -83,6 +93,7 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'ant-list',
     '[class.ant-list-rtl]': `dir === 'rtl'`,
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
@@ -126,10 +137,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, 
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-list');
-  }
+  constructor(@Optional() private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

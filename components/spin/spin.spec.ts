@@ -2,8 +2,10 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
 
@@ -150,11 +152,18 @@ describe('spin', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-spin',
   template: `
     <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i></ng-template>
-    <nz-spin [nzTip]="tip" [nzSize]="size" [nzDelay]="delay" [nzSpinning]="spinning" [nzSimple]="simple" [nzIndicator]="indicator">
+    <nz-spin
+      [nzTip]="tip"
+      [nzSize]="size"
+      [nzDelay]="delay"
+      [nzSpinning]="spinning"
+      [nzSimple]="simple"
+      [nzIndicator]="indicator"
+    >
       <div>test</div>
     </nz-spin>
   `

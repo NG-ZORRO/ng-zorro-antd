@@ -1,11 +1,13 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
@@ -14,7 +16,12 @@ describe('switch', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [NzTestSwitchBasicComponent, NzTestSwitchFormComponent, NzTestSwitchTemplateComponent, NzTestSwitchRtlComponent]
+        declarations: [
+          NzTestSwitchBasicComponent,
+          NzTestSwitchFormComponent,
+          NzTestSwitchTemplateComponent,
+          NzTestSwitchRtlComponent
+        ]
       });
       TestBed.compileComponents();
     })
@@ -165,6 +172,48 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(false);
     });
+    describe('change detection behavior', () => {
+      it('should not run change detection on `click` events if the switch is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new MouseEvent('click');
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        switchElement.nativeElement.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
+      it('should not run change detection on `keydown` events if the switch is disabled', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+
+        const switchButton = switchElement.nativeElement.querySelector('.ant-switch');
+        const appRef = TestBed.inject(ApplicationRef);
+        const event = new KeyboardEvent('keydown', {
+          keyCode: SPACE
+        });
+
+        spyOn(appRef, 'tick');
+        spyOn(event, 'preventDefault').and.callThrough();
+
+        switchButton.dispatchEvent(event);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(event.preventDefault).not.toHaveBeenCalled();
+
+        testComponent.disabled = false;
+        fixture.detectChanges();
+
+        switchButton.dispatchEvent(event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
+    });
   });
   describe('template switch', () => {
     let fixture: ComponentFixture<NzTestSwitchTemplateComponent>;
@@ -178,12 +227,16 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-close');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain(
+        'anticon-close'
+      );
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-check');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain(
+        'anticon-check'
+      );
     }));
   });
   describe('switch form', () => {
@@ -272,7 +325,10 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="close"></i></ng-template>
-    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"></nz-switch>
+    <nz-switch
+      [nzCheckedChildren]="checkedChildrenTemplate"
+      [nzUnCheckedChildren]="unCheckedChildrenTemplate"
+    ></nz-switch>
   `
 })
 export class NzTestSwitchTemplateComponent {}

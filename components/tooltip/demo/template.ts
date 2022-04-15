@@ -3,10 +3,12 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-tooltip-template',
   template: `
-    <a nz-tooltip [nzTooltipTitle]="titleTemplate">This Tooltip has an Icon</a>
-    <ng-template #titleTemplate>
+    <a nz-tooltip [nzTooltipTitle]="titleTemplate" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+      >This Tooltip has an Icon</a
+    >
+    <ng-template #titleTemplate let-thing>
       <i nz-icon nzType="file"></i>
-      <span>Tooltip With Icon</span>
+      <span>Tooltip With {{ thing }}</span>
     </ng-template>
   `,
   styles: [

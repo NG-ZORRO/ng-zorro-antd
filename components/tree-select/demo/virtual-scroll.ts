@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
@@ -17,7 +18,7 @@ export class NzDemoTreeSelectVirtualScrollComponent implements OnInit {
   nodes: NzTreeNodeOptions[] = [];
 
   ngOnInit(): void {
-    const dig = (path = '0', level = 3) => {
+    const dig = (path = '0', level = 3): NzTreeNodeOptions[] => {
       const list = [];
       for (let i = 0; i < 10; i += 1) {
         const key = `${path}-${i}`;

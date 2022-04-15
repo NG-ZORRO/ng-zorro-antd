@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
 import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-draggable',
-  template: ` <nz-tree [nzData]="nodes" nzDraggable nzBlockNode (nzOnDrop)="nzEvent($event)"> </nz-tree> `
+  template: ` <nz-tree [nzData]="nodes" nzDraggable nzBlockNode (nzOnDrop)="nzEvent($event)"></nz-tree> `
 })
 export class NzDemoTreeDraggableComponent {
   nodes = [

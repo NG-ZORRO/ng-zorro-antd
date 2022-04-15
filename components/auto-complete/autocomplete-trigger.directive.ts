@@ -22,16 +22,17 @@ import {
   forwardRef,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   Optional,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
-
 import { Subject, Subscription } from 'rxjs';
 import { delay, filter, takeUntil, tap } from 'rxjs/operators';
+
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -72,9 +73,11 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   panelOpen: boolean = false;
 
   /** Current active option */
-  get activeOption(): NzAutocompleteOptionComponent | void {
+  get activeOption(): NzAutocompleteOptionComponent | null {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
+    } else {
+      return null;
     }
   }
 
@@ -88,6 +91,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private overlayOutsideClickSubscription!: Subscription;
 
   constructor(
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
@@ -109,11 +113,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.destroyPanel();
   }
 
   writeValue(value: NzSafeAny): void {
-    Promise.resolve(null).then(() => this.setTriggerValue(value));
+    this.ngZone.runOutsideAngular(() => Promise.resolve(null).then(() => this.setTriggerValue(value)));
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -165,9 +171,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
       }
       this.closePanel();
     } else if (this.panelOpen && keyCode === ENTER) {
-      if (this.nzAutocomplete.showPanel && this.activeOption) {
+      if (this.nzAutocomplete.showPanel) {
         event.preventDefault();
-        this.activeOption.selectViaInteraction();
+        if (this.activeOption) {
+          this.activeOption.selectViaInteraction();
+        } else {
+          this.closePanel();
+        }
       }
     } else if (this.panelOpen && isArrowKey && this.nzAutocomplete.showPanel) {
       event.stopPropagation();
@@ -301,7 +311,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getConnectedElement(): ElementRef {
-    return this.nzInputGroupWhitSuffixOrPrefixDirective ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef : this.elementRef;
+    return this.nzInputGroupWhitSuffixOrPrefixDirective
+      ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef
+      : this.elementRef;
   }
 
   private getHostWidth(): number {
@@ -328,7 +340,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     this.nzAutocomplete.clearSelectedOptions(null, true);
     if (index !== -1) {
       this.nzAutocomplete.setActiveItem(index);
-      this.nzAutocomplete.activeItem.select(false);
+      this.nzAutocomplete.activeItem!.select(false);
     } else {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
     }

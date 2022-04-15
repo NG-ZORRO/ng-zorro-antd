@@ -5,6 +5,7 @@
 
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
+
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
 
 import { NzMNService } from './base';
@@ -16,7 +17,7 @@ import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
   providedIn: NzMessageServiceModule
 })
 export class NzMessageService extends NzMNService {
-  protected container?: NzMessageContainerComponent;
+  protected override container?: NzMessageContainerComponent;
   protected componentPrefix = 'message-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {

@@ -14,8 +14,8 @@ import {
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -24,6 +24,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -36,10 +37,12 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import { fromEvent, merge, Observable, Subscription } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
+
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
-import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -71,7 +74,6 @@ export type MentionPlacement = 'top' | 'bottom';
           class="ant-mention-dropdown-item"
           *ngFor="let suggestion of filteredSuggestions; let i = index"
           [class.focus]="i === activeIndex"
-          (mousedown)="$event.preventDefault()"
           (click)="selectSuggestion(suggestion)"
         >
           <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
@@ -90,7 +92,7 @@ export type MentionPlacement = 'top' | 'bottom';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzMentionService]
 })
-export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
+export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   static ngAcceptInputType_nzLoading: BooleanInput;
 
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
@@ -141,6 +143,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   constructor(
+    private ngZone: NgZone,
     @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
@@ -165,6 +168,27 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
         this.resetDropdown(false);
       }
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.items.changes
+      .pipe(
+        startWith(this.items),
+        switchMap(() => {
+          const items = this.items.toArray();
+          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+          // but `addEventListener` is called when the `fromEvent` is subscribed.
+          return new Observable<MouseEvent>(subscriber =>
+            this.ngZone.runOutsideAngular(() =>
+              merge(...items.map(item => fromEvent<MouseEvent>(item.nativeElement, 'mousedown'))).subscribe(subscriber)
+            )
+          );
+        })
+      )
+      .subscribe(event => {
+        event.preventDefault();
+      });
   }
 
   ngOnDestroy(): void {
@@ -267,7 +291,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions.filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
+      this.nzValueWith(suggestion).toLowerCase().includes(searchValue)
+    );
   }
 
   private resetDropdown(emit: boolean = true): void {
@@ -313,7 +339,9 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
     while (i >= 0) {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
       const endPos =
-        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
+        value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1
+          ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart)
+          : value.length;
       const mention = value.substring(startPos, endPos);
       if (
         (startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
@@ -353,15 +381,30 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private subscribeOverlayOutsideClick(): Subscription {
-    return merge<MouseEvent | TouchEvent>(
-      this.overlayRef!.outsidePointerEvents(),
-      fromEvent<TouchEvent>(this.ngDocument, 'touchend')
-    ).subscribe((event: MouseEvent | TouchEvent) => {
+    const canCloseDropdown = (event: MouseEvent | TouchEvent): boolean => {
       const clickTarget = event.target as HTMLElement;
-      if (this.isOpen && clickTarget !== this.trigger.el.nativeElement && !this.overlayRef?.overlayElement.contains(clickTarget)) {
-        this.closeDropdown();
-      }
-    });
+      return (
+        this.isOpen &&
+        clickTarget !== this.trigger.el.nativeElement &&
+        !this.overlayRef?.overlayElement.contains(clickTarget)
+      );
+    };
+
+    const subscription = new Subscription();
+
+    subscription.add(
+      this.overlayRef!.outsidePointerEvents().subscribe(event => canCloseDropdown(event) && this.closeDropdown())
+    );
+
+    subscription.add(
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<TouchEvent>(this.ngDocument, 'touchend').subscribe(
+          event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
+        )
+      )
+    );
+
+    return subscription;
   }
 
   private attachOverlay(): void {

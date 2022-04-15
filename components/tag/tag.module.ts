@@ -7,6 +7,7 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTagComponent } from './tag.component';
