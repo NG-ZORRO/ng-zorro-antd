@@ -389,10 +389,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
     }
     const listOfFilteredOptionNotDisabled = this.listOfContainerItem.filter(item => item.type === 'item').filter(item => !item.nzDisabled);
     const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item => this.compareWith(item.nzValue, this.activatedValue));
+    const listOfFilteredOptionNotDisabledCount: number = listOfFilteredOptionNotDisabled.length;
     switch (e.keyCode) {
       case UP_ARROW:
         e.preventDefault();
-        if (this.nzOpen) {
+        if (this.nzOpen && listOfFilteredOptionNotDisabledCount) {
           const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabled.length - 1;
           this.activatedValue = listOfFilteredOptionNotDisabled[preIndex].nzValue;
         }
@@ -400,8 +401,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestro
       case DOWN_ARROW:
         e.preventDefault();
         if (this.nzOpen) {
-          const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
-          this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
+          if (listOfFilteredOptionNotDisabledCount) {
+            const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
+            this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
+          }
         } else {
           this.setOpenState(true);
         }
