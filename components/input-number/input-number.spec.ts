@@ -487,7 +487,7 @@ describe('input number', () => {
       inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
       inputElement = inputNumber.nativeElement.querySelector('input');
     }));
-    it('should autofocus work', () => {
+    it('should readOnly work', () => {
       fixture.detectChanges();
       testComponent.readonly = true;
       testComponent.nzInputNumberComponent.nzReadOnly = true;
