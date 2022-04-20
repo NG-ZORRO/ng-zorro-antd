@@ -18,6 +18,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 ## API
 
 ### nz-input-number
+
 | property | description | type | default |
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
