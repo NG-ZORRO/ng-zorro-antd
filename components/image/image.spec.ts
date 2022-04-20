@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgModule, ViewChild } from '@angular/core';
 import {
@@ -27,7 +28,7 @@ import {
   ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
 
-import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import {
   getFitContentPosition,
@@ -398,6 +399,19 @@ describe('Preview', () => {
       expect(previewImageElement.src).toContain(images[0].src);
       context.previewRef?.next();
       fixture.detectChanges();
+      previewImageElement = getPreviewImageElement();
+      expect(previewImageElement.src).toContain(images[1].src);
+
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', RIGHT_ARROW);
+      tickChanges();
+      previewImageElement = getPreviewImageElement();
+      expect(previewImageElement.src).toContain(images[1].src);
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', LEFT_ARROW);
+      tickChanges();
+      previewImageElement = getPreviewImageElement();
+      expect(previewImageElement.src).toContain(images[0].src);
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', RIGHT_ARROW);
+      tickChanges();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
     }));
