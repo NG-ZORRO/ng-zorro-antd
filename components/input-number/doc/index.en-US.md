@@ -24,6 +24,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzDisabled]` | disable the input | `boolean` | `false` |
+| `[nzReadOnly]` | If readonly the input | `boolean` | `false` |
 | `[nzMax]` | max value | `number` | `Infinity` |
 | `[nzMin]` | min value | `number` | `-Infinity` |
 | `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |

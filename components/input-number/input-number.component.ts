@@ -70,6 +70,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         [attr.max]="nzMax"
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
+        [readOnly]="nzReadOnly"
         [attr.inputmode]="nzInputMode"
         [ngModel]="displayValue"
         (ngModelChange)="onModelChange($event)"
@@ -91,11 +92,13 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled',
+    '[class.ant-input-number-readonly]': 'nzReadOnly',
     '[class.ant-input-number-rtl]': `dir === 'rtl'`
   }
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzReadOnly: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
 
   private autoStepTimer?: number;
@@ -127,6 +130,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzReadOnly = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
 
