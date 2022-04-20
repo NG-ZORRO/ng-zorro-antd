@@ -18,7 +18,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 ## API
 
 ### nz-input-number
-
+| property | description | type | default |
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
@@ -38,6 +38,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
 | `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
+
 #### Methods
 
 You can get instance by `ViewChild`
