@@ -100,7 +100,7 @@ npm install monaco-editor
 | --- | --- | --- | --- |
 | `assetsRoot` | 组件加载 monaco editor 资源文件的位置 | `string` \| `SageUrl` | - |
 | `defaultEditorOption` | 默认的编辑器设置，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
-| `onLoad` | 当 monaco editor 资源加载完毕时触发的钩子，此时全局对象 `monaco` 可用 | `() => void` | - |
+| `onLoad` | 当 monaco editor 资源加载完毕时触发的钩子，此时全局对象 `monaco` 可用 (monaco-editor 版本不小于 0.22.0 时需定义 `window.MonacoEnvironment = { globalAP: true }`) | `() => void` | - |
 | `onFirstEditorInit` | 当第一个编辑器请求初始化时触发的钩子 | `() => void` | - |
 | `onInit` | 每个编辑器请求初始化时触发的钩子  | `() => void`  | - |
 | `useStaticLoading` | 使用静态加载 | `boolean` | `false` |
