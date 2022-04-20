@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -41,6 +41,8 @@ interface Section {
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
+
+const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
 @Component({
   selector: 'nz-anchor',
@@ -143,7 +145,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
     this.destroy$.next();
     this.zone.runOutsideAngular(() => {
-      fromEvent(this.getContainer(), 'scroll')
+      fromEvent(this.getContainer(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
         .pipe(throttleTime(50), takeUntil(this.destroy$))
         .subscribe(() => this.handleScroll());
     });
