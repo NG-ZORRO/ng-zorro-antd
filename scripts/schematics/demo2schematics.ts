@@ -114,7 +114,7 @@ function createSchematic(demoComponent: DemoMeta): void {
   fs.copySync(path.resolve(__dirname, `./template/schema.ts.template`), `${demoPath}/schema.ts`);
 
   const schemaJson = fs.readJsonSync(schemaPath);
-  schemaJson.id = `${demoComponent.demoName}-${demoComponent.componentName}`;
+  schemaJson.$id = `${demoComponent.demoName}-${demoComponent.componentName}`;
   schemaJson.title = `NG-ZORRO ${demoComponent.demoName} ${demoComponent.componentName}`;
   fs.outputJsonSync(schemaPath, schemaJson);
 
