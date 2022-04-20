@@ -39,7 +39,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
-| `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - | `EventEmitter<void>` | - |
+| `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
 
 #### 方法
 
