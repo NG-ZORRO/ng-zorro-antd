@@ -387,19 +387,22 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     const activatedIndex = listOfFilteredOptionNotDisabled.findIndex(item =>
       this.compareWith(item.nzValue, this.activatedValue)
     );
+    const listOfFilteredOptionNotDisabledCount: number = listOfFilteredOptionNotDisabled.length;
     switch (e.keyCode) {
       case UP_ARROW:
         e.preventDefault();
-        if (this.nzOpen && listOfFilteredOptionNotDisabled.length > 0) {
-          const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabled.length - 1;
+        if (this.nzOpen && listOfFilteredOptionNotDisabledCount) {
+          const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabledCount - 1;
           this.activatedValue = listOfFilteredOptionNotDisabled[preIndex].nzValue;
         }
         break;
       case DOWN_ARROW:
         e.preventDefault();
-        if (this.nzOpen && listOfFilteredOptionNotDisabled.length > 0) {
-          const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
-          this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
+        if (this.nzOpen) {
+          if (listOfFilteredOptionNotDisabledCount) {
+            const nextIndex = activatedIndex < listOfFilteredOptionNotDisabledCount - 1 ? activatedIndex + 1 : 0;
+            this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
+          }
         } else {
           this.setOpenState(true);
         }
