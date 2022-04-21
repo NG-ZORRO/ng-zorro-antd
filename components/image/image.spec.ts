@@ -443,11 +443,12 @@ describe('Preview', () => {
     it('should drag released work', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance;
+      const previewInstance = context.previewRef?.previewInstance!;
       tickChanges();
-      previewInstance?.onDragStarted();
-      previewInstance?.onDragReleased();
-      expect(previewInstance?.position).toEqual({ x: 0, y: 0 });
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      expect(previewInstance.isDragging).toEqual(true);
+      previewInstance.onDragReleased();
+      expect(previewInstance.position).toEqual({ x: 0, y: 0 });
     }));
 
     it('should position calculate correct', () => {
