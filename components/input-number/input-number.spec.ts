@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 
-import { createKeyboardEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
@@ -428,6 +428,24 @@ describe('input number', () => {
           expect(appRef.tick).toHaveBeenCalledTimes(1);
           done();
         });
+      });
+      it('should not run change detection when `mouseup` and `mouseleave` events are dispatched on handlers', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        spyOn(inputNumber.componentInstance, 'stop').and.callThrough();
+
+        const mouseupEvent = createMouseEvent('mouseup');
+        const mouseleaveEvent = createMouseEvent('mouseleave');
+
+        upHandler.dispatchEvent(mouseupEvent);
+        upHandler.dispatchEvent(mouseleaveEvent);
+
+        downHandler.dispatchEvent(mouseupEvent);
+        downHandler.dispatchEvent(mouseleaveEvent);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        // We have dispatched 4 events that are followed by calling `stop()`.
+        expect(inputNumber.componentInstance.stop).toHaveBeenCalledTimes(4);
       });
     });
   });
