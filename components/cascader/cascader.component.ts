@@ -29,13 +29,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -79,7 +80,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [(ngModel)]="inputValue"
               (blur)="handleInputBlur()"
               (focus)="handleInputFocus()"
-              (change)="$event.stopPropagation()"
             />
           </span>
           <span *ngIf="showLabelRender" class="ant-select-selection-item" [title]="labelRenderText">
@@ -192,7 +192,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       useExisting: forwardRef(() => NzCascaderComponent),
       multi: true
     },
-    NzCascaderService
+    NzCascaderService,
+    NzDestroyService
   ],
   host: {
     '[attr.tabIndex]': '"0"',
@@ -218,7 +219,17 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
-  @ViewChild('input', { static: false }) input!: ElementRef;
+
+  @ViewChild('input', { static: false })
+  set input(input: ElementRef<HTMLInputElement> | undefined) {
+    this.input$.next(input);
+  }
+  get input(): ElementRef<HTMLInputElement> | undefined {
+    return this.input$.getValue();
+  }
+  /** Used to store the native `<input type="search" />` element since it might be set asynchronously. */
+  private input$ = new BehaviorSubject<ElementRef<HTMLInputElement> | undefined>(undefined);
+
   @ViewChild('menu', { static: false }) menu!: ElementRef;
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
@@ -290,7 +301,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   locale!: NzCascaderI18nInterface;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   private inputString = '';
   private isOpening = false;
   private delayMenuTimer: number | null = null;
@@ -347,6 +357,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private i18nService: NzI18nService,
+    private destroy$: NzDestroyService,
     elementRef: ElementRef,
     renderer: Renderer2,
     @Optional() private directionality: Directionality,
@@ -415,12 +426,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       srv.$redraw.next();
     });
 
+    this.setupChangeListener();
     this.setupKeydownListener();
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.clearDelayMenuTimer();
     this.clearDelaySelectTimer();
   }
@@ -504,14 +514,14 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   focus(): void {
     if (!this.isFocused) {
-      (this.input ? this.input.nativeElement : this.el).focus();
+      (this.input?.nativeElement || this.el).focus();
       this.isFocused = true;
     }
   }
 
   blur(): void {
     if (this.isFocused) {
-      (this.input ? this.input.nativeElement : this.el).blur();
+      (this.input?.nativeElement || this.el).blur();
       this.isFocused = false;
     }
   }
@@ -768,6 +778,21 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
           });
       });
     });
+  }
+
+  private setupChangeListener(): void {
+    this.input$
+      .pipe(
+        switchMap(input =>
+          input
+            ? new Observable<Event>(subscriber =>
+                this.ngZone.runOutsideAngular(() => fromEvent(input.nativeElement, 'change').subscribe(subscriber))
+              )
+            : EMPTY
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => event.stopPropagation());
   }
 
   private setupKeydownListener(): void {
