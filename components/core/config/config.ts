@@ -110,6 +110,7 @@ export interface ButtonConfig {
 
 export interface CodeEditorConfig {
   assetsRoot?: string | SafeUrl;
+  extraConfig?: NzSafeAny;
   defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
   monacoEnvironment?: Environment;
