@@ -7,7 +7,10 @@ import { Component } from '@angular/core';
       <label nz-radio nzValue="A">Option A</label>
       <label nz-radio nzValue="B">Option B</label>
       <label nz-radio nzValue="C">Option C</label>
-      <label nz-radio nzValue="M">More... <input type="text" nz-input *ngIf="radioValue === 'M'" /></label>
+      <label nz-radio nzValue="M">
+        More...
+        <input type="text" nz-input *ngIf="radioValue === 'M'" />
+      </label>
     </nz-radio-group>
   `,
   styles: [

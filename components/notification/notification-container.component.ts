@@ -5,12 +5,12 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { toCssPixel } from 'ng-zorro-antd/core/util';
-
-import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
+import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 
 import { NzNotificationData, NzNotificationDataOptions } from './typings';
 
@@ -92,8 +92,8 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   dir: Direction = 'ltr';
   bottom?: string | null;
   top?: string | null;
-  config!: Required<NotificationConfig>; // initialized by parent class constructor
-  instances: Array<Required<NzNotificationData>> = [];
+  override config!: Required<NotificationConfig>; // initialized by parent class constructor
+  override instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
   bottomLeftInstances: Array<Required<NzNotificationData>> = [];
@@ -105,7 +105,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     this.dir = config?.nzDirection || 'ltr';
   }
 
-  create(notification: NzNotificationData): Required<NzNotificationData> {
+  override create(notification: NzNotificationData): Required<NzNotificationData> {
     const noti = this.onCreate(notification);
     const key = noti.options.nzKey;
     const notificationWithSameKey = this.instances.find(
@@ -125,7 +125,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     return noti;
   }
 
-  protected onCreate(instance: NzNotificationData): Required<NzNotificationData> {
+  protected override onCreate(instance: NzNotificationData): Required<NzNotificationData> {
     instance.options = this.mergeOptions(instance.options);
     instance.onClose = new Subject<boolean>();
     instance.onClick = new Subject<MouseEvent>();
@@ -167,7 +167,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     old.options = _new.options;
   }
 
-  protected readyInstances(): void {
+  protected override readyInstances(): void {
     this.topLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'topLeft');
     this.topRightInstances = this.instances.filter(m => m.options.nzPlacement === 'topRight' || !m.options.nzPlacement);
     this.bottomLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'bottomLeft');
@@ -176,8 +176,8 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     this.cdr.detectChanges();
   }
 
-  protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
+  protected override mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
     const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
-    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement, ...options };
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement, ...options };
   }
 }

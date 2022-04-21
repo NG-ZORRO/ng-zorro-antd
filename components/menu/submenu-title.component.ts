@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzMenuModeType } from './menu.types';
 
 @Component({
@@ -32,7 +33,11 @@ import { NzMenuModeType } from './menu.types';
       <span>{{ nzTitle }}</span>
     </ng-container>
     <ng-content></ng-content>
-    <span [ngSwitch]="dir" *ngIf="isMenuInsideDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-expand-icon">
+    <span
+      [ngSwitch]="dir"
+      *ngIf="isMenuInsideDropDown; else notDropdownTpl"
+      class="ant-dropdown-menu-submenu-expand-icon"
+    >
       <i *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></i>
       <i *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></i>
     </span>

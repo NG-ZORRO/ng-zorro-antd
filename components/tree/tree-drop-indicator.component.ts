@@ -4,6 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 @Component({

@@ -34,6 +34,7 @@ yarn.lock
 .vscode/*
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -42,7 +43,9 @@ yarn.lock
 npm-debug.log
 testem.log
 /typings
+.eslintcache
 yarn-error.log
+report.*.json
 
 # e2e
 /e2e/*.js

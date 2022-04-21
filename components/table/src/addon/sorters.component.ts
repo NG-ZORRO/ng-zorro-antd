@@ -6,14 +6,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzTableSortOrder } from '../table.types';
 
 @Component({
@@ -22,14 +23,27 @@ import { NzTableSortOrder } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
+    <span class="ant-table-column-title"><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
     <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
-        <i nz-icon nzType="caret-up" *ngIf="isUp" class="ant-table-column-sorter-up" [class.active]="sortOrder == 'ascend'"></i>
-        <i nz-icon nzType="caret-down" *ngIf="isDown" class="ant-table-column-sorter-down" [class.active]="sortOrder == 'descend'"></i>
+        <i
+          nz-icon
+          nzType="caret-up"
+          *ngIf="isUp"
+          class="ant-table-column-sorter-up"
+          [class.active]="sortOrder === 'ascend'"
+        ></i>
+        <i
+          nz-icon
+          nzType="caret-down"
+          *ngIf="isDown"
+          class="ant-table-column-sorter-down"
+          [class.active]="sortOrder === 'descend'"
+        ></i>
       </span>
     </span>
-  `
+  `,
+  host: { class: 'ant-table-column-sorters' }
 })
 export class NzTableSortersComponent implements OnChanges {
   @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
@@ -38,10 +52,7 @@ export class NzTableSortersComponent implements OnChanges {
   isUp = false;
   isDown = false;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-column-sorters');
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { sortDirections } = changes;

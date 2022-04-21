@@ -26,11 +26,7 @@ export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
 })
 export class NzResizeHandlesComponent implements OnChanges {
   @Input() nzDirections: NzResizeDirection[] = DEFAULT_RESIZE_DIRECTION;
-  directions: Set<NzResizeDirection>;
-
-  constructor() {
-    this.directions = new Set(this.nzDirections);
-  }
+  directions = new Set<NzResizeDirection>(this.nzDirections);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzDirections) {

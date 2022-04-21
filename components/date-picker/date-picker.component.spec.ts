@@ -3,19 +3,25 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
-
 import { enUS } from 'date-fns/locale';
 
-import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
@@ -301,7 +307,7 @@ describe('NzDatePickerComponent', () => {
       const disabledCell = queryFromOverlay(`tbody tr td.${PREFIX_CLASS}-cell-disabled div`);
       expect(disabledCell.textContent!.trim()).toBe('15');
       const input = getPickerInput(fixture.debugElement);
-      const submit = (date: string) => {
+      const submit = (date: string): void => {
         input.value = date;
         fixture.detectChanges();
         input.dispatchEvent(ENTER_EVENT);
@@ -321,7 +327,8 @@ describe('NzDatePickerComponent', () => {
     it('should support disable year and month right', fakeAsync(() => {
       fixture.detectChanges();
       fixtureInstance.nzValue = new Date(2020, 0, 1);
-      fixtureInstance.nzDisabledDate = (date: Date): boolean => date >= new Date(2019, 0, 1) && date < new Date(2019, 0, 2);
+      fixtureInstance.nzDisabledDate = (date: Date): boolean =>
+        date >= new Date(2019, 0, 1) && date < new Date(2019, 0, 2);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -481,6 +488,22 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     }));
+
+    it('should not run change detection when inline mode is enabled and the `date-range-popup` is clicked', () => {
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('mousedown');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'preventDefault').and.callThrough();
+
+      debugElement.nativeElement.querySelector('date-range-popup').dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
 
     it('should support nzBackdrop', fakeAsync(() => {
       fixtureInstance.nzBackdrop = true;
@@ -714,7 +737,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzShowTime', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fixtureInstance.nzShowTime = '' as any;
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -722,7 +745,9 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-ok')).toBeDefined();
       expect(queryFromOverlay('.ant-picker-time-panel')).toBeDefined();
-      expect(queryFromOverlay('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent!.trim()).toBe('11');
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent!.trim()
+      ).toBe('11');
 
       // Click to choose a hour
       dispatchMouseEvent(queryFromOverlay('.ant-picker-time-panel-cell:first-child'), 'click');
@@ -775,18 +800,18 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = () => {
-        return {
-          nzDisabledHours: () => [0, 1, 2],
-          nzDisabledMinutes: () => [0, 1],
-          nzDisabledSeconds: () => [0]
-        };
-      };
+      fixtureInstance.nzDisabledTime = () => ({
+        nzDisabledHours: () => [0, 1, 2],
+        nzDisabledMinutes: () => [0, 1],
+        nzDisabledSeconds: () => [0]
+      });
       fixture.detectChanges();
       openPickerByClickTrigger();
 
       expect(
-        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains('ant-picker-time-panel-cell-disabled')
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
       ).toBeTruthy();
       expect(
         queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) li:nth-child(2)').classList.contains(
@@ -802,20 +827,24 @@ describe('NzDatePickerComponent', () => {
       // Use nzHideDisabledOptions to hide disabled times
       fixtureInstance.nzShowTime = { nzHideDisabledOptions: true };
       fixture.detectChanges();
-      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) li:first-child').textContent!.trim()).toBe(3);
-      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) li:first-child').textContent!.trim()).toBe(2);
-      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(1);
+      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) li:first-child').textContent!.trim()).toBe(
+        3
+      );
+      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) li:first-child').textContent!.trim()).toBe(
+        2
+      );
+      expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(
+        1
+      );
     }));
 
     it('should nzDisabledTime invalid input not emit', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = () => {
-        return {
-          nzDisabledHours: () => [0, 1, 2],
-          nzDisabledMinutes: () => [0, 1],
-          nzDisabledSeconds: () => [0]
-        };
-      };
+      fixtureInstance.nzDisabledTime = () => ({
+        nzDisabledHours: () => [0, 1, 2],
+        nzDisabledMinutes: () => [0, 1],
+        nzDisabledSeconds: () => [0]
+      });
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -834,6 +863,46 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).value).toBe('');
+    }));
+
+    it('should support updating the disabledtime state when the current time changes', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = (current: Date) => ({
+        nzDisabledHours: () => {
+          if (current) {
+            if (current.getMonth() === 2) {
+              return [0, 1, 2];
+            } else {
+              return [4, 5, 6];
+            }
+          } else {
+            return [7, 8, 9];
+          }
+        },
+        nzDisabledMinutes: () => [],
+        nzDisabledSeconds: () => []
+      });
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      // input disabled value
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('2020-03-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+
+      // input disabled value
+      typeInElement('2020-04-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(5)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
     }));
 
     it('should support nzRenderExtraFooter', fakeAsync(() => {
@@ -1187,7 +1256,7 @@ class NzTestDatePickerComponent {
   nzInputReadOnly: boolean = false;
   nzFormat!: string;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
@@ -1199,9 +1268,9 @@ class NzTestDatePickerComponent {
 
   nzValue: Date | null = null;
   nzDefaultPickerValue: Date | null = null;
-  nzDateRender: any; // tslint:disable-line:no-any
+  nzDateRender: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzShowTime: boolean | object = false;
-  nzDisabledTime: any; // tslint:disable-line:no-any
+  nzDisabledTime: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
   nzShowNow = false;

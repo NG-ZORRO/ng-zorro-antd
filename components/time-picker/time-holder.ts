@@ -15,7 +15,7 @@ export class TimeHolder {
   private _changes = new Subject<Date>();
 
   setMinutes(value: number, disabled: boolean): this {
-    if (value !== this.minutes && !disabled) {
+    if (!disabled) {
       this.initValue();
       this.value.setMinutes(value);
       this.update();
@@ -24,7 +24,7 @@ export class TimeHolder {
   }
 
   setHours(value: number, disabled: boolean): this {
-    if (value !== this.hours && !disabled) {
+    if (!disabled) {
       this.initValue();
       if (this._use12Hours) {
         if (this.selected12Hours === 'PM' && value !== 12) {
@@ -43,7 +43,7 @@ export class TimeHolder {
   }
 
   setSeconds(value: number, disabled: boolean): this {
-    if (value !== this.seconds && !disabled) {
+    if (!disabled) {
       this.initValue();
       this.value.setSeconds(value);
       this.update();

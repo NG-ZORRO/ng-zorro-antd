@@ -30,7 +30,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         </div>
       </div>
       <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-      Or <a> register now! </a>
+      Or
+      <a>register now!</a>
     </form>
   `,
   styles: [
@@ -57,9 +58,15 @@ export class NzDemoFormNormalLoginComponent implements OnInit {
   validateForm!: FormGroup;
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 

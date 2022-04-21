@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -23,12 +23,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
 import { getOffsetTop } from './util';
@@ -41,6 +42,8 @@ interface Section {
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
+const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
+
 @Component({
   selector: 'nz-anchor',
   exportAs: 'nzAnchor',
@@ -51,7 +54,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
     </nz-affix>
     <ng-template #content>
       <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
-        <div class="ant-anchor" [ngClass]="{ fixed: !nzAffix && !nzShowInkInFixed }">
+        <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
           </div>
@@ -142,7 +145,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
     this.destroy$.next();
     this.zone.runOutsideAngular(() => {
-      fromEvent(this.getContainer(), 'scroll')
+      fromEvent(this.getContainer(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
         .pipe(throttleTime(50), takeUntil(this.destroy$))
         .subscribe(() => this.handleScroll());
     });

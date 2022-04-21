@@ -13,7 +13,7 @@ import { MonthTableComponent } from './month-table.component';
 registerLocaleData(zh);
 
 describe('Coverage supplements', () => {
-  let componentInstance: any; // tslint:disable-line:no-any
+  let componentInstance: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   let dateHelper: DateHelperService;
   let i18n: NzI18nService;
 

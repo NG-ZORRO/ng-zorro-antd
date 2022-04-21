@@ -28,9 +28,7 @@ import { Component } from '@angular/core';
       <nz-layout>
         <nz-header></nz-header>
         <nz-content>
-          <div class="inner-content">
-            Content
-          </div>
+          <div class="inner-content">Content</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>

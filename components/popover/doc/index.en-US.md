@@ -23,6 +23,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
+| `[nzPopoverArrowPointAtCenter]` | Arrow point at center of the origin | `boolean` | `false` |
 | `[nzPopoverTitle]` | Title of the popover | `string \| TemplateRef<void>` | - |
 | `[nzPopoverContent]` | Content of the popover | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | Popover trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |

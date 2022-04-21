@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-
 import { Subscription } from 'rxjs';
+
 import cs_CZ from './languages/cs_CZ';
 import de_DE from './languages/de_DE';
 import en_US from './languages/en_US';
@@ -62,7 +62,7 @@ describe('i18n service', () => {
 
     it('should warn when locale for a component is not provided', () => {
       const spy = spyOn(console, 'warn');
-      srv.setLocale({ locale: 'not_existing_language' } as any); // tslint:disable-line no-any
+      srv.setLocale({ locale: 'not_existing_language' } as any); // eslint-disable-line  @typescript-eslint/no-explicit-any
       expect(srv.getLocaleData('global.placeholder')).toBeTruthy();
       expect(spy).toHaveBeenCalledWith(
         '[NG-ZORRO]:',

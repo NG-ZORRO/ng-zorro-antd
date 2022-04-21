@@ -4,6 +4,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzSelectModeType = 'default' | 'multiple' | 'tags';

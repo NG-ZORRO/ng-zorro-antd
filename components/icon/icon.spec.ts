@@ -1,6 +1,7 @@
 import { Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import {
   HomeOutline,
   LeftOutline,
@@ -31,7 +32,14 @@ describe('nz-icon', () => {
         providers: [
           {
             provide: NZ_ICONS,
-            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+            useValue: [
+              LeftOutline,
+              RightOutline,
+              QuestionOutline,
+              QuestionCircleOutline,
+              LoadingOutline,
+              QuestionCircleFill
+            ]
           }
         ]
       });
@@ -108,7 +116,14 @@ describe('nz-icon', () => {
         providers: [
           {
             provide: NZ_ICONS,
-            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+            useValue: [
+              LeftOutline,
+              RightOutline,
+              QuestionOutline,
+              QuestionCircleOutline,
+              LoadingOutline,
+              QuestionCircleFill
+            ]
           }
         ]
       });
@@ -121,7 +136,9 @@ describe('nz-icon', () => {
       const icon1 = icons[0];
       expect(icon1.nativeElement.className).toContain('anticon');
       expect(icon1.nativeElement.innerHTML).toContain('svg');
-      expect(icon1.nativeElement.innerHTML).toContain('viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"');
+      expect(icon1.nativeElement.innerHTML).toContain(
+        'viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"'
+      );
     });
   });
 
@@ -136,7 +153,14 @@ describe('nz-icon', () => {
         providers: [
           {
             provide: NZ_ICONS,
-            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+            useValue: [
+              LeftOutline,
+              RightOutline,
+              QuestionOutline,
+              QuestionCircleOutline,
+              LoadingOutline,
+              QuestionCircleFill
+            ]
           }
         ]
       });
@@ -218,7 +242,7 @@ describe('nz-icon', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-icon-extensions',
   template: `
     <i nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>

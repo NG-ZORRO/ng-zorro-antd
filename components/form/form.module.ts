@@ -39,6 +39,15 @@ import { NzFormDirective } from './form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports: [BidiModule, CommonModule, NzGridModule, NzIconModule, NzToolTipModule, LayoutModule, PlatformModule, NzOutletModule]
+  imports: [
+    BidiModule,
+    CommonModule,
+    NzGridModule,
+    NzIconModule,
+    NzToolTipModule,
+    LayoutModule,
+    PlatformModule,
+    NzOutletModule
+  ]
 })
 export class NzFormModule {}

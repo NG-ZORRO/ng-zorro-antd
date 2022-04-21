@@ -15,7 +15,8 @@ export default {
     prev_5: 'Iepriekšējās 5 lapas',
     next_5: 'Nākamās 5 lapas',
     prev_3: 'Iepriekšējās 3 lapas',
-    next_3: 'Nākamās 3 lapas'
+    next_3: 'Nākamās 3 lapas',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {

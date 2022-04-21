@@ -5,7 +5,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
-      <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onInput($event)" [nzAutocomplete]="auto" />
+      <input
+        placeholder="input here"
+        nz-input
+        [(ngModel)]="inputValue"
+        (input)="onInput($event)"
+        [nzAutocomplete]="auto"
+      />
       <nz-autocomplete [nzDataSource]="options" nzBackfill #auto></nz-autocomplete>
     </div>
   `

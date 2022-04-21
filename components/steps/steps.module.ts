@@ -9,12 +9,13 @@ import { NgModule } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 import { NzStepComponent } from './step.component';
 import { NzStepsComponent } from './steps.component';
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzIconModule, NzOutletModule],
+  imports: [BidiModule, CommonModule, NzIconModule, NzOutletModule, NzProgressModule],
   exports: [NzStepsComponent, NzStepComponent],
   declarations: [NzStepsComponent, NzStepComponent]
 })

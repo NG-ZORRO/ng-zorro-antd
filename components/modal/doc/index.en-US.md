@@ -152,7 +152,7 @@ nzFooter: [{
   // Is it disabled
   disabled?: boolean | ((this: ModalButtonOptions, contentComponentInstance?: object) => boolean);
   // Callback of clicking
-  onClick?(this: ModalButtonOptions, contentComponentInstance?: object): void | Promise&lt;void&gt; | any;
+  onClick?(this: ModalButtonOptions, contentComponentInstance?: object): void | Promise<void> | any;
 }]
 ```
 

@@ -15,7 +15,8 @@ export default {
     prev_5: '5 Pages précédentes',
     next_5: '5 Pages suivantes',
     prev_3: '3 Pages précédentes',
-    next_3: '3 Pages suivantes'
+    next_3: '3 Pages suivantes',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -89,6 +90,9 @@ export default {
     timePickerLocale: {
       placeholder: "Sélectionner l'heure"
     }
+  },
+  global: {
+    placeholder: 'Sélectionner'
   },
   Table: {
     filterTitle: 'Filtrer',

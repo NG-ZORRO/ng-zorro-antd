@@ -69,6 +69,7 @@ import { Component } from '@angular/core';
         margin-bottom: 48px;
       }
 
+      nz-layout nz-layout,
       nz-layout:last-child {
         margin: 0;
       }

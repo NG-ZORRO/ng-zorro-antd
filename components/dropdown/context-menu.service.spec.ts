@@ -1,10 +1,12 @@
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
-import { Component, Provider, Type, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
+
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { Subject } from 'rxjs';
+
 import { NzContextMenuService } from './context-menu.service';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
 import { NzDropDownModule } from './dropdown.module';
@@ -15,7 +17,7 @@ describe('context-menu', () => {
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     declarations: any[] = []
   ): ComponentFixture<T> {
     TestBed.configureTestingModule({
@@ -117,6 +119,22 @@ describe('context-menu', () => {
       expect(overlayContainerElement.textContent).toBe('');
     }).not.toThrowError();
   }));
+  it('should not run change detection if the overlay is clicked inside', async () => {
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    fixture.detectChanges();
+    const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const appRef = TestBed.inject(ApplicationRef);
+    spyOn(appRef, 'tick');
+    overlayContainerElement.querySelector('ul')!.click();
+    expect(appRef.tick).toHaveBeenCalledTimes(0);
+    document.body.click();
+    expect(appRef.tick).toHaveBeenCalledTimes(1);
+  });
 });
 
 @Component({

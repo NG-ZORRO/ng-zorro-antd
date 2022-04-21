@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 // from https://github.com/component/textarea-caret-position
@@ -55,7 +56,7 @@ const isBrowser = typeof window !== 'undefined';
 
 const isFirefox = isBrowser && (window as NzSafeAny).mozInnerScreenX != null;
 
-const _parseInt = (str: string) => parseInt(str, 10);
+const _parseInt = (str: string): number => parseInt(str, 10);
 
 export interface Coordinates {
   top: number;
@@ -163,6 +164,10 @@ export function createDebugEle(element: HTMLInputElement | HTMLTextAreaElement, 
   rect.style.backgroundColor = 'red';
   rect.style.height = fontSize;
   rect.style.width = '1px';
-  rect.style.top = `${element.getBoundingClientRect().top - element.scrollTop + window.pageYOffset + coordinates.top}px`;
-  rect.style.left = `${element.getBoundingClientRect().left - element.scrollLeft + window.pageXOffset + coordinates.left}px`;
+  rect.style.top = `${
+    element.getBoundingClientRect().top - element.scrollTop + window.pageYOffset + coordinates.top
+  }px`;
+  rect.style.left = `${
+    element.getBoundingClientRect().left - element.scrollLeft + window.pageXOffset + coordinates.left
+  }px`;
 }

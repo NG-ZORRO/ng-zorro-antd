@@ -8,10 +8,14 @@ import { Component } from '@angular/core';
         <p>{{ panel.name }}</p>
         <div *ngIf="panel.childPanel && panel.childPanel.length > 0">
           <nz-collapse>
-            <nz-collapse-panel *ngFor="let childPanel of panel.childPanel" [nzHeader]="childPanel.name" [nzActive]="childPanel.active">
+            <nz-collapse-panel
+              *ngFor="let childPanel of panel.childPanel"
+              [nzHeader]="childPanel.name"
+              [nzActive]="childPanel.active"
+            >
               <p>
-                A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many
-                households across the world.
+                A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a
+                welcome guest in many households across the world.
               </p>
             </nz-collapse-panel>
           </nz-collapse>

@@ -2,15 +2,17 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isPromise } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
 
-import { BaseModalContainerComponent } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 
@@ -34,7 +36,13 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   private closeTimeout?: number;
 
-  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainerComponent) {
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private overlayRef: OverlayRef,
+    private config: ModalOptions,
+    public containerInstance: BaseModalContainerComponent
+  ) {
     containerInstance.animationStateChanged
       .pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'enter'),
@@ -58,7 +66,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         this._finishDialogClose();
       });
 
-    containerInstance.containerClick.pipe(take(1)).subscribe(() => {
+    containerInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);
@@ -68,24 +76,25 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => {
-          return (
+        filter(
+          event =>
             (this.config.nzKeyboard as boolean) &&
             !this.config.nzCancelLoading &&
             !this.config.nzOkLoading &&
             event.keyCode === ESCAPE &&
             !hasModifierKey(event)
-          );
-        })
+        )
       )
       .subscribe(event => {
         event.preventDefault();
         this.trigger(NzTriggerAction.CANCEL);
       });
 
-    containerInstance.cancelTriggered.subscribe(() => this.trigger(NzTriggerAction.CANCEL));
+    containerInstance.cancelTriggered
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.trigger(NzTriggerAction.CANCEL));
 
-    containerInstance.okTriggered.subscribe(() => this.trigger(NzTriggerAction.OK));
+    containerInstance.okTriggered.pipe(takeUntil(this.destroy$)).subscribe(() => this.trigger(NzTriggerAction.OK));
 
     overlayRef.detachments().subscribe(() => {
       this.afterClose.next(this.result);
@@ -119,6 +128,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   }
 
   close(result?: R): void {
+    if (this.state !== NzModalState.OPEN) {
+      return;
+    }
     this.result = result;
     this.containerInstance.animationStateChanged
       .pipe(
@@ -155,6 +167,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   }
 
   private async trigger(action: NzTriggerAction): Promise<void> {
+    if (this.state === NzModalState.CLOSING) {
+      return;
+    }
     const trigger = { ok: this.config.nzOnOk, cancel: this.config.nzOnCancel }[action];
     const loadingKey = { ok: 'nzOkLoading', cancel: 'nzCancelLoading' }[action] as 'nzOkLoading' | 'nzCancelLoading';
     const loading = this.config[loadingKey];
@@ -189,5 +204,6 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   _finishDialogClose(): void {
     this.state = NzModalState.CLOSED;
     this.overlayRef.dispose();
+    this.destroy$.next();
   }
 }

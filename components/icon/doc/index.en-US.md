@@ -151,7 +151,7 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<i nz-icon [iconfont]="'icon-tuichu'"></i>
+<i nz-icon [nzIconfont]="'icon-tuichu'"></i>
 ```
 
 It create a component that uses SVG sprites in essence.

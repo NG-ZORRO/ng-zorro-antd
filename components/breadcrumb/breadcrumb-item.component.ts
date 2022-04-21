@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
-import { NzBreadCrumbComponent } from './breadcrumb.component';
+import { NzBreadcrumb } from './breadcrumb';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,5 +42,5 @@ export class NzBreadCrumbItemComponent {
    */
   @Input() nzOverlay?: NzDropdownMenuComponent;
 
-  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
+  constructor(public nzBreadCrumbComponent: NzBreadcrumb) {}
 }

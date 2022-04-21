@@ -8,11 +8,12 @@ import { Component } from '@angular/core';
         <i nz-icon nzType="home"></i>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a><i nz-icon nzType="user"></i><span>Application List</span></a>
+        <a>
+          <i nz-icon nzType="user"></i>
+          <span>Application List</span>
+        </a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        Application
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Application</nz-breadcrumb-item>
     </nz-breadcrumb>
   `
 })

@@ -4,7 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'nz-demo-form-layout',
   template: `
-    <form nz-form [nzLayout]="validateForm.get('formLayout')?.value" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form
+      nz-form
+      [nzLayout]="validateForm.get('formLayout')?.value"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
       <nz-form-item>
         <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Form Layout</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
@@ -46,9 +51,15 @@ export class NzDemoFormLayoutComponent implements OnInit {
   validateForm!: FormGroup;
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 

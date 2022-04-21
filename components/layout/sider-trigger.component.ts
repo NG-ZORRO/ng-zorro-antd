@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
 
 @Component({
@@ -47,7 +56,8 @@ export class NzSiderTriggerComponent implements OnChanges, OnInit {
   isZeroTrigger = false;
   isNormalTrigger = false;
   updateTriggerType(): void {
-    this.isZeroTrigger = this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
+    this.isZeroTrigger =
+      this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
     this.isNormalTrigger = this.nzCollapsedWidth !== 0;
   }
   ngOnInit(): void {

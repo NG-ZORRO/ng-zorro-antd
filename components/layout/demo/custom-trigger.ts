@@ -28,16 +28,19 @@ import { Component } from '@angular/core';
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
+          <i
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></i>
         </nz-header>
         <nz-content>
           <nz-breadcrumb>
             <nz-breadcrumb-item>User</nz-breadcrumb-item>
             <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <div class="inner-content">
-            Bill is a cat.
-          </div>
+          <div class="inner-content">Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>

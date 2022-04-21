@@ -89,4 +89,11 @@ nz-tabs-nav {
     pointer-events: none;
     color: @disabled-color;
   }
+  > .@{tab-prefix-cls}-nav,
+  > div > .@{tab-prefix-cls}-nav {
+
+    .@{tab-prefix-cls}-nav-add {
+      min-height: @tabs-card-height;
+    }
+  }
 }

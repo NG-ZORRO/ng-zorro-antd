@@ -4,16 +4,22 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
+  QueryList,
   TemplateRef,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, Observable } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 import { TransferDirection, TransferItem } from './interface';
 
@@ -31,14 +37,18 @@ import { TransferDirection, TransferItem } from './interface';
           [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
         >
           <label
+            #checkboxes
             nz-checkbox
             [nzChecked]="item.checked"
             (nzCheckedChange)="onItemSelect(item)"
-            (click)="$event.stopPropagation()"
             [nzDisabled]="disabled || item.disabled"
           >
             <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+            <ng-template
+              #renderContainer
+              [ngTemplateOutlet]="render"
+              [ngTemplateOutletContext]="{ $implicit: item }"
+            ></ng-template>
           </label>
         </li>
       </ul>
@@ -49,32 +59,35 @@ import { TransferDirection, TransferItem } from './interface';
     <div class="ant-transfer-list-header">
       <label
         *ngIf="showSelectAll"
+        class="ant-transfer-list-checkbox"
         nz-checkbox
         [nzChecked]="stat.checkAll"
         (nzCheckedChange)="onItemSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"
-        [nzDisabled]="stat.shownCount == 0 || disabled"
+        [nzDisabled]="stat.shownCount === 0 || disabled"
       ></label>
       <span class="ant-transfer-list-header-selected">
         <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ validData.length > 1 ? itemsUnit : itemUnit }}
+          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+          {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
-        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
+      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
       [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
     >
       <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
-        <div
+        <span
           nz-transfer-search
+          class="ant-input-affix-wrapper ant-transfer-list-search"
           (valueChanged)="handleFilter($event)"
           (valueClear)="handleClear()"
           [placeholder]="searchPlaceholder"
           [disabled]="disabled"
           [value]="filter"
-        ></div>
+        ></span>
       </div>
       <ng-container *ngIf="renderList; else defaultRenderList">
         <div class="ant-transfer-list-body-customize-wrapper">
@@ -101,10 +114,11 @@ import { TransferDirection, TransferItem } from './interface';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   }
 })
-export class NzTransferListComponent {
+export class NzTransferListComponent implements AfterViewInit {
   // #region fields
 
   @Input() direction: TransferDirection = 'left';
@@ -131,6 +145,8 @@ export class NzTransferListComponent {
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
+  @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
+
   stat = {
     checkAll: false,
     checkHalf: false,
@@ -142,7 +158,7 @@ export class NzTransferListComponent {
     return this.dataSource.filter(w => !w.hide);
   }
 
-  onItemSelect = (item: TransferItem) => {
+  onItemSelect = (item: TransferItem): void => {
     if (this.disabled || item.disabled) {
       return;
     }
@@ -151,7 +167,7 @@ export class NzTransferListComponent {
     this.handleSelect.emit(item);
   };
 
-  onItemSelectAll = (status: boolean) => {
+  onItemSelectAll = (status: boolean): void => {
     this.dataSource.forEach(item => {
       if (!item.disabled && !item.hide) {
         item.checked = status;
@@ -196,13 +212,33 @@ export class NzTransferListComponent {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-transfer-list');
-  }
+  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();
     this.cdr.markForCheck();
+  }
+
+  ngAfterViewInit(): void {
+    this.checkboxes.changes
+      .pipe(
+        startWith(this.checkboxes),
+        switchMap(() => {
+          const checkboxes = this.checkboxes.toArray();
+          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+          // but `addEventListener` is called when the `fromEvent` is subscribed.
+          return new Observable<MouseEvent>(subscriber =>
+            this.ngZone.runOutsideAngular(() =>
+              merge(...checkboxes.map(checkbox => fromEvent<MouseEvent>(checkbox.nativeElement, 'click'))).subscribe(
+                subscriber
+              )
+            )
+          );
+        })
+      )
+      .subscribe(event => {
+        event.stopPropagation();
+      });
   }
 }

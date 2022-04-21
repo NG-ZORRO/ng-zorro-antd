@@ -5,6 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { NgZone } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export class NzWaveRenderer {
@@ -29,7 +30,7 @@ export class NzWaveRenderer {
     this.bindTriggerEvent();
   }
 
-  onClick = (event: MouseEvent) => {
+  onClick = (event: MouseEvent): void => {
     if (
       !this.triggerElement ||
       !this.triggerElement.getAttribute ||

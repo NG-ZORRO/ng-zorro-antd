@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,10 +17,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzCommentActionComponent as CommentAction } from './comment-cells';
 
 @Component({

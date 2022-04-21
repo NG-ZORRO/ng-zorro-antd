@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
@@ -14,6 +13,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -27,12 +27,17 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: `
     <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
       <span
+        [nzNoAnimation]="noAnimation"
         *ngFor="let n of maxNumberArray; let i = index"
         class="ant-scroll-number-only"
         [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
       >
         <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-          <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+          <p
+            *ngFor="let p of countSingleArray"
+            class="ant-scroll-number-only-unit"
+            [class.current]="p === countArray[i]"
+          >
             {{ p }}
           </p>
         </ng-container>
@@ -41,6 +46,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
   `,
   host: {
+    class: 'ant-scroll-number',
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
@@ -60,15 +66,13 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
+  @Input() noAnimation = false;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-scroll-number');
-  }
+  constructor() {}
 
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');

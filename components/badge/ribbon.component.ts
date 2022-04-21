@@ -6,13 +6,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { badgePresetColors } from './preset-colors';
 
 @Component({
@@ -33,7 +33,8 @@ import { badgePresetColors } from './preset-colors';
       <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
     </div>
-  `
+  `,
+  host: { class: 'ant-ribbon-wrapper' }
 })
 export class NzRibbonComponent implements OnChanges {
   @Input() nzColor: string | undefined;
@@ -41,10 +42,7 @@ export class NzRibbonComponent implements OnChanges {
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-ribbon-wrapper');
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;

@@ -15,7 +15,8 @@ export default {
     prev_5: 'Poprzednie 5 stron',
     next_5: 'Następne 5 stron',
     prev_3: 'Poprzednie 3 strony',
-    next_3: 'Następne 3 strony'
+    next_3: 'Następne 3 strony',
+    page_size: 'rozmiar strony'
   },
   DatePicker: {
     lang: {
@@ -93,12 +94,21 @@ export default {
   Table: {
     filterTitle: 'Menu filtra',
     filterConfirm: 'OK',
-    filterReset: 'Wyczyść',
+    filterReset: 'Usuń filtry',
     selectAll: 'Zaznacz bieżącą stronę',
     selectInvert: 'Odwróć zaznaczenie',
-    triggerDesc: 'Sortuj rosnąco',
-    triggerAsc: 'Sortuj malejąco',
-    cancelSort: 'Usuń sortowanie'
+    triggerDesc: 'Sortuj malejąco',
+    triggerAsc: 'Sortuj rosnąco',
+    cancelSort: 'Usuń sortowanie',
+    filterEmptyText: 'Brak filtrów',
+    filterCheckall: 'Wybierz wszystkie elementy',
+    filterSearchPlaceholder: 'Szukaj w filtrach',
+    emptyText: 'Brak danych',
+    selectNone: 'Wyczyść',
+    selectionAll: 'Wybierz wszystkie',
+    sortTitle: 'Sortowanie',
+    expand: 'Rozwiń wiersz',
+    collapse: 'Zwiń wiersz'
   },
   Modal: {
     okText: 'OK',
@@ -112,7 +122,14 @@ export default {
   Transfer: {
     searchPlaceholder: 'Szukaj',
     itemUnit: 'obiekt',
-    itemsUnit: 'obiekty'
+    itemsUnit: 'obiekty',
+    titles: ['', ''],
+    remove: 'Usuń',
+    selectCurrent: 'Wybierz aktualną stronę',
+    removeCurrent: 'Usuń aktualną stronę',
+    selectAll: 'Wybierz wszystkie',
+    removeAll: 'Usuń wszystkie',
+    selectInvert: 'Odwróć wybór'
   },
   Upload: {
     uploading: 'Wysyłanie...',
@@ -123,5 +140,23 @@ export default {
   },
   Empty: {
     description: 'Brak danych'
+  },
+  global: {
+    placeholder: 'Wybierz'
+  },
+  Icon: {
+    icon: 'Ikona'
+  },
+  Text: {
+    edit: 'Edytuj',
+    copy: 'Kopiuj',
+    copied: 'Skopiowany',
+    expand: 'Rozwiń'
+  },
+  PageHeader: {
+    back: 'Wstecz'
+  },
+  Image: {
+    preview: 'Podgląd'
   }
 };

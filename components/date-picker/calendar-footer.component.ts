@@ -14,18 +14,19 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { transCompatFormat } from './lib/util';
 import { PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'calendar-footer',
   exportAs: 'calendarFooter',
   template: `

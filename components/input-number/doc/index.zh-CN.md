@@ -25,6 +25,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[ngModel]` | 当前值，可双向绑定 | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` |
+| `[nzReadOnly]` | 只读 | `boolean` | `false` |
 | `[nzMax]` | 最大值 | `number` | `Infinity` |
 | `[nzMin]` | 最小值 | `number` | `-Infinity` |
 | `[nzFormatter]` | 指定输入框展示值的格式 | `(value: number \| string) => string \| number` | - |

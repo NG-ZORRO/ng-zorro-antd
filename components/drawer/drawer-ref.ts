@@ -4,8 +4,10 @@
  */
 
 import { TemplateRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzDrawerPlacement } from './drawer-options';
 
 export abstract class NzDrawerRef<T = NzSafeAny, R = NzSafeAny> {

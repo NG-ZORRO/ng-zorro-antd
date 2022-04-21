@@ -15,14 +15,20 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { curveBasis, curveLinear, line } from 'd3-shape';
 import { take } from 'rxjs/operators';
+
+import { curveBasis, curveLinear, line } from 'd3-shape';
+
 import { NzGraphEdge, NzGraphEdgeType } from './interface';
 
 @Component({
   selector: '[nz-graph-edge]',
   template: `
-    <ng-container *ngIf="customTemplate" [ngTemplateOutlet]="customTemplate" [ngTemplateOutletContext]="{ $implicit: edge }"></ng-container>
+    <ng-container
+      *ngIf="customTemplate"
+      [ngTemplateOutlet]="customTemplate"
+      [ngTemplateOutletContext]="{ $implicit: edge }"
+    ></ng-container>
     <svg:g *ngIf="!customTemplate">
       <path class="nz-graph-edge-line" [attr.marker-end]="'url(#edge-end-arrow)'"></path>
       <svg:text class="nz-graph-edge-text" text-anchor="middle" dy="10" *ngIf="edge.label">

@@ -134,11 +134,11 @@ describe('nz-tooltip', () => {
       const title = 'focus';
       const triggerElement = component.focusTemplate.nativeElement;
 
-      dispatchMouseEvent(triggerElement, 'focus');
+      dispatchMouseEvent(triggerElement, 'focusin');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(triggerElement, 'blur');
+      dispatchMouseEvent(triggerElement, 'focusout');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
@@ -200,7 +200,9 @@ describe('nz-tooltip', () => {
 
       component.style = { color: '#fff' };
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(255, 255, 255)');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe(
+        'rgb(255, 255, 255)'
+      );
 
       component.style = { color: '#000' };
       fixture.detectChanges();
@@ -291,15 +293,19 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain('ant-tooltip-pink');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
+        'ant-tooltip-pink'
+      );
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor).toBe(
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
         'rgb(255, 85, 0)'
       );
+      expect(
+        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
+      ).toBe('rgb(255, 85, 0)');
     }));
   });
 
@@ -325,7 +331,27 @@ describe('origin', () => {
   }));
 
   it('should target work', () => {
-    expect((component.tooltip!.component!.origin!.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+    expect((component.tooltip!.component!.origin!.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+  });
+});
+
+describe('arrow', () => {
+  let testBed: ComponentBed<NzTestTooltipArrowComponent>;
+  let component: NzTestTooltipArrowComponent;
+
+  beforeEach(fakeAsync(() => {
+    testBed = createComponentBed(NzTestTooltipArrowComponent, {
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    });
+    component = testBed.component;
+  }));
+
+  it('should support arrow pointing at center', () => {
+    const overlayElement = getOverlayElementForTooltip(component.tooltipDirective);
+
+    expect(overlayElement.querySelector('.ant-tooltip-arrow')).toBeTruthy();
+    // just read style.transform wouldn't get us the correct result
+    expect(overlayElement.parentElement!.innerHTML).toContain('transform: translateX');
   });
 });
 
@@ -350,7 +376,9 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">Click</a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">
+      Click
+    </a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
@@ -365,7 +393,15 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Manually
     </a>
 
-    <a #alwaysShow nz-tooltip [nzTooltipTrigger]="trigger" [nzTooltipTitle]="'always show'" [nzTooltipVisible]="visible">Always Show</a>
+    <a
+      #alwaysShow
+      nz-tooltip
+      [nzTooltipTrigger]="trigger"
+      [nzTooltipTitle]="'always show'"
+      [nzTooltipVisible]="visible"
+    >
+      Always Show
+    </a>
 
     <div>
       <button>A</button>
@@ -420,4 +456,20 @@ export class NzTooltipTestComponent {
 })
 export class NzTestTooltipTargetComponent {
   @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
+}
+
+@Component({
+  template: ` <a
+    #titleString
+    nz-tooltip
+    [nzTooltipVisible]="true"
+    nzTooltipTitle="Title"
+    nzTooltipPlacement="bottomLeft"
+    [nzTooltipArrowPointAtCenter]="true"
+  >
+    Tooltip
+  </a>`
+})
+export class NzTestTooltipArrowComponent {
+  @ViewChild('titleString', { static: false, read: NzTooltipDirective }) tooltipDirective!: NzTooltipDirective;
 }

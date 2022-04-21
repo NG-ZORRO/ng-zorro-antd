@@ -1,4 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
+
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
@@ -7,10 +8,13 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
     <ng-template #template>
       <div class="ant-notification-notice-content">
         <div class="ant-notification-notice-with-icon">
-          <span class="ant-notification-notice-icon"><i nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></i></span>
+          <span class="ant-notification-notice-icon">
+            <i nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></i>
+          </span>
           <div class="ant-notification-notice-message">Notification Title</div>
           <div class="ant-notification-notice-description">
-            This is the content of the notification. This is the content of the notification. This is the content of the notification.
+            This is the content of the notification. This is the content of the notification. This is the content of the
+            notification.
           </div>
         </div>
       </div>
