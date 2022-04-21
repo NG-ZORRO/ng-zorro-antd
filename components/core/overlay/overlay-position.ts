@@ -44,7 +44,9 @@ export const DEFAULT_CASCADER_POSITIONS = [
   POSITION_MAP.bottomLeft,
   POSITION_MAP.bottomRight,
   POSITION_MAP.topLeft,
-  POSITION_MAP.topRight
+  POSITION_MAP.topRight,
+  POSITION_MAP.topCenter,
+  POSITION_MAP.bottomCenter
 ];
 
 export const DEFAULT_MENTION_TOP_POSITIONS = [

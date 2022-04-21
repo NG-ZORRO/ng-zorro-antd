@@ -173,7 +173,6 @@ export class NzCascaderService implements OnDestroy {
     if (option.disabled) {
       return;
     }
-
     this.activatedOptions[columnIndex] = option;
     this.trackAncestorActivatedOptions(columnIndex);
     this.dropBehindActivatedOptions(columnIndex);

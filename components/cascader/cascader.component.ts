@@ -376,10 +376,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       // These operations would not mutate data.
       this.checkChildren();
       this.setDisplayLabel();
+      this.cdr.detectChanges();
       this.reposition();
       this.setDropdownStyles();
-
-      this.cdr.markForCheck();
     });
 
     srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
@@ -597,6 +596,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (option && option.disabled) {
       return;
     }
+
     this.el.focus();
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
@@ -721,6 +721,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
       Promise.resolve().then(() => {
         this.overlay.overlayRef.updatePosition();
+        this.cdr.markForCheck();
       });
     }
   }
