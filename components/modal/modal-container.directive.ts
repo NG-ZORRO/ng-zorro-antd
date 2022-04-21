@@ -23,6 +23,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -157,7 +158,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
       if (this.host.nativeElement.focus) {
-        this.ngZone.runOutsideAngular(() => Promise.resolve().then(() => this.host.nativeElement.focus()));
+        this.ngZone.runOutsideAngular(() => reqAnimFrame(() => this.host.nativeElement.focus()));
       }
     }
   }
