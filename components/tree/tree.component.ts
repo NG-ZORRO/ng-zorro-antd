@@ -485,7 +485,7 @@ export class NzTreeComponent
 
   ngOnInit(): void {
     this.nzTreeService.flattenNodes$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.nzFlattenNodes = data;
+      this.nzFlattenNodes = !!this.nzVirtualHeight && this.nzHideUnMatched ? data.filter(d => !d.canHide) : data;
       this.cdr.markForCheck();
     });
 

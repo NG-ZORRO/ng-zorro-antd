@@ -144,6 +144,55 @@ describe('tree', () => {
         expect(component.treeComponent.getMatchedNodeList().length).toEqual(1);
       }));
 
+      [
+        {
+          title: 'should display 7 nodes when hideUnMatched=false and virtualHeight = undefined',
+          when: { hideUnMatched: false },
+          then: 7
+        },
+        {
+          title: "should display 7 nodes when hideUnMatched=false and virtualHeight = '300px'",
+          when: { hideUnMatched: false, virtualHeight: '300px' },
+          then: 7
+        },
+        {
+          title: 'should display 7 nodes when hideUnMatched=true and virtualHeight = undefined',
+          when: { hideUnMatched: true },
+          then: 7
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px'",
+          when: { hideUnMatched: true, virtualHeight: '300px' },
+          then: 4
+        }
+      ].forEach(({ title, when, then }) => {
+        it(
+          title,
+          fakeAsync(() => {
+            // Given
+            const { component, fixture, nativeElement } = testBed;
+            component.searchValue = '0-1';
+            component.virtualHeight = when.virtualHeight;
+            component.hideUnMatched = when.hideUnMatched;
+            // When
+            fixture.detectChanges();
+            tick(300);
+            fixture.detectChanges();
+            // Then
+            expect(component.treeComponent.getMatchedNodeList().length)
+              .withContext('treeComponent.getMatchedNodeList().length')
+              .toBe(3);
+            expect(component.treeComponent.nzFlattenNodes.length)
+              .withContext('treeComponent.nzFlattenNodes.length')
+              .toBe(then);
+            expect(nativeElement.querySelectorAll('nz-tree-node').length)
+              .withContext('number of displayed nz-tree-node elements')
+              .toBe(then);
+          })
+        );
+      });
+
       it('should match nodes based on nzSearchFunc', fakeAsync(() => {
         const { component, fixture, nativeElement } = testBed;
         component.searchFunc = (data: NzTreeNodeOptions): boolean => data.title === component.searchValue;
@@ -588,6 +637,7 @@ describe('tree', () => {
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
       [nzSearchFunc]="searchFunc"
+      [nzVirtualHeight]="virtualHeight"
       [nzHideUnMatched]="hideUnMatched"
       [nzExpandAll]="expandAll"
       [nzExpandedIcon]="expandedIcon"
@@ -619,6 +669,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultExpandedKeys: string[] = [];
   expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   searchFunc?: (node: NzTreeNodeOptions) => boolean;
+  virtualHeight?: string | boolean = false;
   hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
