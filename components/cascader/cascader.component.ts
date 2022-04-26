@@ -130,6 +130,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         [@slideMotion]="'enter'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
       >
         <div
