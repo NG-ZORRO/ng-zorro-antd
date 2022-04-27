@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 13.2.1
+
+`2022-04-27`
+
+### Bug Fixes
+
+* **code-editor:** 移除 `NZ_CONFIG` monaco-editor 强依赖 ([#7392](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7392)) ([929084d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/929084d5ba65c4e9661ccaea300c58e85e39bed6))
+
+
 ## 13.2.0
 
 `2022-04-26`
