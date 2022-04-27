@@ -13,6 +13,15 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 13.2.1
+
+`2022-04-27`
+
+### Bug Fixes
+
+* **code-editor:** remove monaco-editor dependency in config.ts ([#7392](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7392)) ([929084d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/929084d5ba65c4e9661ccaea300c58e85e39bed6))
+
+
 ## 13.2.0
 
 `2022-04-26`
