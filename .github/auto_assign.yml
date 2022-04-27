@@ -7,7 +7,7 @@ addAssignees: true
 # A list of reviewers to be added to pull requests (GitHub user name)
 reviewers:
   - vthinkxie
-  - wendellhu95
+  - hullis
   - hsuanxyz
   - simplejason
   - wenqi73
