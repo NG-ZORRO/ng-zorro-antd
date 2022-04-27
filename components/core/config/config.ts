@@ -8,7 +8,6 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 
 import { ThemeType } from '@ant-design/icons-angular';
-import { Environment } from 'monaco-editor';
 
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
 import {
@@ -19,6 +18,13 @@ import {
   NzSizeMDSType,
   NzTSType
 } from 'ng-zorro-antd/core/types';
+
+interface MonacoEnvironment {
+  globalAPI?: boolean;
+  baseUrl?: string;
+  getWorker?(workerId: string, label: string): Promise<Worker> | Worker;
+  getWorkerUrl?(workerId: string, label: string): string;
+}
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -113,7 +119,7 @@ export interface CodeEditorConfig {
   extraConfig?: NzSafeAny;
   defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
-  monacoEnvironment?: Environment;
+  monacoEnvironment?: MonacoEnvironment;
 
   onLoad?(): void;
 
