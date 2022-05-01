@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-使用 ReactNode 自定义渲染每一个 Segmented Item。
+使用 nzLabelTemplate 自定义渲染每一个 Segmented Item。
 
 ## en-US
 
-Custom each Segmented Item by ReactNode.
+Custom each Segmented Item by nzLabelTemplate.
