@@ -32,6 +32,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzCollapsible]` | Specify whether the panel be collapsible or the trigger area of collapsible | `header \| disabled` | - |
 | `[nzDisabled]` | If `true`, panel cannot be opened or closed | `boolean` | `false` |
 | `[nzHeader]` | Title of the panel | `string \| TemplateRef<void>` | - |
 | `[nzExpandedIcon]` | Customize an icon for toggle | `string \| TemplateRef<void>` | - |
