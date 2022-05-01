@@ -25,7 +25,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation/thumb';
+import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
