@@ -59,7 +59,14 @@ function generate(target) {
           if (/.md$/.test(demo)) {
             const nameKey = nameWithoutSuffixUtil(demo);
             const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));
-            demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
+            const demoMeta = parseDemoMdUtil(demoMarkDownFile);
+
+            // 在开发模式下允许引入 debug demo，但是在生产模式下不允许
+            if (demoMeta.meta.debug && !process.env.NODE_ENV !== 'development') {
+              return;
+            }
+
+            demoMap[nameKey] = demoMeta;
             demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(
               capitalizeFirstLetter(nameKey)
             )}Component`;
