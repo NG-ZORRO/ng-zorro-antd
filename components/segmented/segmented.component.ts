@@ -128,9 +128,9 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   onTouched: OnTouchedType = () => {};
 
   constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    public readonly nzConfigService: NzConfigService,
+    private readonly cdr: ChangeDetectorRef,
+    @Optional() private readonly directionality: Directionality
   ) {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(direction => {
       this.dir = direction;
