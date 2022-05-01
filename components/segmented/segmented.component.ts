@@ -55,10 +55,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
         'ant-segmented-item-selected': i === selectedIndex,
         'ant-segmented-item-disabled': item.disabled
       }"
-      (click)="!item.disabled && handleOptionClick(i)"
     >
-      <input [ngClass]="{ 'ant-segmented-item-input': true }" type="radio" checked="{{ true }}" />
-      <div class="ant-segmented-item-label">
+      <input class="ant-segmented-item-input" type="radio" [checked]="i === selectedIndex" />
+      <div class="ant-segmented-item-label" (click)="!item.disabled && handleOptionClick(i)">
         <ng-container *ngIf="item.icon; else else_template">
           <span class="ant-segmented-item-icon"><i nz-icon [nzType]="item.icon"></i></span>
           <span>
@@ -166,9 +165,11 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
     }
   }
 
-  writeValue(value: number): void {
-    this.changeSelectedIndex(value);
-    this.cdr.markForCheck();
+  writeValue(value: number | null): void {
+    if (typeof value === 'number' && value > -1) {
+      this.changeSelectedIndex(value);
+      this.cdr.markForCheck();
+    }
   }
 
   registerOnChange(fn: OnChangeType): void {
@@ -195,9 +196,8 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       value: 'to',
       params: getThumbAnimationProps(this.listOfOptions.get(index)!.nativeElement!)
     };
-    this.cdr.detectChanges();
-
     this.transitionedToIndex = index;
+    this.cdr.detectChanges();
   }
 }
 

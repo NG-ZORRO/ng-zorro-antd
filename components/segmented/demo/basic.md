@@ -2,7 +2,7 @@
 order: 0
 title:
   zh-CN: 基本
-  en-US: Basic Usage
+  en-US: Basic usage
 ---
 
 ## zh-CN
