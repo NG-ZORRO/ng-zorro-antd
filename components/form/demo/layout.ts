@@ -8,34 +8,26 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
       nz-form
       [nzLayout]="validateForm.get('formLayout')?.value"
       [formGroup]="validateForm"
+      nzSimple
+      [nzLabelCol]="isHorizontal ? 4 : undefined"
+      [nzControlCol]="isHorizontal ? 14 : undefined"
       (ngSubmit)="submitForm()"
     >
-      <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Form Layout</nz-form-label>
-        <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-          <nz-radio-group formControlName="formLayout">
-            <label nz-radio-button [nzValue]="'horizontal'">Horizontal</label>
-            <label nz-radio-button [nzValue]="'vertical'">Vertical</label>
-            <label nz-radio-button [nzValue]="'inline'">Inline</label>
-          </nz-radio-group>
-        </nz-form-control>
+      <nz-form-item nzLabel="Form Layout">
+        <nz-radio-group formControlName="formLayout">
+          <label nz-radio-button [nzValue]="'horizontal'">Horizontal</label>
+          <label nz-radio-button [nzValue]="'vertical'">Vertical</label>
+          <label nz-radio-button [nzValue]="'inline'">Inline</label>
+        </nz-radio-group>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Field A</nz-form-label>
-        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" nzErrorTip="Please input your username!">
-          <input nz-input formControlName="fieldA" placeholder="input placeholder" />
-        </nz-form-control>
+      <nz-form-item nzLabel="Field A" nzErrorTip="Please input your username!">
+        <input nz-input formControlName="fieldA" placeholder="input placeholder" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Field B</nz-form-label>
-        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" nzErrorTip="Please input your Password!">
-          <input nz-input formControlName="filedB" placeholder="input placeholder" />
-        </nz-form-control>
+      <nz-form-item nzLabel="Field B" nzErrorTip="Please input your Password!">
+        <input nz-input formControlName="filedB" placeholder="input placeholder" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-          <button nz-button nzType="primary">Submit</button>
-        </nz-form-control>
+      <nz-form-item [nzControlCol]="{ span: isHorizontal ? 14 : undefined, offset: isHorizontal ? 4 : undefined }">
+        <button nz-button nzType="primary">Submit</button>
       </nz-form-item>
     </form>
   `,

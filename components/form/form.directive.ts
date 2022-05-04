@@ -23,10 +23,11 @@ import { ThemeType } from '@ant-design/icons-angular';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { ColProperty } from 'ng-zorro-antd/grid';
+
+import { NzFormLabelAlign, NzFormLayoutType } from './types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
-
-export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
 
 export const DefaultTooltipIcon = {
   type: 'question-circle',
@@ -45,14 +46,23 @@ export const DefaultTooltipIcon = {
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  static ngAcceptInputType_nzSimple: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
-  @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzSimple = false;
+
+  // label props
+  @Input() nzLabelCol?: string | number | ColProperty;
+  @Input() @WithConfig() nzLabelAlign: NzFormLabelAlign = 'right';
+  @Input() @WithConfig() @InputBoolean() nzNoColon = false;
+  @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
+
+  // control props
+  @Input() nzControlCol?: string | number | ColProperty;
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
-  @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
 
   dir: Direction = 'ltr';
   destroy$ = new Subject();

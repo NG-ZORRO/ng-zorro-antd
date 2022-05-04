@@ -23,3 +23,7 @@ export function padEnd(toPad: string, length: number, element: string): string {
 export function getRepeatedElement(length: number, element: string): string {
   return Array(length).fill(element).join('');
 }
+
+export function upperFirst(value: string): string {
+  return value.substr(0, 1).toUpperCase() + value.substr(1);
+}

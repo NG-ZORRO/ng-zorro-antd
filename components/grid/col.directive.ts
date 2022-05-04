@@ -34,7 +34,7 @@ export interface EmbeddedProperty {
 }
 
 @Directive({
-  selector: '[nz-col],nz-col,nz-form-control,nz-form-label',
+  selector: '[nz-col],nz-col,nz-form-control:not([nzColProperty]),nz-form-label:not([nzColProperty])',
   exportAs: 'nzCol',
   host: {
     '[style.flex]': 'hostFlexStyle'

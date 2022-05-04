@@ -18,19 +18,13 @@ import {
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { ThemeType } from '@ant-design/icons-angular';
-
 import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 
 import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
+import { NzFormLabelAlign, NzFormTooltipIcon } from './types';
 
-export interface NzFormTooltipIcon {
-  type: NzTSType;
-  theme: ThemeType;
-}
-
-function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormTooltipIcon> {
+function toTooltipIcon(value?: string | NzFormTooltipIcon): Required<NzFormTooltipIcon> {
   const icon = typeof value === 'string' ? { type: value } : value;
   return { ...DefaultTooltipIcon, ...icon };
 }
@@ -41,6 +35,9 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.ant-form-item-label-left]': 'nzAlign === "left"'
+  },
   template: `
     <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
       <ng-content></ng-content>
@@ -56,13 +53,25 @@ export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
 
+  @Input() set nzAlign(value: NzFormLabelAlign | undefined) {
+    if (value) {
+      this.align = value;
+    }
+  }
+  get nzAlign(): NzFormLabelAlign | undefined {
+    return this.align !== 'default' ? this.align : this.nzFormDirective?.nzLabelAlign;
+  }
+  private align: NzFormLabelAlign | 'default' = 'default';
+
   @Input() nzFor?: string;
   @Input() @InputBoolean() nzRequired = false;
   @Input()
-  set nzNoColon(value: boolean) {
-    this.noColon = toBoolean(value);
+  set nzNoColon(value: boolean | undefined) {
+    if (value !== undefined) {
+      this.noColon = toBoolean(value);
+    }
   }
-  get nzNoColon(): boolean {
+  get nzNoColon(): boolean | undefined {
     return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
   }
 
@@ -70,7 +79,7 @@ export class NzFormLabelComponent implements OnDestroy {
 
   @Input() nzTooltipTitle?: NzTSType;
   @Input()
-  set nzTooltipIcon(value: string | NzFormTooltipIcon) {
+  set nzTooltipIcon(value: string | NzFormTooltipIcon | undefined) {
     this._tooltipIcon = toTooltipIcon(value);
   }
   // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
@@ -80,7 +89,6 @@ export class NzFormLabelComponent implements OnDestroy {
       : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
-
   private destroy$ = new Subject();
 
   constructor(
@@ -92,6 +100,14 @@ export class NzFormLabelComponent implements OnDestroy {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
 
     if (this.nzFormDirective) {
+      this.nzFormDirective
+        .getInputObservable('nzLabelAlign')
+        .pipe(
+          filter(() => this.align === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+
       this.nzFormDirective
         .getInputObservable('nzNoColon')
         .pipe(

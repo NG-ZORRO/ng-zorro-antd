@@ -30,8 +30,9 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
+import { NzFormItemComponent } from './form-item.component';
 import { NzFormDirective } from './form.directive';
+import { NzFormControlStatusType } from './types';
 
 const iconTypeMap = {
   error: 'close-circle-fill',
@@ -70,8 +71,6 @@ const iconTypeMap = {
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
-  static ngAcceptInputType_nzRequired: BooleanInput;
-  static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   private _hasFeedback = false;
@@ -214,9 +213,9 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
         if (errors.hasOwnProperty(key)) {
           autoErrorTip =
             errors[key]?.[this.localeId] ??
-            this.nzAutoTips?.[this.localeId]?.[key] ??
+            this.nzAutoTips[this.localeId]?.[key] ??
             this.nzAutoTips.default?.[key] ??
-            this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key] ??
+            this.nzFormDirective?.nzAutoTips[this.localeId]?.[key] ??
             this.nzFormDirective?.nzAutoTips.default?.[key];
         }
         if (!!autoErrorTip) {

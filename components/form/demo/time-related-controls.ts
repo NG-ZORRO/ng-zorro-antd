@@ -4,42 +4,31 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'nz-demo-form-time-related-controls',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>DatePicker</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker formControlName="datePicker"></nz-date-picker>
-        </nz-form-control>
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      nzSimple
+      [nzLabelCol]="{ sm: 8, xs: 24 }"
+      [nzControlCol]="{ sm: 16, xs: 24 }"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item nzRequired nzLabel="DatePicker">
+        <nz-date-picker formControlName="datePicker"></nz-date-picker>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>DatePicker[ShowTime]</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker nzShowTime formControlName="datePickerTime"></nz-date-picker>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="DatePicker[ShowTime]">
+        <nz-date-picker nzShowTime formControlName="datePickerTime"></nz-date-picker>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker nzMode="month" formControlName="monthPicker"></nz-date-picker>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="MonthPicker">
+        <nz-date-picker nzMode="month" formControlName="monthPicker"></nz-date-picker>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>RangePicker</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-range-picker formControlName="rangePicker"></nz-range-picker>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="RangePicker">
+        <nz-range-picker formControlName="rangePicker"></nz-range-picker>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>RangePicker[showTime]</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-range-picker nzShowTime formControlName="rangePickerTime"></nz-range-picker>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="RangePicker[showTime]">
+        <nz-range-picker nzShowTime formControlName="rangePickerTime"></nz-range-picker>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>TimePicker</nz-form-label>
-        <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-time-picker formControlName="timePicker"></nz-time-picker>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="TimePicker">
+        <nz-time-picker formControlName="timePicker"></nz-time-picker>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 16, offset: 8 }">
