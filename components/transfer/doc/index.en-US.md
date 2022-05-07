@@ -26,8 +26,10 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | -------- | ----------- | ---- | ------- |
 | `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop , or using `nzTargetKeys` prop. | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | Whether disabled transfer | `boolean` | `false` |
-| `[nzTitles]` | A set of titles that are sorted from left to right. | `string[]` | `['', '']` |
+| `[nzTitles]` | A set of titles that are sorted from left to right. | `Array<TemplateRef<{ $implicit: 'left' \| 'right' }> \| string>` | `['', '']` |
+| `[nzSelectAllLabels]` | A set of customized labels for select all checkboxs on the header | `Array<string \| ((info: { selectedCount: number; totalCount: number }) => string) \| null>` | - |
 | `[nzOperations]` | A set of operations that are sorted from bottom to top. | `string[]` | `['', '']` |
+| `[nzOperationStyle]` | A custom CSS style used for rendering the operations column. equal `ngStyle` | `object` | - |
 | `[nzListStyle]` | A custom CSS style used for rendering the transfer columns. equal `ngStyle` | `object` | - |
 | `[nzItemUnit]` | single unit | `string` | `'item'` |
 | `[nzItemsUnit]` | multiple unit | `string` | `'items'` |
@@ -41,6 +43,8 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzCanMove]` | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | `[nzSelectedKeys]` | A set of keys of selected items. | `string[]` | - |
 | `[nzTargetKeys]` | A set of keys of elements that are listed on the right column. | `string[]` | - |
+| `[nzOneWay]` | Display as single direction style | `boolean` | `false` |
+| `[nzPagination]` | Use pagination. **Not work in `render` props** | `boolean \| TransferPaginationType` | `false` |
 | `(nzChange)` | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | A callback function which is executed when selected items are changed. | `EventEmitter<TransferSearchChange>` | - |

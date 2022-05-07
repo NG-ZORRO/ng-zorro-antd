@@ -3,32 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
-  selector: 'nz-demo-transfer-basic',
+  selector: 'nz-demo-transfer-large-data',
   template: `
     <nz-transfer
-      #transfer
       [nzDataSource]="list"
-      [nzDisabled]="disabled"
-      [nzTitles]="['Source', titleTpl]"
       (nzSelectChange)="select($event)"
-      [nzSelectedKeys]="['0', '2']"
       (nzChange)="change($event)"
+      [nzOneWay]="oneWay"
+      nzPagination
     ></nz-transfer>
-    <ng-template #titleTpl let-dir>
-      <a (click)="selectAll()">全选所有</a>
-    </ng-template>
     <div style="margin-top: 8px;">
-      <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
-      <div></div>
+      <nz-switch [(ngModel)]="oneWay" nzCheckedChildren="oneWay" nzUnCheckedChildren="oneWay"></nz-switch>
     </div>
   `
 })
-export class NzDemoTransferBasicComponent implements OnInit {
+export class NzDemoTransferLargeDataComponent implements OnInit {
   list: TransferItem[] = [];
-  disabled = false;
+  oneWay = false;
 
   ngOnInit(): void {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 2000; i++) {
       this.list.push({
         key: i.toString(),
         title: `content${i + 1}`,
@@ -45,12 +39,5 @@ export class NzDemoTransferBasicComponent implements OnInit {
 
   change(ret: {}): void {
     console.log('nzChange', ret);
-  }
-
-  selectAll(): void {
-    this.list = [...this.list].map(i => {
-      if (i.direction === 'right') i.checked = true;
-      return i;
-    });
   }
 }

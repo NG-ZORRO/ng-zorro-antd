@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -21,7 +21,7 @@ import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTransferComponent, NzTransferModule } from './index';
-import { TransferCanMove, TransferDirection, TransferItem } from './interface';
+import { TransferCanMove, TransferDirection, TransferItem, TransferPaginationType } from './interface';
 
 const COUNT = 21;
 const LEFTCOUNT = 2;
@@ -307,6 +307,94 @@ describe('transfer', () => {
         expect(event.stopPropagation).toHaveBeenCalled();
       });
     });
+
+    it('#nzTitles', () => {
+      instance.nzTitles = ['Left', instance.titTpl];
+      fixture.detectChanges();
+      expect(pageObject.getEl(`#transfer-tit`).textContent?.trim()).toBe(`tit-right`);
+    });
+
+    it('#nzOneWay', () => {
+      instance.nzOneWay = true;
+      fixture.detectChanges();
+
+      const firstKey = instance.comp.rightDataSource[0].key;
+      const remove = pageObject.getEl('.ant-transfer-list-content-item-remove');
+      remove.click();
+      fixture.detectChanges();
+
+      expect(instance.comp.rightDataSource[0].key).not.toBe(firstKey);
+    });
+
+    describe('#nzPagination', () => {
+      it('should be warn when not support customize render list', () => {
+        const warnSpy = spyOn(console, 'warn');
+        instance.nzPagination = true;
+        instance.nzRenderList = [instance.renderListTpl, instance.renderListTpl];
+        fixture.detectChanges();
+        expect(warnSpy).toHaveBeenCalled();
+        expect(warnSpy.calls.first().args[1]).toContain(`not support customize render list`);
+      });
+      it('should be ignore when is null', () => {
+        instance.nzPagination = undefined;
+        fixture.detectChanges();
+
+        expect(dl.queryAll(By.css('.ant-transfer-list-pagination')).length).toBe(0);
+      });
+      it('should be specify pageSize', () => {
+        instance.nzPagination = { pageSize: 1 };
+        fixture.detectChanges();
+
+        const el = pageObject.getEl('.ant-pagination-simple-pager');
+        expect(el.title).toBe(`1/1`);
+      });
+    });
+
+    describe('selection', () => {
+      it('should be select all', () => {
+        instance.comp.getListComp('left').onItemSelectAll(true);
+        fixture.detectChanges();
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(LEFTCOUNT);
+
+        instance.comp.getListComp('left').onItemSelectAll(false);
+        fixture.detectChanges();
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(0);
+      });
+      it('should be select current page', () => {
+        instance.nzPagination = { pageSize: 1 };
+        fixture.detectChanges();
+
+        const comp = instance.comp.getListComp('left');
+        comp.onItemSelectAll(true, comp.renderData);
+        fixture.detectChanges();
+
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(1);
+      });
+      it('should be invert', () => {
+        pageObject.checkItem('left', 0);
+
+        const comp = instance.comp.getListComp('left');
+        comp.onItemSelectAll('invert');
+        fixture.detectChanges();
+
+        expect(pageObject.getEls('.ant-transfer-list-content-item-checked').length).toBe(1);
+      });
+    });
+
+    it('#nzSelectAllLabels', () => {
+      instance.nzSelectAllLabels = [
+        'Select All',
+        ({ selectedCount, totalCount }: { selectedCount: number; totalCount: number }) =>
+          `${selectedCount}/${totalCount}`
+      ];
+      fixture.detectChanges();
+      expect(pageObject.leftList.querySelector('.ant-transfer-list-header-selected')?.textContent?.trim()).toBe(
+        `Select All`
+      );
+      expect(pageObject.rightList.querySelector('.ant-transfer-list-header-selected')?.textContent?.trim()).toBe(
+        `0/${COUNT - LEFTCOUNT}`
+      );
+    });
   });
 
   describe('#canMove', () => {
@@ -338,25 +426,6 @@ describe('transfer', () => {
     });
   });
 
-  describe('#issues', () => {
-    it('#996', fakeAsync(() => {
-      fixture = TestBed.createComponent(Test996Component);
-      dl = fixture.debugElement;
-      instance = dl.componentInstance;
-      pageObject = new TransferPageObject();
-      fixture.detectChanges();
-      expect(
-        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
-      ).not.toContain('ant-checkbox-checked');
-      pageObject.checkItem('right', 1);
-      tick(50);
-      fixture.detectChanges();
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain(
-        'ant-checkbox-checked'
-      );
-    }));
-  });
-
   describe('RTL', () => {
     let componentElement: HTMLElement;
 
@@ -379,6 +448,10 @@ describe('transfer', () => {
 
     getEl(cls: string): HTMLElement {
       return dl.query(By.css(cls)).nativeElement as HTMLElement;
+    }
+
+    getEls(cls: string): DebugElement[] {
+      return dl.queryAll(By.css(cls));
     }
 
     get leftBtn(): HTMLButtonElement {
@@ -456,8 +529,9 @@ describe('transfer', () => {
       [nzDataSource]="nzDataSource"
       [nzRenderList]="nzRenderList"
       [nzShowSelectAll]="nzShowSelectAll"
+      [nzSelectAllLabels]="nzSelectAllLabels"
       [nzDisabled]="nzDisabled"
-      [nzTitles]="['Source', 'Target']"
+      [nzTitles]="nzTitles"
       [nzOperations]="['to right', 'to left']"
       [nzItemUnit]="nzItemUnit"
       [nzItemsUnit]="nzItemsUnit"
@@ -469,6 +543,8 @@ describe('transfer', () => {
       [nzCanMove]="canMove"
       [nzFooter]="footer"
       [nzTargetKeys]="nzTargetKeys"
+      [nzOneWay]="nzOneWay"
+      [nzPagination]="nzPagination"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
@@ -479,6 +555,9 @@ describe('transfer', () => {
     <ng-template #footer>
       <p id="transfer-footer">footer</p>
     </ng-template>
+    <ng-template #tit let-dir>
+      <p id="transfer-tit">tit-{{ dir }}</p>
+    </ng-template>
   `,
   styleUrls: ['./style/index.less'],
   encapsulation: ViewEncapsulation.None
@@ -486,11 +565,16 @@ describe('transfer', () => {
 class TestTransferComponent implements OnInit {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
   @ViewChild('renderList', { static: false }) renderListTpl!: TemplateRef<void>;
+  @ViewChild('tit', { static: false }) titTpl!: TemplateRef<{ $implicit: TransferDirection }>;
   nzDataSource: any[] = [];
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
   nzShowSelectAll = true;
-  nzTitles = ['Source', 'Target'];
+  nzSelectAllLabels: Array<string | ((info: { selectedCount: number; totalCount: number }) => string) | null> = [
+    null,
+    null
+  ];
+  nzTitles: Array<TemplateRef<{ $implicit: TransferDirection }> | string> = ['Source', 'Target'];
   nzSelectedKeys = ['0', '1', '2'];
   nzTargetKeys: string[] = [];
   nzOperations = ['to right', 'to left'];
@@ -501,6 +585,8 @@ class TestTransferComponent implements OnInit {
   nzFilterOption: null | ((inputValue: string, item: any) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
+  nzOneWay = false;
+  nzPagination?: boolean | TransferPaginationType | null;
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     // if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);

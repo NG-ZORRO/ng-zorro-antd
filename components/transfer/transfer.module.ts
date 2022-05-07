@@ -10,11 +10,15 @@ import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
+import { NzTransferListItemComponent } from './transfer-list-item.component';
 import { NzTransferListComponent } from './transfer-list.component';
 import { NzTransferSearchComponent } from './transfer-search.component';
 import { NzTransferComponent } from './transfer.component';
@@ -29,9 +33,12 @@ import { NzTransferComponent } from './transfer.component';
     NzInputModule,
     NzI18nModule,
     NzIconModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzOutletModule,
+    NzPaginationModule,
+    NzDropDownModule
   ],
-  declarations: [NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent],
+  declarations: [NzTransferComponent, NzTransferListComponent, NzTransferListItemComponent, NzTransferSearchComponent],
   exports: [NzTransferComponent]
 })
 export class NzTransferModule {}

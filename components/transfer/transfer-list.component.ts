@@ -4,24 +4,19 @@
  */
 
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   Output,
-  QueryList,
   TemplateRef,
-  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Observable } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
 
-import { TransferDirection, TransferItem } from './interface';
+import { NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
+
+import type { TransferDirection, TransferItem, TransferPaginationType } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -29,50 +24,76 @@ import { TransferDirection, TransferItem } from './interface';
   preserveWhitespaces: false,
   template: `
     <ng-template #defaultRenderList>
-      <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
+      <ul
+        *ngIf="stat.shownCount > 0"
+        class="ant-transfer-list-content"
+        [class.ant-transfer-list-content-show-remove]="showRemove"
+      >
         <li
-          *ngFor="let item of validData"
-          (click)="onItemSelect(item)"
-          class="ant-transfer-list-content-item"
-          [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+          *ngFor="let item of renderData"
+          nz-transfer-list-item
+          [item]="item"
+          [checked]="item.checked"
+          [disabled]="disabled || item.disabled"
+          [render]="render"
+          (itemSelect)="onItemSelect(item)"
+          [showRemove]="showRemove"
+          (remove)="itemRemove.emit([item])"
         >
-          <label
-            #checkboxes
-            nz-checkbox
-            [nzChecked]="item.checked"
-            (nzCheckedChange)="onItemSelect(item)"
-            [nzDisabled]="disabled || item.disabled"
-          >
-            <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template
-              #renderContainer
-              [ngTemplateOutlet]="render"
-              [ngTemplateOutletContext]="{ $implicit: item }"
-            ></ng-template>
-          </label>
         </li>
       </ul>
       <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
         <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
       </div>
+      <nz-pagination
+        *ngIf="pagination"
+        [nzPageIndex]="pi"
+        [nzTotal]="fullData.length"
+        nzSimple
+        nzSize="small"
+        [nzDisabled]="disabled"
+        (nzPageIndexChange)="pageChange($event)"
+        class="ant-transfer-list-pagination"
+      ></nz-pagination>
     </ng-template>
     <div class="ant-transfer-list-header">
-      <label
-        *ngIf="showSelectAll"
-        class="ant-transfer-list-checkbox"
-        nz-checkbox
-        [nzChecked]="stat.checkAll"
-        (nzCheckedChange)="onItemSelectAll($event)"
-        [nzIndeterminate]="stat.checkHalf"
-        [nzDisabled]="stat.shownCount === 0 || disabled"
-      ></label>
-      <span class="ant-transfer-list-header-selected">
-        <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
-          {{ validData.length > 1 ? itemsUnit : itemUnit }}
+      <ng-container *ngIf="showSelectAll">
+        <label
+          *ngIf="!showRemove && !pagination"
+          class="ant-transfer-list-checkbox"
+          nz-checkbox
+          [nzChecked]="stat.checkAll"
+          (nzCheckedChange)="onItemSelectAll($event)"
+          [nzIndeterminate]="stat.checkHalf"
+          [nzDisabled]="stat.shownCount === 0 || disabled"
+        ></label>
+        <span nz-dropdown [nzDropdownMenu]="menu" [nzDisabled]="disabled" class="ant-transfer-list-header-dropdown">
+          <i nz-icon nzType="down"></i>
         </span>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul *ngIf="showRemove" nz-menu>
+            <li *ngIf="pagination" nz-menu-item (click)="itemRemove.emit(renderData)">{{ locale?.removeCurrent }}</li>
+            <li nz-menu-item (click)="itemRemove.emit(fullData)">{{ locale?.removeAll }}</li>
+          </ul>
+          <ul *ngIf="!showRemove" nz-menu>
+            <li nz-menu-item (click)="onItemSelectAll(true)">{{ locale?.selectAll }}</li>
+            <li *ngIf="pagination" nz-menu-item (click)="onItemSelectAll(true, renderData)">
+              {{ locale?.selectCurrent }}
+            </li>
+            <li nz-menu-item (click)="onItemSelectAll('invert', pagination ? renderData : fullData)">
+              {{ locale?.selectInvert }}
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </ng-container>
+      <span class="ant-transfer-list-header-selected">
+        {{ selectedText }}
       </span>
-      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
+      <span *ngIf="titleText" class="ant-transfer-list-header-title">
+        <ng-container *nzStringTemplateOutlet="titleText; context: { $implicit: direction }">
+          {{ titleText }}
+        </ng-container>
+      </span>
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
@@ -95,7 +116,7 @@ import { TransferDirection, TransferItem } from './interface';
             *ngTemplateOutlet="
               renderList;
               context: {
-                $implicit: validData,
+                $implicit: renderData,
                 direction: direction,
                 disabled: disabled,
                 onItemSelectAll: onItemSelectAll,
@@ -115,15 +136,19 @@ import { TransferDirection, TransferItem } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-transfer-list',
+    '[class.ant-transfer-list-with-pagination]': '!!pagination',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   }
 })
-export class NzTransferListComponent implements AfterViewInit {
-  // #region fields
+export class NzTransferListComponent {
+  pi = 1;
 
+  // #region fields
+  @Input() locale!: NzTransferI18nInterface;
   @Input() direction: TransferDirection = 'left';
-  @Input() titleText = '';
+  @Input() titleText: TemplateRef<{ $implicit: TransferDirection }> | string = '';
   @Input() showSelectAll = true;
+  @Input() selectAllLabel: string | ((info: { selectedCount: number; totalCount: number }) => string) | null = null;
 
   @Input() dataSource: TransferItem[] = [];
 
@@ -135,17 +160,18 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() searchPlaceholder?: string;
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
+  @Input() showRemove: boolean = false;
+  @Input() pagination?: TransferPaginationType;
 
   @Input() renderList: TemplateRef<void> | null = null;
   @Input() render: TemplateRef<void> | null = null;
   @Input() footer: TemplateRef<void> | null = null;
 
   // events
-  @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
-
-  @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
+  @Output() readonly handleSelectAll = new EventEmitter<{ status: boolean; current?: number }>();
+  @Output() readonly handleSelect = new EventEmitter<TransferItem>();
+  @Output() readonly filterChange = new EventEmitter<{ direction: TransferDirection; value: string }>();
+  @Output() readonly itemRemove = new EventEmitter<TransferItem[]>();
 
   stat = {
     checkAll: false,
@@ -154,8 +180,29 @@ export class NzTransferListComponent implements AfterViewInit {
     shownCount: 0
   };
 
-  get validData(): TransferItem[] {
+  get fullData(): TransferItem[] {
     return this.dataSource.filter(w => !w.hide);
+  }
+
+  get renderData(): TransferItem[] {
+    let items = this.fullData;
+    if (this.pagination != null) {
+      const ps = this.pagination.pageSize!;
+      items = items.slice((this.pi - 1) * ps, this.pi * ps);
+    }
+    return items;
+  }
+
+  get selectedText(): string {
+    const totalCount = this.stat.shownCount;
+    const selectedCount = this.stat.checkCount;
+    if (this.selectAllLabel) {
+      return typeof this.selectAllLabel === 'function'
+        ? this.selectAllLabel({ selectedCount, totalCount })
+        : this.selectAllLabel;
+    }
+    const unit = totalCount > 1 ? this.itemsUnit : this.itemUnit;
+    return `${selectedCount > 0 ? `${selectedCount}/` : ''}${totalCount} ${unit}`;
   }
 
   onItemSelect = (item: TransferItem): void => {
@@ -167,21 +214,26 @@ export class NzTransferListComponent implements AfterViewInit {
     this.handleSelect.emit(item);
   };
 
-  onItemSelectAll = (status: boolean): void => {
-    this.dataSource.forEach(item => {
+  onItemSelectAll = (status: boolean | 'invert', list?: TransferItem[]): void => {
+    (list ?? this.dataSource).forEach(item => {
       if (!item.disabled && !item.hide) {
-        item.checked = status;
+        item.checked = status === 'invert' ? !item.checked : status;
       }
     });
 
     this.updateCheckStatus();
-    this.handleSelectAll.emit(status);
+    this.handleSelectAll.emit({ status: status === 'invert' ? true : status, current: this.pi });
   };
+
+  pageChange(pi: number): void {
+    this.pi = pi;
+    this.cdr.detectChanges();
+  }
 
   private updateCheckStatus(): void {
     const validCount = this.dataSource.filter(w => !w.disabled).length;
     this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
-    this.stat.shownCount = this.validData.length;
+    this.stat.shownCount = this.renderData.length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
   }
@@ -195,7 +247,7 @@ export class NzTransferListComponent implements AfterViewInit {
     this.dataSource.forEach(item => {
       item.hide = value.length > 0 && !this.matchFilter(value, item);
     });
-    this.stat.shownCount = this.validData.length;
+    this.stat.shownCount = this.renderData.length;
     this.filterChange.emit({ direction: this.direction, value });
   }
 
@@ -212,33 +264,10 @@ export class NzTransferListComponent implements AfterViewInit {
 
   // #endregion
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();
     this.cdr.markForCheck();
-  }
-
-  ngAfterViewInit(): void {
-    this.checkboxes.changes
-      .pipe(
-        startWith(this.checkboxes),
-        switchMap(() => {
-          const checkboxes = this.checkboxes.toArray();
-          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
-          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
-          // but `addEventListener` is called when the `fromEvent` is subscribed.
-          return new Observable<MouseEvent>(subscriber =>
-            this.ngZone.runOutsideAngular(() =>
-              merge(...checkboxes.map(checkbox => fromEvent<MouseEvent>(checkbox.nativeElement, 'click'))).subscribe(
-                subscriber
-              )
-            )
-          );
-        })
-      )
-      .subscribe(event => {
-        event.stopPropagation();
-      });
   }
 }
