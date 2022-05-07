@@ -9,13 +9,13 @@ Ant Design of Angular is dedicated to providing a **good development experience*
 
 ## Playground
 
-The following StackBlitz link demonstrates a basic use case, and it is recommended to fork this demo as a baseline while doing `Bug Report`. However, please do not use this demo as a scaffold on real production environment.
+The following StackBlitz link demonstrates a basic use case, and it is recommended to fork this demo as a baseline while doing `Bug Report`. However, please do not use this demo as a scaffold in a real production environment.
 
 - [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-ivy)
 
 ## First Local Development
 
-During development, there are several engineering requirements including compiling, debugging, proxying and packaging codes in TypeScript. We strongly encourage you to develop your project with the help of Angular official CLI `@angular/cli`. To be concise, a simple example is demonstrating below.
+There are several engineering requirements during development, including compiling, debugging, proxying, and packaging codes in TypeScript. We strongly encourage you to develop your project with the help of Angular official CLI `@angular/cli`. To be concise, a simple example is demonstrated below.
 
 ### Installation
 
@@ -23,6 +23,8 @@ During development, there are several engineering requirements including compili
 
 ```bash
 $ npm install -g @angular/cli
+# Or if you use yarn
+$ yarn global add @angular/cli
 ```
 
 ### Create a New Project
@@ -33,11 +35,11 @@ The following command allows `@angular/cli` to create a folder called `PROJECT-N
 $ ng new PROJECT-NAME
 ```
 
-`@angular/cli` will run `npm install` after a project is created. If it fails, you can run `npm install` by yourself.
+`@angular/cli` will run `npm install` or `yarn` after a project is created. You can run `npm install` or `yarn` by yourself if it fails.
 
 ### Install ng-zorro-antd
 
-After changing directory to the newly created project, you can run the following commands to initialize project's configuration automatically, including importing i18n files and stylesheets, and loading initial modules.
+After changing the directory to the newly created project, you can automatically run the following commands to initialize the project's configuration, including importing i18n files and stylesheets and loading initial modules.
 
 ```bash
 $ cd PROJECT-NAME
@@ -68,12 +70,14 @@ Project files are built and generated in the `dist` directory by default.
 
 ## Customized Build
 
-You may use any existing scaffold tools in the Angular ecosystem in order to customize the building process. When you encounter problems, please refer to [configure](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) section.
+You may use any existing scaffold tools in the Angular ecosystem in order to customize the building process. Please refer to [configure](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) section if you encounter any issues.
 
 ### Install ng-zorro-antd
 
 ```bash
 $ npm install ng-zorro-antd --save
+# Or if you use yarn
+$ yarn add ng-zorro-antd
 ```
 
 ### Import Styles
@@ -144,7 +148,7 @@ import { AppComponent } from './app.component';
     NzButtonModule
   ]
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 Then use the component inside the template:
