@@ -9,8 +9,8 @@ A simple text popup tip.
 
 ## When To Use
 
-- The tip is shown on mouse enter, and is hidden on mouse leave. The Tooltip doesn't support complex text or operations.
-- To provide an explanation of a `button/text/operation`. It's often used instead of the html `title` attribute.
+- The Tooltip doesn't support complex text or operations. The tip is shown on mouse enter and is hidden on mouse leave.
+- It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
 
 ```ts
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -48,7 +48,7 @@ The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
 ## Exclude body element's scroll event need to refresh the position of CDK
 
-In the usage of tooltip (including popconfirm、popover), body element's scroll event will update the position of tooltip. It will never update the position of tooltip if the scroll event happens in a custom element. You can add `cdkScrollable` directive to achieve the goal. Take notice that you need to import relative package `import {ScrollingModule} from '@angular/cdk/scrolling';`, for more information you can visit [scrolling/api](https://material.angular.io/cdk/scrolling/api).
+In using the tooltip (including popconfirm、popover), the body element's scroll event will update the position of the tooltip. It will never update the tooltip's position if the scroll event happens in a custom element. You can add the `cdkScrollable` directive to achieve the goal. Take notice that you need to import relative package `import {ScrollingModule} from '@angular/cdk/scrolling';`, for more information you can visit [scrolling/api](https://material.angular.io/cdk/scrolling/api).
 
 ## Note
 
