@@ -70,6 +70,7 @@ You can set the title of `[nz-submenu]` in the following ways.
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
+| `[nzPlacement]` | placement of pop menu | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
 | `[nzOpen]` | whether sub menu is open or not, double binding | `boolean` | `false` |
 | `[nzDisabled]` | whether sub menu is disabled or not | `boolean` | `false` |
 | `[nzTitle]` | set submenu title | `string \| TemplateRef<void>` | - |
