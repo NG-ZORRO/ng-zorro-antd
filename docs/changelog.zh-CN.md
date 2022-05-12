@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 13.2.2
+
+`2022-05-12`
+
+### Bug Fixes
+
+* **tree-view:** 修复虚拟滚动模式下动态添加数据未正确更新问题 ([#7426](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7426)) ([a702674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a702674d76974bcc8fa854394bd6681d8dfe8347))
+
+
 ## 13.2.1
 
 `2022-04-27`

@@ -1,3 +1,12 @@
+## [13.2.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.2.1...13.2.2) (2022-05-12)
+
+
+### Bug Fixes
+
+* **tree-view:** trigger markforcheck after nodes changed ([#7426](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7426)) ([a702674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a702674d76974bcc8fa854394bd6681d8dfe8347))
+
+
+
 ## [13.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.2.0...13.2.1) (2022-04-27)
 
 
