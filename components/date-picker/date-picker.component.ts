@@ -26,6 +26,7 @@ import {
   Host,
   Inject,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -520,8 +521,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     event.preventDefault();
     event.stopPropagation();
 
-    this.datePickerService.initValue(true);
-    this.datePickerService.emitValue$.next();
+    // It will fix the issue when in some cases handler will be called runOutsideAngular.
+    // This issue occurs from nz-icon directive because of triggered runOutsideAngular.
+    this.zone.run(() => {
+      this.datePickerService.initValue(true);
+      this.datePickerService.emitValue$.next();
+    });
   }
 
   updateInputValue(): void {
@@ -609,6 +614,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     private nzResizeObserver: NzResizeObserver,
     private platform: Platform,
     @Inject(DOCUMENT) doc: NzSafeAny,
+    private zone: NgZone,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {

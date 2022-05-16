@@ -2,7 +2,7 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -374,6 +374,24 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
+    }));
+
+    it('should call modelValueChange inside zone when clicked on `clear` btn', fakeAsync(() => {
+      const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
+      fixture.detectChanges();
+      spyOn(fixtureInstance.rangePickerComponent.datePicker, 'showClear').and.returnValue(true);
+
+      tick();
+      fixture.detectChanges();
+      expect(debugElement.query(clearBtnSelector)).toBeDefined();
+
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange').and.callFake((args?: Date[]) => {
+        expect(NgZone.isInAngularZone()).toBe(true);
+        expect(args).toEqual([]);
+      });
+
+      debugElement.query(clearBtnSelector).nativeElement.click();
+      expect(nzOnChange).toHaveBeenCalled();
     }));
   }); // /general api testing
 
@@ -1156,6 +1174,7 @@ class NzTestRangePickerComponent {
   useSuite!: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
+  @ViewChild(NzRangePickerComponent, { static: false }) rangePickerComponent!: NzRangePickerComponent;
 
   // --- Suite 1
   nzAllowClear: boolean = false;
