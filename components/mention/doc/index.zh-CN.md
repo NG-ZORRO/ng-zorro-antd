@@ -36,7 +36,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 | `[nzMentionSuggestion]` | 自定义建议渲染模板 | `TemplateRef<any>` | - |
 | `[nzLoading]` | 加载中 | `boolean` | `false` |
 | `[nzNotFoundContent]` | 未找到时的内容 | `string` | `'无匹配结果，轻敲空格完成输入'` |
-| `[nzPlacement]` | 建议框位置 | `'button' \| 'top'` | `'bottom'` |
+| `[nzPlacement]` | 建议框位置 | `'bottom' \| 'top'` | `'bottom'` |
 | `[nzPrefix]` | 触发弹出下拉框的字符 | `string \| string[]` | `'@'` |
 | `[nzSuggestions]` | 建议内容 | `any[]` | `[]` |
 | `[nzValueWith]` | 建议选项的取值方法  | `(any) => string \| (value: string) => string` |
