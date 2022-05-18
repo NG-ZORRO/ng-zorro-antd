@@ -55,7 +55,7 @@ export default {
       previousDecade: 'Última década',
       nextDecade: 'Próxima década',
       previousCentury: 'Último século',
-      nextCentury: 'Próximo século',
+      nextCentury: 'Próximo século'
     },
     timePickerLocale: {
       placeholder: 'Hora',
@@ -64,7 +64,7 @@ export default {
   },
   TimePicker: {
     placeholder: 'Hora',
-    rangePlaceholder: ['Hora inicial', 'Hora final'],
+    rangePlaceholder: ['Hora inicial', 'Hora final']
   },
   Calendar: {
     lang: {
@@ -130,7 +130,7 @@ export default {
     cancelSort: 'Clique para cancelar ordem',
     filterCheckall: 'Seleccionar todos os itens',
     filterSearchPlaceholder: 'Procurar em filtros',
-    selectNone: 'Apagar todos os dados',
+    selectNone: 'Apagar todos os dados'
   },
   Modal: {
     okText: 'OK',
