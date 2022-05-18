@@ -3,12 +3,12 @@ order: 6.1
 title: Dynamic Theme (Experimental)
 ---
 
-Except [less customize theme](/docs/react/customize-theme), We also provide CSS Variable version to enable dynamic theme. You can check on [ConfigProvider](/components/config-provider/#components-config-provider-demo-theme) demo.
+Except [less customize theme](/docs/customize-theme/en), We also provide CSS Variable version to enable dynamic theme.
 
 ## Caveats
 
 - This function depends on CSS Variables. Please check the [browser compatibility](https://caniuse.com/css-variables).
-- This function requires at least `antd@4.17.0-alpha.0`.
+- This function requires at least `ng-zorro-antd@13.2.x`.
 
 ## How to use
 
@@ -17,54 +17,64 @@ Except [less customize theme](/docs/react/customize-theme), We also provide CSS 
 Replace your import style file with CSS Variable version:
 
 ```diff
--- import 'antd/dist/antd.min.css';
-++ import 'antd/dist/antd.variable.min.css';
+-- @import "~ng-zorro-antd/ng-zorro-antd.min.css";
+++ @import "~ng-zorro-antd/ng-zorro-antd.variable.min.css";
 ```
 
 Note: You need remove `babel-plugin-import` for the dynamic theme.
 
 ### Static config
 
-Call ConfigProvider static function to modify theme color:
+In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
 
-```ts
-import { ConfigProvider } from 'antd';
+```typescript
+import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 
-ConfigProvider.config({
+const ngZorroConfig: NzConfig = {
   theme: {
-    primaryColor: '#25b864',
-  },
-});
+    primaryColor: '#1890ff'
+  }
+};
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    CommonModule
+  ],
+  providers: [
+    { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 ```
+
+These global configurations would be injected and stored in a service named `NzConfigService`.
+
+### Dynamically Change Configurations
+
+You can alter the global configuration of CSS Variable through the `set` method of `NzConfigService`. For example:
+
+```typescript
+import { NzConfigService } from 'ng-zorro-antd/core/config';
+
+@Component({
+  selector: 'app-change-zorro-config'
+})
+export class ChangeZorroConfigComponent {
+  constructor(private nzConfigService: NzConfigService) {}
+
+  onChangeConfig() {
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+  }
+}
+```
+
+All component instances is responsive to this configuration change (as long as they are not configured independently).
 
 ## Conflict resolve
 
 CSS Variable use `--ant` prefix by default. When exist multiple antd style file in your project, you can modify prefix to fix it.
-
-### Adjust
-
-Modify `prefixCls` on the root of ConfigProvider:
-
-```tsx
-import { ConfigProvider } from 'antd';
-
-export default () => (
-  <ConfigProvider prefixCls="custom">
-    <MyApp />
-  </ConfigProvider>
-);
-```
-
-Also need call the static function to modify `prefixCls`:
-
-```ts
-ConfigProvider.config({
-  prefixCls: 'custom',
-  theme: {
-    primaryColor: '#25b864',
-  },
-});
-```
 
 ### Compile less
 
@@ -76,6 +86,4 @@ lessc --js --modify-var="ant-prefix=custom" antd/dist/antd.variable.less modifie
 
 ### Related changes
 
-In order to implement CSS Variable and maintain original usage compatibility, we added `@root-entry-name: xxx;` entry injection to the `dist/antd.xxx.less` file to support less dynamic loading of the corresponding less file. Under normal circumstances, you do not need to pay attention to this change. However, if your project directly references the less file in the `lib|es` directory. You need to configure `@root-entry-name: default;` (or `@root-entry-name: variable;`) at the entry of less so that less can find the correct entry.
-
-In addition, we migrated `@import'motion'` and `@import'reset'` in `lib|es/style/minxins/index.less` to `lib|es/style/themes/xxx.less` In, because these two files rely on theme-related variables. If you use the relevant internal method, please adjust it yourself. Of course, we still recommend using the `antd.less` files in the `dist` directory directly instead of calling internal files, because they are often affected by refactoring.
+In order to implement CSS Variable and maintain original usage compatibility, we added `@root-entry-name: xxx;` entry injection to the `ng-zorro-antd.xxx.less` file to support less dynamic loading of the corresponding less file. Under normal circumstances, you do not need to pay attention to this change.
