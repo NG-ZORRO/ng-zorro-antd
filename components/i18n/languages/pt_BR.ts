@@ -55,9 +55,7 @@ export default {
       previousDecade: 'Década anterior',
       nextDecade: 'Próxima década',
       previousCentury: 'Século anterior',
-      nextCentury: 'Próximo século',
-      shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-      shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+      nextCentury: 'Próximo século'
     },
     timePickerLocale: {
       placeholder: 'Hora',
@@ -105,9 +103,7 @@ export default {
       previousDecade: 'Década anterior',
       nextDecade: 'Próxima década',
       previousCentury: 'Século anterior',
-      nextCentury: 'Próximo século',
-      shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-      shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+      nextCentury: 'Próximo século'
     },
     timePickerLocale: {
       placeholder: 'Hora',
@@ -132,6 +128,8 @@ export default {
     triggerDesc: 'Clique organiza por descendente',
     triggerAsc: 'Clique organiza por ascendente',
     cancelSort: 'Clique para cancelar organização',
+    filterCheckall: 'Selecione todos os itens',
+    filterSearchPlaceholder: 'Procurar em filtros',
     selectNone: 'Apagar todo o conteúdo'
   },
   Modal: {
