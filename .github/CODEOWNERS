@@ -37,6 +37,7 @@ components/statistic/**                   @hullis
 components/timeline/**                    @hullis
 components/tooltip/**                     @hullis
 components/code-editor/**                 @hullis
+components/segmented/**                   @hullis
 components/calendar/**                    @wenqi73
 components/date-picker/**                 @wenqi73
 components/skeleton/**                    @wenqi73

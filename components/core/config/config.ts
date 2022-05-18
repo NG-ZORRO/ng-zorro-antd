@@ -56,6 +56,7 @@ export interface NzConfig {
   pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  segmented?: SegmentedConfig;
   space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
@@ -250,6 +251,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SegmentedConfig {
+  nzSize?: NzSizeLDSType;
 }
 
 export interface SpaceConfig {
