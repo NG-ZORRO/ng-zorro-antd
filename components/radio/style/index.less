@@ -42,6 +42,13 @@
     overflow: hidden;
     content: '\a0';
   }
+
+  &&-in-form-item {
+    input[type='radio'] {
+      width: 14px;
+      height: 14px;
+    }
+  }
 }
 
 .@{radio-prefix-cls} {
@@ -174,7 +181,7 @@ span.@{radio-prefix-cls} + * {
   display: inline-block;
   height: @btn-height-base;
   margin: 0;
-  padding: 0 @padding-md - 1px;
+  padding: 0 @radio-button-padding-horizontal;
   color: @radio-button-color;
   font-size: @font-size-base;
   line-height: @btn-height-base - 2px;
