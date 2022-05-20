@@ -38,6 +38,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzShowDot]` | Whether to display the red dot | `boolean` | `true` |
 | `[nzOverflowCount]` | Max count to show | `number` | `99` | ✅ |
 | `[nzShowZero]` | Whether to show badge when `count` is zero | `boolean` | `false` |
+| `[nzSize]` | If `nzCount` is set, `size` sets the size of badge | `default \| small` | `default`
 | `[nzStatus]` | Set `nz-badge` as a status dot | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
 | `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string \| TemplateRef<void>` | - |
 | `[nzTitle]` | Text to show when hovering over the badge（Only Non-standalone), hide when value is `null` | `string \| null` | `nzCount` |
