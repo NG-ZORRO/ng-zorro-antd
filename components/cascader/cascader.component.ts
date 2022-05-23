@@ -17,12 +17,14 @@ import {
   HostListener,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -37,8 +39,15 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NgClassType,
+  NgStyleInterface,
+  NzSafeAny,
+  NzStatus
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -210,7 +219,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-rtl]': `dir ==='rtl'`
   }
 })
-export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
+export class NzCascaderComponent
+  implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
+{
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowInput: BooleanInput;
   static ngAcceptInputType_nzShowArrow: BooleanInput;
@@ -256,6 +267,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMenuStyle: NgStyleInterface | null = null;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input() nzStatus?: NzStatus;
+
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
@@ -276,6 +289,10 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
   @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
   @Output() readonly nzClear = new EventEmitter<void>();
+
+  prefixCls: string = 'ant-select';
+  statusCls: NgClassInterface = {};
+  nzHasFeedback: boolean = false;
 
   /**
    * If the dropdown should show the empty content.
@@ -359,15 +376,15 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private cdr: ChangeDetectorRef,
     private i18nService: NzI18nService,
     private destroy$: NzDestroyService,
-    elementRef: ElementRef,
-    renderer: Renderer2,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
-    renderer.addClass(elementRef.nativeElement, 'ant-select');
-    renderer.addClass(elementRef.nativeElement, 'ant-cascader');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-cascader');
   }
 
   ngOnInit(): void {
@@ -428,6 +445,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
     this.setupChangeListener();
     this.setupKeydownListener();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus } = changes;
+    if (nzStatus) {
+      this.setStatusStyles();
+    }
   }
 
   ngOnDestroy(): void {
@@ -759,6 +783,18 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.dropdownWidthStyle =
         this.inSearchingMode || this.shouldShowEmpty ? `${this.selectContainer.nativeElement.offsetWidth}px` : '';
     }
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 
   private setLocale(): void {

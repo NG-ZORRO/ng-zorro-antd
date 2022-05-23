@@ -50,6 +50,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzShowInput]` | Whether show input | `boolean` | `true` |
 | `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean\|NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | `'large'\|'small'\|'default'` | `'default'` | ✅ |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | 	The custom suffix icon | `string\|TemplateRef<void>` | - |
 | `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
