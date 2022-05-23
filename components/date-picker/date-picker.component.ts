@@ -258,6 +258,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   private isCustomPlaceHolder: boolean = false;
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
+  private matchingFormat: string = '';
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -273,7 +274,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
   @Input() nzSize: NzDatePickerSizeType = 'default';
-  @Input() nzFormat!: string;
+  @Input() nzFormat!: string | string[];
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
@@ -377,6 +378,14 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.focus();
       this.updateInputWidthAndArrowLeft();
     });
+  }
+
+  setDefaultMatchingFormat() {
+    if (Array.isArray(this.nzFormat)) {
+      this.matchingFormat = this.nzFormat[0];
+    } else {
+      this.matchingFormat = this.nzFormat;
+    }
   }
 
   updateInputWidthAndArrowLeft(): void {
@@ -522,7 +531,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   formatValue(value: CandyDate): string {
-    return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.nzFormat);
+    this.setDefaultMatchingFormat();
+    return this.dateHelper.format(
+      value && (value as CandyDate).nativeDate,
+      this.matchingFormat != '' ? this.matchingFormat : (this.nzFormat as string)
+    );
   }
 
   onInputChange(value: string, isEnter: boolean = false): void {
@@ -551,13 +564,25 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   private checkValidDate(value: string): CandyDate | null {
-    const date = new CandyDate(this.dateHelper.parseDate(value, this.nzFormat));
-
-    if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.nzFormat)) {
-      return null;
+    var validDate = new CandyDate(this.dateHelper.parseDate(value, this.matchingFormat));
+    if (Array.isArray(this.nzFormat)) {
+      this.nzFormat.forEach(x => {
+        const date = new CandyDate(this.dateHelper.parseDate(value, x));
+        if (date.isValid() && value === this.dateHelper.format(validDate.nativeDate, x)) {
+          this.matchingFormat = x;
+          validDate = date;
+        }
+      });
+    } else {
+      validDate = new CandyDate(this.dateHelper.parseDate(value, this.nzFormat));
+      this.matchingFormat = this.nzFormat;
     }
-
-    return date;
+    if (validDate.isValid()) {
+      if (value === this.dateHelper.format(validDate.nativeDate, this.matchingFormat)) {
+        return validDate;
+      }
+    }
+    return null;
   }
 
   getPlaceholder(partType?: RangePartType): string {

@@ -6,7 +6,7 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, isMatch, parse as fnsParse } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -34,8 +34,8 @@ export abstract class DateHelperService {
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
-  abstract format(date: Date | null, formatStr: string): string;
-  abstract parseDate(text: string, formatStr?: string): Date;
+  abstract format(date: Date | null, formatStr: string | string[]): string;
+  abstract parseDate(text: string, formatStr?: string | string[]): Date;
   abstract parseTime(text: string, formatStr?: string): Date | undefined;
 }
 
@@ -66,8 +66,13 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param date Date
    * @param formatStr format string
    */
-  format(date: Date, formatStr: string): string {
-    return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+  format(date: Date, formatStr: string | string[]): string {
+    if (Array.isArray(formatStr)) {
+      formatStr.forEach(x => {
+        if (isMatch(date.toString(), x)) formatStr = x;
+      });
+    }
+    return date ? fnsFormat(date, formatStr as string, { locale: this.i18n.getDateLocale() }) : '';
   }
 
   parseDate(text: string, formatStr: string): Date {

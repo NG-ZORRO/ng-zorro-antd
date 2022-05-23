@@ -42,7 +42,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
 | `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
 | `[nzDropdownClassName]` | to customize the className of the popup calendar  | `string` | - | - |
-| `[nzFormat]` | to set the date format, see `nzFormat special instructions` | `string` | - |
+| `[nzFormat]` | to set the date format, see `nzFormat special instructions` | `string \| string[]` | - |
 | `[nzInputReadOnly]` | set the readonly attribute of the input tag (avoids virtual keyboard on touch devices) | `boolean` | `false` | - |
 | `[nzLocale]` | localization configuration | `object` | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
 | `[nzMode]` | Set picker mode | `'date'` \| `'week'` \| `'month'` \| `'year'` | `'date'` |
