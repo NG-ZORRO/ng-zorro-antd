@@ -3,5 +3,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './color';
-export * from './generate';
+export const tuple = <T extends string[]>(...args: T): T => args;

@@ -70,6 +70,23 @@ export interface NzConfig {
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
   imageExperimental?: ImageExperimentalConfig;
+  theme?: Theme;
+  prefixCls?: PrefixCls;
+}
+
+export interface PrefixCls {
+  prefixCls?: string;
+  iconPrefixCls?: string;
+}
+
+export interface Theme {
+  primaryColor?: string;
+  infoColor?: string;
+  successColor?: string;
+  processingColor?: string;
+  errorColor?: string;
+  warningColor?: string;
+  [key: string]: string | undefined;
 }
 
 export interface SelectConfig {

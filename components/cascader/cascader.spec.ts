@@ -68,7 +68,12 @@ describe('cascader', () => {
           NzCascaderModule,
           NzIconTestModule
         ],
-        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
+        declarations: [
+          NzDemoCascaderDefaultComponent,
+          NzDemoCascaderLoadDataComponent,
+          NzDemoCascaderRtlComponent,
+          NzDemoCascaderStatusComponent
+        ]
       }).compileComponents();
 
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -1786,6 +1791,29 @@ describe('cascader', () => {
       expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
     }));
   });
+
+  describe('Status', () => {
+    let fixture: ComponentFixture<NzDemoCascaderStatusComponent>;
+    let cascader: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderStatusComponent);
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-select-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-select-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).not.toContain('ant-select-status-warning');
+    });
+  });
 });
 
 const ID_NAME_LIST = [
@@ -2170,4 +2198,12 @@ export class NzDemoCascaderRtlComponent {
   public nzOptions: any[] | null = options1;
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: ` <nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader> `
+})
+export class NzDemoCascaderStatusComponent {
+  public nzOptions: any[] | null = options1;
+  public status = 'error';
 }
