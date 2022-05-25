@@ -32,6 +32,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -43,8 +44,8 @@ import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { getCaretCoordinates, getMentions, getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -117,6 +118,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
+  @Input() nzStatus?: NzStatus;
   @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
@@ -137,6 +139,10 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
   activeIndex = -1;
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-mentions';
+  statusCls: NgClassInterface = {};
+  nzHasFeedback: boolean = false;
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -166,6 +172,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
     private nzMentionService: NzMentionService,
     private destroy$: NzDestroyService
   ) {}
@@ -185,12 +193,16 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzSuggestions')) {
+    const { nzSuggestions, nzStatus } = changes;
+    if (nzSuggestions) {
       if (this.isOpen) {
         this.previousValue = null;
         this.activeIndex = -1;
         this.resetDropdown(false);
       }
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
@@ -463,5 +475,17 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       .withFlexibleDimensions(false)
       .withPush(false);
     return this.positionStrategy;
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 }
