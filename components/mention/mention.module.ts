@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -18,7 +19,7 @@ import { NzMentionComponent } from './mention.component';
 const COMPONENTS = [NzMentionComponent, NzMentionTriggerDirective, NzMentionSuggestionDirective];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, FormsModule, OverlayModule, NzIconModule],
+  imports: [BidiModule, CommonModule, FormsModule, OverlayModule, NzIconModule, NzEmptyModule],
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS]
 })
