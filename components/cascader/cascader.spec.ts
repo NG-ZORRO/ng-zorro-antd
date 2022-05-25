@@ -31,6 +31,7 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzCascaderComponent } from './cascader.component';
@@ -2205,5 +2206,5 @@ export class NzDemoCascaderRtlComponent {
 })
 export class NzDemoCascaderStatusComponent {
   public nzOptions: any[] | null = options1;
-  public status = 'error';
+  public status: NzStatus = 'error';
 }
