@@ -33,6 +33,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzPrecision]` | 数值精度 | `number` | - |
 | `[nzPrecisionMode]` | 数值精度的取值方式 | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | 输入框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 | `[nzStep]` | 每次改变步数，可以为小数 | `number \| string` | `1` |
 | `[nzInputMode]` | 提供了用户在编辑元素或其内容时可能输入的数据类型的提示，详见[MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode) | `string` | `decimal` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
