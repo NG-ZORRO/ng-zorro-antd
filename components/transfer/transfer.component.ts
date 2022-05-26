@@ -69,6 +69,7 @@ import { NzTransferListComponent } from './transfer-list.component';
     <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
       <button
         nz-button
+        type="button"
         (click)="moveToLeft()"
         [disabled]="nzDisabled || !leftActive"
         [nzType]="'primary'"
@@ -79,6 +80,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       </button>
       <button
         nz-button
+        type="button"
         (click)="moveToRight()"
         [disabled]="nzDisabled || !rightActive"
         [nzType]="'primary'"
@@ -91,6 +93,7 @@ import { NzTransferListComponent } from './transfer-list.component';
     <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
       <button
         nz-button
+        type="button"
         (click)="moveToRight()"
         [disabled]="nzDisabled || !rightActive"
         [nzType]="'primary'"
@@ -101,6 +104,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       </button>
       <button
         nz-button
+        type="button"
         (click)="moveToLeft()"
         [disabled]="nzDisabled || !leftActive"
         [nzType]="'primary'"
