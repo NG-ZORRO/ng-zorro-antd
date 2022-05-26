@@ -4,11 +4,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
   selector: 'nz-demo-mention-status',
   encapsulation: ViewEncapsulation.None,
   template: `
-    <nz-mention [nzSuggestions]="suggestions" nzStatus="error">
-      <input placeholder="input here" nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+    <nz-mention [nzSuggestions]="suggestions" nzStatus="error" style="margin-bottom: 8px;">
+      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
     <nz-mention [nzSuggestions]="suggestions" nzStatus="warning">
-      <input placeholder="input here" nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
   `
 })
