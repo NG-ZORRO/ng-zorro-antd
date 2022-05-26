@@ -1,4 +1,4 @@
-import { Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
@@ -34,6 +34,7 @@ describe('mention', () => {
       const dir = 'ltr';
       TestBed.configureTestingModule({
         imports: [
+          BidiModule,
           NzMentionModule,
           NzInputModule,
           NoopAnimationsModule,
@@ -41,7 +42,7 @@ describe('mention', () => {
           ReactiveFormsModule,
           NzIconTestModule
         ],
-        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
+        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent, NzTestDirMentionComponent],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
           { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
@@ -67,6 +68,24 @@ describe('mention', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestDirMentionComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDirMentionComponent);
+      fixture.detectChanges();
+    });
+
+    it('should classname correct', () => {
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).not.toContain(
+        'ant-mentions-rtl'
+      );
+      fixture.componentInstance.direction = 'rtl';
+      fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).toContain('ant-mentions-rtl');
+    });
+  });
 
   describe('toggling', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
@@ -580,4 +599,17 @@ class NzTestPropertyMentionComponent {
       ];
     }, 500);
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-mention [nzSuggestions]="[]">
+        <input nz-input nzMentionTrigger />
+      </nz-mention>
+    </div>
+  `
+})
+class NzTestDirMentionComponent {
+  direction: Direction = 'ltr';
 }
