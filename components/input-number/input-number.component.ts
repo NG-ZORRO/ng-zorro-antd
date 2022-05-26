@@ -21,6 +21,7 @@ import {
   OnInit,
   Optional,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
@@ -30,8 +31,15 @@ import { fromEvent, merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NzSizeLDSType,
+  NzStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-input-number',
@@ -109,6 +117,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   disabledUp = false;
   disabledDown = false;
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-input-number';
+  statusCls: NgClassInterface = {};
+  nzHasFeedback: boolean = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @Output() readonly nzBlur = new EventEmitter();
@@ -130,6 +142,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecision?: number;
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
+  @Input() nzStatus?: NzStatus;
   @Input() nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
@@ -376,6 +389,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    private renderer: Renderer2,
     @Optional() private directionality: Directionality,
     private destroy$: NzDestroyService
   ) {}
@@ -434,10 +448,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus } = changes;
     if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
@@ -461,6 +479,18 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       )
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.stop());
+    });
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
     });
   }
 }

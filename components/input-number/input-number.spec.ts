@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 
 import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
@@ -17,7 +18,8 @@ describe('input number', () => {
       declarations: [
         NzTestInputNumberBasicComponent,
         NzTestInputNumberFormComponent,
-        NzTestReadOnlyInputNumberBasicComponent
+        NzTestReadOnlyInputNumberBasicComponent,
+        NzTestInputNumberStatusComponent
       ]
     });
     TestBed.compileComponents();
@@ -517,6 +519,34 @@ describe('input number', () => {
       expect(inputElement.attributes.getNamedItem('readOnly')).toBe(null);
     });
   });
+
+  describe('input number status', () => {
+    let fixture: ComponentFixture<NzTestInputNumberStatusComponent>;
+    let testComponent: NzTestInputNumberStatusComponent;
+    let inputNumber: DebugElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestInputNumberStatusComponent);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+    }));
+    it('should status work', () => {
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).toContain('ant-input-number-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).toContain('ant-input-number-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).not.toContain('ant-input-number-status-warning');
+    });
+  });
 });
 
 @Component({
@@ -582,4 +612,11 @@ export class NzTestInputNumberFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+@Component({
+  template: ` <nz-input-number [nzStatus]="status"></nz-input-number> `
+})
+export class NzTestInputNumberStatusComponent {
+  status: NzStatus = 'error';
 }

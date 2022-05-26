@@ -32,6 +32,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzPrecision]` | precision of input value | `number` | - |
 | `[nzPrecisionMode]` | The method for calculating the precision of input value | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | width of input box | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number \| string` | `1` |
 | `[nzInputMode]` | enumerated attribute that hints at the type of data that might be entered by the user, [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode) | `string` | `decimal` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
