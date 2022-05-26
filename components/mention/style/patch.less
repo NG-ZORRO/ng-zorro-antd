@@ -1,6 +1,19 @@
-.ant-mention-dropdown {
+.ant-mentions {
+  border-width: 0;
+  display: unset; // to make sure input:hover work
+
+  &:hover {
+    border-right-width: 0;
+  }
+
+  & > textarea {
+    border: @border-width-base @border-style-base @border-color-base;
+  }
+}
+
+.ant-mentions-dropdown {
   top: 100%;
-  left: 0;
+  left: 12px;
   position: relative;
   width: 100%;
   margin-top: 4px;

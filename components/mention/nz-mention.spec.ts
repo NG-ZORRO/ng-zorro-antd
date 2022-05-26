@@ -1,4 +1,4 @@
-import { Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
@@ -34,6 +34,7 @@ describe('mention', () => {
       const dir = 'ltr';
       TestBed.configureTestingModule({
         imports: [
+          BidiModule,
           NzMentionModule,
           NzInputModule,
           NoopAnimationsModule,
@@ -41,7 +42,7 @@ describe('mention', () => {
           ReactiveFormsModule,
           NzIconTestModule
         ],
-        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
+        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent, NzTestDirMentionComponent],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
           { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
@@ -67,6 +68,24 @@ describe('mention', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestDirMentionComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDirMentionComponent);
+      fixture.detectChanges();
+    });
+
+    it('should classname correct', () => {
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).not.toContain(
+        'ant-mentions-rtl'
+      );
+      fixture.componentInstance.direction = 'rtl';
+      fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).toContain('ant-mentions-rtl');
+    });
+  });
 
   describe('toggling', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
@@ -147,7 +166,7 @@ describe('mention', () => {
       fixture.detectChanges();
       flush();
 
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       option.click();
       fixture.detectChanges();
 
@@ -165,7 +184,7 @@ describe('mention', () => {
       flush();
 
       const appRef = TestBed.inject(ApplicationRef);
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       const event = new MouseEvent('mousedown');
 
       spyOn(appRef, 'tick');
@@ -194,7 +213,7 @@ describe('mention', () => {
 
       expect(mention.isOpen).toBe(true);
 
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       option.click();
       fixture.detectChanges();
 
@@ -236,15 +255,15 @@ describe('mention', () => {
 
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
       fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[1].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the first option when DOWN key is pressed in last item', () => {
@@ -254,7 +273,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -262,9 +281,9 @@ describe('mention', () => {
       [1, 2, 3, 4, 5].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[1].classList).not.toContain('focus');
-      expect(optionEls[4].classList).not.toContain('focus');
-      expect(optionEls[0].classList).toContain('focus');
+      expect(optionEls[1].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[4].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[0].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the last option when UP key is pressed', () => {
@@ -274,7 +293,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -282,8 +301,8 @@ describe('mention', () => {
       fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[4].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[4].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the previous option when UP key is pressed', () => {
@@ -293,7 +312,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -301,8 +320,8 @@ describe('mention', () => {
       [1, 2, 3].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[2].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[2].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item properly after filtering', () => {
@@ -315,11 +334,11 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[1].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).toContain('ant-mentions-dropdown-menu-item-active');
       expect(optionEls[1].innerText).toEqual('ant-design');
     });
 
@@ -333,11 +352,11 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
-      expect(optionEls[0].classList).toContain('focus');
-      expect(optionEls[1].classList).not.toContain('focus');
+      expect(optionEls[0].classList).toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
       expect(optionEls[0].innerText).toEqual('ant-design');
       expect(optionEls[1].innerText).toEqual('mention');
     });
@@ -388,13 +407,13 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
 
     it('should close the dropdown when pressing escape', fakeAsync(() => {
@@ -402,13 +421,13 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
   });
 
@@ -432,11 +451,11 @@ describe('mention', () => {
 
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
       fixture.detectChanges();
       flush(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
     }));
 
     it('should open the dropdown when the type in @ prefix', () => {
@@ -489,7 +508,7 @@ describe('mention', () => {
       fixture.detectChanges();
       typeInElement('@', textarea);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .custom')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .custom')).toBeTruthy();
     });
 
     it('should correct parsing the trigger content', () => {
@@ -580,4 +599,17 @@ class NzTestPropertyMentionComponent {
       ];
     }, 500);
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-mention [nzSuggestions]="[]">
+        <input nz-input nzMentionTrigger />
+      </nz-mention>
+    </div>
+  `
+})
+class NzTestDirMentionComponent {
+  direction: Direction = 'ltr';
 }

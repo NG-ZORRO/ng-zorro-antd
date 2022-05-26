@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
@@ -38,9 +39,10 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { fromEvent, merge, Observable, Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -68,29 +70,43 @@ export type MentionPlacement = 'top' | 'bottom';
   template: `
     <ng-content></ng-content>
     <ng-template #suggestions>
-      <ul class="ant-mention-dropdown">
-        <li
-          #items
-          class="ant-mention-dropdown-item"
-          *ngFor="let suggestion of filteredSuggestions; let i = index"
-          [class.focus]="i === activeIndex"
-          (click)="selectSuggestion(suggestion)"
-        >
-          <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
-            <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
-          </ng-container>
-          <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
-        </li>
-        <li class="ant-mention-dropdown-notfound ant-mention-dropdown-item" *ngIf="filteredSuggestions.length === 0">
-          <span *ngIf="nzLoading"><i nz-icon nzType="loading"></i></span>
-          <span *ngIf="!nzLoading">{{ nzNotFoundContent }}</span>
-        </li>
-      </ul>
+      <div class="ant-mentions-dropdown">
+        <ul class="ant-mentions-dropdown-menu" role="menu" tabindex="0">
+          <li
+            #items
+            class="ant-mentions-dropdown-menu-item"
+            role="menuitem"
+            tabindex="-1"
+            *ngFor="let suggestion of filteredSuggestions; let i = index"
+            [class.ant-mentions-dropdown-menu-item-active]="i === activeIndex"
+            [class.ant-mentions-dropdown-menu-item-selected]="i === activeIndex"
+            (click)="selectSuggestion(suggestion)"
+          >
+            <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
+              <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
+            </ng-container>
+            <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
+          </li>
+          <li
+            class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled"
+            *ngIf="filteredSuggestions.length === 0"
+          >
+            <span *ngIf="nzLoading"><i nz-icon nzType="loading"></i></span>
+            <span *ngIf="!nzLoading">
+              <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!"></nz-embed-empty>
+            </span>
+          </li>
+        </ul>
+      </div>
     </ng-template>
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzMentionService]
+  providers: [NzMentionService, NzDestroyService],
+  host: {
+    class: 'ant-mentions',
+    '[class.ant-mentions-rtl]': `dir === 'rtl'`
+  }
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   static ngAcceptInputType_nzLoading: BooleanInput;
@@ -120,6 +136,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   filteredSuggestions: string[] = [];
   suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
   activeIndex = -1;
+  dir: Direction = 'ltr';
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -145,10 +162,12 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   constructor(
     private ngZone: NgZone,
     @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
+    @Optional() private directionality: Directionality,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private nzMentionService: NzMentionService
+    private nzMentionService: NzMentionService,
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
@@ -157,6 +176,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       this.bindTriggerEvents();
       this.closeDropdown();
       this.overlayRef = null;
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 
