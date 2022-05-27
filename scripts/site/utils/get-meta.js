@@ -35,7 +35,7 @@ module.exports = function getMeta(file) {
     .reduce((a, b) => [...a, ...b], []);
   let description = '';
   if (meta.subtitle) {
-    description = `Angular ${meta.subtitle}组件，`;
+    description = `Angular ${meta.subtitle} 组件，`;
   } else if (meta.title) {
     description = `Angular ${meta.title} Component, `;
   }
