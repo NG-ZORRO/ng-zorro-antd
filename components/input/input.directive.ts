@@ -20,8 +20,8 @@ import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
@@ -40,6 +40,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzBorderless: BooleanInput;
   @Input() @InputBoolean() nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() nzStatus?: NzStatus;
   @Input()
   get disabled(): boolean {
     if (this.ngControl && this.ngControl.disabled !== null) {
@@ -53,12 +54,16 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   _disabled = false;
   disabled$ = new Subject<boolean>();
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-input';
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
-    renderer: Renderer2,
-    elementRef: ElementRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     @Optional() private directionality: Directionality
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
@@ -83,14 +88,29 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { disabled } = changes;
+    const { disabled, nzStatus } = changes;
     if (disabled) {
       this.disabled$.next(this.disabled);
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 }
