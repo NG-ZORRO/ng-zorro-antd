@@ -3,7 +3,9 @@ import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angu
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
 import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
@@ -13,7 +15,13 @@ describe('input', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent],
+        declarations: [
+          NzTestInputWithInputComponent,
+          NzTestInputWithTextAreaComponent,
+          NzTestInputFormComponent,
+          NzTestInputWithStatusComponent,
+          NzTestInputGroupWithStatusComponent
+        ],
         providers: []
       }).compileComponents();
     })
@@ -92,6 +100,70 @@ describe('input', () => {
       }));
     });
   });
+
+  describe('input with status', () => {
+    let fixture: ComponentFixture<NzTestInputWithStatusComponent>;
+    let inputElement: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputWithStatusComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).toContain('ant-input-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).not.toContain('ant-input-status-warning');
+    });
+  });
+
+  describe('input group with status', () => {
+    let fixture: ComponentFixture<NzTestInputGroupWithStatusComponent>;
+    let inputElement: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputGroupWithStatusComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+    });
+
+    it('should className correct with prefix', () => {
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).toContain('ant-input-affix-wrapper-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).not.toContain('ant-input-affix-wrapper-status-warning');
+    });
+
+    it('should className correct with addon', () => {
+      fixture.componentInstance.isAddon = true;
+      fixture.detectChanges();
+      // re-query input element
+      inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+      expect(inputElement.nativeElement.classList).toContain('ant-input-group-wrapper-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).toContain('ant-input-group-wrapper-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
+    });
+  });
 });
 
 @Component({
@@ -126,4 +198,32 @@ export class NzTestInputFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+// status
+@Component({
+  template: ` <input nz-input [nzStatus]="status" /> `
+})
+export class NzTestInputWithStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <ng-container *ngIf="!isAddon">
+      <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
+        <input type="text" nz-input />
+      </nz-input-group>
+      <ng-template #prefixTemplateClock><i nz-icon nzType="clock-circle" nzTheme="outline"></i></ng-template>
+    </ng-container>
+    <ng-container *ngIf="isAddon">
+      <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
+        <input type="text" nz-input />
+      </nz-input-group>
+    </ng-container>
+  `
+})
+export class NzTestInputGroupWithStatusComponent {
+  isAddon = false;
+  status: NzStatus = 'error';
 }
