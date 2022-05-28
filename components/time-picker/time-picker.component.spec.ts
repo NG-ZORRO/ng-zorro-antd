@@ -1,3 +1,4 @@
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -8,6 +9,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 
@@ -24,9 +26,9 @@ describe('time-picker', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
+        imports: [BidiModule, NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
         schemas: [NO_ERRORS_SCHEMA],
-        declarations: [NzTestTimePickerComponent]
+        declarations: [NzTestTimePickerComponent, NzTestTimePickerStatusComponent, NzTestTimePickerDirComponent]
       });
       TestBed.compileComponents();
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -292,6 +294,48 @@ describe('time-picker', () => {
     });
   });
 
+  describe('time-picker status', () => {
+    let testComponent: NzTestTimePickerStatusComponent;
+    let fixture: ComponentFixture<NzTestTimePickerStatusComponent>;
+    let timeElement: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimePickerStatusComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
+    });
+    it('should className correct with nzStatus', () => {
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.className).toContain('ant-picker-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.className).not.toContain('ant-picker-status-warning');
+    });
+  });
+
+  describe('time-picker RTL', () => {
+    let testComponent: NzTestTimePickerDirComponent;
+    let fixture: ComponentFixture<NzTestTimePickerDirComponent>;
+    let timeElement: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimePickerDirComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
+    });
+    it('should className correct on dir change', () => {
+      expect(timeElement.nativeElement.classList).not.toContain('ant-picker-rtl');
+      testComponent.dir = 'rtl';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-rtl');
+    });
+  });
+
   function queryFromOverlay(selector: string): HTMLElement {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
@@ -333,4 +377,18 @@ export class NzTestTimePickerComponent {
   defaultOpenValue: Date | null = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
+}
+
+@Component({
+  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `
+})
+export class NzTestTimePickerStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: ` <div [dir]="dir"><nz-time-picker></nz-time-picker></div> `
+})
+export class NzTestTimePickerDirComponent {
+  dir: Direction = 'ltr';
 }
