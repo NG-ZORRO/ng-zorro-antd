@@ -34,8 +34,8 @@ import { isValid } from 'date-fns';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
@@ -176,10 +176,15 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   ] as ConnectionPositionPair[];
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-picker';
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzId: string | null = null;
   @Input() nzSize: string | null = null;
+  @Input() nzStatus?: NzStatus;
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;
   @Input() @WithConfig() nzSecondStep: number = 1;
@@ -347,7 +352,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus } = changes;
+    const { nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus } = changes;
     if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
       this.nzFormat = 'h:mm:ss a';
     }
@@ -362,6 +367,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
     if (nzAutoFocus) {
       this.updateAutoFocus();
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
@@ -420,5 +428,17 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       disabledMinutes?.includes(value.getMinutes()) ||
       disabledSeconds?.includes(value.getSeconds())
     );
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.element.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.element.nativeElement, status);
+      }
+    });
   }
 }
