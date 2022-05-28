@@ -3,33 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  addMonths,
-  addYears,
-  differenceInCalendarDays,
-  differenceInCalendarMonths,
-  differenceInCalendarYears,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInSeconds,
-  isFirstDayOfMonth,
-  isLastDayOfMonth,
-  isSameDay,
-  isSameHour,
-  isSameMinute,
-  isSameMonth,
-  isSameSecond,
-  isSameYear,
-  isToday,
-  isValid,
-  setDay,
-  setMonth,
-  setYear,
-  startOfMonth,
-  startOfWeek
-} from 'date-fns';
+import { Injectable } from '@angular/core';
 
-import { warn } from 'ng-zorro-antd/core/logger';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type CandyDateMode = 'decade' | 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
@@ -38,6 +14,7 @@ export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateType = CandyDate | Date | null;
 export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
+export type CandyDateFac = (date?: Date | string | number) => CandyDate;
 
 export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
   const [start, end] = rangeValue;
@@ -45,13 +22,14 @@ export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
 }
 
 export function normalizeRangeValue(
+  adapter: NzDateAdapter,
   value: SingleValue[],
   hasTimePicker: boolean,
   type: NormalizedMode = 'month',
   activePart: 'left' | 'right' = 'left'
 ): CandyDate[] {
   const [start, end] = value;
-  let newStart: CandyDate = start || new CandyDate();
+  let newStart: CandyDate = start || new CandyDate(adapter);
   let newEnd: CandyDate = end || (hasTimePicker ? newStart : newStart.add(1, type));
 
   if (start && !end) {
@@ -88,27 +66,42 @@ export function cloneDate(value: CompatibleValue): CompatibleValue {
  * NOTE: most APIs are based on local time other than customized locale id (this needs tobe support in future)
  * TODO: support format() against to angular's core API
  */
-export class CandyDate implements IndexableObject {
-  nativeDate: Date;
+@Injectable({
+  providedIn: 'root',
+  useFactory:
+    (adapter: NzDateAdapter): CandyDateFac =>
+    (date?: Date | string | number): CandyDate =>
+      new CandyDate(adapter, date),
+  deps: [NzDateAdapter]
+})
+export class CandyDate<D = Date> implements IndexableObject {
+  date!: D;
+  nativeDate!: Date;
+
   // locale: string; // Custom specified locale ID
 
-  constructor(date?: Date | string | number) {
+  constructor(private dateAdapter: NzDateAdapter<D>, date?: D | Date | string | number) {
     if (date) {
-      if (date instanceof Date) {
-        this.nativeDate = date;
-      } else if (typeof date === 'string' || typeof date === 'number') {
-        warn('The string type is not recommended for date-picker, use "Date" type');
-        this.nativeDate = new Date(date);
-      } else {
+      if (typeof date === 'string' || typeof date === 'number')
+        console.warn('The string type is not recommended for date-picker, use "Date" type');
+
+      try {
+        this.date = this.dateAdapter.deserialize(date);
+      } catch (e) {
         throw new Error('The input date type is not supported ("Date" is now recommended)');
       }
     } else {
-      this.nativeDate = new Date();
+      this.date = dateAdapter.today();
     }
+
+    this.nativeDate = this.dateAdapter.toNativeDate(this.date);
   }
 
-  calendarStart(options?: { weekStartsOn: WeekDayIndex | undefined }): CandyDate {
-    return new CandyDate(startOfWeek(startOfMonth(this.nativeDate), options));
+  calendarStart(options?: { weekStartsOn: WeekDayIndex | undefined }): CandyDate<D> {
+    return new CandyDate<D>(
+      this.dateAdapter,
+      this.dateAdapter.calendarStartOfWeek(this.dateAdapter.calendarStartOfMonth(this.date), options)
+    );
   }
 
   // ---------------------------------------------------------------------
@@ -116,87 +109,84 @@ export class CandyDate implements IndexableObject {
   // -----------------------------------------------------------------------------\
 
   getYear(): number {
-    return this.nativeDate.getFullYear();
+    return this.dateAdapter.getYear(this.date);
   }
 
   getMonth(): number {
-    return this.nativeDate.getMonth();
+    return this.dateAdapter.getMonth(this.date);
   }
 
   getDay(): number {
-    return this.nativeDate.getDay();
+    return this.dateAdapter.getDay(this.date);
   }
 
   getTime(): number {
-    return this.nativeDate.getTime();
+    return this.dateAdapter.getTime(this.date);
   }
 
   getDate(): number {
-    return this.nativeDate.getDate();
+    return this.dateAdapter.getDate(this.date);
   }
 
   getHours(): number {
-    return this.nativeDate.getHours();
+    return this.dateAdapter.getHours(this.date);
   }
 
   getMinutes(): number {
-    return this.nativeDate.getMinutes();
+    return this.dateAdapter.getMinutes(this.date);
   }
 
   getSeconds(): number {
-    return this.nativeDate.getSeconds();
+    return this.dateAdapter.getSeconds(this.date);
   }
 
   getMilliseconds(): number {
-    return this.nativeDate.getMilliseconds();
+    return this.dateAdapter.getMilliseconds(this.date);
   }
 
   // ---------------------------------------------------------------------
   // | New implementing APIs
   // ---------------------------------------------------------------------
 
-  clone(): CandyDate {
-    return new CandyDate(new Date(this.nativeDate));
+  clone(): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.clone(this.date));
   }
 
-  setHms(hour: number, minute: number, second: number): CandyDate {
-    const newDate = new Date(this.nativeDate.setHours(hour, minute, second));
-    return new CandyDate(newDate);
+  setHms(hour: number, minute: number, second: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.setHms(this.date, hour, minute, second));
   }
 
-  setYear(year: number): CandyDate {
-    return new CandyDate(setYear(this.nativeDate, year));
+  setYear(year: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.setYear(this.date, year));
   }
 
-  addYears(amount: number): CandyDate {
-    return new CandyDate(addYears(this.nativeDate, amount));
+  addYears(amount: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.addYears(this.date, amount));
   }
 
   // NOTE: month starts from 0
   // NOTE: Don't use the native API for month manipulation as it not restrict the date when it overflows, eg. (new Date('2018-7-31')).setMonth(1) will be date of 2018-3-03 instead of 2018-2-28
-  setMonth(month: number): CandyDate {
-    return new CandyDate(setMonth(this.nativeDate, month));
+  setMonth(month: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.setMonth(this.date, month));
   }
 
-  addMonths(amount: number): CandyDate {
-    return new CandyDate(addMonths(this.nativeDate, amount));
+  addMonths(amount: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.addMonths(this.date, amount));
   }
 
-  setDay(day: number, options?: { weekStartsOn: WeekDayIndex }): CandyDate {
-    return new CandyDate(setDay(this.nativeDate, day, options));
+  setDay(day: number, options?: { weekStartsOn: WeekDayIndex }): CandyDate<D> {
+    return new CandyDate(this.dateAdapter, this.dateAdapter.setDay(this.date, day, options));
   }
 
-  setDate(amount: number): CandyDate {
-    const date = new Date(this.nativeDate);
-    date.setDate(amount);
-    return new CandyDate(date);
+  setDate(amount: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.setDate(this.date, amount));
   }
 
-  addDays(amount: number): CandyDate {
-    return this.setDate(this.getDate() + amount);
+  addDays(amount: number): CandyDate<D> {
+    return new CandyDate<D>(this.dateAdapter, this.dateAdapter.addDays(this.date, amount));
   }
 
-  add(amount: number, mode: NormalizedMode): CandyDate {
+  add(amount: number, mode: NormalizedMode): CandyDate<D> {
     switch (mode) {
       case 'decade':
         return this.addYears(amount * 10);
@@ -210,34 +200,7 @@ export class CandyDate implements IndexableObject {
   }
 
   isSame(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
-    let fn;
-    switch (grain) {
-      case 'decade':
-        fn = (pre: Date, next: Date) => Math.abs(pre.getFullYear() - next.getFullYear()) < 11;
-        break;
-      case 'year':
-        fn = isSameYear;
-        break;
-      case 'month':
-        fn = isSameMonth;
-        break;
-      case 'day':
-        fn = isSameDay;
-        break;
-      case 'hour':
-        fn = isSameHour;
-        break;
-      case 'minute':
-        fn = isSameMinute;
-        break;
-      case 'second':
-        fn = isSameSecond;
-        break;
-      default:
-        fn = isSameDay;
-        break;
-    }
-    return fn(this.nativeDate, this.toNativeDate(date));
+    return this.dateAdapter.isSame(this.date, this.toNativeDate(date), grain);
   }
 
   isSameYear(date: CandyDateType): boolean {
@@ -265,34 +228,7 @@ export class CandyDate implements IndexableObject {
   }
 
   isBefore(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
-    if (date === null) {
-      return false;
-    }
-    let fn;
-    switch (grain) {
-      case 'year':
-        fn = differenceInCalendarYears;
-        break;
-      case 'month':
-        fn = differenceInCalendarMonths;
-        break;
-      case 'day':
-        fn = differenceInCalendarDays;
-        break;
-      case 'hour':
-        fn = differenceInHours;
-        break;
-      case 'minute':
-        fn = differenceInMinutes;
-        break;
-      case 'second':
-        fn = differenceInSeconds;
-        break;
-      default:
-        fn = differenceInCalendarDays;
-        break;
-    }
-    return fn(this.nativeDate, this.toNativeDate(date)) < 0;
+    return this.dateAdapter.isBefore(this.date, this.toNativeDate(date), grain);
   }
 
   isBeforeYear(date: CandyDateType): boolean {
@@ -309,22 +245,22 @@ export class CandyDate implements IndexableObject {
 
   // Equal to today accurate to "day"
   isToday(): boolean {
-    return isToday(this.nativeDate);
+    return this.dateAdapter.isToday(this.date);
   }
 
   isValid(): boolean {
-    return isValid(this.nativeDate);
+    return this.dateAdapter.isValid(this.date);
   }
 
   isFirstDayOfMonth(): boolean {
-    return isFirstDayOfMonth(this.nativeDate);
+    return this.dateAdapter.isFirstDayOfMonth(this.date);
   }
 
   isLastDayOfMonth(): boolean {
-    return isLastDayOfMonth(this.nativeDate);
+    return this.dateAdapter.isLastDayOfMonth(this.date);
   }
 
-  private toNativeDate(date: NzSafeAny): Date {
+  private toNativeDate(date: NzSafeAny): D {
     return date instanceof CandyDate ? date.nativeDate : date;
   }
 }

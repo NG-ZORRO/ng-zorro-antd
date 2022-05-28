@@ -47,7 +47,8 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   BooleanInput,
   FunctionProp,
@@ -564,7 +565,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   private checkValidDate(value: string): CandyDate | null {
-    const date = new CandyDate(this.dateHelper.parseDate(value, this.nzFormat));
+    const date = this.candyDate(this.dateHelper.parseDate(value, this.nzFormat));
 
     if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.nzFormat)) {
       return null;
@@ -610,6 +611,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     private platform: Platform,
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
+    @Inject(CandyDate) private candyDate: CandyDateFac,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.document = doc;

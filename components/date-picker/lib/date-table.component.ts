@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
@@ -23,8 +24,12 @@ import { transCompatFormat } from './util';
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() override locale!: NzCalendarI18nInterface;
 
-  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
-    super();
+  constructor(
+    private i18n: NzI18nService,
+    private dateHelper: DateHelperService,
+    @Inject(CandyDate) candyDate: CandyDateFac
+  ) {
+    super(candyDate);
   }
 
   private changeValueFromInside(value: CandyDate): void {
@@ -44,8 +49,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const day = start.addDays(colIndex);
       weekDays.push({
         trackByIndex: null,
-        value: day.nativeDate,
-        title: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
+        value: day,
+        title: this.dateHelper.format(day.nativeDate, 'e'), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
@@ -79,7 +84,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const label = this.dateHelper.format(date.nativeDate, 'dd');
         const cell: DateCell = {
           trackByIndex: day,
-          value: date.nativeDate,
+          value: date,
           label,
           isSelected: false,
           isDisabled: false,
@@ -147,7 +152,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   override getClassMap(cell: DateCell): { [key: string]: boolean } {
-    const date = new CandyDate(cell.value);
+    const date = cell.value.clone();
     return {
       ...super.getClassMap(cell),
       [`ant-picker-cell-today`]: !!cell.isToday,

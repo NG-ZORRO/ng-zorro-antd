@@ -3,9 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { Directive, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { NzDateMode } from '../standard-types';
 import { PanelSelector } from './interface';
 
@@ -26,6 +28,8 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   abstract getSelectors(): PanelSelector[];
+
+  constructor(@Inject(CandyDate) protected candyDate: CandyDateFac) {}
 
   superPreviousTitle(): string {
     return this.locale.previousYear;
@@ -79,7 +83,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (!this.value) {
-      this.value = new CandyDate(); // Show today by default
+      this.value = this.candyDate(); // Show today by default
     }
     this.selectors = this.getSelectors();
   }

@@ -8,6 +8,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 
 import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import { NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
@@ -132,12 +133,12 @@ describe('Calendar', () => {
 
       const calendar = fixture.debugElement.queryAll(By.directive(Calendar))[1].injector.get(Calendar);
 
-      expect(calendar.activeDate.nativeDate).toBe(component.date0);
+      expect(calendar.activeDate.nativeDate).toEqual(component.date0);
 
-      calendar.onDateSelect(new CandyDate(now));
+      calendar.onDateSelect(new CandyDate(fixture.debugElement.injector.get(NzDateAdapter), now));
       fixture.detectChanges();
 
-      expect(component.date0).toBe(now);
+      expect(component.date0).toEqual(now);
     });
 
     it('should support model binding', fakeAsync(() => {
@@ -151,12 +152,12 @@ describe('Calendar', () => {
       flush();
       fixture.detectChanges();
 
-      expect(calendar.activeDate.nativeDate).toBe(component.date1);
+      expect(calendar.activeDate.nativeDate).toEqual(component.date1);
 
       model.viewToModelUpdate(now);
       fixture.detectChanges();
 
-      expect(component.date1).toBe(now);
+      expect(component.date1).toEqual(now);
     }));
 
     it('should update value when year changed', () => {

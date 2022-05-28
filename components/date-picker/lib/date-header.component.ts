@@ -3,9 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, ViewEncapsulation } from '@angular/core';
 
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
@@ -18,8 +20,8 @@ import { transCompatFormat } from './util';
   templateUrl: './abstract-panel-header.html'
 })
 export class DateHeaderComponent extends AbstractPanelHeader {
-  constructor(private dateHelper: DateHelperService) {
-    super();
+  constructor(private dateHelper: DateHelperService, @Inject(CandyDate) candyDate: CandyDateFac) {
+    super(candyDate);
   }
 
   getSelectors(): PanelSelector[] {
