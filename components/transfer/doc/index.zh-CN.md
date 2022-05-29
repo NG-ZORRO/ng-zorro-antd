@@ -43,6 +43,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzCanMove]` | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
 | `[nzSelectedKeys]` | 设置被选中的 key 集合 | `string[]` | - |
 | `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
