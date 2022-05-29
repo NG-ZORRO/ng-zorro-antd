@@ -60,6 +60,10 @@ export function cloneDate(value: CompatibleValue): CompatibleValue {
   }
 }
 
+export function CANDY_DATE_FACTORY(adapter: NzDateAdapter): CandyDateFac {
+  return (date?: Date | string | number): CandyDate => new CandyDate(adapter, date);
+}
+
 /**
  * Wrapping kind APIs for date operating and unify
  * NOTE: every new API return new CandyDate object without side effects to the former Date object
@@ -68,10 +72,7 @@ export function cloneDate(value: CompatibleValue): CompatibleValue {
  */
 @Injectable({
   providedIn: 'root',
-  useFactory:
-    (adapter: NzDateAdapter): CandyDateFac =>
-    (date?: Date | string | number): CandyDate =>
-      new CandyDate(adapter, date),
+  useFactory: CANDY_DATE_FACTORY,
   deps: [NzDateAdapter]
 })
 export class CandyDate<D = Date> implements IndexableObject {

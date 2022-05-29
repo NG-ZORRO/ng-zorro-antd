@@ -3,27 +3,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { InjectionToken } from '@angular/core';
+import { inject, InjectionToken } from '@angular/core';
 
 import { WeekDayIndex } from 'ng-zorro-antd/core/time';
+
+export interface NzDateDisplayFormats {
+  dateInput?: string;
+  dateTimeInput?: string;
+  dayLabel?: string;
+  weekLabel?: string;
+  monthLabel?: string;
+  yearLabel?: string;
+  weekYearLabel?: string;
+  monthYearLabel?: string;
+  shortWeekLabel?: string;
+  veryShortWeekLabel?: string;
+}
 
 export interface NzDateConfig {
   /** Customize the first day of a week */
   firstDayOfWeek?: WeekDayIndex;
 
   /** Customize display formats */
-  displayFormats?: {
-    dateInput?: string;
-    dateTimeInput?: string;
-    dayLabel?: string;
-    weekLabel?: string;
-    monthLabel?: string;
-    yearLabel?: string;
-    weekYearLabel?: string;
-    monthYearLabel?: string;
-    shortWeekLabel?: string;
-    veryShortWeekLabel?: string;
-  };
+  displayFormats?: NzDateDisplayFormats;
 }
 
 export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config', {
@@ -37,7 +39,7 @@ export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
     dateInput: 'yyyy-MM-dd',
     dateTimeInput: 'yyyy-MM-dd HH:mm:ss',
     dayLabel: 'dd',
-    weekLabel: 'e',
+    weekLabel: 'EEEE',
     monthLabel: 'MMM',
     yearLabel: 'yyyy',
     weekYearLabel: 'yyyy-ww',
@@ -57,3 +59,8 @@ export function mergeDateConfig(config: NzDateConfig): NzDateConfig {
     }
   };
 }
+
+export const NZ_DATE_FORMATS = new InjectionToken<NzDateDisplayFormats>('display formats', {
+  providedIn: 'root',
+  factory: () => mergeDateConfig(inject(NZ_DATE_CONFIG)).displayFormats!
+});

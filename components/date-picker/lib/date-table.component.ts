@@ -9,9 +9,9 @@ import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
-  NZ_DATE_CONFIG,
+  NZ_DATE_FORMATS,
   NzCalendarI18nInterface,
-  NzDateConfig,
+  NzDateDisplayFormats,
   NzI18nService
 } from 'ng-zorro-antd/i18n';
 
@@ -34,9 +34,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     private i18n: NzI18nService,
     private dateHelper: DateHelperService,
     @Inject(CandyDate) candyDate: CandyDateFac,
-    @Inject(NZ_DATE_CONFIG) config: NzDateConfig
+    @Inject(NZ_DATE_FORMATS) dateFormats: NzDateDisplayFormats
   ) {
-    super(candyDate, config);
+    super(candyDate, dateFormats);
   }
 
   private changeValueFromInside(value: CandyDate): void {
@@ -57,7 +57,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       weekDays.push({
         trackByIndex: null,
         value: day,
-        title: this.dateHelper.format(day.nativeDate, this.config.displayFormats?.weekLabel!), // eg. Tue
+        title: this.dateHelper.format(day.nativeDate, this.dateFormats.weekLabel!), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
@@ -69,7 +69,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getVeryShortWeekFormat(): string {
-    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : this.config.displayFormats?.veryShortWeekLabel!; // Use extreme short for chinese
+    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : this.dateFormats.veryShortWeekLabel!; // Use extreme short for chinese
   }
 
   makeBodyRows(): DateBodyRow[] {
@@ -88,7 +88,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const date = weekStart.addDays(day);
         const dateFormat = transCompatFormat(this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, this.config.displayFormats?.dayLabel!);
+        const label = this.dateHelper.format(date.nativeDate, this.dateFormats.dayLabel!);
         const cell: DateCell = {
           trackByIndex: day,
           value: date,

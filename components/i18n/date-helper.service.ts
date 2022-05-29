@@ -7,14 +7,10 @@ import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
-import { DateFnsDateAdapter, NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
+import { isCustomAdapter, NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
-
-function isCustomAdapter(adapter: NzDateAdapter): boolean {
-  return !(adapter instanceof DateFnsDateAdapter);
-}
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {
   const i18n = injector.get(NzI18nService);

@@ -304,3 +304,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
     return format(date, displayFormat, options);
   }
 }
+
+export function isCustomAdapter(adapter: NzDateAdapter): boolean {
+  return !(adapter instanceof DateFnsDateAdapter);
+}
