@@ -16,6 +16,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import en_US from '../i18n/languages/en_US';
@@ -30,7 +31,11 @@ const DISABLED = 1;
 describe('transfer', () => {
   let injector: Injector;
   let fixture: ComponentFixture<
-    TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent
+    | TestTransferComponent
+    | TestTransferCustomRenderComponent
+    | Test996Component
+    | NzTestTransferRtlComponent
+    | NzTestTransferStatusComponent
   >;
   let dl: DebugElement;
   let instance: TestTransferComponent;
@@ -42,7 +47,8 @@ describe('transfer', () => {
         TestTransferComponent,
         TestTransferCustomRenderComponent,
         Test996Component,
-        NzTestTransferRtlComponent
+        NzTestTransferRtlComponent,
+        NzTestTransferStatusComponent
       ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
@@ -374,6 +380,31 @@ describe('transfer', () => {
     }));
   });
 
+  describe('transfer status', () => {
+    let componentElement: HTMLElement;
+    let testComponent: NzTestTransferStatusComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTransferStatusComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+
+    it('should className correct with nzStatus', () => {
+      fixture.detectChanges();
+      expect(componentElement.className).toContain('ant-transfer-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(componentElement.className).toContain('ant-transfer-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(componentElement.className).not.toContain('ant-transfer-status-warning');
+    });
+  });
+
   class TransferPageObject {
     [key: string]: any;
 
@@ -609,4 +640,11 @@ class Test996Component implements OnInit {
 export class NzTestTransferRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: ` <nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer> `
+})
+export class NzTestTransferStatusComponent {
+  status: NzStatus = 'error';
 }
