@@ -123,8 +123,8 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
     return input;
   }
 
-  calendarStartOfWeek(date: Date): Date {
-    return startOfWeek(date);
+  calendarStartOfWeek(date: Date, options?: { weekStartsOn: WeekDayIndex | undefined }): Date {
+    return startOfWeek(date, options);
   }
 
   calendarStartOfMonth(date: Date): Date {
@@ -196,8 +196,8 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
     return new Date(newDate.setDate(amount));
   }
 
-  setDay(date: Date, day: number): Date {
-    return setDay(date, day);
+  setDay(date: Date, day: number, options?: { weekStartsOn: WeekDayIndex | undefined }): Date {
+    return setDay(date, day, options);
   }
 
   setMonth(date: Date, month: number): Date {
