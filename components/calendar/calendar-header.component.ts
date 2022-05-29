@@ -15,7 +15,13 @@ import {
 } from '@angular/core';
 
 import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
+import {
+  DateHelperService,
+  mergeDateConfig,
+  NZ_DATE_CONFIG,
+  NzDateConfig,
+  NzI18nService as I18n
+} from 'ng-zorro-antd/i18n';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
@@ -77,6 +83,8 @@ export class NzCalendarHeaderComponent implements OnInit {
   years: Array<{ label: string; value: number }> = [];
   months: Array<{ label: string; value: number }> = [];
 
+  config: NzDateConfig;
+
   get activeYear(): number {
     return this.activeDate.getYear();
   }
@@ -100,8 +108,11 @@ export class NzCalendarHeaderComponent implements OnInit {
   constructor(
     private i18n: I18n,
     private dateHelper: DateHelperService,
-    @Inject(CandyDate) private candyDate: CandyDateFac
-  ) {}
+    @Inject(CandyDate) private candyDate: CandyDateFac,
+    @Inject(NZ_DATE_CONFIG) config: NzDateConfig
+  ) {
+    this.config = mergeDateConfig(config);
+  }
 
   ngOnInit(): void {
     this.setUpYears();
@@ -128,7 +139,7 @@ export class NzCalendarHeaderComponent implements OnInit {
 
     for (let i = 0; i < 12; i++) {
       const dateInMonth = this.activeDate.setMonth(i);
-      const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
+      const monthText = this.dateHelper.format(dateInMonth.nativeDate, this.config.displayFormats?.monthLabel!);
       this.months.push({ label: monthText, value: i });
     }
   }

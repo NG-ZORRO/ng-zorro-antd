@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Inject, ViewEncapsulation } from '@
 
 import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NZ_DATE_CONFIG, NzDateConfig} from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
@@ -24,8 +24,12 @@ export class YearTableComponent extends AbstractTable {
   override MAX_ROW = 4;
   override MAX_COL = 3;
 
-  constructor(private dateHelper: DateHelperService, @Inject(CandyDate) candyDate: CandyDateFac) {
-    super(candyDate);
+  constructor(
+    private dateHelper: DateHelperService,
+    @Inject(CandyDate) candyDate: CandyDateFac,
+    @Inject(NZ_DATE_CONFIG) config: NzDateConfig
+  ) {
+    super(candyDate, config);
   }
 
   makeHeadRow(): DateCell[] {
@@ -48,7 +52,7 @@ export class YearTableComponent extends AbstractTable {
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const yearNum = previousYear + yearValue;
         const year = this.activeDate.setYear(yearNum);
-        const content = this.dateHelper.format(year.nativeDate, 'yyyy');
+        const content = this.dateHelper.format(year.nativeDate, this.config.displayFormats?.yearLabel!);
         const isDisabled = this.isDisabledYear(year);
         const cell: YearCell = {
           trackByIndex: colIndex,

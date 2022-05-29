@@ -7,7 +7,13 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, V
 
 import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import {
+  DateHelperService,
+  NZ_DATE_CONFIG,
+  NzCalendarI18nInterface,
+  NzDateConfig,
+  NzI18nService
+} from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
@@ -27,9 +33,10 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   constructor(
     private i18n: NzI18nService,
     private dateHelper: DateHelperService,
-    @Inject(CandyDate) candyDate: CandyDateFac
+    @Inject(CandyDate) candyDate: CandyDateFac,
+    @Inject(NZ_DATE_CONFIG) config: NzDateConfig
   ) {
-    super(candyDate);
+    super(candyDate, config);
   }
 
   private changeValueFromInside(value: CandyDate): void {
@@ -50,7 +57,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       weekDays.push({
         trackByIndex: null,
         value: day,
-        title: this.dateHelper.format(day.nativeDate, 'e'), // eg. Tue
+        title: this.dateHelper.format(day.nativeDate, this.config.displayFormats?.weekLabel!), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
@@ -62,7 +69,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getVeryShortWeekFormat(): string {
-    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : this.config.displayFormats?.veryShortWeekLabel!; // Use extreme short for chinese
   }
 
   makeBodyRows(): DateBodyRow[] {
@@ -81,7 +88,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const date = weekStart.addDays(day);
         const dateFormat = transCompatFormat(this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, 'dd');
+        const label = this.dateHelper.format(date.nativeDate, this.config.displayFormats?.dayLabel!);
         const cell: DateCell = {
           trackByIndex: day,
           value: date,

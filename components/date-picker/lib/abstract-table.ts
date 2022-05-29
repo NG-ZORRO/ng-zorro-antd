@@ -19,7 +19,7 @@ import {
 import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
-import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import {mergeDateConfig, NZ_DATE_CONFIG, NzCalendarI18nInterface, NzDateConfig} from 'ng-zorro-antd/i18n';
 
 import { DateBodyRow, DateCell } from './interface';
 
@@ -32,6 +32,8 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   bodyRows: DateBodyRow[] = [];
   MAX_ROW = 6;
   MAX_COL = 7;
+
+  config: NzDateConfig;
 
   @Input() prefixCls: string = 'ant-picker';
   @Input() value!: CandyDate;
@@ -47,7 +49,12 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
-  constructor(@Inject(CandyDate) protected candyDate: CandyDateFac) {}
+  constructor(
+    @Inject(CandyDate) protected candyDate: CandyDateFac,
+    @Inject(NZ_DATE_CONFIG) config: NzDateConfig,
+  ) {
+    this.config = mergeDateConfig(config);
+  }
 
   protected render(): void {
     if (this.activeDate) {

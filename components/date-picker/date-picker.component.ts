@@ -61,6 +61,9 @@ import {
 import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
+  mergeDateConfig,
+  NZ_DATE_CONFIG,
+  NzDateConfig,
   NzDatePickerI18nInterface,
   NzDatePickerLangI18nInterface,
   NzI18nService
@@ -271,6 +274,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   private isCustomPlaceHolder: boolean = false;
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
+  private config: NzDateConfig;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -612,10 +616,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
     @Inject(CandyDate) private candyDate: CandyDateFac,
+    @Inject(NZ_DATE_CONFIG) config: NzDateConfig,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
+    this.config = mergeDateConfig(config);
   }
 
   ngOnInit(): void {
@@ -704,10 +710,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   setModeAndFormat(): void {
     const inputFormats: { [key in NzDateMode]?: string } = {
-      year: 'yyyy',
-      month: 'yyyy-MM',
-      week: this.i18n.getDateLocale() ? 'RRRR-II' : 'yyyy-ww', // Format for week
-      date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
+      year: this.config.displayFormats?.yearLabel,
+      month: this.config.displayFormats?.monthYearLabel,
+      week: this.i18n.getDateLocale() ? 'RRRR-II' : this.config.displayFormats?.weekYearLabel, // Format for week
+      date: this.nzShowTime ? this.config.displayFormats?.dateTimeInput : this.config.displayFormats?.dateInput
     };
 
     if (!this.nzMode) {
