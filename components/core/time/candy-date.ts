@@ -109,39 +109,39 @@ export class CandyDate<D = Date> implements IndexableObject {
   // -----------------------------------------------------------------------------\
 
   getYear(): number {
-    return this.dateAdapter.getYear(this.date);
+    return this.dateAdapter.getYear(this.nativeDate);
   }
 
   getMonth(): number {
-    return this.dateAdapter.getMonth(this.date);
+    return this.dateAdapter.getMonth(this.nativeDate);
   }
 
   getDay(): number {
-    return this.dateAdapter.getDay(this.date);
+    return this.dateAdapter.getDay(this.nativeDate);
   }
 
   getTime(): number {
-    return this.dateAdapter.getTime(this.date);
+    return this.dateAdapter.getTime(this.nativeDate);
   }
 
   getDate(): number {
-    return this.dateAdapter.getDate(this.date);
+    return this.dateAdapter.getDate(this.nativeDate);
   }
 
   getHours(): number {
-    return this.dateAdapter.getHours(this.date);
+    return this.dateAdapter.getHours(this.nativeDate);
   }
 
   getMinutes(): number {
-    return this.dateAdapter.getMinutes(this.date);
+    return this.dateAdapter.getMinutes(this.nativeDate);
   }
 
   getSeconds(): number {
-    return this.dateAdapter.getSeconds(this.date);
+    return this.dateAdapter.getSeconds(this.nativeDate);
   }
 
   getMilliseconds(): number {
-    return this.dateAdapter.getMilliseconds(this.date);
+    return this.dateAdapter.getMilliseconds(this.nativeDate);
   }
 
   // ---------------------------------------------------------------------

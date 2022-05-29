@@ -6,16 +6,23 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
-
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
+import { DateFnsDateAdapter, NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
+function isCustomAdapter(adapter: NzDateAdapter): boolean {
+  return !(adapter instanceof DateFnsDateAdapter);
+}
+
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {
   const i18n = injector.get(NzI18nService);
-  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n, config) : new DateHelperByDatePipe(i18n, config);
+  const dateAdapter = injector.get(NzDateAdapter);
+
+  return i18n.getDateLocale() || isCustomAdapter(dateAdapter)
+    ? new DateHelperByDateAdapter(i18n, config, dateAdapter)
+    : new DateHelperByDatePipe(i18n, config, dateAdapter);
 }
 
 /**
@@ -28,7 +35,11 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
   deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
 })
 export abstract class DateHelperService {
-  constructor(protected i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig) {
+  constructor(
+    protected i18n: NzI18nService,
+    @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig,
+    protected dateAdapter: NzDateAdapter
+  ) {
     this.config = mergeDateConfig(this.config);
   }
 
@@ -40,11 +51,14 @@ export abstract class DateHelperService {
 }
 
 /**
- * DateHelper that handles date formats with date-fns
+ * DateHelper that handles date formats with date-adapter
  */
-export class DateHelperByDateFns extends DateHelperService {
+@Injectable({
+  providedIn: 'root'
+})
+export class DateHelperByDateAdapter extends DateHelperService {
   getISOWeek(date: Date): number {
-    return fnsGetISOWeek(date);
+    return this.dateAdapter.getISOWeek(date);
   }
 
   // Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
@@ -67,14 +81,11 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param formatStr format string
    */
   format(date: Date, formatStr: string): string {
-    return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+    return date ? this.dateAdapter.format(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 
   parseDate(text: string, formatStr: string): Date {
-    return fnsParse(text, formatStr, new Date(), {
-      locale: this.i18n.getDateLocale(),
-      weekStartsOn: this.getFirstDayOfWeek()
-    });
+    return this.dateAdapter.toNativeDate(this.dateAdapter.parse(text, formatStr));
   }
 
   parseTime(text: string, formatStr: string): Date | undefined {

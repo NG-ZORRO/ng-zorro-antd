@@ -16,6 +16,7 @@ import {
   differenceInMinutes,
   differenceInSeconds,
   format,
+  getISOWeek,
   isFirstDayOfMonth,
   isLastDayOfMonth,
   isSameDay,
@@ -30,10 +31,12 @@ import {
   setMonth,
   setYear,
   startOfMonth,
-  startOfWeek
+  startOfWeek,
+  parse as fnsParse
 } from 'date-fns';
 
 import { CandyDateMode, WeekDayIndex } from 'ng-zorro-antd/core/time/candy-date';
+import { DateLocale } from 'ng-zorro-antd/i18n';
 
 export type DateMode = CandyDateMode;
 
@@ -48,27 +51,31 @@ export abstract class NzDateAdapter<D = Date> {
 
   abstract deserialize(input: D | Date | string | number | never): D;
 
+  abstract parse(text: string, formatStr: string, options?: { locale: DateLocale; weekStartsOn: number }): D;
+
   abstract toNativeDate(input: D): Date;
 
   abstract today(): D;
 
-  abstract getYear(date: D): number;
+  abstract getYear(date: Date): number;
 
-  abstract getMonth(date: D): number;
+  abstract getMonth(date: Date): number;
 
-  abstract getDay(date: D): number;
+  abstract getDay(date: Date): number;
 
-  abstract getTime(date: D): number;
+  abstract getTime(date: Date): number;
 
-  abstract getDate(date: D): number;
+  abstract getDate(date: Date): number;
 
-  abstract getHours(date: D): number;
+  abstract getHours(date: Date): number;
 
-  abstract getMinutes(date: D): number;
+  abstract getMinutes(date: Date): number;
 
-  abstract getSeconds(date: D): number;
+  abstract getSeconds(date: Date): number;
 
-  abstract getMilliseconds(date: D): number;
+  abstract getMilliseconds(date: Date): number;
+
+  abstract getISOWeek(date: Date): number;
 
   abstract clone(date: D): D;
 
@@ -100,7 +107,7 @@ export abstract class NzDateAdapter<D = Date> {
 
   abstract isLastDayOfMonth(date: D): boolean;
 
-  abstract format(date: D, displayFormat: string): string;
+  abstract format(date: Date, displayFormat: string, options?: { locale: DateLocale }): string;
 }
 
 @Injectable({
@@ -117,6 +124,13 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
     }
 
     throw new Error('The input date type is not supported ("Date" is now recommended)');
+  }
+
+  parse(text: string, formatStr: string, options: { locale: DateLocale; weekStartsOn: WeekDayIndex }): Date {
+    return fnsParse(text, formatStr, new Date(), {
+      locale: options?.locale,
+      weekStartsOn: options?.weekStartsOn
+    });
   }
 
   toNativeDate(input: Date): Date {
@@ -165,6 +179,10 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
 
   getMilliseconds(date: Date): number {
     return date.getMilliseconds();
+  }
+
+  getISOWeek(date: Date): number {
+    return getISOWeek(date);
   }
 
   clone(date: Date): Date {
@@ -282,7 +300,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
     return isLastDayOfMonth(date);
   }
 
-  format(date: Date, displayFormat: string): string {
-    return format(date, displayFormat as string);
+  format(date: Date, displayFormat: string, options?: { locale: DateLocale }): string {
+    return format(date, displayFormat, options);
   }
 }
