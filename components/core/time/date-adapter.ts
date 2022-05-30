@@ -57,23 +57,23 @@ export abstract class NzDateAdapter<D = Date> {
 
   abstract today(): D;
 
-  abstract getYear(date: Date): number;
+  abstract getYear(date: D): number;
 
-  abstract getMonth(date: Date): number;
+  abstract getMonth(date: D): number;
 
-  abstract getDay(date: Date): number;
+  abstract getDay(date: D): number;
 
-  abstract getTime(date: Date): number;
+  abstract getTime(date: D): number;
 
-  abstract getDate(date: Date): number;
+  abstract getDate(date: D): number;
 
-  abstract getHours(date: Date): number;
+  abstract getHours(date: D): number;
 
-  abstract getMinutes(date: Date): number;
+  abstract getMinutes(date: D): number;
 
-  abstract getSeconds(date: Date): number;
+  abstract getSeconds(date: D): number;
 
-  abstract getMilliseconds(date: Date): number;
+  abstract getMilliseconds(date: D): number;
 
   abstract getISOWeek(date: Date): number;
 
@@ -254,9 +254,6 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date> {
   }
 
   isBefore(first: Date, second: Date, mode: CandyDateMode): boolean {
-    if (second === null) {
-      return false;
-    }
     let fn;
     switch (mode) {
       case 'year':

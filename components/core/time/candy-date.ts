@@ -6,12 +6,12 @@
 import { Injectable } from '@angular/core';
 
 import { NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
-import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 export type CandyDateMode = 'decade' | 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type NormalizedMode = 'decade' | 'year' | 'month';
 export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export type CandyDateType = CandyDate | Date | null;
+export type CandyDateType<D = Date> = CandyDate<D> | null;
 export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
 export type CandyDateFac = (date?: Date | string | number) => CandyDate;
@@ -110,39 +110,39 @@ export class CandyDate<D = Date> implements IndexableObject {
   // -----------------------------------------------------------------------------\
 
   getYear(): number {
-    return this.dateAdapter.getYear(this.nativeDate);
+    return this.dateAdapter.getYear(this.date);
   }
 
   getMonth(): number {
-    return this.dateAdapter.getMonth(this.nativeDate);
+    return this.dateAdapter.getMonth(this.date);
   }
 
   getDay(): number {
-    return this.dateAdapter.getDay(this.nativeDate);
+    return this.dateAdapter.getDay(this.date);
   }
 
   getTime(): number {
-    return this.dateAdapter.getTime(this.nativeDate);
+    return this.dateAdapter.getTime(this.date);
   }
 
   getDate(): number {
-    return this.dateAdapter.getDate(this.nativeDate);
+    return this.dateAdapter.getDate(this.date);
   }
 
   getHours(): number {
-    return this.dateAdapter.getHours(this.nativeDate);
+    return this.dateAdapter.getHours(this.date);
   }
 
   getMinutes(): number {
-    return this.dateAdapter.getMinutes(this.nativeDate);
+    return this.dateAdapter.getMinutes(this.date);
   }
 
   getSeconds(): number {
-    return this.dateAdapter.getSeconds(this.nativeDate);
+    return this.dateAdapter.getSeconds(this.date);
   }
 
   getMilliseconds(): number {
-    return this.dateAdapter.getMilliseconds(this.nativeDate);
+    return this.dateAdapter.getMilliseconds(this.date);
   }
 
   // ---------------------------------------------------------------------
@@ -200,47 +200,51 @@ export class CandyDate<D = Date> implements IndexableObject {
     }
   }
 
-  isSame(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
-    return this.dateAdapter.isSame(this.date, this.toNativeDate(date), grain);
+  isSame(candyDate: CandyDateType<D>, grain: CandyDateMode = 'day'): boolean {
+    if (!candyDate) return false;
+
+    return this.dateAdapter.isSame(this.date, candyDate.date, grain);
   }
 
-  isSameYear(date: CandyDateType): boolean {
+  isSameYear(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'year');
   }
 
-  isSameMonth(date: CandyDateType): boolean {
+  isSameMonth(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'month');
   }
 
-  isSameDay(date: CandyDateType): boolean {
+  isSameDay(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'day');
   }
 
-  isSameHour(date: CandyDateType): boolean {
+  isSameHour(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'hour');
   }
 
-  isSameMinute(date: CandyDateType): boolean {
+  isSameMinute(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'minute');
   }
 
-  isSameSecond(date: CandyDateType): boolean {
+  isSameSecond(date: CandyDateType<D>): boolean {
     return this.isSame(date, 'second');
   }
 
-  isBefore(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
-    return this.dateAdapter.isBefore(this.date, this.toNativeDate(date), grain);
+  isBefore(candyDate: CandyDateType<D>, grain: CandyDateMode = 'day'): boolean {
+    if (!candyDate) return false;
+
+    return this.dateAdapter.isBefore(this.date, candyDate.date, grain);
   }
 
-  isBeforeYear(date: CandyDateType): boolean {
+  isBeforeYear(date: CandyDateType<D>): boolean {
     return this.isBefore(date, 'year');
   }
 
-  isBeforeMonth(date: CandyDateType): boolean {
+  isBeforeMonth(date: CandyDateType<D>): boolean {
     return this.isBefore(date, 'month');
   }
 
-  isBeforeDay(date: CandyDateType): boolean {
+  isBeforeDay(date: CandyDateType<D>): boolean {
     return this.isBefore(date, 'day');
   }
 
@@ -259,9 +263,5 @@ export class CandyDate<D = Date> implements IndexableObject {
 
   isLastDayOfMonth(): boolean {
     return this.dateAdapter.isLastDayOfMonth(this.date);
-  }
-
-  private toNativeDate(date: NzSafeAny): D {
-    return date instanceof CandyDate ? date.nativeDate : date;
   }
 }
