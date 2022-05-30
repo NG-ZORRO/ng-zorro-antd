@@ -25,6 +25,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[nzAllowClear]` | 显示清除按钮 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
+| `[nzPlacement]` | 选择框弹出的位置 | `bottomLeft` `bottomRight` `topLeft` `topRight` | bottomLeft |
 | `[nzDisabled]` | 禁用选择器 | `boolean` | `false` |
 | `[nzShowIcon]` | 是否展示 TreeNode title 前的图标，没有默认样式 | `boolean` | `false` | ✅ |
 | `[nzShowSearch]` | 显示搜索框 | `boolean` | `false` |
@@ -35,6 +36,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzMultiple]` | 支持多选（当设置 nzCheckable 时自动变为true） | `boolean` | `false` |
 | `[nzHideUnMatched]` | 搜索隐藏未匹配的节点 | `boolean` | `false` | ✅ |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |  |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
 | `[nzCheckStrictly]` | checkable 状态下节点选择完全受控（父子节点选中状态不再关联） | `boolean` | `false` |
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` | |
