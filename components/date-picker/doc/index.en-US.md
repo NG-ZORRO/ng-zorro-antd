@@ -28,7 +28,7 @@ registerLocaleData(en);
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it with [date-fns](https://date-fns.org/).
 
-providing custom date adapter for Jalali and Hijri calendars [here](/docs/i18n/en#Provide%20Custom%20Date%20Adapter)
+providing custom date adapter for Jalali and Hijri calendars [here](/docs/i18n/en#provide-custom-dateadapter)
 
 ### Common API
 
