@@ -19,9 +19,9 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE, NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import en_US from '../i18n/languages/en_US';
@@ -1210,6 +1210,57 @@ describe('status', () => {
     fixture.detectChanges();
     expect(datePickerElement.classList).not.toContain('ant-picker-status-warning');
   });
+});
+
+describe('custom date display formats testing', () => {
+  let fixture: ComponentFixture<NzTestDatePickerComponent>;
+  let fixtureInstance: NzTestDatePickerComponent;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      providers: [
+        { provide: NZ_DATE_LOCALE, useValue: enUS },
+        {
+          provide: NZ_DATE_CONFIG,
+          useValue: {
+            displayFormats: {
+              dateInput: 'yyyy/dd/MM',
+              veryShortWeekLabel: 'EEEE'
+            }
+          }
+        }
+      ],
+      declarations: [NzTestDatePickerComponent]
+    });
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerComponent);
+    fixtureInstance = fixture.componentInstance;
+    fixtureInstance.useSuite = 1;
+  });
+
+  it('should show header week label according to provided value', fakeAsync(() => {
+    fixture.componentInstance.nzInline = true;
+    fixture.detectChanges();
+    tick(500);
+
+    const firstWeekName = fixture.debugElement.nativeElement.querySelector('.ant-picker-content thead th:first-child');
+
+    expect(firstWeekName.innerHTML).toBe(' S ');
+  }));
+
+  it('should format input from provided value', fakeAsync(() => {
+    fixture.componentInstance.nzValue = new Date('2020-06-12');
+    fixture.detectChanges();
+    tick(500);
+
+    const input = getPickerInput(fixture.debugElement);
+
+    expect(input.value).toBe('2020/12/06');
+  }));
 });
 
 @Component({
