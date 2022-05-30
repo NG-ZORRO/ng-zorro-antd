@@ -19,8 +19,10 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
@@ -1185,6 +1187,31 @@ describe('date-fns testing', () => {
   }));
 });
 
+describe('status', () => {
+  let testBed: ComponentBed<NzTestDatePickerStatusComponent>;
+  let fixture: ComponentFixture<NzTestDatePickerStatusComponent>;
+  let fixtureInstance: NzTestDatePickerStatusComponent;
+  let datePickerElement!: HTMLElement;
+  beforeEach(() => {
+    testBed = createComponentBed(NzTestDatePickerStatusComponent, { imports: [NzDatePickerModule, NzIconModule] });
+    fixture = testBed.fixture;
+    fixtureInstance = fixture.componentInstance;
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.detectChanges();
+  });
+  it('should classname correct', () => {
+    expect(datePickerElement.classList).toContain('ant-picker-status-error');
+
+    fixtureInstance.status = 'warning';
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-status-warning');
+
+    fixtureInstance.status = '';
+    fixture.detectChanges();
+    expect(datePickerElement.classList).not.toContain('ant-picker-status-warning');
+  });
+});
+
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
@@ -1297,4 +1324,11 @@ class NzTestDatePickerComponent {
   // --- Suite 5
   firstValue!: Date;
   secondValue!: Date;
+}
+
+@Component({
+  template: ` <nz-date-picker [nzStatus]="status"></nz-date-picker> `
+})
+class NzTestDatePickerStatusComponent {
+  status: NzStatus = 'error';
 }
