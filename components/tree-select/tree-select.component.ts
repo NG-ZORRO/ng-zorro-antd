@@ -44,8 +44,16 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NgStyleInterface,
+  NzSizeLDSType,
+  NzStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -253,6 +261,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
   @Input() @WithConfig() nzBackdrop = false;
+  @Input() nzStatus: NzStatus = '';
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -284,6 +293,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }
+
+  prefixCls: string = 'ant-select';
+  statusCls: NgClassInterface = {};
+  nzHasFeedback: boolean = false;
 
   dropdownClassName = TREE_SELECT_DEFAULT_CLASS;
   triggerWidth?: number;
@@ -370,14 +383,29 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.closeDropDown();
   }
 
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzNodes, nzDropdownClassName } = changes;
+    const { nzNodes, nzDropdownClassName, nzStatus } = changes;
     if (nzNodes) {
       this.updateSelectedNodes(true);
     }
     if (nzDropdownClassName) {
       const className = this.nzDropdownClassName && this.nzDropdownClassName.trim();
       this.dropdownClassName = className ? `${TREE_SELECT_DEFAULT_CLASS} ${className}` : TREE_SELECT_DEFAULT_CLASS;
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
