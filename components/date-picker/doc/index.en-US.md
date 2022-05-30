@@ -50,6 +50,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzPopupStyle]` | to customize the style of the popup calendar | `object` | `{}` | - |
 | `[nzRenderExtraFooter]` | render extra footer in panel | `TemplateRef \| string \| (() => TemplateRef \| string)` | - |
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
 | `[nzBorderless]` | remove the border | `boolean` | `false` | - |
 | `[nzInline]` | inline mode | `boolean` | `false` | - |

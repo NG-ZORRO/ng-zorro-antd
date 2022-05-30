@@ -48,8 +48,16 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
-import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  FunctionProp,
+  NgClassInterface,
+  NzSafeAny,
+  NzStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -253,6 +261,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   extraFooter?: TemplateRef<NzSafeAny> | string;
   dir: Direction = 'ltr';
 
+  // status
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
+
   public panelMode: NzDateMode | NzDateMode[] = 'date';
   private destroyed$: Subject<void> = new Subject();
   private isCustomPlaceHolder: boolean = false;
@@ -273,6 +285,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
   @Input() nzSize: NzDatePickerSizeType = 'default';
+  @Input() nzStatus?: NzStatus;
   @Input() nzFormat!: string;
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
@@ -648,6 +661,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus } = changes;
     if (changes.nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
@@ -674,6 +688,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (changes.nzMode) {
       this.setDefaultPlaceHolder();
       this.setModeAndFormat();
+    }
+
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
@@ -822,5 +840,18 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
         this.nzOnOk.emit(null);
       }
     }
+  }
+
+  // status
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 }
