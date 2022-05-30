@@ -6,5 +6,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { FormsModule } from '@angular/forms';
 import { HttpClientJsonpModule } from '@angular/common/http';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ FormsModule, NzSpinModule, HttpClientJsonpModule, NzSelectModule, NzDividerModule, NzRadioModule, NzIconModule, NzInputModule ];
+export const moduleList = [ FormsModule, NzSpinModule, HttpClientJsonpModule, NzSelectModule, NzDividerModule, NzRadioModule, NzIconModule, NzInputModule, NzSpaceModule ];
