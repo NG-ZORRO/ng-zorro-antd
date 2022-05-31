@@ -276,20 +276,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDropdownClassName?: string;
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzStatus: NzStatus = '';
-  placement: NzPlacementType = '';
-  @Input()
-  set nzPlacement(placement: NzPlacementType) {
-    this.placement = placement;
-    if (this.nzPlacement) {
-      const currentPositon = POSITION_MAP[this.nzPlacement];
-      this.positions = [currentPositon, ...this.positions];
-    }
-  }
-
-  get nzPlacement(): NzPlacementType {
-    return this.placement;
-  }
-
+  @Input() nzPlacement: NzPlacementType = '';
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -425,7 +412,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzNodes, nzDropdownClassName, nzStatus } = changes;
+    const { nzNodes, nzDropdownClassName, nzStatus, nzPlacement } = changes;
     if (nzNodes) {
       this.updateSelectedNodes(true);
     }
@@ -435,6 +422,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
     if (nzStatus) {
       this.setStatusStyles();
+    }
+
+    if (nzPlacement && this.nzPlacement) {
+      const currentPositon = POSITION_MAP[this.nzPlacement];
+      this.positions = [currentPositon, ...this.positions];
     }
   }
 
