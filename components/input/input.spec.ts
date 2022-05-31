@@ -21,7 +21,6 @@ describe('input', () => {
           NzTestInputWithTextAreaComponent,
           NzTestInputFormComponent,
           NzTestInputWithStatusComponent,
-          NzTestInputGroupWithStatusComponent,
           NzTestInputWithDirComponent
         ],
         providers: []
@@ -149,46 +148,6 @@ describe('input', () => {
       expect(inputElement.nativeElement.className).not.toContain('ant-input-status-warning');
     });
   });
-
-  describe('input group with status', () => {
-    let fixture: ComponentFixture<NzTestInputGroupWithStatusComponent>;
-    let inputElement: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestInputGroupWithStatusComponent);
-      fixture.detectChanges();
-      inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
-    });
-
-    it('should className correct with prefix', () => {
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-error');
-
-      fixture.componentInstance.status = 'warning';
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.className).toContain('ant-input-affix-wrapper-status-warning');
-
-      fixture.componentInstance.status = '';
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.className).not.toContain('ant-input-affix-wrapper-status-warning');
-    });
-
-    it('should className correct with addon', () => {
-      fixture.componentInstance.isAddon = true;
-      fixture.detectChanges();
-      // re-query input element
-      inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
-      expect(inputElement.nativeElement.classList).toContain('ant-input-group-wrapper-status-error');
-
-      fixture.componentInstance.status = 'warning';
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.className).toContain('ant-input-group-wrapper-status-warning');
-
-      fixture.componentInstance.status = '';
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
-    });
-  });
 });
 
 @Component({
@@ -244,25 +203,5 @@ export class NzTestInputFormComponent {
   template: ` <input nz-input [nzStatus]="status" /> `
 })
 export class NzTestInputWithStatusComponent {
-  status: NzStatus = 'error';
-}
-
-@Component({
-  template: `
-    <ng-container *ngIf="!isAddon">
-      <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
-        <input type="text" nz-input />
-      </nz-input-group>
-      <ng-template #prefixTemplateClock><i nz-icon nzType="clock-circle" nzTheme="outline"></i></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isAddon">
-      <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
-        <input type="text" nz-input />
-      </nz-input-group>
-    </ng-container>
-  `
-})
-export class NzTestInputGroupWithStatusComponent {
-  isAddon = false;
   status: NzStatus = 'error';
 }

@@ -1,9 +1,10 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputGroupComponent } from './input-group.component';
@@ -19,7 +20,8 @@ describe('input-group', () => {
           NzTestInputGroupAffixComponent,
           NzTestInputGroupMultipleComponent,
           NzTestInputGroupColComponent,
-          NzTestInputGroupMixComponent
+          NzTestInputGroupMixComponent,
+          NzTestInputGroupWithStatusComponent
         ],
         providers: []
       }).compileComponents();
@@ -239,6 +241,45 @@ describe('input-group', () => {
         );
       });
     });
+    describe('status', () => {
+      let fixture: ComponentFixture<NzTestInputGroupWithStatusComponent>;
+      let inputElement: DebugElement;
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputGroupWithStatusComponent);
+        fixture.detectChanges();
+        inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+      });
+
+      it('should className correct with prefix', () => {
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-error');
+
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.className).toContain('ant-input-affix-wrapper-status-warning');
+
+        fixture.componentInstance.status = '';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.className).not.toContain('ant-input-affix-wrapper-status-warning');
+      });
+
+      it('should className correct with addon', () => {
+        fixture.componentInstance.isAddon = true;
+        fixture.detectChanges();
+        // re-query input element
+        inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+        expect(inputElement.nativeElement.classList).toContain('ant-input-group-wrapper-status-error');
+
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.className).toContain('ant-input-group-wrapper-status-warning');
+
+        fixture.componentInstance.status = '';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
+      });
+    });
   });
 });
 
@@ -314,3 +355,23 @@ export class NzTestInputGroupMixComponent {}
   `
 })
 export class NzTestInputGroupColComponent {}
+
+@Component({
+  template: `
+    <ng-container *ngIf="!isAddon">
+      <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
+        <input type="text" nz-input />
+      </nz-input-group>
+      <ng-template #prefixTemplateClock><i nz-icon nzType="clock-circle" nzTheme="outline"></i></ng-template>
+    </ng-container>
+    <ng-container *ngIf="isAddon">
+      <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
+        <input type="text" nz-input />
+      </nz-input-group>
+    </ng-container>
+  `
+})
+export class NzTestInputGroupWithStatusComponent {
+  isAddon = false;
+  status: NzStatus = 'error';
+}
