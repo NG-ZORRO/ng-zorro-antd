@@ -5,13 +5,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-mention [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)">
-      <input
+      <textarea
+        rows="1"
         placeholder="input here"
         nzMentionTrigger
         nz-input
         [(ngModel)]="inputValue"
         (ngModelChange)="onChange($event)"
-      />
+      ></textarea>
     </nz-mention>
   `
 })

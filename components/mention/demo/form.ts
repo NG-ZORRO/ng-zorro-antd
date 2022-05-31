@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { NzMentionComponent } from 'ng-zorro-antd/mention';
 
 @Component({
-  selector: 'nz-demo-mention-controlled',
+  selector: 'nz-demo-mention-form',
   encapsulation: ViewEncapsulation.None,
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
@@ -12,7 +12,14 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
         <nz-form-label [nzSm]="6" nzFor="mention">Top coders</nz-form-label>
         <nz-form-control [nzSm]="16" nzErrorTip="More than one must be selected!">
           <nz-mention #mentions [nzSuggestions]="suggestions">
-            <input id="mention" placeholder="input here" formControlName="mention" nzMentionTrigger nz-input />
+            <textarea
+              rows="1"
+              id="mention"
+              placeholder="input here"
+              formControlName="mention"
+              nzMentionTrigger
+              nz-input
+            ></textarea>
           </nz-mention>
         </nz-form-control>
       </nz-form-item>
@@ -26,7 +33,7 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
     </form>
   `
 })
-export class NzDemoMentionControlledComponent implements OnInit {
+export class NzDemoMentionFormComponent implements OnInit {
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   validateForm!: FormGroup;
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;

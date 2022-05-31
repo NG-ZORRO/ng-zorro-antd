@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 3
 title:
   zh-CN: 自定义触发字符
   en-US: Customize Trigger Token

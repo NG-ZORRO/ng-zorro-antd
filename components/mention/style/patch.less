@@ -1,21 +1,30 @@
-.ant-mentions {
-  border-width: 0;
-  display: unset; // to make sure input:hover work
-
-  &:hover {
-    border-right-width: 0;
+.@{mention-prefix-cls} {
+  &-dropdown {
+    top: 100%;
+    left: 12px;
+    position: relative;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 4px;
   }
 
-  & > textarea {
-    border: @border-width-base @border-style-base @border-color-base;
+  &:focus-within {
+    .active();
   }
-}
 
-.ant-mentions-dropdown {
-  top: 100%;
-  left: 12px;
-  position: relative;
-  width: 100%;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  &&-status-error {
+    &:not(.@{mention-prefix-cls}-disabled):not(.@{mention-prefix-cls}-borderless).@{mention-prefix-cls} {
+      &:focus-within {
+        .active(@error-color, @error-color-hover, @error-color-outline);
+      }
+    }
+  }
+
+  &&-status-warning {
+    &:not(.@{mention-prefix-cls}-disabled):not(.@{mention-prefix-cls}-borderless).@{mention-prefix-cls} {
+      &:focus-within {
+        .active(@warning-color, @warning-color-hover, @warning-color-outline);
+      }
+    }
+  }
 }

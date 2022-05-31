@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 8
 title:
   zh-CN: 多行
   en-US: Multi-lines Mode
