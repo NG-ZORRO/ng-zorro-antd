@@ -1,9 +1,12 @@
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
 import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
@@ -12,8 +15,14 @@ describe('input', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent],
+        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [
+          NzTestInputWithInputComponent,
+          NzTestInputWithTextAreaComponent,
+          NzTestInputFormComponent,
+          NzTestInputWithStatusComponent,
+          NzTestInputWithDirComponent
+        ],
         providers: []
       }).compileComponents();
     })
@@ -92,7 +101,68 @@ describe('input', () => {
       }));
     });
   });
+
+  describe('input RTL', () => {
+    let fixture: ComponentFixture<NzTestInputWithDirComponent>;
+    let inputElement: DebugElement;
+    let inputGroupElement: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputWithDirComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+      inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+    });
+
+    it('should className correct on dir change', () => {
+      expect(inputElement.nativeElement.classList).not.toContain('ant-input-rtl');
+      expect(inputGroupElement.nativeElement.classList).not.toContain('ant-input-group-rtl');
+
+      fixture.componentInstance.dir = 'rtl';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-rtl');
+      expect(inputGroupElement.nativeElement.classList).toContain('ant-input-group-rtl');
+    });
+  });
+
+  describe('input with status', () => {
+    let fixture: ComponentFixture<NzTestInputWithStatusComponent>;
+    let inputElement: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputWithStatusComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).toContain('ant-input-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.className).not.toContain('ant-input-status-warning');
+    });
+  });
 });
+
+@Component({
+  template: `
+    <div [dir]="dir">
+      <input nz-input />
+      <nz-input-group nzAddOnAfterIcon="setting">
+        <input type="text" nz-input />
+      </nz-input-group>
+    </div>
+  `
+})
+export class NzTestInputWithDirComponent {
+  dir: Direction = 'ltr';
+}
 
 @Component({
   template: ` <input nz-input [nzSize]="size" [disabled]="disabled" /> `
@@ -126,4 +196,12 @@ export class NzTestInputFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+}
+
+// status
+@Component({
+  template: ` <input nz-input [nzStatus]="status" /> `
+})
+export class NzTestInputWithStatusComponent {
+  status: NzStatus = 'error';
 }
