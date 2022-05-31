@@ -32,11 +32,13 @@ import {
   setYear,
   startOfMonth,
   startOfWeek,
-  parse as fnsParse
+  parse as fnsParse,
+  Locale
 } from 'date-fns';
 
-import { CandyDateMode, WeekDayIndex } from 'ng-zorro-antd/core/time/candy-date';
-import { DateLocale } from 'ng-zorro-antd/i18n';
+export type DateLocale = Locale;
+
+import { CandyDateMode, WeekDayIndex } from './candy-date';
 
 export type DateMode = CandyDateMode;
 

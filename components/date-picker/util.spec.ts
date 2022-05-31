@@ -1,5 +1,4 @@
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateFnsDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
+import { CandyDate, DateFnsDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { isAllowedDate } from './util';
 

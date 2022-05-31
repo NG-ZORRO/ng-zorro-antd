@@ -5,8 +5,9 @@
 
 import { Injectable } from '@angular/core';
 
-import { NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
+
+import { NzDateAdapter } from './date-adapter';
 
 export type CandyDateMode = 'decade' | 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type NormalizedMode = 'decade' | 'year' | 'month';

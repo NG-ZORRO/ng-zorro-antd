@@ -3,8 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Locale } from 'date-fns';
-
 export interface NzPaginationI18nInterface {
   items_per_page: string;
   jump_to: string;
@@ -146,5 +144,3 @@ export interface NzI18nInterface {
   Empty: NzEmptyI18nInterface;
   Text?: NzTextI18nInterface;
 }
-
-export type DateLocale = Locale;

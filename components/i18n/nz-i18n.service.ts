@@ -7,11 +7,12 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { warn } from 'ng-zorro-antd/core/logger';
+import { DateLocale } from 'ng-zorro-antd/core/time';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
-import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
+import { NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
 
 @Injectable({

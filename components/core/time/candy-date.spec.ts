@@ -1,8 +1,7 @@
 import differenceInCalendarMonths from 'date-fns/differenceInCalendarMonths';
 
-import { DateFnsDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
-
 import { CandyDate, normalizeRangeValue, SingleValue } from './candy-date';
+import { DateFnsDateAdapter } from './date-adapter';
 
 export const dateAdapter = new DateFnsDateAdapter();
 export const candyDateFac = (date?: Date | number | string): CandyDate => new CandyDate(dateAdapter, date);

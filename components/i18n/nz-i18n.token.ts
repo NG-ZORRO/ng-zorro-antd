@@ -5,7 +5,9 @@
 
 import { InjectionToken } from '@angular/core';
 
-import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
+import { DateLocale } from 'ng-zorro-antd/core/time';
+
+import { NzI18nInterface } from './nz-i18n.interface';
 
 export const NZ_I18N = new InjectionToken<NzI18nInterface>('nz-i18n');
 

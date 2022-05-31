@@ -12,9 +12,9 @@ import {
   cloneDate,
   CompatibleValue,
   NormalizedMode,
-  normalizeRangeValue
+  normalizeRangeValue,
+  NzDateAdapter
 } from 'ng-zorro-antd/core/time';
-import { NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
 
 import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 

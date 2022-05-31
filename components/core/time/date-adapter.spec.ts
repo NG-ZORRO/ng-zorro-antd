@@ -1,5 +1,6 @@
 import { dateAdapter } from 'ng-zorro-antd/core/time/candy-date.spec';
-import { DateFnsDateAdapter, isCustomAdapter, NzDateAdapter } from 'ng-zorro-antd/core/time/date-adapter';
+
+import { DateFnsDateAdapter, isCustomAdapter, NzDateAdapter } from './date-adapter';
 
 describe('date-adapter', () => {
   let dateAdapter: NzDateAdapter;
