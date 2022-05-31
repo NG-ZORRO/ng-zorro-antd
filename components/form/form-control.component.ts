@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 
 import { helpMotion } from 'ng-zorro-antd/core/animation';
@@ -32,13 +32,6 @@ import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
 import { NzFormDirective } from './form.directive';
-
-const iconTypeMap = {
-  error: 'close-circle-fill',
-  validating: 'loading',
-  success: 'check-circle-fill',
-  warning: 'exclamation-circle-fill'
-} as const;
 
 @Component({
   selector: 'nz-form-control',
@@ -52,9 +45,6 @@ const iconTypeMap = {
       <div class="ant-form-item-control-input-content">
         <ng-content></ng-content>
       </div>
-      <span class="ant-form-item-children-icon">
-        <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
-      </span>
     </div>
     <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected" *ngIf="innerTip">
       <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
@@ -74,6 +64,9 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
+  // Used by inner components with ngModel/formControlName
+  formControlChanges = new ReplaySubject<{ status: NzFormControlStatusType; hasFeedback: boolean }>(1);
+
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;
@@ -87,9 +80,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
       : this.nzFormDirective?.nzDisableAutoTips;
   }
 
-  status: NzFormControlStatusType = null;
+  status: NzFormControlStatusType = '';
   validateControl: AbstractControl | NgModel | null = null;
-  iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
   innerTip: string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null = null;
 
   @ContentChild(NgControl, { static: false }) defaultValidateControl?: FormControlName | FormControlDirective;
@@ -104,6 +96,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   @Input()
   set nzHasFeedback(value: boolean) {
     this._hasFeedback = toBoolean(value);
+    this.formControlChanges.next({ status: this.status, hasFeedback: this._hasFeedback });
     if (this.nzFormItemComponent) {
       this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
     }
@@ -148,8 +141,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
 
   private setStatus(): void {
     this.status = this.getControlStatus(this.validateString);
-    this.iconType = this.status ? iconTypeMap[this.status] : null;
     this.innerTip = this.getInnerTip(this.status);
+    this.formControlChanges.next({ status: this.status, hasFeedback: this.nzHasFeedback });
     if (this.nzFormItemComponent) {
       this.nzFormItemComponent.setWithHelpViaTips(!!this.innerTip);
       this.nzFormItemComponent.setStatus(this.status);
@@ -172,7 +165,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     } else if (validateString === 'success' || this.validateControlStatus('VALID')) {
       status = 'success';
     } else {
-      status = null;
+      status = '';
     }
 
     return status;

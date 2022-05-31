@@ -32,7 +32,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -45,9 +45,11 @@ import {
   NgClassType,
   NgStyleInterface,
   NzSafeAny,
-  NzStatus
+  NzStatus,
+  NzValidateStatus
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -115,6 +117,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
             [class.ant-cascader-picker-arrow-expand]="menuVisible"
           ></i>
           <i *ngIf="isLoading" nz-icon nzType="loading"></i>
+          <ng-container *ngIf="hasFeedback && !!status">
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          </ng-container>
         </span>
         <span class="ant-select-clear" *ngIf="clearIconVisible">
           <i nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></i>
@@ -207,6 +212,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   ],
   host: {
     '[attr.tabIndex]': '"0"',
+    '[class.ant-select-in-form-item]': '!!nzFormControlComponent',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
@@ -267,7 +273,7 @@ export class NzCascaderComponent
   @Input() nzMenuStyle: NgStyleInterface | null = null;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
@@ -292,7 +298,8 @@ export class NzCascaderComponent
 
   prefixCls: string = 'ant-select';
   statusCls: NgClassInterface = {};
-  nzHasFeedback: boolean = false;
+  status: NzValidateStatus = '';
+  hasFeedback: boolean = false;
 
   /**
    * If the dropdown should show the empty content.
@@ -379,6 +386,7 @@ export class NzCascaderComponent
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
+    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
@@ -388,6 +396,17 @@ export class NzCascaderComponent
   }
 
   ngOnInit(): void {
+    this.nzFormControlComponent?.formControlChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     const srv = this.cascaderService;
 
     srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -450,7 +469,7 @@ export class NzCascaderComponent
   ngOnChanges(changes: SimpleChanges): void {
     const { nzStatus } = changes;
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
@@ -785,9 +804,13 @@ export class NzCascaderComponent
     }
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);
