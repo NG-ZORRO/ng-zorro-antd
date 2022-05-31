@@ -19,6 +19,7 @@ import {
   OnInit,
   Optional,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -26,8 +27,8 @@ import {
 import { merge, Subject } from 'rxjs';
 import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzInputDirective } from './input.directive';
 
@@ -131,6 +132,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   @Input() nzAddOnBefore?: string | TemplateRef<void>;
   @Input() nzAddOnAfter?: string | TemplateRef<void>;
   @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzStatus?: NzStatus;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSearch = false;
@@ -142,11 +144,17 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   focused = false;
   disabled = false;
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-input';
+  affixStatusCls: NgClassInterface = {};
+  groupStatusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
+    private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
   ) {}
@@ -197,7 +205,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
       nzAddOnAfter,
       nzAddOnBefore,
       nzAddOnAfterIcon,
-      nzAddOnBeforeIcon
+      nzAddOnBeforeIcon,
+      nzStatus
     } = changes;
     if (nzSize) {
       this.updateChildrenInputSize();
@@ -210,10 +219,27 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
     }
+    if (nzStatus) {
+      this.setStatusStyles();
+    }
   }
   ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.elementRef);
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, this.nzStatus, this.hasFeedback);
+    this.groupStatusCls = getStatusClassNames(`${this.prefixCls}-group-wrapper`, this.nzStatus, this.hasFeedback);
+    const statusCls = this.isAffix ? this.affixStatusCls : this.isAddOn ? this.groupStatusCls : {};
+    Object.keys(statusCls).forEach(status => {
+      if (statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 }

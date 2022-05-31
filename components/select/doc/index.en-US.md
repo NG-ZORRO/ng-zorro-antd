@@ -51,6 +51,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true`(for single select), `false`(for multiple select) |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<any> \| string` | - |  ✅ |
 | `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<any>` | - |
 | `[nzClearIcon]` | The custom clear icon | `TemplateRef<any>` | - |

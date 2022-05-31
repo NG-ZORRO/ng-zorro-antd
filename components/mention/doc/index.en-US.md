@@ -38,6 +38,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 | `[nzPlacement]` | The position of the suggestion relative to the target, which can be one of top and bottom | `'button' \| 'top'` | `'bottom'` |
 | `[nzPrefix]` | Character which will trigger Mention to show mention list | `string \| string[]` | `'@'` |
 | `[nzSuggestions]` | Suggestion content | `any[]` | `[]` |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzValueWith]` | Function that maps an suggestion's value  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)` | Callback function called when select from suggestions | `EventEmitter<any>` | - |
 | `(nzOnSearchChange)` | Callback function called when search content changes| `EventEmitter<MentionOnSearchTypes>` | - |

@@ -2,7 +2,7 @@ import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import {
   MockNgZone,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from '../input';
@@ -42,7 +43,12 @@ describe('mention', () => {
           ReactiveFormsModule,
           NzIconTestModule
         ],
-        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent, NzTestDirMentionComponent],
+        declarations: [
+          NzTestSimpleMentionComponent,
+          NzTestPropertyMentionComponent,
+          NzTestDirMentionComponent,
+          NzTestStatusMentionComponent
+        ],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
           { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
@@ -199,15 +205,13 @@ describe('mention', () => {
     it('should support switch trigger', fakeAsync(() => {
       fixture.componentInstance.inputTrigger = true;
       fixture.detectChanges();
-      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      const textareaWithSingleLine = fixture.debugElement.query(By.css('textarea')).nativeElement;
       const mention = fixture.componentInstance.mention;
+      expect(textareaWithSingleLine).toBeTruthy();
 
-      expect(fixture.debugElement.query(By.css('textarea'))).toBeFalsy();
-      expect(input).toBeTruthy();
-
-      input.value = '@a';
+      textareaWithSingleLine.value = '@a';
       fixture.detectChanges();
-      dispatchFakeEvent(input, 'click');
+      dispatchFakeEvent(textareaWithSingleLine, 'click');
       fixture.detectChanges();
       flush();
 
@@ -521,6 +525,30 @@ describe('mention', () => {
       expect(fixture.componentInstance.mention.getMentions().join(',')).toBe('@Angular,@ant-design,@你好,@@ng,#ng');
     });
   });
+
+  describe('status', () => {
+    let fixture: ComponentFixture<NzTestStatusMentionComponent>;
+    let mention: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestStatusMentionComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+    });
+
+    it('should className with status correct', () => {
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-status-warning');
+    });
+  });
 });
 
 @Component({
@@ -533,7 +561,7 @@ describe('mention', () => {
         [(ngModel)]="inputValue"
         nzMentionTrigger
       ></textarea>
-      <input *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger />
+      <textarea rows="1" *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
   `
 })
@@ -605,11 +633,22 @@ class NzTestPropertyMentionComponent {
   template: `
     <div [dir]="direction">
       <nz-mention [nzSuggestions]="[]">
-        <input nz-input nzMentionTrigger />
+        <textarea rows="1" nz-input nzMentionTrigger></textarea>
       </nz-mention>
     </div>
   `
 })
 class NzTestDirMentionComponent {
   direction: Direction = 'ltr';
+}
+
+@Component({
+  template: `
+    <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
+      <textarea rows="1" nz-input nzMentionTrigger></textarea>
+    </nz-mention>
+  `
+})
+class NzTestStatusMentionComponent {
+  status: NzStatus = 'error';
 }

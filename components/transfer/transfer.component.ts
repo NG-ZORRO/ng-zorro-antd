@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -16,6 +17,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
@@ -24,8 +26,8 @@ import {
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
@@ -161,6 +163,11 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   rightFilter = '';
   dir: Direction = 'ltr';
 
+  // status
+  prefixCls: string = 'ant-transfer';
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
+
   // #region fields
 
   @Input() @InputBoolean() nzDisabled = false;
@@ -181,6 +188,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
+  @Input() nzStatus?: NzStatus;
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -286,6 +294,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
+    private elementRef: ElementRef<HTMLElement>,
+    private renderer: Renderer2,
     @Optional() private directionality: Directionality
   ) {}
 
@@ -333,23 +343,39 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzDataSource) {
+    const { nzStatus, nzDataSource, nzTargetKeys, nzSelectedKeys } = changes;
+    if (nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
       this.cdr.detectChanges();
       this.markForCheckAllList();
     }
-    if (changes.nzTargetKeys) {
+    if (nzTargetKeys) {
       this.handleNzTargetKeys();
     }
-    if (changes.nzSelectedKeys) {
+    if (nzSelectedKeys) {
       this.handleNzSelectedKeys();
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 }

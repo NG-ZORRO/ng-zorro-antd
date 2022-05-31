@@ -12,7 +12,7 @@ import {
   ɵComponentBed as ComponentBed,
   ɵcreateComponentBed as createComponentBed
 } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzSelectSearchComponent } from './select-search.component';
@@ -1268,6 +1268,34 @@ describe('select', () => {
       expect(appRef.tick).toHaveBeenCalledTimes(0);
     });
   });
+  describe('status', () => {
+    let testBed: ComponentBed<TestSelectStatusComponent>;
+    let component: TestSelectStatusComponent;
+    let fixture: ComponentFixture<TestSelectStatusComponent>;
+    let selectElement!: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectStatusComponent, {
+        imports: [NzSelectModule, NzIconTestModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    });
+
+    it('should classname correct', () => {
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-error');
+
+      component.status = 'warning';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-warning');
+
+      component.status = '';
+      fixture.detectChanges();
+      expect(selectElement.classList).not.toContain('ant-select-status-warning');
+    });
+  });
 });
 
 @Component({
@@ -1557,4 +1585,11 @@ export class TestSelectReactiveTagsComponent {
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
   nzMaxTagPlaceholder?: TemplateRef<{ $implicit: NzSafeAny[] }>;
+}
+
+@Component({
+  template: ` <nz-select [nzStatus]="status"></nz-select> `
+})
+export class TestSelectStatusComponent {
+  status: NzStatus = 'error';
 }

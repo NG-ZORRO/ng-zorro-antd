@@ -18,7 +18,8 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzRangePickerComponent } from 'ng-zorro-antd/date-picker/range-picker.component';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
 import {
   ENTER_EVENT,
@@ -43,7 +44,7 @@ describe('NzRangePickerComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule],
       providers: [],
-      declarations: [NzTestRangePickerComponent]
+      declarations: [NzTestRangePickerComponent, NzTestRangePickerStatusComponent]
     });
 
     TestBed.compileComponents();
@@ -984,6 +985,30 @@ describe('NzRangePickerComponent', () => {
     }));
   });
 
+  describe('status', () => {
+    let fixtureStatus: ComponentFixture<NzTestRangePickerStatusComponent>;
+    let fixtureStatusInstance: NzTestRangePickerStatusComponent;
+    let rangePickerElement!: HTMLElement;
+    beforeEach(() => {
+      fixtureStatus = TestBed.createComponent(NzTestRangePickerStatusComponent);
+      fixtureStatusInstance = fixtureStatus.componentInstance;
+      rangePickerElement = fixtureStatus.debugElement.query(By.directive(NzRangePickerComponent)).nativeElement;
+      fixtureStatus.detectChanges();
+    });
+
+    it('should classname correct', fakeAsync(() => {
+      expect(rangePickerElement.classList).toContain('ant-picker-status-error');
+
+      fixtureStatusInstance.status = 'warning';
+      fixtureStatus.detectChanges();
+      expect(rangePickerElement.classList).toContain('ant-picker-status-warning');
+
+      fixtureStatusInstance.status = '';
+      fixtureStatus.detectChanges();
+      expect(rangePickerElement.classList).not.toContain('ant-picker-status-warning');
+    }));
+  });
+
   ////////////
 
   function getCssIndex(part: RangePartType): string {
@@ -1167,4 +1192,11 @@ class NzTestRangePickerComponent {
 
   // --- Suite 4
   singleValue!: Date;
+}
+
+@Component({
+  template: ` <nz-range-picker [nzStatus]="status"></nz-range-picker> `
+})
+class NzTestRangePickerStatusComponent {
+  status: NzStatus = 'error';
 }

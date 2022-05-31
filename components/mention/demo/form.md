@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 2
 title:
   zh-CN: 配合 Form 使用
   en-US: With Form
