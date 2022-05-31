@@ -19,9 +19,9 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE, NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE, NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import en_US from '../i18n/languages/en_US';
