@@ -6,7 +6,12 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
   Component,
@@ -35,6 +40,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
@@ -63,9 +69,15 @@ export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService
   return injector.get(NzTreeSelectService);
 }
 
+export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
-
+const listOfPositions = [
+  POSITION_MAP.bottomLeft,
+  POSITION_MAP.bottomRight,
+  POSITION_MAP.topRight,
+  POSITION_MAP.topLeft
+];
 @Component({
   selector: 'nz-tree-select',
   exportAs: 'nzTreeSelect',
@@ -76,6 +88,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       nzConnectedOverlay
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
+      [cdkConnectedOverlayPositions]="nzPlacement ? positions : []"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
@@ -262,6 +275,20 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDropdownClassName?: string;
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzStatus: NzStatus = '';
+  placement: NzPlacementType = '';
+  @Input()
+  set nzPlacement(placement: NzPlacementType) {
+    this.placement = placement;
+    if (this.nzPlacement) {
+      const currentPositon = POSITION_MAP[this.nzPlacement];
+      this.positions = [currentPositon, ...this.positions];
+    }
+  }
+
+  get nzPlacement(): NzPlacementType {
+    return this.placement;
+  }
+
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -310,6 +337,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   expandedKeys: string[] = [];
   value: string[] = [];
   dir: Direction = 'ltr';
+  positions: ConnectionPositionPair[] = [...listOfPositions];
 
   private destroy$ = new Subject<void>();
 
@@ -616,7 +644,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (!this.nzPlacement || !listOfPositions.includes(POSITION_MAP[this.nzPlacement])) {
+      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    }
   }
 
   trackValue(_index: number, option: NzTreeNode): string {

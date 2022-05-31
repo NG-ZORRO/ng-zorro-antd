@@ -25,6 +25,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `[nzAllowClear]` | 显示清除按钮 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
+| `[nzPlacement]` | 选择框弹出的位置 | `bottomLeft` `bottomRight` `topLeft` `topRight` | bottomLeft |
 | `[nzDisabled]` | 禁用选择器 | `boolean` | `false` |
 | `[nzShowIcon]` | 是否展示 TreeNode title 前的图标，没有默认样式 | `boolean` | `false` | ✅ |
 | `[nzShowSearch]` | 显示搜索框 | `boolean` | `false` |
