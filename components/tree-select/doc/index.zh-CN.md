@@ -35,6 +35,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzMultiple]` | 支持多选（当设置 nzCheckable 时自动变为true） | `boolean` | `false` |
 | `[nzHideUnMatched]` | 搜索隐藏未匹配的节点 | `boolean` | `false` | ✅ |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |  |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
 | `[nzCheckStrictly]` | checkable 状态下节点选择完全受控（父子节点选中状态不再关联） | `boolean` | `false` |
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` | |
