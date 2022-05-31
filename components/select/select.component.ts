@@ -26,6 +26,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -40,8 +41,15 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NzSafeAny,
+  NzStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
@@ -179,6 +187,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
+  @Input() nzStatus?: NzStatus;
   @Input() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string | null = null;
@@ -253,6 +262,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   listOfValue: NzSafeAny[] = [];
   focused = false;
   dir: Direction = 'ltr';
+
+  // status
+  prefixCls: string = 'ant-select';
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
 
   generateTagItem(value: string): NzSelectItemInterface {
     return {
@@ -508,6 +522,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private host: ElementRef<HTMLElement>,
+    private renderer: Renderer2,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
@@ -551,7 +566,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzDisabled, nzOptions } = changes;
+    const { nzOpen, nzDisabled, nzOptions, nzStatus } = changes;
     if (nzOpen) {
       this.onOpenChange();
     }
@@ -575,6 +590,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         };
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
+    }
+    if (nzStatus) {
+      this.setStatusStyles();
     }
   }
 
@@ -694,5 +712,17 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   ngOnDestroy(): void {
     cancelRequestAnimationFrame(this.requestId);
     this.focusMonitor.stopMonitoring(this.host);
+  }
+
+  private setStatusStyles(): void {
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.host.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.host.nativeElement, status);
+      }
+    });
   }
 }
