@@ -56,7 +56,10 @@ describe('date-adapter', () => {
     expect(dateAdapter.getMonth(date)).toBe(5);
     expect(dateAdapter.getDay(date)).toBe(5);
     expect(dateAdapter.getDate(date)).toBe(12);
-    expect(dateAdapter.getTime(date)).toBe(1591947732012);
+
+    const now = new Date();
+    expect(dateAdapter.getTime(now)).toBe(now.getTime());
+
     expect(dateAdapter.getHours(date)).toBe(12);
     expect(dateAdapter.getMinutes(date)).toBe(12);
     expect(dateAdapter.getSeconds(date)).toBe(12);
