@@ -117,9 +117,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
             [class.ant-cascader-picker-arrow-expand]="menuVisible"
           ></i>
           <i *ngIf="isLoading" nz-icon nzType="loading"></i>
-          <ng-container *ngIf="hasFeedback && !!status">
-            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
-          </ng-container>
+          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
         </span>
         <span class="ant-select-clear" *ngIf="clearIconVisible">
           <i nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></i>
@@ -386,7 +384,7 @@ export class NzCascaderComponent
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent,
+    @Host() @Optional() public nzFormControlComponent?: NzFormControlComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
