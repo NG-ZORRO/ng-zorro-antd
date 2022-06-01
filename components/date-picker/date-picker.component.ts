@@ -614,8 +614,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     private platform: Platform,
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Host() @Optional() public nzFormControlComponent?: NzFormControlComponent
+    @Host() @Optional() public noAnimation: NzNoAnimationDirective,
+    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);

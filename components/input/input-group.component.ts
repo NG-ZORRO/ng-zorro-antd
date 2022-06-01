@@ -13,6 +13,7 @@ import {
   ContentChildren,
   Directive,
   ElementRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -25,10 +26,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { merge, Subject } from 'rxjs';
-import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzInputDirective } from './input.directive';
 
@@ -86,12 +88,14 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       <span
-        *ngIf="nzSuffix || nzSuffixIcon"
+        *ngIf="nzSuffix || nzSuffixIcon || (hasFeedback && !!status)"
         nz-input-group-slot
         type="suffix"
         [icon]="nzSuffixIcon"
         [template]="nzSuffix"
-      ></span>
+      >
+        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+      </span>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -132,7 +136,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   @Input() nzAddOnBefore?: string | TemplateRef<void>;
   @Input() nzAddOnAfter?: string | TemplateRef<void>;
   @Input() nzPrefix?: string | TemplateRef<void>;
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSearch = false;
@@ -146,6 +150,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   dir: Direction = 'ltr';
   // status
   prefixCls: string = 'ant-input';
+  status: NzValidateStatus = '';
   affixStatusCls: NgClassInterface = {};
   groupStatusCls: NgClassInterface = {};
   hasFeedback: boolean = false;
@@ -156,7 +161,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent
   ) {}
 
   updateChildrenInputSize(): void {
@@ -166,6 +172,17 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   }
 
   ngOnInit(): void {
+    this.nzFormControlComponent?.formControlChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.focusMonitor
       .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
@@ -220,7 +237,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
   ngOnDestroy(): void {
@@ -229,10 +246,13 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     this.destroy$.complete();
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, this.nzStatus, this.hasFeedback);
-    this.groupStatusCls = getStatusClassNames(`${this.prefixCls}-group-wrapper`, this.nzStatus, this.hasFeedback);
+    this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, status, hasFeedback);
+    this.groupStatusCls = getStatusClassNames(`${this.prefixCls}-group-wrapper`, status, hasFeedback);
     const statusCls = this.isAffix ? this.affixStatusCls : this.isAddOn ? this.groupStatusCls : {};
     Object.keys(statusCls).forEach(status => {
       if (statusCls[status]) {
