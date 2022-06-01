@@ -425,8 +425,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
 
     if (nzPlacement && this.nzPlacement) {
-      const currentPositon = POSITION_MAP[this.nzPlacement];
-      this.positions = [currentPositon];
+      this.positions = [POSITION_MAP[this.nzPlacement]];
     }
   }
 
