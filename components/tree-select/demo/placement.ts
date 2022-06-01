@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
+
 @Component({
   selector: 'nz-demo-tree-select-placement',
   template: `
@@ -26,8 +28,8 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTreeSelectPlacementComponent {
-  list: string[] = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
-  placement = 'topLeft';
+  list: NzPlacementType[] = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
+  placement: NzPlacementType = 'topLeft';
   value: string[] = [];
   nodes = [
     {
