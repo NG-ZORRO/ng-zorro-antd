@@ -325,7 +325,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   expandedKeys: string[] = [];
   value: string[] = [];
   dir: Direction = 'ltr';
-  positions: ConnectionPositionPair[] = [...listOfPositions];
+  positions: ConnectionPositionPair[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -426,7 +426,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
     if (nzPlacement && this.nzPlacement) {
       const currentPositon = POSITION_MAP[this.nzPlacement];
-      this.positions = [currentPositon, ...this.positions];
+      this.positions = [currentPositon];
     }
   }
 
