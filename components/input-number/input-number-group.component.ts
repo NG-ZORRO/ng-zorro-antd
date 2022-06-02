@@ -116,7 +116,8 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzCompact: BooleanInput;
 
-  @ContentChildren(NzInputNumberComponent) listOfNzInputNumberComponent!: QueryList<NzInputNumberComponent>;
+  @ContentChildren(NzInputNumberComponent, { descendants: true })
+  listOfNzInputNumberComponent!: QueryList<NzInputNumberComponent>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
   @Input() nzPrefixIcon?: string | null = null;
@@ -215,7 +216,6 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
     }
-    console.log(this.isAffix, this.isAddOn, nzPrefixIcon?.currentValue);
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }

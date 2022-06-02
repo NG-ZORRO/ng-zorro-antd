@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-number-group',
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">
-      <div nz-row [nzGutter]="8" *nzSpaceItem>
+      <nz-input-number-group nz-row [nzGutter]="8" nzSize="large" *nzSpaceItem>
         <div nz-col nzSpan="8">
           <nz-input-number [ngModel]="1234" [nzStep]="1" style="width: 100%"></nz-input-number>
         </div>
         <div nz-col nzSpan="8">
           <nz-input-number [ngModel]="56789" [nzStep]="1" style="width: 100%"></nz-input-number>
         </div>
-      </div>
+      </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem nzCompact>
         <nz-input-number [ngModel]="1234" [nzStep]="1" style="width: 33%"></nz-input-number>
         <nz-input-number [ngModel]="56789" [nzStep]="1" style="width: 33%"></nz-input-number>
