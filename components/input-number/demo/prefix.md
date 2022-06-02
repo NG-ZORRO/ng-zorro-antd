@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 title:
     zh-CN: 前缀
     en-US: Prefix
@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-在输入框上添加前缀图标。
+在数字输入框上添加前缀图标。
 
 ## en-US
 

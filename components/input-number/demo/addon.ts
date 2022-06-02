@@ -27,9 +27,6 @@ import { Component } from '@angular/core';
       <nz-input-number-group *nzSpaceItem nzAddOnAfterIcon="setting">
         <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
       </nz-input-number-group>
-      <nz-input-number-group *nzSpaceItem nzAddOnAfterIcon="setting">
-        <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem [nzAddOnBefore]="addOnBeforeCascaderTemplate">
         <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
       </nz-input-number-group>

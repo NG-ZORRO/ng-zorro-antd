@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 9
 title:
     zh-CN: 输入框组合
     en-US: Input Number Group
@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-输入框的组合展现。
+数字输入框的组合展现。
 
 注意：使用 `nzCompact` 模式时，不需要通过 `nz-col` 来控制宽度。
 
