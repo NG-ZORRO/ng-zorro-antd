@@ -1,3 +1,4 @@
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,14 +14,15 @@ describe('input-number-group', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
         declarations: [
           NzTestInputNumberGroupAddonComponent,
           NzTestInputNumberGroupAffixComponent,
           NzTestInputNumberGroupMultipleComponent,
           NzTestInputNumberGroupColComponent,
           NzTestInputNumberGroupMixComponent,
-          NzTestInputNumberGroupWithStatusComponent
+          NzTestInputNumberGroupWithStatusComponent,
+          NzTestInputNumberGroupWithDirComponent
         ],
         providers: []
       }).compileComponents();
@@ -274,6 +276,22 @@ describe('input-number-group', () => {
         );
       });
     });
+
+    describe('dir', () => {
+      let fixture: ComponentFixture<NzTestInputNumberGroupWithDirComponent>;
+      let inputNumberGroupElement: HTMLElement;
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputNumberGroupWithDirComponent);
+        fixture.detectChanges();
+        inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
+      });
+      it('should dir work', () => {
+        expect(inputNumberGroupElement.classList).not.toContain('ant-input-number-group-wrapper-rtl');
+        fixture.componentInstance.dir = 'rtl';
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.classList).toContain('ant-input-number-group-wrapper-rtl');
+      });
+    });
   });
 });
 
@@ -366,4 +384,17 @@ export class NzTestInputNumberGroupMixComponent {}
 export class NzTestInputNumberGroupWithStatusComponent {
   isAddon = false;
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <div [dir]="dir">
+      <nz-input-number-group nzAddOnAfterIcon="setting">
+        <nz-input-number></nz-input-number>
+      </nz-input-number-group>
+    </div>
+  `
+})
+export class NzTestInputNumberGroupWithDirComponent {
+  dir: Direction = 'ltr';
 }
