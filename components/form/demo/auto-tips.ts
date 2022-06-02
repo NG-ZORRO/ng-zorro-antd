@@ -7,45 +7,36 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 @Component({
   selector: 'nz-demo-form-auto-tips',
   template: `
-    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
-          <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
-        </nz-form-control>
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      [nzAutoTips]="autoTips"
+      nzSimple
+      [nzLabelCol]="7"
+      [nzControlCol]="12"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item nzRequired nzLabel="Username" nzValidatingTip="Validating...">
+        <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Mobile</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <input nz-input formControlName="mobile" placeholder="mobile" />
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="Mobile">
+        <input nz-input formControlName="mobile" placeholder="mobile" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <input nz-input formControlName="email" placeholder="email" type="email" />
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="E-mail">
+        <input nz-input formControlName="email" placeholder="email" type="email" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzDisableAutoTips nzErrorTip="Please input your password!">
-          <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="Password" nzDisableAutoTips nzErrorTip="Please input your password!">
+        <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
-          <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
-          <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
-          </ng-template>
-        </nz-form-control>
+      <nz-form-item nzRequired nzLabel="Confirm Password" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
+        <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
+        <ng-template #passwordErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
+        </ng-template>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-control [nzOffset]="7" [nzSpan]="12">
-          <button nz-button nzType="primary">Submit</button>
-        </nz-form-control>
+      <nz-form-item [nzControlCol]="{ span: 12, offset: 7 }">
+        <button nz-button nzType="primary">Submit</button>
       </nz-form-item>
     </form>
   `,

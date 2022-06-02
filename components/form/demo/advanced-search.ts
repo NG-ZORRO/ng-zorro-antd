@@ -4,19 +4,16 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'nz-demo-form-advanced-search',
   template: `
-    <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <form nz-form [formGroup]="validateForm" nzSimple class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
         <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
-          <nz-form-item>
-            <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
-            <nz-form-control>
-              <input
-                nz-input
-                placeholder="placeholder"
-                [formControlName]="'field' + control.index"
-                [attr.id]="'field' + control.index"
-              />
-            </nz-form-control>
+          <nz-form-item [nzLabel]="'Field' + control.index" [nzFor]="'field' + control.index">
+            <input
+              nz-input
+              placeholder="placeholder"
+              [formControlName]="'field' + control.index"
+              [attr.id]="'field' + control.index"
+            />
           </nz-form-item>
         </div>
       </div>

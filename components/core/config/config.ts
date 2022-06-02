@@ -213,6 +213,8 @@ export interface FormConfig {
   nzNoColon?: boolean;
   nzAutoTips?: Record<string, Record<string, string>>;
   nzTooltipIcon?: string | { type: string; theme: ThemeType };
+  nzLabelAlign?: 'left' | 'right';
+  nzSimple?: boolean;
 }
 
 export interface IconConfig {

@@ -4,31 +4,23 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'nz-demo-form-coordinated',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5" nzRequired nzFor="note">Note</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="Please input your username!">
-          <input id="note" type="text" nz-input formControlName="note" />
-        </nz-form-control>
+    <form nz-form [formGroup]="validateForm" nzSimple nzLabelCol="5" nzControlCol="12" (ngSubmit)="submitForm()">
+      <nz-form-item nzFor="note" nzLabel="Note" nzErrorTip="Please input your username!">
+        <input id="note" type="text" nz-input formControlName="note" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5" nzFor="gender" nzRequired>Gender</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="Please select your gender!">
-          <nz-select
-            id="gender"
-            formControlName="gender"
-            nzPlaceHolder="Select a option and change input text above"
-            (ngModelChange)="genderChange($event)"
-          >
-            <nz-option nzValue="male" nzLabel="male"></nz-option>
-            <nz-option nzValue="female" nzLabel="female"></nz-option>
-          </nz-select>
-        </nz-form-control>
+      <nz-form-item nzFor="gender" nzLabel="Gender" nzErrorTip="Please select your gender!">
+        <nz-select
+          id="gender"
+          formControlName="gender"
+          nzPlaceHolder="Select a option and change input text above"
+          (ngModelChange)="genderChange($event)"
+        >
+          <nz-option nzValue="male" nzLabel="male"></nz-option>
+          <nz-option nzValue="female" nzLabel="female"></nz-option>
+        </nz-select>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-control [nzSpan]="12" [nzOffset]="5">
-          <button nz-button nzType="primary">Submit</button>
-        </nz-form-control>
+      <nz-form-item [nzControlCol]="{ span: 12, offset: 5 }">
+        <button nz-button nzType="primary">Submit</button>
       </nz-form-item>
     </form>
   `,

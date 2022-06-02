@@ -4,32 +4,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzRequired nzFor="name">Name</nz-form-label>
-        <nz-form-control [nzSpan]="8" nzErrorTip="Please input your name">
-          <input type="text" nz-input formControlName="name" placeholder="Please input your name" />
-        </nz-form-control>
+    <form nz-form [formGroup]="validateForm" nzSimple nzLabelCol="4" nzControlCol="8" (ngSubmit)="submitForm()">
+      <nz-form-item nzRequired nzFor="name" nzLabel="Name" nzErrorTip="Please input your name">
+        <input type="text" nz-input formControlName="name" placeholder="Please input your name" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">
-          Nickname
-        </nz-form-label>
-        <nz-form-control [nzSpan]="8" nzErrorTip="Please input your nickname">
-          <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
-        </nz-form-control>
+      <nz-form-item
+        [nzRequired]="validateForm.get('required')?.value"
+        nzFor="nickname"
+        nzLabel="Nickname"
+        nzErrorTip="Please input your nickname"
+      >
+        <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">
-            Nickname is required
-          </label>
-        </nz-form-control>
+      <nz-form-item [nzControlCol]="{ span: 8, offset: 4 }">
+        <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">
+          Nickname is required
+        </label>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <button nz-button nzType="primary">Check</button>
-        </nz-form-control>
+      <nz-form-item [nzControlCol]="{ span: 8, offset: 4 }">
+        <button nz-button nzType="primary">Check</button>
       </nz-form-item>
     </form>
   `

@@ -4,7 +4,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 
-import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
+import { NzFormLabelComponent } from './form-label.component';
+import { NzFormTooltipIcon } from './types';
 
 const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormLabelComponent] };
 

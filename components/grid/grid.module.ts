@@ -9,12 +9,13 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzColPropertyDirective } from './col-property.directive';
 import { NzColDirective } from './col.directive';
 import { NzRowDirective } from './row.directive';
 
 @NgModule({
-  declarations: [NzColDirective, NzRowDirective],
-  exports: [NzColDirective, NzRowDirective],
+  declarations: [NzColPropertyDirective, NzColDirective, NzRowDirective],
+  exports: [NzColPropertyDirective, NzColDirective, NzRowDirective],
   imports: [BidiModule, CommonModule, LayoutModule, PlatformModule]
 })
 export class NzGridModule {}
