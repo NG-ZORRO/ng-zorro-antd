@@ -104,11 +104,11 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   assertIconOnly(element: HTMLButtonElement, renderer: Renderer2): void {
     const listOfNode = Array.from(element.childNodes);
     const iconCount = listOfNode.filter(
-      node => node.nodeName === 'span' && (node as HTMLSpanElement).classList.contains('ant-icon')
+      node => node.nodeName === 'SPAN' && (node as HTMLSpanElement).classList.contains('anticon')
     ).length;
     const noText = listOfNode.every(node => node.nodeName !== '#text');
     const noSpan = listOfNode.every(
-      node => node.nodeName !== 'SPAN' || !(node as HTMLSpanElement).classList.contains('ant-icon')
+      node => node.nodeName !== 'SPAN' || (node as HTMLSpanElement).classList.contains('anticon')
     );
     const isIconOnly = noSpan && noText && iconCount >= 1;
     if (isIconOnly) {
