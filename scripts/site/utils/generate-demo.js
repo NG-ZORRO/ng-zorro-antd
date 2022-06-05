@@ -131,9 +131,9 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
 	${hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : ''}
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<i nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
+		<span nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
       language === 'zh' ? '展开全部代码' : 'Expand All Code'
-    }" (click)="expandAllCode()"></i>
+    }" (click)="expandAllCode()"></span>
 	</h2>
 </section>${example}`;
   } else {

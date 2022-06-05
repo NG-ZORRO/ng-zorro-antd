@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       <nz-option nzLabel="Android" nzValue="android"></nz-option>
     </nz-select>
     <ng-template #defaultTemplate let-selected>
-      <i nz-icon [nzType]="selected.nzValue"></i>
+      <span nz-icon [nzType]="selected.nzValue"></span>
       {{ selected.nzLabel }}
     </ng-template>
     <br />
@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
     </nz-select>
     <ng-template #multipleTemplate let-selected>
       <div class="ant-select-selection-item-content">
-        <i nz-icon [nzType]="selected.nzValue"></i>
+        <span nz-icon [nzType]="selected.nzValue"></span>
         {{ selected.nzLabel }}
       </div>
     </ng-template>

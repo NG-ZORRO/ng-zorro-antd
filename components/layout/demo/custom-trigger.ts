@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>File</span>
           </li>
         </ul>

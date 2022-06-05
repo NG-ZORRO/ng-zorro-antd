@@ -77,7 +77,7 @@ import { NzTransferListComponent } from './transfer-list.component';
         [nzType]="'primary'"
         [nzSize]="'small'"
       >
-        <i nz-icon nzType="left"></i>
+        <span nz-icon nzType="left"></span>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
       <button
@@ -88,7 +88,7 @@ import { NzTransferListComponent } from './transfer-list.component';
         [nzType]="'primary'"
         [nzSize]="'small'"
       >
-        <i nz-icon nzType="right"></i>
+        <span nz-icon nzType="right"></span>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
     </div>
@@ -101,7 +101,7 @@ import { NzTransferListComponent } from './transfer-list.component';
         [nzType]="'primary'"
         [nzSize]="'small'"
       >
-        <i nz-icon nzType="left"></i>
+        <span nz-icon nzType="left"></span>
         <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
       <button
@@ -112,7 +112,7 @@ import { NzTransferListComponent } from './transfer-list.component';
         [nzType]="'primary'"
         [nzSize]="'small'"
       >
-        <i nz-icon nzType="right"></i>
+        <span nz-icon nzType="right"></span>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
     </div>

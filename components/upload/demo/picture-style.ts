@@ -12,7 +12,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
         [(nzFileList)]="fileList1"
       >
         <button nz-button>
-          <i nz-icon nzType="upload"></i>
+          <span nz-icon nzType="upload"></span>
           Upload
         </button>
       </nz-upload>
@@ -28,7 +28,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
       >
         <button nz-button>
           <span>
-            <i nz-icon nzType="upload"></i>
+            <span nz-icon nzType="upload"></span>
             Upload
           </span>
         </button>

@@ -63,10 +63,10 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 ```html
 <li nz-submenu nzTitle="SubTitle" nzIcon="appstore"></li>
 
-<li nz-submenu><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
+<li nz-submenu><span title><span nz-icon nzType="appstore"></span><span>SubTitle</span></span></li>
 
 <li nz-submenu [nzTitle]="titleTpl"></li>
-<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
+<ng-template #titleTpl><span nz-icon nzType="appstore"></span><span>SubTitle</span></ng-template>
 ```
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -86,10 +86,10 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 ```html
 <li nz-menu-group nzTitle="SubTitle" nzIcon="appstore"></li>
 
-<li nz-menu-group><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
+<li nz-menu-group><span title><span nz-icon nzType="appstore"></span><span>SubTitle</span></span></li>
 
 <li nz-menu-group [nzTitle]="titleTpl"></li>
-<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
+<ng-template #titleTpl><span nz-icon nzType="appstore"></span><span>SubTitle</span></ng-template>
 ```
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

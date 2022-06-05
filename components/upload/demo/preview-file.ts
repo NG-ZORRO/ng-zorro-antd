@@ -15,7 +15,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
         [nzPreviewFile]="previewFile"
       >
         <button nz-button>
-          <i nz-icon nzType="upload"></i>
+          <span nz-icon nzType="upload"></span>
           Upload
         </button>
       </nz-upload>

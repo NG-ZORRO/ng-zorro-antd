@@ -5,11 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <ul nz-menu nzMode="horizontal">
       <li nz-menu-item nzSelected>
-        <i nz-icon nzType="mail"></i>
+        <span nz-icon nzType="mail"></span>
         Navigation One
       </li>
       <li nz-menu-item nzDisabled>
-        <i nz-icon nzType="appstore"></i>
+        <span nz-icon nzType="appstore"></span>
         Navigation Two
       </li>
       <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">

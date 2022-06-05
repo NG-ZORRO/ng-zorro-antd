@@ -8,35 +8,35 @@ import { Component } from '@angular/core';
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>nav 1</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="video-camera"></i>
+            <span nz-icon nzType="video-camera"></span>
             <span>nav 2</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="upload"></i>
+            <span nz-icon nzType="upload"></span>
             <span>nav 3</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="bar-chart"></i>
+            <span nz-icon nzType="bar-chart"></span>
             <span>nav 4</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="cloud-o"></i>
+            <span nz-icon nzType="cloud-o"></span>
             <span>nav 5</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="appstore-o"></i>
+            <span nz-icon nzType="appstore-o"></span>
             <span>nav 6</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="team"></i>
+            <span nz-icon nzType="team"></span>
             <span>nav 7</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="shop"></i>
+            <span nz-icon nzType="shop"></span>
             <span>nav 8</span>
           </li>
         </ul>

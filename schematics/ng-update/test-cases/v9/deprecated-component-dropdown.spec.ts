@@ -63,7 +63,7 @@ describe('dropdown components migration', () => {
       @Component({
         template: \`
         <nz-dropdown>
-          <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
+          <a nz-dropdown> Hover me <span nz-icon type="down"></span> </a>
           <ul nz-menu nzSelectable>
             <li nz-menu-item>
               <a>1st menu item</a>

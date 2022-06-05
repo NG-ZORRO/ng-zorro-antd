@@ -71,7 +71,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       <input type="text" nz-input placeholder="Search" ngModel (ngModelChange)="searchValue$.next($event)" />
     </nz-input-group>
     <ng-template #suffixIcon>
-      <i nz-icon nzType="search"></i>
+      <span nz-icon nzType="search"></span>
     </ng-template>
 
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
@@ -82,7 +82,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
       </nz-tree-node>

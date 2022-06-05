@@ -62,7 +62,7 @@ To solve this, it is recommended to use a `FactoryProvider` instead of a `ValueP
   template: `
     <ng-template #nzIndicatorTpl>
       <span class="ant-spin-dot">
-        <i nz-icon [nzType]="'loading'"></i>
+        <span nz-icon [nzType]="'loading'"></span>
       </span>
     </ng-template>
   `

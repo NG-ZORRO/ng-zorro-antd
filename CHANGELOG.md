@@ -1292,8 +1292,8 @@ docs: fix icon English doc
 * build: fix generate-iframe script
 
 * style: fix lint
-* **icon:** - `i[nz-icon]`:  `twoToneColor` `theme` `spin` `iconfont` `type` inputs has been removed, use `nzTwoToneColor` `nzTheme` `nzSpin` `nzIconfont` `nzType` instead.
-- `i.anticon` selector has been removed, use `i[nz-icon]` instead.
+* **icon:** - `span[nz-icon]`:  `twoToneColor` `theme` `spin` `iconfont` `type` inputs has been removed, use `nzTwoToneColor` `nzTheme` `nzSpin` `nzIconfont` `nzType` instead.
+- `i.anticon` selector has been removed, use `span[nz-icon]` instead.
 * **calendar:** `<nz-calendar>` `nzCard` input has been removed, use `nzFullscreen` instead.
 * **tooltip,popover,popconfirm:** `<nz-tooltip>` `<nz-popover>` `<nz-popconfirm>` components has been removed, use its directives instead.
 

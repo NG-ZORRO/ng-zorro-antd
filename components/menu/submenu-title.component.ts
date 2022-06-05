@@ -28,7 +28,7 @@ import { NzMenuModeType } from './menu.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></i>
+    <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></span>
     <ng-container *nzStringTemplateOutlet="nzTitle">
       <span>{{ nzTitle }}</span>
     </ng-container>

@@ -122,7 +122,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
             <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
           </span>
           <ng-template #defaultSeparator>
-            <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+            <span nz-icon nzType="swap-right" nzTheme="outline"></span>
           </ng-template>
         </div>
         <div class="{{ prefixCls }}-input">
@@ -154,11 +154,11 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     <ng-template #tplRightRest>
       <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-        <i nz-icon nzType="close-circle" nzTheme="fill"></i>
+        <span nz-icon nzType="close-circle" nzTheme="fill"></span>
       </span>
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
-          <i nz-icon [nzType]="suffixIcon"></i>
+          <span nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
       </span>
     </ng-template>

@@ -117,7 +117,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           <i *ngIf="isLoading" nz-icon nzType="loading"></i>
         </span>
         <span class="ant-select-clear" *ngIf="clearIconVisible">
-          <i nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></i>
+          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
         </span>
       </ng-container>
       <ng-content></ng-content>

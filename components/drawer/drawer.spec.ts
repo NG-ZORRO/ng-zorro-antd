@@ -765,7 +765,7 @@ describe('NzDrawerService', () => {
 @Component({
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #closeIconTemplate><i nz-icon nzType="close-circle" nzTheme="outline"></i></ng-template>
+    <ng-template #closeIconTemplate><span nz-icon nzType="close-circle" nzTheme="outline"></span></ng-template>
     <ng-template #titleTemplate>
       <span class="custom-title">title</span>
       <button class="close-btn"></button>

@@ -61,7 +61,7 @@ describe('icon migration', () => {
       writeFile('/index.ts', `
         import {Component} from '@angular/core';
         @Component({template: \`
-          <i nz-icon [iconfont]="'value'" [spin]="true" [type]="'play'" theme="o"></i>
+          <span nz-icon [iconfont]="'value'" [spin]="true" [type]="'play'" theme="o"></span>
         \`})
         export class MyComp {
         }
@@ -88,7 +88,7 @@ describe('icon migration', () => {
       await runMigration();
 
       expect(warnOutput).toContain( '/index.ts@5:14 - Found deprecated css selector "i.anticon" component. ' +
-        'Use "i[nz-icon]" to instead please.');
+        'Use "span[nz-icon]" to instead please.');
     });
 
   });

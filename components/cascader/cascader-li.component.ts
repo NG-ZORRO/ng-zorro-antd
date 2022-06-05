@@ -40,7 +40,7 @@ import { NzCascaderOption } from './typings';
       <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
       <ng-template #icon>
         <ng-container *nzStringTemplateOutlet="expandIcon">
-          <i nz-icon [nzType]="$any(expandIcon)"></i>
+          <span nz-icon [nzType]="$any(expandIcon)"></span>
         </ng-container>
       </ng-template>
     </div>

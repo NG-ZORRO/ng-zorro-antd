@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
         <button nz-button>Operation</button>
         <button nz-button nzType="primary">Primary</button>
         <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
-          <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
+          <span nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
         </button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>

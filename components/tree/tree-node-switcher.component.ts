@@ -36,7 +36,7 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
       </ng-container>
     </ng-container>
     <ng-template #loadingTemplate>
-      <i nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
+      <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

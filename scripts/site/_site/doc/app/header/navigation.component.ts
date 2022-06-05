@@ -27,7 +27,7 @@ const CNMirrorSite = 'ng-zorro.gitee.io';
     </li>
     <ng-container *ngIf="!isMobile && responsive === 'crowded'">
       <li nz-submenu [nzTitle]="additionalTitle" nzMenuClassName="top-menu-additional">
-        <ng-template #additionalTitle><i nz-icon nzType="unordered-list" nzTheme="outline"></i></ng-template>
+        <ng-template #additionalTitle><span nz-icon nzType="unordered-list" nzTheme="outline"></span></ng-template>
         <ul>
           <ng-container [ngTemplateOutlet]="additionalItems"></ng-container>
         </ul>

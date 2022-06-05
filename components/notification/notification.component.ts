@@ -73,11 +73,11 @@ import { NzNotificationData } from './typings';
         <span class="ant-notification-notice-close-x">
           <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">
             <ng-container *nzStringTemplateOutlet="instance.options?.nzCloseIcon; let closeIcon">
-              <i nz-icon [nzType]="closeIcon"></i>
+              <span nz-icon [nzType]="closeIcon"></span>
             </ng-container>
           </ng-container>
           <ng-template #iconTpl>
-            <i nz-icon nzType="close" class="ant-notification-close-icon"></i>
+            <span nz-icon nzType="close" class="ant-notification-close-icon"></span>
           </ng-template>
         </span>
       </a>

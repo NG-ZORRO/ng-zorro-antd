@@ -11,7 +11,7 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
       (nzChange)="handleChange($event)"
     >
       <button nz-button>
-        <i nz-icon nzType="upload"></i>
+        <span nz-icon nzType="upload"></span>
         Upload
       </button>
     </nz-upload>
