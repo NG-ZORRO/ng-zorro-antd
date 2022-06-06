@@ -384,7 +384,7 @@ export class NzCascaderComponent
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent,
+    @Optional() public nzFormControlComponent: NzFormControlComponent,
     @Host() @Optional() public noAnimation: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;

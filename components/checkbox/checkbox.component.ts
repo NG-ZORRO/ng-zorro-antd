@@ -28,6 +28,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 
@@ -68,6 +69,7 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
   ],
   host: {
     class: 'ant-checkbox-wrapper',
+    '[class.ant-checkbox-wrapper-in-form-item]': '!!nzFormControlComponent',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-rtl]': `dir === 'rtl'`
   }
@@ -135,7 +137,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Optional() public nzFormControlComponent: NzFormControlComponent
   ) {}
 
   ngOnInit(): void {
