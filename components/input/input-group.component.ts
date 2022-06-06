@@ -13,7 +13,6 @@ import {
   ContentChildren,
   Directive,
   ElementRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -57,11 +56,12 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
         [template]="nzAddOnBefore"
       ></span>
       <span
-        *ngIf="isAffix; else contentTemplate"
+        *ngIf="isAffix || isFeedback; else contentTemplate"
         class="ant-input-affix-wrapper"
         [class.ant-input-affix-wrapper-disabled]="disabled"
         [class.ant-input-affix-wrapper-sm]="isSmall"
         [class.ant-input-affix-wrapper-lg]="isLarge"
+        [ngClass]="affixInGroupStatusCls"
       >
         <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
       </span>
@@ -88,13 +88,13 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       <span
-        *ngIf="nzSuffix || nzSuffixIcon || (hasFeedback && !!status)"
+        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
         nz-input-group-slot
         type="suffix"
         [icon]="nzSuffixIcon"
         [template]="nzSuffix"
       >
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
       </span>
     </ng-template>
     <ng-template #contentTemplate>
@@ -145,6 +145,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   isSmall = false;
   isAffix = false;
   isAddOn = false;
+  isFeedback = false;
   focused = false;
   disabled = false;
   dir: Direction = 'ltr';
@@ -153,6 +154,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   status: NzValidateStatus = '';
   affixStatusCls: NgClassInterface = {};
   groupStatusCls: NgClassInterface = {};
+  affixInGroupStatusCls: NgClassInterface = {};
   hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
 
@@ -162,7 +164,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent
+    @Optional() private nzFormControlComponent: NzFormControlComponent
   ) {}
 
   updateChildrenInputSize(): void {
@@ -249,11 +251,29 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
     this.status = status;
     this.hasFeedback = hasFeedback;
-    this.cdr.markForCheck();
+    this.isFeedback = !!status && hasFeedback;
+    const baseAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
+    this.isAffix = baseAffix || (!this.isAddOn && hasFeedback);
+    this.affixInGroupStatusCls =
+      this.isAffix || this.isFeedback
+        ? (this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, status, hasFeedback))
+        : {};
+    this.cdr.detectChanges();
     // render status if nzStatus is set
-    this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, status, hasFeedback);
-    this.groupStatusCls = getStatusClassNames(`${this.prefixCls}-group-wrapper`, status, hasFeedback);
-    const statusCls = this.isAffix ? this.affixStatusCls : this.isAddOn ? this.groupStatusCls : {};
+    this.affixStatusCls = getStatusClassNames(
+      `${this.prefixCls}-affix-wrapper`,
+      this.isAddOn ? '' : status,
+      this.isAddOn ? false : hasFeedback
+    );
+    this.groupStatusCls = getStatusClassNames(
+      `${this.prefixCls}-group-wrapper`,
+      this.isAddOn ? status : '',
+      this.isAddOn ? hasFeedback : false
+    );
+    const statusCls = {
+      ...this.affixStatusCls,
+      ...this.groupStatusCls
+    };
     Object.keys(statusCls).forEach(status => {
       if (statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);

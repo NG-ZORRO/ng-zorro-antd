@@ -7,7 +7,6 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   Directive,
   ElementRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -67,7 +66,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     @Optional() @Self() public ngControl: NgControl,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent,
+    @Optional() private nzFormControlComponent: NzFormControlComponent,
     @Optional() private directionality: Directionality
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
