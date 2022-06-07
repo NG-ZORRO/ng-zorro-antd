@@ -38,25 +38,27 @@ import { PaginationItemRenderContext } from './pagination.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #containerTemplate>
-      <li class="ant-pagination-total-text" *ngIf="showTotal">
-        <ng-template
-          [ngTemplateOutlet]="showTotal"
-          [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
-        ></ng-template>
-      </li>
-      <li
-        *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
-        nz-pagination-item
-        [locale]="locale"
-        [type]="page.type"
-        [index]="page.index"
-        [disabled]="!!page.disabled"
-        [itemRender]="itemRender"
-        [active]="pageIndex === page.index"
-        (gotoIndex)="jumpPage($event)"
-        (diffIndex)="jumpDiff($event)"
-        [direction]="dir"
-      ></li>
+      <ul class="ant-pagination" unselectable="unselectable">
+        <li class="ant-pagination-total-text" *ngIf="showTotal">
+          <ng-template
+            [ngTemplateOutlet]="showTotal"
+            [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
+          ></ng-template>
+        </li>
+        <li
+          *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
+          nz-pagination-item
+          [locale]="locale"
+          [type]="page.type"
+          [index]="page.index"
+          [disabled]="!!page.disabled"
+          [itemRender]="itemRender"
+          [active]="pageIndex === page.index"
+          (gotoIndex)="jumpPage($event)"
+          (diffIndex)="jumpDiff($event)"
+          [direction]="dir"
+        ></li>
+      </ul>
       <div
         nz-pagination-options
         *ngIf="showQuickJumper || showSizeChanger"
