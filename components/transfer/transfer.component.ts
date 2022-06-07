@@ -24,10 +24,18 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NgStyleInterface,
+  NzSafeAny,
+  NzStatus,
+  NzValidateStatus
+} from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
@@ -188,7 +196,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -296,7 +304,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private i18n: NzI18nService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Optional() private nzFormControlComponent: NzFormControlComponent
   ) {}
 
   private markForCheckAllList(): void {
@@ -330,6 +339,17 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.nzFormControlComponent?.formControlChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
@@ -358,7 +378,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
       this.handleNzSelectedKeys();
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
@@ -367,9 +387,12 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);
