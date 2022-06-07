@@ -38,7 +38,7 @@ import { PaginationItemRenderContext } from './pagination.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #containerTemplate>
-      <ul class="ant-pagination" unselectable="unselectable">
+      <ul>
         <li class="ant-pagination-total-text" *ngIf="showTotal">
           <ng-template
             [ngTemplateOutlet]="showTotal"
