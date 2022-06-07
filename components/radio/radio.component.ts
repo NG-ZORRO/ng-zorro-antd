@@ -27,6 +27,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
@@ -68,6 +69,7 @@ import { NzRadioService } from './radio.service';
     }
   ],
   host: {
+    '[class.ant-radio-wrapper-in-form-item]': '!!nzFormControlComponent',
     '[class.ant-radio-wrapper]': '!isRadioButton',
     '[class.ant-radio-button-wrapper]': 'isRadioButton',
     '[class.ant-radio-wrapper-checked]': 'isChecked && !isRadioButton',
@@ -111,7 +113,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
-    @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null
+    @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null,
+    @Optional() public nzFormControlComponent: NzFormControlComponent
   ) {}
 
   setDisabledState(disabled: boolean): void {
