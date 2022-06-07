@@ -17,6 +17,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { ɵNzTransitionPatchModule as NzTransitionPatchModule } from 'ng-zorro-antd/core/transition-patch';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -47,6 +48,7 @@ import { NzSelectComponent } from './select.component';
     NzOverlayModule,
     NzNoAnimationModule,
     NzTransitionPatchModule,
+    NzFormModule,
     ScrollingModule,
     A11yModule
   ],
