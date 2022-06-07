@@ -27,7 +27,7 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 
 - The first level navigation and the last level navigation should be distincted by visualization;
 - The current item should have the highest priority of visualization;
-- When the current navigation item is collapsed, the stlye of the current navigation item will be applied to its parent level;
+- When the current navigation item is collapsed, the style of the current navigation item will be applied to its parent level;
 - The left side navigation bar has support for both the accordion and expanding styles, you can choose the one that fits your case best.
 
 ## Visualization rules
