@@ -58,22 +58,22 @@ import { PaginationItemRenderContext } from './pagination.types';
           (diffIndex)="jumpDiff($event)"
           [direction]="dir"
         ></li>
+        <li
+          nz-pagination-options
+          *ngIf="showQuickJumper || showSizeChanger"
+          [total]="total"
+          [locale]="locale"
+          [disabled]="disabled"
+          [nzSize]="nzSize"
+          [showSizeChanger]="showSizeChanger"
+          [showQuickJumper]="showQuickJumper"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          (pageIndexChange)="onPageIndexChange($event)"
+          (pageSizeChange)="onPageSizeChange($event)"
+        ></li>
       </ul>
-      <div
-        nz-pagination-options
-        *ngIf="showQuickJumper || showSizeChanger"
-        [total]="total"
-        [locale]="locale"
-        [disabled]="disabled"
-        [nzSize]="nzSize"
-        [showSizeChanger]="showSizeChanger"
-        [showQuickJumper]="showQuickJumper"
-        [pageIndex]="pageIndex"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        (pageIndexChange)="onPageIndexChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      ></div>
     </ng-template>
   `
 })
