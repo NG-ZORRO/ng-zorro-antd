@@ -30,7 +30,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, of as observableOf, Subject } from 'rxjs';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -50,10 +50,12 @@ import {
   NgStyleInterface,
   NzSizeLDSType,
   NzStatus,
+  NzValidateStatus,
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -180,7 +182,15 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       ></nz-select-item>
 
       <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
-
+      <nz-select-arrow
+        *ngIf="!isMultiple || (hasFeedback && !!status)"
+        [showArrow]="!isMultiple"
+        [feedbackIcon]="feedbackIconTpl"
+      >
+        <ng-template #feedbackIconTpl>
+          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+        </ng-template>
+      </nz-select-arrow>
       <nz-select-clear
         *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length"
         (clear)="onClearSelection()"
@@ -202,6 +212,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   ],
   host: {
     class: 'ant-select',
+    '[class.ant-select-in-form-item]': '!!nzFormControlComponent',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
@@ -254,7 +265,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzVirtualHeight: string | null = null;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzNotFoundContent?: string;
-  @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
+  @Input() nzNodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
@@ -296,7 +307,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   prefixCls: string = 'ant-select';
   statusCls: NgClassInterface = {};
-  nzHasFeedback: boolean = false;
+  status: NzValidateStatus = '';
+  hasFeedback: boolean = false;
 
   dropdownClassName = TREE_SELECT_DEFAULT_CLASS;
   triggerWidth?: number;
@@ -332,6 +344,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private elementRef: ElementRef,
     @Optional() private directionality: Directionality,
     private focusMonitor: FocusMonitor,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
@@ -341,6 +354,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   ngOnInit(): void {
+    this.nzFormControlComponent?.formControlChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.isDestroy = false;
     this.subscribeSelectionChange();
 
@@ -383,9 +407,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.closeDropDown();
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);
@@ -405,7 +433,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.dropdownClassName = className ? `${TREE_SELECT_DEFAULT_CLASS} ${className}` : TREE_SELECT_DEFAULT_CLASS;
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
