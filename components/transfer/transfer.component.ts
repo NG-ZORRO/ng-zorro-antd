@@ -305,7 +305,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Optional() private nzFormControlComponent: NzFormControlComponent
+    @Optional() private nzFormControlComponent?: NzFormControlComponent
   ) {}
 
   private markForCheckAllList(): void {

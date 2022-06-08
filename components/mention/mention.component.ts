@@ -23,6 +23,7 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  Host,
   Inject,
   Input,
   NgZone,
@@ -40,13 +41,13 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { fromEvent, merge, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -176,19 +177,21 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     private ngZone: NgZone,
     @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
     @Optional() private directionality: Directionality,
-    @Optional() public nzFormControlComponent: NzFormControlComponent,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService
+    private destroy$: NzDestroyService,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {}
 
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

@@ -32,7 +32,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -49,7 +49,7 @@ import {
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -384,8 +384,9 @@ export class NzCascaderComponent
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Optional() public nzFormControlComponent: NzFormControlComponent,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
@@ -396,6 +397,7 @@ export class NzCascaderComponent
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

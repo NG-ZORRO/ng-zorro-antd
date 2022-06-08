@@ -138,7 +138,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
-    @Optional() public nzFormControlComponent: NzFormControlComponent
+    @Optional() public nzFormControlComponent?: NzFormControlComponent
   ) {}
 
   ngOnInit(): void {

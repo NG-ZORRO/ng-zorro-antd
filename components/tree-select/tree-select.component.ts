@@ -55,7 +55,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -344,8 +344,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private elementRef: ElementRef,
     @Optional() private directionality: Directionality,
     private focusMonitor: FocusMonitor,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
     @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {
     super(nzTreeService);
 
@@ -356,6 +357,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

@@ -51,6 +51,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       <span
         *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
         nz-input-group-slot
+        nz-form-no-status
         type="addon"
         [icon]="nzAddOnBeforeIcon"
         [template]="nzAddOnBefore"
@@ -68,6 +69,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       <span
         *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
         nz-input-group-slot
+        nz-form-no-status
         type="addon"
         [icon]="nzAddOnAfterIcon"
         [template]="nzAddOnAfter"
@@ -162,7 +164,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
-    @Optional() private nzFormControlComponent: NzFormControlComponent
+    @Optional() private nzFormControlComponent?: NzFormControlComponent
   ) {}
 
   updateChildrenInputSize(): void {

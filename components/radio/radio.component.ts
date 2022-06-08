@@ -114,7 +114,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
     @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null,
-    @Optional() public nzFormControlComponent: NzFormControlComponent
+    @Optional() public nzFormControlComponent?: NzFormControlComponent
   ) {}
 
   setDisabledState(disabled: boolean): void {

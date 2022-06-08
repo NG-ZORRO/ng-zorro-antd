@@ -41,7 +41,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -59,7 +59,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -614,8 +614,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     private platform: Platform,
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective,
-    @Host() @Optional() public nzFormControlComponent: NzFormControlComponent
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
@@ -624,6 +625,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

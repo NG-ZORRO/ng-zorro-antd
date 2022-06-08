@@ -14,6 +14,7 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
+  Host,
   Input,
   NgZone,
   OnChanges,
@@ -28,7 +29,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
@@ -41,7 +42,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'nz-input-number',
@@ -402,13 +403,15 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private focusMonitor: FocusMonitor,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Optional() public nzFormControlComponent: NzFormControlComponent,
-    private destroy$: NzDestroyService
+    private destroy$: NzDestroyService,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {}
 
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

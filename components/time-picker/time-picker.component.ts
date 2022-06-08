@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -27,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
@@ -36,7 +37,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
@@ -332,13 +333,15 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private cdr: ChangeDetectorRef,
     private dateHelper: DateHelperService,
     private platform: Platform,
-    @Optional() public nzFormControlComponent: NzFormControlComponent,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Optional() public nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {}
 
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

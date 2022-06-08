@@ -8,6 +8,7 @@ import {
   ComponentRef,
   Directive,
   ElementRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -24,7 +25,7 @@ import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/form/form-item-feedback-icon.component';
 
 @Directive({
@@ -72,8 +73,9 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected hostView: ViewContainerRef,
-    @Optional() private nzFormControlComponent: NzFormControlComponent,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Optional() private nzFormControlComponent?: NzFormControlComponent,
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
@@ -81,6 +83,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

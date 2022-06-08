@@ -34,7 +34,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, merge } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -51,7 +51,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
@@ -537,8 +537,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     private platform: Platform,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
     @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
   ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
@@ -611,6 +612,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
+        filter(() => !!this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
