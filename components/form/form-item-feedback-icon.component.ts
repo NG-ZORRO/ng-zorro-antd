@@ -39,11 +39,15 @@ const iconTypeMap = {
 })
 export class NzFormItemFeedbackIconComponent implements OnChanges {
   @Input() status: NzValidateStatus = '';
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(public cdr: ChangeDetectorRef) {}
 
   iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
 
   ngOnChanges(_changes: SimpleChanges): void {
+    this.updateIcon();
+  }
+
+  updateIcon(): void {
     this.iconType = this.status ? iconTypeMap[this.status] : null;
     this.cdr.markForCheck();
   }

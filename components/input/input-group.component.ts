@@ -88,13 +88,12 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       <span
-        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
+        *ngIf="nzSuffix || nzSuffixIcon"
         nz-input-group-slot
         type="suffix"
         [icon]="nzSuffixIcon"
         [template]="nzSuffix"
       >
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
       </span>
     </ng-template>
     <ng-template #contentTemplate>
@@ -151,7 +150,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   dir: Direction = 'ltr';
   // status
   prefixCls: string = 'ant-input';
-  status: NzValidateStatus = '';
   affixStatusCls: NgClassInterface = {};
   groupStatusCls: NgClassInterface = {};
   affixInGroupStatusCls: NgClassInterface = {};
@@ -249,7 +247,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
-    this.status = status;
     this.hasFeedback = hasFeedback;
     this.isFeedback = !!status && hasFeedback;
     const baseAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
@@ -258,7 +255,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
       this.isAffix || this.isFeedback
         ? (this.affixStatusCls = getStatusClassNames(`${this.prefixCls}-affix-wrapper`, status, hasFeedback))
         : {};
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
     // render status if nzStatus is set
     this.affixStatusCls = getStatusClassNames(
       `${this.prefixCls}-affix-wrapper`,

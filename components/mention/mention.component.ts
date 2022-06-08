@@ -101,9 +101,11 @@ export type MentionPlacement = 'top' | 'bottom';
         </ul>
       </div>
     </ng-template>
-    <span class="ant-mentions-suffix" *ngIf="hasFeedback && !!status">
-      <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
-    </span>
+    <nz-form-item-feedback-icon
+      class="ant-mentions-suffix"
+      *ngIf="hasFeedback && !!status"
+      [status]="status"
+    ></nz-form-item-feedback-icon>
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

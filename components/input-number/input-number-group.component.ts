@@ -88,13 +88,12 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
       ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       <span
-        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
+        *ngIf="nzSuffix || nzSuffixIcon"
         nz-input-number-group-slot
         type="suffix"
         [icon]="nzSuffixIcon"
         [template]="nzSuffix"
       >
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
       </span>
     </ng-template>
     <ng-template #contentTemplate>
@@ -142,7 +141,6 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   dir: Direction = 'ltr';
   // status
   prefixCls: string = 'ant-input-number';
-  status: NzValidateStatus = '';
   affixStatusCls: NgClassInterface = {};
   groupStatusCls: NgClassInterface = {};
   affixInGroupStatusCls: NgClassInterface = {};
@@ -245,7 +243,6 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
-    this.status = status;
     this.hasFeedback = hasFeedback;
     this.isFeedback = !!status && hasFeedback;
     const baseAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
