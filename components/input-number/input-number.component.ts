@@ -85,6 +85,9 @@ import { NzFormControlComponent } from 'ng-zorro-antd/form';
         (ngModelChange)="onModelChange($event)"
       />
     </div>
+    <span class="ant-input-number-suffix" *ngIf="hasFeedback && !!status">
+      <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+    </span>
   `,
   providers: [
     {
