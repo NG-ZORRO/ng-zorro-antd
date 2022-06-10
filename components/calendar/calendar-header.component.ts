@@ -7,14 +7,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnInit,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
+import { DateHelperService, NZ_DATE_FORMATS, NzDateDisplayFormats, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
@@ -64,7 +65,7 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
-  @Input() activeDate: CandyDate = new CandyDate();
+  @Input() activeDate: CandyDate = this.candyDate();
 
   @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
@@ -96,7 +97,12 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(
+    private i18n: I18n,
+    private dateHelper: DateHelperService,
+    @Inject(CandyDate) private candyDate: CandyDateFac,
+    @Inject(NZ_DATE_FORMATS) private displayFormats: NzDateDisplayFormats
+  ) {}
 
   ngOnInit(): void {
     this.setUpYears();
@@ -123,7 +129,7 @@ export class NzCalendarHeaderComponent implements OnInit {
 
     for (let i = 0; i < 12; i++) {
       const dateInMonth = this.activeDate.setMonth(i);
-      const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
+      const monthText = this.dateHelper.format(dateInMonth.nativeDate, this.displayFormats.monthLabel!);
       this.months.push({ label: monthText, value: i });
     }
   }

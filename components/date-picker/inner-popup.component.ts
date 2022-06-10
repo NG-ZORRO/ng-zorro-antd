@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   Output,
@@ -15,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -176,6 +177,8 @@ export class InnerPopupComponent implements OnChanges {
 
   prefixCls: string = PREFIX_CLASS;
 
+  constructor(@Inject(CandyDate) private candyDate: CandyDateFac) {}
+
   /**
    * Hide "next" arrow in left panel,
    * hide "prev" arrow in right panel
@@ -192,12 +195,12 @@ export class InnerPopupComponent implements OnChanges {
   }
 
   onSelectTime(date: Date): void {
-    this.selectTime.emit(new CandyDate(date));
+    this.selectTime.emit(this.candyDate(date));
   }
 
   // The value real changed to outside
-  onSelectDate(date: CandyDate | Date): void {
-    const value = date instanceof CandyDate ? date : new CandyDate(date);
+  onSelectDate(date: CandyDate): void {
+    const value = date;
     const timeValue = this.timeOptions && this.timeOptions.nzDefaultOpenValue;
 
     // Display timeValue when value is null
@@ -243,7 +246,7 @@ export class InnerPopupComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeDate && !changes.activeDate.currentValue) {
-      this.activeDate = new CandyDate();
+      this.activeDate = this.candyDate();
     }
     // New Antd vesion has merged 'date' ant 'time' to one panel,
     // So there is not 'time' panel

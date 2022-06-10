@@ -16,6 +16,7 @@ When data is in the form of dates, such as schedules, timetables, prices calenda
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 ```
 
+providing custom date adapter for Jalali and Hijri calendars [here](/docs/i18n/en#provide-custom-dateadapter)
 
 ## API
 

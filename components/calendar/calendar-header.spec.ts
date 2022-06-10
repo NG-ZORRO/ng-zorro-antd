@@ -1,12 +1,12 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
@@ -219,7 +219,9 @@ class NzTestCalendarHeaderFullscreenComponent {
   `
 })
 class NzTestCalendarHeaderActiveDateComponent {
-  activeDate = new CandyDate(new Date(2001, 1, 3));
+  constructor(@Inject(CandyDate) private candyDate: CandyDateFac) {}
+
+  activeDate = this.candyDate(new Date(2001, 1, 3));
 }
 
 @Component({

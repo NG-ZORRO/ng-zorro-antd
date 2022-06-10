@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { ChangeDetectionStrategy, Component, Inject, ViewEncapsulation } from '@angular/core';
+
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NZ_DATE_FORMATS, NzDateDisplayFormats } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
 
@@ -22,8 +24,12 @@ export class YearTableComponent extends AbstractTable {
   override MAX_ROW = 4;
   override MAX_COL = 3;
 
-  constructor(private dateHelper: DateHelperService) {
-    super();
+  constructor(
+    private dateHelper: DateHelperService,
+    @Inject(CandyDate) candyDate: CandyDateFac,
+    @Inject(NZ_DATE_FORMATS) dateFormats: NzDateDisplayFormats
+  ) {
+    super(candyDate, dateFormats);
   }
 
   makeHeadRow(): DateCell[] {
@@ -46,11 +52,11 @@ export class YearTableComponent extends AbstractTable {
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const yearNum = previousYear + yearValue;
         const year = this.activeDate.setYear(yearNum);
-        const content = this.dateHelper.format(year.nativeDate, 'yyyy');
+        const content = this.dateHelper.format(year.nativeDate, this.dateFormats.yearLabel!);
         const isDisabled = this.isDisabledYear(year);
         const cell: YearCell = {
           trackByIndex: colIndex,
-          value: year.nativeDate,
+          value: year,
           isDisabled,
           isSameDecade: yearNum >= startYear && yearNum <= endYear,
           isSelected: yearNum === (this.value && this.value.getYear()),
@@ -61,7 +67,7 @@ export class YearTableComponent extends AbstractTable {
           isFirstCellInPanel: year.getYear() === startYear,
           cellRender: valueFunctionProp(this.cellRender!, year), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, year),
-          onClick: () => this.chooseYear(cell.value.getFullYear()), // don't use yearValue here,
+          onClick: () => this.chooseYear(cell.value.getYear()), // don't use yearValue here,
           onMouseEnter: () => this.cellHover.emit(year)
         };
 

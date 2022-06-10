@@ -3,10 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
-import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
+import {
+  CandyDate,
+  CandyDateFac,
+  cloneDate,
+  CompatibleValue,
+  NormalizedMode,
+  normalizeRangeValue,
+  NzDateAdapter
+} from 'ng-zorro-antd/core/time';
 
 import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
@@ -22,6 +30,8 @@ export class DatePickerService implements OnDestroy {
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
   emitValue$ = new Subject<void>();
   inputPartChange$ = new Subject<RangePartType>();
+
+  constructor(private dateAdapter: NzDateAdapter, @Inject(CandyDate) private candyDate: CandyDateFac) {}
 
   initValue(reset: boolean = false): void {
     if (reset) {
@@ -41,9 +51,9 @@ export class DatePickerService implements OnDestroy {
 
   makeValue(value?: CompatibleDate): CompatibleValue {
     if (this.isRange) {
-      return value ? (value as Date[]).map(val => new CandyDate(val)) : [];
+      return value ? (value as Date[]).map(val => this.candyDate(val)) : [];
     } else {
-      return value ? new CandyDate(value as Date) : null;
+      return value ? this.candyDate(value as Date) : null;
     }
   }
 
@@ -54,7 +64,13 @@ export class DatePickerService implements OnDestroy {
       year: 'decade'
     };
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue(value as CandyDate[], hasTimePicker, parentPanels[mode], this.activeInput);
+      this.activeDate = normalizeRangeValue(
+        this.dateAdapter,
+        value as CandyDate[],
+        hasTimePicker,
+        parentPanels[mode],
+        this.activeInput
+      );
     } else {
       this.activeDate = cloneDate(value);
     }

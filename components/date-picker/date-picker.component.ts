@@ -47,7 +47,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -60,6 +60,8 @@ import {
 import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
+  NZ_DATE_FORMATS,
+  NzDateDisplayFormats,
   NzDatePickerI18nInterface,
   NzDatePickerLangI18nInterface,
   NzI18nService
@@ -564,7 +566,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   private checkValidDate(value: string): CandyDate | null {
-    const date = new CandyDate(this.dateHelper.parseDate(value, this.nzFormat));
+    const date = this.candyDate(this.dateHelper.parseDate(value, this.nzFormat));
 
     if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.nzFormat)) {
       return null;
@@ -610,6 +612,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     private platform: Platform,
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
+    @Inject(CandyDate) private candyDate: CandyDateFac,
+    @Inject(NZ_DATE_FORMATS) private dateFormats: NzDateDisplayFormats,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.document = doc;
@@ -702,10 +706,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   setModeAndFormat(): void {
     const inputFormats: { [key in NzDateMode]?: string } = {
-      year: 'yyyy',
-      month: 'yyyy-MM',
-      week: this.i18n.getDateLocale() ? 'RRRR-II' : 'yyyy-ww', // Format for week
-      date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
+      year: this.dateFormats.yearLabel,
+      month: this.dateFormats.monthYearLabel,
+      week: this.i18n.getDateLocale() ? 'RRRR-II' : this.dateFormats.weekYearLabel, // Format for week
+      date: this.nzShowTime ? this.dateFormats.dateTimeInput : this.dateFormats.dateInput
     };
 
     if (!this.nzMode) {

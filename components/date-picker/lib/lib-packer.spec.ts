@@ -1,9 +1,10 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { candyDateFac } from 'ng-zorro-antd/core/time/candy-date.spec';
+import { NZ_DATE_CONFIG_DEFAULT } from 'ng-zorro-antd/i18n';
+
 import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { DateTableComponent } from './date-table.component';
@@ -79,11 +80,16 @@ describe('Coverage supplements', () => {
   // TODO: Unit test of date-table and month-table
   describe('DateTable', () => {
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n, dateHelper);
+      componentInstance = new DateTableComponent(
+        i18n,
+        dateHelper,
+        candyDateFac,
+        NZ_DATE_CONFIG_DEFAULT.displayFormats!
+      );
     });
 
     it('should cover untouched branches', () => {
-      componentInstance.value = new CandyDate('2018-11-11');
+      componentInstance.value = candyDateFac('2018-11-11');
       componentInstance.showWeek = true;
       const weekRows = componentInstance.makeBodyRows();
       expect(weekRows.length > 0).toBeTruthy();
@@ -92,11 +98,11 @@ describe('Coverage supplements', () => {
 
   describe('MonthTable', () => {
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(dateHelper);
+      componentInstance = new MonthTableComponent(dateHelper, candyDateFac, NZ_DATE_CONFIG_DEFAULT.displayFormats!);
     });
 
     it('should cover untouched branches', () => {
-      componentInstance.value = new CandyDate();
+      componentInstance.value = candyDateFac();
       spyOn(componentInstance, 'render');
       componentInstance.ngOnChanges({ disabledDate: true }); // Fake
       expect(componentInstance.render).toHaveBeenCalled();

@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { ChangeDetectionStrategy, Component, Inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NZ_DATE_FORMATS, NzDateDisplayFormats } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
@@ -22,8 +24,12 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
   override MAX_ROW = 4;
   override MAX_COL = 3;
 
-  constructor(private dateHelper: DateHelperService) {
-    super();
+  constructor(
+    private dateHelper: DateHelperService,
+    @Inject(CandyDate) candyDate: CandyDateFac,
+    @Inject(NZ_DATE_FORMATS) dateFormats: NzDateDisplayFormats
+  ) {
+    super(candyDate, dateFormats);
   }
 
   makeHeadRow(): DateCell[] {
@@ -43,10 +49,10 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
         const isDisabled = this.isDisabledMonth(month);
-        const content = this.dateHelper.format(month.nativeDate, 'MMM');
+        const content = this.dateHelper.format(month.nativeDate, this.dateFormats.monthLabel!);
         const cell: DateCell = {
           trackByIndex: colIndex,
-          value: month.nativeDate,
+          value: month,
           isDisabled,
           isSelected: month.isSameMonth(this.value),
           content,

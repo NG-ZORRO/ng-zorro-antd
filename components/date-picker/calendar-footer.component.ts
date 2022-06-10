@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   Output,
@@ -15,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
@@ -94,7 +95,7 @@ export class CalendarFooterComponent implements OnChanges {
   isTodayDisabled: boolean = false;
   todayTitle: string = '';
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor(private dateHelper: DateHelperService, @Inject(CandyDate) private candyDate: CandyDateFac) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const now: Date = new Date();
@@ -109,7 +110,7 @@ export class CalendarFooterComponent implements OnChanges {
   }
 
   onClickToday(): void {
-    const now: CandyDate = new CandyDate();
+    const now: CandyDate = this.candyDate();
     this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
   }
 }

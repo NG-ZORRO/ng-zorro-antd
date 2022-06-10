@@ -10,6 +10,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -25,6 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   CandyDate,
+  CandyDateFac,
   cloneDate,
   CompatibleValue,
   NormalizedMode,
@@ -183,7 +185,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     public datePickerService: DatePickerService,
     public cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private host: ElementRef<HTMLElement>
+    private host: ElementRef<HTMLElement>,
+    @Inject(CandyDate) private candyDate: CandyDateFac
   ) {}
 
   ngOnInit(): void {
@@ -432,7 +435,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   onClickPresetRange(val: PresetRanges[keyof PresetRanges]): void {
     const value = typeof val === 'function' ? val() : val;
     if (value) {
-      this.datePickerService.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
+      this.datePickerService.setValue([this.candyDate(value[0]), this.candyDate(value[1])]);
       this.datePickerService.emitValue$.next();
     }
   }
@@ -443,7 +446,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   onHoverPresetRange(val: PresetRanges[keyof PresetRanges]): void {
     if (typeof val !== 'function') {
-      this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+      this.hoverValue = [this.candyDate(val[0]), this.candyDate(val[1])];
     }
   }
 
@@ -492,8 +495,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private overrideHms(newValue: CandyDate | null, oldValue: CandyDate | null): CandyDate {
-    newValue = newValue || new CandyDate();
-    oldValue = oldValue || new CandyDate();
+    newValue = newValue || this.candyDate();
+    oldValue = oldValue || this.candyDate();
     return oldValue.setHms(newValue.getHours(), newValue.getMinutes(), newValue.getSeconds());
   }
 }

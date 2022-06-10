@@ -52,7 +52,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
 
         const cell: DecadeCell = {
           trackByIndex: colIndex,
-          value: this.activeDate.setYear(start).nativeDate,
+          value: this.activeDate.setYear(start),
           content,
           title: content,
           isDisabled: false,

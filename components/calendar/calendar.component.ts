@@ -11,6 +11,7 @@ import {
   ContentChild,
   EventEmitter,
   forwardRef,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -25,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, CandyDateFac } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -97,7 +98,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzFullscreen: BooleanInput;
 
-  activeDate: CandyDate = new CandyDate();
+  activeDate: CandyDate = this.candyDate();
   prefixCls: string = 'ant-picker-calendar';
   private destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
@@ -144,7 +145,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality,
+    @Inject(CandyDate) private candyDate: CandyDateFac
+  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
@@ -175,7 +180,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
   }
 
   writeValue(value: Date | null): void {
-    this.updateDate(new CandyDate(value as Date), false);
+    this.updateDate(this.candyDate(value as Date), false);
     this.cdr.markForCheck();
   }
 
@@ -200,7 +205,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzValue) {
-      this.updateDate(new CandyDate(this.nzValue), false);
+      this.updateDate(this.candyDate(this.nzValue), false);
     }
   }
 

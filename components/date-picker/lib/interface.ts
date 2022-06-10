@@ -4,6 +4,8 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export interface PanelSelector {
@@ -15,7 +17,7 @@ export interface PanelSelector {
 
 export interface DateCell {
   trackByIndex: NzSafeAny;
-  value: Date;
+  value: CandyDate;
   content: TemplateRef<Date> | string;
   onClick(): void;
   onMouseEnter(): void;
