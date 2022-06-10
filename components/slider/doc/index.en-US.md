@@ -29,7 +29,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 | `[nzMin]` | The minimum value the slider can slide to. | `number` | `0` |
 | `[nzRange]` | dual thumb mode | `boolean` | `false` |
 | `[nzStep]` | The granularity the slider can step through values. Must greater than 0, and be divided by (max - min) . When  `marks` no null, `step` can be `null`. | `number \| null` | `1` |
-| `[nzTipFormatter]` | Slider will pass its value to `tipFormatter`, and display its value in Tooltip, and hide Tooltip when return value is null. | `(value: number) => string` | - |
+| `[nzTipFormatter]` | Slider will pass its value to `tipFormatter`, and display its value in Tooltip, and hide Tooltip when return value is null. | `(value: number) => string \| TemplateRef<void>` | - |
 | `[ngModel]` | The value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number \| number[]` | - |
 | `[nzVertical]` | If true, the slider will be vertical. | `boolean` | `false` |
 | `[nzReverse]` | Reverse the component | `boolean` | `false` |
