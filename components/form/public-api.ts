@@ -11,3 +11,4 @@ export * from './form-control.component';
 export * from './form-text.component';
 export * from './form-split.component';
 export * from './form-no-status.directive';
+export * from './form-item-feedback-icon.component';

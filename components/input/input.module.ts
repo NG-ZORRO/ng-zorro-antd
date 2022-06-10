@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormItemFeedbackIconComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAutosizeDirective } from './autosize.directive';
@@ -34,6 +34,7 @@ import { NzTextareaCountComponent } from './textarea-count.component';
     NzAutosizeDirective,
     NzInputGroupWhitSuffixOrPrefixDirective
   ],
+  entryComponents: [NzFormItemFeedbackIconComponent],
   imports: [BidiModule, CommonModule, NzIconModule, PlatformModule, NzOutletModule, NzFormModule]
 })
 export class NzInputModule {}

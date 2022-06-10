@@ -25,8 +25,7 @@ import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
-import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/form/form-item-feedback-icon.component';
+import { NzFormControlComponent, NzFormItemFeedbackIconComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
