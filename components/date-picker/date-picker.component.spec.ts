@@ -5,7 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,8 +22,9 @@ import {
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormModule } from '../form';
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
@@ -1193,7 +1194,7 @@ describe('status', () => {
   let fixtureInstance: NzTestDatePickerStatusComponent;
   let datePickerElement!: HTMLElement;
   beforeEach(() => {
-    testBed = createComponentBed(NzTestDatePickerStatusComponent, { imports: [NzDatePickerModule, NzIconModule] });
+    testBed = createComponentBed(NzTestDatePickerStatusComponent, { imports: [NzDatePickerModule, NzIconTestModule] });
     fixture = testBed.fixture;
     fixtureInstance = fixture.componentInstance;
     datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
@@ -1209,6 +1210,47 @@ describe('status', () => {
     fixtureInstance.status = '';
     fixture.detectChanges();
     expect(datePickerElement.classList).not.toContain('ant-picker-status-warning');
+  });
+});
+
+describe('in form', () => {
+  let testBed: ComponentBed<NzTestDatePickerInFormComponent>;
+  let fixture: ComponentFixture<NzTestDatePickerInFormComponent>;
+  let datePickerElement!: HTMLElement;
+  let formGroup: FormGroup;
+  beforeEach(() => {
+    testBed = createComponentBed(NzTestDatePickerInFormComponent, {
+      imports: [NzDatePickerModule, NzIconTestModule, NzFormModule, ReactiveFormsModule, FormsModule]
+    });
+    fixture = testBed.fixture;
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    formGroup = fixture.componentInstance.validateForm;
+    fixture.detectChanges();
+  });
+  it('should classname correct', () => {
+    expect(datePickerElement.classList).not.toContain('ant-picker-status-error');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+
+    formGroup.get('demo')!.markAsDirty();
+    formGroup.get('demo')!.setValue(null);
+    formGroup.get('demo')!.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-status-error');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+    expect(datePickerElement!.querySelector('nz-form-item-feedback-icon')!.className).toContain(
+      'ant-form-item-feedback-icon-error'
+    );
+
+    formGroup.get('demo')!.markAsDirty();
+    formGroup.get('demo')!.setValue(new Date());
+    formGroup.get('demo')!.updateValueAndValidity();
+    fixture.detectChanges();
+    // show success
+    expect(datePickerElement.classList).toContain('ant-picker-status-success');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')!.className).toContain(
+      'ant-form-item-feedback-icon-success'
+    );
   });
 });
 
@@ -1331,4 +1373,22 @@ class NzTestDatePickerComponent {
 })
 class NzTestDatePickerStatusComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-control nzHasFeedback>
+          <nz-date-picker formControlName="demo"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+class NzTestDatePickerInFormComponent {
+  validateForm: FormGroup = this.fb.group({
+    demo: [null, [Validators.required]]
+  });
+  constructor(private fb: FormBuilder) {}
 }

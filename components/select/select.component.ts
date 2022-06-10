@@ -612,7 +612,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   ngOnInit(): void {
     this.nzFormControlComponent?.formControlChanges
       .pipe(
-        filter(() => !!this.noFormStatus),
+        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

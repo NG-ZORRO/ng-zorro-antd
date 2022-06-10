@@ -19,6 +19,7 @@ import {
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionComponent } from './mention.component';
@@ -41,13 +42,15 @@ describe('mention', () => {
           NoopAnimationsModule,
           FormsModule,
           ReactiveFormsModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzFormModule
         ],
         declarations: [
           NzTestSimpleMentionComponent,
           NzTestPropertyMentionComponent,
           NzTestDirMentionComponent,
-          NzTestStatusMentionComponent
+          NzTestStatusMentionComponent,
+          NzTestMentionInFormComponent
         ],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -549,6 +552,35 @@ describe('mention', () => {
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-status-warning');
     });
   });
+
+  describe('in form', () => {
+    let fixture: ComponentFixture<NzTestMentionInFormComponent>;
+    let mention: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestMentionInFormComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
+      expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
+
+      fixture.componentInstance.status = 'success';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-success');
+
+      fixture.componentInstance.feedback = false;
+      fixture.detectChanges();
+      expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+    });
+  });
 });
 
 @Component({
@@ -651,4 +683,22 @@ class NzTestDirMentionComponent {
 })
 class NzTestStatusMentionComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-mention [nzSuggestions]="[]">
+            <textarea rows="1" nzMentionTrigger></textarea>
+          </nz-mention>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+class NzTestMentionInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

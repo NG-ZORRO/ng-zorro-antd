@@ -46,14 +46,6 @@ describe('nz-form-control', () => {
     it('should className correct', () => {
       expect(formControl.nativeElement.classList).toContain('ant-form-item-control');
     });
-    it('should hasFeedback work', () => {
-      expect(formItem.nativeElement.classList).not.toContain('ant-form-item-has-feedback');
-      expect(formControl.nativeElement.querySelector('.ant-form-item-children-icon .anticon')).toBeNull();
-      testComponent.hasFeedback = true;
-      testBed.fixture.detectChanges();
-      expect(formItem.nativeElement.classList).toContain('ant-form-item-has-feedback');
-      expect(formControl.nativeElement.querySelector('.ant-form-item-children-icon .anticon')).not.toBeNull();
-    });
     it('should status work', () => {
       const statusList: Array<keyof typeof statusMap> = ['warning', 'validating', 'pending', 'error', 'success'];
       statusList.forEach(status => {

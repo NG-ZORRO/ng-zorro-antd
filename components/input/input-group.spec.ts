@@ -7,6 +7,7 @@ import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 
@@ -14,14 +15,15 @@ describe('input-group', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
         declarations: [
           NzTestInputGroupAddonComponent,
           NzTestInputGroupAffixComponent,
           NzTestInputGroupMultipleComponent,
           NzTestInputGroupColComponent,
           NzTestInputGroupMixComponent,
-          NzTestInputGroupWithStatusComponent
+          NzTestInputGroupWithStatusComponent,
+          NzTestInputGroupInFormComponent
         ],
         providers: []
       }).compileComponents();
@@ -280,6 +282,43 @@ describe('input-group', () => {
         expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
       });
     });
+    describe('in form', () => {
+      let fixture: ComponentFixture<NzTestInputGroupInFormComponent>;
+      let inputElement: DebugElement;
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputGroupInFormComponent);
+        inputElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+        fixture.detectChanges();
+      });
+
+      it('should className correct', () => {
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-error');
+        expect(inputElement.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-warning');
+
+        fixture.componentInstance.status = 'success';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-affix-wrapper-status-success');
+
+        fixture.componentInstance.feedback = false;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+      });
+
+      it('should className correct with addon', () => {
+        fixture.componentInstance.addon = 'before';
+        fixture.detectChanges();
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-group-wrapper-status-warning');
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-affix-wrapper-status-warning');
+      });
+    });
   });
 });
 
@@ -374,4 +413,23 @@ export class NzTestInputGroupColComponent {}
 export class NzTestInputGroupWithStatusComponent {
   isAddon = false;
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-input-group [nzAddOnBefore]="addon">
+            <input type="text" nz-input />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestInputGroupInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
+  addon: string = '';
 }

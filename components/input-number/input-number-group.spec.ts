@@ -10,11 +10,13 @@ import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzInputNumberGroupComponent } from 'ng-zorro-antd/input-number/input-number-group.component';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number/input-number.module';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
+
 describe('input-number-group', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
         declarations: [
           NzTestInputNumberGroupAddonComponent,
           NzTestInputNumberGroupAffixComponent,
@@ -22,7 +24,8 @@ describe('input-number-group', () => {
           NzTestInputNumberGroupColComponent,
           NzTestInputNumberGroupMixComponent,
           NzTestInputNumberGroupWithStatusComponent,
-          NzTestInputNumberGroupWithDirComponent
+          NzTestInputNumberGroupWithDirComponent,
+          NzTestInputNumberGroupInFormComponent
         ],
         providers: []
       }).compileComponents();
@@ -292,6 +295,54 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.classList).toContain('ant-input-number-group-wrapper-rtl');
       });
     });
+
+    describe('in form', () => {
+      let fixture: ComponentFixture<NzTestInputNumberGroupInFormComponent>;
+      let inputNumberGroupElement: DebugElement;
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestInputNumberGroupInFormComponent);
+        fixture.detectChanges();
+        inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent));
+      });
+
+      it('should className correct', () => {
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.nativeElement.classList).toContain(
+          'ant-input-number-affix-wrapper-status-error'
+        );
+        expect(inputNumberGroupElement.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.nativeElement.classList).toContain(
+          'ant-input-number-affix-wrapper-status-warning'
+        );
+
+        fixture.componentInstance.status = 'success';
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.nativeElement.classList).toContain(
+          'ant-input-number-affix-wrapper-status-success'
+        );
+
+        fixture.componentInstance.feedback = false;
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+      });
+
+      it('should className correct with addon', () => {
+        fixture.componentInstance.addon = 'before';
+        fixture.detectChanges();
+        fixture.componentInstance.status = 'warning';
+        fixture.detectChanges();
+        expect(inputNumberGroupElement.nativeElement.classList).toContain(
+          'ant-input-number-group-wrapper-status-warning'
+        );
+        expect(inputNumberGroupElement.nativeElement.classList).not.toContain(
+          'ant-input-number-affix-wrapper-status-warning'
+        );
+      });
+    });
   });
 });
 
@@ -397,4 +448,23 @@ export class NzTestInputNumberGroupWithStatusComponent {
 })
 export class NzTestInputNumberGroupWithDirComponent {
   dir: Direction = 'ltr';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-input-number-group [nzAddOnBefore]="addon">
+            <nz-input-number></nz-input-number>
+          </nz-input-number-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestInputNumberGroupInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
+  addon: string = '';
 }

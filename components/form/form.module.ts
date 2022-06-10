@@ -42,7 +42,8 @@ import { NzFormDirective } from './form.directive';
     NzFormControlComponent,
     NzFormTextComponent,
     NzFormSplitComponent,
-    NzFormItemFeedbackIconComponent
+    NzFormItemFeedbackIconComponent,
+    NzFormNoStatusDirective
   ],
   imports: [
     BidiModule,
