@@ -17,7 +17,7 @@ import polyfillTS from './files/polyfill';
 })
 export class OnlineIdeService {
   document: Document;
-  template = 'angular-cli';
+  template = 'angular-cli' as const;
   dependencies = {
     '@angular/animations': '^13.0.1',
     '@angular/cdk': '^13.0.1',
