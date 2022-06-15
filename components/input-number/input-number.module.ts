@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -19,7 +20,7 @@ import {
 import { NzInputNumberComponent } from './input-number.component';
 
 @NgModule({
-  imports: [BidiModule, CommonModule, FormsModule, NzOutletModule, NzIconModule],
+  imports: [BidiModule, CommonModule, FormsModule, NzOutletModule, NzIconModule, NzFormPatchModule],
   declarations: [
     NzInputNumberComponent,
     NzInputNumberGroupWhitSuffixOrPrefixDirective,

@@ -11,12 +11,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import en_US from '../i18n/languages/en_US';
@@ -36,19 +38,21 @@ describe('transfer', () => {
     | Test996Component
     | NzTestTransferRtlComponent
     | NzTestTransferStatusComponent
+    | NzTestTransferInFormComponent
   >;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule],
+      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule, FormsModule, NzFormModule],
       declarations: [
         TestTransferComponent,
         TestTransferCustomRenderComponent,
         Test996Component,
         NzTestTransferRtlComponent,
-        NzTestTransferStatusComponent
+        NzTestTransferStatusComponent,
+        NzTestTransferInFormComponent
       ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
@@ -405,6 +409,35 @@ describe('transfer', () => {
     });
   });
 
+  describe('transfer in form', () => {
+    let componentElement: HTMLElement;
+    let testComponent: NzTestTransferInFormComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTransferInFormComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-warning');
+
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-success');
+
+      testComponent.feedback = false;
+      fixture.detectChanges();
+      expect(componentElement.classList).not.toContain('ant-transfer-has-feedback');
+    });
+  });
+
   class TransferPageObject {
     [key: string]: any;
 
@@ -647,4 +680,20 @@ export class NzTestTransferRtlComponent {
 })
 export class NzTestTransferStatusComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-transfer [nzDataSource]="[]"></nz-transfer>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestTransferInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

@@ -33,11 +33,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, fromEvent, merge } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -46,6 +47,7 @@ import {
   NgClassInterface,
   NzSafeAny,
   NzStatus,
+  NzValidateStatus,
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
@@ -108,11 +110,18 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
     <nz-select-arrow
-      *ngIf="nzShowArrow"
+      *ngIf="nzShowArrow || (hasFeedback && !!status)"
+      [showArrow]="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
-    ></nz-select-arrow>
+      [feedbackIcon]="feedbackIconTpl"
+    >
+      <ng-template #feedbackIconTpl>
+        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+      </ng-template>
+    </nz-select-arrow>
+
     <nz-select-clear
       *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
       [clearIcon]="nzClearIcon"
@@ -158,6 +167,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   `,
   host: {
     class: 'ant-select',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
@@ -187,7 +197,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
   @Input() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string | null = null;
@@ -266,6 +276,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   // status
   prefixCls: string = 'ant-select';
   statusCls: NgClassInterface = {};
+  status: NzValidateStatus = '';
   hasFeedback: boolean = false;
 
   generateTagItem(value: string): NzSelectItemInterface {
@@ -526,7 +537,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     private platform: Platform,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
@@ -592,11 +605,24 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.listOfTemplateItem$.next(listOfTransformedItem);
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
   ngOnInit(): void {
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.focusMonitor
       .monitor(this.host, true)
       .pipe(takeUntil(this.destroy$))
@@ -714,9 +740,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.focusMonitor.stopMonitoring(this.host);
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.host.nativeElement, status);

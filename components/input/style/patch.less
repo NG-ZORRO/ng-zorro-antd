@@ -25,3 +25,26 @@ textarea.nz-textarea-autosize-measuring {
     }
   }
 }
+
+.@{ant-prefix}-input {
+  &-suffix {
+    display: flex;
+    flex: none;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  &-suffix {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    height: 100%;
+    margin-right: @input-padding-horizontal-base;
+    margin-left: @input-affix-margin;
+  }
+
+  &&-has-feedback {
+    padding-right: @padding-lg;
+  }
+}

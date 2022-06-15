@@ -28,8 +28,9 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -84,6 +85,11 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
         (ngModelChange)="onModelChange($event)"
       />
     </div>
+    <nz-form-item-feedback-icon
+      class="ant-input-number-suffix"
+      *ngIf="hasFeedback && !!status"
+      [status]="status"
+    ></nz-form-item-feedback-icon>
   `,
   providers: [
     {
@@ -97,6 +103,7 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-input-number',
+    '[class.ant-input-number-in-form-item]': '!!nzFormStatusService',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -395,21 +402,36 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private focusMonitor: FocusMonitor,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService
+    private destroy$: NzDestroyService,
+    @Optional() public nzFormStatusService?: NzFormStatusService
   ) {}
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        this.isFocused = false;
-        this.updateDisplayValue(this.value!);
-        this.nzBlur.emit();
-        Promise.resolve().then(() => this.onTouched());
-      } else {
-        this.isFocused = true;
-        this.nzFocus.emit();
-      }
-    });
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.isFocused = false;
+          this.updateDisplayValue(this.value!);
+          this.nzBlur.emit();
+          Promise.resolve().then(() => this.onTouched());
+        } else {
+          this.isFocused = true;
+          this.nzFocus.emit();
+        }
+      });
 
     this.dir = this.directionality.value;
     this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -496,7 +518,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.cdr.markForCheck();
     // render status if nzStatus is set
     this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
-    console.dir(this.statusCls, status);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);

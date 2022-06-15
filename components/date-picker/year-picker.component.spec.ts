@@ -131,6 +131,17 @@ describe('NzYearPickerComponent', () => {
       });
     }));
 
+    it('should nz-year-picker work', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+      fixture.whenRenderingDone().then(() => {
+        tick(500);
+        fixture.detectChanges();
+        expect(getPickerContainer()).not.toBeNull();
+        const pickerInput = getPickerInput(fixture.debugElement);
+        expect(pickerInput).not.toBeNull();
+      });
+    }));
+
     it('should support nzCompact', () => {
       fixtureInstance.useSuite = 4;
       fixture.detectChanges();
@@ -373,11 +384,13 @@ describe('NzYearPickerComponent', () => {
         <nz-date-picker nzMode="year" style="width: 200px;"></nz-date-picker>
         <input nz-input type="text" style="width: 200px;" />
       </nz-input-group>
+
+      <nz-year-picker *ngSwitchCase="5" nzOpen [(ngModel)]="modelValue"></nz-year-picker>
     </ng-container>
   `
 })
 class NzTestYearPickerComponent {
-  useSuite?: 1 | 2 | 3 | 4;
+  useSuite?: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1

@@ -13,7 +13,6 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   template: `
     <i nz-icon [nzType]="icon" *ngIf="icon"></i>
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
-    <ng-content></ng-content>
   `,
   host: {
     '[class.ant-input-number-group-addon]': `type === 'addon'`,
