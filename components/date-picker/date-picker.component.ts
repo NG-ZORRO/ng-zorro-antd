@@ -40,12 +40,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { of as observableOf, Subject } from 'rxjs';
+import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
@@ -59,7 +60,6 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -615,20 +615,21 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
-        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroyed$)
       )
       .subscribe(({ status, hasFeedback }) => {

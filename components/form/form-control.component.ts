@@ -22,10 +22,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 
 import { helpMotion } from 'ng-zorro-antd/core/animation';
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -56,16 +57,14 @@ import { NzFormDirective } from './form.directive';
     <div class="ant-form-item-extra" *ngIf="nzExtra">
       <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
     </div>
-  `
+  `,
+  providers: [NzFormStatusService]
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
-
-  // Used by inner components with ngModel/formControlName
-  formControlChanges = new ReplaySubject<{ status: NzFormControlStatusType; hasFeedback: boolean }>(1);
 
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
@@ -96,7 +95,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   @Input()
   set nzHasFeedback(value: boolean) {
     this._hasFeedback = toBoolean(value);
-    this.formControlChanges.next({ status: this.status, hasFeedback: this._hasFeedback });
+    this.nzFormStatusService.formStatusChanges.next({ status: this.status, hasFeedback: this._hasFeedback });
     if (this.nzFormItemComponent) {
       this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
     }
@@ -142,7 +141,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private setStatus(): void {
     this.status = this.getControlStatus(this.validateString);
     this.innerTip = this.getInnerTip(this.status);
-    this.formControlChanges.next({ status: this.status, hasFeedback: this.nzHasFeedback });
+    this.nzFormStatusService.formStatusChanges.next({ status: this.status, hasFeedback: this.nzHasFeedback });
     if (this.nzFormItemComponent) {
       this.nzFormItemComponent.setWithHelpViaTips(!!this.innerTip);
       this.nzFormItemComponent.setStatus(this.status);
@@ -236,7 +235,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     private cdr: ChangeDetectorRef,
     renderer: Renderer2,
     i18n: NzI18nService,
-    @Optional() private nzFormDirective: NzFormDirective
+    @Optional() private nzFormDirective: NzFormDirective,
+    private nzFormStatusService: NzFormStatusService
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
 

@@ -2,13 +2,13 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form/nz-form-patch.module';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzValidateStatus } from 'ng-zorro-antd/core/types';
 
-import { NzFormItemFeedbackIconComponent } from './form-item-feedback-icon.component';
-import { NzFormModule } from './form.module';
+import { NzFormItemFeedbackIconComponent } from './nz-form-item-feedback-icon.component';
 
-const testBedOptions = { imports: [NzFormModule, NoopAnimationsModule] };
+const testBedOptions = { imports: [NzFormPatchModule, NoopAnimationsModule] };
 
 describe('nz-form-item-feedback-icon', () => {
   describe('default', () => {
@@ -19,6 +19,7 @@ describe('nz-form-item-feedback-icon', () => {
       testBed = createComponentBed(NzTestFormItemFeedbackIconComponent, testBedOptions);
       fixtureInstance = testBed.fixture.componentInstance;
       feedback = testBed.fixture.debugElement.query(By.directive(NzFormItemFeedbackIconComponent));
+      testBed.fixture.detectChanges();
     });
     it('should className correct', () => {
       expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon');

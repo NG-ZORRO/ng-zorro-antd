@@ -25,9 +25,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
@@ -69,7 +69,7 @@ import { NzRadioService } from './radio.service';
     }
   ],
   host: {
-    '[class.ant-radio-wrapper-in-form-item]': '!!nzFormControlComponent',
+    '[class.ant-radio-wrapper-in-form-item]': '!!nzFormStatusService',
     '[class.ant-radio-wrapper]': '!isRadioButton',
     '[class.ant-radio-button-wrapper]': 'isRadioButton',
     '[class.ant-radio-wrapper-checked]': 'isChecked && !isRadioButton',
@@ -114,7 +114,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
     @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent
+    @Optional() public nzFormStatusService?: NzFormStatusService
   ) {}
 
   setDisabledState(disabled: boolean): void {

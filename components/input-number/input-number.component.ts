@@ -14,7 +14,6 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Host,
   Input,
   NgZone,
   OnChanges,
@@ -29,8 +28,9 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -42,7 +42,6 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'nz-input-number',
@@ -104,7 +103,7 @@ import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/f
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-input-number',
-    '[class.ant-input-number-in-form-item]': '!!nzFormControlComponent',
+    '[class.ant-input-number-in-form-item]': '!!nzFormStatusService',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
@@ -404,14 +403,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
     private destroy$: NzDestroyService,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
+    @Optional() public nzFormStatusService?: NzFormStatusService
   ) {}
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
-        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),

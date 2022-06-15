@@ -23,9 +23,10 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Observable, of as observableOf, of, Subject } from 'rxjs';
+import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import {
   BooleanInput,
   NgClassInterface,
@@ -35,7 +36,6 @@ import {
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
@@ -305,7 +305,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Optional() private nzFormControlComponent?: NzFormControlComponent
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   private markForCheckAllList(): void {
@@ -339,11 +340,13 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.unsubscribe$)
       )
       .subscribe(({ status, hasFeedback }) => {

@@ -27,9 +27,9 @@ import {
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzInputNumberComponent } from './input-number.component';
 
@@ -46,22 +46,23 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzFormNoStatusService],
   template: `
     <span class="ant-input-number-wrapper ant-input-number-group" *ngIf="isAddOn; else noAddOnTemplate">
       <div
         *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
         nz-input-number-group-slot
-        nz-form-no-status
         type="addon"
         [icon]="nzAddOnBeforeIcon"
         [template]="nzAddOnBefore"
       ></div>
       <div
-        *ngIf="isAffix || isFeedback; else contentTemplate"
+        *ngIf="isAffix; else contentTemplate"
         class="ant-input-number-affix-wrapper"
         [class.ant-input-number-affix-wrapper-disabled]="disabled"
         [class.ant-input-number-affix-wrapper-sm]="isSmall"
         [class.ant-input-number-affix-wrapper-lg]="isLarge"
+        [class.ant-input-number-affix-wrapper-focused]="focused"
         [ngClass]="affixInGroupStatusCls"
       >
         <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
@@ -69,7 +70,6 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
       <span
         *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
         nz-input-number-group-slot
-        nz-form-no-status
         type="addon"
         [icon]="nzAddOnAfterIcon"
         [template]="nzAddOnAfter"
@@ -156,7 +156,8 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
-    @Optional() private nzFormControlComponent?: NzFormControlComponent
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   updateChildrenInputSize(): void {
@@ -166,7 +167,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
@@ -233,6 +234,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     }
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
+      this.nzFormNoStatusService?.noFormStatus?.next(this.isAddOn);
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);

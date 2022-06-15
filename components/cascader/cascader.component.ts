@@ -31,11 +31,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -49,7 +50,6 @@ import {
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -210,7 +210,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   ],
   host: {
     '[attr.tabIndex]': '"0"',
-    '[class.ant-select-in-form-item]': '!!nzFormControlComponent',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
@@ -385,8 +385,8 @@ export class NzCascaderComponent
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
@@ -395,12 +395,13 @@ export class NzCascaderComponent
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
-        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroy$)
       )
       .subscribe(({ status, hasFeedback }) => {

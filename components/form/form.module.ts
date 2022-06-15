@@ -15,10 +15,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzFormControlComponent } from './form-control.component';
-import { NzFormItemFeedbackIconComponent } from './form-item-feedback-icon.component';
 import { NzFormItemComponent } from './form-item.component';
 import { NzFormLabelComponent } from './form-label.component';
-import { NzFormNoStatusDirective } from './form-no-status.directive';
 import { NzFormSplitComponent } from './form-split.component';
 import { NzFormTextComponent } from './form-text.component';
 import { NzFormDirective } from './form.directive';
@@ -30,9 +28,7 @@ import { NzFormDirective } from './form.directive';
     NzFormLabelComponent,
     NzFormControlComponent,
     NzFormTextComponent,
-    NzFormSplitComponent,
-    NzFormItemFeedbackIconComponent,
-    NzFormNoStatusDirective
+    NzFormSplitComponent
   ],
   exports: [
     NzGridModule,
@@ -41,9 +37,7 @@ import { NzFormDirective } from './form.directive';
     NzFormLabelComponent,
     NzFormControlComponent,
     NzFormTextComponent,
-    NzFormSplitComponent,
-    NzFormItemFeedbackIconComponent,
-    NzFormNoStatusDirective
+    NzFormSplitComponent
   ],
   imports: [
     BidiModule,

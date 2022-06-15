@@ -10,9 +10,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -32,7 +32,7 @@ import { NzTimePickerComponent } from './time-picker.component';
     NzOverlayModule,
     NzOutletModule,
     NzButtonModule,
-    NzFormModule
+    NzFormPatchModule
   ]
 })
 export class NzTimePickerModule {}

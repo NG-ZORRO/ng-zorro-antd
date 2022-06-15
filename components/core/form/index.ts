@@ -3,10 +3,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive } from '@angular/core';
-
-@Directive({
-  selector: '[nz-form-no-status]',
-  exportAs: 'nzFormNoStatus'
-})
-export class NzFormNoStatusDirective {}
+export * from './public-api';

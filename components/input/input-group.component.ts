@@ -27,9 +27,9 @@ import {
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent } from 'ng-zorro-antd/form';
 
 import { NzInputDirective } from './input.directive';
 
@@ -46,22 +46,23 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzFormNoStatusService],
   template: `
     <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn; else noAddOnTemplate">
       <span
         *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
         nz-input-group-slot
-        nz-form-no-status
         type="addon"
         [icon]="nzAddOnBeforeIcon"
         [template]="nzAddOnBefore"
       ></span>
       <span
-        *ngIf="isAffix || isFeedback; else contentTemplate"
+        *ngIf="isAffix; else contentTemplate"
         class="ant-input-affix-wrapper"
         [class.ant-input-affix-wrapper-disabled]="disabled"
         [class.ant-input-affix-wrapper-sm]="isSmall"
         [class.ant-input-affix-wrapper-lg]="isLarge"
+        [class.ant-input-affix-wrapper-focused]="focused"
         [ngClass]="affixInGroupStatusCls"
       >
         <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
@@ -69,7 +70,6 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       <span
         *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
         nz-input-group-slot
-        nz-form-no-status
         type="addon"
         [icon]="nzAddOnAfterIcon"
         [template]="nzAddOnAfter"
@@ -164,7 +164,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
-    @Optional() private nzFormControlComponent?: NzFormControlComponent
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   updateChildrenInputSize(): void {
@@ -174,7 +175,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
@@ -237,6 +238,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     }
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
+      this.nzFormNoStatusService?.noFormStatus?.next(this.isAddOn);
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);

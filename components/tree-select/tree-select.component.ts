@@ -30,10 +30,11 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, of as observableOf, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
@@ -55,7 +56,6 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -212,7 +212,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   ],
   host: {
     class: 'ant-select',
-    '[class.ant-select-in-form-item]': '!!nzFormControlComponent',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
@@ -345,8 +345,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     @Optional() private directionality: Directionality,
     private focusMonitor: FocusMonitor,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {
     super(nzTreeService);
 
@@ -355,12 +355,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
-        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroy$)
       )
       .subscribe(({ status, hasFeedback }) => {

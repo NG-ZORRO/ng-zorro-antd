@@ -33,11 +33,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, fromEvent, merge } from 'rxjs';
-import { distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -51,7 +52,6 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzFormControlComponent, NzFormNoStatusDirective } from 'ng-zorro-antd/form';
 
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
@@ -167,7 +167,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   `,
   host: {
     class: 'ant-select',
-    '[class.ant-select-in-form-item]': '!!nzFormControlComponent',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
@@ -538,8 +538,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormControlComponent?: NzFormControlComponent,
-    @Host() @Optional() public noFormStatus?: NzFormNoStatusDirective
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
@@ -610,12 +610,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   ngOnInit(): void {
-    this.nzFormControlComponent?.formControlChanges
+    this.nzFormStatusService?.formStatusChanges
       .pipe(
-        filter(() => !this.noFormStatus),
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroy$)
       )
       .subscribe(({ status, hasFeedback }) => {
