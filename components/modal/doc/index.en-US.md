@@ -34,7 +34,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzBodyStyle       | Body style for modal body element. Such as height, padding etc. | `object` | - |
 | nzCancelText      | Text of the Cancel button. <i>Set to null to show no cancel button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | Cancel |
 | nzCentered        | Centered Modal | `boolean` | `false` |
-| nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. <i>Invalid value in confirm box mode (default will be hidden)</i> | `boolean` | `true` |
+| nzClosable        | Whether a close (x) button is visible on top right of the modal dialog or not. | `boolean` | `true` |
 | nzOkLoading       | Whether to apply loading visual effect for OK button or not | `boolean` | `false` |
 | nzCancelLoading   | Whether to apply loading visual effect for Cancel button or not | `boolean` | `false` |
 | nzOkDisabled      | Whether to disable Ok button or not | `boolean` | `false` |
