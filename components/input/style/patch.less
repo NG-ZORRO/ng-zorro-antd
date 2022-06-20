@@ -26,7 +26,11 @@ textarea.nz-textarea-autosize-measuring {
   }
 }
 
-.@{ant-prefix}-input {
+.ant-input-affix-wrapper-textarea-with-clear-btn .ant-input-suffix {
+  margin-left: 0;
+}
+
+nz-form-item-feedback-icon.@{ant-prefix}-input {
   &-suffix {
     display: flex;
     flex: none;
@@ -40,11 +44,16 @@ textarea.nz-textarea-autosize-measuring {
     right: 0;
     z-index: 1;
     height: 100%;
-    margin-right: @input-padding-horizontal-base;
+    margin-right: @padding-sm;
     margin-left: @input-affix-margin;
   }
+}
 
-  &&-has-feedback {
-    padding-right: @padding-lg;
+.@{ant-prefix}-input {
+  &-status-error, &-status-warning, &-status-validating, &-status-success {
+    &.@{ant-prefix}-input-has-feedback {
+      padding-right: @padding-lg + @padding-xss;
+    }
   }
 }
+

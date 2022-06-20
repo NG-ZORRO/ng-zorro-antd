@@ -90,12 +90,13 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
       ></span>
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       <span
-        *ngIf="nzSuffix || nzSuffixIcon"
+        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
         nz-input-group-slot
         type="suffix"
         [icon]="nzSuffixIcon"
         [template]="nzSuffix"
       >
+        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
       </span>
     </ng-template>
     <ng-template #contentTemplate>
@@ -155,6 +156,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   affixStatusCls: NgClassInterface = {};
   groupStatusCls: NgClassInterface = {};
   affixInGroupStatusCls: NgClassInterface = {};
+  status: NzValidateStatus = '';
   hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
 
@@ -251,6 +253,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
     this.hasFeedback = hasFeedback;
     this.isFeedback = !!status && hasFeedback;
     const baseAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
