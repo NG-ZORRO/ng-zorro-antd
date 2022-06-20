@@ -13,6 +13,15 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 13.3.1
+
+`2022-06-20`
+
+### Bug Fixes
+
+* **input, input-number, steps:** fix styles in components ([#7522](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7522)) ([222b225](https://github.com/NG-ZORRO/ng-zorro-antd/commit/222b225ed4d4e56de049b08d7e6e8a77d476d481))
+
+
 ## 13.3.0
 
 `2022-06-15`

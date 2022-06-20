@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 13.3.1
+
+`2022-06-20`
+
+### Bug Fixes
+
+* **input, input-number, steps:** 修复组件部分场景下的样式问题 ([#7522](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7522)) ([222b225](https://github.com/NG-ZORRO/ng-zorro-antd/commit/222b225ed4d4e56de049b08d7e6e8a77d476d481))
+
+
 ## 13.3.0
 
 `2022-06-15`
