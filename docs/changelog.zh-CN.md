@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 13.3.2
+
+`2022-06-26`
+
+### Bug Fixes
+
+* **input-number:** 修复引入 input number 模块报错问题 ([#7531](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7531)) ([800e6f4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/800e6f4f1495d63edcb0f992836a75a40e3ca5b6))
+
+
 ## 13.3.1
 
 `2022-06-20`
