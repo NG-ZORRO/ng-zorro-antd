@@ -8,7 +8,6 @@ import {
   ComponentRef,
   Directive,
   ElementRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -23,11 +22,9 @@ import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
-import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
-
-import { NzInputGroupComponent } from './input-group.component';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
@@ -75,8 +72,8 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     private elementRef: ElementRef,
     protected hostView: ViewContainerRef,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() private nzInputGroupComponent?: NzInputGroupComponent,
-    @Optional() private nzFormStatusService?: NzFormStatusService
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
@@ -142,7 +139,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   }
 
   private renderFeedbackIcon(): void {
-    if (!this.status || !this.hasFeedback || this.nzInputGroupComponent?.isFeedback) {
+    if (!this.status || !this.hasFeedback || !!this.nzFormNoStatusService) {
       // remove feedback
       this.hostView.clear();
       this.feedbackRef = null;

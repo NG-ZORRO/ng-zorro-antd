@@ -57,7 +57,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
         [template]="nzAddOnBefore"
       ></div>
       <div
-        *ngIf="isAffix; else contentTemplate"
+        *ngIf="isAffix || hasFeedback; else contentTemplate"
         class="ant-input-number-affix-wrapper"
         [class.ant-input-number-affix-wrapper-disabled]="disabled"
         [class.ant-input-number-affix-wrapper-sm]="isSmall"
@@ -101,6 +101,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
+      <span *ngIf="!isAddOn && !isAffix && isFeedback" nz-input-number-group-slot type="suffix">
+        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
+      </span>
     </ng-template>
   `,
   host: {
