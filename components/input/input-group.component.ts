@@ -57,7 +57,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
         [template]="nzAddOnBefore"
       ></span>
       <span
-        *ngIf="isAffix; else contentTemplate"
+        *ngIf="isAffix || hasFeedback; else contentTemplate"
         class="ant-input-affix-wrapper"
         [class.ant-input-affix-wrapper-disabled]="disabled"
         [class.ant-input-affix-wrapper-sm]="isSmall"
@@ -101,6 +101,9 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
+      <span *ngIf="!isAddOn && !isAffix && isFeedback" nz-input-group-slot type="suffix">
+        <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+      </span>
     </ng-template>
   `,
   host: {

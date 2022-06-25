@@ -14,7 +14,6 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Host,
   Input,
   NgZone,
   OnChanges,
@@ -31,7 +30,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -43,8 +42,6 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-
-import { NzInputNumberGroupComponent } from './input-number-group.component';
 
 @Component({
   selector: 'nz-input-number',
@@ -90,7 +87,7 @@ import { NzInputNumberGroupComponent } from './input-number-group.component';
     </div>
     <nz-form-item-feedback-icon
       class="ant-input-number-suffix"
-      *ngIf="hasFeedback && !!status && !nzInputNumberGroupComponent?.isFeedback"
+      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
       [status]="status"
     ></nz-form-item-feedback-icon>
   `,
@@ -406,8 +403,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private renderer: Renderer2,
     @Optional() private directionality: Directionality,
     private destroy$: NzDestroyService,
-    @Host() @Optional() public nzInputNumberGroupComponent?: NzInputNumberGroupComponent,
-    @Optional() public nzFormStatusService?: NzFormStatusService
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   ngOnInit(): void {

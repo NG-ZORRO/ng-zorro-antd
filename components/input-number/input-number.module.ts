@@ -23,10 +23,10 @@ import { NzInputNumberComponent } from './input-number.component';
   imports: [BidiModule, CommonModule, FormsModule, NzOutletModule, NzIconModule, NzFormPatchModule],
   declarations: [
     NzInputNumberComponent,
-    NzInputNumberGroupWhitSuffixOrPrefixDirective,
     NzInputNumberGroupComponent,
+    NzInputNumberGroupWhitSuffixOrPrefixDirective,
     NzInputNumberGroupSlotComponent
   ],
-  exports: [NzInputNumberComponent, NzInputNumberGroupWhitSuffixOrPrefixDirective, NzInputNumberGroupComponent]
+  exports: [NzInputNumberComponent, NzInputNumberGroupComponent, NzInputNumberGroupWhitSuffixOrPrefixDirective]
 })
 export class NzInputNumberModule {}
