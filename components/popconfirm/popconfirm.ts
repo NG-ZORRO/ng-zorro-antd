@@ -27,15 +27,15 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { finalize, first, takeUntil } from 'rxjs/operators';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
@@ -70,6 +70,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() nzOkType?: string;
   @Input() nzOkDanger?: boolean;
   @Input() nzCancelText?: string;
+  @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean = false;
   @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
@@ -90,6 +91,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzOkType: ['nzOkType', () => this.nzOkType],
       nzOkDanger: ['nzOkDanger', () => this.nzOkDanger],
       nzCancelText: ['nzCancelText', () => this.nzCancelText],
+      nzBeforeConfirm: ['nzBeforeConfirm', () => this.nzBeforeConfirm],
       nzCondition: ['nzCondition', () => this.nzCondition],
       nzIcon: ['nzIcon', () => this.nzIcon],
       nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
@@ -190,6 +192,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     [nzSize]="'small'"
                     [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
                     [nzDanger]="nzOkDanger || nzOkType === 'danger'"
+                    [nzLoading]="confirmLoading"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
@@ -217,6 +220,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzOkType: NzButtonType | 'danger' = 'primary';
   nzOkDanger: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
+  nzBeforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
 
   readonly nzOnCancel = new Subject<void>();
   readonly nzOnConfirm = new Subject<void>();
@@ -226,6 +230,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   private document: Document;
 
   override _prefix = 'ant-popover';
+
+  confirmLoading = false;
 
   constructor(
     cdr: ChangeDetectorRef,
@@ -262,14 +268,37 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
     this.restoreFocus();
   }
 
+  handleConfirm(): void {
+    this.nzOnConfirm.next();
+    super.hide();
+  }
+
   onCancel(): void {
     this.nzOnCancel.next();
     super.hide();
   }
 
   onConfirm(): void {
-    this.nzOnConfirm.next();
-    super.hide();
+    if (this.nzBeforeConfirm) {
+      const observable = wrapIntoObservable(this.nzBeforeConfirm()).pipe(first());
+      this.confirmLoading = true;
+      observable
+        .pipe(
+          finalize(() => {
+            this.confirmLoading = false;
+            this.cdr.markForCheck();
+          }),
+          takeUntil(this.nzVisibleChange),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(value => {
+          if (value) {
+            this.handleConfirm();
+          }
+        });
+    } else {
+      this.handleConfirm();
+    }
   }
 
   private capturePreviouslyFocusedElement(): void {

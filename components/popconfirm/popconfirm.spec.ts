@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable } from 'rxjs';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -144,6 +145,74 @@ describe('NzPopconfirm', () => {
     expect(component.cancel).toHaveBeenCalledTimes(0);
   }));
 
+  it('should before confirm work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+    expect(getTitleText()!.textContent).toContain('title-string');
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+
+    component.beforeConfirm = () => false;
+    fixture.detectChanges();
+
+    dispatchMouseEvent(getTooltipTrigger(1), 'click');
+    waitingForTooltipToggling();
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+    expect(getTitleText()!.textContent).toContain('title-string');
+  }));
+
+  it('should before confirm observable work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+    expect(getTitleText()!.textContent).toContain('title-string');
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+
+    component.beforeConfirm = () =>
+      new Observable(observer => {
+        setTimeout(() => {
+          observer.next(true);
+          observer.complete();
+        }, 200);
+      });
+
+    dispatchMouseEvent(getTooltipTrigger(1), 'click');
+    tick(200 + 10);
+    waitingForTooltipToggling();
+    expect(getTitleText()).toBeNull();
+    expect(component.confirm).toHaveBeenCalledTimes(1);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+  }));
+
+  it('should before confirm promise work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+    expect(getTitleText()!.textContent).toContain('title-string');
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+
+    component.beforeConfirm = () =>
+      new Promise(resolve => {
+        setTimeout(() => {
+          resolve(true);
+        }, 200);
+      });
+
+    dispatchMouseEvent(getTooltipTrigger(1), 'click');
+    tick(200 + 10);
+    waitingForTooltipToggling();
+    expect(getTitleText()).toBeNull();
+    expect(component.confirm).toHaveBeenCalledTimes(1);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+  }));
+
   it('should nzPopconfirmShowArrow work', fakeAsync(() => {
     const triggerElement = component.stringTemplate.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
@@ -178,6 +247,7 @@ describe('NzPopconfirm', () => {
       nzCancelText="cancel-text"
       [nzAutofocus]="autoFocus"
       [nzCondition]="condition"
+      [nzBeforeConfirm]="beforeConfirm"
       [nzPopconfirmShowArrow]="nzPopconfirmShowArrow"
       [nzPopconfirmBackdrop]="nzPopconfirmBackdrop"
       (nzOnConfirm)="confirm()"
@@ -210,6 +280,7 @@ export class NzPopconfirmTestNewComponent {
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
   autoFocus: NzAutoFocusType = null;
+  beforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
 
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
   @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;
