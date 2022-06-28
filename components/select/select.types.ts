@@ -34,3 +34,5 @@ export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
 };
 
 export type NzFilterOptionType = (input: string, option: NzSelectItemInterface) => boolean;
+
+export type NzSelectPlacementType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
