@@ -5,6 +5,15 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
 @Component({
   selector: 'nz-demo-notification-placement',
   template: `
+    <button nz-button (click)="createBasicNotification('top')" nzType="primary">
+      <i nz-icon nzType="border-top" nzTheme="outline"></i>
+      top
+    </button>
+    <button nz-button (click)="createBasicNotification('bottom')" nzType="primary">
+      <i nz-icon nzType="border-bottom" nzTheme="outline"></i>
+      bottom
+    </button>
+    <nz-divider></nz-divider>
     <button nz-button (click)="createBasicNotification('topLeft')" nzType="primary">
       <i nz-icon nzType="radius-upleft"></i>
       topLeft
