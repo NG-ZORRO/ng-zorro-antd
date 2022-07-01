@@ -122,6 +122,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
+    '[class.ant-picker-borderless]': `nzBorderless`,
     '(click)': 'open()'
   },
   animations: [slideMotion],
@@ -135,6 +136,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   static ngAcceptInputType_nzAllowEmpty: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
 
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
@@ -213,6 +215,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
+  @Input() @InputBoolean() nzBorderless: boolean = false;
 
   emitValue(value: Date | null): void {
     this.setValue(value, true);
