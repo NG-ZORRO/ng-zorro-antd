@@ -109,13 +109,15 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled',
     '[class.ant-input-number-readonly]': 'nzReadOnly',
-    '[class.ant-input-number-rtl]': `dir === 'rtl'`
+    '[class.ant-input-number-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-number-borderless]': `nzBorderless`
   }
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzReadOnly: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
 
   private autoStepTimer?: number;
   private parsedValue?: string | number;
@@ -133,6 +135,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   hasFeedback: boolean = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
+
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
   /** The native `<span class="ant-input-number-handler-up"></span>` element. */
@@ -159,6 +162,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzReadOnly = false;
   @Input() @InputBoolean() nzAutoFocus = false;
+  @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
 
   onModelChange(value: string): void {

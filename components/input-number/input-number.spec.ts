@@ -63,6 +63,13 @@ describe('input number', () => {
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
     });
+    it('should border work', () => {
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement!.classList).not.toContain('ant-input-number-borderless');
+      testComponent.bordered = false;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement!.classList).toContain('ant-input-number-borderless');
+    });
     it('should focus className correct', fakeAsync(() => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
@@ -608,6 +615,7 @@ describe('input number', () => {
       [nzParser]="parser"
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
+      [nzBorderless]="!bordered"
     ></nz-input-number>
   `
 })
@@ -621,6 +629,7 @@ export class NzTestInputNumberBasicComponent {
   size = 'default';
   placeholder = 'placeholder';
   step = 1;
+  bordered = true;
   precision?: number = 2;
   precisionMode?: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
   formatter = (value: number): string => (value !== null ? `${value}` : '');
