@@ -27,14 +27,15 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -66,6 +67,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
+        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
       </span>
       <span *ngIf="nzAllowEmpty && !nzDisabled && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
@@ -179,12 +181,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   // status
   prefixCls: string = 'ant-picker';
   statusCls: NgClassInterface = {};
+  status: NzValidateStatus = '';
   hasFeedback: boolean = false;
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzId: string | null = null;
   @Input() nzSize: string | null = null;
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;
   @Input() @WithConfig() nzSecondStep: number = 1;
@@ -329,10 +332,25 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private cdr: ChangeDetectorRef,
     private dateHelper: DateHelperService,
     private platform: Platform,
-    @Optional() private directionality: Directionality
+    @Optional() private directionality: Directionality,
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   ngOnInit(): void {
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.origin = new CdkOverlayOrigin(this.element);
 
@@ -369,7 +387,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       this.updateAutoFocus();
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
@@ -430,9 +448,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     );
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.hasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.element.nativeElement, status);

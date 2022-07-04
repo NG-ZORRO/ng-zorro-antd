@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
+export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | '';
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
@@ -34,7 +34,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
   template: ` <ng-content></ng-content> `
 })
 export class NzFormItemComponent implements OnDestroy, OnDestroy {
-  status: NzFormControlStatusType = null;
+  status: NzFormControlStatusType = '';
   hasFeedback = false;
   withHelpClass = false;
 

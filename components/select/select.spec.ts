@@ -13,6 +13,7 @@ import {
   ɵcreateComponentBed as createComponentBed
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzSelectSearchComponent } from './select-search.component';
@@ -1296,6 +1297,40 @@ describe('select', () => {
       expect(selectElement.classList).not.toContain('ant-select-status-warning');
     });
   });
+  describe('in form', () => {
+    let testBed: ComponentBed<TestSelectInFormComponent>;
+    let component: TestSelectInFormComponent;
+    let fixture: ComponentFixture<TestSelectInFormComponent>;
+    let selectElement!: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectInFormComponent, {
+        imports: [NzSelectModule, NzIconTestModule, NzFormModule, FormsModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    });
+
+    it('should classname correct', () => {
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-error');
+      expect(selectElement.classList).toContain('ant-select-in-form-item');
+      expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+      component.status = 'warning';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-warning');
+
+      component.status = 'success';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-success');
+
+      component.feedback = false;
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+    });
+  });
 });
 
 @Component({
@@ -1592,4 +1627,20 @@ export class TestSelectReactiveTagsComponent {
 })
 export class TestSelectStatusComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-select [nzOptions]="[]"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class TestSelectInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

@@ -75,6 +75,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [ngClass]="'ant-progress ant-progress-status-' + status"
       [class.ant-progress-line]="nzType === 'line'"
       [class.ant-progress-small]="nzSize === 'small'"
+      [class.ant-progress-default]="nzSize === 'default'"
       [class.ant-progress-show-info]="nzShowInfo"
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"

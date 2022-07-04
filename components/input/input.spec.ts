@@ -8,6 +8,7 @@ import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 
@@ -15,13 +16,14 @@ describe('input', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
         declarations: [
           NzTestInputWithInputComponent,
           NzTestInputWithTextAreaComponent,
           NzTestInputFormComponent,
           NzTestInputWithStatusComponent,
-          NzTestInputWithDirComponent
+          NzTestInputWithDirComponent,
+          NzTestInputInFormComponent
         ],
         providers: []
       }).compileComponents();
@@ -148,6 +150,43 @@ describe('input', () => {
       expect(inputElement.nativeElement.className).not.toContain('ant-input-status-warning');
     });
   });
+
+  describe('input in form', () => {
+    let fixture: ComponentFixture<NzTestInputInFormComponent>;
+    let inputElement: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputInFormComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-error');
+      expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-error');
+
+      fixture.componentInstance.status = 'success';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-success');
+      expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-success');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-warning');
+      expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-warning');
+
+      fixture.componentInstance.status = 'validating';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-validating');
+      expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-validating');
+
+      fixture.componentInstance.feedback = false;
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.classList).toContain('ant-input-status-validating');
+      expect(inputElement.nativeElement.nextSibling?.classList).not.toContain('ant-form-item-feedback-icon');
+    });
+  });
 });
 
 @Component({
@@ -204,4 +243,20 @@ export class NzTestInputFormComponent {
 })
 export class NzTestInputWithStatusComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <input nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestInputInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

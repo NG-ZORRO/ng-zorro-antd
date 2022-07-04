@@ -19,7 +19,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzProgressFormatter } from 'ng-zorro-antd/progress';
 
@@ -43,7 +43,7 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
             <nz-progress
               [nzPercent]="nzPercentage"
               nzType="circle"
-              [nzWidth]="40"
+              [nzWidth]="nzSize === 'small' ? 32 : 40"
               [nzFormat]="nullProcessFormat"
               [nzStrokeWidth]="4"
             ></nz-progress>
@@ -112,6 +112,7 @@ export class NzStepComponent implements OnInit {
   @Input() nzDescription?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzPercentage: number | null = null;
+  @Input() nzSize: NzSizeDSType = 'default';
 
   @Input()
   get nzStatus(): string {

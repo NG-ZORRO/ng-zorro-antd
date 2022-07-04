@@ -39,12 +39,13 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
-import { fromEvent, merge, Observable, Subscription } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { fromEvent, merge, Observable, of as observableOf, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NZ_MENTION_CONFIG } from './config';
@@ -100,6 +101,11 @@ export type MentionPlacement = 'top' | 'bottom';
         </ul>
       </div>
     </ng-template>
+    <nz-form-item-feedback-icon
+      class="ant-mentions-suffix"
+      *ngIf="hasFeedback && !!status"
+      [status]="status"
+    ></nz-form-item-feedback-icon>
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -118,7 +124,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
-  @Input() nzStatus?: NzStatus;
+  @Input() nzStatus: NzStatus = '';
   @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
@@ -142,7 +148,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   // status
   prefixCls: string = 'ant-mentions';
   statusCls: NgClassInterface = {};
-  nzHasFeedback: boolean = false;
+  status: NzValidateStatus = '';
+  hasFeedback: boolean = false;
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -175,10 +182,25 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService
+    private destroy$: NzDestroyService,
+    @Optional() private nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   ngOnInit(): void {
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.nzMentionService.triggerChanged().subscribe(trigger => {
       this.trigger = trigger;
       this.bindTriggerEvents();
@@ -202,7 +224,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       }
     }
     if (nzStatus) {
-      this.setStatusStyles();
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
@@ -477,9 +499,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     return this.positionStrategy;
   }
 
-  private setStatusStyles(): void {
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
     // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, this.nzStatus, this.nzHasFeedback);
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
         this.renderer.addClass(this.elementRef.nativeElement, status);

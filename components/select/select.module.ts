@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -47,6 +48,7 @@ import { NzSelectComponent } from './select.component';
     NzOverlayModule,
     NzNoAnimationModule,
     NzTransitionPatchModule,
+    NzFormPatchModule,
     ScrollingModule,
     A11yModule
   ],

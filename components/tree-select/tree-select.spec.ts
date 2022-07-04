@@ -17,6 +17,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
@@ -29,13 +30,14 @@ describe('tree-select component', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
+        imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzFormModule],
         declarations: [
           NzTestTreeSelectBasicComponent,
           NzTestTreeSelectCheckableComponent,
           NzTestTreeSelectFormComponent,
           NzTestTreeSelectCustomizedIconComponent,
-          NzTestTreeSelectStatusComponent
+          NzTestTreeSelectStatusComponent,
+          NzTestTreeSelectInFormComponent
         ],
         providers: [
           {
@@ -631,6 +633,33 @@ describe('tree-select component', () => {
       expect(treeSelect.nativeElement.className).not.toContain('ant-select-status-warning');
     });
   });
+
+  describe('in form', () => {
+    let fixture: ComponentFixture<NzTestTreeSelectInFormComponent>;
+    let treeSelect!: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectInFormComponent);
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(treeSelect.classList).toContain('ant-select-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(treeSelect.classList).toContain('ant-select-status-warning');
+
+      fixture.componentInstance.status = 'success';
+      fixture.detectChanges();
+      expect(treeSelect.classList).toContain('ant-select-status-success');
+
+      fixture.componentInstance.feedback = false;
+      fixture.detectChanges();
+      expect(treeSelect.querySelector('nz-form-item-feedback-icon')).toBeNull();
+    });
+  });
 });
 
 @Component({
@@ -925,4 +954,20 @@ export class NzTestTreeSelectStatusComponent {
       ]
     }
   ];
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-tree-select [nzNodes]="[]"></nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestTreeSelectInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }
