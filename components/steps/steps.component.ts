@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  ElementRef,
   EventEmitter,
   Input,
   NgZone,
@@ -19,7 +18,6 @@ import {
   Optional,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -79,14 +77,13 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   private indexChangeSubscription = Subscription.EMPTY;
 
   showProcessDot = false;
+  showProgress = false;
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
   classMap: NgClassType = {};
   dir: Direction = 'ltr';
 
   constructor(
     private ngZone: NgZone,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     private destroy$: NzDestroyService
@@ -95,7 +92,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent) {
+    if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent || changes.nzSize) {
       this.updateChildrenSteps();
     }
     if (changes.nzDirection || changes.nzProgressDot || changes.nzLabelPlacement || changes.nzSize) {
@@ -126,14 +123,8 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
 
   private updateHostProgressClass(): void {
     if (this.steps && !this.showProcessDot) {
-      const hasPercent = !!this.steps.toArray().find(step => step.nzPercentage !== null);
-      const className = 'ant-steps-with-progress';
-      const hasClass = this.elementRef.nativeElement.classList.contains(className);
-      if (hasPercent && !hasClass) {
-        this.renderer.addClass(this.elementRef.nativeElement, className);
-      } else if (!hasPercent && hasClass) {
-        this.renderer.removeClass(this.elementRef.nativeElement, className);
-      }
+      this.showProgress = !!this.steps.toArray().find(step => step.nzPercentage !== null);
+      this.setClassMap();
     }
   }
 
@@ -142,6 +133,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
       const length = this.steps.length;
       this.steps.toArray().forEach((step, index) => {
         Promise.resolve().then(() => {
+          step.nzSize = this.nzSize;
           step.outStatus = this.nzStatus;
           step.showProcessDot = this.showProcessDot;
           if (this.customProcessDotTemplate) {
@@ -175,7 +167,8 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
       [`ant-steps-dot`]: this.showProcessDot,
       ['ant-steps-small']: this.nzSize === 'small',
       ['ant-steps-navigation']: this.nzType === 'navigation',
-      ['ant-steps-rtl']: this.dir === 'rtl'
+      ['ant-steps-rtl']: this.dir === 'rtl',
+      ['ant-steps-with-progress']: this.showProgress
     };
   }
 }

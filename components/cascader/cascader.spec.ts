@@ -21,7 +21,7 @@ import {
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -34,6 +34,7 @@ import {
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormModule } from '../form';
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
 import { NzCascaderOption, NzShowSearchOptions } from './typings';
@@ -67,13 +68,15 @@ describe('cascader', () => {
           ReactiveFormsModule,
           NoopAnimationsModule,
           NzCascaderModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzFormModule
         ],
         declarations: [
           NzDemoCascaderDefaultComponent,
           NzDemoCascaderLoadDataComponent,
           NzDemoCascaderRtlComponent,
-          NzDemoCascaderStatusComponent
+          NzDemoCascaderStatusComponent,
+          NzDemoCascaderInFormComponent
         ]
       }).compileComponents();
 
@@ -1815,6 +1818,45 @@ describe('cascader', () => {
       expect(cascader.nativeElement.className).not.toContain('ant-select-status-warning');
     });
   });
+  describe('In form', () => {
+    let fixture: ComponentFixture<NzDemoCascaderInFormComponent>;
+    let formGroup: FormGroup;
+    let cascader: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderInFormComponent);
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+      formGroup = fixture.componentInstance.validateForm;
+      fixture.detectChanges();
+    });
+
+    it('should className correct', () => {
+      expect(cascader.nativeElement.className).not.toContain('ant-select-status-error');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+      formGroup.get('demo')!.markAsDirty();
+      formGroup.get('demo')!.setValue(null);
+      formGroup.get('demo')!.updateValueAndValidity();
+      fixture.detectChanges();
+
+      // show error
+      expect(cascader.nativeElement.className).toContain('ant-select-status-error');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon').className).toContain(
+        'ant-form-item-feedback-icon-error'
+      );
+
+      formGroup.get('demo')!.markAsDirty();
+      formGroup.get('demo')!.setValue(['a', 'b']);
+      formGroup.get('demo')!.updateValueAndValidity();
+      fixture.detectChanges();
+      // show success
+      expect(cascader.nativeElement.className).toContain('ant-select-status-success');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon').className).toContain(
+        'ant-form-item-feedback-icon-success'
+      );
+    });
+  });
 });
 
 const ID_NAME_LIST = [
@@ -2207,4 +2249,23 @@ export class NzDemoCascaderRtlComponent {
 export class NzDemoCascaderStatusComponent {
   public nzOptions: any[] | null = options1;
   public status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-control nzHasFeedback>
+          <nz-cascader formControlName="demo" [nzOptions]="nzOptions"></nz-cascader>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzDemoCascaderInFormComponent {
+  validateForm: FormGroup = this.fb.group({
+    demo: [null, [Validators.required]]
+  });
+  public nzOptions: any[] | null = options1;
+  constructor(private fb: FormBuilder) {}
 }

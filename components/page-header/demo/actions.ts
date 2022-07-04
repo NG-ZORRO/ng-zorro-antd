@@ -7,9 +7,11 @@ import { Component } from '@angular/core';
       <nz-page-header-title>Title</nz-page-header-title>
       <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
       <nz-page-header-extra>
-        <button nz-button>Operation</button>
-        <button nz-button>Operation</button>
-        <button nz-button nzType="primary">Primary</button>
+        <nz-space>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button nzType="primary">Primary</button>
+        </nz-space>
       </nz-page-header-extra>
       <nz-page-header-content>
         <nz-descriptions nzSize="small" [nzColumn]="3">
@@ -31,9 +33,11 @@ import { Component } from '@angular/core';
         <nz-tag nzColor="blue">Runing</nz-tag>
       </nz-page-header-tags>
       <nz-page-header-extra>
-        <button nz-button>Operation</button>
-        <button nz-button>Operation</button>
-        <button nz-button nzType="primary">Primary</button>
+        <nz-space>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button nzType="primary">Primary</button>
+        </nz-space>
       </nz-page-header-extra>
       <nz-page-header-content>
         <nz-row nzType="flex">

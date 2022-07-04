@@ -80,6 +80,17 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should nz-range-picker work', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+      fixture.whenRenderingDone().then(() => {
+        tick(500);
+        fixture.detectChanges();
+        expect(getPickerContainer()).not.toBeNull();
+        const pickerInput = getPickerInput(fixture.debugElement);
+        expect(pickerInput).not.toBeNull();
+      });
+    }));
+
     it('should open by click and close by tab', fakeAsync(() => {
       fixtureInstance.useSuite = 4;
 
@@ -832,6 +843,9 @@ describe('NzRangePickerComponent', () => {
       const newDateString = ['2019-09-15 11:08:22', '2020-10-10 11:08:22'];
       typeInElement(newDateString[0], leftInput);
       fixture.detectChanges();
+      // should focus the other input
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
       typeInElement(newDateString[1], rightInput);
       fixture.detectChanges();
       rightInput.dispatchEvent(ENTER_EVENT);
@@ -870,6 +884,9 @@ describe('NzRangePickerComponent', () => {
       const leftInput = getPickerInput(fixture.debugElement);
       const rightInput = getRangePickerRightInput(fixture.debugElement);
       typeInElement('2019-08-10', leftInput);
+      fixture.detectChanges();
+      // should focus the other input
+      leftInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       typeInElement('2018-02-06', rightInput);
       fixture.detectChanges();
@@ -1149,11 +1166,13 @@ describe('NzRangePickerComponent', () => {
         <nz-range-picker [(ngModel)]="modelValue"></nz-range-picker>
         <nz-date-picker [ngModel]="singleValue"></nz-date-picker>
       </ng-container>
+
+      <nz-range-picker *ngSwitchCase="5" nzOpen></nz-range-picker>
     </ng-container>
   `
 })
 class NzTestRangePickerComponent {
-  useSuite!: 1 | 2 | 3 | 4;
+  useSuite!: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 

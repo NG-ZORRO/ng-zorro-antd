@@ -23,8 +23,8 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { asapScheduler, Subject } from 'rxjs';
+import { delay, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -184,11 +184,25 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
     this.initProperties();
 
-    this.component.nzVisibleChange
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((visible: boolean) => {
-        this.internalVisible = visible;
-        this.visibleChange.emit(visible);
+    const ngVisibleChange$ = this.component.nzVisibleChange.pipe(distinctUntilChanged());
+
+    ngVisibleChange$.pipe(takeUntil(this.destroy$)).subscribe((visible: boolean) => {
+      this.internalVisible = visible;
+      this.visibleChange.emit(visible);
+    });
+
+    // In some cases, the rendering takes into account the height at which the `arrow` is in wrong place,
+    // so `cdk` sets the container position incorrectly.
+    // To avoid this, after placing the `arrow` in the correct position, we should `re-calculate` the position of the `overlay`.
+    ngVisibleChange$
+      .pipe(
+        filter((visible: boolean) => visible),
+        delay(0, asapScheduler),
+        filter(() => Boolean(this.component?.overlay?.overlayRef)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.component?.updatePosition();
       });
   }
 

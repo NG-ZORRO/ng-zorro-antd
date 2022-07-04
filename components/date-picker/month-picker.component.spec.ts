@@ -148,6 +148,17 @@ describe('NzMonthPickerComponent', () => {
       expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
     });
 
+    it('should nz-month-picker work', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+      fixture.whenRenderingDone().then(() => {
+        tick(500);
+        fixture.detectChanges();
+        expect(getPickerContainer()).not.toBeNull();
+        const pickerInput = getPickerInput(fixture.debugElement);
+        expect(pickerInput).not.toBeNull();
+      });
+    }));
+
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
@@ -435,11 +446,13 @@ describe('NzMonthPickerComponent', () => {
         <nz-date-picker nzMode="month" style="width: 200px;"></nz-date-picker>
         <input nz-input type="text" style="width: 200px;" />
       </nz-input-group>
+
+      <nz-month-picker *ngSwitchCase="5" nzOpen></nz-month-picker>
     </ng-container>
   `
 })
 class NzTestMonthPickerComponent {
-  useSuite!: 1 | 2 | 3 | 4;
+  useSuite!: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
   // --- Suite 1
   nzAllowClear: boolean = false;
