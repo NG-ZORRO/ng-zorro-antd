@@ -146,25 +146,40 @@ describe('tree', () => {
 
       [
         {
-          title: 'should display 7 nodes when hideUnMatched=false and virtualHeight = undefined',
-          when: { hideUnMatched: false },
-          then: 7
-        },
-        {
-          title: "should display 7 nodes when hideUnMatched=false and virtualHeight = '300px'",
-          when: { hideUnMatched: false, virtualHeight: '300px' },
-          then: 7
-        },
-        {
-          title: 'should display 7 nodes when hideUnMatched=true and virtualHeight = undefined',
-          when: { hideUnMatched: true },
-          then: 7
+          title:
+            "should display 7 nodes when hideUnMatched=false and virtualHeight = undefined and nzSearchValue = '0-1'",
+          when: { hideUnMatched: false, searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
         },
         {
           title:
-            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px'",
+            "should display 7 nodes when hideUnMatched=false and virtualHeight = '300px' and nzSearchValue = '0-1'",
+          when: { hideUnMatched: false, virtualHeight: '300px', searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
+        },
+        {
+          title:
+            "'should display 7 nodes when hideUnMatched=true and virtualHeight = undefined and nzSearchValue = '0-1'",
+          when: { hideUnMatched: true, searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = undefined",
           when: { hideUnMatched: true, virtualHeight: '300px' },
-          then: 4
+          then: { matchedNodeList: 0, nzFlattenNodes: 3 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = ''",
+          when: { hideUnMatched: true, virtualHeight: '300px', searchValue: '' },
+          then: { matchedNodeList: 0, nzFlattenNodes: 3 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = '0-1'",
+          when: { hideUnMatched: true, virtualHeight: '300px', searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 4 }
         }
       ].forEach(({ title, when, then }) => {
         it(
@@ -172,7 +187,7 @@ describe('tree', () => {
           fakeAsync(() => {
             // Given
             const { component, fixture, nativeElement } = testBed;
-            component.searchValue = '0-1';
+            component.searchValue = when.searchValue;
             component.virtualHeight = when.virtualHeight;
             component.hideUnMatched = when.hideUnMatched;
             // When
@@ -182,13 +197,13 @@ describe('tree', () => {
             // Then
             expect(component.treeComponent.getMatchedNodeList().length)
               .withContext('treeComponent.getMatchedNodeList().length')
-              .toBe(3);
+              .toBe(then.matchedNodeList);
             expect(component.treeComponent.nzFlattenNodes.length)
               .withContext('treeComponent.nzFlattenNodes.length')
-              .toBe(then);
+              .toBe(then.nzFlattenNodes);
             expect(nativeElement.querySelectorAll('nz-tree-node').length)
               .withContext('number of displayed nz-tree-node elements')
-              .toBe(then);
+              .toBe(then.nzFlattenNodes);
           })
         );
       });
