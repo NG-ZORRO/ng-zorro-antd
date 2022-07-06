@@ -41,13 +41,23 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   encapsulation: ViewEncapsulation.None,
   animations: [collapseMotion],
   template: `
-    <div #collapseHeader role="button" [attr.aria-expanded]="nzActive" class="ant-collapse-header">
+    <div
+      #collapseHeader
+      role="button"
+      [attr.aria-expanded]="nzActive"
+      class="ant-collapse-header"
+      [class.ant-collapse-header-collapsible-only]="nzCollapsible === 'header'"
+    >
       <div *ngIf="nzShowArrow">
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
           <i nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
         </ng-container>
       </div>
-      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      <span #collapseHeaderText class="ant-collapse-header-text">
+        <ng-container *nzStringTemplateOutlet="nzHeader">
+          {{ nzHeader }}
+        </ng-container>
+      </span>
       <div class="ant-collapse-extra" *ngIf="nzExtra">
         <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
       </div>
@@ -68,7 +78,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'nzActive',
-    '[class.ant-collapse-item-disabled]': 'nzDisabled'
+    '[class.ant-collapse-item-disabled]': 'nzDisabled || nzCollapsible === "disabled"'
   },
   providers: [NzDestroyService]
 })
@@ -84,9 +94,11 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzExpandedIcon?: string | TemplateRef<void>;
+  @Input() nzCollapsible?: 'disabled' | 'header';
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
 
   @ViewChild('collapseHeader', { static: true }) collapseHeader!: ElementRef<HTMLElement>;
+  @ViewChild('collapseHeaderText', { static: true }) collapseHeaderText!: ElementRef<HTMLElement>;
 
   markForCheck(): void {
     this.cdr.markForCheck();
@@ -110,11 +122,12 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.nzCollapseComponent.addPanel(this);
+    const target = this.nzCollapsible === 'header' ? this.collapseHeaderText : this.collapseHeader;
 
     this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.collapseHeader.nativeElement, 'click')
+      fromEvent(target.nativeElement, 'click')
         .pipe(
-          filter(() => !this.nzDisabled),
+          filter(() => !this.nzDisabled && this.nzCollapsible !== 'disabled'),
           takeUntil(this.destroy$)
         )
         .subscribe(() => {

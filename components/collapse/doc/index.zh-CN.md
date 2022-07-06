@@ -33,6 +33,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzCollapsible]` | 是否可折叠或指定可折叠触发区域 | `header \| disabled` | - |
 | `[nzDisabled]` | 禁用后的面板展开与否将无法通过用户交互改变 | `boolean` | `false` |
 | `[nzHeader]` | 面板头内容 | `string \| TemplateRef<void>` | - |
 | `[nzExpandedIcon]` | 自定义切换图标 | `string \| TemplateRef<void>` | - |
