@@ -72,3 +72,37 @@ export function getPlacementName(position: ConnectedOverlayPositionChange): stri
   }
   return undefined;
 }
+
+export const DATE_PICKER_POSITION_MAP = {
+  bottomLeft: new ConnectionPositionPair(
+    { originX: 'start', originY: 'bottom' },
+    { overlayX: 'start', overlayY: 'top' },
+    undefined,
+    2
+  ),
+  topLeft: new ConnectionPositionPair(
+    { originX: 'start', originY: 'top' },
+    { overlayX: 'start', overlayY: 'bottom' },
+    undefined,
+    -2
+  ),
+  bottomRight: new ConnectionPositionPair(
+    { originX: 'end', originY: 'bottom' },
+    { overlayX: 'end', overlayY: 'top' },
+    undefined,
+    2
+  ),
+  topRight: new ConnectionPositionPair(
+    { originX: 'end', originY: 'top' },
+    { overlayX: 'end', overlayY: 'bottom' },
+    undefined,
+    -2
+  )
+};
+
+export const DEFAULT_DATE_PICKER_POSITIONS = [
+  DATE_PICKER_POSITION_MAP.bottomLeft,
+  DATE_PICKER_POSITION_MAP.topLeft,
+  DATE_PICKER_POSITION_MAP.bottomRight,
+  DATE_PICKER_POSITION_MAP.topRight
+];

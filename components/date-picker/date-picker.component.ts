@@ -48,6 +48,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_DATE_PICKER_POSITIONS, DATE_PICKER_POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
@@ -83,6 +84,7 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
 
 export type NzDatePickerSizeType = 'large' | 'default' | 'small';
+export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 /**
  * The base picker for all common APIs
@@ -303,6 +305,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
+  @Input() nzPlacement: NzPlacement = 'bottomLeft';
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
   @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();
@@ -335,36 +338,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   inputValue!: NzSafeAny;
   activeBarStyle: object = {};
   overlayOpen: boolean = false; // Available when "nzOpen" = undefined
-  overlayPositions: ConnectionPositionPair[] = [
-    {
-      offsetY: 2,
-      originX: 'start',
-      originY: 'bottom',
-      overlayX: 'start',
-      overlayY: 'top'
-    },
-    {
-      offsetY: -2,
-      originX: 'start',
-      originY: 'top',
-      overlayX: 'start',
-      overlayY: 'bottom'
-    },
-    {
-      offsetY: 2,
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top'
-    },
-    {
-      offsetY: -2,
-      originX: 'end',
-      originY: 'top',
-      overlayX: 'end',
-      overlayY: 'bottom'
-    }
-  ] as ConnectionPositionPair[];
+  overlayPositions: ConnectionPositionPair[] = [...DEFAULT_DATE_PICKER_POSITIONS];
   currentPositionX: HorizontalConnectionPos = 'start';
   currentPositionY: VerticalConnectionPos = 'bottom';
 
@@ -680,7 +654,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus } = changes;
+    const { nzStatus, nzPlacement } = changes;
     if (changes.nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
@@ -711,6 +685,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+
+    if (nzPlacement) {
+      this.setPlacement(this.nzPlacement);
     }
   }
 
@@ -876,5 +854,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
         this.renderer.removeClass(this.elementRef.nativeElement, status);
       }
     });
+  }
+
+  private setPlacement(placement: NzPlacement): void {
+    const position: ConnectionPositionPair = DATE_PICKER_POSITION_MAP[placement];
+    this.overlayPositions = [position, ...DEFAULT_DATE_PICKER_POSITIONS];
+    this.currentPositionX = position.originX;
+    this.currentPositionY = position.originY;
   }
 }
