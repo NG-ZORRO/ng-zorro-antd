@@ -10,6 +10,10 @@ cover: https://gw.alipayobjects.com/zos/bmw-prod/a3ff040f-24ba-43e0-92e9-c845df1
 - When displaying multiple options and user can select a single option;
 - When switching the selected option, the content of the associated area changes.
 
+```ts
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+```
+
 ## API
 
 | Property | Description | Type | Default | Global Config |
