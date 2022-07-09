@@ -11,6 +11,10 @@ cover: https://gw.alipayobjects.com/zos/bmw-prod/a3ff040f-24ba-43e0-92e9-c845df1
 - 用于展示多个选项并允许用户选择其中单个选项；
 - 当切换选中选项时，关联区域的内容会发生变化。
 
+```ts
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+```
+
 ## API
 
 ### Segmented
