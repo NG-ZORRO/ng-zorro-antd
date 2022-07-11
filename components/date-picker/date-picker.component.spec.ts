@@ -514,6 +514,52 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+    it('should support nzPlacement', fakeAsync(() => {
+      fixtureInstance.nzPlacement = 'bottomLeft';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      let element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'topLeft';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'bottomRight';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'topRight';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(true);
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1289,6 +1335,7 @@ describe('in form', () => {
         [nzBorderless]="nzBorderless"
         [nzInline]="nzInline"
         [nzBackdrop]="nzBackdrop"
+        [nzPlacement]="nzPlacement"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1348,6 +1395,7 @@ class NzTestDatePickerComponent {
   nzBorderless = false;
   nzInline = false;
   nzBackdrop = false;
+  nzPlacement = 'bottomLeft';
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}
