@@ -15,11 +15,14 @@ import {
   Output,
   QueryList,
   TemplateRef,
+  ViewChild,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, Observable } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
+
+import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
 
 import { TransferDirection, TransferItem } from './interface';
 
@@ -61,6 +64,7 @@ import { TransferDirection, TransferItem } from './interface';
         *ngIf="showSelectAll"
         class="ant-transfer-list-checkbox"
         nz-checkbox
+        #headerCheckbox
         [nzChecked]="stat.checkAll"
         (nzCheckedChange)="onItemSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"
@@ -145,6 +149,8 @@ export class NzTransferListComponent implements AfterViewInit {
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
+  @ViewChild('headerCheckbox', { read: NzCheckboxComponent }) headerCheckbox?: NzCheckboxComponent;
+
   @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
 
   stat = {
@@ -184,6 +190,19 @@ export class NzTransferListComponent implements AfterViewInit {
     this.stat.shownCount = this.validData.length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
+    // Note: this is done explicitly since the internal `nzChecked` value may not be updated in edge cases.
+    // Consider the following flow:
+    // 1) the initial value of `stat.checkAll` is `false`
+    // 2) the user filters items
+    // 3) the user clicks "Select All" checkbox
+    // 4) the `NzCheckboxComponent` sets `nzChecked` to `true` internally
+    // 5) the user clicks "Move to right"
+    // 6) items are moved and the `updateCheckStatus` is invoked
+    // 7) the `stat.checkAll` value has never been updated in this flow, it's always been `false`
+    // 8) the `nzChecked` is still `true` and the checkbox is not unchecked
+    // This is because Angular checks bindings and it checked that `[nzChecked]="stat.checkAll"` has
+    // never been updated, so Angular did not set new `nzChecked` value on the checkbox.
+    this.headerCheckbox && (this.headerCheckbox.nzChecked = this.stat.checkAll);
   }
 
   // #endregion
