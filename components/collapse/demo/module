@@ -1,4 +1,5 @@
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
-export const moduleList = [ NzCollapseModule, NzIconModule ];
+export const moduleList = [NzCollapseModule, NzIconModule, NzSelectModule];
