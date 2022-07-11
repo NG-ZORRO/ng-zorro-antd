@@ -30,7 +30,9 @@ import { badgePresetColors } from './preset-colors';
       [class.ant-ribbon-placement-start]="nzPlacement === 'start'"
       [style.background-color]="!presetColor && nzColor"
     >
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      <ng-container *nzStringTemplateOutlet="nzText">
+        <span class="ant-ribbon-text">{{ nzText }}</span>
+      </ng-container>
       <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
     </div>
   `,
