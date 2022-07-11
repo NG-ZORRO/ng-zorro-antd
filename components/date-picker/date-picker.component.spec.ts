@@ -159,6 +159,12 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
+    it('should have focus when opened progammatically', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByCode();
+      expect(document.activeElement).toEqual(getPickerInput(fixture.debugElement));
+    }));
+
     it('should open by click and close by tab', fakeAsync(() => {
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixtureInstance.useSuite = 5;
@@ -1184,6 +1190,13 @@ describe('NzDatePickerComponent', () => {
 
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+  }
+
+  function openPickerByCode(): void {
+    fixtureInstance.datePicker.open();
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();

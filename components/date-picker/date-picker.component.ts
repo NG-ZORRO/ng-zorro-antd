@@ -432,6 +432,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.nzOnOpenChange.emit(true);
+      this.focus();
       this.cdr.markForCheck();
     }
   }
