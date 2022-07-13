@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 10
 title:
   zh-CN: 无边框
   en-US: Bordered-less
