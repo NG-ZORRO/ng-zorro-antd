@@ -34,7 +34,7 @@ import { TransferDirection, TransferItem } from './interface';
     <ng-template #defaultRenderList>
       <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
         <li
-          *ngFor="let item of validData"
+          *ngFor="let item of validData; trackBy: trackByHide"
           (click)="onItemSelect(item)"
           class="ant-transfer-list-content-item"
           [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
@@ -162,6 +162,12 @@ export class NzTransferListComponent implements AfterViewInit {
 
   get validData(): TransferItem[] {
     return this.dataSource.filter(w => !w.hide);
+  }
+
+  trackByHide(_index: number, item: TransferItem): boolean | undefined {
+    // The `validData` is a getter which returns new array each time the property is read.
+    // This may lead to unexpected re-renders, tho the array hasn't been updated.
+    return item.hide;
   }
 
   onItemSelect = (item: TransferItem): void => {
