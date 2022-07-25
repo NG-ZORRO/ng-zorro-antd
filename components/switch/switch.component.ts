@@ -51,6 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       type="button"
       class="ant-switch"
       #switchElement
+      [attr.id]="nzId"
       [disabled]="nzDisabled"
       [class.ant-switch-checked]="isChecked"
       [class.ant-switch-loading]="nzLoading"
@@ -91,6 +92,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
+  @Input() nzId: string | null = null;
 
   dir: Direction = 'ltr';
 
