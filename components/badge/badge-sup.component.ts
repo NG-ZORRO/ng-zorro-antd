@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -54,6 +54,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
+    '[class.ant-badge-count-sm]': `nzSize === 'small'`,
     '[class.ant-badge-dot]': `nzDot`,
     '[class.ant-badge-multiple-words]': `countArray.length >= 2`
   }
@@ -67,6 +68,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
+  @Input() nzSize: NzSizeDSType = 'default';
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;

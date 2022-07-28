@@ -110,10 +110,19 @@ export class NzNotificationComponent extends NzMNComponent implements OnDestroy 
 
   get state(): string | undefined {
     if (this.instance.state === 'enter') {
-      if (this.placement === 'topLeft' || this.placement === 'bottomLeft') {
-        return 'enterLeft';
-      } else {
-        return 'enterRight';
+      switch (this.placement) {
+        case 'topLeft':
+        case 'bottomLeft':
+          return 'enterLeft';
+        case 'topRight':
+        case 'bottomRight':
+          return 'enterRight';
+        case 'top':
+          return 'enterTop';
+        case 'bottom':
+          return 'enterBottom';
+        default:
+          return 'enterRight';
       }
     } else {
       return this.instance.state;

@@ -189,6 +189,20 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
+  it('should show with placement of top', () => {
+    nzConfigService.set('notification', { nzPlacement: 'top' });
+    notificationService.create('', '', 'EXISTS');
+    fixture.detectChanges();
+    expect(overlayContainerElement.textContent).toContain('EXISTS');
+    expect(overlayContainerElement.querySelector('.ant-notification-top')).not.toBeNull();
+  });
+  it('should show with placement of bottom', () => {
+    nzConfigService.set('notification', { nzPlacement: 'bottom' });
+    notificationService.create('', '', 'EXISTS');
+    fixture.detectChanges();
+    expect(overlayContainerElement.textContent).toContain('EXISTS');
+    expect(overlayContainerElement.querySelector('.ant-notification-bottom')).not.toBeNull();
+  });
   // Should support nzData as context.
   it('should open a message box with template ref', () => {
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'data' });

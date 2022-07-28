@@ -47,6 +47,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzSecondStep]` | 秒选项间隔 | `number` | `1` | ✅ |
 | `[nzSize]` | 时间选择框大小 | `'large'\|'small'\|'default'` | `'default'` |
 | `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
+| `[nzBorderless]` | 移除边框 | `boolean` | `false` | - |
 | `[nzOpen]` | 面板是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 没有值的时候显示的内容 | `string` | `"请选择时间"` |
 | `[nzPopupClassName]` | 弹出层类名 | `string` | `''` | ✅ |

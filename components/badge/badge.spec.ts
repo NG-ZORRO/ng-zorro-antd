@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
@@ -155,6 +155,14 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
     });
+
+    it('should size work', () => {
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count');
+      testComponent.size = 'small';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
+    });
   });
 
   describe('RTL', () => {
@@ -194,6 +202,7 @@ describe('badge', () => {
       [nzOffset]="offset"
       [nzTitle]="title"
       [nzStandalone]="!inner"
+      [nzSize]="size"
     >
       <a *ngIf="inner"></a>
     </nz-badge>
@@ -210,6 +219,7 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
+  size?: NzSizeDSType = 'default';
   noAnimation = true;
 }
 

@@ -46,6 +46,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzSecondStep]` | interval between seconds in picker | `number` | `1` | ✅ |
 | `[nzSize]` | width of time picker box | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
+| `[nzBorderless]` | remove the border | `boolean` | `false` | - |
 | `[nzOpen]` | whether to popup panel, double binding | `boolean` | `false` |
 | `[nzPlaceHolder]` | display when there's no value | `string` | `"Select a time"` |
 | `[nzPopupClassName]` | className of panel | `string` | `''` | ✅ |

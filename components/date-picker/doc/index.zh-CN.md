@@ -51,6 +51,7 @@ registerLocaleData(zh);
 | `[nzRenderExtraFooter]` | 在面板中添加额外的页脚 | `TemplateRef \| string \| (() => TemplateRef \| string)` | - |
 | `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - | - |
 | `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
+| `[nzPlacement]` | 选择框弹出的位置 | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | `'bottomLeft'` |  |
 | `[nzSuffixIcon]` | 自定义的后缀图标 | `string` \| `TemplateRef` | - | ✅ |
 | `[nzBorderless]` | 移除边框 | `boolean` | `false` | - |
 | `[nzInline]` | 内联模式 | `boolean` | `false` | - |

@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 
 import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 
-export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;

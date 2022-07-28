@@ -51,6 +51,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzRenderExtraFooter]` | render extra footer in panel | `TemplateRef \| string \| (() => TemplateRef \| string)` | - |
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
 | `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
+| `[nzPlacement]` | The position where the selection box pops up | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | `'bottomLeft'` |  |
 | `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
 | `[nzBorderless]` | remove the border | `boolean` | `false` | - |
 | `[nzInline]` | inline mode | `boolean` | `false` | - |
