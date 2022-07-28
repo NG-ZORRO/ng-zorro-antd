@@ -29,12 +29,26 @@ import { InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
+/** https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-loading */
+type NzAvatarLoading = 'eager' | 'lazy';
+
+/** https://wicg.github.io/priority-hints/#idl-index */
+type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
+
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
   template: `
     <i nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></i>
-    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    <img
+      *ngIf="nzSrc && hasSrc"
+      [src]="nzSrc"
+      [attr.srcset]="nzSrcSet"
+      [attr.alt]="nzAlt"
+      [attr.loading]="nzLoading"
+      [attr.fetchpriority]="nzFetchPriority"
+      (error)="imgError($event)"
+    />
     <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
   `,
   host: {
@@ -67,6 +81,8 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzSrcSet?: string;
   @Input() nzAlt?: string;
   @Input() nzIcon?: string;
+  @Input() nzLoading?: NzAvatarLoading;
+  @Input() nzFetchPriority?: NzAvatarFetchPriority;
   @Output() readonly nzError = new EventEmitter<Event>();
 
   hasText: boolean = false;
