@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
   template: `
     <ng-template #nzIndicatorTpl>
       <span class="ant-spin-dot">
-        <i nz-icon [nzType]="'loading'"></i>
+        <span  [nzType]="'loading'"></span>
       </span>
     </ng-template>
   `

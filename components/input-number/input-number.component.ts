@@ -55,7 +55,7 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
         (mousedown)="up($event)"
         [class.ant-input-number-handler-up-disabled]="disabledUp"
       >
-        <i nz-icon nzType="up" class="ant-input-number-handler-up-inner"></i>
+        <span nz-icon nzType="up" class="ant-input-number-handler-up-inner"></span>
       </span>
       <span
         #downHandler
@@ -64,7 +64,7 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
         (mousedown)="down($event)"
         [class.ant-input-number-handler-down-disabled]="disabledDown"
       >
-        <i nz-icon nzType="down" class="ant-input-number-handler-down-inner"></i>
+        <span nz-icon nzType="down" class="ant-input-number-handler-down-inner"></span>
       </span>
     </div>
     <div class="ant-input-number-input-wrap">

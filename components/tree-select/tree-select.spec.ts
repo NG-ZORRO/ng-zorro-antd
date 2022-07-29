@@ -891,7 +891,7 @@ export class NzTestTreeSelectFormComponent {
     <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
       <ng-template #nzTreeTemplate let-node>
         <span>
-          <i class="anticon anticon-frown-o"></i>
+          <span class="anticon anticon-frown-o"></span>
           {{ node.title }}
         </span>
       </ng-template>

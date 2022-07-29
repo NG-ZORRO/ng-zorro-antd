@@ -46,7 +46,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
       <ng-content></ng-content>
       <span *ngIf="nzTooltipTitle" class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
         <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
-          <i nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></i>
+          <span nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></span>
         </ng-container>
       </span>
     </label>

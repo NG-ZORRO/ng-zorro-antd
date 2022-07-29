@@ -24,13 +24,13 @@ import { Component } from '@angular/core';
       <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon nzType="setting"></i>
+      <span nz-icon nzType="setting"></span>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit"></i>
+      <span nz-icon nzType="edit"></span>
     </ng-template>
     <ng-template #actionEllipsis>
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </ng-template>
   `
 })

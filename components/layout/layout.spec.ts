@@ -231,12 +231,12 @@ describe('layout', () => {
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate"></nz-sider>
       <nz-layout>
         <nz-header>
-          <i
+          <span
             class="trigger"
             nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             (click)="isCollapsed = !isCollapsed"
-          ></i>
+          ></span>
         </nz-header>
         <nz-content>
           <div>Bill is a cat.</div>
@@ -245,7 +245,7 @@ describe('layout', () => {
       </nz-layout>
     </nz-layout>
     <ng-template #trigger>
-      <i nz-icon nzType="up"></i>
+      <span nz-icon nzType="up"></span>
     </ng-template>
   `
 })
@@ -304,7 +304,7 @@ export class NzLayoutSideComponent {
       </nz-layout>
     </nz-layout>
     <ng-template #zeroTrigger>
-      <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
+      <span nz-icon nzType="menu-fold" nzTheme="outline"></span>
     </ng-template>
   `
 })

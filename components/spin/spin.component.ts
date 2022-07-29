@@ -33,10 +33,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   template: `
     <ng-template #defaultTemplate>
       <span class="ant-spin-dot ant-spin-dot-spin">
-        <i class="ant-spin-dot-item"></i>
-        <i class="ant-spin-dot-item"></i>
-        <i class="ant-spin-dot-item"></i>
-        <i class="ant-spin-dot-item"></i>
+        <span class="ant-spin-dot-item"></span>
+        <span class="ant-spin-dot-item"></span>
+        <span class="ant-spin-dot-item"></span>
+        <span class="ant-spin-dot-item"></span>
       </span>
     </ng-template>
     <div *ngIf="isLoading">

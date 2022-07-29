@@ -12,7 +12,11 @@ import { Component } from '@angular/core';
       />
     </nz-input-group>
     <ng-template #suffixTemplate>
-      <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+      <span
+        nz-icon
+        [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+        (click)="passwordVisible = !passwordVisible"
+      ></span>
     </ng-template>
   `,
   styles: [

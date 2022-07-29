@@ -28,7 +28,7 @@ const iconTypeMap = {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <i *ngIf="iconType" nz-icon [nzType]="iconType"></i> `,
+  template: ` <span *ngIf="iconType" nz-icon [nzType]="iconType"></span> `,
   host: {
     class: 'ant-form-item-feedback-icon',
     '[class.ant-form-item-feedback-icon-error]': 'status==="error"',

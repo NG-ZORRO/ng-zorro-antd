@@ -60,7 +60,7 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
         <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
           <ng-container *nzStringTemplateOutlet="nzPendingDot">
             {{ nzPendingDot }}
-            <i *ngIf="!nzPendingDot" nz-icon nzType="loading"></i>
+            <span *ngIf="!nzPendingDot" nz-icon nzType="loading"></span>
           </ng-container>
         </div>
         <div class="ant-timeline-item-content">

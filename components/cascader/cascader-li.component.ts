@@ -37,10 +37,10 @@ import { NzCascaderOption } from './typings';
       ></div>
     </ng-template>
     <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
+      <span *ngIf="option.loading; else icon" nz-icon nzType="loading"></span>
       <ng-template #icon>
         <ng-container *nzStringTemplateOutlet="expandIcon">
-          <i nz-icon [nzType]="$any(expandIcon)"></i>
+          <span nz-icon [nzType]="$any(expandIcon)"></span>
         </ng-container>
       </ng-template>
     </div>

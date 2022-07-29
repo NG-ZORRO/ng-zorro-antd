@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
               [nzSuffix]="'%'"
               [nzValueStyle]="{ color: '#3F8600' }"
             ></nz-statistic>
-            <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
+            <ng-template #prefixTplOne><span nz-icon nzType="arrow-up"></span></ng-template>
           </nz-card>
         </nz-col>
         <nz-col [nzSpan]="12">
@@ -26,7 +26,7 @@ import { Component } from '@angular/core';
               [nzSuffix]="'%'"
               [nzValueStyle]="{ color: '#CF1322' }"
             ></nz-statistic>
-            <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
+            <ng-template #prefixTplTwo><span nz-icon nzType="arrow-down"></span></ng-template>
           </nz-card>
         </nz-col>
       </nz-row>

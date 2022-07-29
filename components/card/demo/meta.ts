@@ -17,13 +17,13 @@ import { Component } from '@angular/core';
       <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon nzType="setting"></i>
+      <span nz-icon nzType="setting"></span>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit"></i>
+      <span nz-icon nzType="edit"></span>
     </ng-template>
     <ng-template #actionEllipsis>
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </ng-template>
   `
 })

@@ -50,7 +50,7 @@ interface FlatNode {
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine>
         <nz-tree-node-toggle nzTreeNodeNoopToggle *ngIf="showLeafIcon">
-          <i nz-icon nzType="file" nzTheme="outline"></i>
+          <span nz-icon nzType="file" nzTheme="outline"></span>
         </nz-tree-node-toggle>
         <nz-tree-node-option>
           {{ node.name }}
@@ -59,7 +59,11 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine>
         <nz-tree-node-toggle>
-          <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'" nzTheme="outline"></i>
+          <span
+            nz-icon
+            [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"
+            nzTheme="outline"
+          ></span>
         </nz-tree-node-toggle>
         <nz-tree-node-option>
           {{ node.name }}

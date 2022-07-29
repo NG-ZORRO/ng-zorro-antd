@@ -51,7 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
       (@slideAlertMotion.done)="onFadeAnimationDone()"
     >
       <ng-container *ngIf="nzShowIcon">
-        <i nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></i>
+        <span nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
       </ng-container>
       <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
         <span class="ant-alert-message" *ngIf="nzMessage">
@@ -72,7 +72,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
         (click)="closeAlert()"
       >
         <ng-template #closeDefaultTemplate>
-          <i nz-icon nzType="close"></i>
+          <span nz-icon nzType="close"></span>
         </ng-template>
         <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
           <ng-container *nzStringTemplateOutlet="nzCloseText">

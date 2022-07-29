@@ -41,7 +41,7 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       (nzVisibleChange)="menuVisChange($event)"
       (mouseenter)="showItems()"
     >
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu *ngIf="menuOpened">

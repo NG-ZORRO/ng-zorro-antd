@@ -26,7 +26,7 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angul
           <button nz-button (click)="resetForm()">Clear</button>
           <a class="collapse" (click)="toggleCollapse()">
             Collapse
-            <i nz-icon [nzType]="isCollapse ? 'down' : 'up'"></i>
+            <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
           </a>
         </div>
       </div>

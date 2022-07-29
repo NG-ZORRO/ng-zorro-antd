@@ -61,7 +61,7 @@ describe('icon migration', () => {
       writeFile('/index.ts', `
         import {Component} from '@angular/core';
         @Component({template: \`
-          <i nz-icon [iconfont]="'value'" [spin]="true" [type]="'play'" theme="o"></i>
+          <span nz-icon [iconfont]="'value'" [spin]="true" [type]="'play'" theme="o"></span>
         \`})
         export class MyComp {
         }
@@ -80,7 +80,7 @@ describe('icon migration', () => {
       import {Component} from '@angular/core'
       @Component({
         template: \`
-          <i class="anticon play"></i>
+          <span class="anticon play"></span>
         \`
       })
       export class MyComp {

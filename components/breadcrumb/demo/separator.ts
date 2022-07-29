@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
     </nz-breadcrumb>
-    <ng-template #iconTemplate><i nz-icon nzType="arrow-right"></i></ng-template>
+    <ng-template #iconTemplate><span nz-icon nzType="arrow-right"></span></ng-template>
   `,
   styles: [
     `

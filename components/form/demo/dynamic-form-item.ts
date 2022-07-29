@@ -22,13 +22,18 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } 
             [attr.id]="control.id"
             [formControlName]="control.controlInstance"
           />
-          <i nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="removeField(control, $event)"></i>
+          <span
+            nz-icon
+            nzType="minus-circle-o"
+            class="dynamic-delete-button"
+            (click)="removeField(control, $event)"
+          ></span>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
           <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
-            <i nz-icon nzType="plus"></i>
+            <span nz-icon nzType="plus"></span>
             Add field
           </button>
         </nz-form-control>

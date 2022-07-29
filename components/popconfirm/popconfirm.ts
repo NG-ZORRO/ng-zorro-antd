@@ -168,7 +168,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                 <div class="ant-popover-message">
                   <ng-container *nzStringTemplateOutlet="nzTitle">
                     <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-                      <i nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></i>
+                      <span nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></span>
                     </ng-container>
                     <div class="ant-popover-message-title">{{ nzTitle }}</div>
                   </ng-container>
