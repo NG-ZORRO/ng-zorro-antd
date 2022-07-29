@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-input-textarea-with-character-count',
@@ -16,9 +16,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   `
 })
 export class NzDemoInputTextareaWithCharacterCountComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.form = this.formBuilder.group({
       comment: [null, [Validators.maxLength(100)]]
     });

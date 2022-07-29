@@ -21,7 +21,7 @@ import {
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -1820,7 +1820,7 @@ describe('cascader', () => {
   });
   describe('In form', () => {
     let fixture: ComponentFixture<NzDemoCascaderInFormComponent>;
-    let formGroup: FormGroup;
+    let formGroup: UntypedFormGroup;
     let cascader: DebugElement;
 
     beforeEach(() => {
@@ -2263,9 +2263,9 @@ export class NzDemoCascaderStatusComponent {
   `
 })
 export class NzDemoCascaderInFormComponent {
-  validateForm: FormGroup = this.fb.group({
+  validateForm: UntypedFormGroup = this.fb.group({
     demo: [null, [Validators.required]]
   });
   public nzOptions: any[] | null = options1;
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 }

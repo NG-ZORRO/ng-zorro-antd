@@ -38,7 +38,6 @@ import { NzDropDownDirective } from './dropdown.directive';
     NzContextMenuServiceModule,
     NzOutletModule
   ],
-  entryComponents: [NzDropdownMenuComponent],
   declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
   exports: [NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
 })

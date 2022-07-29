@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-form-item',
@@ -72,7 +72,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   ]
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
   listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
   addField(e?: MouseEvent): void {
@@ -89,7 +89,7 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
     console.log(this.listOfControl[this.listOfControl.length - 1]);
     this.validateForm.addControl(
       this.listOfControl[index - 1].controlInstance,
-      new FormControl(null, Validators.required)
+      new UntypedFormControl(null, Validators.required)
     );
   }
 
@@ -116,7 +116,7 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({});

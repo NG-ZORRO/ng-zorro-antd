@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-advanced-search',
@@ -73,7 +73,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   ]
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
   controlArray: Array<{ index: number; show: boolean }> = [];
   isCollapse = true;
 
@@ -88,13 +88,13 @@ export class NzDemoFormAdvancedSearchComponent implements OnInit {
     this.validateForm.reset();
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({});
     for (let i = 0; i < 10; i++) {
       this.controlArray.push({ index: i, show: i < 6 });
-      this.validateForm.addControl(`field${i}`, new FormControl());
+      this.validateForm.addControl(`field${i}`, new UntypedFormControl());
     }
   }
 }

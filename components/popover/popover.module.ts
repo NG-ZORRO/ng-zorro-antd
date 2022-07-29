@@ -17,7 +17,6 @@ import { NzPopoverComponent, NzPopoverDirective } from './popover';
 
 @NgModule({
   exports: [NzPopoverDirective, NzPopoverComponent],
-  entryComponents: [NzPopoverComponent],
   declarations: [NzPopoverDirective, NzPopoverComponent],
   imports: [
     BidiModule,

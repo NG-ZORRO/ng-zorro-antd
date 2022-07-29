@@ -55,7 +55,12 @@ task('init:site', done => {
 /** Run `ng serve` */
 task('serve:site', done => {
   detectPort(4200).then((port: number) => {
-    execNodeTask('@angular/cli', 'ng', ['serve', '--port', port === 4200 ? '4200' : '0'])(done);
+    execNodeTask('@angular/cli', 'ng', [
+      'serve',
+      '--port',
+      port === 4200 ? '4200' : '0',
+      '--project=ng-zorro-antd-doc'
+    ])(done);
   });
 });
 

@@ -1,7 +1,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -224,9 +224,9 @@ export class NzTestInputWithTextAreaComponent {}
   `
 })
 export class NzTestInputFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
       input: ['abc']
     });
