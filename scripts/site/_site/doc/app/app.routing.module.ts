@@ -1,4 +1,6 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HoverPreloadStrategy } from 'ngx-hover-preload';
 
 import { DEMO_ROUTES } from './router';
 import { DEMOComponent } from './_demo/demo.component';
@@ -14,3 +16,15 @@ export const routes: Routes = [
   },
   { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: HoverPreloadStrategy,
+      scrollPositionRestoration: 'enabled',
+      initialNavigation: 'enabledBlocking'
+    })
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
