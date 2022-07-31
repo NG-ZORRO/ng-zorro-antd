@@ -1,5 +1,6 @@
 // TypeScript config file that matches all source files in the project. This file is read by
 // IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
+// optionalChainNotNullable: https://github.com/angular/angular/issues/46918
 {
   "compilerOptions": {
     "baseUrl": "./",
@@ -27,5 +28,12 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["jasmine"]
+  },
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "suppress"
+      }
+    }
   }
 }
