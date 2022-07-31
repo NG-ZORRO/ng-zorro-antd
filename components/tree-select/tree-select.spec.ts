@@ -607,7 +607,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('span.anticon.anticon-frown-o')).toBeTruthy();
     }));
   });
 
