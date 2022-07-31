@@ -30,14 +30,14 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
         <a *ngSwitchCase="'page'">{{ page }}</a>
         <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
           <ng-container [ngSwitch]="direction">
-            <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
-            <i *ngSwitchDefault nz-icon nzType="left"></i>
+            <span *ngSwitchCase="'rtl'" nz-icon nzType="right"></span>
+            <span *ngSwitchDefault nz-icon nzType="left"></span>
           </ng-container>
         </button>
         <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
           <ng-container [ngSwitch]="direction">
-            <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
-            <i *ngSwitchDefault nz-icon nzType="right"></i>
+            <span *ngSwitchCase="'rtl'" nz-icon nzType="left"></span>
+            <span *ngSwitchDefault nz-icon nzType="right"></span>
           </ng-container>
         </button>
         <ng-container *ngSwitchDefault>
@@ -45,12 +45,12 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
                 <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
-                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
-                  <i *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
+                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                  <span *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
                 </ng-container>
                 <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
-                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
-                  <i *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
+                  <span *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
                 </ng-container>
               </ng-container>
               <span class="ant-pagination-item-ellipsis">•••</span>

@@ -16,12 +16,12 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
     <ng-template #nzTreeTemplate let-node let-origin="origin">
       <span class="custom-node">
         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
-          <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+          <span nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></span>
           <span class="folder-name">{{ node.title }}</span>
           <span class="folder-desc">created by {{ origin.author | lowercase }}</span>
         </span>
         <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
-          <i nz-icon nzType="file"></i>
+          <span nz-icon nzType="file"></span>
           <span class="file-name">{{ node.title }}</span>
           <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
         </span>

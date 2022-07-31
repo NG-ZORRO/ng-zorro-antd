@@ -624,7 +624,7 @@ class TestTransferComponent implements OnInit {
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
-        <i nz-icon nzType="{{ item.icon }}"></i>
+        <span nz-icon nzType="{{ item.icon }}"></span>
         {{ item.title }}
       </ng-template>
     </nz-transfer>

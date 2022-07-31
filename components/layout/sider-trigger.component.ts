@@ -29,11 +29,11 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
       <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger"></ng-template>
     </ng-container>
     <ng-template #defaultTrigger>
-      <i nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
-      <i nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
+      <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></span>
+      <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></span>
     </ng-template>
     <ng-template #defaultZeroTrigger>
-      <i nz-icon nzType="bars"></i>
+      <span nz-icon nzType="bars"></span>
     </ng-template>
   `,
   host: {

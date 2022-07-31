@@ -20,13 +20,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i
+    <span
       nz-icon
       nzType="close-circle"
       nzTheme="fill"
       *ngIf="!clearIcon; else clearIcon"
       class="ant-select-close-icon"
-    ></i>
+    ></span>
   `,
   host: {
     class: 'ant-select-clear',

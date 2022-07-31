@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
     </nz-collapse>
     <ng-template #extraTpl>
       <!-- You can use stopPropagation if you don't want the panel to toggle -->
-      <i nz-icon nzType="setting" (click)="$event.stopPropagation()"></i>
+      <span nz-icon nzType="setting" (click)="$event.stopPropagation()"></span>
     </ng-template>
     <br />
     <span>Expand Icon Position: </span>

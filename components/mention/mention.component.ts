@@ -93,7 +93,7 @@ export type MentionPlacement = 'top' | 'bottom';
             class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled"
             *ngIf="filteredSuggestions.length === 0"
           >
-            <span *ngIf="nzLoading"><i nz-icon nzType="loading"></i></span>
+            <span *ngIf="nzLoading"><span nz-icon nzType="loading"></span></span>
             <span *ngIf="!nzLoading">
               <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!"></nz-embed-empty>
             </span>

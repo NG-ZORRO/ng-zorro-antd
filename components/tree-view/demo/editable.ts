@@ -57,7 +57,7 @@ interface FlatNode {
           {{ node.name }}
         </nz-tree-node-option>
         <button nz-button nzType="text" nzSize="small" (click)="delete(node)">
-          <i nz-icon nzType="minus" nzTheme="outline"></i>
+          <span nz-icon nzType="minus" nzTheme="outline"></span>
         </button>
       </nz-tree-node>
 
@@ -69,11 +69,11 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         {{ node.name }}
         <button nz-button nzType="text" nzSize="small" (click)="addNewNode(node)">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          <span nz-icon nzType="plus" nzTheme="outline"></span>
         </button>
       </nz-tree-node>
     </nz-tree-view>

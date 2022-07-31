@@ -26,20 +26,20 @@ import { NzTableSortOrder } from '../table.types';
     <span class="ant-table-column-title"><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
     <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
-        <i
+        <span
           nz-icon
           nzType="caret-up"
           *ngIf="isUp"
           class="ant-table-column-sorter-up"
           [class.active]="sortOrder === 'ascend'"
-        ></i>
-        <i
+        ></span>
+        <span
           nz-icon
           nzType="caret-down"
           *ngIf="isDown"
           class="ant-table-column-sorter-down"
           [class.active]="sortOrder === 'descend'"
-        ></i>
+        ></span>
       </span>
     </span>
   `,

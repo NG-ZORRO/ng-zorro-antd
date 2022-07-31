@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
       [nzCopyIcons]="['meh', 'smile']"
     ></p>
     <ng-template #copedIcon>
-      <i nz-icon nzType="smile" nzTheme="fill"></i>
+      <span nz-icon nzType="smile" nzTheme="fill"></span>
       you clicked!!
     </ng-template>
     <p nz-typography nzCopyable [nzCopyTooltips]="null" nzContent="Hide copy tooltips."></p>

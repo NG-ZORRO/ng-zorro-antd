@@ -13,30 +13,30 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
     <ng-container *ngIf="isShowSwitchIcon">
       <ng-container *ngIf="!isLoading; else loadingTemplate">
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
-          <i
+          <span
             nz-icon
             nzType="caret-down"
             [class.ant-select-tree-switcher-icon]="nzSelectMode"
             [class.ant-tree-switcher-icon]="!nzSelectMode"
-          ></i>
+          ></span>
         </ng-container>
       </ng-container>
     </ng-container>
     <ng-container *ngIf="nzShowLine">
       <ng-container *ngIf="!isLoading; else loadingTemplate">
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
-          <i
+          <span
             *ngIf="isShowLineIcon"
             nz-icon
             [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
             class="ant-tree-switcher-line-icon"
-          ></i>
-          <i *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
+          ></span>
+          <span *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
         </ng-container>
       </ng-container>
     </ng-container>
     <ng-template #loadingTemplate>
-      <i nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
+      <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

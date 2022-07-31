@@ -6,24 +6,24 @@ import { Component } from '@angular/core';
     <nz-button-group>
       <button nz-button (click)="log()">DropDown</button>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight">
-        <i nz-icon nzType="ellipsis"></i>
+        <span nz-icon nzType="ellipsis"></span>
       </button>
     </nz-button-group>
     <nz-button-group>
       <button nz-button (click)="log()">DropDown</button>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
-        <i nz-icon nzType="user"></i>
+        <span nz-icon nzType="user"></span>
       </button>
     </nz-button-group>
     <nz-button-group>
       <button nz-button disabled>DropDown</button>
       <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu3" nzPlacement="bottomRight">
-        <i nz-icon nzType="ellipsis"></i>
+        <span nz-icon nzType="ellipsis"></span>
       </button>
     </nz-button-group>
     <button nz-button nz-dropdown [nzDropdownMenu]="menu4">
       Button
-      <i nz-icon nzType="down"></i>
+      <span nz-icon nzType="down"></span>
     </button>
     <nz-dropdown-menu #menu1="nzDropdownMenu">
       <ul nz-menu>

@@ -28,7 +28,7 @@ import { NzMenuModeType } from './menu.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></i>
+    <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></span>
     <ng-container *nzStringTemplateOutlet="nzTitle">
       <span>{{ nzTitle }}</span>
     </ng-container>
@@ -38,11 +38,11 @@ import { NzMenuModeType } from './menu.types';
       *ngIf="isMenuInsideDropDown; else notDropdownTpl"
       class="ant-dropdown-menu-submenu-expand-icon"
     >
-      <i *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></i>
-      <i *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></i>
+      <span *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+      <span *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
     </span>
     <ng-template #notDropdownTpl>
-      <i class="ant-menu-submenu-arrow"></i>
+      <span class="ant-menu-submenu-arrow"></span>
     </ng-template>
   `,
   host: {

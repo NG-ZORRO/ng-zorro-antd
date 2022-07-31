@@ -38,7 +38,7 @@ import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
       (click)="onClick()"
     >
       <ng-container *nzStringTemplateOutlet="copied ? copedIcon : copyIcon; let icon">
-        <i nz-icon [nzType]="icon"></i>
+        <span nz-icon [nzType]="icon"></span>
       </ng-container>
     </button>
   `,

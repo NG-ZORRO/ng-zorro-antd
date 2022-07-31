@@ -18,25 +18,25 @@ import { formatDistance } from 'date-fns';
         </p>
       </nz-comment-content>
       <nz-comment-action>
-        <i
+        <span
           nz-tooltip
           nzTitle="Like"
           nz-icon
           nzType="like"
           [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
           (click)="like()"
-        ></i>
+        ></span>
         <span class="count like">{{ likes }}</span>
       </nz-comment-action>
       <nz-comment-action>
-        <i
+        <span
           nz-tooltip
           nzTitle="Dislike"
           nz-icon
           nzType="dislike"
           [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
           (click)="dislike()"
-        ></i>
+        ></span>
         <span class="count dislike">{{ dislikes }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>

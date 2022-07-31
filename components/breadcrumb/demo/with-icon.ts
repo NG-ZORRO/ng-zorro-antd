@@ -5,11 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <nz-breadcrumb>
       <nz-breadcrumb-item>
-        <i nz-icon nzType="home"></i>
+        <span nz-icon nzType="home"></span>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
         <a>
-          <i nz-icon nzType="user"></i>
+          <span nz-icon nzType="user"></span>
           <span>Application List</span>
         </a>
       </nz-breadcrumb-item>

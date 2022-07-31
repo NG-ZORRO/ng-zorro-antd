@@ -5,15 +5,15 @@ import { Component } from '@angular/core';
   template: `
     <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select OS" [(ngModel)]="selectedOS">
       <nz-option nzCustomContent nzLabel="Windows" nzValue="windows">
-        <i nz-icon nzType="windows"></i>
+        <span nz-icon nzType="windows"></span>
         Windows
       </nz-option>
       <nz-option nzCustomContent nzLabel="Mac" nzValue="mac">
-        <i nz-icon nzType="apple"></i>
+        <span nz-icon nzType="apple"></span>
         Mac
       </nz-option>
       <nz-option nzCustomContent nzLabel="Android" nzValue="android">
-        <i nz-icon nzType="android"></i>
+        <span nz-icon nzType="android"></span>
         Android
       </nz-option>
     </nz-select>

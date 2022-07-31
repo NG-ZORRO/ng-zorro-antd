@@ -607,7 +607,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('span.anticon.anticon-frown-o')).toBeTruthy();
     }));
   });
 
@@ -891,7 +891,7 @@ export class NzTestTreeSelectFormComponent {
     <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
       <ng-template #nzTreeTemplate let-node>
         <span>
-          <i class="anticon anticon-frown-o"></i>
+          <span class="anticon anticon-frown-o"></span>
           {{ node.title }}
         </span>
       </ng-template>

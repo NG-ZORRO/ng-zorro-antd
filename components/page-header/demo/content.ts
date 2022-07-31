@@ -42,7 +42,7 @@ import { Component } from '@angular/core';
             nzPlacement="bottomRight"
             style="border: none; padding: 0"
           >
-            <i nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
+            <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
           </button>
         </nz-space>
         <nz-dropdown-menu #menu="nzDropdownMenu">

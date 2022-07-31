@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
             [nzDisabled]="menu.disabled"
             [nzSelected]="menu.selected"
           >
-            <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+            <span nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></span>
             <span>{{ menu.title }}</span>
           </li>
           <li
