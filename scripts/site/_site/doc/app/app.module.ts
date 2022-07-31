@@ -62,7 +62,8 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     NzContributorsListModule,
     FixedWidgetsModule,
     AppRoutingModule,
-    HoverPreloadModule,
+    // skip ngx-hover-preload errors
+    environment.production ? HoverPreloadModule : [],
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [

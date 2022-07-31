@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HoverPreloadStrategy } from 'ngx-hover-preload';
+import { environment } from '../environments/environment';
 
 import { DEMO_ROUTES } from './router';
 import { DEMOComponent } from './_demo/demo.component';
@@ -19,11 +20,16 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: HoverPreloadStrategy,
-      scrollPositionRestoration: 'enabled',
-      initialNavigation: 'enabledBlocking'
-    })
+    RouterModule.forRoot(
+      routes,
+      environment.production
+        ? {
+            preloadingStrategy: HoverPreloadStrategy,
+            scrollPositionRestoration: 'enabled',
+            initialNavigation: 'enabledBlocking'
+          }
+        : {}
+    )
   ],
   exports: [RouterModule]
 })
