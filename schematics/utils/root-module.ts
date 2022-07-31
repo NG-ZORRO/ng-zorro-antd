@@ -26,7 +26,7 @@ function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
 export function addModule(moduleName: string, modulePath: string): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
-    const project = getProjectFromWorkspace(workspace);
+    const project = getProjectFromWorkspace(workspace, [...workspace.projects.keys()][0]);
     addModuleImportToRootModule(host, moduleName, modulePath, project);
     return noop();
   }
@@ -35,7 +35,7 @@ export function addModule(moduleName: string, modulePath: string): Rule {
 export function addDeclaration(componentName: string, componentPath: string): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
-    const project = getProjectFromWorkspace(workspace)
+    const project = getProjectFromWorkspace(workspace,  [...workspace.projects.keys()][0])
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const source = readIntoSourceFile(host, appModulePath);
     const relativePath = buildRelativePath(appModulePath, componentPath);

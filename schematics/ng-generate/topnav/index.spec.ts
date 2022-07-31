@@ -1,11 +1,15 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { Style } from '@schematics/angular/ng-new/schema';
-import { getFileContent } from '@schematics/angular/utility/test';
+import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
 
+import { Schema as NzOptions } from '../../ng-add/schema';
 import { createTestApp } from '../../testing/test-app';
 
 describe('top-nav schematic', () => {
+  const defaultOptions: NzOptions = {
+    project: 'ng-zorro-top-nav',
+  };
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
@@ -15,7 +19,9 @@ describe('top-nav schematic', () => {
   });
 
   it('should create top-nav files', async () => {
-    const tree = await runner.runSchematicAsync('topnav', {}, appTree).toPromise();
+    const options = {...defaultOptions};
+
+    const tree = await runner.runSchematicAsync('topnav', options, appTree).toPromise();
     const files = tree.files;
     expect(files).toEqual(
       jasmine.arrayContaining([
@@ -33,7 +39,9 @@ describe('top-nav schematic', () => {
   });
 
   it('should set the style preprocessor correctly', async () => {
-    const tree = await runner.runSchematicAsync('topnav', {style: Style.Less}, appTree).toPromise();
+    const options = {...defaultOptions, style: Style.Less};
+
+    const tree = await runner.runSchematicAsync('topnav', options, appTree).toPromise();
     const files = tree.files;
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
@@ -50,7 +58,8 @@ describe('top-nav schematic', () => {
   });
 
   it('should set the prefix correctly', async () => {
-    const tree = await runner.runSchematicAsync('topnav', {prefix: 'nz'}, appTree).toPromise();
+    const options = {...defaultOptions, prefix: 'nz'};
+    const tree = await runner.runSchematicAsync('topnav', options, appTree).toPromise();
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
 
