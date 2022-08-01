@@ -53,7 +53,7 @@ export default function(options: Schema): Rule {
         ),
         MergeStrategy.Overwrite
       ),
-      addModule('AppRoutingModule', './app-routing.module')
+      addModule('AppRoutingModule', './app-routing.module', options.project)
     ]);
   }
 }
