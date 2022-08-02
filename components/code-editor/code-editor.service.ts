@@ -53,6 +53,9 @@ export class NzCodeEditorService implements OnDestroy {
 
     this.document = _document;
     this.config = { ...globalConfig };
+    if (this.config.monacoEnvironment) {
+      window.MonacoEnvironment = { ...this.config.monacoEnvironment };
+    }
     this.option = this.config.defaultEditorOption || {};
 
     this.subscription = this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME).subscribe(() => {
@@ -72,7 +75,7 @@ export class NzCodeEditorService implements OnDestroy {
     this.option = { ...this.option, ...option };
     this.option$.next(this.option);
 
-    if (option.theme) {
+    if ('theme' in option && option.theme) {
       monaco.editor.setTheme(option.theme);
     }
   }
@@ -124,7 +127,8 @@ export class NzCodeEditorService implements OnDestroy {
     const onLoad = (): void => {
       cleanup();
       windowAsAny.require.config({
-        paths: { vs }
+        paths: { vs },
+        ...this.config.extraConfig
       });
       windowAsAny.require(['vs/editor/editor.main'], () => {
         this.onLoad();

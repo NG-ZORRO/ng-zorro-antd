@@ -22,6 +22,7 @@ import {
   forwardRef,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   Optional,
   ViewContainerRef
@@ -90,6 +91,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private overlayOutsideClickSubscription!: Subscription;
 
   constructor(
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
@@ -111,11 +113,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.destroyPanel();
   }
 
   writeValue(value: NzSafeAny): void {
-    Promise.resolve(null).then(() => this.setTriggerValue(value));
+    this.ngZone.runOutsideAngular(() => Promise.resolve(null).then(() => this.setTriggerValue(value)));
   }
 
   registerOnChange(fn: (value: {}) => {}): void {

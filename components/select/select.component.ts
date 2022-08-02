@@ -19,28 +19,39 @@ import {
   forwardRef,
   Host,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, merge } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NzSafeAny,
+  NzStatus,
+  NzValidateStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
@@ -99,11 +110,18 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
     <nz-select-arrow
-      *ngIf="nzShowArrow"
+      *ngIf="nzShowArrow || (hasFeedback && !!status)"
+      [showArrow]="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
-    ></nz-select-arrow>
+      [feedbackIcon]="feedbackIconTpl"
+    >
+      <ng-template #feedbackIconTpl>
+        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+      </ng-template>
+    </nz-select-arrow>
+
     <nz-select-clear
       *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
       [clearIcon]="nzClearIcon"
@@ -119,7 +137,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
       [cdkConnectedOverlayOpen]="nzOpen"
-      (overlayKeydown)="onOverlayKeyDown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
@@ -149,6 +166,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     </ng-template>
   `,
   host: {
+    class: 'ant-select',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
@@ -160,8 +179,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
-    '[class.ant-select-rtl]': `dir === 'rtl'`,
-    '(click)': 'onHostClick()'
+    '[class.ant-select-rtl]': `dir === 'rtl'`
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
@@ -179,6 +197,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
+  @Input() nzStatus: NzStatus = '';
   @Input() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string | null = null;
@@ -254,6 +273,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   focused = false;
   dir: Direction = 'ltr';
 
+  // status
+  prefixCls: string = 'ant-select';
+  statusCls: NgClassInterface = {};
+  status: NzValidateStatus = '';
+  hasFeedback: boolean = false;
+
   generateTagItem(value: string): NzSelectItemInterface {
     return {
       nzValue: value,
@@ -291,14 +316,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.clearInput();
   }
 
-  onHostClick(): void {
-    if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
-      return;
-    }
-
-    this.setOpenState(!this.nzOpen);
-  }
-
   updateListOfContainerItem(): void {
     let listOfContainerItem = this.listOfTagAndTemplateItem
       .filter(item => !item.nzHide)
@@ -320,7 +337,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       }
     }
     const activatedItem =
-      listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
+      listOfContainerItem.find(item => item.nzLabel === this.searchValue) ||
+      listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) ||
+      listOfContainerItem[0];
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     let listOfGroupLabel: Array<string | number | TemplateRef<NzSafeAny> | null> = [];
     if (this.isReactiveDriven) {
@@ -383,12 +402,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.clearInput();
   }
 
-  onOverlayKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === ESCAPE) {
-      this.setOpenState(false);
-    }
-  }
-
   onKeyDown(e: KeyboardEvent): void {
     if (this.nzDisabled) {
       return;
@@ -402,14 +415,14 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     switch (e.keyCode) {
       case UP_ARROW:
         e.preventDefault();
-        if (this.nzOpen) {
+        if (this.nzOpen && listOfFilteredOptionNotDisabled.length > 0) {
           const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionNotDisabled.length - 1;
           this.activatedValue = listOfFilteredOptionNotDisabled[preIndex].nzValue;
         }
         break;
       case DOWN_ARROW:
         e.preventDefault();
-        if (this.nzOpen) {
+        if (this.nzOpen && listOfFilteredOptionNotDisabled.length > 0) {
           const nextIndex = activatedIndex < listOfFilteredOptionNotDisabled.length - 1 ? activatedIndex + 1 : 0;
           this.activatedValue = listOfFilteredOptionNotDisabled[nextIndex].nzValue;
         } else {
@@ -473,7 +486,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (!this.host.nativeElement.contains(event.target as HTMLElement)) {
       this.setOpenState(false);
     }
   }
@@ -515,18 +528,19 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   constructor(
+    private ngZone: NgZone,
     private destroy$: NzDestroyService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
+    private host: ElementRef<HTMLElement>,
+    private renderer: Renderer2,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select');
-  }
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+  ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/
@@ -565,7 +579,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzDisabled, nzOptions } = changes;
+    const { nzOpen, nzDisabled, nzOptions, nzStatus } = changes;
     if (nzOpen) {
       this.onOpenChange();
     }
@@ -590,11 +604,27 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
     }
+    if (nzStatus) {
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
   }
 
   ngOnInit(): void {
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     this.focusMonitor
-      .monitor(this.elementRef, true)
+      .monitor(this.host, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
@@ -642,6 +672,29 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       });
 
     this.dir = this.directionality.value;
+
+    this.ngZone.runOutsideAngular(() =>
+      fromEvent(this.host.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
+            return;
+          }
+
+          this.ngZone.run(() => this.setOpenState(!this.nzOpen));
+        })
+    );
+
+    // Caretaker note: we could've added this listener within the template `(overlayKeydown)="..."`,
+    // but with this approach, it'll run change detection on each keyboard click, and also it'll run
+    // `markForCheck()` internally, which means the whole component tree (starting from the root and
+    // going down to the select component) will be re-checked and updated (if needed).
+    // This is safe to do that manually since `setOpenState()` calls `markForCheck()` if needed.
+    this.cdkConnectedOverlay.overlayKeydown.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      if (event.keyCode === ESCAPE) {
+        this.setOpenState(false);
+      }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -681,8 +734,24 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         });
     }
   }
+
   ngOnDestroy(): void {
     cancelRequestAnimationFrame(this.requestId);
-    this.focusMonitor.stopMonitoring(this.elementRef);
+    this.focusMonitor.stopMonitoring(this.host);
+  }
+
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.host.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.host.nativeElement, status);
+      }
+    });
   }
 }

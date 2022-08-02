@@ -15,7 +15,8 @@ export default {
     prev_5: 'Prejšnjih 5 strani',
     next_5: 'Naslednjih 5 strani',
     prev_3: 'Prejšnje 3 strani',
-    next_3: 'Naslednje 3 strani'
+    next_3: 'Naslednje 3 strani',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -25,7 +26,7 @@ export default {
       today: 'Danes',
       now: 'Trenutno',
       backToToday: 'Nazaj na trenutni datum',
-      ok: 'Ok',
+      ok: 'OK',
       clear: 'Počisti',
       month: 'Mesec',
       year: 'Leto',
@@ -64,7 +65,7 @@ export default {
       today: 'Danes',
       now: 'Trenutno',
       backToToday: 'Nazaj na trenutni datum',
-      ok: 'Ok',
+      ok: 'OK',
       clear: 'Počisti',
       month: 'Mesec',
       year: 'Leto',

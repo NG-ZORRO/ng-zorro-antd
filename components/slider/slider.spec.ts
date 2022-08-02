@@ -918,6 +918,16 @@ describe('nz-slider', () => {
       expect(sliderInstance.value).toEqual([2, 99]);
     });
 
+    it('should trigger nzOnAfterChange', () => {
+      const onChangeSpy = jasmine.createSpy('slider onChange');
+
+      sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('should work for range slider when activeValueIndex is undefined', () => {
       testComponent.range = true;
       fixture.detectChanges();

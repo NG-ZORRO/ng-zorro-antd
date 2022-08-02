@@ -62,11 +62,27 @@ export async function compile(): Promise<void | void[]> {
       const buildFilePath = `${sourcePath}/${dir}/style/entry.less`;
       const componentLess = await fs.readFile(buildFilePath, { encoding: 'utf8' });
       if (await fs.pathExists(buildFilePath)) {
+        // Rewrite `entry.less` file with `root-entry-name`
+        const entryLessFileContent = needTransformStyle(componentLess)
+          ? `@root-entry-name: default;\n${componentLess}`
+          : componentLess;
         promiseList.push(
-          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.css`), false, true, buildFilePath)
+          compileLess(
+            entryLessFileContent,
+            path.join(targetPath, dir, 'style', `index.css`),
+            false,
+            true,
+            buildFilePath
+          )
         );
         promiseList.push(
-          compileLess(componentLess, path.join(targetPath, dir, 'style', `index.min.css`), true, true, buildFilePath)
+          compileLess(
+            entryLessFileContent,
+            path.join(targetPath, dir, 'style', `index.min.css`),
+            true,
+            true,
+            buildFilePath
+          )
         );
       }
     }
@@ -89,6 +105,11 @@ export async function compile(): Promise<void | void[]> {
     await fs.readFile(`${sourcePath}/ng-zorro-antd.compact.less`)
   );
 
+  await fs.writeFile(
+    `${targetPath}/ng-zorro-antd.variable.less`,
+    await fs.readFile(`${sourcePath}/ng-zorro-antd.variable.less`)
+  );
+
   // Compile concentrated less file to CSS file.
   const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
   promiseList.push(compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false));
@@ -109,10 +130,28 @@ export async function compile(): Promise<void | void[]> {
   promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.css'), false));
   promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.min.css'), true));
 
+  // Compile the aliyun theme less file to CSS file.
+  const variableLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.variable.less')}";`;
+  promiseList.push(compileLess(variableLessContent, path.join(targetPath, 'ng-zorro-antd.variable.css'), false));
+  promiseList.push(compileLess(variableLessContent, path.join(targetPath, 'ng-zorro-antd.variable.min.css'), true));
+
   // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
   const cssIndex = await fs.readFile(cssIndexPath, { encoding: 'utf8' });
-  promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath));
-  promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath));
+  // Rewrite `entry.less` file with `root-entry-name`
+  const entryLessInStyle = needTransformStyle(cssIndex) ? `@root-entry-name: default;\n${cssIndex}` : cssIndex;
+
+  promiseList.push(
+    compileLess(entryLessInStyle, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath)
+  );
+  promiseList.push(
+    compileLess(entryLessInStyle, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath)
+  );
   return Promise.all(promiseList).catch(e => console.log(e));
+}
+
+function needTransformStyle(content: string): boolean {
+  return (
+    content.includes('../../style/index.less') || content.includes('./index.less') || content.includes('/entry.less')
+  );
 }

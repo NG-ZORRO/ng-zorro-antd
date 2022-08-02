@@ -16,6 +16,7 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -64,7 +65,7 @@ let nextId = 0;
   ],
   template: `
     <nz-tabs-nav
-      *ngIf="tabs.length"
+      *ngIf="tabs.length || addable"
       [ngStyle]="nzTabBarStyle"
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
@@ -234,6 +235,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   constructor(
     public nzConfigService: NzConfigService,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     @Optional() private router: Router
@@ -259,9 +261,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngAfterContentInit(): void {
-    Promise.resolve().then(() => {
-      this.setUpRouter();
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve().then(() => this.setUpRouter());
     });
+
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
 
@@ -475,7 +478,15 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
-    return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
+    return (link?: RouterLink | RouterLinkWithHref) =>
+      link
+        ? router.isActive(link.urlTree || '', {
+            paths: this.nzLinkExact ? 'exact' : 'subset',
+            queryParams: this.nzLinkExact ? 'exact' : 'subset',
+            fragment: 'ignored',
+            matrixParams: 'ignored'
+          })
+        : false;
   }
 
   private getTabContentMarginValue(): number {

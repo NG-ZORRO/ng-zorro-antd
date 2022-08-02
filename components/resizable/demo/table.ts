@@ -42,12 +42,6 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
   `,
   styles: [
     `
-      .resize-trigger {
-        width: 1px;
-        height: 30px;
-        margin-top: 12px;
-        background: #e8e8e8;
-      }
       .nz-resizable-preview {
         border-width: 0;
         border-right-width: 1px;

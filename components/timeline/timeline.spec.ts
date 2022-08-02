@@ -245,6 +245,27 @@ describe('nz-timeline', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-rtl');
     });
   });
+
+  describe('clear', () => {
+    let testBed: ComponentBed<NzTestTimelineClearItemsComponent>;
+    let fixture: ComponentFixture<NzTestTimelineClearItemsComponent>;
+    let timeline: NzTimelineComponent;
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestTimelineClearItemsComponent, {
+        imports: [NzTimelineModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+      timeline = fixture.componentInstance.nzTimeLine;
+    });
+
+    it('test clear items', () => {
+      fixture.componentInstance.reset();
+      fixture.detectChanges();
+      expect(timeline.timelineItems.length).toBe(0);
+    });
+  });
 });
 
 @Component({
@@ -313,4 +334,21 @@ export class NzTestTimelineCustomPositionComponent {}
 export class NzTestTimelineRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: `
+    <nz-timeline nzMode="custom">
+      <nz-timeline-item *ngFor="let item of data">{{ item }}</nz-timeline-item>
+    </nz-timeline>
+    <span (click)="reset()">reset</span>
+  `
+})
+export class NzTestTimelineClearItemsComponent {
+  @ViewChild(NzTimelineComponent)
+  nzTimeLine!: NzTimelineComponent;
+  data = [1, 2, 3];
+  reset(): void {
+    this.data = [];
+  }
 }

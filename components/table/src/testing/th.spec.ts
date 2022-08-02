@@ -1,4 +1,4 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,6 +93,20 @@ describe('nz-th', () => {
           declarations: [NzTestDisableThComponent]
         }).createComponent(NzTestDisableThComponent);
       }).toThrow();
+    });
+    it('should not run change detection on click events for the `nz-filter-trigger`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('click');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'stopPropagation').and.callThrough();
+
+      fixture.debugElement.nativeElement
+        .querySelector('nz-filter-trigger .ant-table-filter-trigger')
+        .dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
     });
   });
 });

@@ -4,9 +4,9 @@
  */
 
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzResizeService } from './resize';
 
@@ -44,9 +44,18 @@ export const siderResponsiveMap: BreakpointMap = {
 @Injectable({
   providedIn: 'root'
 })
-export class NzBreakpointService {
+export class NzBreakpointService implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   constructor(private resizeService: NzResizeService, private mediaMatcher: MediaMatcher) {
-    this.resizeService.subscribe().subscribe(() => {});
+    this.resizeService
+      .subscribe()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {});
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   subscribe(breakpointMap: BreakpointMap): Observable<NzBreakpointEnum>;

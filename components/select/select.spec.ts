@@ -12,7 +12,8 @@ import {
   ɵComponentBed as ComponentBed,
   ɵcreateComponentBed as createComponentBed
 } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzSelectSearchComponent } from './select-search.component';
@@ -331,6 +332,24 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledWith(false);
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
+
+    it('should not throw error with keydown up arrow and down arrow event when listOfOption is empty', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [];
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', UP_ARROW, inputElement);
+      flushChanges();
+      dispatchKeyboardEvent(inputElement, 'keydown', DOWN_ARROW, inputElement);
+      flushChanges();
+      expect(component.valueChange).toHaveBeenCalledTimes(0);
+    }));
+
     it('should mouseenter activated option work', fakeAsync(() => {
       const flushChanges = (): void => {
         fixture.detectChanges();
@@ -1250,6 +1269,68 @@ describe('select', () => {
       expect(appRef.tick).toHaveBeenCalledTimes(0);
     });
   });
+  describe('status', () => {
+    let testBed: ComponentBed<TestSelectStatusComponent>;
+    let component: TestSelectStatusComponent;
+    let fixture: ComponentFixture<TestSelectStatusComponent>;
+    let selectElement!: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectStatusComponent, {
+        imports: [NzSelectModule, NzIconTestModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    });
+
+    it('should classname correct', () => {
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-error');
+
+      component.status = 'warning';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-warning');
+
+      component.status = '';
+      fixture.detectChanges();
+      expect(selectElement.classList).not.toContain('ant-select-status-warning');
+    });
+  });
+  describe('in form', () => {
+    let testBed: ComponentBed<TestSelectInFormComponent>;
+    let component: TestSelectInFormComponent;
+    let fixture: ComponentFixture<TestSelectInFormComponent>;
+    let selectElement!: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectInFormComponent, {
+        imports: [NzSelectModule, NzIconTestModule, NzFormModule, FormsModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    });
+
+    it('should classname correct', () => {
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-error');
+      expect(selectElement.classList).toContain('ant-select-in-form-item');
+      expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+      component.status = 'warning';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-warning');
+
+      component.status = 'success';
+      fixture.detectChanges();
+      expect(selectElement.classList).toContain('ant-select-status-success');
+
+      component.feedback = false;
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+    });
+  });
 });
 
 @Component({
@@ -1539,4 +1620,27 @@ export class TestSelectReactiveTagsComponent {
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
   nzMaxTagPlaceholder?: TemplateRef<{ $implicit: NzSafeAny[] }>;
+}
+
+@Component({
+  template: ` <nz-select [nzStatus]="status"></nz-select> `
+})
+export class TestSelectStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-select [nzOptions]="[]"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class TestSelectInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

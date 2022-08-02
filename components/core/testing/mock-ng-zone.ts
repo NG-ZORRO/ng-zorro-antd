@@ -5,6 +5,8 @@
 
 import { EventEmitter, Injectable, NgZone } from '@angular/core';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 /**
  * Mock synchronous NgZone implementation that can be used
  * to flush out `onStable` subscriptions in tests.
@@ -15,20 +17,17 @@ import { EventEmitter, Injectable, NgZone } from '@angular/core';
  */
 @Injectable()
 export class MockNgZone extends NgZone {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onStable: EventEmitter<any> = new EventEmitter(false);
+  override onStable: EventEmitter<NzSafeAny> = new EventEmitter(false);
 
   constructor() {
     super({ enableLongStackTrace: false });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  run(fn: Function): any {
+  override run(fn: Function): NzSafeAny {
     return fn();
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
-  runOutsideAngular(fn: Function): any {
+  override runOutsideAngular(fn: Function): NzSafeAny {
     return fn();
   }
 

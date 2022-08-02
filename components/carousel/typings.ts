@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { InjectionToken, QueryList } from '@angular/core';
+import { InjectionToken, NgZone, QueryList } from '@angular/core';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -21,6 +21,7 @@ export interface NzCarouselComponentAsSource {
   slickTrackEl: HTMLElement;
   activeIndex: number;
   dir: Direction;
+  ngZone: NgZone;
 }
 
 export interface NzCarouselStrategyRegistryItem {

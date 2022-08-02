@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input
 import { animationFrameScheduler, asapScheduler, merge, Subscription } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
-import { NzTreeNodeComponent } from './node';
+import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
 import { getNextSibling, getParent } from './utils';
 
@@ -49,7 +49,7 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   private currentIndents: string = '';
   private changeSubscription: Subscription;
 
-  constructor(private treeNode: NzTreeNodeComponent<T>, private tree: NzTreeView<T>, private cdr: ChangeDetectorRef) {
+  constructor(private treeNode: NzNodeBase<T>, private tree: NzTreeView<T>, private cdr: ChangeDetectorRef) {
     this.buildIndents();
     this.checkLast();
 

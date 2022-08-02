@@ -4,7 +4,6 @@
  */
 
 import { ModalOptions } from './modal-types';
-import { NzModalComponent } from './modal.component';
 
 export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalOptions): ModalOptions {
   return { ...defaultOptions, ...config };
@@ -26,13 +25,13 @@ export function getValueWithConfig<T>(
  * Assign the params into the content component instance.
  *
  * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 13.0.0
+ * @breaking-change 14.0.0
  */
 export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
   Object.assign(instance, params);
 }
 
-export function getConfigFromComponent(component: NzModalComponent): ModalOptions {
+export function getConfigFromComponent<T extends ModalOptions>(component: T): ModalOptions {
   const {
     nzCentered,
     nzMask,

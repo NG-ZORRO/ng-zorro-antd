@@ -33,12 +33,12 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
     super(carouselComponent, cdr, renderer, platform, options);
   }
 
-  dispose(): void {
+  override dispose(): void {
     super.dispose();
     this.renderer.setStyle(this.slickTrackEl, 'transform', null);
   }
 
-  withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
+  override withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
     super.withCarouselContents(contents);
 
     const carousel = this.carouselComponent!;
@@ -89,7 +89,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
     this.isTransitioning = true;
     this.isDragging = false;
 
-    // TODO@wendellhu95: use transitionEnd event instead of setTimeout
+    // TODO@hullis: use transitionEnd event instead of setTimeout
     setTimeout(() => {
       this.renderer.setStyle(this.slickTrackEl, 'transition', null);
       this.contents.forEach((content: NzCarouselContentDirective) => {
@@ -111,7 +111,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
     return complete$.asObservable();
   }
 
-  dragging(_vector: PointerVector): void {
+  override dragging(_vector: PointerVector): void {
     if (this.isTransitioning) {
       return;
     }

@@ -38,12 +38,12 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
-| `[nzInlineCollapsed]` | specifies the collapsed status when menu is inline mode | `boolean` | - |
-| `[nzInlineIndent]` | indent px of inline menu item on each level | `number` | `24` |
-| `[nzMode]` | type of the menu; `vertical`, `horizontal`, and `inline` modes are supported | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
+| `[nzInlineCollapsed]` | specifies the collapsed status when menu is `inline` mode | `boolean` | - |
+| `[nzInlineIndent]` | indent px of `inline` menu item on each level | `number` | `24` |
+| `[nzMode]` | type of the menu; `vertical`、 `horizontal`, and `inline` modes are supported | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
 | `[nzSelectable]` | allow selecting menu items | `boolean` | `true` |
 | `[nzTheme]` | color theme of the menu | `'light' \| 'dark'` | `'light'` |
-| `(nzClick)` | the Output when click nz-menu-item inside nz-menu | `EventEmitter<NzMenuItemDirective>` | |
+| `(nzClick)` | the Output when click `nz-menu-item` inside nz-menu | `EventEmitter<NzMenuItemDirective>` | |
 
 ### [nz-menu-item]
 
@@ -73,7 +73,7 @@ You can set the title of `[nz-submenu]` in the following ways.
 | `[nzOpen]` | whether sub menu is open or not, double binding | `boolean` | `false` |
 | `[nzDisabled]` | whether sub menu is disabled or not | `boolean` | `false` |
 | `[nzTitle]` | set submenu title | `string \| TemplateRef<void>` | - |
-| `[nzIcon]` | icon type in title | `string` | - |
+| `[nzIcon]` | `icon` type in title | `string` | - |
 | `[nzMenuClassName]` | Custom the submenu container's class name | `string` | - |
 | `(nzOpenChange)` | nzOpen callback | `EventEmitter<boolean>` | - |
 

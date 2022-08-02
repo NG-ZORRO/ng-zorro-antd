@@ -3,19 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
+  NgZone,
   OnInit,
   Output,
   Renderer2
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzResizableService } from './resizable.service';
 
@@ -33,12 +36,15 @@ export class NzResizeHandleMouseDownEvent {
   constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
 }
 
+const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveListenerOptions({ passive: true });
+
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
   template: ` <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'nz-resizable-handle',
     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
     '[class.nz-resizable-handle-right]': `nzDirection === 'right'`,
     '[class.nz-resizable-handle-bottom]': `nzDirection === 'bottom'`,
@@ -46,44 +52,45 @@ export class NzResizeHandleMouseDownEvent {
     '[class.nz-resizable-handle-topRight]': `nzDirection === 'topRight'`,
     '[class.nz-resizable-handle-bottomRight]': `nzDirection === 'bottomRight'`,
     '[class.nz-resizable-handle-bottomLeft]': `nzDirection === 'bottomLeft'`,
-    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`,
-    '(mousedown)': 'onMousedown($event)',
-    '(touchstart)': 'onMousedown($event)'
-  }
+    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`
+  },
+  providers: [NzDestroyService]
 })
-export class NzResizeHandleComponent implements OnInit, OnDestroy {
+export class NzResizeHandleComponent implements OnInit {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
   @Output() readonly nzMouseDown = new EventEmitter<NzResizeHandleMouseDownEvent>();
 
-  private destroy$ = new Subject<void>();
-
   constructor(
+    private ngZone: NgZone,
     private nzResizableService: NzResizableService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-resizable-handle');
-  }
+    private host: ElementRef<HTMLElement>,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
-    // Caretaker note: `mouseEntered$` subject will emit events within the `<root>` zone,
-    // see `NzResizableDirective#ngAfterViewInit`. There're event listeners are added within the `<root>` zone.
-    this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
+    this.nzResizableService.mouseEnteredOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
       if (entered) {
-        this.renderer.addClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+        this.renderer.addClass(this.host.nativeElement, 'nz-resizable-handle-box-hover');
       } else {
-        this.renderer.removeClass(this.elementRef.nativeElement, 'nz-resizable-handle-box-hover');
+        this.renderer.removeClass(this.host.nativeElement, 'nz-resizable-handle-box-hover');
       }
     });
-  }
 
-  onMousedown(event: MouseEvent | TouchEvent): void {
-    this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, event));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.ngZone.runOutsideAngular(() => {
+      // Note: since Chrome 56 defaults document level `touchstart` listener to passive.
+      // The element `touchstart` listener is not passive by default
+      // We never call `preventDefault()` on it, so we're safe making it passive too.
+      merge(
+        fromEvent<MouseEvent>(this.host.nativeElement, 'mousedown', passiveEventListenerOptions),
+        fromEvent<TouchEvent>(this.host.nativeElement, 'touchstart', passiveEventListenerOptions)
+      )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: MouseEvent | TouchEvent) => {
+          this.nzResizableService.handleMouseDownOutsideAngular$.next(
+            new NzResizeHandleMouseDownEvent(this.nzDirection, event)
+          );
+        });
+    });
   }
 }

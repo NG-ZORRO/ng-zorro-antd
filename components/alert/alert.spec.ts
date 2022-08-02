@@ -104,6 +104,12 @@ describe('alert', () => {
         expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-${type}`);
       });
     });
+    it('should action work', () => {
+      fixture.detectChanges();
+      testComponent.action = testComponent.template;
+      fixture.detectChanges();
+      expect(alert.nativeElement.querySelector('.ant-alert-action').classList).not.toBeNull();
+    });
   });
   describe('banner alert', () => {
     let fixture: ComponentFixture<NzDemoTestBannerComponent>;
@@ -149,12 +155,14 @@ describe('alert', () => {
       [nzShowIcon]="showIcon"
       [nzIconType]="iconType"
       [nzType]="type"
+      [nzAction]="action"
       (nzOnClose)="onClose($event)"
     ></nz-alert>
   `
 })
 export class NzDemoTestBasicComponent {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
+  action?: string | TemplateRef<void>;
   banner = false;
   closeable = false;
   closeText?: string | TemplateRef<void>;

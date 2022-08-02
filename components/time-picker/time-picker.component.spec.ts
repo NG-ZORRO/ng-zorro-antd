@@ -1,3 +1,4 @@
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -8,8 +9,10 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
@@ -24,9 +27,14 @@ describe('time-picker', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
+        imports: [BidiModule, NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule, NzFormModule],
         schemas: [NO_ERRORS_SCHEMA],
-        declarations: [NzTestTimePickerComponent]
+        declarations: [
+          NzTestTimePickerComponent,
+          NzTestTimePickerStatusComponent,
+          NzTestTimePickerDirComponent,
+          NzTestTimePickerInFormComponent
+        ]
       });
       TestBed.compileComponents();
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -268,7 +276,11 @@ describe('time-picker', () => {
       expect(result.getMinutes()).toEqual(10);
       expect(result.getSeconds()).toEqual(30);
     }));
-
+    it('should support nzBorderless', fakeAsync(() => {
+      fixture.componentInstance.nzBorderless = true;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
+    }));
     describe('setup I18n service', () => {
       let srv: NzI18nService;
 
@@ -289,6 +301,77 @@ describe('time-picker', () => {
         placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
         expect(placeHolderValue).toBe('Select time');
       }));
+    });
+  });
+
+  describe('time-picker status', () => {
+    let testComponent: NzTestTimePickerStatusComponent;
+    let fixture: ComponentFixture<NzTestTimePickerStatusComponent>;
+    let timeElement: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimePickerStatusComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
+    });
+    it('should className correct with nzStatus', () => {
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.className).toContain('ant-picker-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.className).not.toContain('ant-picker-status-warning');
+    });
+  });
+
+  describe('time-picker RTL', () => {
+    let testComponent: NzTestTimePickerDirComponent;
+    let fixture: ComponentFixture<NzTestTimePickerDirComponent>;
+    let timeElement: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimePickerDirComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
+    });
+    it('should className correct on dir change', () => {
+      expect(timeElement.nativeElement.classList).not.toContain('ant-picker-rtl');
+      testComponent.dir = 'rtl';
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-rtl');
+    });
+  });
+
+  describe('time-picker in form', () => {
+    let testComponent: NzTestTimePickerInFormComponent;
+    let fixture: ComponentFixture<NzTestTimePickerInFormComponent>;
+    let timeElement!: HTMLElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimePickerInFormComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    });
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(timeElement.classList).toContain('ant-picker-status-error');
+      expect(timeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(timeElement.classList).toContain('ant-picker-status-warning');
+
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(timeElement.classList).toContain('ant-picker-status-success');
+
+      testComponent.feedback = false;
+      fixture.detectChanges();
+      expect(timeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
 
@@ -318,6 +401,7 @@ describe('time-picker', () => {
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
       [nzDefaultOpenValue]="defaultOpenValue"
+      [nzBorderless]="nzBorderless"
     ></nz-time-picker>
   `
 })
@@ -330,7 +414,38 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon?: string;
   nzBackdrop = false;
+  nzBorderless = true;
   defaultOpenValue: Date | null = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
+}
+
+@Component({
+  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `
+})
+export class NzTestTimePickerStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: ` <div [dir]="dir"><nz-time-picker></nz-time-picker></div> `
+})
+export class NzTestTimePickerDirComponent {
+  dir: Direction = 'ltr';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-time-picker></nz-time-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestTimePickerInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

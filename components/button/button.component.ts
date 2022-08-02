@@ -47,6 +47,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     <ng-content></ng-content>
   `,
   host: {
+    class: 'ant-btn',
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -119,8 +120,6 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     public nzConfigService: NzConfigService,
     @Optional() private directionality: Directionality
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-btn');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -142,10 +141,10 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       // The compiler generates the `ɵɵlistener` instruction which wraps the actual listener internally into the
       // function, which runs `markDirty()` before running the actual listener (the decorated class method).
       // Since we're preventing the default behavior and stopping event propagation this doesn't require Angular to run the change detection.
-      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
+      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click', { capture: true })
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
-          if (this.disabled && (event.target as HTMLElement)?.tagName === 'A') {
+          if ((this.disabled && (event.target as HTMLElement)?.tagName === 'A') || this.nzLoading) {
             event.preventDefault();
             event.stopImmediatePropagation();
           }

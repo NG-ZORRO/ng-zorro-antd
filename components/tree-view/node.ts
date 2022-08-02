@@ -23,6 +23,7 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
@@ -35,7 +36,10 @@ export interface NzTreeVirtualNodeData<T> {
   selector: 'nz-tree-node:not([builtin])',
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CdkTreeNode, useExisting: NzTreeNodeComponent }],
+  providers: [
+    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
+    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+  ],
   template: `
     <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
@@ -51,7 +55,7 @@ export interface NzTreeVirtualNodeData<T> {
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
   }
 })
-export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy, OnInit {
+export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
   disabled = false;
   selected = false;
@@ -67,7 +71,7 @@ export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy,
     this._elementRef.nativeElement.classList.add('ant-tree-treenode');
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
   }
 
@@ -118,7 +122,7 @@ export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy,
   providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({
@@ -153,7 +157,7 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
 
   private shouldRecreateView(changes: SimpleChanges): boolean {
     const ctxChange = changes.data;
-    return !!changes.data || (ctxChange && this.hasContextShapeChanged(ctxChange));
+    return ctxChange && this.hasContextShapeChanged(ctxChange);
   }
 
   private hasContextShapeChanged(ctxChange: SimpleChange): boolean {
@@ -166,7 +170,7 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
           return true;
         }
       }
-      return false;
+      return ctxChange.previousValue?.data !== ctxChange.currentValue?.data;
     }
     return true;
   }

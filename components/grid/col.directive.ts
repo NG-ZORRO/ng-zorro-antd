@@ -128,7 +128,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.setHostClassMap();
     });

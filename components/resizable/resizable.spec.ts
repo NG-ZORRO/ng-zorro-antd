@@ -77,6 +77,14 @@ describe('resizable', () => {
       expect(appRef.tick).toHaveBeenCalledTimes(0);
     });
 
+    it('should not run change detection on `mousedown` event on the `nz-resize-handle`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+      const nzResizeHandle = resizableEle.querySelector('nz-resize-handle')!;
+      dispatchMouseEvent(nzResizeHandle, 'mousedown');
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+    });
+
     it('should maximum size work', fakeAsync(() => {
       const rect = resizableEle.getBoundingClientRect();
       const handel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;

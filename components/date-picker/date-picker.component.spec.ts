@@ -3,9 +3,9 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -19,9 +19,12 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormModule } from '../form';
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
@@ -154,6 +157,12 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should have focus when opened progammatically', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByCode();
+      expect(document.activeElement).toEqual(getPickerInput(fixture.debugElement));
     }));
 
     it('should open by click and close by tab', fakeAsync(() => {
@@ -489,11 +498,73 @@ describe('NzDatePickerComponent', () => {
       expect(result.getDate()).toBe(+cellText);
     }));
 
+    it('should not run change detection when inline mode is enabled and the `date-range-popup` is clicked', () => {
+      fixtureInstance.nzInline = true;
+      fixture.detectChanges();
+
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('mousedown');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'preventDefault').and.callThrough();
+
+      debugElement.nativeElement.querySelector('date-range-popup').dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
     it('should support nzBackdrop', fakeAsync(() => {
       fixtureInstance.nzBackdrop = true;
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+    it('should support nzPlacement', fakeAsync(() => {
+      fixtureInstance.nzPlacement = 'bottomLeft';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      let element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'topLeft';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'bottomRight';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzPlacement = 'topRight';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(true);
     }));
   });
 
@@ -849,6 +920,46 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).value).toBe('');
     }));
 
+    it('should support updating the disabledtime state when the current time changes', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = (current: Date) => ({
+        nzDisabledHours: () => {
+          if (current) {
+            if (current.getMonth() === 2) {
+              return [0, 1, 2];
+            } else {
+              return [4, 5, 6];
+            }
+          } else {
+            return [7, 8, 9];
+          }
+        },
+        nzDisabledMinutes: () => [],
+        nzDisabledSeconds: () => []
+      });
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      // input disabled value
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('2020-03-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(3)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+
+      // input disabled value
+      typeInElement('2020-04-14 00:00:00', input);
+      fixture.detectChanges();
+      expect(
+        queryFromOverlay('.ant-picker-time-panel-column li:nth-child(5)').classList.contains(
+          'ant-picker-time-panel-cell-disabled'
+        )
+      ).toBeTruthy();
+    }));
+
     it('should support nzRenderExtraFooter', fakeAsync(() => {
       fixtureInstance.nzRenderExtraFooter = () => fixtureInstance.tplExtraFooter;
       fixture.detectChanges();
@@ -1084,6 +1195,13 @@ describe('NzDatePickerComponent', () => {
     fixture.detectChanges();
   }
 
+  function openPickerByCode(): void {
+    fixtureInstance.datePicker.open();
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+  }
+
   function triggerInputBlur(): void {
     dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
   }
@@ -1129,6 +1247,72 @@ describe('date-fns testing', () => {
   }));
 });
 
+describe('status', () => {
+  let testBed: ComponentBed<NzTestDatePickerStatusComponent>;
+  let fixture: ComponentFixture<NzTestDatePickerStatusComponent>;
+  let fixtureInstance: NzTestDatePickerStatusComponent;
+  let datePickerElement!: HTMLElement;
+  beforeEach(() => {
+    testBed = createComponentBed(NzTestDatePickerStatusComponent, { imports: [NzDatePickerModule, NzIconTestModule] });
+    fixture = testBed.fixture;
+    fixtureInstance = fixture.componentInstance;
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.detectChanges();
+  });
+  it('should classname correct', () => {
+    expect(datePickerElement.classList).toContain('ant-picker-status-error');
+
+    fixtureInstance.status = 'warning';
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-status-warning');
+
+    fixtureInstance.status = '';
+    fixture.detectChanges();
+    expect(datePickerElement.classList).not.toContain('ant-picker-status-warning');
+  });
+});
+
+describe('in form', () => {
+  let testBed: ComponentBed<NzTestDatePickerInFormComponent>;
+  let fixture: ComponentFixture<NzTestDatePickerInFormComponent>;
+  let datePickerElement!: HTMLElement;
+  let formGroup: FormGroup;
+  beforeEach(() => {
+    testBed = createComponentBed(NzTestDatePickerInFormComponent, {
+      imports: [NzDatePickerModule, NzIconTestModule, NzFormModule, ReactiveFormsModule, FormsModule]
+    });
+    fixture = testBed.fixture;
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    formGroup = fixture.componentInstance.validateForm;
+    fixture.detectChanges();
+  });
+  it('should classname correct', () => {
+    expect(datePickerElement.classList).not.toContain('ant-picker-status-error');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+
+    formGroup.get('demo')!.markAsDirty();
+    formGroup.get('demo')!.setValue(null);
+    formGroup.get('demo')!.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-status-error');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+    expect(datePickerElement!.querySelector('nz-form-item-feedback-icon')!.className).toContain(
+      'ant-form-item-feedback-icon-error'
+    );
+
+    formGroup.get('demo')!.markAsDirty();
+    formGroup.get('demo')!.setValue(new Date());
+    formGroup.get('demo')!.updateValueAndValidity();
+    fixture.detectChanges();
+    // show success
+    expect(datePickerElement.classList).toContain('ant-picker-status-success');
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+    expect(datePickerElement.querySelector('nz-form-item-feedback-icon')!.className).toContain(
+      'ant-form-item-feedback-icon-success'
+    );
+  });
+});
+
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
@@ -1164,6 +1348,7 @@ describe('date-fns testing', () => {
         [nzBorderless]="nzBorderless"
         [nzInline]="nzInline"
         [nzBackdrop]="nzBackdrop"
+        [nzPlacement]="nzPlacement"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1223,6 +1408,7 @@ class NzTestDatePickerComponent {
   nzBorderless = false;
   nzInline = false;
   nzBackdrop = false;
+  nzPlacement = 'bottomLeft';
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}
@@ -1241,4 +1427,29 @@ class NzTestDatePickerComponent {
   // --- Suite 5
   firstValue!: Date;
   secondValue!: Date;
+}
+
+@Component({
+  template: ` <nz-date-picker [nzStatus]="status"></nz-date-picker> `
+})
+class NzTestDatePickerStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-control nzHasFeedback>
+          <nz-date-picker formControlName="demo"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+class NzTestDatePickerInFormComponent {
+  validateForm: FormGroup = this.fb.group({
+    demo: [null, [Validators.required]]
+  });
+  constructor(private fb: FormBuilder) {}
 }

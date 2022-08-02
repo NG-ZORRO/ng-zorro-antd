@@ -15,7 +15,8 @@ export default {
     prev_5: 'पिछले 5 पृष्ठ',
     next_5: 'अगले 5 पृष्ठ',
     prev_3: 'पिछले 3 पृष्ठ',
-    next_3: 'अगले 3 पेज'
+    next_3: 'अगले 3 पेज',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -47,14 +48,23 @@ export default {
       previousDecade: 'पिछला दशक',
       nextDecade: 'अगले दशक',
       previousCentury: 'पीछ्ली शताब्दी',
-      nextCentury: 'अगली सदी'
+      nextCentury: 'अगली सदी',
+      yearPlaceholder: 'वर्ष चुनें',
+      quarterPlaceholder: 'तिमाही चुनें',
+      monthPlaceholder: 'महीना चुनिए',
+      weekPlaceholder: 'सप्ताह चुनें',
+      rangeYearPlaceholder: ['आरंभिक वर्ष', 'अंत वर्ष'],
+      rangeMonthPlaceholder: ['आरंभिक महीना', 'अंत महीना'],
+      rangeWeekPlaceholder: ['आरंभिक सप्ताह', 'अंत सप्ताह']
     },
     timePickerLocale: {
-      placeholder: 'समय का चयन करें'
+      placeholder: 'समय का चयन करें',
+      rangePlaceholder: ['आरंभिक समय', 'अंत समय']
     }
   },
   TimePicker: {
-    placeholder: 'समय का चयन करें'
+    placeholder: 'समय का चयन करें',
+    rangePlaceholder: ['आरंभिक समय', 'अंत समय']
   },
   Calendar: {
     lang: {
@@ -86,10 +96,18 @@ export default {
       previousDecade: 'पिछला दशक',
       nextDecade: 'अगले दशक',
       previousCentury: 'पीछ्ली शताब्दी',
-      nextCentury: 'अगली सदी'
+      nextCentury: 'अगली सदी',
+      yearPlaceholder: 'वर्ष चुनें',
+      quarterPlaceholder: 'तिमाही चुनें',
+      monthPlaceholder: 'महीना चुनिए',
+      weekPlaceholder: 'सप्ताह चुनें',
+      rangeYearPlaceholder: ['आरंभिक वर्ष', 'अंत वर्ष'],
+      rangeMonthPlaceholder: ['आरंभिक महीना', 'अंत महीना'],
+      rangeWeekPlaceholder: ['आरंभिक सप्ताह', 'अंत सप्ताह']
     },
     timePickerLocale: {
-      placeholder: 'समय का चयन करें'
+      placeholder: 'समय का चयन करें',
+      rangePlaceholder: ['आरंभिक समय', 'अंत समय']
     }
   },
   global: {
@@ -102,7 +120,15 @@ export default {
     emptyText: 'कोई जानकारी नहीं',
     selectAll: 'वर्तमान पृष्ठ का चयन करें',
     selectInvert: 'वर्तमान पृष्ठ घुमाएं',
-    sortTitle: 'द्वारा क्रमबद्ध करें'
+    sortTitle: 'द्वारा क्रमबद्ध करें',
+    filterEmptyText: 'कोई फ़िल्टर नहीं',
+    selectNone: 'सभी डेटा साफ़ करें',
+    selectionAll: 'सभी डेटा का चयन करें',
+    expand: 'पंक्ति का विस्तार करें',
+    collapse: 'पंक्ति संक्षिप्त करें',
+    triggerDesc: 'अवरोही क्रमित करने के लिए क्लिक करें',
+    triggerAsc: 'आरोही क्रमित करने के लिए क्लिक करें',
+    cancelSort: 'छँटाई रद्द करने के लिए क्लिक करें'
   },
   Modal: {
     okText: 'अच्छी तरह से',
@@ -118,16 +144,40 @@ export default {
     notFoundContent: 'नहीं मिला',
     searchPlaceholder: 'यहां खोजें',
     itemUnit: 'तत्त्व',
-    itemsUnit: 'विषय-वस्तु'
+    itemsUnit: 'विषय-वस्तु',
+    remove: 'हटाए',
+    selectCurrent: 'वर्तमान पृष्ठ का चयन करें',
+    removeCurrent: 'वर्तमान पृष्ठ हटाएं',
+    selectAll: 'सभी डेटा का चयन करें',
+    removeAll: 'सभी डेटा हटाएं',
+    selectInvert: 'वर्तमान पृष्ठ को उल्टा करें'
   },
   Select: {
     notFoundContent: 'नहीं मिला'
   },
   Upload: {
-    uploading: 'अपलोडिंग...',
+    uploading: 'अपलोड हो रहा...',
     removeFile: 'फ़ाइल निकालें',
     uploadError: 'अपलोड में त्रुटि',
     previewFile: 'फ़ाइल पूर्वावलोकन',
     downloadFile: 'फ़ाइल डाउनलोड करें'
+  },
+  Empty: {
+    description: 'कोई आकड़ा उपलब्ध नहीं है'
+  },
+  Icon: {
+    icon: 'आइकन'
+  },
+  Text: {
+    edit: 'संपादित करें',
+    copy: 'प्रतिलिपि',
+    copied: 'कॉपी किया गया',
+    expand: 'विस्तार'
+  },
+  PageHeader: {
+    back: 'वापस'
+  },
+  Image: {
+    preview: 'पूर्वावलोकन'
   }
 };

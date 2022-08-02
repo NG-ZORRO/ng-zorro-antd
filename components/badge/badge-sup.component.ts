@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
@@ -16,7 +15,7 @@ import {
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -47,6 +46,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
   `,
   host: {
+    class: 'ant-scroll-number',
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
@@ -54,6 +54,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
+    '[class.ant-badge-count-sm]': `nzSize === 'small'`,
     '[class.ant-badge-dot]': `nzDot`,
     '[class.ant-badge-multiple-words]': `countArray.length >= 2`
   }
@@ -67,15 +68,13 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
+  @Input() nzSize: NzSizeDSType = 'default';
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-scroll-number');
-  }
+  constructor() {}
 
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');

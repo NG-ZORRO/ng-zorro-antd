@@ -4,4 +4,6 @@
  */
 
 export * from './input-number.component';
+export * from './input-number-group-slot.component';
+export * from './input-number-group.component';
 export * from './input-number.module';

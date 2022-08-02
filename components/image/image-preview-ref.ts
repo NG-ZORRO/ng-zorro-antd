@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+import { ESCAPE, hasModifierKey, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -21,10 +21,25 @@ export class NzImagePreviewRef {
   ) {
     overlayRef
       .keydownEvents()
-      .pipe(filter(event => (this.config.nzKeyboard as boolean) && event.keyCode === ESCAPE && !hasModifierKey(event)))
+      .pipe(
+        filter(
+          event =>
+            (this.config.nzKeyboard as boolean) &&
+            (event.keyCode === ESCAPE || event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
+            !hasModifierKey(event)
+        )
+      )
       .subscribe(event => {
         event.preventDefault();
-        this.close();
+        if (event.keyCode === ESCAPE) {
+          this.close();
+        }
+        if (event.keyCode === LEFT_ARROW) {
+          this.prev();
+        }
+        if (event.keyCode === RIGHT_ARROW) {
+          this.next();
+        }
       });
 
     overlayRef.detachments().subscribe(() => {

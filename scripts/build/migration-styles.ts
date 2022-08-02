@@ -19,7 +19,8 @@ export function copyStylesToSrc(): void {
   fs.copySync(path.resolve(sourcePath, `ng-zorro-antd.min.css`), path.resolve(targetPath, `ng-zorro-antd.min.css`));
   fs.outputFileSync(
     path.resolve(targetPath, `ng-zorro-antd.less`),
-    `@import "../style/entry.less";
+    `@root-entry-name: default;
+@import "../style/entry.less";
 @import "../components.less";`
   );
 }

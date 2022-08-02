@@ -85,16 +85,17 @@ import { NzNotificationData } from './typings';
   `
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() instance!: Required<NzNotificationData>;
+  @Input() override instance!: Required<NzNotificationData>;
+  @Input() override index!: number;
   @Input() placement?: string;
-  @Input() index!: number;
-  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+
+  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {
     super(cdr);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.instance.onClick.complete();
   }
@@ -109,10 +110,19 @@ export class NzNotificationComponent extends NzMNComponent implements OnDestroy 
 
   get state(): string | undefined {
     if (this.instance.state === 'enter') {
-      if (this.placement === 'topLeft' || this.placement === 'bottomLeft') {
-        return 'enterLeft';
-      } else {
-        return 'enterRight';
+      switch (this.placement) {
+        case 'topLeft':
+        case 'bottomLeft':
+          return 'enterLeft';
+        case 'topRight':
+        case 'bottomRight':
+          return 'enterRight';
+        case 'top':
+          return 'enterTop';
+        case 'bottom':
+          return 'enterBottom';
+        default:
+          return 'enterRight';
       }
     } else {
       return this.instance.state;

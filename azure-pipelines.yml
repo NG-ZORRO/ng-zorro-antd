@@ -82,6 +82,7 @@ stages:
           inputs:
             command: 'install'
         - script: npm run test:schematics
+
   dependsOn: env
 
 - stage: lint

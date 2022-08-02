@@ -23,6 +23,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzBanner]` | Whether to show as banner | `boolean` | `false` |
+| `[nzAction]` | Customized alert's action | `string \| TemplateRef<void>` | - |
 | `[nzCloseable]` | Whether Alert can be closed | `boolean` | - | ✅ |
 | `[nzCloseText]` | Close text to show | `string \| TemplateRef<void>` | - |
 | `[nzDescription]` | Additional content of Alert | `string \| TemplateRef<void>` | - |

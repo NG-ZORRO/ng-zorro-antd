@@ -7,7 +7,6 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -48,6 +47,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     </div>
   `,
   host: {
+    class: 'ant-menu-submenu ant-menu-submenu-popup',
     '[class.ant-menu-light]': "theme === 'light'",
     '[class.ant-menu-dark]': "theme === 'dark'",
     '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
@@ -71,10 +71,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-menu-submenu', 'ant-menu-submenu-popup');
-  }
+  constructor(@Optional() private directionality: Directionality) {}
 
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {

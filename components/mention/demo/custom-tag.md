@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 7
 title:
   zh-CN: 自定义建议
   en-US: Customize Suggestion

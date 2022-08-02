@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnInit,
@@ -58,6 +57,7 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
     </div>
   `,
   host: {
+    class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   }
 })
@@ -96,10 +96,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-fullcalendar-header');
-  }
+  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     this.setUpYears();

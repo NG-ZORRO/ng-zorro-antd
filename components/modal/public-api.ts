@@ -14,7 +14,7 @@ export * from './modal-content.directive';
 export * from './modal.module';
 export * from './modal-confirm-container.component';
 export * from './modal-container.component';
-export * from './modal-container';
+export * from './modal-container.directive';
 export * from './modal-close.component';
 export * from './modal-title.component';
 export * from './modal-legacy-api';

@@ -62,43 +62,40 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
   exportAs: 'nzTree',
   animations: [treeCollapseMotion],
   template: `
-    <div role="tree">
+    <div>
       <input [ngStyle]="HIDDEN_STYLE" />
     </div>
-    <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode">
-      <div>
-        <cdk-virtual-scroll-viewport
-          *ngIf="nzVirtualHeight"
-          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-          [class.ant-tree-list-holder-inner]="!nzSelectMode"
-          [itemSize]="nzVirtualItemSize"
-          [minBufferPx]="nzVirtualMinBufferPx"
-          [maxBufferPx]="nzVirtualMaxBufferPx"
-          [style.height]="nzVirtualHeight"
-        >
-          <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-            <ng-template
-              [ngTemplateOutlet]="nodeTemplate"
-              [ngTemplateOutletContext]="{ $implicit: node }"
-            ></ng-template>
-          </ng-container>
-        </cdk-virtual-scroll-viewport>
+    <div class="ant-tree-treenode" [ngStyle]="HIDDEN_NODE_STYLE">
+      <div class="ant-tree-indent">
+        <div class="ant-tree-indent-unit"></div>
+      </div>
+    </div>
+    <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode" style="position: relative">
+      <cdk-virtual-scroll-viewport
+        *ngIf="nzVirtualHeight"
+        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+        [class.ant-tree-list-holder-inner]="!nzSelectMode"
+        [itemSize]="nzVirtualItemSize"
+        [minBufferPx]="nzVirtualMinBufferPx"
+        [maxBufferPx]="nzVirtualMaxBufferPx"
+        [style.height]="nzVirtualHeight"
+      >
+        <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
+          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
+        </ng-container>
+      </cdk-virtual-scroll-viewport>
 
-        <div
-          *ngIf="!nzVirtualHeight"
-          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-          [class.ant-tree-list-holder-inner]="!nzSelectMode"
-          [@.disabled]="beforeInit || noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
-          [@treeCollapseMotion]="nzFlattenNodes.length"
-        >
-          <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-            <ng-template
-              [ngTemplateOutlet]="nodeTemplate"
-              [ngTemplateOutletContext]="{ $implicit: node }"
-            ></ng-template>
-          </ng-container>
-        </div>
+      <div
+        *ngIf="!nzVirtualHeight"
+        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+        [class.ant-tree-list-holder-inner]="!nzSelectMode"
+        [@.disabled]="beforeInit || noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [@treeCollapseMotion]="nzFlattenNodes.length"
+      >
+        <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
+          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
+        </ng-container>
       </div>
     </div>
     <ng-template #nodeTemplate let-treeNode>
@@ -252,6 +249,14 @@ export class NzTreeComponent
     border: 0,
     padding: 0,
     margin: 0
+  };
+
+  HIDDEN_NODE_STYLE = {
+    position: 'absolute',
+    pointerEvents: 'none',
+    visibility: 'hidden',
+    height: 0,
+    overflow: 'hidden'
   };
 
   destroy$ = new Subject();

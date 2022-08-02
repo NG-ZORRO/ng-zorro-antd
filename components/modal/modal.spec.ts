@@ -908,6 +908,32 @@ describe('NzModal', () => {
       expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
     }));
 
+    it('should omit any action when closing', async function () {
+      const onOk = jasmine.createSpy('onOk', () => {});
+      const onCancel = jasmine.createSpy('onCancel', () => {});
+      const modalRef = modalService.create({
+        nzContent: TestWithModalContentComponent,
+        nzOnOk: onOk,
+        nzOnCancel: onCancel
+      });
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(1);
+      await modalRef.triggerOk();
+      expect(onOk).toHaveBeenCalledTimes(1);
+      fakeAsync(() => {
+        expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+        modalRef.triggerOk();
+        modalRef.triggerOk();
+        modalRef.triggerCancel();
+        modalRef.triggerCancel();
+        expect(onOk).toHaveBeenCalledTimes(1);
+        expect(onCancel).toHaveBeenCalledTimes(0);
+        fixture.detectChanges();
+        flush();
+        expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
+      });
+    });
+
     it('should set loading state when the callback is promise', fakeAsync(() => {
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
@@ -1095,7 +1121,7 @@ describe('NzModal', () => {
       });
 
       fixture.detectChanges();
-      flushMicrotasks();
+      tick(16);
 
       expect(document.activeElement!.tagName).toBe('NZ-MODAL-CONTAINER', 'Expected modal container to be focused.');
     }));

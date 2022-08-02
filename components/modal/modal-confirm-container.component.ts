@@ -14,6 +14,8 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  NgZone,
+  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -27,7 +29,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { nzModalAnimations } from './modal-animations';
-import { BaseModalContainerComponent } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -38,7 +40,6 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      (mousedown)="onMousedown()"
       [ngClass]="config.nzClassName!"
       [ngStyle]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
@@ -102,33 +103,38 @@ import { ModalOptions } from './modal-types';
     '[@modalContainer]': 'state',
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
-    '(click)': 'onContainerClick($event)',
-    '(mouseup)': 'onMouseup()'
+    '(click)': 'onContainerClick($event)'
   }
 })
-export class NzModalConfirmContainerComponent extends BaseModalContainerComponent {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
-  @Output() readonly cancelTriggered = new EventEmitter<void>();
-  @Output() readonly okTriggered = new EventEmitter<void>();
+export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
+  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
+  @Output() override readonly cancelTriggered = new EventEmitter<void>();
+  @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
 
   constructor(
+    ngZone: NgZone,
     private i18n: NzI18nService,
-    elementRef: ElementRef,
+    host: ElementRef<HTMLElement>,
     focusTrapFactory: FocusTrapFactory,
     cdr: ChangeDetectorRef,
     render: Renderer2,
     overlayRef: OverlayRef,
     nzConfigService: NzConfigService,
-    public config: ModalOptions,
+    public override config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+    super(ngZone, host, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
+  }
+
+  ngOnInit(): void {
+    this.setupMouseListeners(this.modalElementRef);
   }
 
   onCancel(): void {

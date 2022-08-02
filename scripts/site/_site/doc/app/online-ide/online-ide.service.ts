@@ -7,7 +7,6 @@ import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
 import appModuleTS from './files/app.module';
-import dotAngularCliJSON from './files/dot_angular-cli.json';
 import environmentTS from './files/environment';
 import mainTS from './files/main';
 import nzModuleTS from './files/ng-zorro-antd.module';
@@ -18,18 +17,18 @@ import polyfillTS from './files/polyfill';
 })
 export class OnlineIdeService {
   document: Document;
-  template = 'angular-cli';
+  template = 'angular-cli' as const;
   dependencies = {
-    '@angular/animations': '^12.0.0',
-    '@angular/cdk': '^12.0.0',
-    '@angular/common': '^12.0.0',
-    '@angular/compiler': '^12.0.0',
-    '@angular/core': '^12.0.0',
-    '@angular/forms': '^12.0.0',
-    '@angular/platform-browser': '^12.0.0',
-    '@angular/platform-browser-dynamic': '^12.0.0',
-    '@angular/router': '^12.0.0',
-    '@ant-design/icons-angular': '^12.0.0',
+    '@angular/animations': '^13.0.1',
+    '@angular/cdk': '^13.0.1',
+    '@angular/common': '^13.0.1',
+    '@angular/compiler': '^13.0.1',
+    '@angular/core': '^13.0.1',
+    '@angular/forms': '^13.0.1',
+    '@angular/platform-browser': '^13.0.1',
+    '@angular/platform-browser-dynamic': '^13.0.1',
+    '@angular/router': '^13.0.1',
+    '@ant-design/icons-angular': '^13.0.1',
     rxjs: '~6.6.3',
     'core-js': '~3.6.5',
     'date-fns': '^2.0.0',
@@ -77,8 +76,8 @@ export class OnlineIdeService {
           ),
           isBinary: false
         },
-        '.angular-cli.json': {
-          content: dotAngularCliJSON,
+        'angular.json': {
+          content: `${JSON.stringify(angularJSON, null, 2)}`,
           isBinary: false
         },
         'src/index.html': {
@@ -117,6 +116,23 @@ export class OnlineIdeService {
         },
         'environments/environment.ts': {
           content: environmentTS,
+          isBinary: false
+        },
+        'sandbox.config.json': {
+          content: JSON.stringify(
+            {
+              infiniteLoopProtection: true,
+              hardReloadOnChange: false,
+              view: 'browser',
+              template: 'node',
+              container: {
+                node: '14',
+                port: 4200
+              }
+            },
+            null,
+            2
+          ),
           isBinary: false
         }
       }

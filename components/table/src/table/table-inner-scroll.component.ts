@@ -81,7 +81,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         [contentTemplate]="contentTemplate"
       ></table>
     </div>
-  `
+  `,
+  host: { class: 'ant-table-container' }
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
   @Input() data: readonly T[] = [];
@@ -132,12 +133,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
     private renderer: Renderer2,
     private ngZone: NgZone,
     private platform: Platform,
-    private resizeService: NzResizeService,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-container');
-  }
+    private resizeService: NzResizeService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
@@ -152,10 +149,13 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
         overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
-      this.scroll$.next();
+      // Caretaker note: we have to emit the value outside of the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
+      // event listener will be also added outside of the Angular zone.
+      this.ngZone.runOutsideAngular(() => this.scroll$.next());
     }
     if (data) {
-      this.data$.next();
+      // See the comment above.
+      this.ngZone.runOutsideAngular(() => this.data$.next());
     }
   }
   ngAfterViewInit(): void {

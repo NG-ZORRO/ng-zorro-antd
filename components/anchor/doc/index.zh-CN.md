@@ -27,8 +27,11 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `[nzBounds]` | 锚点区域边界，单位：px | `number` | `5` | ✅ |
 | `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | `number` | - | ✅ |
 | `[nzShowInkInFixed]` | 固定模式是否显示小圆点 | `boolean` | `false` | ✅ |
+| `[nzTargetOffset]` | 锚点滚动偏移量，默认与 offsetTop 相同，[例子](#components-anchor-demo-targetOffset) | number | - |  |
 | `[nzContainer]` | 指定滚动的容器 | `string \| HTMLElement` | `window` |
+| `[nzCurrentAnchor]` | 自定义高亮的锚点 | string | - |  |
 | `(nzClick)` | 点击项触发 | `EventEmitter<string>` | - |
+| `(nzChange)` | 监听锚点链接改变 | `EventEmitter<string>` | - |  |
 | `(nzScroll)` | 滚动至某锚点时触发 | `EventEmitter<NzAnchorLinkComponent>` | - |
 
 ### nz-link
@@ -36,4 +39,5 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzHref]` | 锚点链接 | `string` | - |
+| `[nzTarget]` | 该属性指定在何处显示链接的资源。 | string    | -      |      |
 | `[nzTitle]` | 文字内容 | `string \| TemplateRef<void>` | - |

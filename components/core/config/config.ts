@@ -19,6 +19,13 @@ import {
   NzTSType
 } from 'ng-zorro-antd/core/types';
 
+interface MonacoEnvironment {
+  globalAPI?: boolean;
+  baseUrl?: string;
+  getWorker?(workerId: string, label: string): Promise<Worker> | Worker;
+  getWorkerUrl?(workerId: string, label: string): string;
+}
+
 export interface NzConfig {
   affix?: AffixConfig;
   select?: SelectConfig;
@@ -37,7 +44,9 @@ export interface NzConfig {
   datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
+  dropDown?: DropDownConfig;
   empty?: EmptyConfig;
+  filterTrigger?: FilterTriggerConfig;
   form?: FormConfig;
   icon?: IconConfig;
   message?: MessageConfig;
@@ -47,6 +56,7 @@ export interface NzConfig {
   pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  segmented?: SegmentedConfig;
   space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
@@ -60,6 +70,23 @@ export interface NzConfig {
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
   imageExperimental?: ImageExperimentalConfig;
+  theme?: Theme;
+  prefixCls?: PrefixCls;
+}
+
+export interface PrefixCls {
+  prefixCls?: string;
+  iconPrefixCls?: string;
+}
+
+export interface Theme {
+  primaryColor?: string;
+  infoColor?: string;
+  successColor?: string;
+  processingColor?: string;
+  errorColor?: string;
+  warningColor?: string;
+  [key: string]: string | undefined;
 }
 
 export interface SelectConfig {
@@ -107,8 +134,10 @@ export interface ButtonConfig {
 
 export interface CodeEditorConfig {
   assetsRoot?: string | SafeUrl;
+  extraConfig?: NzSafeAny;
   defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
+  monacoEnvironment?: MonacoEnvironment;
 
   onLoad?(): void;
 
@@ -168,8 +197,16 @@ export interface DrawerConfig {
   nzDirection?: Direction;
 }
 
+export interface DropDownConfig {
+  nzBackdrop?: boolean;
+}
+
 export interface EmptyConfig {
   nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
+}
+
+export interface FilterTriggerConfig {
+  nzBackdrop?: boolean;
 }
 
 export interface FormConfig {
@@ -202,7 +239,7 @@ export interface ModalConfig {
 export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 }
 
 export interface PageHeaderConfig {
@@ -231,6 +268,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SegmentedConfig {
+  nzSize?: NzSizeLDSType;
 }
 
 export interface SpaceConfig {

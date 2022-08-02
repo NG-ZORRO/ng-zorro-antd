@@ -52,6 +52,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-tag',
     '[style.background-color]': `isPresetColor ? '' : nzColor`,
     '[class.ant-tag-has-color]': `nzColor && !isPresetColor`,
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
@@ -76,10 +77,7 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-tag');
-  }
+  ) {}
 
   updateCheckedStatus(): void {
     if (this.nzMode === 'checkable') {
@@ -95,13 +93,6 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
 
-  /**
-   * @deprecated
-   * move to host after View Engine deprecation
-   * host: {
-   *   '[class]': `isPresetColor ? ('ant-tag-' + nzColor) : ''`
-   * }
-   */
   private clearPresetColor(): void {
     const hostElement = this.elementRef.nativeElement as HTMLElement;
     // /(ant-tag-(?:pink|red|...))/g
@@ -116,13 +107,6 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     hostElement.classList.remove(...matches);
   }
 
-  /**
-   * @deprecated
-   * move to host after View Engine deprecation
-   * host: {
-   *   '[class]': `isPresetColor ? ('ant-tag-' + nzColor) : ''`
-   * }
-   */
   private setPresetColor(): void {
     const hostElement = this.elementRef.nativeElement as HTMLElement;
     this.clearPresetColor();

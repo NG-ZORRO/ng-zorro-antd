@@ -180,6 +180,17 @@ describe('button', () => {
       // Previously, it would've caused `tick()` to be called 2 times, because 2 click events have been triggered.
       expect(spy).toHaveBeenCalledTimes(0);
     });
+
+    it('prevent default and stop propagation when the button state is loading', fakeAsync(() => {
+      testBed.component.nzLoading = true;
+      testBed.fixture.detectChanges();
+      const event = new MouseEvent('click');
+      const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+      const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+      buttonElement.dispatchEvent(event);
+      expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+      expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
+    }));
   });
 });
 
@@ -280,6 +291,13 @@ export class TestButtonIconOnlyComponent {}
   `
 })
 export class TestButtonIconOnlyLoadingComponent {}
+
+@Component({
+  template: `<button nz-button [nzLoading]="nzLoading" (click)="buttonClick()">click me</button> `
+})
+export class TestButtonWithLoadingComponent {
+  @Input() nzLoading: boolean = false;
+}
 
 @Component({
   template: `

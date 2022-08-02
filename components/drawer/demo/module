@@ -9,6 +9,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 export const moduleList = [
   NzDrawerModule,
@@ -21,5 +22,6 @@ export const moduleList = [
   NzListModule,
   NzRadioModule,
   NzDividerModule,
-  NzDescriptionsModule
+  NzDescriptionsModule,
+  NzSpaceModule
 ];

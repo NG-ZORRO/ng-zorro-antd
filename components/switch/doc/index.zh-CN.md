@@ -23,6 +23,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzId]` | 组件内部 button 的 id 值 | `string` | - |
 | `[ngModel]` | 指定当前是否选中，可双向绑定 | `boolean` | `false` |
 | `[nzCheckedChildren]` | 选中时的内容 | `string \| TemplateRef<void>` | - |
 | `[nzUnCheckedChildren]` | 非选中时的内容 | `string \| TemplateRef<void>` | - |

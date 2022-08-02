@@ -18,19 +18,21 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
       nzTitle="Resizable Drawer"
       (nzOnClose)="close()"
     >
-      <div
-        *ngIf="visible"
-        class="drawer-body"
-        nz-resizable
-        nzBounds="window"
-        [nzMinWidth]="256"
-        (nzResize)="onResize($event)"
-      >
-        <nz-resize-handles [nzDirections]="['right']"></nz-resize-handles>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </div>
+      <ng-container *nzDrawerContent>
+        <div
+          *ngIf="visible"
+          class="drawer-body"
+          nz-resizable
+          nzBounds="window"
+          [nzMinWidth]="256"
+          (nzResize)="onResize($event)"
+        >
+          <nz-resize-handles [nzDirections]="['right']"></nz-resize-handles>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </div>
+      </ng-container>
     </nz-drawer>
   `,
   styles: [

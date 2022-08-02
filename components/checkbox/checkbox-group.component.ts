@@ -55,6 +55,7 @@ export interface NzCheckBoxOptionInterface {
     }
   ],
   host: {
+    class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
   }
 })
@@ -84,10 +85,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-checkbox-group');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor
