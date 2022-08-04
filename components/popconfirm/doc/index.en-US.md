@@ -46,6 +46,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` | - |
 | `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - | - |
 | `[nzAutoFocus]` | Autofocus a button | `null \| 'ok' \| 'cancel'` | `null` | ✅ |
+| `[nzBeforeConfirm]` | The hook before the confirmation operation, decides whether to continue responding to the `nzOnConfirm` callback, supports asynchronous verification. | `(() => Observable<boolean> \| Promise<boolean> \| boolean) \| null` | `null` | - |
 | `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - | - |
 | `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - | - |
 
