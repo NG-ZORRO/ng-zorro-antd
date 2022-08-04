@@ -25,7 +25,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | ----- | ----------- | ---- | ------------- |
 | `[nzPopconfirmArrowPointAtCenter]` | Arrow point at center of the origin | `boolean` | `false` |
 | `[nzPopconfirmTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
+| `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'click'` |
 | `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopconfirmOrigin]` | Origin of the popconfirm | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | Show or hide popconfirm | `boolean` | `false` |
