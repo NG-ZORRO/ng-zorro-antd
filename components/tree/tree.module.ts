@@ -40,6 +40,6 @@ import { NzTreeComponent } from './tree.component';
     NzTreeNodeTitleComponent,
     NzTreeDropIndicatorComponent
   ],
-  exports: [NzTreeComponent, NzTreeNodeBuiltinComponent, NzTreeIndentComponent]
+  exports: [NzTreeComponent, NzTreeNodeBuiltinComponent, NzTreeIndentComponent, NzTreeDropIndicatorComponent]
 })
 export class NzTreeModule {}

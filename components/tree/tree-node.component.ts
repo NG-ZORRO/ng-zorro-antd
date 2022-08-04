@@ -82,8 +82,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [showIcon]="nzShowIcon"
       [selectMode]="nzSelectMode"
       [context]="nzTreeNode"
-      [showIndicator]="showIndicator"
-      [dragPosition]="dragPos"
+      [showIndicator]="nzTreeNode.showIndicator"
+      [dragPosition]="nzTreeNode.dragPosition"
       (dblclick)="dblClick($event)"
       (click)="clickSelect($event)"
       (contextmenu)="contextMenu($event)"
@@ -170,14 +170,13 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
    * drag var
    */
   destroy$ = new Subject();
-  dragPos = 2;
   dragPosClass: { [key: string]: string } = {
     0: 'drag-over',
     1: 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
   };
   draggingKey: string | null = null;
-  showIndicator = false;
+
   /**
    * default set
    */
@@ -284,7 +283,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   handleDragEnter(e: DragEvent): void {
     e.preventDefault();
     // reset position
-    this.showIndicator = this.nzTreeNode.key !== this.nzTreeService.getSelectedNode()?.key;
+    this.nzTreeNode.showIndicator = this.nzTreeNode.key !== this.nzTreeService.getSelectedNode()?.key;
     this.renderIndicator(2);
     this.ngZone.run(() => {
       const eventNext = this.nzTreeService.formatEvent('dragenter', this.nzTreeNode, e);
@@ -295,12 +294,12 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   handleDragOver(e: DragEvent): void {
     e.preventDefault();
     const dropPosition = this.nzTreeService.calcDropPosition(e);
-    if (this.dragPos !== dropPosition) {
+    if (this.nzTreeNode.dragPosition !== dropPosition) {
       this.clearDragClass();
       this.renderIndicator(dropPosition);
       // leaf node will pass
-      if (!(this.dragPos === 0 && this.isLeaf)) {
-        this.renderer.addClass(this.elementRef.nativeElement, this.dragPosClass[this.dragPos]);
+      if (!(this.nzTreeNode.dragPosition === 0 && this.isLeaf)) {
+        this.renderer.addClass(this.elementRef.nativeElement, this.dragPosClass[this.nzTreeNode.dragPosition]);
         this.renderer.addClass(this.elementRef.nativeElement, 'drop-target');
       }
     }
@@ -320,10 +319,10 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     e.preventDefault();
     e.stopPropagation();
     this.ngZone.run(() => {
-      this.showIndicator = false;
+      this.nzTreeNode.showIndicator = false;
       this.clearDragClass();
       const node = this.nzTreeService.getSelectedNode();
-      if (!node || (node && node.key === this.nzTreeNode.key) || (this.dragPos === 0 && this.isLeaf)) {
+      if (!node || (node && node.key === this.nzTreeNode.key) || (this.nzTreeNode.dragPosition === 0 && this.isLeaf)) {
         return;
       }
       // pass if node is leafNo
@@ -333,16 +332,16 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
         this.nzBeforeDrop({
           dragNode: this.nzTreeService.getSelectedNode()!,
           node: this.nzTreeNode,
-          pos: this.dragPos
+          pos: this.nzTreeNode.dragPosition
         }).subscribe((canDrop: boolean) => {
           if (canDrop) {
-            this.nzTreeService.dropAndApply(this.nzTreeNode, this.dragPos);
+            this.nzTreeService.dropAndApply(this.nzTreeNode, this.nzTreeNode.dragPosition);
           }
           this.nzOnDrop.emit(dropEvent);
           this.nzOnDragEnd.emit(dragEndEvent);
         });
       } else if (this.nzTreeNode) {
-        this.nzTreeService.dropAndApply(this.nzTreeNode, this.dragPos);
+        this.nzTreeService.dropAndApply(this.nzTreeNode, this.nzTreeNode.dragPosition);
         this.nzOnDrop.emit(dropEvent);
       }
     });
@@ -435,11 +434,11 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   private renderIndicator(dropPosition: number): void {
     this.ngZone.run(() => {
-      this.showIndicator = dropPosition !== 2;
+      this.nzTreeNode.showIndicator = dropPosition !== 2;
       if (this.nzTreeNode.key === this.nzTreeService.getSelectedNode()?.key || (dropPosition === 0 && this.isLeaf)) {
         return;
       }
-      this.dragPos = dropPosition;
+      this.nzTreeNode.dragPosition = dropPosition;
       this.cdr.markForCheck();
     });
   }

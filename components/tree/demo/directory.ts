@@ -7,6 +7,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree
+      nzDraggable
       nzBlockNode
       [nzData]="nodes"
       (nzClick)="activeNode($event)"
@@ -26,6 +27,11 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
           <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
         </span>
       </span>
+      <nz-tree-drop-indicator
+        *ngIf="node.showIndicator"
+        [dropPosition]="node.dragPosition"
+        [level]="node.level"
+      ></nz-tree-drop-indicator>
     </ng-template>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>

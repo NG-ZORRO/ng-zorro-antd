@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
@@ -24,7 +24,7 @@ export class NzTreeDropIndicatorComponent implements OnChanges {
   @Input() direction: string = 'ltr';
   style: NgStyleInterface = {};
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.renderIndicator(this.dropPosition!, this.direction);
@@ -55,6 +55,5 @@ export class NzTreeDropIndicatorComponent implements OnChanges {
         break;
     }
     this.style = style;
-    this.cdr.markForCheck();
   }
 }
