@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="default">secondary</button>
     <button nz-button nz-dropdown [nzDropdownMenu]="menu">
       Actions
-      <i nz-icon nzType="down"></i>
+      <span nz-icon nzType="down"></span>
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>

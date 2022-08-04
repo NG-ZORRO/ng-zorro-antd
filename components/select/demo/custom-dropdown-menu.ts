@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
       <div class="container">
         <input type="text" nz-input #inputElement />
         <a class="add-item" (click)="addItem(inputElement)">
-          <i nz-icon nzType="plus"></i>
+          <span nz-icon nzType="plus"></span>
           Add item
         </a>
       </div>

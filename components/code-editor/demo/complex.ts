@@ -20,14 +20,14 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
       [nzEditorOption]="{ language: 'javascript' }"
     ></nz-code-editor>
     <ng-template #toolkit>
-      <i
+      <span
         nz-icon
         [class.active]="fullScreen"
         nz-tooltip
         nzTooltipTitle="Toggle Fullscreen"
         [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
-      ></i>
+      ></span>
     </ng-template>
   `,
   styles: [

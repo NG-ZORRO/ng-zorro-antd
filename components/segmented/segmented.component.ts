@@ -60,7 +60,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
         <input class="ant-segmented-item-input" type="radio" [checked]="i === selectedIndex" />
         <div class="ant-segmented-item-label" (click)="!item.disabled && handleOptionClick(i)">
           <ng-container *ngIf="item.icon; else else_template">
-            <span class="ant-segmented-item-icon"><i nz-icon [nzType]="item.icon"></i></span>
+            <span class="ant-segmented-item-icon"><span nz-icon [nzType]="item.icon"></span></span>
             <span>
               <ng-container
                 *nzStringTemplateOutlet="item.useTemplate && nzLabelTemplate; context: { $implicit: item, index: i }"

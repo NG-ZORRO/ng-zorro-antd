@@ -11,7 +11,7 @@
     "sourceMap": true,
     "strictFunctionTypes": true,
     "stripInternal": true,
-    "target": "es2015"
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "strictInputAccessModifiers": true,

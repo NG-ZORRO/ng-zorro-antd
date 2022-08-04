@@ -401,7 +401,7 @@ export class NzTestInputGroupColComponent {}
       <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
         <input type="text" nz-input />
       </nz-input-group>
-      <ng-template #prefixTemplateClock><i nz-icon nzType="clock-circle" nzTheme="outline"></i></ng-template>
+      <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
     </ng-container>
     <ng-container *ngIf="isAddon">
       <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">

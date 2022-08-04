@@ -12,15 +12,15 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i nz-icon nzType="loading" *ngIf="loading; else defaultArrow"></i>
+    <span nz-icon nzType="loading" *ngIf="loading; else defaultArrow"></span>
     <ng-template #defaultArrow>
       <ng-container *ngIf="showArrow && !suffixIcon; else suffixTemplate">
-        <i nz-icon nzType="down" *ngIf="!search"></i>
-        <i nz-icon nzType="search" *ngIf="search"></i>
+        <span nz-icon nzType="down" *ngIf="!search"></span>
+        <span nz-icon nzType="search" *ngIf="search"></span>
       </ng-container>
       <ng-template #suffixTemplate>
         <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
-          <i *ngIf="suffixIcon" nz-icon [nzType]="suffixIcon"></i>
+          <span *ngIf="suffixIcon" nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
       </ng-template>
     </ng-template>

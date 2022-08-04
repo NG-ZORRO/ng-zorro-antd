@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -447,9 +447,9 @@ export class NzTestRadioGroupComponent {
   `
 })
 export class NzTestRadioFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
       radio: [false]
     });
@@ -473,9 +473,9 @@ export class NzTestRadioFormComponent {
   `
 })
 export class NzTestRadioGroupFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
       radioGroup: ['B']
     });
@@ -518,10 +518,10 @@ export class NzTestRadioGroupDisabledComponent {
   `
 })
 export class NzTestRadioGroupDisabledFormComponent implements OnInit {
-  validateForm?: FormGroup;
+  validateForm?: UntypedFormGroup;
   radioValues = ['A', 'B', 'C', 'D'];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

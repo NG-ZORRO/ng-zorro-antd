@@ -14,7 +14,7 @@ import { NzResultModule } from './result.module';
   selector: 'nz-test-basic-result',
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
-      <i nz-icon nz-result-icon nzType="up" nzTheme="outline"></i>
+      <span nz-icon nz-result-icon nzType="up" nzTheme="outline"></span>
       <div nz-result-title>Content Title</div>
       <div nz-result-subtitle>Content SubTitle</div>
       <div nz-result-content>Content</div>

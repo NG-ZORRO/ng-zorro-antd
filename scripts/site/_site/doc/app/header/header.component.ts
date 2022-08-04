@@ -19,7 +19,7 @@ const RESPONSIVE_SM = 1200;
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header id="header" class="clearfix">
-      <i
+      <span
         nz-icon
         class="nav-phone-icon"
         nzType="unordered-list"
@@ -28,7 +28,7 @@ const RESPONSIVE_SM = 1200;
         nzPopoverPlacement="bottomLeft"
         nz-popover
         [nzPopoverContent]="menu"
-      ></i>
+      ></span>
 
       <div nz-row style="flex-flow: nowrap">
         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">

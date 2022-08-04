@@ -1392,7 +1392,7 @@ describe('upload', () => {
       (nzChange)="nzChange($event)"
     >
       <button nz-button>
-        <i nz-icon nzType="upload"></i>
+        <span nz-icon nzType="upload"></span>
         <span>Click to Upload</span>
       </button>
     </nz-upload>

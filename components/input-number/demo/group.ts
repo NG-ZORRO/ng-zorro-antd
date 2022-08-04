@@ -23,7 +23,7 @@ import { Component } from '@angular/core';
       <nz-input-number-group *nzSpaceItem nzCompact>
         <nz-input-number [ngModel]="1234" [nzStep]="1" style="width: calc(100% - 200px)"></nz-input-number>
         <button nz-button>
-          <i nz-icon nzType="copy" nzTheme="outline"></i>
+          <span nz-icon nzType="copy" nzTheme="outline"></span>
         </button>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem nzCompact>

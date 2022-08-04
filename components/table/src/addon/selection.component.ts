@@ -24,7 +24,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     ></label>
     <div class="ant-table-selection-extra" *ngIf="showRowSelection">
       <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
-        <i nz-icon nzType="down"></i>
+        <span nz-icon nzType="down"></span>
       </span>
       <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
         <ul nz-menu class="ant-table-selection-menu">

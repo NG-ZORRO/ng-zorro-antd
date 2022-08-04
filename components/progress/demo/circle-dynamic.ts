@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   template: `
     <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
     <nz-button-group>
-      <button nz-button (click)="decline()"><i nz-icon nzType="minus"></i></button>
-      <button nz-button (click)="increase()"><i nz-icon nzType="plus"></i></button>
+      <button nz-button (click)="decline()"><span nz-icon nzType="minus"></span></button>
+      <button nz-button (click)="increase()"><span nz-icon nzType="plus"></span></button>
     </nz-button-group>
   `,
   styles: [

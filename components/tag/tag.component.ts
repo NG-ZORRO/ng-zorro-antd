@@ -40,14 +40,14 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
-    <i
+    <span
       nz-icon
       nzType="close"
       class="ant-tag-close-icon"
       *ngIf="nzMode === 'closeable'"
       tabindex="-1"
       (click)="closeTag($event)"
-    ></i>
+    ></span>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

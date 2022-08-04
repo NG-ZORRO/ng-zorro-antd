@@ -41,7 +41,7 @@ const ExceptionStatus = ['404', '500', '403'];
       <ng-container *ngIf="!isException; else exceptionTpl">
         <ng-container *ngIf="icon">
           <ng-container *nzStringTemplateOutlet="icon; let icon">
-            <i nz-icon [nzType]="icon" nzTheme="fill"></i>
+            <span nz-icon [nzType]="icon" nzTheme="fill"></span>
           </ng-container>
         </ng-container>
         <ng-content *ngIf="!icon" select="[nz-result-icon]"></ng-content>

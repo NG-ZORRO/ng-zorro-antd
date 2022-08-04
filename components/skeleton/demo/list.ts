@@ -13,15 +13,15 @@ import { Component } from '@angular/core';
         >
           <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
             <ng-template #starAction>
-              <i nz-icon nzType="star-o" style="margin-right: 8px;"></i>
+              <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
               156
             </ng-template>
             <ng-template #likeAction>
-              <i nz-icon nzType="like-o" style="margin-right: 8px;"></i>
+              <span nz-icon nzType="like-o" style="margin-right: 8px;"></span>
               156
             </ng-template>
             <ng-template #msgAction>
-              <i nz-icon nzType="message" style="margin-right: 8px;"></i>
+              <span nz-icon nzType="message" style="margin-right: 8px;"></span>
               2
             </ng-template>
             <nz-list-item-meta [nzAvatar]="item.avatar" [nzTitle]="nzTitle" [nzDescription]="item.description">

@@ -61,7 +61,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [nzWaveExtraNode]="true"
     >
       <span class="ant-switch-handle">
-        <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+        <span *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></span>
       </span>
       <span class="ant-switch-inner">
         <ng-container *ngIf="isChecked; else uncheckTemplate">

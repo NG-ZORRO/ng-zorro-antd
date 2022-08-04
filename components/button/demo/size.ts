@@ -17,26 +17,26 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <a nz-button [nzSize]="size" nzType="link">Link</a>
     <br />
-    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon nzType="download"></i></button>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon nzType="download"></i></button>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon nzType="download"></i></button>
+    <button nz-button nzType="primary" [nzSize]="size"><span nz-icon nzType="download"></span></button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="download"></span></button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><span nz-icon nzType="download"></span></button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="round">
-      <i nz-icon nzType="download"></i>
+      <span nz-icon nzType="download"></span>
       Download
     </button>
     <button nz-button nzType="primary" [nzSize]="size">
-      <i nz-icon nzType="download"></i>
+      <span nz-icon nzType="download"></span>
       Download
     </button>
     <br />
     <nz-button-group [nzSize]="size">
       <button nz-button nzType="primary">
-        <i nz-icon nzType="left"></i>
+        <span nz-icon nzType="left"></span>
         Backward
       </button>
       <button nz-button nzType="primary">
         Forward
-        <i nz-icon nzType="right"></i>
+        <span nz-icon nzType="right"></span>
       </button>
     </nz-button-group>
   `,

@@ -540,7 +540,7 @@ describe('menu', () => {
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
         <span title>
-          <i nz-icon nzType="setting"></i>
+          <span nz-icon nzType="setting"></span>
           Navigation Three - Submenu
         </span>
         <ul>
@@ -592,7 +592,7 @@ export class NzTestMenuHorizontalComponent {
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
         <span title>
-          <i nz-icon nzType="mail"></i>
+          <span nz-icon nzType="mail"></span>
           Navigation One
         </span>
         <ul>
@@ -616,7 +616,7 @@ export class NzTestMenuInlineComponent {
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
         <span title>
-          <i nz-icon nzType="appstore"></i>
+          <span nz-icon nzType="appstore"></span>
           {{ l1.text }}
         </span>
         <ul>
@@ -649,11 +649,11 @@ export class NzDemoMenuNgForComponent {
   template: `
     <ul nz-menu nzMode="horizontal">
       <li nz-menu-item>
-        <i nz-icon nzType="mail"></i>
+        <span nz-icon nzType="mail"></span>
         Navigation One
       </li>
       <li nz-menu-item nzDisabled>
-        <i nz-icon nzType="appstore"></i>
+        <span nz-icon nzType="appstore"></span>
         Navigation Two
       </li>
       <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">
@@ -765,7 +765,7 @@ export class NzTestNgIfMenuComponent {
   template: `
     <ul nz-menu nzMode="inline" nzTheme="dark" nzInlineCollapsed>
       <li nz-menu-item>
-        <i nz-icon nzType="mail"></i>
+        <span nz-icon nzType="mail"></span>
         <span>Navigation One</span>
       </li>
       <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
@@ -783,11 +783,11 @@ export class NzTestSubMenuSelectedComponent {}
   template: `
     <div class="wrapper">
       <button nz-button nzType="primary" (click)="toggleCollapsed()">
-        <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
       </button>
       <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
         <li nz-menu-item nzSelected>
-          <i nz-icon nzType="mail"></i>
+          <span nz-icon nzType="mail"></span>
           <span>Navigation One</span>
         </li>
         <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">

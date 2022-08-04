@@ -47,7 +47,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
           <div class="ant-back-top-icon">
-            <i nz-icon nzType="vertical-align-top"></i>
+            <span nz-icon nzType="vertical-align-top"></span>
           </div>
         </div>
       </ng-template>
