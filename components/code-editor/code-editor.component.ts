@@ -229,7 +229,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     }
 
     if (this.nzFullControl && this.value) {
-      warn(`should not set value when you are using full control mode! It would result in ambiguous data flow!`);
+      if (typeof ngDevMode === 'undefined' || ngDevMode) {
+        warn(`should not set value when you are using full control mode! It would result in ambiguous data flow!`);
+      }
       return;
     }
 

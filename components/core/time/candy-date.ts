@@ -97,7 +97,9 @@ export class CandyDate implements IndexableObject {
       if (date instanceof Date) {
         this.nativeDate = date;
       } else if (typeof date === 'string' || typeof date === 'number') {
-        warn('The string type is not recommended for date-picker, use "Date" type');
+        if (typeof ngDevMode === 'undefined' || ngDevMode) {
+          warn('The string type is not recommended for date-picker, use "Date" type');
+        }
         this.nativeDate = new Date(date);
       } else {
         throw new Error('The input date type is not supported ("Date" is now recommended)');

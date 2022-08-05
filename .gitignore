@@ -42,7 +42,6 @@ yarn.lock
 /libpeerconnection.log
 npm-debug.log
 testem.log
-/typings
 .eslintcache
 yarn-error.log
 report.*.json

@@ -60,7 +60,7 @@ export class NzModalService implements OnDestroy {
   }
 
   confirm<T>(options: ModalOptions<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef<T> {
-    if ('nzFooter' in options) {
+    if ((typeof ngDevMode === 'undefined' || ngDevMode) && 'nzFooter' in options) {
       warn(`The Confirm-Modal doesn't support "nzFooter", this property will be ignored.`);
     }
     if (!('nzWidth' in options)) {
