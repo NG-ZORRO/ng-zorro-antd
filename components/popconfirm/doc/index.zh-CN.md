@@ -26,7 +26,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | --- | --- | --- | --- |
 | `[nzPopconfirmArrowPointAtCenter]` | 箭头指向锚点的中心 | `boolean` | `false` |
 | `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
+| `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'click'` |
 | `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
