@@ -1,4 +1,3 @@
-J
 ---
 category: Components
 type: Data Entry
