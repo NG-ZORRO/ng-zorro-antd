@@ -4,6 +4,7 @@ import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -19,7 +20,7 @@ describe('menu', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+        imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
         declarations: [
           NzTestBasicMenuHorizontalComponent,
           NzTestBasicMenuInlineComponent,

@@ -2,6 +2,7 @@ import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -21,7 +22,7 @@ describe('context-menu', () => {
     declarations: any[] = []
   ): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [NzDropDownModule, NzMenuModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
       declarations: [component, ...declarations],
       providers
     })
