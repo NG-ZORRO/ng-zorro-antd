@@ -4,6 +4,7 @@ import { Component, Provider, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -21,7 +22,7 @@ describe('dropdown', () => {
     declarations: any[] = []
   ): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [NzDropDownModule, NzMenuModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
       declarations: [component, ...declarations],
       providers
     })
