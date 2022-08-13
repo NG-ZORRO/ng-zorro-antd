@@ -13,6 +13,30 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 14.0.0
+
+`2022-08-13`
+
+### Install ng-zorro-antd
+
+```bash
+$ cd PROJECT-NAME
+$ ng add ng-zorro-antd@14.0.0
+```
+
+### Bug Fixes
+* **steps:** remove top-level redundant `div` element ([#7582](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7582)) ([60beabc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/60beabccd2459adcb973133fc139008b31abfca0))
+
+### Features
+* **icon:** change tag of nz-icon from `<i>` to `<span>` ([#7586](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7586)) ([7242111](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7242111c8bc2523df9d13e19521473502a4f6cf1))
+* **popconfirm:** support async close ([#7533](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7533)) ([797b261](https://github.com/NG-ZORRO/ng-zorro-antd/commit/797b2617f08394b56fe0a7903dc69e2d75984219))
+
+```diff
+- <i nz-icon nzType="search" nzTheme="outline"></i>
++ <span nz-icon nzType="search" nzTheme="outline"></span>
+```
+
+
 ## 13.4.0
 
 `2022-07-25`
