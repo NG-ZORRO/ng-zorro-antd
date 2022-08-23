@@ -29,7 +29,7 @@
     "@ant-design/icons-angular": "^14.1.0",
     "@ctrl/tinycolor": "^3.4.1",
     "date-fns": "^2.16.1",
-    "ngx-hover-preload": "0.0.3"
+    "ngx-quicklink": "^0.3.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^14.0.0",
