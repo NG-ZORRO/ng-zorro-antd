@@ -38,7 +38,7 @@ import { PaginationItemRenderContext } from './pagination.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #containerTemplate>
-      <ul class="ant-pagination">
+      <ul>
         <li
           nz-pagination-item
           [attr.title]="locale.prev_page"

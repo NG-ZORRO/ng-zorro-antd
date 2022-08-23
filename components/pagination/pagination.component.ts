@@ -72,6 +72,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     ></nz-pagination-default>
   `,
   host: {
+    class: 'ant-pagination',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.mini]': `!nzSimple && size === 'small'`,
