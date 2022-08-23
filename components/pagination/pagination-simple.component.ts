@@ -38,29 +38,31 @@ import { PaginationItemRenderContext } from './pagination.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #containerTemplate>
-      <li
-        nz-pagination-item
-        [attr.title]="locale.prev_page"
-        [disabled]="isFirstIndex"
-        [direction]="dir"
-        (click)="prePage()"
-        type="prev"
-        [itemRender]="itemRender"
-      ></li>
-      <li [attr.title]="pageIndex + '/' + lastIndex" class="ant-pagination-simple-pager">
-        <input [disabled]="disabled" [value]="pageIndex" (keydown.enter)="jumpToPageViaInput($event)" size="3" />
-        <span class="ant-pagination-slash">/</span>
-        {{ lastIndex }}
-      </li>
-      <li
-        nz-pagination-item
-        [attr.title]="locale?.next_page"
-        [disabled]="isLastIndex"
-        [direction]="dir"
-        (click)="nextPage()"
-        type="next"
-        [itemRender]="itemRender"
-      ></li>
+      <ul>
+        <li
+          nz-pagination-item
+          [attr.title]="locale.prev_page"
+          [disabled]="isFirstIndex"
+          [direction]="dir"
+          (click)="prePage()"
+          type="prev"
+          [itemRender]="itemRender"
+        ></li>
+        <li [attr.title]="pageIndex + '/' + lastIndex" class="ant-pagination-simple-pager">
+          <input [disabled]="disabled" [value]="pageIndex" (keydown.enter)="jumpToPageViaInput($event)" size="3" />
+          <span class="ant-pagination-slash">/</span>
+          {{ lastIndex }}
+        </li>
+        <li
+          nz-pagination-item
+          [attr.title]="locale?.next_page"
+          [disabled]="isLastIndex"
+          [direction]="dir"
+          (click)="nextPage()"
+          type="next"
+          [itemRender]="itemRender"
+        ></li>
+      </ul>
     </ng-template>
   `
 })
