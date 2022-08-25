@@ -67,18 +67,19 @@ task('serve:site', done => {
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
 task(
   'build:site-doc',
-  execNodeTask('@angular/cli', 'ng', [
-    'build',
-    '--project=ng-zorro-antd-doc',
-    '--prod',
-    CI ? '--configuration=pre-production' : ''
-  ])
+  execNodeTask(
+    '@angular/cli',
+    'ng',
+    CI
+      ? ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production,pre-production']
+      : ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production']
+  )
 );
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
 task(
   'build:site-doc-es5',
-  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5'])
+  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production,es5'])
 );
 
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */

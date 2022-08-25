@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { EditOutline, LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
@@ -20,12 +21,12 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
-import { HoverPreloadModule } from 'ngx-hover-preload';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing.module';
+import { routes } from './app.routing.module';
 import { FooterModule } from './footer/footer.module';
 import { HeaderModule } from './header/header.module';
 import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
@@ -61,9 +62,16 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     FooterModule,
     NzContributorsListModule,
     FixedWidgetsModule,
-    AppRoutingModule,
-    // skip ngx-hover-preload errors
-    environment.production ? HoverPreloadModule : [],
+    QuicklinkModule,
+    RouterModule.forRoot(
+      routes,
+      environment.production
+        ? {
+            preloadingStrategy: QuicklinkStrategy,
+            scrollPositionRestoration: 'enabled'
+          }
+        : { preloadingStrategy: QuicklinkStrategy }
+    ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [

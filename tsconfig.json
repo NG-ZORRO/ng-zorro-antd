@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "target": "es2020",
     "typeRoots": ["node_modules/@types/!(node)"],
-    "lib": ["es2018", "dom"],
+    "lib": ["es2020", "dom"],
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,

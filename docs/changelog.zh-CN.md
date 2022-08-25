@@ -13,6 +13,33 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 14.0.0
+
+`2022-08-25`
+
+### 安装 ng-zorro-antd
+
+```bash
+$ cd PROJECT-NAME
+$ ng add ng-zorro-antd@14.0.0
+```
+
+### Bug Fixes
+* **steps:** 移除顶层多余的 `div` 元素 ([#7582](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7582)) ([60beabc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/60beabccd2459adcb973133fc139008b31abfca0))
+
+### Features
+* **icon:** `nz-icon` 使用方式从 `i` 元素变更为 `span` 元素 ([#7586](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7586)) ([7242111](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7242111c8bc2523df9d13e19521473502a4f6cf1))
+* **popconfirm:** 支持基于 `Promise` 的异步关闭 ([#7533](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7533)) ([797b261](https://github.com/NG-ZORRO/ng-zorro-antd/commit/797b2617f08394b56fe0a7903dc69e2d75984219))
+
+```diff
+- <i nz-icon nzType="search" nzTheme="outline"></i>
++ <span nz-icon nzType="search" nzTheme="outline"></span>
+```
+
+## BREAKING CHANGES
+* **pagination:** `dom` 结构中添加 `ul` 标签 ([#7500](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7500)) ([becdd68](https://github.com/NG-ZORRO/ng-zorro-antd/commit/becdd682514e36b188be93667a03ac74f224dcf7))
+
+
 ## 13.4.0
 
 `2022-07-25`
