@@ -220,7 +220,6 @@
     display: block;
     color: @site-text-color-secondary;
     font-size: 16px;
-    transition: all 0.3s;
 
     &:hover {
       color: @site-text-color;
@@ -443,6 +442,13 @@
       > h2 {
         margin-top: 0;
         padding-top: 4px;
+        direction: ltr;
+
+        span {
+          .ant-row-rtl & {
+            float: right;
+          }
+        }
       }
     }
   }

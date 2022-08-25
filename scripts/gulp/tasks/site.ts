@@ -72,7 +72,7 @@ task(
     'ng',
     CI
       ? ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production,pre-production']
-      : ['build', '--project=ng-zorro-antd-doc']
+      : ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production']
   )
 );
 

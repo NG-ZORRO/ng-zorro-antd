@@ -1,6 +1,6 @@
 /
-/components/overview/zh
 /components/overview/en
+/components/overview/zh
 /components/affix/en
 /components/affix/zh
 /components/alert/en

@@ -15,7 +15,7 @@ timeline: true
 ---
 ## 14.0.0
 
-`2022-08-13`
+`2022-08-25`
 
 ### 安装 ng-zorro-antd
 
@@ -35,6 +35,9 @@ $ ng add ng-zorro-antd@14.0.0
 - <i nz-icon nzType="search" nzTheme="outline"></i>
 + <span nz-icon nzType="search" nzTheme="outline"></span>
 ```
+
+## BREAKING CHANGES
+* **pagination:** `dom` 结构中添加 `ul` 标签 ([#7500](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7500)) ([becdd68](https://github.com/NG-ZORRO/ng-zorro-antd/commit/becdd682514e36b188be93667a03ac74f224dcf7))
 
 
 ## 13.4.0

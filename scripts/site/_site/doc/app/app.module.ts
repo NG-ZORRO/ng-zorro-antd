@@ -21,6 +21,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
@@ -32,7 +33,6 @@ import { NzContributorsListModule } from './share/contributors-list/contributors
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
 import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
 import { SideComponent } from './side/side.component';
-import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
 
@@ -68,8 +68,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
       environment.production
         ? {
             preloadingStrategy: QuicklinkStrategy,
-            scrollPositionRestoration: 'enabled',
-            initialNavigation: 'enabledBlocking'
+            scrollPositionRestoration: 'enabled'
           }
         : { preloadingStrategy: QuicklinkStrategy }
     ),
