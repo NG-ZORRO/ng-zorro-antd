@@ -16,7 +16,8 @@ import {
   Renderer2,
   Self,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewRef
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -141,7 +142,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   private renderFeedbackIcon(): void {
     if (!this.status || !this.hasFeedback || !!this.nzFormNoStatusService) {
       // remove feedback
-      this.hostView.clear();
+      // Cannot use `this.hostView.clear()`, because there may be an auto-complete also been attached in this hostView.
+      const feedbackViewIndex = this.hostView.indexOf(this.feedbackRef?.changeDetectorRef as ViewRef);
+      if (feedbackViewIndex > -1) {
+        this.hostView.remove(feedbackViewIndex);
+      }
       this.feedbackRef = null;
       return;
     }
