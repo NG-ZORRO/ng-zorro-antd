@@ -30,6 +30,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() cellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() fullCellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
+  @Input() canSelectWeek: boolean = false;
 
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
@@ -90,6 +91,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
       changes.disabledDate ||
       changes.locale ||
       changes.showWeek ||
+      changes.selectWeek ||
       this.isDateRealChange(changes.activeDate) ||
       this.isDateRealChange(changes.value) ||
       this.isDateRealChange(changes.selectedValue) ||
