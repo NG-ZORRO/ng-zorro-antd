@@ -28,7 +28,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzBreadcrumb } from './breadcrumb';
 
-export interface BreadcrumbOption {
+export interface NzBreadcrumbOption {
   label: string;
   params: Params;
   url: string;
@@ -43,10 +43,17 @@ export interface BreadcrumbOption {
   providers: [{ provide: NzBreadcrumb, useExisting: NzBreadCrumbComponent }],
   template: `
     <ng-content></ng-content>
-    <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
-      <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
-        <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
-      </nz-breadcrumb-item>
+    <ng-container *ngIf="nzAutoGenerate && breadcrumbs?.length">
+      <ng-container *ngFor="let breadcrumb of breadcrumbs">
+        <nz-breadcrumb-item *ngIf="!nzAutoGenerateTemplate">
+          <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
+        </nz-breadcrumb-item>
+        <ng-container *ngIf="nzAutoGenerateTemplate">
+          <ng-container
+            *ngTemplateOutlet="nzAutoGenerateTemplate; context: { url: breadcrumb.url, label: breadcrumb.label }"
+          ></ng-container>
+        </ng-container>
+      </ng-container>
     </ng-container>
   `
 })
@@ -54,12 +61,13 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   static ngAcceptInputType_nzAutoGenerate: BooleanInput;
 
   @Input() @InputBoolean() nzAutoGenerate = false;
-  @Input() nzSeparator: string | TemplateRef<void> | null = '/';
+  @Input() nzAutoGenerateTemplate: TemplateRef<NzBreadcrumbOption> | null = null;
   @Input() nzRouteLabel: string = 'breadcrumb';
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
+  @Input() nzSeparator: string | TemplateRef<{ url: string; label: string }> | null = '/';
 
-  breadcrumbs: BreadcrumbOption[] = [];
   dir: Direction = 'ltr';
+  breadcrumbs: NzBreadcrumbOption[] | undefined = [];
 
   private destroy$ = new Subject<void>();
 
@@ -120,8 +128,8 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   private getBreadcrumbs(
     route: ActivatedRoute,
     url: string = '',
-    breadcrumbs: BreadcrumbOption[] = []
-  ): BreadcrumbOption[] {
+    breadcrumbs: NzBreadcrumbOption[] = []
+  ): NzBreadcrumbOption[] | undefined {
     const children: ActivatedRoute[] = route.children;
 
     // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
@@ -144,7 +152,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
 
         // If have data, go to generate a breadcrumb for it.
         if (routeUrl && breadcrumbLabel) {
-          const breadcrumb: BreadcrumbOption = {
+          const breadcrumb: NzBreadcrumbOption = {
             label: breadcrumbLabel,
             params: child.snapshot.params,
             url: nextUrl
