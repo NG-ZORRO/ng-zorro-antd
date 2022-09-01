@@ -44,6 +44,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   encapsulation: ViewEncapsulation.None,
   template: `
     <span nz-icon nzType="loading" *ngIf="nzLoading"></span>
+    <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon && !nzLoading"></span>
     <ng-content></ng-content>
   `,
   host: {
@@ -85,6 +86,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() tabIndex: number | string | null = null;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
+  @Input() nzIcon: string | null = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();

@@ -47,6 +47,7 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 | `[nzSize]` | can be set to `small` `large` or omitted | `'large'\|'small'\|'default'` | `'default'` | ✅ |
 | `[nzType]` | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | option to fit button width to its parent width | `boolean` | `false` |
+| `[nzIcon]` | set the icon component of button | `string` | `null` |
 | `[nzDanger]` | set the danger status of button | boolean | `false` |  |
 
 

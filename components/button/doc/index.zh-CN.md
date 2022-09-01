@@ -50,6 +50,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 | `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | ✅ |
 | `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | 将按钮宽度调整为其父宽度的选项 | `boolean` | `false` |
+| `[nzIcon]` | 设置按钮的图标组件 | `string` | `null` |
 | `[nzDanger]` | 设置危险按钮 | boolean | `false` |  |
 
 
