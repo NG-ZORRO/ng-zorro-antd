@@ -48,7 +48,7 @@ interface NzThItemInterface {
         [nzDropdownMenu]="filterMenu"
         (nzVisibleChange)="onVisibleChange($event)"
       >
-        <i nz-icon nzType="filter" nzTheme="fill"></i>
+        <span nz-icon nzType="filter" nzTheme="fill"></span>
       </nz-filter-trigger>
       <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">

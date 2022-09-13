@@ -44,7 +44,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
         <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
           <div role="button" tabindex="0" class="ant-page-header-back-button">
             <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-              <i nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline"></i>
+              <span nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline"></span>
             </ng-container>
           </div>
         </div>

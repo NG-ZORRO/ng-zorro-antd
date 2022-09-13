@@ -95,7 +95,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                     style="--scroll-bar: 0px;"
                   >
                     <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
-                      <i nz-icon [nzType]="closeIcon"></i>
+                      <span nz-icon [nzType]="closeIcon"></span>
                     </ng-container>
                   </button>
                   <div *ngIf="nzTitle" class="ant-drawer-title">

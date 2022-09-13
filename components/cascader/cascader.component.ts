@@ -110,17 +110,17 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           >
         </div>
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading" *ngIf="nzShowArrow">
-          <i
+          <span
             *ngIf="!isLoading"
             nz-icon
             [nzType]="$any(nzSuffixIcon)"
             [class.ant-cascader-picker-arrow-expand]="menuVisible"
-          ></i>
-          <i *ngIf="isLoading" nz-icon nzType="loading"></i>
+          ></span>
+          <span *ngIf="isLoading" nz-icon nzType="loading"></span>
           <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
         </span>
         <span class="ant-select-clear" *ngIf="clearIconVisible">
-          <i nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></i>
+          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
         </span>
       </ng-container>
       <ng-content></ng-content>

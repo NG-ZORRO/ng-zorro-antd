@@ -126,7 +126,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
             <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
           </span>
           <ng-template #defaultSeparator>
-            <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+            <span nz-icon nzType="swap-right" nzTheme="outline"></span>
           </ng-template>
         </div>
         <div class="{{ prefixCls }}-input">
@@ -158,11 +158,11 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <ng-template #tplRightRest>
       <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-        <i nz-icon nzType="close-circle" nzTheme="fill"></i>
+        <span nz-icon nzType="close-circle" nzTheme="fill"></span>
       </span>
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
-          <i nz-icon [nzType]="suffixIcon"></i>
+          <span nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
         <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
       </span>

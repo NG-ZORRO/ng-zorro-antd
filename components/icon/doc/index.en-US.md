@@ -52,13 +52,13 @@ You can join in [this dicussion of Ant Design](https://github.com/ant-design/ant
 NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
 
 ```html
-<i nz-icon [nzType]="'star'" [nzTheme]="'fill'"></i>
+<span nz-icon [nzType]="'star'" [nzTheme]="'fill'"></span>
 ```
 
 All the icons will be rendered to `<svg>`, and styles and classes applied to `<i>` would work.
 
 ```html
-<i nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></i>
+<span nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></span>
 ```
 
 ### Static loading and dynamic loading
@@ -151,7 +151,7 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<i nz-icon [nzIconfont]="'icon-tuichu'"></i>
+<span nz-icon [nzIconfont]="'icon-tuichu'"></span>
 ```
 
 It create a component that uses SVG sprites in essence.
@@ -180,7 +180,7 @@ Dynamic importing. Make sure that you have put your SVG resources in dir like `a
 
 Have you read the docs above?
 
-### There are two similar icons in a `<i></i>` tag. What happened?
+### There are two similar icons in a `<span></span>` tag. What happened?
 
 In older versions of NG-ZORRO, there was a font file which would use `:before` to insert a icon according to a `i` tag's `className`. So if you have two icons, try to remove `node_modules` and reinstall. If the problem is still there, search `@icon-url` and remove that line.
 

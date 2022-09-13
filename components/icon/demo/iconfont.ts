@@ -6,9 +6,9 @@ import { NzIconService } from 'ng-zorro-antd/icon';
   selector: 'nz-demo-icon-iconfont',
   template: `
     <div class="icons-list">
-      <i nz-icon [nzIconfont]="'icon-tuichu'"></i>
-      <i nz-icon [nzIconfont]="'icon-facebook'"></i>
-      <i nz-icon [nzIconfont]="'icon-twitter'"></i>
+      <span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+      <span nz-icon [nzIconfont]="'icon-facebook'"></span>
+      <span nz-icon [nzIconfont]="'icon-twitter'"></span>
     </div>
   `,
   styles: [

@@ -1,7 +1,7 @@
 import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 
@@ -653,9 +653,9 @@ export class NzTestReadOnlyInputNumberBasicComponent {
   `
 })
 export class NzTestInputNumberFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
       inputNumber: [1]
     });

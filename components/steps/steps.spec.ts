@@ -56,9 +56,7 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.className).toBe(
-        'ant-steps ant-steps-horizontal ant-steps-label-horizontal'
-      );
+      expect(outStep.nativeElement.className).toBe('ant-steps ant-steps-horizontal ant-steps-label-horizontal');
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-active ant-steps-item-process');
       expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
@@ -141,7 +139,7 @@ describe('steps', () => {
       testComponent.size = 'small';
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.className).toBe(
+      expect(outStep.nativeElement.className).toBe(
         'ant-steps ant-steps-horizontal ant-steps-label-horizontal ant-steps-small'
       );
     });
@@ -151,7 +149,7 @@ describe('steps', () => {
       testComponent.direction = 'vertical';
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.className).toBe('ant-steps ant-steps-vertical');
+      expect(outStep.nativeElement.className).toBe('ant-steps ant-steps-vertical');
     });
 
     it('should label placement display correct', () => {
@@ -159,7 +157,7 @@ describe('steps', () => {
       testComponent.labelPlacement = 'vertical';
       testComponent.cdr.markForCheck();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild!.classList).toContain('ant-steps-label-vertical');
+      expect(outStep.nativeElement.classList).toContain('ant-steps-label-vertical');
     });
 
     it('should status display correct', fakeAsync(() => {
@@ -197,7 +195,7 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild!.classList.contains('ant-steps-dot')).toBe(true);
+      expect(outStep.nativeElement.classList.contains('ant-steps-dot')).toBe(true);
       expect(
         innerSteps[0].nativeElement
           .querySelector('.ant-steps-icon')
@@ -224,7 +222,7 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild!.classList.contains('ant-steps-dot')).toBe(true);
+      expect(outStep.nativeElement.classList.contains('ant-steps-dot')).toBe(true);
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe(
         'process0'
       );
@@ -497,7 +495,7 @@ describe('steps', () => {
       fixture.detectChanges();
 
       steps
-        .map(step => step.nativeElement.querySelector('.ant-steps'))
+        .map(step => step.nativeElement)
         .forEach((e: HTMLElement) => {
           expect(e.classList).toContain('ant-steps-navigation');
         });
@@ -511,11 +509,11 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.classList).toContain('ant-steps-rtl');
+      expect(outStep.nativeElement.classList).toContain('ant-steps-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(outStep.nativeElement.firstElementChild.classList).not.toContain('ant-steps-rtl');
+      expect(outStep.nativeElement.classList).not.toContain('ant-steps-rtl');
     }));
   });
 });
@@ -566,7 +564,7 @@ export class NzTestOuterStepsComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><i nz-icon nzType="smile-o"></i></ng-template>
+    <ng-template #iconTemplate><span nz-icon nzType="smile-o"></span></ng-template>
   `
 })
 export class NzTestInnerStepStringComponent {
@@ -589,7 +587,7 @@ export class NzTestInnerStepStringComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><i nz-icon nzType="smile-o"></i></ng-template>
+    <ng-template #iconTemplate><span nz-icon nzType="smile-o"></span></ng-template>
   `
 })
 export class NzTestInnerStepTemplateComponent {}
@@ -635,11 +633,7 @@ export class NzTestStepAsyncComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <div [dir]="direction">
-      <nz-test-outer-steps></nz-test-outer-steps>
-    </div>
-  `
+  template: ` <nz-test-outer-steps [dir]="direction"></nz-test-outer-steps> `
 })
 export class NzTestOuterStepsRtlComponent {
   @ViewChild(Dir) dir!: Dir;

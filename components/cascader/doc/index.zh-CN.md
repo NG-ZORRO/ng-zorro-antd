@@ -98,3 +98,9 @@ const filter: NzCascaderFilter = (i, p) => {
 
 
 > 注意，如果需要获得中国省市区数据，可以参考 [china-division](https://gist.github.com/afc163/7582f35654fd03d5be7009444345ea17)。
+
+## FAQ
+
+### Q: 为什么使用 `nzLoadData` 时报了一个错误 this === undefined ？
+
+对传递给 Cascader 组件的 `nzLoadData` 参数会成为 `NzCasacderComponent` 对象的一个属性，调用这个函数时，函数中的 `this` 没有指向任何对象。因此，正确的做法是传递剪头函数，或者使用 `Function.bind` 将 `nzLoadData` 参数和你的对象绑定。[这里](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983)是一个比较有代表性的例子。

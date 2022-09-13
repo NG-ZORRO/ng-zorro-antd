@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
     <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
       <input type="text" nz-input placeholder="Enter your username" />
     </nz-input-group>
-    <ng-template #prefixTemplateUser><i nz-icon nzType="user"></i></ng-template>
+    <ng-template #prefixTemplateUser><span nz-icon nzType="user"></span></ng-template>
     <ng-template #suffixTemplateInfo>
-      <i nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle"></i>
+      <span nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle"></span>
     </ng-template>
     <br />
     <br />

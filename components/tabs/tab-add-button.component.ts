@@ -11,7 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: 'nz-tab-add-button, button[nz-tab-add-button]',
   template: `
     <ng-container *nzStringTemplateOutlet="addIcon; let icon">
-      <i nz-icon [nzType]="icon" nzTheme="outline"></i>
+      <span nz-icon [nzType]="icon" nzTheme="outline"></span>
     </ng-container>
   `,
   host: {

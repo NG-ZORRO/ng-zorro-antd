@@ -7,14 +7,14 @@ import { Component } from '@angular/core';
       <input type="text" nz-input [(ngModel)]="inputValue" placeholder="input with clear icon" />
     </nz-input-group>
     <ng-template #inputClearTpl>
-      <i
+      <span
         nz-icon
         class="ant-input-clear-icon"
         nzTheme="fill"
         nzType="close-circle"
         *ngIf="inputValue"
         (click)="inputValue = null"
-      ></i>
+      ></span>
     </ng-template>
     <br />
     <br />
@@ -22,14 +22,14 @@ import { Component } from '@angular/core';
       <textarea nz-input [(ngModel)]="textValue" placeholder="textarea with clear icon"></textarea>
     </nz-input-group>
     <ng-template #textAreaClearTpl>
-      <i
+      <span
         nz-icon
         class="ant-input-clear-icon"
         nzTheme="fill"
         nzType="close-circle"
         *ngIf="textValue"
         (click)="textValue = null"
-      ></i>
+      ></span>
     </ng-template>
   `
 })

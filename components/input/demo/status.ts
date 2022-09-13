@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
       <nz-input-group *nzSpaceItem [nzPrefix]="prefixTemplateClock" nzStatus="warning">
         <input type="text" nz-input placeholder="Warning with prefix" />
       </nz-input-group>
-      <ng-template #prefixTemplateClock><i nz-icon nzType="clock-circle" nzTheme="outline"></i></ng-template>
+      <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
     </nz-space>
   `
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-coordinated',
@@ -41,7 +41,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   ]
 })
 export class NzDemoFormCoordinatedComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -60,7 +60,7 @@ export class NzDemoFormCoordinatedComponent implements OnInit {
     this.validateForm.get('note')!.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

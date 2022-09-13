@@ -7,11 +7,11 @@ import { Component } from '@angular/core';
       Render Template
     </button>
     <ng-template #titleTemplate>
-      <i nz-icon nzType="close"></i>
+      <span nz-icon nzType="close"></span>
       Title
     </ng-template>
     <ng-template #contentTemplate>
-      <i nz-icon nzType="check"></i>
+      <span nz-icon nzType="check"></span>
       Content
     </ng-template>
   `

@@ -17,7 +17,6 @@ import { NzNotificationServiceModule } from './notification.service.module';
 
 @NgModule({
   imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzNotificationServiceModule],
-  declarations: [NzNotificationComponent, NzNotificationContainerComponent],
-  entryComponents: [NzNotificationContainerComponent]
+  declarations: [NzNotificationComponent, NzNotificationContainerComponent]
 })
 export class NzNotificationModule {}

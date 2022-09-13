@@ -4,7 +4,7 @@ import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -607,7 +607,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('span.anticon.anticon-frown-o')).toBeTruthy();
     }));
   });
 
@@ -853,7 +853,7 @@ export class NzTestTreeSelectCheckableComponent {
   `
 })
 export class NzTestTreeSelectFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   nodes = [
     {
       title: 'root2',
@@ -871,7 +871,7 @@ export class NzTestTreeSelectFormComponent {
     }
   ].map(item => new NzTreeNode(item));
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.formGroup = this.fb.group({
       select: '10021'
     });
@@ -891,7 +891,7 @@ export class NzTestTreeSelectFormComponent {
     <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
       <ng-template #nzTreeTemplate let-node>
         <span>
-          <i class="anticon anticon-frown-o"></i>
+          <span class="anticon anticon-frown-o"></span>
           {{ node.title }}
         </span>
       </ng-template>

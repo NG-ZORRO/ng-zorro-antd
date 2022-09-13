@@ -21,7 +21,7 @@ export interface AutocompleteOptionGroups {
         />
       </nz-input-group>
       <ng-template #suffixIcon>
-        <i nz-icon nzType="search"></i>
+        <span nz-icon nzType="search"></span>
       </ng-template>
       <nz-autocomplete #auto>
         <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">

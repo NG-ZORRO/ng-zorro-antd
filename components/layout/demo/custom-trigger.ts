@@ -21,19 +21,19 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>File</span>
           </li>
         </ul>
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <i
+          <span
             class="trigger"
             nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             (click)="isCollapsed = !isCollapsed"
-          ></i>
+          ></span>
         </nz-header>
         <nz-content>
           <nz-breadcrumb>
