@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
+import { DEMOComponent } from './_demo/demo.component';
 
 import { DEMO_ROUTES } from './router';
-import { DEMOComponent } from './_demo/demo.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/docs/introduce/en' },

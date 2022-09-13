@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
       <nz-step nzTitle="Verification" nzStatus="finish" nzIcon="solution"></nz-step>
       <nz-step nzTitle="Pay" nzStatus="process" nzIcon="loading"></nz-step>
       <nz-step nzTitle="Done" nzStatus="wait" [nzIcon]="iconTemplate"></nz-step>
-      <ng-template #iconTemplate><i nz-icon nzType="smile"></i></ng-template>
+      <ng-template #iconTemplate><span nz-icon nzType="smile"></span></ng-template>
     </nz-steps>
   `
 })

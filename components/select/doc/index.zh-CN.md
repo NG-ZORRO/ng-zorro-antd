@@ -52,6 +52,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | 单选为 `true`，多选为 `false` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | 自定义的选择框后缀图标 | `TemplateRef<any> \| string` | - | ✅ |
 | `[nzRemoveIcon]` | 自定义的多选框清除图标 | `TemplateRef<any>` | - |
 | `[nzClearIcon]` | 自定义的多选框清空图标 | `TemplateRef<any>` | - |

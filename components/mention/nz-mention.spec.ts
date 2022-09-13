@@ -1,8 +1,8 @@
-import { Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,8 +16,10 @@ import {
   MockNgZone,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionComponent } from './mention.component';
@@ -34,14 +36,22 @@ describe('mention', () => {
       const dir = 'ltr';
       TestBed.configureTestingModule({
         imports: [
+          BidiModule,
           NzMentionModule,
           NzInputModule,
           NoopAnimationsModule,
           FormsModule,
           ReactiveFormsModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzFormModule
         ],
-        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
+        declarations: [
+          NzTestSimpleMentionComponent,
+          NzTestPropertyMentionComponent,
+          NzTestDirMentionComponent,
+          NzTestStatusMentionComponent,
+          NzTestMentionInFormComponent
+        ],
         providers: [
           { provide: Directionality, useFactory: () => ({ value: dir }) },
           { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
@@ -67,6 +77,24 @@ describe('mention', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestDirMentionComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDirMentionComponent);
+      fixture.detectChanges();
+    });
+
+    it('should classname correct', () => {
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).not.toContain(
+        'ant-mentions-rtl'
+      );
+      fixture.componentInstance.direction = 'rtl';
+      fixture.detectChanges();
+      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).toContain('ant-mentions-rtl');
+    });
+  });
 
   describe('toggling', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
@@ -147,7 +175,7 @@ describe('mention', () => {
       fixture.detectChanges();
       flush();
 
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       option.click();
       fixture.detectChanges();
 
@@ -165,7 +193,7 @@ describe('mention', () => {
       flush();
 
       const appRef = TestBed.inject(ApplicationRef);
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       const event = new MouseEvent('mousedown');
 
       spyOn(appRef, 'tick');
@@ -180,21 +208,19 @@ describe('mention', () => {
     it('should support switch trigger', fakeAsync(() => {
       fixture.componentInstance.inputTrigger = true;
       fixture.detectChanges();
-      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      const textareaWithSingleLine = fixture.debugElement.query(By.css('textarea')).nativeElement;
       const mention = fixture.componentInstance.mention;
+      expect(textareaWithSingleLine).toBeTruthy();
 
-      expect(fixture.debugElement.query(By.css('textarea'))).toBeFalsy();
-      expect(input).toBeTruthy();
-
-      input.value = '@a';
+      textareaWithSingleLine.value = '@a';
       fixture.detectChanges();
-      dispatchFakeEvent(input, 'click');
+      dispatchFakeEvent(textareaWithSingleLine, 'click');
       fixture.detectChanges();
       flush();
 
       expect(mention.isOpen).toBe(true);
 
-      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       option.click();
       fixture.detectChanges();
 
@@ -236,15 +262,15 @@ describe('mention', () => {
 
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
       fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[1].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the first option when DOWN key is pressed in last item', () => {
@@ -254,7 +280,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -262,9 +288,9 @@ describe('mention', () => {
       [1, 2, 3, 4, 5].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[1].classList).not.toContain('focus');
-      expect(optionEls[4].classList).not.toContain('focus');
-      expect(optionEls[0].classList).toContain('focus');
+      expect(optionEls[1].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[4].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[0].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the last option when UP key is pressed', () => {
@@ -274,7 +300,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -282,8 +308,8 @@ describe('mention', () => {
       fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[4].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[4].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item to the previous option when UP key is pressed', () => {
@@ -293,7 +319,7 @@ describe('mention', () => {
       fixture.detectChanges();
       const mention = fixture.componentInstance.mention;
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
       expect(mention.isOpen).toBe(true);
@@ -301,8 +327,8 @@ describe('mention', () => {
       [1, 2, 3].forEach(() => fixture.componentInstance.trigger.onKeydown.emit(UP_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[2].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[2].classList).toContain('ant-mentions-dropdown-menu-item-active');
     });
 
     it('should set the active item properly after filtering', () => {
@@ -315,11 +341,11 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
-      expect(optionEls[0].classList).not.toContain('focus');
-      expect(optionEls[1].classList).toContain('focus');
+      expect(optionEls[0].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).toContain('ant-mentions-dropdown-menu-item-active');
       expect(optionEls[1].innerText).toEqual('ant-design');
     });
 
@@ -333,11 +359,11 @@ describe('mention', () => {
       fixture.detectChanges();
 
       const optionEls = overlayContainerElement.querySelectorAll(
-        '.ant-mention-dropdown-item'
+        '.ant-mentions-dropdown-menu-item'
       ) as NodeListOf<HTMLElement>;
 
-      expect(optionEls[0].classList).toContain('focus');
-      expect(optionEls[1].classList).not.toContain('focus');
+      expect(optionEls[0].classList).toContain('ant-mentions-dropdown-menu-item-active');
+      expect(optionEls[1].classList).not.toContain('ant-mentions-dropdown-menu-item-active');
       expect(optionEls[0].innerText).toEqual('ant-design');
       expect(optionEls[1].innerText).toEqual('mention');
     });
@@ -388,13 +414,13 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
 
     it('should close the dropdown when pressing escape', fakeAsync(() => {
@@ -402,13 +428,13 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
       fixture.detectChanges();
 
       tick(500);
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
   });
 
@@ -432,11 +458,11 @@ describe('mention', () => {
 
       tick();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
       fixture.detectChanges();
       flush(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .anticon-loading')).toBeFalsy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
     }));
 
     it('should open the dropdown when the type in @ prefix', () => {
@@ -489,7 +515,7 @@ describe('mention', () => {
       fixture.detectChanges();
       typeInElement('@', textarea);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mention-dropdown .custom')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .custom')).toBeTruthy();
     });
 
     it('should correct parsing the trigger content', () => {
@@ -500,6 +526,59 @@ describe('mention', () => {
       );
       fixture.detectChanges();
       expect(fixture.componentInstance.mention.getMentions().join(',')).toBe('@Angular,@ant-design,@你好,@@ng,#ng');
+    });
+  });
+
+  describe('status', () => {
+    let fixture: ComponentFixture<NzTestStatusMentionComponent>;
+    let mention: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestStatusMentionComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+    });
+
+    it('should className with status correct', () => {
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-status-warning');
+    });
+  });
+
+  describe('in form', () => {
+    let fixture: ComponentFixture<NzTestMentionInFormComponent>;
+    let mention: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestMentionInFormComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
+      expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
+
+      fixture.componentInstance.status = 'success';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-status-success');
+
+      fixture.componentInstance.feedback = false;
+      fixture.detectChanges();
+      expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
 });
@@ -514,7 +593,7 @@ describe('mention', () => {
         [(ngModel)]="inputValue"
         nzMentionTrigger
       ></textarea>
-      <input *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger />
+      <textarea rows="1" *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
   `
 })
@@ -580,4 +659,46 @@ class NzTestPropertyMentionComponent {
       ];
     }, 500);
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-mention [nzSuggestions]="[]">
+        <textarea rows="1" nz-input nzMentionTrigger></textarea>
+      </nz-mention>
+    </div>
+  `
+})
+class NzTestDirMentionComponent {
+  direction: Direction = 'ltr';
+}
+
+@Component({
+  template: `
+    <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
+      <textarea rows="1" nz-input nzMentionTrigger></textarea>
+    </nz-mention>
+  `
+})
+class NzTestStatusMentionComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-mention [nzSuggestions]="[]">
+            <textarea rows="1" nzMentionTrigger></textarea>
+          </nz-mention>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+class NzTestMentionInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

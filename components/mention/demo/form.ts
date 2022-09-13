@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { NzMentionComponent } from 'ng-zorro-antd/mention';
 
 @Component({
-  selector: 'nz-demo-mention-controlled',
+  selector: 'nz-demo-mention-form',
   encapsulation: ViewEncapsulation.None,
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
@@ -12,7 +12,14 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
         <nz-form-label [nzSm]="6" nzFor="mention">Top coders</nz-form-label>
         <nz-form-control [nzSm]="16" nzErrorTip="More than one must be selected!">
           <nz-mention #mentions [nzSuggestions]="suggestions">
-            <input id="mention" placeholder="input here" formControlName="mention" nzMentionTrigger nz-input />
+            <textarea
+              rows="1"
+              id="mention"
+              placeholder="input here"
+              formControlName="mention"
+              nzMentionTrigger
+              nz-input
+            ></textarea>
           </nz-mention>
         </nz-form-control>
       </nz-form-item>
@@ -26,16 +33,16 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
     </form>
   `
 })
-export class NzDemoMentionControlledComponent implements OnInit {
+export class NzDemoMentionFormComponent implements OnInit {
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
   get mention(): AbstractControl {
     return this.validateForm.get('mention')!;
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -43,7 +50,7 @@ export class NzDemoMentionControlledComponent implements OnInit {
     });
   }
 
-  mentionValidator = (control: FormControl): { [s: string]: boolean } => {
+  mentionValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
     } else if (this.mentionChild.getMentions().length < 2) {

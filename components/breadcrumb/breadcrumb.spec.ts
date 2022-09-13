@@ -56,7 +56,7 @@ describe('breadcrumb', () => {
     beforeEach(
       waitForAsync(() => {
         TestBed.configureTestingModule({
-          imports: [NzBreadCrumbModule, NzDropDownModule],
+          imports: [RouterTestingModule, NzBreadCrumbModule, NzDropDownModule],
           declarations: [NzDemoBreadcrumbDropdownComponent],
           providers: []
         }).compileComponents();

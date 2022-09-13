@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 8
 title:
   zh-CN: 12小时制
   en-US: 12 hours

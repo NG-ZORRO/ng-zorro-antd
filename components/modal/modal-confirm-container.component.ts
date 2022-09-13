@@ -49,7 +49,7 @@ import { ModalOptions } from './modal-types';
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <div class="ant-modal-confirm-body-wrapper">
             <div class="ant-modal-confirm-body">
-              <i nz-icon [nzType]="config.nzIconType!"></i>
+              <span nz-icon [nzType]="config.nzIconType!"></span>
               <span class="ant-modal-confirm-title">
                 <ng-container *nzStringTemplateOutlet="config.nzTitle">
                   <span [innerHTML]="config.nzTitle"></span>

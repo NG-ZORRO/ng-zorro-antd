@@ -19,3 +19,6 @@ export * from './measure-scrollbar';
 export * from './ensure-in-bounds';
 export * from './tick';
 export * from './observable';
+export * from './can-use-dom';
+export * from './dynamic-css';
+export * from './status-util';

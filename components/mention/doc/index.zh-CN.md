@@ -39,6 +39,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 | `[nzPlacement]` | 建议框位置 | `'bottom' \| 'top'` | `'bottom'` |
 | `[nzPrefix]` | 触发弹出下拉框的字符 | `string \| string[]` | `'@'` |
 | `[nzSuggestions]` | 建议内容 | `any[]` | `[]` |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 | `[nzValueWith]` | 建议选项的取值方法  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)` | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
 | `(nzOnSearchChange)` | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |

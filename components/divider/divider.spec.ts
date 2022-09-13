@@ -96,7 +96,7 @@ class TestDividerComponent {
   template: `
     <nz-divider nzDashed [nzText]="text">
       <ng-template #text>
-        <i nz-icon nzType="plus"></i>
+        <span nz-icon nzType="plus"></span>
         Add
       </ng-template>
     </nz-divider>

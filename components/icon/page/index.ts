@@ -287,33 +287,33 @@ declare const locale: NzSafeAny;
     <div class="icon-selector">
       <nz-radio-group [ngModel]="currentTheme" (ngModelChange)="setIconsShouldBeDisplayed($event)">
         <label nz-radio-button nzValue="outline">
-          <i nz-icon>
+          <span nz-icon>
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z m-12 800H172c-6.6 0-12-5.4-12-12V172c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v680c0 6.6-5.4 12-12 12z"
               ></path>
             </svg>
-          </i>
+          </span>
           Outlined
         </label>
         <label nz-radio-button nzValue="fill">
-          <i nz-icon>
+          <span nz-icon>
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
               ></path>
             </svg>
-          </i>
+          </span>
           Filled
         </label>
         <label nz-radio-button nzValue="twotone">
-          <i nz-icon>
+          <span nz-icon>
             <svg>
               <path
                 d="M16 512c0 273.932 222.066 496 496 496s496-222.068 496-496S785.932 16 512 16 16 238.066 16 512z m496 368V144c203.41 0 368 164.622 368 368 0 203.41-164.622 368-368 368z"
               ></path>
             </svg>
-          </i>
+          </span>
           Two Tone
         </label>
       </nz-radio-group>
@@ -327,7 +327,7 @@ declare const locale: NzSafeAny;
       </nz-input-group>
       <ng-template #suffixIconCamera>
         <div class="icon-pic-searcher">
-          <i
+          <span
             class="icon-pic-btn"
             nz-icon
             nz-popover
@@ -341,12 +341,12 @@ declare const locale: NzSafeAny;
                 d="M864 248H728l-32.4-90.8a32.07 32.07 0 00-30.2-21.2H358.6c-13.5 0-25.6 8.5-30.1 21.2L296 248H160c-44.2 0-80 35.8-80 80v456c0 44.2 35.8 80 80 80h704c44.2 0 80-35.8 80-80V328c0-44.2-35.8-80-80-80zm8 536c0 4.4-3.6 8-8 8H160c-4.4 0-8-3.6-8-8V328c0-4.4 3.6-8 8-8h186.7l17.1-47.8 22.9-64.2h250.5l22.9 64.2 17.1 47.8H864c4.4 0 8 3.6 8 8v456zM512 384c-88.4 0-160 71.6-160 160s71.6 160 160 160 160-71.6 160-160-71.6-160-160-160zm0 256c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z"
               ></path>
             </svg>
-          </i>
+          </span>
         </div>
       </ng-template>
       <ng-template #addOnAfterIconSearch>
         <button nz-button nzType="default" nzSearch>
-          <i nz-icon nzType="search"></i>
+          <span nz-icon nzType="search"></span>
         </button>
       </ng-template>
     </div>
@@ -354,7 +354,7 @@ declare const locale: NzSafeAny;
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
         <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <i nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></i>
+          <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
           <span class="anticon-class">
             <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
               {{ icon }}
@@ -383,7 +383,7 @@ declare const locale: NzSafeAny;
             [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: false }"
           >
             <p class="ant-upload-drag-icon">
-              <i nz-icon nzType="inbox" nzTheme="outline"></i>
+              <span nz-icon nzType="inbox" nzTheme="outline"></span>
             </p>
             <p class="ant-upload-text">{{ localeObj.picSearcherUploadText }}</p>
             <p class="ant-upload-hint">{{ localeObj.picSearcherUploadHint }}</p>
@@ -406,7 +406,7 @@ declare const locale: NzSafeAny;
                   <tbody>
                     <tr *ngFor="let icon of icons">
                       <td class="col-icon">
-                        <i
+                        <span
                           nz-icon
                           nz-tooltip
                           [nzTooltipTitle]="icon.type"
@@ -415,7 +415,7 @@ declare const locale: NzSafeAny;
                           [nzTheme]="currentTheme"
                           (click)="onIconClick($event, icon.type)"
                         >
-                        </i>
+                        </span>
                       </td>
                       <td>
                         <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
@@ -485,7 +485,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
-    const copiedString = `<i nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}"></i>`;
+    const copiedString = `<span nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}"></span>`;
     target.classList.add('copied');
     this._copy(copiedString).then(() => {
       setTimeout(() => {

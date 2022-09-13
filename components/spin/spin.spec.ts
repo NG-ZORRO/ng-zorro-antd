@@ -155,7 +155,7 @@ describe('spin', () => {
   // eslint-disable-next-line
   selector: 'nz-test-basic-spin',
   template: `
-    <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i></ng-template>
+    <ng-template #indicatorTemplate><span nz-icon nzType="loading" style="font-size: 24px;"></span></ng-template>
     <nz-spin
       [nzTip]="tip"
       [nzSize]="size"

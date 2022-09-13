@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-collapse-extra',
   template: `
-    <nz-collapse>
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition">
       <nz-collapse-panel
         *ngFor="let panel of panels"
         [nzHeader]="panel.name"
@@ -19,11 +19,19 @@ import { Component } from '@angular/core';
     </nz-collapse>
     <ng-template #extraTpl>
       <!-- You can use stopPropagation if you don't want the panel to toggle -->
-      <i nz-icon nzType="setting" (click)="$event.stopPropagation()"></i>
+      <span nz-icon nzType="setting" (click)="$event.stopPropagation()"></span>
     </ng-template>
+    <br />
+    <span>Expand Icon Position: </span>
+    <nz-select [(ngModel)]="expandIconPosition">
+      <nz-option nzValue="left" nzLabel="left"></nz-option>
+      <nz-option nzValue="right" nzLabel="right"></nz-option>
+    </nz-select>
   `
 })
 export class NzDemoCollapseExtraComponent {
+  expandIconPosition: 'left' | 'right' = 'left';
+
   panels = [
     {
       active: true,

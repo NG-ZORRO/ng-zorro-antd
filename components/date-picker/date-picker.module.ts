@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -36,6 +37,7 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzIconModule,
     NzOverlayModule,
     NzNoAnimationModule,
+    NzFormPatchModule,
     NzOutletModule,
     NzTimePickerModule,
     NzButtonModule,

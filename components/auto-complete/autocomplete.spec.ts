@@ -15,7 +15,13 @@ import {
   ViewChildren
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -528,7 +534,7 @@ describe('auto-complete', () => {
 
     it('should set disabled work', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
+      const formControl = (componentInstance.form as UntypedFormGroup).get('formControl')!;
       fixture.detectChanges();
 
       expect(input.disabled).toBe(false);
@@ -541,7 +547,7 @@ describe('auto-complete', () => {
 
     it('should close the panel when the input is disabled', () => {
       const componentInstance = fixture.componentInstance;
-      const formControl = (componentInstance.form as FormGroup).get('formControl')!;
+      const formControl = (componentInstance.form as UntypedFormGroup).get('formControl')!;
       fixture.detectChanges();
 
       componentInstance.trigger.openPanel();
@@ -962,7 +968,7 @@ describe('auto-complete', () => {
 class NzTestSimpleAutocompleteComponent {
   inputValue!: string;
   filteredOptions: Array<string | number>;
-  inputControl = new FormControl();
+  inputControl = new UntypedFormControl();
   options: Array<string | number> = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
   @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
@@ -1110,11 +1116,11 @@ class NzTestAutocompleteGroupComponent {
   `
 })
 class NzTestAutocompleteWithFormComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.form = this.fb.group({ formControl: 'Burns' });
   }
 }
@@ -1132,14 +1138,14 @@ class NzTestAutocompleteWithFormComponent {
   `
 })
 class NzTestAutocompleteDifferentValueWithFormComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   options = [
     { label: 'Lucy', value: 'lucy' },
     { label: 'Jack', value: 'jack' }
   ];
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.form = this.fb.group({ formControl: 'lucy' });
   }
 }
@@ -1157,7 +1163,7 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
   `
 })
 class NzTestAutocompleteWithObjectOptionComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   options = [
     { label: 'Lucy', value: 'lucy' },
     { label: 'Jack', value: 'jack' }
@@ -1173,7 +1179,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
     }
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.form = this.fb.group({ formControl: { label: 'Lucy', value: 'lucy', age: 20 } });
   }
 }

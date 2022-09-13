@@ -1,5 +1,7 @@
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FormsModule } from '@angular/forms';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ FormsModule, NzTreeSelectModule, NzIconModule ];
+
+export const moduleList = [ FormsModule, NzTreeSelectModule, NzIconModule , NzSpaceModule];

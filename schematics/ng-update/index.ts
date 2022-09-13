@@ -78,6 +78,10 @@ export function updateToV13(): Rule {
   return createMigrationSchematicRule(TargetVersion.V13, migrations, ruleUpgradeData, postUpdate);
 }
 
+/** Entry point for the migration schematics with target of NG-ZORRO v14 */
+export function updateToV14(): Rule {
+  return createMigrationSchematicRule(TargetVersion.V14, migrations, ruleUpgradeData, postUpdate);
+}
 
 /** Post-update schematic to be called when update is finished. */
 export function postUpdate(context: SchematicContext, targetVersion: TargetVersion,

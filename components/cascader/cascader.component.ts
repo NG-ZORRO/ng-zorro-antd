@@ -17,28 +17,39 @@ import {
   HostListener,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NgClassType,
+  NgStyleInterface,
+  NzSafeAny,
+  NzStatus,
+  NzValidateStatus
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -99,16 +110,17 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           >
         </div>
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading" *ngIf="nzShowArrow">
-          <i
+          <span
             *ngIf="!isLoading"
             nz-icon
             [nzType]="$any(nzSuffixIcon)"
             [class.ant-cascader-picker-arrow-expand]="menuVisible"
-          ></i>
-          <i *ngIf="isLoading" nz-icon nzType="loading"></i>
+          ></span>
+          <span *ngIf="isLoading" nz-icon nzType="loading"></span>
+          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
         </span>
         <span class="ant-select-clear" *ngIf="clearIconVisible">
-          <i nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></i>
+          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
         </span>
       </ng-container>
       <ng-content></ng-content>
@@ -198,6 +210,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   ],
   host: {
     '[attr.tabIndex]': '"0"',
+    '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
@@ -210,7 +223,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-rtl]': `dir ==='rtl'`
   }
 })
-export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
+export class NzCascaderComponent
+  implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
+{
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowInput: BooleanInput;
   static ngAcceptInputType_nzShowArrow: BooleanInput;
@@ -256,6 +271,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMenuStyle: NgStyleInterface | null = null;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input() nzStatus: NzStatus = '';
+
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
@@ -276,6 +293,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
   @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
   @Output() readonly nzClear = new EventEmitter<void>();
+
+  prefixCls: string = 'ant-select';
+  statusCls: NgClassInterface = {};
+  status: NzValidateStatus = '';
+  hasFeedback: boolean = false;
 
   /**
    * If the dropdown should show the empty content.
@@ -359,18 +381,33 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private cdr: ChangeDetectorRef,
     private i18nService: NzI18nService,
     private destroy$: NzDestroyService,
-    elementRef: ElementRef,
-    renderer: Renderer2,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
-    renderer.addClass(elementRef.nativeElement, 'ant-select');
-    renderer.addClass(elementRef.nativeElement, 'ant-cascader');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-cascader');
   }
 
   ngOnInit(): void {
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
     const srv = this.cascaderService;
 
     srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -428,6 +465,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
     this.setupChangeListener();
     this.setupKeydownListener();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus } = changes;
+    if (nzStatus) {
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
   }
 
   ngOnDestroy(): void {
@@ -759,6 +803,22 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.dropdownWidthStyle =
         this.inSearchingMode || this.shouldShowEmpty ? `${this.selectContainer.nativeElement.offsetWidth}px` : '';
     }
+  }
+
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
+    });
   }
 
   private setLocale(): void {

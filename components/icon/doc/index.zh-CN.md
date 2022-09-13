@@ -54,13 +54,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的指令 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
 
 ```html
-<i nz-icon [nzType]="'star'" [nzTheme]="'fill'"></i>
+<span nz-icon [nzType]="'star'" [nzTheme]="'fill'"></span>
 ```
 
 所有的图标都会以 `<svg>` 标签渲染，但是你还是可以用之前对 i 标签设置的样式和类来控制 svg 的样式，例如：
 
 ```html
-<i nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></i>
+<span nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></span>
 ```
 
 ### 静态加载与动态加载
@@ -153,7 +153,7 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<i nz-icon [nzIconfont]="'icon-tuichu'"></i>
+<span nz-icon [nzIconfont]="'icon-tuichu'"></span>
 ```
 
 其本质上是创建了一个使用 `<use>` 标签渲染图标的组件。

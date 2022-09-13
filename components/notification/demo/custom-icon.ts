@@ -9,7 +9,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
       <div class="ant-notification-notice-content">
         <div class="ant-notification-notice-with-icon">
           <span class="ant-notification-notice-icon">
-            <i nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></i>
+            <span nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></span>
           </span>
           <div class="ant-notification-notice-message">Notification Title</div>
           <div class="ant-notification-notice-description">

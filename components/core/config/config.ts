@@ -56,6 +56,7 @@ export interface NzConfig {
   pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  segmented?: SegmentedConfig;
   space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
@@ -69,6 +70,23 @@ export interface NzConfig {
   popconfirm?: PopConfirmConfig;
   popover?: PopoverConfig;
   imageExperimental?: ImageExperimentalConfig;
+  theme?: Theme;
+  prefixCls?: PrefixCls;
+}
+
+export interface PrefixCls {
+  prefixCls?: string;
+  iconPrefixCls?: string;
+}
+
+export interface Theme {
+  primaryColor?: string;
+  infoColor?: string;
+  successColor?: string;
+  processingColor?: string;
+  errorColor?: string;
+  warningColor?: string;
+  [key: string]: string | undefined;
 }
 
 export interface SelectConfig {
@@ -221,7 +239,7 @@ export interface ModalConfig {
 export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 }
 
 export interface PageHeaderConfig {
@@ -250,6 +268,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SegmentedConfig {
+  nzSize?: NzSizeLDSType;
 }
 
 export interface SpaceConfig {

@@ -10,6 +10,10 @@ export const notificationMotion: AnimationTriggerMetadata = trigger('notificatio
   transition('* => enterRight', [style({ opacity: 0, transform: 'translateX(5%)' }), animate('100ms linear')]),
   state('enterLeft', style({ opacity: 1, transform: 'translateX(0)' })),
   transition('* => enterLeft', [style({ opacity: 0, transform: 'translateX(-5%)' }), animate('100ms linear')]),
+  state('enterTop', style({ opacity: 1, transform: 'translateY(0)' })),
+  transition('* => enterTop', [style({ opacity: 0, transform: 'translateY(-5%)' }), animate('100ms linear')]),
+  state('enterBottom', style({ opacity: 1, transform: 'translateY(0)' })),
+  transition('* => enterBottom', [style({ opacity: 0, transform: 'translateY(5%)' }), animate('100ms linear')]),
   state(
     'leave',
     style({

@@ -12,12 +12,12 @@ import { Component } from '@angular/core';
         <div class="desc">
           <h4 nz-title>The content you submitted has the following error:</h4>
           <p nz-paragraph>
-            <i nz-icon nzType="close-circle"></i>
+            <span nz-icon nzType="close-circle"></span>
             Your account has been frozen
             <a>Thaw immediately &gt;</a>
           </p>
           <p nz-paragraph>
-            <i nz-icon nzType="close-circle"></i>
+            <span nz-icon nzType="close-circle"></span>
             Your account is not yet eligible to apply
             <a>Apply immediately &gt;</a>
           </p>

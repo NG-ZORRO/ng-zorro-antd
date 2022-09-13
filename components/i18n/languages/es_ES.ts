@@ -96,10 +96,10 @@ export default {
       dayFormat: 'D',
       dateTimeFormat: 'D/M/YYYY HH:mm:ss',
       monthBeforeYear: true,
-      previousMonth: 'Mes anterior (PageUp)',
-      nextMonth: 'Mes siguiente (PageDown)',
-      previousYear: 'Año anterior (Control + left)',
-      nextYear: 'Año siguiente (Control + right)',
+      previousMonth: 'Mes anterior (AvPág)',
+      nextMonth: 'Mes siguiente (RePág)',
+      previousYear: 'Año anterior (Control + izquierda)',
+      nextYear: 'Año siguiente (Control + derecha)',
       previousDecade: 'Década anterior',
       nextDecade: 'Década siguiente',
       previousCentury: 'Siglo anterior',
@@ -125,10 +125,12 @@ export default {
     sortTitle: 'Ordenar',
     expand: 'Expandir fila',
     collapse: 'Colapsar fila',
-    triggerDesc: 'Click para ordenar en orden descendente',
-    triggerAsc: 'Click para ordenar en orden ascendente',
-    cancelSort: 'Click para cancelar ordenamiento',
-    selectNone: 'Vacíe todo'
+    triggerDesc: 'Click para ordenar descendentemente',
+    triggerAsc: 'Click para ordenar ascendentemenre',
+    cancelSort: 'Click para cancelar ordenación',
+    filterCheckall: 'Seleccionar todos los filtros',
+    filterSearchPlaceholder: 'Buscar en filtros',
+    selectNone: 'Vaciar todo'
   },
   Modal: {
     okText: 'Aceptar',
@@ -146,7 +148,7 @@ export default {
     itemsUnit: 'elementos',
     remove: 'Eliminar',
     selectCurrent: 'Seleccionar página actual',
-    removeCurrent: 'Remover página actual',
+    removeCurrent: 'Eliminar página actual',
     selectAll: 'Seleccionar todos los datos',
     removeAll: 'Eliminar todos los datos',
     selectInvert: 'Invertir página actual'
@@ -162,7 +164,7 @@ export default {
     description: 'No hay datos'
   },
   Icon: {
-    icon: 'ícono'
+    icon: 'icono'
   },
   Text: {
     edit: 'Editar',

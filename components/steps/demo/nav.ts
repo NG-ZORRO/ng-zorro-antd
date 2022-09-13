@@ -39,7 +39,6 @@ import { Component } from '@angular/core';
   styles: [
     `
       nz-steps {
-        display: block;
         margin-bottom: 60px;
         box-shadow: rgb(232, 232, 232) 0px -1px 0px 0 inset;
       }

@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   template: `
     <a [href]="link" target="_blank" rel="noopener">
       <span *ngIf="icon || imgSrc" class="rc-footer-item-icon">
-        <i *ngIf="icon" nz-icon [nzType]="icon"></i>
+        <span *ngIf="icon" nz-icon [nzType]="icon"></span>
         <img *ngIf="imgSrc" [src]="imgSrc" [attr.alt]="imgAlt" />
       </span>
       {{ title }}

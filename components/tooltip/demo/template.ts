@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       >This Tooltip has an Icon</a
     >
     <ng-template #titleTemplate let-thing>
-      <i nz-icon nzType="file"></i>
+      <span nz-icon nzType="file"></span>
       <span>Tooltip With {{ thing }}</span>
     </ng-template>
   `,

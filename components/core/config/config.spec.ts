@@ -99,6 +99,25 @@ describe('nz global config', () => {
       expect(buttonEl.classList).not.toContain('ant-btn-sm');
     });
 
+    it('should dynamic theme colors config work', () => {
+      fixture.detectChanges();
+      testComponent.nzConfigService.set('theme', { primaryColor: '#0000FF' });
+      fixture.detectChanges();
+      expect(getComputedStyle(document.documentElement).getPropertyValue('--ant-primary-color').trim()).toEqual(
+        'rgb(0, 0, 255)'
+      );
+    });
+
+    it('should dynamic theme colors config with custom prefix work', () => {
+      fixture.detectChanges();
+      testComponent.nzConfigService.set('prefixCls', { prefixCls: 'custom-variable' });
+      testComponent.nzConfigService.set('theme', { primaryColor: '#0000FF' });
+      fixture.detectChanges();
+      expect(
+        getComputedStyle(document.documentElement).getPropertyValue('--custom-variable-primary-color').trim()
+      ).toEqual('rgb(0, 0, 255)');
+    });
+
     // It would fail silently. User cannot input a component name wrong - TypeScript comes to help!
     // it('should raise error when the component with given name is not defined', () => {
     //   expect(() => {

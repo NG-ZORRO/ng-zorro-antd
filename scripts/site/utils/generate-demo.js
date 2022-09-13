@@ -25,11 +25,9 @@ function generateDemoModule(content) {
   const demoMap = content.demoMap;
   let imports = '';
   let declarations = '';
-  let entryComponents = [];
   for (const key in demoMap) {
     const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
-    entryComponents.push(...entries);
     declareComponents.push(...entries);
     imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
     declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
@@ -47,8 +45,7 @@ function generateDemoModule(content) {
   return demoModuleTemplate
     .replace(/{{imports}}/g, imports)
     .replace(/{{declarations}}/g, declarations)
-    .replace(/{{component}}/g, componentName(component))
-    .replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
+    .replace(/{{component}}/g, componentName(component));
 }
 
 function componentName(component) {
@@ -76,7 +73,9 @@ function generatePageDemoComponent(content) {
 }
 
 function generateDemoComponent(content) {
-  const demoComponentTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts')));
+  const demoComponentTemplate = String(
+    fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts'))
+  );
   const component = content.name;
 
   let output = demoComponentTemplate;
@@ -108,11 +107,13 @@ function generateTemplate(result) {
   return {
     zh: wrapperAll(
       generateToc('zh-CN', result.name, result.demoMap),
-      wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)
+      wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) +
+        wrapperAPI(result.docZh.api)
     ),
     en: wrapperAll(
       generateToc('en-US', result.name, result.demoMap),
-      wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api)
+      wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) +
+        wrapperAPI(result.docEn.api)
     )
   };
 }
@@ -128,12 +129,16 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
 	<section class="markdown" ngNonBindable>
 		${whenToUse}
 	</section>
-	${hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : ''}
+	${
+    hasPageDemo
+      ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>`
+      : ''
+  }
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<i nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
+		<span nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
       language === 'zh' ? '展开全部代码' : 'Expand All Code'
-    }" (click)="expandAllCode()"></i>
+    }" (click)="expandAllCode()"></span>
 	</h2>
 </section>${example}`;
   } else {

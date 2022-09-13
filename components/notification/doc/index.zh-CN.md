@@ -69,7 +69,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息从顶部弹出时，距离顶部的位置。 | `string` | 24px |
 | nzBottom | 消息从底部弹出时，距离底部的位置。 | `string` | 24px |
-| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string` | `topRight` |
 | nzDirection | 通知的文字方向 | `'ltr' \| 'rtl'` | - |
 
 ### NzNotificationRef

@@ -50,10 +50,10 @@ export default function(options: Schema): Rule {
         ),
         MergeStrategy.Overwrite
       ),
-      addModule('AppRoutingModule', './app-routing.module'),
-      addModule('IconsProviderModule', './icons-provider.module'),
-      addModule('NzLayoutModule', 'ng-zorro-antd/layout'),
-      addModule('NzMenuModule', 'ng-zorro-antd/menu')
+      addModule('AppRoutingModule', './app-routing.module', options.project),
+      addModule('IconsProviderModule', './icons-provider.module', options.project),
+      addModule('NzLayoutModule', 'ng-zorro-antd/layout', options.project),
+      addModule('NzMenuModule', 'ng-zorro-antd/menu', options.project)
     ]);
   }
 }

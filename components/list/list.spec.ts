@@ -312,7 +312,7 @@ class TestListWithTemplateComponent {
     <nz-list id="item-string">
       <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
         <ng-template #action>
-          <i nz-icon nzType="star-o" style="margin-right: 8px;"></i>
+          <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
           156
         </ng-template>
         <ng-template #extra>

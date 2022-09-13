@@ -22,7 +22,6 @@ import { NzImageService } from './image.service';
   imports: [BidiModule, OverlayModule, PortalModule, DragDropModule, CommonModule, NzIconModule, NzPipesModule],
   exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
   providers: [NzImageService],
-  entryComponents: [NzImagePreviewComponent],
   declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent]
 })
 export class NzImageModule {}

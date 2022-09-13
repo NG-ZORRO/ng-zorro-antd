@@ -11,11 +11,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import en_US from '../i18n/languages/en_US';
@@ -30,19 +33,26 @@ const DISABLED = 1;
 describe('transfer', () => {
   let injector: Injector;
   let fixture: ComponentFixture<
-    TestTransferComponent | TestTransferCustomRenderComponent | Test996Component | NzTestTransferRtlComponent
+    | TestTransferComponent
+    | TestTransferCustomRenderComponent
+    | Test996Component
+    | NzTestTransferRtlComponent
+    | NzTestTransferStatusComponent
+    | NzTestTransferInFormComponent
   >;
   let dl: DebugElement;
   let instance: TestTransferComponent;
   let pageObject: TransferPageObject;
   beforeEach(() => {
     injector = TestBed.configureTestingModule({
-      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule],
+      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule, FormsModule, NzFormModule],
       declarations: [
         TestTransferComponent,
         TestTransferCustomRenderComponent,
         Test996Component,
-        NzTestTransferRtlComponent
+        NzTestTransferRtlComponent,
+        NzTestTransferStatusComponent,
+        NzTestTransferInFormComponent
       ]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
@@ -307,6 +317,24 @@ describe('transfer', () => {
         expect(event.stopPropagation).toHaveBeenCalled();
       });
     });
+
+    describe('https://github.com/NG-ZORRO/ng-zorro-antd/issues/6667', () => {
+      it('should uncheck "Select all" checkbox after searched items are moved', () => {
+        const { leftList } = pageObject;
+        pageObject.search('left', 'content1');
+        expect(leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
+
+        const selectAll = leftList.querySelector<HTMLElement>('.ant-transfer-list-header .ant-checkbox')!;
+        selectAll.click();
+        fixture.detectChanges();
+
+        pageObject.rightBtn.click();
+        fixture.detectChanges();
+
+        expect(selectAll).not.toHaveClass('ant-checkbox-checked');
+        expect(selectAll).not.toHaveClass('ant-checkbox-indeterminate');
+      });
+    });
   });
 
   describe('#canMove', () => {
@@ -372,6 +400,60 @@ describe('transfer', () => {
       fixture.detectChanges();
       expect(componentElement.classList).not.toContain('ant-transfer-rtl');
     }));
+  });
+
+  describe('transfer status', () => {
+    let componentElement: HTMLElement;
+    let testComponent: NzTestTransferStatusComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTransferStatusComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+
+    it('should className correct with nzStatus', () => {
+      fixture.detectChanges();
+      expect(componentElement.className).toContain('ant-transfer-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(componentElement.className).toContain('ant-transfer-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(componentElement.className).not.toContain('ant-transfer-status-warning');
+    });
+  });
+
+  describe('transfer in form', () => {
+    let componentElement: HTMLElement;
+    let testComponent: NzTestTransferInFormComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTransferInFormComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-warning');
+
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(componentElement.classList).toContain('ant-transfer-status-success');
+
+      testComponent.feedback = false;
+      fixture.detectChanges();
+      expect(componentElement.classList).not.toContain('ant-transfer-has-feedback');
+    });
   });
 
   class TransferPageObject {
@@ -542,7 +624,7 @@ class TestTransferComponent implements OnInit {
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
-        <i nz-icon nzType="{{ item.icon }}"></i>
+        <span nz-icon nzType="{{ item.icon }}"></span>
         {{ item.title }}
       </ng-template>
     </nz-transfer>
@@ -609,4 +691,27 @@ class Test996Component implements OnInit {
 export class NzTestTransferRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: ` <nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer> `
+})
+export class NzTestTransferStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-transfer [nzDataSource]="[]"></nz-transfer>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestTransferInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

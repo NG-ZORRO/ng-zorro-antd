@@ -39,19 +39,21 @@ describe('pagination', () => {
     let testComponent: NzTestPaginationComponent;
     let pagination: DebugElement;
     let paginationElement: HTMLElement;
+    let paginationRootElement: HTMLElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationComponent);
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement;
+      paginationRootElement = pagination.nativeElement;
+      paginationElement = pagination.nativeElement.querySelector('ul')!;
     });
 
     describe('not simple mode', () => {
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(paginationElement.classList.contains('ant-pagination')).toBe(true);
+        expect(paginationRootElement.classList.contains('ant-pagination')).toBe(true);
         expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
         expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-disabled')).toBe(true);
         expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
@@ -64,7 +66,7 @@ describe('pagination', () => {
       it('should small size className correct', () => {
         testComponent.size = 'small';
         fixture.detectChanges();
-        expect(paginationElement.classList.contains('mini')).toBe(true);
+        expect(paginationRootElement.classList.contains('mini')).toBe(true);
       });
 
       it('should pageIndex change work', () => {
@@ -237,7 +239,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         testComponent.disabled = true;
         fixture.detectChanges();
-        expect(paginationElement.classList.contains('ant-pagination-disabled')).toBe(true);
+        expect(paginationRootElement.classList.contains('ant-pagination-disabled')).toBe(true);
       });
     });
 
@@ -245,10 +247,11 @@ describe('pagination', () => {
       beforeEach(() => {
         testComponent.simple = true;
         fixture.detectChanges();
-        paginationElement = pagination.nativeElement;
+        paginationRootElement = pagination.nativeElement;
+        paginationElement = pagination.nativeElement.querySelector('ul')!;
       });
       it('should simple className work', () => {
-        expect(paginationElement.classList.contains('ant-pagination-simple')).toBe(true);
+        expect(paginationRootElement.classList.contains('ant-pagination-simple')).toBe(true);
         expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
         expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
       });
@@ -313,7 +316,7 @@ describe('pagination', () => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement;
+      paginationElement = pagination.nativeElement.querySelector('ul')!;
     });
     it('should render correct', () => {
       fixture.detectChanges();
@@ -334,7 +337,7 @@ describe('pagination', () => {
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement;
+      paginationElement = pagination.nativeElement.querySelector('ul')!;
     });
 
     it('should render correct', () => {
@@ -389,7 +392,7 @@ describe('pagination', () => {
       fixture = TestBed.createComponent(NzTestPaginationRtlComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement;
+      paginationElement = pagination.nativeElement.querySelector('ul')!;
     });
 
     it('should pagination className correct on dir change', () => {

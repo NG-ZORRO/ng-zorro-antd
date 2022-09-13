@@ -23,19 +23,19 @@ function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
   return ts.createSourceFile(modulePath, sourceText, ts.ScriptTarget.Latest, true);
 }
 
-export function addModule(moduleName: string, modulePath: string): Rule {
+export function addModule(moduleName: string, modulePath: string, projectName: string): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
-    const project = getProjectFromWorkspace(workspace);
+    const project = getProjectFromWorkspace(workspace, projectName);
     addModuleImportToRootModule(host, moduleName, modulePath, project);
     return noop();
   }
 }
 
-export function addDeclaration(componentName: string, componentPath: string): Rule {
+export function addDeclaration(componentName: string, componentPath: string, projectName: string): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
-    const project = getProjectFromWorkspace(workspace)
+    const project = getProjectFromWorkspace(workspace, projectName);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const source = readIntoSourceFile(host, appModulePath);
     const relativePath = buildRelativePath(appModulePath, componentPath);

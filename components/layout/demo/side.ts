@@ -8,11 +8,11 @@ import { Component } from '@angular/core';
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <i nz-icon nzType="pie-chart"></i>
+            <span nz-icon nzType="pie-chart"></span>
             <span>Option 1</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="desktop"></i>
+            <span nz-icon nzType="desktop"></span>
             <span>Option 2</span>
           </li>
           <li nz-submenu nzTitle="User" nzIcon="user">
@@ -29,7 +29,7 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>File</span>
           </li>
         </ul>

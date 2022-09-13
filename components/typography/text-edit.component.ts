@@ -32,7 +32,7 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
     <ng-template [ngIf]="editing" [ngIfElse]="notEditing">
       <textarea #textarea nz-input nzAutosize (blur)="confirm()"></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
-        <i nz-icon nzType="enter"></i>
+        <span nz-icon nzType="enter"></span>
       </button>
     </ng-template>
 
@@ -45,7 +45,7 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
         (click)="onClick()"
       >
         <ng-container *nzStringTemplateOutlet="icon; let icon">
-          <i nz-icon [nzType]="icon"></i>
+          <span nz-icon [nzType]="icon"></span>
         </ng-container>
       </button>
     </ng-template>
