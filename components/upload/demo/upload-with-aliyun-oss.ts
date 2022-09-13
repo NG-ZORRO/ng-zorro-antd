@@ -15,7 +15,7 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
     >
       Photos:
       <button nz-button>
-        <i nz-icon nzType="upload"></i>
+        <span nz-icon nzType="upload"></span>
         Click to Upload
       </button>
     </nz-upload>

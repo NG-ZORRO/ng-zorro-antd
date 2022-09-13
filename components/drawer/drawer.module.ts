@@ -29,7 +29,6 @@ import { NzDrawerServiceModule } from './drawer.service.module';
     NzDrawerServiceModule
   ],
   exports: [NzDrawerComponent, NzDrawerContentDirective],
-  declarations: [NzDrawerComponent, NzDrawerContentDirective],
-  entryComponents: [NzDrawerComponent]
+  declarations: [NzDrawerComponent, NzDrawerContentDirective]
 })
 export class NzDrawerModule {}

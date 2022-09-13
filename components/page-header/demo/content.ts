@@ -29,12 +29,22 @@ import { Component } from '@angular/core';
 
       <!--extra-->
       <nz-page-header-extra>
-        <button nz-button>Operation</button>
-        <button nz-button>Operation</button>
-        <button nz-button nzType="primary">Primary</button>
-        <button nz-button nzNoAnimation nz-dropdown [nzDropdownMenu]="menu" style="border: none; padding: 0">
-          <i nz-icon nzType="ellipsis" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></i>
-        </button>
+        <nz-space>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button>Operation</button>
+          <button *nzSpaceItem nz-button nzType="primary">Primary</button>
+          <button
+            *nzSpaceItem
+            nz-button
+            nzNoAnimation
+            nz-dropdown
+            [nzDropdownMenu]="menu"
+            nzPlacement="bottomRight"
+            style="border: none; padding: 0"
+          >
+            <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
+          </button>
+        </nz-space>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
             <li nz-menu-item>1st menu item length</li>

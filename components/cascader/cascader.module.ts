@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzFormPatchModule } from 'ng-zorro-antd/core/form';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -32,7 +33,8 @@ import { NzCascaderComponent } from './cascader.component';
     NzIconModule,
     NzInputModule,
     NzNoAnimationModule,
-    NzOverlayModule
+    NzOverlayModule,
+    NzFormPatchModule
   ],
   declarations: [NzCascaderComponent, NzCascaderOptionComponent],
   exports: [NzCascaderComponent]

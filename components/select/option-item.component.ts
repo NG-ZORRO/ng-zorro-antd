@@ -33,7 +33,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       <ng-template #noCustomContent>{{ label }}</ng-template>
     </div>
     <div *ngIf="showState && selected" class="ant-select-item-option-state" style="user-select: none" unselectable="on">
-      <i nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></i>
+      <span nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></span>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

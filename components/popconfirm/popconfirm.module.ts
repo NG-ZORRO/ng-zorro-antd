@@ -22,7 +22,6 @@ import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
 @NgModule({
   declarations: [NzPopconfirmComponent, NzPopconfirmDirective],
   exports: [NzPopconfirmComponent, NzPopconfirmDirective],
-  entryComponents: [NzPopconfirmComponent],
   imports: [
     BidiModule,
     CommonModule,

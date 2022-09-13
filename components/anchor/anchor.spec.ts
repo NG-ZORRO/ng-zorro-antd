@@ -26,6 +26,7 @@ describe('anchor', () => {
     fixture.detectChanges();
     page = new PageObject();
     spyOn(context, '_scroll');
+    spyOn(context, '_change');
     srv = TestBed.inject(NzScrollService);
   });
   afterEach(() => context.comp.ngOnDestroy());
@@ -131,6 +132,18 @@ describe('anchor', () => {
       });
     });
 
+    describe('[nzCurrentAnchor]', () => {
+      it('customize the anchor highlight', () => {
+        context.nzCurrentAnchor = '#basic';
+        fixture.detectChanges();
+        const linkList = dl.queryAll(By.css('.ant-anchor-link'));
+        expect(linkList.length).toBeGreaterThan(0);
+        const activeLink = linkList.find(n => (n.nativeElement as HTMLDivElement).getAttribute('nzhref') === '#basic')!;
+        expect(activeLink).toBeTruthy();
+        expect((activeLink.nativeElement as HTMLDivElement).classList).toContain('ant-anchor-link-active');
+      });
+    });
+
     describe('[nzShowInkInFixed]', () => {
       beforeEach(() => {
         context.nzAffix = false;
@@ -166,6 +179,30 @@ describe('anchor', () => {
         expect(el.addEventListener).toHaveBeenCalled();
         page.to('#basic-target');
         expect(context._click).toHaveBeenCalled();
+      });
+    });
+
+    describe('(nzChange)', () => {
+      it('should emit nzChange when click a link', fakeAsync(() => {
+        spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+          if (options.callback) {
+            options.callback();
+          }
+        });
+        expect(context._change).not.toHaveBeenCalled();
+        page.to('#basic-target');
+        expect(context._change).toHaveBeenCalled();
+      }));
+      it('should emit nzChange when scrolling to the anchor', (done: () => void) => {
+        spyOn(context, '_change');
+        expect(context._change).not.toHaveBeenCalled();
+        page.scrollTo();
+        setTimeout(() => {
+          const inkNode = page.getEl('.ant-anchor-ink-ball');
+          expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
+          expect(context._change).toHaveBeenCalled();
+          done();
+        }, throttleTime);
       });
     });
 
@@ -233,9 +270,12 @@ describe('anchor', () => {
       [nzBounds]="nzBounds"
       [nzShowInkInFixed]="nzShowInkInFixed"
       [nzOffsetTop]="nzOffsetTop"
+      [nzTargetOffset]="nzTargetOffset"
       [nzContainer]="nzContainer"
+      [nzCurrentAnchor]="nzCurrentAnchor"
       (nzClick)="_click($event)"
       (nzScroll)="_scroll($event)"
+      (nzChange)="_change($event)"
     >
       <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
       <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
@@ -288,8 +328,11 @@ export class TestComponent {
   nzAffix = true;
   nzBounds = 5;
   nzOffsetTop = 0;
+  nzTargetOffset?: number;
   nzShowInkInFixed = false;
   nzContainer: any = null;
+  nzCurrentAnchor?: string;
   _click() {}
+  _change() {}
   _scroll() {}
 }

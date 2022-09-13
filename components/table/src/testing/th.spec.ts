@@ -2,6 +2,7 @@ import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/cor
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -12,7 +13,7 @@ import { NzTableModule } from '../table.module';
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzTableModule, NzIconTestModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzTableModule, NzIconTestModule, NoopAnimationsModule],
       declarations: [NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent]
     });
     TestBed.compileComponents();

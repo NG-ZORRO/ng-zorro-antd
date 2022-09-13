@@ -48,6 +48,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -69,6 +70,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+import { NzGraphModule } from 'ng-zorro-antd/graph';
 
 @NgModule({
   exports: [
@@ -117,6 +120,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzRadioModule,
     NzRateModule,
     NzResultModule,
+    NzSegmentedModule,
     NzSelectModule,
     NzSkeletonModule,
     NzSliderModule,
@@ -140,6 +144,8 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
+    NzCodeEditorModule,
+    NzGraphModule
   ]
 })
 export class DemoNgZorroAntdModule {

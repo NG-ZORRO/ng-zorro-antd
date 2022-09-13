@@ -25,7 +25,7 @@ import { takeUntil } from 'rxjs/operators';
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
 
-export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between' | 'space-evenly';
 export type NzAlign = 'top' | 'middle' | 'bottom';
 
 @Directive({
@@ -41,6 +41,7 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-center]': `nzJustify === 'center'`,
     '[class.ant-row-space-around]': `nzJustify === 'space-around'`,
     '[class.ant-row-space-between]': `nzJustify === 'space-between'`,
+    '[class.ant-row-space-evenly]': `nzJustify === 'space-evenly'`,
     '[class.ant-row-rtl]': `dir === "rtl"`
   }
 })

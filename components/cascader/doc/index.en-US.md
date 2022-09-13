@@ -50,6 +50,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzShowInput]` | Whether show input | `boolean` | `true` |
 | `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean\|NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | `'large'\|'small'\|'default'` | `'default'` | ✅ |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | 	The custom suffix icon | `string\|TemplateRef<void>` | - |
 | `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
@@ -93,3 +94,10 @@ const filter: NzCascaderFilter = (i, p) => {
 | blur() | remove focus |
 | focus() | get focus |
 | closeMenu() | hide the menu |
+
+
+## FAQ
+
+### Q: An error is thrown when `nzLoadData` is used.
+
+When you pass a function to `nzLoadData`, this function becomes a property of `NzCascaderComponent`. When the cascader component calls this method, `this` in in the function is bound to nothing. To fix this, you should pass an arrow function or use `Function.bind` to bind `this`. [An example](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983).

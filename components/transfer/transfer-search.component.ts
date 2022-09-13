@@ -20,7 +20,7 @@ import {
   preserveWhitespaces: false,
   template: `
     <span class="ant-input-prefix">
-      <i nz-icon nzType="search"></i>
+      <span nz-icon nzType="search"></span>
     </span>
     <input
       [(ngModel)]="value"
@@ -31,7 +31,7 @@ import {
       [ngClass]="{ 'ant-input-disabled': disabled }"
     />
     <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <i nz-icon nzType="close-circle" class="ant-input-clear-icon"></i>
+      <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
     </span>
   `,
   encapsulation: ViewEncapsulation.None,

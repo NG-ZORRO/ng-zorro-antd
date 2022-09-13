@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
@@ -35,7 +35,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   `
 })
 export class NzDemoFormDynamicRuleComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -61,7 +61,7 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
     this.validateForm.get('nickname')!.updateValueAndValidity();
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

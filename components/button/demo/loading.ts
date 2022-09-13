@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-button-loading',
   template: `
     <button nz-button nzType="primary" nzLoading>
-      <i nz-icon nzType="poweroff"></i>
+      <span nz-icon nzType="poweroff"></span>
       Loading
     </button>
     <button nz-button nzType="primary" nzSize="small" nzLoading>Loading</button>
     <br />
     <button nz-button nzType="primary" (click)="loadOne()" [nzLoading]="isLoadingOne">Click me!</button>
     <button nz-button nzType="primary" (click)="loadTwo()" [nzLoading]="isLoadingTwo">
-      <i nz-icon nzType="poweroff"></i>
+      <span nz-icon nzType="poweroff"></span>
       Click me!
     </button>
     <br />

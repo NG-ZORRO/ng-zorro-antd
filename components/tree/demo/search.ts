@@ -9,7 +9,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
       <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
     </nz-input-group>
     <ng-template #suffixIcon>
-      <i nz-icon nzType="search"></i>
+      <span nz-icon nzType="search"></span>
     </ng-template>
     <nz-tree
       [nzData]="nodes"

@@ -21,7 +21,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
-import { HoverPreloadModule, HoverPreloadStrategy } from 'ngx-hover-preload';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
@@ -62,16 +62,15 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     FooterModule,
     NzContributorsListModule,
     FixedWidgetsModule,
-    HoverPreloadModule,
+    QuicklinkModule,
     RouterModule.forRoot(
       routes,
       environment.production
         ? {
-            preloadingStrategy: HoverPreloadStrategy,
-            scrollPositionRestoration: 'enabled',
-            initialNavigation: 'enabledBlocking'
+            preloadingStrategy: QuicklinkStrategy,
+            scrollPositionRestoration: 'enabled'
           }
-        : {}
+        : { preloadingStrategy: QuicklinkStrategy }
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],

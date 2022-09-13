@@ -21,17 +21,27 @@ import {
   OnInit,
   Optional,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, merge } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  BooleanInput,
+  NgClassInterface,
+  NzSizeLDSType,
+  NzStatus,
+  NzValidateStatus,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-input-number',
@@ -45,7 +55,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         (mousedown)="up($event)"
         [class.ant-input-number-handler-up-disabled]="disabledUp"
       >
-        <i nz-icon nzType="up" class="ant-input-number-handler-up-inner"></i>
+        <span nz-icon nzType="up" class="ant-input-number-handler-up-inner"></span>
       </span>
       <span
         #downHandler
@@ -54,7 +64,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         (mousedown)="down($event)"
         [class.ant-input-number-handler-down-disabled]="disabledDown"
       >
-        <i nz-icon nzType="down" class="ant-input-number-handler-down-inner"></i>
+        <span nz-icon nzType="down" class="ant-input-number-handler-down-inner"></span>
       </span>
     </div>
     <div class="ant-input-number-input-wrap">
@@ -75,6 +85,11 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         (ngModelChange)="onModelChange($event)"
       />
     </div>
+    <nz-form-item-feedback-icon
+      class="ant-input-number-suffix"
+      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
+      [status]="status"
+    ></nz-form-item-feedback-icon>
   `,
   providers: [
     {
@@ -88,29 +103,39 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-input-number',
+    '[class.ant-input-number-in-form-item]': '!!nzFormStatusService',
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled',
     '[class.ant-input-number-readonly]': 'nzReadOnly',
-    '[class.ant-input-number-rtl]': `dir === 'rtl'`
+    '[class.ant-input-number-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-number-borderless]': `nzBorderless`
   }
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzReadOnly: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
 
   private autoStepTimer?: number;
   private parsedValue?: string | number;
   private value?: number;
   displayValue?: string | number;
   isFocused = false;
+  disabled$ = new Subject<boolean>();
   disabledUp = false;
   disabledDown = false;
   dir: Direction = 'ltr';
+  // status
+  prefixCls: string = 'ant-input-number';
+  status: NzValidateStatus = '';
+  statusCls: NgClassInterface = {};
+  hasFeedback: boolean = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
+
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
   /** The native `<span class="ant-input-number-handler-up"></span>` element. */
@@ -130,12 +155,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecision?: number;
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
+  @Input() nzStatus: NzStatus = '';
   @Input() nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzReadOnly = false;
   @Input() @InputBoolean() nzAutoFocus = false;
+  @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
 
   onModelChange(value: string): void {
@@ -360,6 +387,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   setDisabledState(disabled: boolean): void {
     this.nzDisabled = disabled;
+    this.disabled$.next(disabled);
     this.cdr.markForCheck();
   }
 
@@ -376,22 +404,39 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    private renderer: Renderer2,
     @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService
+    private destroy$: NzDestroyService,
+    @Optional() public nzFormStatusService?: NzFormStatusService,
+    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
   ) {}
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        this.isFocused = false;
-        this.updateDisplayValue(this.value!);
-        this.nzBlur.emit();
-        Promise.resolve().then(() => this.onTouched());
-      } else {
-        this.isFocused = true;
-        this.nzFocus.emit();
-      }
-    });
+    this.nzFormStatusService?.formStatusChanges
+      .pipe(
+        distinctUntilChanged((pre, cur) => {
+          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(({ status, hasFeedback }) => {
+        this.setStatusStyles(status, hasFeedback);
+      });
+
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          this.isFocused = false;
+          this.updateDisplayValue(this.value!);
+          this.nzBlur.emit();
+          Promise.resolve().then(() => this.onTouched());
+        } else {
+          this.isFocused = true;
+          this.nzFocus.emit();
+        }
+      });
 
     this.dir = this.directionality.value;
     this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -434,10 +479,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus, nzDisabled } = changes;
     if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
+    }
+    if (nzDisabled) {
+      this.disabled$.next(this.nzDisabled);
+    }
+    if (nzStatus) {
+      this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
   }
 
@@ -461,6 +513,22 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       )
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.stop());
+    });
+  }
+
+  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
+    // set inner status
+    this.status = status;
+    this.hasFeedback = hasFeedback;
+    this.cdr.markForCheck();
+    // render status if nzStatus is set
+    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
+    Object.keys(this.statusCls).forEach(status => {
+      if (this.statusCls[status]) {
+        this.renderer.addClass(this.elementRef.nativeElement, status);
+      } else {
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
+      }
     });
   }
 }

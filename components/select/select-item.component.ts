@@ -25,7 +25,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       <ng-template #labelTemplate>{{ label }}</ng-template>
     </ng-container>
     <span *ngIf="deletable && !disabled" class="ant-select-selection-item-remove" (click)="onDelete($event)">
-      <i nz-icon nzType="close" *ngIf="!removeIcon; else removeIcon"></i>
+      <span nz-icon nzType="close" *ngIf="!removeIcon; else removeIcon"></span>
     </span>
   `,
   host: {

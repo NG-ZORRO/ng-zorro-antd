@@ -44,7 +44,7 @@
         <ng-container [ngSwitch]="listType">
           <ng-container *ngSwitchCase="'picture'">
             <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">
-              <i nz-icon nzType="loading"></i>
+              <span nz-icon nzType="loading"></span>
             </ng-container>
           </ng-container>
           <ng-container *ngSwitchCase="'picture-card'">
@@ -52,7 +52,7 @@
               {{ locale.uploading }}
             </ng-container>
           </ng-container>
-          <i *ngSwitchDefault nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></i>
+          <span *ngSwitchDefault nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></span>
         </ng-container>
       </ng-container>
       <ng-template
@@ -61,7 +61,7 @@
         [ngTemplateOutletContext]="{ $implicit: file }"
       ></ng-template>
       <ng-template #iconNodeFileIcon>
-        <i nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></i>
+        <span nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></span>
       </ng-template>
     </ng-template>
     <ng-template #removeIcon>
@@ -75,7 +75,7 @@
         [attr.title]="locale.removeFile"
         class="ant-upload-list-item-card-actions-btn"
       >
-        <i nz-icon nzType="delete"></i>
+        <span nz-icon nzType="delete"></span>
       </button>
     </ng-template>
     <ng-template #downloadIcon>
@@ -89,7 +89,7 @@
         [attr.title]="locale.downloadFile"
         class="ant-upload-list-item-card-actions-btn"
       >
-        <i nz-icon nzType="download"></i>
+        <span nz-icon nzType="download"></span>
       </button>
     </ng-template>
     <ng-template #downloadOrDelete>
@@ -140,7 +140,7 @@
         [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
         (click)="handlePreview(file, $event)"
       >
-        <i nz-icon nzType="eye"></i>
+        <span nz-icon nzType="eye"></span>
       </a>
       <ng-container *ngIf="file.status === 'done'">
         <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>

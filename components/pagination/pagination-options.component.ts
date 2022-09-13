@@ -18,7 +18,7 @@ import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
-  selector: 'div[nz-pagination-options]',
+  selector: 'li[nz-pagination-options]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

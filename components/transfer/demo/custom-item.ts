@@ -14,7 +14,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       (nzChange)="change($event)"
     >
       <ng-template #render let-item>
-        <i nz-icon nzType="{{ item.icon }}"></i>
+        <span nz-icon nzType="{{ item.icon }}"></span>
         {{ item.title }}
       </ng-template>
     </nz-transfer>

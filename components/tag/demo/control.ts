@@ -11,7 +11,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
       {{ sliceTagName(tag) }}
     </nz-tag>
     <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
-      <i nz-icon nzType="plus"></i>
+      <span nz-icon nzType="plus"></span>
       New Tag
     </nz-tag>
     <input

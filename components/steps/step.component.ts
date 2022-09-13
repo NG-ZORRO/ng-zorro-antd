@@ -19,7 +19,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzProgressFormatter } from 'ng-zorro-antd/progress';
 
@@ -43,19 +43,21 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
             <nz-progress
               [nzPercent]="nzPercentage"
               nzType="circle"
-              [nzWidth]="40"
+              [nzWidth]="nzSize === 'small' ? 32 : 40"
               [nzFormat]="nullProcessFormat"
               [nzStrokeWidth]="4"
             ></nz-progress>
           </div>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"><i nz-icon nzType="check"></i></span>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
+          <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"
+            ><span nz-icon nzType="check"></span
+          ></span>
+          <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><span nz-icon nzType="close"></span></span>
           <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
             {{ index + 1 }}
           </span>
           <span class="ant-steps-icon" *ngIf="nzIcon">
             <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-              <i nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></i>
+              <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
             </ng-container>
           </span>
         </ng-template>
@@ -112,6 +114,7 @@ export class NzStepComponent implements OnInit {
   @Input() nzDescription?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzPercentage: number | null = null;
+  @Input() nzSize: NzSizeDSType = 'default';
 
   @Input()
   get nzStatus(): string {

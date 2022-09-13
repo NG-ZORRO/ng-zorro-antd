@@ -42,7 +42,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
-        <i nz-icon nzType="smile" style="font-size: 20px;"></i>
+        <span nz-icon nzType="smile" style="font-size: 20px;"></span>
         <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>

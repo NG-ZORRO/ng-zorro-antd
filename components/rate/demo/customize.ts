@@ -12,11 +12,11 @@ import { Component } from '@angular/core';
     </ng-template>
     <ng-template #characterIcon let-index>
       <ng-container [ngSwitch]="index">
-        <i nz-icon nzType="frown" *ngSwitchCase="0"></i>
-        <i nz-icon nzType="frown" *ngSwitchCase="1"></i>
-        <i nz-icon nzType="meh" *ngSwitchCase="2"></i>
-        <i nz-icon nzType="smile" *ngSwitchCase="3"></i>
-        <i nz-icon nzType="smile" *ngSwitchCase="4"></i>
+        <span nz-icon nzType="frown" *ngSwitchCase="0"></span>
+        <span nz-icon nzType="frown" *ngSwitchCase="1"></span>
+        <span nz-icon nzType="meh" *ngSwitchCase="2"></span>
+        <span nz-icon nzType="smile" *ngSwitchCase="3"></span>
+        <span nz-icon nzType="smile" *ngSwitchCase="4"></span>
       </ng-container>
     </ng-template>
   `,

@@ -19,7 +19,7 @@ import { NzBreadcrumb } from './breadcrumb';
     <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
         <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
-        <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
+        <span *ngIf="!!nzOverlay" nz-icon nzType="down"></span>
       </span>
     </ng-container>
 

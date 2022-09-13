@@ -193,7 +193,7 @@
 .markdown .anchor {
   margin-left: 8px;
   opacity: 0;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 
   .ant-row-rtl & {
     margin-right: 8px;
@@ -215,17 +215,15 @@
     margin-right: 8px;
     margin-left: 0;
   }
-  i {
-    color: @site-text-color-secondary;
-
-    &:hover {
-      color: @primary-color;
-    }
-  }
 
   .anticon {
     display: block;
+    color: @site-text-color-secondary;
     font-size: 16px;
+
+    &:hover {
+      color: @site-text-color;
+    }
   }
 }
 
@@ -444,6 +442,13 @@
       > h2 {
         margin-top: 0;
         padding-top: 4px;
+        direction: ltr;
+
+        span {
+          .ant-row-rtl & {
+            float: right;
+          }
+        }
       }
     }
   }

@@ -15,10 +15,10 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
       ></nz-switch>
     </p>
     <ng-template #unchecked>
-      <i nz-icon nzType="bulb"></i>
+      <span nz-icon nzType="bulb"></span>
     </ng-template>
     <ng-template #checked>
-      <i nz-icon nzType="poweroff"></i>
+      <span nz-icon nzType="poweroff"></span>
     </ng-template>
     <nz-code-editor style="height: 200px" [ngModel]="code" [nzEditorOption]="{ language: 'markdown' }"></nz-code-editor>
   `

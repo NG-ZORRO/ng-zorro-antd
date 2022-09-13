@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <button *nzSpaceItem nz-button nzType="primary">Button</button>
       <nz-upload *nzSpaceItem nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76">
         <button nz-button>
-          <i nz-icon nzType="upload"></i>
+          <span nz-icon nzType="upload"></span>
           Click to Upload
         </button>
       </nz-upload>

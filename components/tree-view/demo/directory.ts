@@ -49,21 +49,21 @@ interface ExampleFlatNode {
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <i nz-icon nzType="file" nzTheme="outline"></i>
+          <span nz-icon nzType="file" nzTheme="outline"></span>
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'folder-open' : 'folder'" nzTheme="outline"></i>
+          <span nz-icon [nzType]="treeControl.isExpanded(node) ? 'folder-open' : 'folder'" nzTheme="outline"></span>
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>

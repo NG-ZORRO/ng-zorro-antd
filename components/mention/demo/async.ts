@@ -7,7 +7,7 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-mention [nzSuggestions]="suggestions" [nzLoading]="loading" (nzOnSearchChange)="onSearchChange($event)">
-      <input nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+      <textarea rows="1" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
     </nz-mention>
   `
 })

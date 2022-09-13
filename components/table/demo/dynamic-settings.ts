@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableSize } from 'ng-zorro-antd/table';
 
@@ -124,7 +124,7 @@ interface Setting {
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  settingForm?: FormGroup;
+  settingForm?: UntypedFormGroup;
   listOfData: readonly ItemData[] = [];
   displayData: readonly ItemData[] = [];
   allChecked = false;
@@ -231,7 +231,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     return data;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.settingForm = this.formBuilder.group({

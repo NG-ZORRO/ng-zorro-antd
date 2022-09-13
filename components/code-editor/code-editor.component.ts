@@ -22,7 +22,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
-import { editor, IDisposable } from 'monaco-editor';
+import type { editor, IDisposable } from 'monaco-editor';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -32,9 +32,9 @@ import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
 
 // Import types from monaco editor.
-import ITextModel = editor.ITextModel;
-import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
-import IStandaloneDiffEditor = editor.IStandaloneDiffEditor;
+type ITextModel = editor.ITextModel;
+type IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+type IStandaloneDiffEditor = editor.IStandaloneDiffEditor;
 
 declare const monaco: NzSafeAny;
 

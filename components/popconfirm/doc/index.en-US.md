@@ -25,7 +25,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | ----- | ----------- | ---- | ------------- |
 | `[nzPopconfirmArrowPointAtCenter]` | Arrow point at center of the origin | `boolean` | `false` |
 | `[nzPopconfirmTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
+| `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'click'` |
 | `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopconfirmOrigin]` | Origin of the popconfirm | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | Show or hide popconfirm | `boolean` | `false` |
@@ -46,6 +46,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` | - |
 | `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - | - |
 | `[nzAutoFocus]` | Autofocus a button | `null \| 'ok' \| 'cancel'` | `null` | ✅ |
+| `[nzBeforeConfirm]` | The hook before the confirmation operation, decides whether to continue responding to the `nzOnConfirm` callback, supports asynchronous verification. | `(() => Observable<boolean> \| Promise<boolean> \| boolean) \| null` | `null` | - |
 | `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - | - |
 | `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - | - |
 

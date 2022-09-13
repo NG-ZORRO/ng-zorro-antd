@@ -22,7 +22,7 @@ import { NzTabSetComponent } from './tabset.component';
 describe('NzTabSet', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzTabsModule, NzIconTestModule, CommonModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzTabsModule, NzIconTestModule, CommonModule, NoopAnimationsModule],
       declarations: [
         SimpleTabsTestComponent,
         TemplateTabsTestComponent,
