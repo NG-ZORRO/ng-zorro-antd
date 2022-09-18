@@ -21,7 +21,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Selezionare la data',
+      yearPlaceholder: "Selezionare l'anno",
+      quarterPlaceholder: 'Selezionare il trimestre',
+      monthPlaceholder: 'Selezionare il mese',
+      weekPlaceholder: 'Selezionare la settimana',
       rangePlaceholder: ["Data d'inizio", 'Data di fine'],
+      rangeYearPlaceholder: ["Anno d'inizio", 'Anno di fine'],
+      rangeMonthPlaceholder: ["Mese d'inizio ", 'Mese di fine'],
+      rangeWeekPlaceholder: ["Settimana d'inizio", 'Settimana di fine'],
       locale: 'it_IT',
       today: 'Oggi',
       now: 'Adesso',
@@ -32,6 +39,7 @@ export default {
       year: 'Anno',
       timeSelect: "Seleziona l'ora",
       dateSelect: 'Seleziona la data',
+      weekSelect: 'Seleziona la settimana',
       monthSelect: 'Seleziona il mese',
       yearSelect: "Seleziona l'anno",
       decadeSelect: 'Seleziona il decennio',
@@ -50,16 +58,25 @@ export default {
       nextCentury: 'Prossimo secolo'
     },
     timePickerLocale: {
-      placeholder: "Selezionare l'orario"
+      placeholder: "Selezionare l'orario",
+      rangePlaceholder: ["Ora d'inizio", 'Ora di fine']
     }
   },
   TimePicker: {
-    placeholder: "Selezionare l'orario"
+    placeholder: "Selezionare l'orario",
+    rangePlaceholder: ["Ora d'inizio", 'Ora di fine']
   },
   Calendar: {
     lang: {
       placeholder: 'Selezionare la data',
+      yearPlaceholder: "Selezionare l'anno",
+      quarterPlaceholder: 'Selezionare il trimestre',
+      monthPlaceholder: 'Selezionare il mese',
+      weekPlaceholder: 'Selezionare la settimana',
       rangePlaceholder: ["Data d'inizio", 'Data di fine'],
+      rangeYearPlaceholder: ["Anno d'inizio", 'Anno di fine'],
+      rangeMonthPlaceholder: ["Mese d'inizio ", 'Mese di fine'],
+      rangeWeekPlaceholder: ["Settimana d'inizio", 'Settimana di fine'],
       locale: 'it_IT',
       today: 'Oggi',
       now: 'Adesso',
@@ -69,6 +86,7 @@ export default {
       month: 'Mese',
       year: 'Anno',
       timeSelect: "Seleziona l'ora",
+      weekSelect: 'Seleziona la settimana',
       dateSelect: 'Seleziona la data',
       monthSelect: 'Seleziona il mese',
       yearSelect: "Seleziona l'anno",
@@ -88,7 +106,8 @@ export default {
       nextCentury: 'Prossimo secolo'
     },
     timePickerLocale: {
-      placeholder: "Selezionare l'orario"
+      placeholder: "Selezionare l'orario",
+      rangePlaceholder: ["Ora d'inizio", 'Ora di fine']
     }
   },
   global: {
@@ -98,12 +117,20 @@ export default {
     filterTitle: 'Menù Filtro',
     filterConfirm: 'OK',
     filterReset: 'Reset',
+    filterEmptyText: 'Nessun filtro',
+    emptyText: 'Nessun dato',
     selectAll: 'Seleziona pagina corrente',
     selectInvert: 'Inverti selezione nella pagina corrente',
+    selectionAll: 'Seleziona tutti i dati',
     sortTitle: 'Ordina',
+    expand: 'Esapandi riga',
+    collapse: 'Chiudi riga',
     triggerDesc: 'Clicca per ordinare in modo discendente',
-    triggerAsc: '﻿Clicca per ordinare in modo ascendente',
-    cancelSort: 'Clicca per eliminare i filtri'
+    triggerAsc: 'Clicca per ordinare in modo ascendente',
+    cancelSort: 'Clicca per eliminare i filtri',
+    filterCheckall: 'Seleziona tutto',
+    filterSearchPlaceholder: 'Cerca nei filtri',
+    selectNone: 'Pulisci tutti i dati'
   },
   Modal: {
     okText: 'OK',
@@ -115,9 +142,16 @@ export default {
     cancelText: 'Annulla'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Cerca qui',
     itemUnit: 'elemento',
-    itemsUnit: 'elementi'
+    itemsUnit: 'elementi',
+    remove: 'Rimuovi',
+    selectCurrent: 'Seleziona pagina corrente',
+    removeCurrent: 'Rimuovi pagina corrente',
+    selectAll: 'Selezione tutti i dati',
+    removeAll: 'Rimuovi tutti i dati',
+    selectInvert: 'Inverti selezione nella pagina corrente'
   },
   Upload: {
     uploading: 'Caricamento...',
@@ -137,5 +171,11 @@ export default {
     copy: 'copia',
     copied: 'copia effettuata',
     expand: 'espandi'
+  },
+  PageHeader: {
+    back: 'Indietro'
+  },
+  Image: {
+    preview: 'Anteprima'
   }
 };
