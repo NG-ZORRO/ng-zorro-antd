@@ -103,8 +103,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         row.dateCells.push(cell);
       }
       row.classMap = {
-        [`ant-picker-week-panel-row`]: this.showWeek,
-        [`ant-picker-week-panel-row-selected`]: this.showWeek && row.isActive
+        [`ant-picker-week-panel-row`]: this.canSelectWeek,
+        [`ant-picker-week-panel-row-selected`]: this.canSelectWeek && row.isActive
       };
       weekRows.push(row);
     }
@@ -112,7 +112,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   addCellProperty(cell: DateCell, date: CandyDate): void {
-    if (this.hasRangeValue() && !this.showWeek) {
+    if (this.hasRangeValue() && !this.canSelectWeek) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
       // Selected

@@ -573,6 +573,18 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(true);
     }));
+
+    it('should support nzShowWeekNumber', fakeAsync(() => {
+      fixtureInstance.nzShowWeekNumber = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
+      fixtureInstance.nzShowWeekNumber = false;
+      fixture.detectChanges();
+      tick(500);
+      openPickerByClickTrigger();
+      expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeNull();
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1138,7 +1150,7 @@ describe('NzDatePickerComponent', () => {
     return queryFromOverlay(`.${PREFIX_CLASS}-header-super-next-btn`);
   }
 
-  describe('ngModel value accesors', () => {
+  describe('ngModel value accessors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
     it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
@@ -1356,6 +1368,7 @@ describe('in form', () => {
         [nzInline]="nzInline"
         [nzBackdrop]="nzBackdrop"
         [nzPlacement]="nzPlacement"
+        [nzShowWeekNumber]="nzShowWeekNumber"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1363,7 +1376,7 @@ describe('in form', () => {
       <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
-      <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
+      <!-- use another picker to avoid nzOpen's side-effects because nzOpen acts as "true" if used -->
       <nz-date-picker *ngSwitchCase="2" [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)"></nz-date-picker>
 
       <!-- Suite 3 -->
@@ -1416,6 +1429,7 @@ class NzTestDatePickerComponent {
   nzInline = false;
   nzBackdrop = false;
   nzPlacement = 'bottomLeft';
+  nzShowWeekNumber = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}

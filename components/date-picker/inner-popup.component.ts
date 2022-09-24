@@ -106,10 +106,12 @@ import { PREFIX_CLASS } from './util';
             <date-header
               [(value)]="activeDate"
               [locale]="locale"
-              [showSuperPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
-              [showSuperNextBtn]="showWeek ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
-              [showPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
-              [showNextBtn]="showWeek ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
+              [showSuperPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
+              [showSuperNextBtn]="
+                panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')
+              "
+              [showPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
+              [showNextBtn]="panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             ></date-header>
@@ -123,6 +125,7 @@ import { PREFIX_CLASS } from './util';
                 [cellRender]="dateRender"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
+                [canSelectWeek]="panelMode === 'week'"
                 (valueChange)="onSelectDate($event)"
                 (cellHover)="cellHover.emit($event)"
               ></date-table>
