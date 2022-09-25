@@ -79,6 +79,7 @@ registerLocaleData(zh);
 | `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzShowToday]` | 是否展示“今天”按钮 | `boolean` | `true` |
 | `[nzShowNow]` | 当设定了`nzShowTime`的时候，面板是否显示“此刻”按钮 | `boolean` | `true` |
+| `[nzShowWeekNumber]` | 是否在每一行显示周数（仅日期选择器支持。周选择器始终显示周数） | `boolean` | `false` |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
 
 
@@ -96,6 +97,7 @@ registerLocaleData(zh);
 | --- | --- | --- | --- |
 | `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzDisabledTime]` | 不可选择的时间 | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[nzShowWeekNumber]` | 是否在每一行显示周数（仅日期选择器支持。周选择器始终显示周数） | `boolean` | `false` |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
 
 > `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

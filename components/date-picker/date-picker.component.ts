@@ -185,7 +185,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [isRange]="isRange"
           [inline]="nzInline"
           [defaultPickerValue]="nzDefaultPickerValue"
-          [showWeek]="nzMode === 'week'"
+          [showWeek]="nzShowWeekNumber || nzMode === 'week'"
           [panelMode]="panelMode"
           (panelModeChange)="onPanelModeChange($event)"
           (calendarChange)="onCalendarChange($event)"
@@ -306,6 +306,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
+  @Input() @InputBoolean() nzShowWeekNumber: boolean = false;
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
   @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();

@@ -78,6 +78,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzShowToday]` | whether to show 'Today' button | `boolean` | `true` |
 | `[nzShowNow]` | whether to show 'Now' button on panel when `nzShowTime` is set | `boolean` | `true` |
+| `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean` | `false` |
 | `(nzOnOk)` | callback when click ok button | `EventEmitter<Date>` | - |
 
 ### nz-range-picker
@@ -95,6 +96,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | -------- | ----------- | ---- | ------- |
 | `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean` | `false` |
 | `(nzOnOk)` | click ok callback | `EventEmitter<Date[]>` | - |
 
 > Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`

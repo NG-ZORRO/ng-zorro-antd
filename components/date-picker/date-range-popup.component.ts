@@ -57,7 +57,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
         <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
-        <div class="{{ prefixCls }}-panel-container">
+        <div class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }}">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngIf="hasTimePicker; else noTimePicker">
               <ng-container

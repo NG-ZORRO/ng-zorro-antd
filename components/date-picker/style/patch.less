@@ -17,3 +17,12 @@
   top: unset;
   left: unset;
 }
+
+// ensure table is correct width to display week numbers in date mode
+.@{picker-prefix-cls}-panel-container.@{picker-prefix-cls}-week-number .@{picker-prefix-cls}-date-panel .@{picker-prefix-cls}-content {
+  width: 100%;
+
+  th {
+    width: inherit;
+  }
+}
