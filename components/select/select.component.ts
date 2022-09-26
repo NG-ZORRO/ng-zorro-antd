@@ -6,7 +6,12 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair
+} from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -40,6 +45,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { getPlacementName, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
@@ -56,7 +62,13 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
-import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType, NzSelectOptionInterface } from './select.types';
+import {
+  NzFilterOptionType,
+  NzSelectItemInterface,
+  NzSelectModeType,
+  NzSelectOptionInterface,
+  NzSelectPlacementType
+} from './select.types';
 
 const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
   if (item && item.nzLabel) {
@@ -137,6 +149,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
       [cdkConnectedOverlayOpen]="nzOpen"
+      [cdkConnectedOverlayPositions]="positions"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
@@ -146,8 +159,10 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
         [itemSize]="nzOptionHeightPx"
         [maxItemLength]="nzOptionOverflowSize"
         [matchWidth]="nzDropdownMatchSelectWidth"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
-        [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="dropDownPosition === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="dropDownPosition === 'topRight'"
         [@slideMotion]="'enter'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -205,6 +220,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
   @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzPlacement: NzSelectPlacementType | null = null;
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
@@ -264,7 +280,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private requestId: number = -1;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  dropDownPosition: NzSelectPlacementType = 'bottomLeft';
   triggerWidth: number | null = null;
   listOfContainerItem: NzSelectItemInterface[] = [];
   listOfTopItem: NzSelectItemInterface[] = [];
@@ -272,6 +288,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   listOfValue: NzSafeAny[] = [];
   focused = false;
   dir: Direction = 'ltr';
+  positions: ConnectionPositionPair[] = [];
 
   // status
   prefixCls: string = 'ant-select';
@@ -500,7 +517,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.dropDownPosition = position.connectionPair.originY;
+    const placement = getPlacementName(position);
+    this.dropDownPosition = placement as NzSelectPlacementType;
   }
 
   updateCdkConnectedOverlayStatus(): void {
@@ -579,7 +597,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzDisabled, nzOptions, nzStatus } = changes;
+    const { nzOpen, nzDisabled, nzOptions, nzStatus, nzPlacement } = changes;
     if (nzOpen) {
       this.onOpenChange();
     }
@@ -606,6 +624,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+    if (nzPlacement) {
+      const { currentValue } = nzPlacement;
+      this.dropDownPosition = currentValue as NzSelectPlacementType;
+      const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
+      if (currentValue && listOfPlacement.includes(currentValue)) {
+        this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
+      } else {
+        this.positions = listOfPlacement.map(e => POSITION_MAP[e as POSITION_TYPE]);
+      }
     }
   }
 
