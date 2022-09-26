@@ -37,6 +37,10 @@ export const POSITION_MAP = {
   )
 };
 export type POSITION_TYPE = keyof typeof POSITION_MAP;
+export type POSITION_TYPE_HORIZONTAL = Extract<
+  POSITION_TYPE,
+  'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight'
+>;
 
 export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
 

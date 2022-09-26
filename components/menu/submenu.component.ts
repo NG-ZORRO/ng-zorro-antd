@@ -32,7 +32,7 @@ import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -50,7 +50,12 @@ const listOfVerticalPositions = [
   POSITION_MAP.left,
   POSITION_MAP.leftBottom
 ];
-const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
+const listOfHorizontalPositions = [
+  POSITION_MAP.bottomLeft,
+  POSITION_MAP.bottomRight,
+  POSITION_MAP.topRight,
+  POSITION_MAP.topLeft
+];
 
 @Component({
   selector: '[nz-submenu]',
@@ -146,6 +151,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() nzIcon: string | null = null;
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
   @ContentChildren(NzSubMenuComponent, { descendants: true })
@@ -181,7 +187,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setTriggerWidth(): void {
-    if (this.mode === 'horizontal' && this.platform.isBrowser && this.cdkOverlayOrigin) {
+    if (
+      this.mode === 'horizontal' &&
+      this.platform.isBrowser &&
+      this.cdkOverlayOrigin &&
+      this.nzPlacement === 'bottomLeft'
+    ) {
       /** TODO: fast dom **/
       this.triggerWidth = this.cdkOverlayOrigin!.nativeElement.getBoundingClientRect().width;
     }
@@ -216,7 +227,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     this.nzSubmenuService.mode$.pipe(takeUntil(this.destroy$)).subscribe(mode => {
       this.mode = mode;
       if (mode === 'horizontal') {
-        this.overlayPositions = listOfHorizontalPositions;
+        this.overlayPositions = [POSITION_MAP[this.nzPlacement], ...listOfHorizontalPositions];
       } else if (mode === 'vertical') {
         this.overlayPositions = listOfVerticalPositions;
       }

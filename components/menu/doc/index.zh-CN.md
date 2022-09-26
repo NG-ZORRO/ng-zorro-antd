@@ -71,6 +71,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
 | `[nzOpen]` | 是否展开，可双向绑定 | `boolean` | `false` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
