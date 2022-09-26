@@ -215,7 +215,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzStatus: NzStatus = '';
   @Input() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
-  @Input() nzDropdownClassName: string | null = null;
+  @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
   @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
