@@ -53,13 +53,22 @@ function generate(target) {
       // handle components->${component}->demo folder
       const demoDirPath = path.join(componentDirPath, 'demo');
       const demoMap = {};
+      const debugDemos = new Set();
+
       if (fs.existsSync(demoDirPath)) {
         const demoDir = fs.readdirSync(demoDirPath);
         demoDir.forEach(demo => {
           if (/.md$/.test(demo)) {
             const nameKey = nameWithoutSuffixUtil(demo);
             const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));
-            demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
+            const demoMeta = parseDemoMdUtil(demoMarkDownFile);
+
+            if (demoMeta.meta.debug && process.env.NODE_ENV !== 'development') {
+              debugDemos.add(nameKey);
+              return;
+            }
+
+            demoMap[nameKey] = demoMeta;
             demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(
               capitalizeFirstLetter(nameKey)
             )}Component`;
@@ -80,12 +89,18 @@ function generate(target) {
               demoMap[nameKey].meta.iframe
             );
           }
+
           if (/.ts$/.test(demo)) {
             const nameKey = nameWithoutSuffixUtil(demo);
+            if (debugDemos.has(nameKey)) {
+              return;
+            }
+
             demoMap[nameKey].ts = String(fs.readFileSync(path.join(demoDirPath, demo)));
             // copy ts file to site->${component} folder
             fs.writeFileSync(path.join(showCaseComponentPath, demo), demoMap[nameKey].ts);
           }
+
           if (demo === 'module') {
             const data = String(fs.readFileSync(path.join(demoDirPath, demo)));
             fs.writeFileSync(path.join(showCaseComponentPath, 'module.ts'), data);
