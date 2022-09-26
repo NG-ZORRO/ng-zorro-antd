@@ -38,7 +38,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzOpen]` | dropdown expand state, double binding | `boolean` | `false` |
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
 | `[nzDisabled]` | Whether disabled select | `boolean` | `false` |
-| `[nzDropdownClassName]` | className of dropdown menu | `string` | - |
+| `[nzDropdownClassName]` | className of dropdown menu | `string \| string[]` | - |
 | `[nzDropdownMatchSelectWidth]` | Whether dropdown's width is same width than select. | `boolean` | `true` |
 | `[nzDropdownStyle]` | style of dropdown menu | `object` | - |
 | `[nzCustomTemplate]` | The custom template of select | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
@@ -48,7 +48,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzMode]` | Set mode of Select | `'multiple' \| 'tags' \| 'default'` | `'default'` |
 | `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string  \|  TemplateRef<void>` | `'Not Found'` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
-| `[nzPlacement]` | The position where the selection box pops up | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | `'bottomLeft'` |
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true`(for single select), `false`(for multiple select) |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |

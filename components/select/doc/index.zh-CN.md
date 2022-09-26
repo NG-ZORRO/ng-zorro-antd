@@ -39,7 +39,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzOpen]` | 下拉菜单是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzAutoFocus]` | 默认获取焦点 | `boolean` | `false` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
-| `[nzDropdownClassName]` | 下拉菜单的 className 属性 | `string` | - |
+| `[nzDropdownClassName]` | 下拉菜单的 className 属性 | `string \| string[]` | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` |
 | `[nzDropdownStyle]` | 下拉菜单的 style 属性 | `object` | - |
 | `[nzCustomTemplate]` | 自定义选择框的 Template 内容 | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
@@ -49,7 +49,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzMode]` | 设置 nz-select 的模式 | `'multiple' \| 'tags' \| 'default'` | `'default'` |
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string \| TemplateRef<void>` | - |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
-| `[nzPlacement]` | 选择框弹出的位置 | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | `'bottomLeft'` |
 | `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | 单选为 `true`，多选为 `false` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
