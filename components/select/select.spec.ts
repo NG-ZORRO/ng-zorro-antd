@@ -20,7 +20,12 @@ import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
-import { NzFilterOptionType, NzSelectItemInterface, NzSelectOptionInterface } from './select.types';
+import {
+  NzFilterOptionType,
+  NzSelectItemInterface,
+  NzSelectOptionInterface,
+  NzSelectPlacementType
+} from './select.types';
 
 describe('select', () => {
   describe('default template mode', () => {
@@ -1331,6 +1336,70 @@ describe('select', () => {
       expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
+  describe('placement', () => {
+    let testBed: ComponentBed<TestSelectTemplateDefaultComponent>;
+    let component: TestSelectTemplateDefaultComponent;
+    let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
+    let overlayContainerElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestSelectTemplateDefaultComponent, {
+        imports: [NzSelectModule, NzIconTestModule, FormsModule]
+      });
+      component = testBed.component;
+      fixture = testBed.fixture;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should nzPlacement work', fakeAsync(() => {
+      component.nzOpen = true;
+      fixture.detectChanges();
+      let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+      component.nzOpen = false;
+      component.nzPlacement = 'bottomRight';
+      fixture.detectChanges();
+      component.nzOpen = true;
+      tick();
+      fixture.detectChanges();
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+      component.nzOpen = false;
+      component.nzPlacement = 'topLeft';
+      fixture.detectChanges();
+      component.nzOpen = true;
+      tick();
+      fixture.detectChanges();
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+      component.nzOpen = false;
+      component.nzPlacement = 'topRight';
+      fixture.detectChanges();
+      component.nzOpen = true;
+      tick();
+      fixture.detectChanges();
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
+      component.nzOpen = false;
+      fixture.detectChanges();
+      flush();
+    }));
+  });
 });
 
 @Component({
@@ -1357,6 +1426,7 @@ describe('select', () => {
       [nzDisabled]="nzDisabled"
       [nzBackdrop]="nzBackdrop"
       [(nzOpen)]="nzOpen"
+      [nzPlacement]="nzPlacement"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1418,6 +1488,7 @@ export class TestSelectTemplateDefaultComponent {
   nzDisabled = false;
   nzOpen = false;
   nzBackdrop = false;
+  nzPlacement: NzSelectPlacementType | null = 'bottomLeft';
 }
 
 @Component({
