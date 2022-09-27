@@ -79,7 +79,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     const hostDOM = this.elementRef.nativeElement;
     const inputDOM = this.inputElement.nativeElement;
     this.renderer.removeStyle(hostDOM, 'width');
-    mirrorDOM.innerHTML = this.renderer.createText(`${inputDOM.value}&nbsp;`);
+    this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
     this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
   }
 
