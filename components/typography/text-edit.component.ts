@@ -17,8 +17,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
-import { filter, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, from, fromEvent, Observable } from 'rxjs';
+import { switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTSType } from 'ng-zorro-antd/core/types';
@@ -66,9 +66,7 @@ export class NzTextEditComponent implements OnInit {
   @Output() readonly endEditing = new EventEmitter<string>(true);
   @ViewChild('textarea', { static: false })
   set textarea(textarea: ElementRef<HTMLTextAreaElement> | undefined) {
-    if (textarea) {
-      this.textarea$.next(textarea);
-    }
+    this.textarea$.next(textarea);
   }
   @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective!: NzAutosizeDirective;
 
@@ -79,7 +77,7 @@ export class NzTextEditComponent implements OnInit {
   // We could've saved the textarea within some private property (e.g. `_textarea`) and have a getter,
   // but having subject makes the code more reactive and cancellable (e.g. event listeners will be
   // automatically removed and re-added through the `switchMap` below).
-  private textarea$ = new BehaviorSubject<ElementRef<HTMLTextAreaElement> | null>(null);
+  private textarea$ = new BehaviorSubject<ElementRef<HTMLTextAreaElement> | null | undefined>(null);
 
   constructor(
     private ngZone: NgZone,
@@ -95,22 +93,19 @@ export class NzTextEditComponent implements OnInit {
       this.cdr.markForCheck();
     });
 
-    const textarea$: Observable<ElementRef<HTMLTextAreaElement>> = this.textarea$.pipe(
-      filter((textarea): textarea is ElementRef<HTMLTextAreaElement> => textarea !== null)
-    );
-
-    textarea$
+    this.textarea$
       .pipe(
-        switchMap(
-          textarea =>
-            // Caretaker note: we explicitly should call `subscribe()` within the root zone.
-            // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
-            // but `addEventListener` is called when the `fromEvent` is subscribed.
-            new Observable<KeyboardEvent>(subscriber =>
-              this.ngZone.runOutsideAngular(() =>
-                fromEvent<KeyboardEvent>(textarea.nativeElement, 'keydown').subscribe(subscriber)
+        switchMap(textarea =>
+          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+          // but `addEventListener` is called when the `fromEvent` is subscribed.
+          textarea
+            ? new Observable<KeyboardEvent>(subscriber =>
+                this.ngZone.runOutsideAngular(() =>
+                  fromEvent<KeyboardEvent>(textarea.nativeElement, 'keydown').subscribe(subscriber)
+                )
               )
-            )
+            : EMPTY
         ),
         takeUntil(this.destroy$)
       )
@@ -133,15 +128,16 @@ export class NzTextEditComponent implements OnInit {
         });
       });
 
-    textarea$
+    this.textarea$
       .pipe(
-        switchMap(
-          textarea =>
-            new Observable<KeyboardEvent>(subscriber =>
-              this.ngZone.runOutsideAngular(() =>
-                fromEvent<KeyboardEvent>(textarea.nativeElement, 'input').subscribe(subscriber)
+        switchMap(textarea =>
+          textarea
+            ? new Observable<KeyboardEvent>(subscriber =>
+                this.ngZone.runOutsideAngular(() =>
+                  fromEvent<KeyboardEvent>(textarea.nativeElement, 'input').subscribe(subscriber)
+                )
               )
-            )
+            : EMPTY
         ),
         takeUntil(this.destroy$)
       )
@@ -175,9 +171,13 @@ export class NzTextEditComponent implements OnInit {
   }
 
   focusAndSetValue(): void {
-    this.ngZone.onStable
-      .pipe(take(1), withLatestFrom(this.textarea$), takeUntil(this.destroy$))
-      .subscribe(([, textarea]) => {
+    // Note: the zone may be nooped through `BootstrapOptions` when bootstrapping the root module. This means
+    // the `onStable` will never emit any value.
+    const onStable$ = this.ngZone.isStable ? from(Promise.resolve()) : this.ngZone.onStable.pipe(take(1));
+    // Normally this isn't in the zone, but it can cause performance regressions for apps
+    // using `zone-patch-rxjs` because it'll trigger a change detection when it unsubscribes.
+    this.ngZone.runOutsideAngular(() => {
+      onStable$.pipe(withLatestFrom(this.textarea$), takeUntil(this.destroy$)).subscribe(([, textarea]) => {
         if (textarea) {
           textarea.nativeElement.focus();
           textarea.nativeElement.value = this.currentText || '';
@@ -185,5 +185,6 @@ export class NzTextEditComponent implements OnInit {
           this.cdr.markForCheck();
         }
       });
+    });
   }
 }

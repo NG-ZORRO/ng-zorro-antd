@@ -2,7 +2,7 @@ import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -28,12 +28,11 @@ describe('typography', () => {
   let componentElement: HTMLElement;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let zone: MockNgZone;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
-      providers: [{ provide: NgZone, useFactory: () => (zone = new MockNgZone()) }],
+      providers: [{ provide: NgZone, useFactory: () => new MockNgZone() }],
       declarations: [
         NzTestTypographyComponent,
         NzTestTypographyCopyComponent,
@@ -283,9 +282,11 @@ describe('typography', () => {
     it('should edit focus', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
-
       fixture.detectChanges();
-      zone.simulateZoneExit();
+      // The zone may be already stable (see `isStable` condition), thus there're no tasks
+      // in the queue that have been scheduled previously.
+      // This will schedule a microtask (except of waiting for `onStable`).
+      flushMicrotasks();
 
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
 
