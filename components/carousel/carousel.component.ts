@@ -103,6 +103,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
+    class: 'ant-carousel',
     '[class.ant-carousel-vertical]': 'vertical',
     '[class.ant-carousel-rtl]': `dir ==='rtl'`
   }
@@ -183,8 +184,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
-
-    this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
   ngOnInit(): void {

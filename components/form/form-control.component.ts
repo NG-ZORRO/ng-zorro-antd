@@ -9,14 +9,12 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -58,7 +56,10 @@ import { NzFormDirective } from './form.directive';
       <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
     </div>
   `,
-  providers: [NzFormStatusService]
+  providers: [NzFormStatusService],
+  host: {
+    class: 'ant-form-item-control'
+  }
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
@@ -230,16 +231,12 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   }
 
   constructor(
-    elementRef: ElementRef,
     @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     private cdr: ChangeDetectorRef,
-    renderer: Renderer2,
     i18n: NzI18nService,
     @Optional() private nzFormDirective: NzFormDirective,
     private nzFormStatusService: NzFormStatusService
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
-
     this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
     this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
     this.subscribeAutoTips(

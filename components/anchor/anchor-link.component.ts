@@ -40,7 +40,10 @@ import { NzAnchorComponent } from './anchor.component';
     <ng-content></ng-content>
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'ant-anchor-link'
+  }
 })
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
@@ -67,9 +70,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     private anchorComp: NzAnchorComponent,
     private platform: Platform,
     private renderer: Renderer2
-  ) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);

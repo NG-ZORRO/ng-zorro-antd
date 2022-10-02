@@ -4,17 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  Renderer2,
-  SimpleChange,
-  SimpleChanges
-} from '@angular/core';
+import { Directive, Input, OnChanges, OnDestroy, Optional, SimpleChange, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
@@ -39,6 +29,7 @@ export const DefaultTooltipIcon = {
   selector: '[nz-form]',
   exportAs: 'nzForm',
   host: {
+    class: 'ant-form',
     '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
@@ -68,14 +59,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private directionality: Directionality
-  ) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-form');
-
+  constructor(public nzConfigService: NzConfigService, @Optional() private directionality: Directionality) {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
