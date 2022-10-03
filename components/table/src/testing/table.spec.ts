@@ -191,6 +191,12 @@ describe('nz-table', () => {
       testComponent.fixHeader = true;
       expect(table.nativeElement.querySelector('.ant-table-scroll')).toBeDefined();
     });
+    it('should show a scrollBar cell in table header when has vertical scroll', () => {
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-table-cell-scrollbar')).toBeNull();
+      testComponent.fixHeader = true;
+      expect(table.nativeElement.querySelector('.ant-table-cell-scrollbar')).toBeDefined();
+    });
     it('should width config', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelectorAll('col').length).toBe(4);
