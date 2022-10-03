@@ -26,6 +26,10 @@ export class NzCellFixedDirective implements OnChanges {
   isFixedRight = false;
   isFixed = false;
 
+  isInsideTableThead(): boolean {
+    return this.elementRef.nativeElement.closest('thead')?.contains(this.elementRef.nativeElement);
+  }
+
   setAutoLeftWidth(autoLeft: string | null): void {
     this.renderer.setStyle(this.elementRef.nativeElement, 'left', autoLeft);
   }

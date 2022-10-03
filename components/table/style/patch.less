@@ -25,24 +25,8 @@ nz-filter-trigger {
   }
 }
 
-cdk-virtual-scroll-viewport.ant-table-body {
-  overflow-y: scroll;
-}
-
 .nz-table-hide-scrollbar {
-  scrollbar-color: @table-header-bg @table-header-bg;
-  &::-webkit-scrollbar {
-    background-color: @table-header-bg;
-  }
-}
-
-.@{table-prefix-cls}.@{table-prefix-cls}-small {
-  .nz-table-hide-scrollbar {
-    scrollbar-color: @table-header-bg-sm @table-header-bg-sm;
-    &::-webkit-scrollbar {
-      background-color: transparent;
-    }
-  }
+  overflow: hidden;
 }
 
 .ant-table-wrapper-rtl .ant-table thead > tr > th.ant-table-selection-column {

@@ -14,6 +14,7 @@ import { NzThMeasureDirective } from './cell/th-measure.directive';
 @Injectable()
 export class NzTableStyleService {
   theadTemplate$ = new ReplaySubject<TemplateRef<NzSafeAny>>(1);
+  hasVerticalScrollBar$ = new ReplaySubject<boolean>(1);
   hasFixLeft$ = new ReplaySubject<boolean>(1);
   hasFixRight$ = new ReplaySubject<boolean>(1);
   hostWidth$ = new ReplaySubject<number>(1);
@@ -62,6 +63,10 @@ export class NzTableStyleService {
 
   setHasFixRight(hasFixRight: boolean): void {
     this.hasFixRight$.next(hasFixRight);
+  }
+
+  setHasVerticalScrollBar(hasVerticalScrollBar: boolean): void {
+    this.hasVerticalScrollBar$.next(hasVerticalScrollBar);
   }
 
   setTableWidthConfig(widthConfig: ReadonlyArray<string | null>): void {

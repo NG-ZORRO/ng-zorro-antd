@@ -33,11 +33,14 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-container *ngIf="scrollY">
-      <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
+      <div #tableHeaderElement class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
           tableLayout="fixed"
           [scrollX]="scrollX"
+          [hasVerticalScrollBar]="hasVerticalScrollBar"
+          [hasFixRight]="hasFixRight"
+          [scrollbarWidth]="verticalScrollBarWidth"
           [listOfColWidth]="listOfColWidth"
           [theadTemplate]="theadTemplate"
         ></table>
@@ -90,6 +93,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() widthConfig: string[] = [];
+  @Input() hasFixRight: boolean | null = null;
+  @Input() hasVerticalScrollBar: boolean | null = null;
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -102,7 +107,6 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
-  headerStyleMap = {};
   bodyStyleMap = {};
   @Input() verticalScrollBarWidth = 0;
   noDateVirtualHeight = '182px';
@@ -139,18 +143,13 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
     if (scrollX || scrollY) {
-      const hasVerticalScrollBar = this.verticalScrollBarWidth !== 0;
-      this.headerStyleMap = {
-        overflowX: 'hidden',
-        overflowY: this.scrollY && hasVerticalScrollBar ? 'scroll' : 'hidden'
-      };
       this.bodyStyleMap = {
         overflowY: this.scrollY ? 'scroll' : 'hidden',
         overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
-      // Caretaker note: we have to emit the value outside of the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
-      // event listener will be also added outside of the Angular zone.
+      // Caretaker note: we have to emit the value outside the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
+      // event listener will be also added outside the Angular zone.
       this.ngZone.runOutsideAngular(() => this.scroll$.next());
     }
     if (data) {

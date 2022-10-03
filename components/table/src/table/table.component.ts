@@ -79,6 +79,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
           [data]="data"
           [scrollX]="scrollX"
           [scrollY]="scrollY"
+          [hasVerticalScrollBar]="hasVerticalScrollBar"
+          [hasFixRight]="hasFixRight"
           [contentTemplate]="contentTemplate"
           [listOfColWidth]="listOfAutoColWidth"
           [theadTemplate]="theadTemplate"
@@ -192,6 +194,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
   listOfAutoColWidth: ReadonlyArray<string | null> = [];
   listOfManualColWidth: ReadonlyArray<string | null> = [];
+  hasVerticalScrollBar: boolean | null = null;
   hasFixLeft = false;
   hasFixRight = false;
   showPagination = true;
@@ -361,6 +364,8 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
     this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
     this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
+    this.hasVerticalScrollBar = !!this.scrollY;
+    this.nzTableStyleService.setHasVerticalScrollBar(!!this.scrollY);
   }
 
   private updateShowPagination(): void {
