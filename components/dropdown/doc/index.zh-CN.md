@@ -34,7 +34,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
 
-> nz-dropdown 下的 nz-menu 默认不可选中。如果需要菜单可选中，可以指定 `<ul nz-menu nzSelectable>`.
+> 注意：`nz-dropdown` 下的 `[nz-menu]` 默认不可选中。如果需要菜单可选中，可以指定 `<ul nz-menu nzSelectable>`.
+>
+> `nz-dropdown-menu` 内 `[nz-menu]` 的 `nzMode` 只可以是默认值 `vertical`。
 
 ### nz-dropdown-menu
 
