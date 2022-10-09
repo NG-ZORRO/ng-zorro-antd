@@ -194,7 +194,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
   placementChangeTimeoutId = -1;
-  nzContentParams?: D; // only service
+  nzContentParams?: NzSafeAny; // only service
   overlayRef?: OverlayRef | null;
   portal?: TemplatePortal;
   focusTrap?: FocusTrap;
@@ -419,7 +419,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
       this.componentInstance = componentRef.instance;
-      Object.assign(componentRef.instance, this.nzContentParams);
+      Object.assign(componentRef.instance!, this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }
   }
