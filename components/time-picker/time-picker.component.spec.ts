@@ -96,6 +96,15 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('disabled')).toBeNull();
     });
+    it('should readOnly work', () => {
+      testComponent.nzInputReadOnly = true;
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).readOnly).toBeTruthy();
+
+      testComponent.nzInputReadOnly = false;
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).readOnly).not.toBeTruthy();
+    });
     it('should open and close work', () => {
       testComponent.open = true;
       fixture.detectChanges();
@@ -397,6 +406,7 @@ describe('time-picker', () => {
       [(nzOpen)]="open"
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
+      [nzInputReadOnly]="nzInputReadOnly"
       [nzUse12Hours]="use12Hours"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
@@ -411,6 +421,7 @@ export class NzTestTimePickerComponent {
   autoFocus = false;
   date: Date | string = new Date();
   disabled = false;
+  nzInputReadOnly = false;
   use12Hours = false;
   nzSuffixIcon?: string;
   nzBackdrop = false;
