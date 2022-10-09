@@ -57,6 +57,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
+        [readOnly]="nzInputReadOnly"
         (focus)="onFocus(true)"
         (blur)="onFocus(false)"
         (keyup.enter)="onKeyupEnter()"
@@ -143,6 +144,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
+  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
 
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
@@ -222,6 +224,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
   @Input() @InputBoolean() nzBorderless: boolean = false;
+  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
 
   emitValue(value: Date | null): void {
     this.setValue(value, true);
