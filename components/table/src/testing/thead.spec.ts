@@ -64,7 +64,7 @@ describe('nz-thead', () => {
       const colgroup = table.nativeElement.querySelector('colgroup');
       const cols = colgroup.querySelectorAll('col');
       expect(cols.length).toBe(6);
-    })
+    });
   });
 });
 
