@@ -132,6 +132,9 @@ export interface NzTextI18nInterface {
 }
 
 export interface NzCronExpressionI18nInterface {
+  cronMore1: string;
+  cronMore2: string;
+  cronMore3: string;
   cronError: string;
   moreSetting: string;
   minute: string;

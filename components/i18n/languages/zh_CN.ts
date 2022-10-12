@@ -175,6 +175,9 @@ export default {
     preview: '预览'
   },
   CronExpression: {
+    cronMore1: '每小时',
+    cronMore2: '每天晚上',
+    cronMore3: '每周五',
     cronError: 'cron 表达式不合法',
     moreSetting: '快捷设置',
     minute: '分钟',

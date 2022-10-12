@@ -179,6 +179,9 @@ export default {
     preview: 'Preview'
   },
   CronExpression: {
+    cronMore1: 'Every hours',
+    cronMore2: 'Every night',
+    cronMore3: 'Every Friday',
     cronError: 'Invalid cron expression',
     moreSetting: 'Quick Settings',
     minute: 'minute',

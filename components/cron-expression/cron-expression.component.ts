@@ -5,6 +5,7 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   forwardRef,
   Input,
@@ -18,6 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { CronSettings, CronType } from 'ng-zorro-antd/cron-expression/typings';
+import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,23 +53,11 @@ import { CronSettings, CronType } from 'ng-zorro-antd/cron-expression/typings';
   ]
 })
 export class NzCronExpressionComponent implements OnInit, OnDestroy {
+  locale!: NzCronExpressionI18nInterface;
   @Input() nzMoreDisable: boolean = false;
   @Input() nzSize: NzButtonSize = 'default';
   @Input() nzType: NzButtonType = 'default';
-  @Input() nzDefaultConfigure: CronSettings = [
-    {
-      label: '每小时',
-      value: '0 0-23/1 * * *'
-    },
-    {
-      label: '每天晚上',
-      value: '0 18-23 * * *'
-    },
-    {
-      label: '每周五',
-      value: '0 0 * * 5'
-    }
-  ];
+  @Input() nzDefaultConfigure: CronSettings = [];
   private destroy$ = new Subject<void>();
 
   validateForm: UntypedFormGroup = this.formBuilder.group({
@@ -108,9 +98,29 @@ export class NzCronExpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private formBuilder: UntypedFormBuilder) {}
+  constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('CronExpression');
+      this.nzDefaultConfigure = this.nzDefaultConfigure.length
+        ? this.nzDefaultConfigure
+        : [
+            {
+              label: this.locale.cronMore1,
+              value: '0 0-23/1 * * *'
+            },
+            {
+              label: this.locale.cronMore2,
+              value: '0 18-23 * * *'
+            },
+            {
+              label: this.locale.cronMore3,
+              value: '0 0 * * 5'
+            }
+          ];
+      this.cdr.markForCheck();
+    });
     this.validateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(item => {
       this.onChange(Object.values(item.specialized).join(' '));
     });
