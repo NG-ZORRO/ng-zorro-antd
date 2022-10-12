@@ -173,5 +173,24 @@ export default {
   },
   Image: {
     preview: '预览'
+  },
+  CronExpression: {
+    cronError: 'cron 表达式不合法',
+    moreSetting: '快捷设置',
+    minute: '分钟',
+    hour: '小时',
+    day: '日',
+    month: '月',
+    week: '周',
+    minuteError:
+      '<p><span>*</span>任意值</p><p><span>,</span>多个值之间的分隔符</p><p><span>-</span>区间值的连接符</p><p><span>/</span>平均分配</p><p><span>0-59</span>允许范围</p>',
+    hourError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>0-23</span> 允许范围</p>',
+    dayError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-31</span> 允许范围</p>',
+    monthError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-12</span> 允许范围</p>',
+    weekError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-7</span> 允许范围（1代表周日，2-7依次为周一到周六）</p>'
   }
 };

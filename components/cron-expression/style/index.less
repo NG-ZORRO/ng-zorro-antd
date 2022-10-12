@@ -1,0 +1,70 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@cron-expression-prefix-cls: ~'@{ant-prefix}-cron-expression';
+
+.@{cron-expression-prefix-cls} {
+  display: block;
+}
+
+.@{cron-expression-prefix-cls}-box {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.@{cron-expression-prefix-cls}-input-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  border: 1px solid @border-color-base;
+  padding: 4px @padding-sm;
+  input {
+    border: none !important;
+    box-shadow: none !important;
+    width: 100%;
+    outline: none;
+    padding: 0;
+  }
+}
+.@{cron-expression-prefix-cls}-input-group-lg {
+  padding: 6.5px @padding-sm;
+  font-size: @font-size-lg;
+}
+
+.@{cron-expression-prefix-cls}-input-group-sm {
+  padding: 0 @padding-sm;
+}
+
+.@{cron-expression-prefix-cls}-label-group {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  padding: 0 @padding-sm;
+
+  &>div {
+    width: 20%;
+  }
+}
+
+.@{cron-expression-prefix-cls}-more-setting {
+  margin-left: @margin-sm;
+}
+
+nz-collapse {
+  width: 100%;
+}
+
+.@{cron-expression-prefix-cls}-error {
+  color: red;
+}
+
+.@{cron-expression-prefix-cls}-hint {
+  p {
+    display: flex;
+  }
+  span {
+    display: inline-block;
+    min-width: 40px;
+  }
+}

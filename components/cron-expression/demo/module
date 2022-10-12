@@ -1,0 +1,6 @@
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
+export const moduleList = [NzCronExpressionModule, NzFormModule, NzInputModule, NzButtonModule];

@@ -177,5 +177,24 @@ export default {
   },
   Image: {
     preview: 'Preview'
+  },
+  CronExpression: {
+    cronError: 'Invalid cron expression',
+    moreSetting: 'Quick Settings',
+    minute: 'minute',
+    hour: 'hour',
+    day: 'day',
+    month: 'month',
+    week: 'week',
+    minuteError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
+    hourError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-23</span>Allowable range</p>',
+    dayError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-31</span>Allowable range</p>',
+    monthError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-12</span>Allowable range</p>',
+    weekError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-7</span>Allowable range (0 represents Sunday, 1-7 are Monday to Sunday)</p>'
   }
 };
