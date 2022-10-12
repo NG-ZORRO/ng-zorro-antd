@@ -10,7 +10,7 @@ import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 
 declare global {
   interface Window {
-    MonacoEnvironment: Environment | undefined;
+    MonacoEnvironment?: Environment | undefined;
   }
 }
 
