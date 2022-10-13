@@ -801,6 +801,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     const newValue: CompatibleValue = this.datePickerService.makeValue(value);
     this.datePickerService.setValue(newValue);
     this.datePickerService.initialValue = newValue;
+    this.cdr.detectChanges();
   }
 
   renderClass(value: boolean): void {
