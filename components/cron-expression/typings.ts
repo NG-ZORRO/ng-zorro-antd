@@ -3,14 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 export interface CronType {
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  [p: string]: any;
+  [p: string]: NzSafeAny;
 }
 
-export type CronSettings = CronSetting[];
+export type NzCronOptions = NzCronOption[];
 
-export interface CronSetting {
+export interface NzCronOption {
   label: string;
   value: string;
 }

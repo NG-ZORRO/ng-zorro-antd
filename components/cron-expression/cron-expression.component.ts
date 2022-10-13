@@ -18,9 +18,10 @@ import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { CronSettings, CronType } from './typings';
+import { CronType, NzCronOptions } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,17 +29,16 @@ import { CronSettings, CronType } from './typings';
   selector: 'nz-cron-expression',
   exportAs: 'nzCronExpression',
   template: `
-    <div>
-      <form nz-form [formGroup]="validateForm">
-        <nz-cron-expression-specialized
-          formControlName="specialized"
-          [nzDefaultConfigure]="nzDefaultConfigure"
-          [nzMoreDisable]="nzMoreDisable"
-          [nzSize]="nzSize"
-          [nzType]="nzType"
-        ></nz-cron-expression-specialized>
-      </form>
-    </div>
+    <form nz-form [formGroup]="validateForm">
+      <nz-cron-expression-specialized
+        formControlName="specialized"
+        [nzOptions]="nzOptions"
+        [nzVisible]="nzVisible"
+        [nzSize]="nzSize"
+        [nzType]="nzType"
+      >
+      </nz-cron-expression-specialized>
+    </form>
   `,
   providers: [
     {
@@ -55,18 +55,17 @@ import { CronSettings, CronType } from './typings';
 })
 export class NzCronExpressionComponent implements OnInit, OnDestroy {
   locale!: NzCronExpressionI18nInterface;
-  @Input() nzMoreDisable: boolean = false;
+  @Input() nzVisible: boolean = false;
   @Input() nzSize: NzButtonSize = 'default';
   @Input() nzType: NzButtonType = 'default';
-  @Input() nzDefaultConfigure: CronSettings = [];
+  @Input() nzOptions: NzCronOptions = [];
   private destroy$ = new Subject<void>();
 
   validateForm: UntypedFormGroup = this.formBuilder.group({
     specialized: { minute: '*', hour: '*', day: '*', month: '*', week: '*' }
   });
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  onChange: any = () => {};
+  onChange: NzSafeAny = () => {};
   onTouch: () => void = () => null;
 
   writeValue(value: CronType): void {
@@ -81,13 +80,11 @@ export class NzCronExpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: NzSafeAny): void {
     this.onChange = fn;
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: NzSafeAny): void {
     this.onTouch = fn;
   }
 
@@ -104,8 +101,8 @@ export class NzCronExpressionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('CronExpression');
-      this.nzDefaultConfigure = this.nzDefaultConfigure.length
-        ? this.nzDefaultConfigure
+      this.nzOptions = this.nzOptions.length
+        ? this.nzOptions
         : [
             {
               label: this.locale.dropDownTextHour,

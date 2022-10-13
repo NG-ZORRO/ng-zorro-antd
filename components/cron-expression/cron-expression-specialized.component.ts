@@ -29,9 +29,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseExpression } from 'cron-parser';
 
 import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { CronSettings, CronType } from './typings';
+import { CronType, NzCronOptions } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,19 +50,19 @@ import { CronSettings, CronType } from './typings';
               [class.ant-cron-expression-input-group-sm]="nzSize === 'small'"
             >
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="minute" id="minute" name="minute" />
+                <input nz-input formControlName="minute" name="minute" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="hour" id="hour" name="hour" />
+                <input nz-input formControlName="hour" name="hour" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="day" id="day" name="day" />
+                <input nz-input formControlName="day" name="day" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="month" id="month" name="month" />
+                <input nz-input formControlName="month" name="month" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="week" id="week" name="week" />
+                <input nz-input formControlName="week" name="week" />
               </div>
             </div>
             <div class="ant-cron-expression-label-group">
@@ -72,7 +73,7 @@ import { CronSettings, CronType } from './typings';
                 [nzTooltipTitle]="minute"
                 [nzTooltipVisible]="true && !validateForm.controls.minute.valid"
               >
-                <label for="minute">{{ locale.minute }}</label>
+                <label>{{ locale.minute }}</label>
               </div>
               <div
                 [className]="!validateForm.controls.hour.valid ? 'ant-cron-expression-error' : null"
@@ -81,7 +82,7 @@ import { CronSettings, CronType } from './typings';
                 [nzTooltipTitle]="hour"
                 [nzTooltipVisible]="true && !validateForm.controls.hour.valid"
               >
-                <label for="hour">{{ locale.hour }}</label>
+                <label>{{ locale.hour }}</label>
               </div>
               <div
                 [className]="!validateForm.controls.day.valid ? 'ant-cron-expression-error' : null"
@@ -90,7 +91,7 @@ import { CronSettings, CronType } from './typings';
                 [nzTooltipTitle]="day"
                 [nzTooltipVisible]="true && !validateForm.controls.day.valid"
               >
-                <label for="day">{{ locale.day }}</label>
+                <label>{{ locale.day }}</label>
               </div>
               <div
                 [className]="!validateForm.controls.month.valid ? 'ant-cron-expression-error' : null"
@@ -99,7 +100,7 @@ import { CronSettings, CronType } from './typings';
                 [nzTooltipTitle]="month"
                 [nzTooltipVisible]="true && !validateForm.controls.month.valid"
               >
-                <label for="month">{{ locale.month }}</label>
+                <label>{{ locale.month }}</label>
               </div>
               <div
                 [className]="!validateForm.controls.week.valid ? 'ant-cron-expression-error' : null"
@@ -108,7 +109,7 @@ import { CronSettings, CronType } from './typings';
                 [nzTooltipTitle]="week"
                 [nzTooltipVisible]="true && !validateForm.controls.week.valid"
               >
-                <label for="week">{{ locale.week }}</label>
+                <label>{{ locale.week }}</label>
               </div>
             </div>
             <nz-collapse [nzBordered]="false">
@@ -123,7 +124,7 @@ import { CronSettings, CronType } from './typings';
             </nz-collapse>
           </div>
           <button
-            *ngIf="!nzMoreDisable"
+            *ngIf="!nzVisible"
             class="ant-cron-expression-more-setting"
             nz-button
             nz-dropdown
@@ -138,7 +139,7 @@ import { CronSettings, CronType } from './typings';
         </div>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
-            <li *ngFor="let item of nzDefaultConfigure" nz-menu-item (click)="quickSetting(item.value)">
+            <li *ngFor="let item of nzOptions" nz-menu-item (click)="quickSetting(item.value)">
               {{ item.label }}
             </li>
           </ul>
@@ -190,8 +191,8 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   locale!: NzCronExpressionI18nInterface;
   @Input() nzSize: NzButtonSize = 'default';
   @Input() nzType: NzButtonType = 'default';
-  @Input() nzDefaultConfigure: CronSettings = [];
-  @Input() nzMoreDisable: boolean = false;
+  @Input() nzOptions: NzCronOptions = [];
+  @Input() nzVisible: boolean = false;
 
   private destroy$ = new Subject<void>();
 
@@ -265,20 +266,18 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
 
   constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  onChange: any = () => {};
+  onChange: NzSafeAny = () => {};
   onTouch: () => void = () => null;
 
   writeValue(value: CronType): void {
     this.validateForm.patchValue(value);
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: NzSafeAny): void {
     this.onChange = fn;
   }
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  registerOnTouched(fn: any): void {
+
+  registerOnTouched(fn: NzSafeAny): void {
     this.onTouch = fn;
   }
 

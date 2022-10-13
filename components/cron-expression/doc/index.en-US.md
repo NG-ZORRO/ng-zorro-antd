@@ -1,6 +1,6 @@
 ---
 category: Components
-subtitle: cron form validation
+subtitle: cron form
 type: Code Editor
 title: Cron Expression
 cols: 1
@@ -31,3 +31,10 @@ npm install cron-parser
 ```
 
 ### nz-cron-expression
+
+| Parameter  | Description        | Type  | Default     |
+|-------------|---------|----------------------------|---------|
+| `[nzSize]`   | The size of the input box.    | `'large'｜'small'｜'default'` | `default` |
+| `[nzType]`  | can be set to `primary` `dashed` `text` `link` or omitted | `'primary'｜'dashed'｜'link'｜'text'` | -  |
+| `[nzVisible]`      | Hide quick settings   | `boolean` | `false` |
+| `[nzOptions]` | Options for Modifying Quick Settings    | `NzCronOptions`  | - |
