@@ -7,8 +7,8 @@ import { CronSettings } from 'ng-zorro-antd/cron-expression';
   template: `
     <div class="example-cron-expression">
       <nz-cron-expression [nzMoreDisable]="true"></nz-cron-expression>
-      <nz-cron-expression [nzDefaultConfigure]="defaultSetting"></nz-cron-expression>
       <nz-cron-expression nzType="primary"></nz-cron-expression>
+      <nz-cron-expression [nzDefaultConfigure]="defaultSetting"></nz-cron-expression>
     </div>
   `,
   styles: [

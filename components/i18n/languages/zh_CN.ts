@@ -175,9 +175,9 @@ export default {
     preview: '预览'
   },
   CronExpression: {
-    cronMore1: '每小时',
-    cronMore2: '每天晚上',
-    cronMore3: '每周五',
+    dropDownTextHour: '每小时',
+    dropDownTextNight: '每天晚上',
+    dropDownTextFriday: '每周五',
     cronError: 'cron 表达式不合法',
     moreSetting: '快捷设置',
     minute: '分钟',
@@ -194,6 +194,6 @@ export default {
     monthError:
       '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-12</span> 允许范围</p>',
     weekError:
-      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-7</span> 允许范围（1代表周日，2-7依次为周一到周六）</p>'
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>0-7</span> 允许范围（0代表周日，1-7依次为周一到周日）</p>'
   }
 };

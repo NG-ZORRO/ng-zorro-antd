@@ -16,8 +16,8 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  border: 1px solid @border-color-base;
-  padding: 4px @padding-sm;
+  border: @border-width-base solid @border-color-base;
+  padding: @padding-xss @padding-sm;
   input {
     border: none !important;
     box-shadow: none !important;
@@ -56,7 +56,7 @@ nz-collapse {
 }
 
 .@{cron-expression-prefix-cls}-error {
-  color: red;
+  color: @error-color;
 }
 
 .@{cron-expression-prefix-cls}-hint {

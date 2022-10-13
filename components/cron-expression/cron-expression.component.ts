@@ -18,8 +18,9 @@ import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
-import { CronSettings, CronType } from 'ng-zorro-antd/cron-expression/typings';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+
+import { CronSettings, CronType } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -107,15 +108,15 @@ export class NzCronExpressionComponent implements OnInit, OnDestroy {
         ? this.nzDefaultConfigure
         : [
             {
-              label: this.locale.cronMore1,
+              label: this.locale.dropDownTextHour,
               value: '0 0-23/1 * * *'
             },
             {
-              label: this.locale.cronMore2,
+              label: this.locale.dropDownTextNight,
               value: '0 18-23 * * *'
             },
             {
-              label: this.locale.cronMore3,
+              label: this.locale.dropDownTextFriday,
               value: '0 0 * * 5'
             }
           ];

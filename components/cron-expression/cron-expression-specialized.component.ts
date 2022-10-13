@@ -29,8 +29,9 @@ import { takeUntil } from 'rxjs/operators';
 import { parseExpression } from 'cron-parser';
 
 import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
-import { CronSettings, CronType } from 'ng-zorro-antd/cron-expression/typings';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+
+import { CronSettings, CronType } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
