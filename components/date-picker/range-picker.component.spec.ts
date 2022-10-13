@@ -161,6 +161,19 @@ describe('NzRangePickerComponent', () => {
       expect(debugElement.query(clearBtnSelector)).toBeFalsy();
     }));
 
+    it('should support clear input value when set default value', fakeAsync(() => {
+      const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
+      fixtureInstance.modelValue = [new Date(), new Date()];
+      fixtureInstance.nzAllowClear = true;
+      tick();
+      fixture.autoDetectChanges();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      tick(500);
+      debugElement.query(clearBtnSelector).nativeElement.click();
+      expect(leftInput.attributes.getNamedItem('ng-reflect-model')?.value).toBeUndefined();
+    }));
+
     it('should support nzAutoFocus', fakeAsync(() => {
       fixtureInstance.nzAutoFocus = true;
       fixture.detectChanges();
