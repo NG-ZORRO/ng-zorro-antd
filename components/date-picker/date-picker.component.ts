@@ -369,6 +369,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.focus();
       this.updateInputWidthAndArrowLeft();
     });
+
+    this.elementRef.nativeElement.addEventListener('mousedown', this.onMouseDown);
   }
 
   updateInputWidthAndArrowLeft(): void {
@@ -405,6 +407,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (this.document.activeElement !== activeInputElement) {
       activeInputElement?.focus();
     }
+  }
+
+  onMouseDown(event: Event): void {
+    event.preventDefault();
   }
 
   onFocus(event: FocusEvent, partType?: RangePartType): void {
@@ -697,6 +703,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+    this.elementRef.nativeElement.removeEventListener('mousedown', this.onMouseDown);
   }
 
   setModeAndFormat(): void {

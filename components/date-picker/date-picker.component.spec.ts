@@ -221,6 +221,20 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
+    it('should prevent default on the mousedown event when click or mouse down any place in date picker', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+
+      const span = fixture.nativeElement.querySelector(`.${PREFIX_CLASS}`);
+      const event = new MouseEvent('mousedown');
+
+      spyOn(event, 'preventDefault').and.callThrough();
+      span.dispatchEvent(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
       const initial = (fixtureInstance.nzValue = new Date());
