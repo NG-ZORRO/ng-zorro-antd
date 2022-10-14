@@ -1,37 +1,41 @@
 import { Component } from '@angular/core';
 
-import { NzCronOptions } from 'ng-zorro-antd/cron-expression';
-
 @Component({
   selector: 'nz-demo-cron-expression-shortcuts',
   template: `
-    <div class="example-cron-expression">
-      <nz-cron-expression [nzVisible]="true"></nz-cron-expression>
-      <nz-cron-expression nzType="primary"></nz-cron-expression>
-      <nz-cron-expression [nzOptions]="options"></nz-cron-expression>
-    </div>
-  `,
-  styles: [
-    `
-      .example-cron-expression nz-cron-expression {
-        margin: 0 8px 8px 0;
-      }
-    `
-  ]
+    <nz-cron-expression [defaults]="defaults">
+      <button nzCronExpressionExtra nz-button nz-dropdown [nzDropdownMenu]="menu">
+        Shortcuts
+        <span nz-icon nzType="down"></span>
+      </button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item *ngFor="let item of options" [value]="item.value" (click)="Shortcuts(item.value)">{{
+            item.label
+          }}</li>
+        </ul>
+      </nz-dropdown-menu>
+    </nz-cron-expression>
+  `
 })
 export class NzDemoCronExpressionShortcutsComponent {
-  options: NzCronOptions = [
+  defaults: string | null = null;
+  options = [
     {
-      label: '每小时',
+      label: 'Every hour',
       value: '0 0-23/1 * * *'
     },
     {
-      label: '每天八点',
+      label: 'Every day at eight',
       value: '0 8 * * *'
     },
     {
-      label: '每周一',
-      value: '0 0 * * 1'
+      label: 'Every Friday',
+      value: '0 0 * * 5'
     }
   ];
+
+  Shortcuts(value: string): void {
+    this.defaults = value;
+  }
 }

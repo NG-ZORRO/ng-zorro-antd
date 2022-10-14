@@ -179,16 +179,15 @@ export default {
     preview: 'Preview'
   },
   CronExpression: {
-    dropDownTextHour: 'Every hours',
-    dropDownTextNight: 'Every night',
-    dropDownTextFriday: 'Every Friday',
     cronError: 'Invalid cron expression',
-    moreSetting: 'Quick Settings',
+    second: 'second',
     minute: 'minute',
     hour: 'hour',
     day: 'day',
     month: 'month',
     week: 'week',
+    secondError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
     minuteError:
       '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
     hourError:

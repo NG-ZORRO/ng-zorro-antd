@@ -3,15 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 export interface CronType {
-  [p: string]: NzSafeAny;
+  [p: string]: string;
 }
 
-export type NzCronOptions = NzCronOption[];
-
-export interface NzCronOption {
-  label: string;
-  value: string;
-}
+export type NzCronExpressionSize = 'large' | 'default' | 'small';

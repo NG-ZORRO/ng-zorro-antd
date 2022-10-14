@@ -12,9 +12,15 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="6">nz_cron</nz-form-label>
+        <nz-form-label [nzSpan]="6">nz-cron-linux</nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <nz-cron-expression formControlName="cron"></nz-cron-expression>
+          <nz-cron-expression formControlName="cronLinux"></nz-cron-expression>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6">nz-cron-spring</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <nz-cron-expression formControlName="cronSpring" nzCronType="spring"></nz-cron-expression>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -33,7 +39,8 @@ export class NzDemoCronExpressionUseComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       userName: ['cron-expression', [Validators.required]],
-      cron: ['* 1 * * *', [Validators.required]]
+      cronLinux: ['* 1 * * *', [Validators.required]],
+      cronSpring: ['0 * 1 * * *', [Validators.required]]
     });
   }
 

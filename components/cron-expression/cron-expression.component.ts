@@ -5,23 +5,23 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   forwardRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzCronExpressionI18nInterface } from 'ng-zorro-antd/i18n';
 
-import { CronType, NzCronOptions } from './typings';
+import { CronType, NzCronExpressionSize } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,11 +32,11 @@ import { CronType, NzCronOptions } from './typings';
     <form nz-form [formGroup]="validateForm">
       <nz-cron-expression-specialized
         formControlName="specialized"
-        [nzOptions]="nzOptions"
-        [nzVisible]="nzVisible"
         [nzSize]="nzSize"
-        [nzType]="nzType"
+        [nzCronType]="nzCronType"
+        [nzCollapseDisable]="nzCollapseDisable"
       >
+        <ng-content></ng-content>
       </nz-cron-expression-specialized>
     </form>
   `,
@@ -53,30 +53,32 @@ import { CronType, NzCronOptions } from './typings';
     }
   ]
 })
-export class NzCronExpressionComponent implements OnInit, OnDestroy {
+export class NzCronExpressionComponent implements OnInit, OnChanges, OnDestroy {
   locale!: NzCronExpressionI18nInterface;
-  @Input() nzVisible: boolean = false;
-  @Input() nzSize: NzButtonSize = 'default';
-  @Input() nzType: NzButtonType = 'default';
-  @Input() nzOptions: NzCronOptions = [];
+  @Input() defaults: string | null = null;
+  @Input() nzSize: NzCronExpressionSize = 'default';
+  @Input() nzCronType: 'linux' | 'spring' = 'linux';
+  @Input() nzCollapseDisable: boolean = false;
   private destroy$ = new Subject<void>();
 
-  validateForm: UntypedFormGroup = this.formBuilder.group({
-    specialized: { minute: '*', hour: '*', day: '*', month: '*', week: '*' }
-  });
+  validateForm!: UntypedFormGroup;
 
   onChange: NzSafeAny = () => {};
   onTouch: () => void = () => null;
 
-  writeValue(value: CronType): void {
+  convertFormat(value: string): CronType {
+    const values = value.split(' ');
+    const keys = Object.keys(this.validateForm.controls.specialized.value);
+    const valueObject: CronType = {};
+    keys.map((a, b) => {
+      valueObject[a] = values[b];
+    });
+    return valueObject;
+  }
+
+  writeValue(value: string | null): void {
     if (value) {
-      const values = value.split(' ');
-      const keys = Object.keys(this.validateForm.controls.specialized.value);
-      const valueObject: CronType = {};
-      keys.map((a, b) => {
-        valueObject[a] = values[b];
-      });
-      this.validateForm.controls.specialized.patchValue(valueObject);
+      this.validateForm.controls.specialized.patchValue(this.convertFormat(value));
     }
   }
 
@@ -96,32 +98,29 @@ export class NzCronExpressionComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('CronExpression');
-      this.nzOptions = this.nzOptions.length
-        ? this.nzOptions
-        : [
-            {
-              label: this.locale.dropDownTextHour,
-              value: '0 0-23/1 * * *'
-            },
-            {
-              label: this.locale.dropDownTextNight,
-              value: '0 18-23 * * *'
-            },
-            {
-              label: this.locale.dropDownTextFriday,
-              value: '0 0 * * 5'
-            }
-          ];
-      this.cdr.markForCheck();
-    });
+    if (this.nzCronType === 'spring') {
+      this.validateForm = this.formBuilder.group({
+        specialized: { second: '0', minute: '*', hour: '*', day: '*', month: '*', week: '*' }
+      });
+    } else {
+      this.validateForm = this.formBuilder.group({
+        specialized: { minute: '*', hour: '*', day: '*', month: '*', week: '*' }
+      });
+    }
+
     this.validateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(item => {
       this.onChange(Object.values(item.specialized).join(' '));
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { defaults } = changes;
+    if (defaults && this.defaults) {
+      this.validateForm.controls.specialized.patchValue(this.convertFormat(this.defaults));
+    }
   }
 
   ngOnDestroy(): void {

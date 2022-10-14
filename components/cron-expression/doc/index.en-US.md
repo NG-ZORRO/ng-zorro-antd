@@ -32,9 +32,10 @@ npm install cron-parser
 
 ### nz-cron-expression
 
-| Parameter  | Description        | Type  | Default     |
-|-------------|---------|----------------------------|---------|
-| `[nzSize]`   | The size of the input box.    | `'large'｜'small'｜'default'` | `default` |
-| `[nzType]`  | can be set to `primary` `dashed` `text` `link` or omitted | `'primary'｜'dashed'｜'link'｜'text'` | -  |
-| `[nzVisible]`      | Hide quick settings   | `boolean` | `false` |
-| `[nzOptions]` | Options for Modifying Quick Settings    | `NzCronOptions`  | - |
+| Parameter  | Description                     | Type  | Default     |
+|-------------|---------------|-------------|---------|
+| `[nzSize]`   | The size of the input box.   | `'large'｜'small'｜'default'` | `default` |
+| `[nzCronType]` | Set cron rule type, optional value is `linux` and `spring` or not set            | `'linux'｜'spring'`  | `linux`  |
+| `[nzVisible]` | Hide quick settings                         | `boolean` | `false` |
+| `[nzType]`  | can be set to `primary` `dashed` `text` `link` or omitted, Takes effect when `[nzVisible]=false` | `'primary'｜'dashed'｜'link'｜'text'` | -  |
+| `[nzOptions]` | Options for Modifying Quick Settings, Takes effect when `[nzVisible]=false`                      | `NzCronOptions`  | - |

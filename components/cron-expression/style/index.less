@@ -18,6 +18,12 @@
   align-items: center;
   border: @border-width-base solid @border-color-base;
   padding: @padding-xss @padding-sm;
+  border-radius: @border-radius-base;
+
+  &:hover {
+    border-color: @primary-color;
+  }
+
   input {
     border: none !important;
     box-shadow: none !important;
@@ -35,6 +41,13 @@
   padding: 0 @padding-sm;
 }
 
+.@{cron-expression-prefix-cls}-input-group-focus {
+  border-color: @primary-color;
+  box-shadow: 0 0 0 2px @primary-color-outline;
+  border-right-width: @border-width-base;
+  outline: 0;
+}
+
 .@{cron-expression-prefix-cls}-label-group {
   display: flex;
   width: 100%;
@@ -47,7 +60,11 @@
   }
 }
 
-.@{cron-expression-prefix-cls}-more-setting {
+.@{cron-expression-prefix-cls}-label-foucs {
+  color: @primary-color;
+}
+
+.@{cron-expression-prefix-cls}-map {
   margin-left: @margin-sm;
 }
 

@@ -32,9 +32,10 @@ npm install cron-parser
 
 ### nz-cron-expression
 
-| 参数      | 说明      | 类型     | 默认值      |
-|---------------|-------|-------------|----------|
-| `[nzSize]`  | 设置文本框、按钮大小，可选值为 `small` `large` 或者不设   | `'large'｜'small'｜'default'` | `default` |
-| `[nzType]`  | 设置快捷设置类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'｜'dashed'｜'link'｜'text'` | -        |
-| `[nzVisible]` | 隐藏快捷设置   | `boolean`  | `false`  |
-| `[nzOptions]` | 修改快捷设置的选项   | `NzCronOptions`   | - |
+| 参数             | 说明                        | 类型                                 | 默认值      |
+|----------------|-----|-------------|----------|
+| `[nzSize]`     | 设置文本框、按钮大小，可选值为 `small` `large` 或者不设      | `'large'｜'small'｜'default'`        | `default` |
+| `[nzCronType]` | 设置cron规则类型，可选值为 `spring` 或者不设       | `'linux'｜'spring'`  | `linux`  |
+| `[nzVisible]`  | 隐藏快捷设置          | `boolean`    | `false`  |
+| `[nzType]`     | 设置快捷设置类型，可选值为 `primary` `dashed` `text` `link` 或者不设， `[nzVisible]=false` 时生效 | `'primary'｜'dashed'｜'link'｜'text'` | -        |
+| `[nzOptions]`  | 修改快捷设置的选项， `[nzVisible]=false` 时生效         | `NzCronOptions`  | -        |

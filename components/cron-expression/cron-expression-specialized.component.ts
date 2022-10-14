@@ -28,11 +28,10 @@ import { takeUntil } from 'rxjs/operators';
 
 import { parseExpression } from 'cron-parser';
 
-import { NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { CronType, NzCronOptions } from './typings';
+import { CronType, NzCronExpressionSize } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,71 +47,109 @@ import { CronType, NzCronOptions } from './typings';
               class="ant-cron-expression-input-group"
               [class.ant-cron-expression-input-group-lg]="nzSize === 'large'"
               [class.ant-cron-expression-input-group-sm]="nzSize === 'small'"
+              [class.ant-cron-expression-input-group-focus]="focus"
             >
-              <div class="ant-cron-expression-input">
-                <input nz-input formControlName="minute" name="minute" />
+              <div class="ant-cron-expression-input" *ngIf="nzCronType === 'spring'">
+                <input
+                  nz-input
+                  formControlName="second"
+                  name="minute"
+                  (focus)="focusColor('second')"
+                  (blur)="blurColor()"
+                />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="hour" name="hour" />
+                <input
+                  nz-input
+                  formControlName="minute"
+                  name="minute"
+                  (focus)="focusColor('minute')"
+                  (blur)="blurColor()"
+                />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="day" name="day" />
+                <input nz-input formControlName="hour" name="hour" (focus)="focusColor('hour')" (blur)="blurColor()" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="month" name="month" />
+                <input nz-input formControlName="day" name="day" (focus)="focusColor('day')" (blur)="blurColor()" />
               </div>
               <div class="ant-cron-expression-input">
-                <input nz-input formControlName="week" name="week" />
+                <input
+                  nz-input
+                  formControlName="month"
+                  name="month"
+                  (focus)="focusColor('month')"
+                  (blur)="blurColor()"
+                />
+              </div>
+              <div class="ant-cron-expression-input">
+                <input nz-input formControlName="week" name="week" (focus)="focusColor('week')" (blur)="blurColor()" />
               </div>
             </div>
             <div class="ant-cron-expression-label-group">
               <div
-                [className]="!validateForm.controls.minute.valid ? 'ant-cron-expression-error' : null"
+                *ngIf="nzCronType === 'spring'"
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'second'"
+                [class.ant-cron-expression-error]="!validateForm.controls.second.valid"
+                nz-tooltip
+                nzTooltipPlacement="bottom"
+                [nzTooltipTitle]="second"
+                [nzTooltipVisible]="!validateForm.controls.second.valid"
+              >
+                <label>{{ locale.second }}</label>
+              </div>
+              <div
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'minute'"
+                [class.ant-cron-expression-error]="!validateForm.controls.minute.valid"
                 nz-tooltip
                 nzTooltipPlacement="bottom"
                 [nzTooltipTitle]="minute"
-                [nzTooltipVisible]="true && !validateForm.controls.minute.valid"
+                [nzTooltipVisible]="!validateForm.controls.minute.valid"
               >
                 <label>{{ locale.minute }}</label>
               </div>
               <div
-                [className]="!validateForm.controls.hour.valid ? 'ant-cron-expression-error' : null"
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'hour'"
+                [class.ant-cron-expression-error]="!validateForm.controls.hour.valid"
                 nz-tooltip
                 nzTooltipPlacement="bottom"
                 [nzTooltipTitle]="hour"
-                [nzTooltipVisible]="true && !validateForm.controls.hour.valid"
+                [nzTooltipVisible]="!validateForm.controls.hour.valid"
               >
                 <label>{{ locale.hour }}</label>
               </div>
               <div
-                [className]="!validateForm.controls.day.valid ? 'ant-cron-expression-error' : null"
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'day'"
+                [class.ant-cron-expression-error]="!validateForm.controls.day.valid"
                 nz-tooltip
                 nzTooltipPlacement="bottom"
                 [nzTooltipTitle]="day"
-                [nzTooltipVisible]="true && !validateForm.controls.day.valid"
+                [nzTooltipVisible]="!validateForm.controls.day.valid"
               >
                 <label>{{ locale.day }}</label>
               </div>
               <div
-                [className]="!validateForm.controls.month.valid ? 'ant-cron-expression-error' : null"
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'month'"
+                [class.ant-cron-expression-error]="!validateForm.controls.month.valid"
                 nz-tooltip
                 nzTooltipPlacement="bottom"
                 [nzTooltipTitle]="month"
-                [nzTooltipVisible]="true && !validateForm.controls.month.valid"
+                [nzTooltipVisible]="!validateForm.controls.month.valid"
               >
                 <label>{{ locale.month }}</label>
               </div>
               <div
-                [className]="!validateForm.controls.week.valid ? 'ant-cron-expression-error' : null"
+                [class.ant-cron-expression-label-foucs]="labelFocus === 'week'"
+                [class.ant-cron-expression-error]="!validateForm.controls.week.valid"
                 nz-tooltip
                 nzTooltipPlacement="bottom"
                 [nzTooltipTitle]="week"
-                [nzTooltipVisible]="true && !validateForm.controls.week.valid"
+                [nzTooltipVisible]="!validateForm.controls.week.valid"
               >
                 <label>{{ locale.week }}</label>
               </div>
             </div>
-            <nz-collapse [nzBordered]="false">
+            <nz-collapse *ngIf="!nzCollapseDisable" [nzBordered]="false">
               <nz-collapse-panel [nzHeader]="nextDate">
                 <ng-container *ngIf="validateForm.valid">
                   <p style="margin: 0" *ngFor="let dateItem of nextTimeList">
@@ -123,27 +160,10 @@ import { CronType, NzCronOptions } from './typings';
               </nz-collapse-panel>
             </nz-collapse>
           </div>
-          <button
-            *ngIf="!nzVisible"
-            class="ant-cron-expression-more-setting"
-            nz-button
-            nz-dropdown
-            [nzSize]="nzSize"
-            [nzType]="nzType"
-            [nzDropdownMenu]="menu"
-            nzPlacement="bottomCenter"
-          >
-            {{ locale.moreSetting }}
-            <span nz-icon nzType="down" nzTheme="outline"></span>
-          </button>
+          <div class="ant-cron-expression-map">
+            <ng-content></ng-content>
+          </div>
         </div>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul nz-menu>
-            <li *ngFor="let item of nzOptions" nz-menu-item (click)="quickSetting(item.value)">
-              {{ item.label }}
-            </li>
-          </ul>
-        </nz-dropdown-menu>
       </form>
 
       <ng-template #nextDate>
@@ -151,6 +171,10 @@ import { CronType, NzCronOptions } from './typings';
           {{ dateTime | date: 'YYYY-MM-dd HH:mm:ss' }}
         </ng-container>
         <ng-container *ngIf="!validateForm.valid">{{ locale.cronError }}</ng-container>
+      </ng-template>
+
+      <ng-template #second>
+        <div class="ant-cron-expression-hint" [innerHTML]="locale.secondError"></div>
       </ng-template>
 
       <ng-template #minute>
@@ -188,21 +212,35 @@ import { CronType, NzCronOptions } from './typings';
   ]
 })
 export class NzCronExpressionSpecializedComponent implements OnInit, ControlValueAccessor, OnDestroy {
+  validateForm!: UntypedFormGroup;
   locale!: NzCronExpressionI18nInterface;
-  @Input() nzSize: NzButtonSize = 'default';
-  @Input() nzType: NzButtonType = 'default';
-  @Input() nzOptions: NzCronOptions = [];
-  @Input() nzVisible: boolean = false;
+  focus: boolean = false;
+  labelFocus: string | null = null;
+
+  @Input() nzSize: NzCronExpressionSize = 'default';
+  @Input() nzCronType: 'linux' | 'spring' = 'linux';
+  @Input() nzCollapseDisable: boolean = false;
 
   private destroy$ = new Subject<void>();
 
   nextTimeList: Date[] = [];
   dateTime: Date = new Date();
 
+  second = (control: FormControl): Observable<ValidationErrors | null> => {
+    if (control.value) {
+      try {
+        parseExpression(`${control.value} * * * * *`);
+      } catch (err: unknown) {
+        return of({ error: true });
+      }
+    }
+    return of(null);
+  };
+
   minute = (control: FormControl): Observable<ValidationErrors | null> => {
     if (control.value) {
       try {
-        parseExpression(`${control.value} * * * *`);
+        parseExpression(`* ${control.value} * * * *`);
       } catch (err: unknown) {
         return of({ error: true });
       }
@@ -213,7 +251,7 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   hour = (control: FormControl): Observable<ValidationErrors | null> => {
     if (control.value) {
       try {
-        parseExpression(`* ${control.value} * * *`);
+        parseExpression(`* * ${control.value} * * *`);
       } catch (err: unknown) {
         return of({ error: true });
       }
@@ -224,7 +262,7 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   day = (control: FormControl): Observable<ValidationErrors | null> => {
     if (control.value) {
       try {
-        parseExpression(`* * ${control.value} * *`);
+        parseExpression(`* * * ${control.value} * *`);
       } catch (err: unknown) {
         return of({ error: true });
       }
@@ -235,7 +273,7 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   month = (control: FormControl): Observable<ValidationErrors | null> => {
     if (control.value) {
       try {
-        parseExpression(`* * * ${control.value} *`);
+        parseExpression(`* * * * ${control.value} *`);
       } catch (err: unknown) {
         return of({ error: true });
       }
@@ -246,7 +284,7 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   week = (control: FormControl): Observable<ValidationErrors | null> => {
     if (control.value) {
       try {
-        parseExpression(`* * * * ${control.value}`);
+        parseExpression(`* * * * * ${control.value}`);
       } catch (err: unknown) {
         return of({ error: true });
       }
@@ -255,14 +293,6 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
       return of({ error: true });
     }
   };
-
-  validateForm: UntypedFormGroup = this.formBuilder.group({
-    minute: ['*', Validators.required, this.minute],
-    hour: ['*', Validators.required, this.hour],
-    day: ['*', Validators.required, this.day],
-    month: ['*', Validators.required, this.month],
-    week: ['?', Validators.required, this.week]
-  });
 
   constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
@@ -289,6 +319,25 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
   }
 
   ngOnInit(): void {
+    if (this.nzCronType === 'spring') {
+      this.validateForm = this.formBuilder.group({
+        second: ['0', Validators.required, this.second],
+        minute: ['*', Validators.required, this.minute],
+        hour: ['*', Validators.required, this.hour],
+        day: ['*', Validators.required, this.day],
+        month: ['*', Validators.required, this.month],
+        week: ['?', Validators.required, this.week]
+      });
+    } else {
+      this.validateForm = this.formBuilder.group({
+        minute: ['*', Validators.required, this.minute],
+        hour: ['*', Validators.required, this.hour],
+        day: ['*', Validators.required, this.day],
+        month: ['*', Validators.required, this.month],
+        week: ['?', Validators.required, this.week]
+      });
+    }
+
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('CronExpression');
       this.cdr.markForCheck();
@@ -305,20 +354,22 @@ export class NzCronExpressionSpecializedComponent implements OnInit, ControlValu
           new Date(interval.next().toString()),
           new Date(interval.next().toString())
         ];
-      } catch (err: unknown) {
+      } catch (err: NzSafeAny) {
         return;
       }
     });
   }
 
-  quickSetting(value: string): void {
-    const values = value.split(' ');
-    const keys = Object.keys(this.validateForm.value);
-    const valueObject: CronType = {};
-    keys.map((a, b) => {
-      valueObject[a] = values[b];
-    });
-    this.validateForm.patchValue(valueObject);
+  focusColor(value: string): void {
+    this.focus = true;
+    this.labelFocus = value;
+    this.cdr.markForCheck();
+  }
+
+  blurColor(): void {
+    this.focus = false;
+    this.labelFocus = null;
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {

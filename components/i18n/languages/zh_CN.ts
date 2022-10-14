@@ -175,16 +175,15 @@ export default {
     preview: '预览'
   },
   CronExpression: {
-    dropDownTextHour: '每小时',
-    dropDownTextNight: '每天晚上',
-    dropDownTextFriday: '每周五',
     cronError: 'cron 表达式不合法',
-    moreSetting: '快捷设置',
+    second: '秒',
     minute: '分钟',
     hour: '小时',
     day: '日',
     month: '月',
     week: '周',
+    secondError:
+      '<p><span>*</span>任意值</p><p><span>,</span>多个值之间的分隔符</p><p><span>-</span>区间值的连接符</p><p><span>/</span>平均分配</p><p><span>0-59</span>允许范围</p>',
     minuteError:
       '<p><span>*</span>任意值</p><p><span>,</span>多个值之间的分隔符</p><p><span>-</span>区间值的连接符</p><p><span>/</span>平均分配</p><p><span>0-59</span>允许范围</p>',
     hourError:

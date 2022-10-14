@@ -132,17 +132,15 @@ export interface NzTextI18nInterface {
 }
 
 export interface NzCronExpressionI18nInterface {
-  dropDownTextHour: string;
-  dropDownTextNight: string;
-  dropDownTextFriday: string;
   cronError: string;
-  moreSetting: string;
+  second: string;
   minute: string;
   hour: string;
   day: string;
   month: string;
   week: string;
   // innerHTML
+  secondError: string;
   minuteError: string;
   hourError: string;
   dayError: string;
