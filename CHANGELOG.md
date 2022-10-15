@@ -1,3 +1,12 @@
+## [14.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.1.1) (2022-10-15)
+
+
+### Bug Fixes
+
+* **code-editor:** fix declaration of Window as monaco-editor ([#7676](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7676)) ([bdf6507](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bdf65077f174512efa2ed2dcf65c87734cfe4255))
+* **date-picker:** fix datePicker can't clear ([#7671](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7671)) ([ba90876](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ba90876690e462e18da0126d8e90d682b62ebb70)), closes [#7534](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7534)
+
+
 # [14.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.1.0) (2022-10-09)
 
 
