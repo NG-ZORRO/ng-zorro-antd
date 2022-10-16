@@ -13,6 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 14.1.1
+
+`2022-10-15`
+
+### Bug Fixes
+
+* **code-editor:** 修复 `Window` 定义与 `monaco-editor` 最新版本不匹配问题 ([#7676](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7676)) ([bdf6507](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bdf65077f174512efa2ed2dcf65c87734cfe4255))
+* **date-picker:** 修复清除按钮无效问题 ([#7671](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7671)) ([ba90876](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ba90876690e462e18da0126d8e90d682b62ebb70)), closes [#7534](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7534)
+
+
 ## 14.1.0
 
 `2022-10-09`
