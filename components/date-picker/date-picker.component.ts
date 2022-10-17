@@ -369,6 +369,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.focus();
       this.updateInputWidthAndArrowLeft();
     });
+
+    // prevent mousedown event to trigger focusout event when click in date picker
+    // see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/7450
+    this.elementRef.nativeElement.addEventListener('mousedown', this.onMouseDown);
   }
 
   updateInputWidthAndArrowLeft(): void {
@@ -404,6 +408,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     const activeInputElement = this.getInput(this.datePickerService.activeInput);
     if (this.document.activeElement !== activeInputElement) {
       activeInputElement?.focus();
+    }
+  }
+
+  onMouseDown(event: Event): void {
+    if ((event.target as HTMLInputElement).tagName.toLowerCase() !== 'input') {
+      event.preventDefault();
     }
   }
 
@@ -697,6 +707,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+    this.elementRef.nativeElement.removeEventListener('mousedown', this.onMouseDown);
   }
 
   setModeAndFormat(): void {
