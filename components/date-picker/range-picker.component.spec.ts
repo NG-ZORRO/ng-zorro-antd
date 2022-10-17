@@ -140,6 +140,17 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
+    it('should execute default on the mousedown event when mouse down in date picker input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const event = new MouseEvent('mousedown');
+      spyOn(event, 'preventDefault').and.callThrough();
+      fixture.nativeElement.querySelector(`.${PREFIX_CLASS}-separator`).dispatchEvent(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
       const initial = (fixtureInstance.modelValue = [new Date(), new Date()]);
