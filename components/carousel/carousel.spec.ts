@@ -171,6 +171,19 @@ describe('carousel', () => {
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
 
+    it('should disable loop work', fakeAsync(() => {
+      testComponent.loop = false;
+      testComponent.autoPlay = true;
+      testComponent.autoPlaySpeed = 1000;
+      fixture.detectChanges();
+      tick(10000);
+      fixture.detectChanges();
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+      tick(1000 + 10);
+      fixture.detectChanges();
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+    }));
+
     it('should func work', fakeAsync(() => {
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
@@ -406,6 +419,7 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
       [nzDotRender]="dotRender"
       [nzAutoPlay]="autoPlay"
       [nzAutoPlaySpeed]="autoPlaySpeed"
+      [nzLoop]="loop"
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)"
     >
@@ -426,6 +440,7 @@ export class NzTestCarouselBasicComponent {
   array = [1, 2, 3, 4];
   autoPlay = false;
   autoPlaySpeed = 3000;
+  loop = true;
   afterChange = jasmine.createSpy('afterChange callback');
   beforeChange = jasmine.createSpy('beforeChange callback');
 }
