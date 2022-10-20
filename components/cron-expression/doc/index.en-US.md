@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: cron form
-type: Code Editor
+type: Data Entry
 title: Cron Expression
 cols: 1
 experimental: true
@@ -32,10 +32,9 @@ npm install cron-parser
 
 ### nz-cron-expression
 
-| Parameter  | Description                     | Type  | Default     |
-|-------------|---------------|-------------|---------|
-| `[nzSize]`   | The size of the input box.   | `'large'｜'small'｜'default'` | `default` |
-| `[nzCronType]` | Set cron rule type, optional value is `linux` and `spring` or not set            | `'linux'｜'spring'`  | `linux`  |
-| `[nzVisible]` | Hide quick settings                         | `boolean` | `false` |
-| `[nzType]`  | can be set to `primary` `dashed` `text` `link` or omitted, Takes effect when `[nzVisible]=false` | `'primary'｜'dashed'｜'link'｜'text'` | -  |
-| `[nzOptions]` | Options for Modifying Quick Settings, Takes effect when `[nzVisible]=false`                      | `NzCronOptions`  | - |
+| Parameter  | Description                                      | Type  | Default     |
+|-------------|--------------------------------------------------|-------------|---------|
+| `[nzType]` | Cron rule type                                   | `'linux'｜'spring'`          | `linux`  |
+| `[nzSize]`   | The size of the input box.                       | `'large'｜'small'｜'default'` | `default` |
+| `[nzCollapseDisable]`  | Hide collapse                                    | `boolean`                   | `false`  |
+| `[nzExtra]`     | Render the content on the right                  | `TemplateRef<void>`         | -        |

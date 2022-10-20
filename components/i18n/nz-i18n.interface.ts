@@ -131,22 +131,27 @@ export interface NzTextI18nInterface {
   expand: string;
 }
 
-export interface NzCronExpressionI18nInterface {
-  cronError: string;
-  second: string;
-  minute: string;
-  hour: string;
-  day: string;
-  month: string;
-  week: string;
+export interface NzCronExpressionLabelI18n {
+  second?: string;
+  minute?: string;
+  hour?: string;
+  day?: string;
+  month?: string;
+  week?: string;
   // innerHTML
-  secondError: string;
-  minuteError: string;
-  hourError: string;
-  dayError: string;
-  monthError: string;
-  weekError: string;
+  secondError?: string;
+  minuteError?: string;
+  hourError?: string;
+  dayError?: string;
+  monthError?: string;
+  weekError?: string;
 }
+
+export interface NzCronExpressionCronErrorI18n {
+  cronError?: string;
+}
+
+export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
 
 export interface NzI18nInterface {
   locale: string;

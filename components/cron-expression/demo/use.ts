@@ -20,7 +20,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
       <nz-form-item>
         <nz-form-label [nzSpan]="6">nz-cron-spring</nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <nz-cron-expression formControlName="cronSpring" nzCronType="spring"></nz-cron-expression>
+          <nz-cron-expression formControlName="cronSpring" nzType="spring"></nz-cron-expression>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-cron-expression-type',
   template: `
     <div class="example-cron-expression">
-      <nz-cron-expression nzCronType="linux"></nz-cron-expression>
-      <nz-cron-expression nzCronType="spring"></nz-cron-expression>
+      <nz-cron-expression nzType="linux"></nz-cron-expression>
+      <nz-cron-expression nzType="spring"></nz-cron-expression>
     </div>
   `,
   styles: [
