@@ -410,6 +410,30 @@ describe('NzRangePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
     }));
+
+    it('should support correct position for top arrow', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const arrow = queryFromOverlay(`.${PREFIX_CLASS}-range-arrow`) as HTMLElement;
+
+      expect(arrow.style.left).not.toBe('');
+    }));
+
+    it('should support dir rtl for top arrow', fakeAsync(() => {
+      fixture.debugElement.nativeElement.parentElement.setAttribute('dir', 'rtl');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const arrow = queryFromOverlay(`.${PREFIX_CLASS}-range-arrow`) as HTMLElement;
+
+      expect(arrow.style.right).not.toBe('');
+      fixture.debugElement.nativeElement.parentElement.setAttribute('dir', '');
+    }));
   }); // /general api testing
 
   describe('panel switch and move forward/afterward', () => {
