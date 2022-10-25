@@ -56,7 +56,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
+        <div class="{{ prefixCls }}-range-arrow" [style]="arrowPosition"></div>
         <div class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }}">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngIf="hasTimePicker; else noTimePicker">
@@ -177,6 +177,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   get hasFooter(): boolean {
     return this.showToday || this.hasTimePicker || !!this.extraFooter || !!this.ranges;
+  }
+
+  get arrowPosition(): { left?: string; right?: string } {
+    return this.dir === 'rtl'
+      ? { right: `${this.datePickerService?.arrowLeft}px` }
+      : { left: `${this.datePickerService?.arrowLeft}px` };
   }
 
   constructor(
