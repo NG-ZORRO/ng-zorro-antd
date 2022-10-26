@@ -171,19 +171,6 @@ describe('carousel', () => {
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
 
-    it('should disable loop work', fakeAsync(() => {
-      testComponent.loop = false;
-      testComponent.autoPlay = true;
-      testComponent.autoPlaySpeed = 1000;
-      fixture.detectChanges();
-      tick(10000);
-      fixture.detectChanges();
-      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
-      tick(1000 + 10);
-      fixture.detectChanges();
-      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
-    }));
-
     it('should func work', fakeAsync(() => {
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
@@ -232,6 +219,35 @@ describe('carousel', () => {
       swipe(testComponent.nzCarouselComponent, 500);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
+    }));
+
+    it('should disable loop work', fakeAsync(() => {
+      testComponent.loop = false;
+      fixture.detectChanges();
+      swipe(testComponent.nzCarouselComponent, -10);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+      swipe(testComponent.nzCarouselComponent, -1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      testComponent.loop = true;
+      fixture.detectChanges();
+      swipe(testComponent.nzCarouselComponent, -1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+      swipe(testComponent.nzCarouselComponent, 1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      testComponent.loop = false;
+      testComponent.autoPlay = true;
+      testComponent.autoPlaySpeed = 1000;
+      fixture.detectChanges();
+      tick(10000);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+      tick(1000 + 10);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
   });
 
