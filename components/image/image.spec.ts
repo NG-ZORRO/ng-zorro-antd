@@ -364,6 +364,35 @@ describe('Preview', () => {
       previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(SRC);
     }));
+
+    it('should not call reset if nzNoReset is true', fakeAsync(() => {
+      const images = [
+        {
+          src: 'https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'ng-zorro'
+        },
+        {
+          src: 'https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'angular'
+        }
+      ];
+      context.images = images;
+      context.createUsingService(true);
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      expect(previewInstance.resetDisabled).toBeTrue();
+      const mockfn = spyOn(previewInstance, 'reset' as never);
+      context.previewRef?.next();
+      fixture.detectChanges();
+      expect(mockfn).not.toHaveBeenCalled();
+      context.previewRef?.prev();
+      fixture.detectChanges();
+      expect(mockfn).not.toHaveBeenCalled();
+    }));
   });
 
   describe('Service', () => {
