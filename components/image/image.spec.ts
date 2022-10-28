@@ -415,6 +415,68 @@ describe('Preview', () => {
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
     }));
+
+    it('should reset image options when next or prev button is clicked', fakeAsync(() => {
+      const images = [
+        {
+          src: 'https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'ng-zorro'
+        },
+        {
+          src: 'https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'angular'
+        }
+      ];
+      context.images = images;
+      context.createUsingService();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+      context.previewRef?.next();
+      fixture.detectChanges();
+      imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+      context.previewRef?.prev();
+      fixture.detectChanges();
+      imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+    }));
+
+    it('should keep image options when next or prev button is clicked', fakeAsync(() => {
+      const images = [
+        {
+          src: 'https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'ng-zorro'
+        },
+        {
+          src: 'https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg',
+          width: '200px',
+          height: '200px',
+          alt: 'angular'
+        }
+      ];
+      context.images = images;
+      context.createUsingService(true);
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+      context.previewRef?.next();
+      fixture.detectChanges();
+      imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+      context.previewRef?.prev();
+      fixture.detectChanges();
+      imageElement = getPreviewImageElement();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+    }));
   });
 
   describe('Animation', () => {
@@ -590,8 +652,8 @@ export class TestImagePreviewGroupComponent {
 
   constructor(private nzImageService: NzImageService) {}
 
-  createUsingService(): void {
-    this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0 });
+  createUsingService(nzNoReset = false): void {
+    this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0, nzNoReset });
   }
 }
 

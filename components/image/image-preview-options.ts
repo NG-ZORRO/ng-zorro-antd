@@ -14,6 +14,7 @@ export class NzImagePreviewOptions {
   nzZoom?: number;
   nzRotate?: number;
   nzDirection?: Direction;
+  nzNoReset?: boolean = false;
 }
 
 export interface NzImage {
