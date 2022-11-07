@@ -127,6 +127,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() @WithConfig() @InputBoolean() nzAutoPlay: boolean = false;
   @Input() @WithConfig() @InputNumber() nzAutoPlaySpeed: number = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
+  @Input() @WithConfig() nzLoop: boolean = true;
 
   /**
    * this property is passed directly to an NzCarouselBaseStrategy
@@ -300,7 +301,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   goTo(index: number): void {
-    if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
+    if (
+      this.carouselContents &&
+      this.carouselContents.length &&
+      !this.isTransiting &&
+      (this.nzLoop || (index >= 0 && index < this.carouselContents.length))
+    ) {
       const length = this.carouselContents.length;
       const from = this.activeIndex;
       const to = (index + length) % length;
@@ -386,7 +392,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
 
             // Switch to another slide if delta is bigger than third of the width.
-            if (Math.abs(xDelta) > this.gestureRect!.width / 3) {
+            if (
+              Math.abs(xDelta) > this.gestureRect!.width / 3 &&
+              (this.nzLoop ||
+                (xDelta <= 0 && this.activeIndex + 1 < this.carouselContents.length) ||
+                (xDelta > 0 && this.activeIndex > 0))
+            ) {
               this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
             } else {
               this.goTo(this.activeIndex);

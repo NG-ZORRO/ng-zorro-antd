@@ -220,6 +220,35 @@ describe('carousel', () => {
       tickMilliseconds(fixture, 700);
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
+
+    it('should disable loop work', fakeAsync(() => {
+      testComponent.loop = false;
+      fixture.detectChanges();
+      swipe(testComponent.nzCarouselComponent, -10);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+      swipe(testComponent.nzCarouselComponent, -1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      testComponent.loop = true;
+      fixture.detectChanges();
+      swipe(testComponent.nzCarouselComponent, -1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+      swipe(testComponent.nzCarouselComponent, 1000);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      testComponent.loop = false;
+      testComponent.autoPlay = true;
+      testComponent.autoPlaySpeed = 1000;
+      fixture.detectChanges();
+      tick(10000);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+      tick(1000 + 10);
+      expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+    }));
   });
 
   describe('strategies', () => {
@@ -406,6 +435,7 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
       [nzDotRender]="dotRender"
       [nzAutoPlay]="autoPlay"
       [nzAutoPlaySpeed]="autoPlaySpeed"
+      [nzLoop]="loop"
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)"
     >
@@ -426,6 +456,7 @@ export class NzTestCarouselBasicComponent {
   array = [1, 2, 3, 4];
   autoPlay = false;
   autoPlaySpeed = 3000;
+  loop = true;
   afterChange = jasmine.createSpy('afterChange callback');
   beforeChange = jasmine.createSpy('beforeChange callback');
 }
