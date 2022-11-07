@@ -80,7 +80,7 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 </ng-container>
                 <!-- Horizontal & Bordered -->
                 <ng-container *ngIf="nzBordered">
-                  <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">
+                  <td class="ant-descriptions-item-label">
                     <ng-container *nzStringTemplateOutlet="item.title">
                       {{ item.title }}
                     </ng-container>
