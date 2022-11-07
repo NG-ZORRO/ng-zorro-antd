@@ -131,6 +131,28 @@ export interface NzTextI18nInterface {
   expand: string;
 }
 
+export interface NzCronExpressionLabelI18n {
+  second?: string;
+  minute?: string;
+  hour?: string;
+  day?: string;
+  month?: string;
+  week?: string;
+  // innerHTML
+  secondError?: string;
+  minuteError?: string;
+  hourError?: string;
+  dayError?: string;
+  monthError?: string;
+  weekError?: string;
+}
+
+export interface NzCronExpressionCronErrorI18n {
+  cronError?: string;
+}
+
+export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -145,6 +167,7 @@ export interface NzI18nInterface {
   Upload: NzUploadI18nInterface;
   Empty: NzEmptyI18nInterface;
   Text?: NzTextI18nInterface;
+  CronExpression?: NzCronExpressionI18nInterface;
 }
 
 export type DateLocale = Locale;

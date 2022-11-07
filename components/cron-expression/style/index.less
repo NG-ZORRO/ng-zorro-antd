@@ -1,0 +1,119 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@cron-expression-prefix-cls: ~'@{ant-prefix}-cron-expression';
+
+.@{cron-expression-prefix-cls} {
+  display: flex;
+  flex-wrap: nowrap;
+
+  &-content{
+    width: 100%;
+
+    .@{cron-expression-prefix-cls}-input-group-error {
+      border-color: @error-color;
+      box-shadow: none;
+
+      &:hover {
+        border-color: @error-color;
+        box-shadow: none;
+      }
+    }
+
+    .@{cron-expression-prefix-cls}-input-group-error-focus {
+      box-shadow: 0 0 0 2px @error-color-outline;
+      &:hover {
+        box-shadow: 0 0 0 2px @error-color-outline;
+      }
+    }
+  }
+
+  nz-cron-expression-input{
+    width: 20%;
+  }
+
+  &-input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    border: @border-width-base solid @border-color-base;
+    padding: @padding-xss @padding-sm;
+    border-radius: @border-radius-base;
+
+    &:hover {
+      border-color: @primary-color;
+    }
+
+    input {
+      border: none !important;
+      box-shadow: none !important;
+      width: 100%;
+      outline: none;
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+
+  &-input-group-lg {
+    padding: 6.5px @padding-sm;
+    font-size: @font-size-lg;
+  }
+
+  &-input-group-sm {
+    padding: 0 @padding-sm;
+  }
+
+  &-input-group-focus {
+    border-color: @primary-color;
+    box-shadow: 0 0 0 2px @primary-color-outline;
+    border-right-width: @border-width-base;
+    outline: 0;
+  }
+
+  nz-cron-expression-label {
+    width: 20%;
+  }
+
+  &-label-group {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    padding: 0 @padding-sm;
+  }
+
+  &-label-foucs {
+    color: @primary-color;
+  }
+
+  &-map {
+    margin-left: @margin-sm;
+  }
+
+  &-preview-date {
+    overflow-y: scroll;
+    height: 132px;
+  }
+
+  &-error {
+    color: @error-color;
+  }
+
+  &-hint {
+    p {
+      display: flex;
+    }
+    span {
+      display: inline-block;
+      min-width: 40px;
+    }
+  }
+}
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: @padding-sm;
+}
+
+.ant-collapse-content > .ant-collapse-content-box {
+  padding: @padding-md @padding-lg+@padding-sm;
+}
