@@ -80,6 +80,7 @@
     "codelyzer": "^6.0.1",
     "codesandbox": "^2.2.1",
     "conventional-changelog-cli": "^2.1.1",
+    "cron-parser": "^4.6.0",
     "d3": "^6.3.1",
     "dagre": "^0.8.5",
     "dagre-compound": "0.0.8",
