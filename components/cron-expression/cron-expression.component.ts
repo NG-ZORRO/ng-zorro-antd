@@ -76,7 +76,7 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
           <nz-collapse-panel [nzHeader]="nextDate">
             <ng-container *ngIf="validateForm.valid">
               <ul class="ant-cron-expression-preview-date">
-                <li style="margin: 0" *ngFor="let dateItem of nextTimeList">
+                <li *ngFor="let dateItem of nextTimeList">
                   {{ dateItem | date: 'YYYY-MM-dd HH:mm:ss' }}
                 </li>
                 <li><a (click)="loadMorePreview()">···</a></li>
