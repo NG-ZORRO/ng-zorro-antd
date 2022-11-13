@@ -123,11 +123,13 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         </div>
         <div #separatorElement class="{{ prefixCls }}-range-separator">
           <span class="{{ prefixCls }}-separator">
-            <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="nzSeparator; let separator">
+              <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
+              <ng-template #defaultSeparator>
+                <span nz-icon nzType="swap-right" nzTheme="outline"></span>
+              </ng-template>
+            </ng-container>
           </span>
-          <ng-template #defaultSeparator>
-            <span nz-icon nzType="swap-right" nzTheme="outline"></span>
-          </ng-template>
         </div>
         <div class="{{ prefixCls }}-input">
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
@@ -301,7 +303,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() @InputBoolean() nzShowNow: boolean = true;
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() @WithConfig() nzSeparator?: string = undefined;
+  @Input() @WithConfig() nzSeparator?: string | TemplateRef<NzSafeAny> = undefined;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
