@@ -51,6 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  static ngAcceptInputType_nzOkDanger: BooleanInput;
   static ngAcceptInputType_nzCondition: BooleanInput;
   static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
   static ngAcceptInputType_nzPopconfirmArrowPointAtCenter: BooleanInput;
@@ -68,7 +69,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmVisible') override visible?: boolean;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
-  @Input() nzOkDanger?: boolean;
+  @Input() @InputBoolean() nzOkDanger?: boolean;
   @Input() nzCancelText?: string;
   @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
   @Input() nzIcon?: string | TemplateRef<void>;
