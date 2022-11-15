@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,8 +27,7 @@ import { NzCronExpressionComponent } from './cron-expression.component';
     NzFormModule,
     NzInputModule,
     NzIconModule,
-    FormsModule,
-    ScrollingModule
+    FormsModule
   ],
   exports: [NzCronExpressionComponent]
 })
