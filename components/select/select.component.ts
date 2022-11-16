@@ -355,6 +355,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     const activatedItem =
       listOfContainerItem.find(item => item.nzLabel === this.searchValue) ||
+      listOfContainerItem.find(item => this.compareWith(item.nzValue, this.activatedValue)) ||
       listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) ||
       listOfContainerItem[0];
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
