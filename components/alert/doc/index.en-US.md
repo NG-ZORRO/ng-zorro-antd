@@ -31,4 +31,5 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 | `[nzShowIcon]` | Whether to show icon, in `nzBanner` mode default is `true` | `boolean` | `false` | ✅ |
 | `[nzIconType]` | Icon type, effective when `nzShowIcon` is `true` | `string` | - |
 | `[nzType]` | Type of Alert styles, in `nzBanner` mode default is `'warning'` | `'success' \| 'info' \| 'warning' \| 'error'` | `'info'` |
+| `[nzIcon]` | Custom icon, effective when showIcon is true | `string \| TemplateRef<void>` | - |
 | `(nzOnClose)` | Callback when Alert is closed | `EventEmitter<void>` | - |
