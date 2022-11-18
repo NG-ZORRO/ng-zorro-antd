@@ -14,7 +14,12 @@ describe('alert', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
-        declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent, NzTestAlertRtlComponent]
+        declarations: [
+          NzDemoTestBasicComponent,
+          NzDemoTestBannerComponent,
+          NzTestAlertRtlComponent,
+          NzTestAlertCustomIconComponent
+        ]
       });
       TestBed.compileComponents();
     })
@@ -93,8 +98,10 @@ describe('alert', () => {
       testComponent.showIcon = true;
       testComponent.iconType = 'lock';
       fixture.detectChanges();
-      expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon');
-      expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon-lock');
+      expect(alert.nativeElement.querySelector('.ant-alert-icon').firstElementChild.classList).toContain('anticon');
+      expect(alert.nativeElement.querySelector('.ant-alert-icon').firstElementChild.classList).toContain(
+        'anticon-lock'
+      );
     });
     it('should type work', () => {
       const listOfType = ['success', 'info', 'warning', 'error'];
@@ -137,6 +144,15 @@ describe('alert', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
       expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-rtl');
+    });
+  });
+  describe('custom icon', () => {
+    it('should custom icon work', () => {
+      const fixture = TestBed.createComponent(NzTestAlertCustomIconComponent);
+      const alert = fixture.debugElement.query(By.directive(NzAlertComponent));
+      fixture.detectChanges();
+      expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeDefined();
+      expect(alert.nativeElement.querySelector('.ant-alert-icon').firstElementChild).not.toContain('anticon');
     });
   });
 });
@@ -190,3 +206,20 @@ export class NzTestAlertRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 }
+
+@Component({
+  template: `
+    <nz-alert
+      nzType="success"
+      nzMessage="Success Tips"
+      nzDescription="Detailed description and advices about successful copywriting."
+      [nzIcon]="customIconTemplate"
+      nzShowIcon
+    ></nz-alert>
+
+    <ng-template #customIconTemplate>
+      <div> S </div>
+    </ng-template>
+  `
+})
+export class NzTestAlertCustomIconComponent {}

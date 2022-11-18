@@ -50,9 +50,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
       [@slideAlertMotion]
       (@slideAlertMotion.done)="onFadeAnimationDone()"
     >
-      <ng-container *ngIf="nzShowIcon">
-        <span nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
-      </ng-container>
+      <div *ngIf="nzShowIcon" class="ant-alert-icon">
+        <ng-container *ngIf="nzIcon; else iconDefaultTemplate">
+          <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
+        </ng-container>
+        <ng-template #iconDefaultTemplate>
+          <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
+        </ng-template>
+      </div>
       <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
         <span class="ant-alert-message" *ngIf="nzMessage">
           <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
@@ -103,6 +108,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @WithConfig() @InputBoolean() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzBanner = false;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
