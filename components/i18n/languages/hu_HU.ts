@@ -21,7 +21,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Válasszon dátumot',
+      yearPlaceholder: 'Válasszon évet',
+      quarterPlaceholder: 'Válasszon negyedévet',
+      monthPlaceholder: 'Válasszon hónapot',
+      weekPlaceholder: 'Válasszon hetet',
       rangePlaceholder: ['Kezdő dátum', 'Befejezés dátuma'],
+      rangeYearPlaceholder: ['Kezdő év', 'Befejezés éve'],
+      rangeMonthPlaceholder: ['Kezdő hónap', 'Befejezés hónapja'],
+      rangeWeekPlaceholder: ['Kezdő hét', 'Befejezés hete'],
       locale: 'hu_HU',
       today: 'Ma',
       now: 'Most',
@@ -32,6 +39,7 @@ export default {
       year: 'Év',
       timeSelect: 'Időpont kiválasztása',
       dateSelect: 'Dátum kiválasztása',
+      weekSelect: 'Hét kiválasztása',
       monthSelect: 'Hónap kiválasztása',
       yearSelect: 'Év kiválasztása',
       decadeSelect: 'Évtized kiválasztása',
@@ -50,16 +58,25 @@ export default {
       nextCentury: 'Jövő évszázad'
     },
     timePickerLocale: {
-      placeholder: 'Válasszon időt'
+      placeholder: 'Válasszon időt',
+      rangePlaceholder: ['Kezdő idő', 'Befejezés ideje']
     }
   },
   TimePicker: {
-    placeholder: 'Válasszon időt'
+    placeholder: 'Válasszon időt',
+    rangePlaceholder: ['Kezdő idő', 'Befejezés ideje']
   },
   Calendar: {
     lang: {
       placeholder: 'Válasszon dátumot',
+      yearPlaceholder: 'Válasszon évet',
+      quarterPlaceholder: 'Válasszon negyedévet',
+      monthPlaceholder: 'Válasszon hónapot',
+      weekPlaceholder: 'Válasszon hetet',
       rangePlaceholder: ['Kezdő dátum', 'Befejezés dátuma'],
+      rangeYearPlaceholder: ['Kezdő év', 'Befejezés éve'],
+      rangeMonthPlaceholder: ['Kezdő hónap', 'Befejezés hónapja'],
+      rangeWeekPlaceholder: ['Kezdő hét', 'Befejezés hete'],
       locale: 'hu_HU',
       today: 'Ma',
       now: 'Most',
@@ -70,6 +87,7 @@ export default {
       year: 'Év',
       timeSelect: 'Időpont kiválasztása',
       dateSelect: 'Dátum kiválasztása',
+      weekSelect: 'Hét kiválasztása',
       monthSelect: 'Hónap kiválasztása',
       yearSelect: 'Év kiválasztása',
       decadeSelect: 'Évtized kiválasztása',
@@ -88,16 +106,29 @@ export default {
       nextCentury: 'Jövő évszázad'
     },
     timePickerLocale: {
-      placeholder: 'Válasszon időt'
+      placeholder: 'Válasszon időt',
+      rangePlaceholder: ['Kezdő idő', 'Befejezés ideje']
     }
+  },
+  global: {
+    placeholder: 'Kérlek, válassz'
   },
   Table: {
     filterTitle: 'Szűrők',
     filterConfirm: 'Alkalmazás',
     filterReset: 'Visszaállítás',
+    filterEmptyText: 'No filters',
+    emptyText: 'Nincs adat',
     selectAll: 'Jelenlegi oldal kiválasztása',
     selectInvert: 'Jelenlegi oldal inverze',
-    sortTitle: 'Rendezés'
+    selectionAll: 'Összes adat kiválasztása',
+    sortTitle: 'Rendezés',
+    expand: 'Sor kinyitása',
+    collapse: 'Sor becsukása',
+    triggerDesc: 'Kattintson a csökkenő sorrendbe rendezéshez',
+    triggerAsc: 'Kattintson a növekvő sorrendbe rendezéshez',
+    cancelSort: 'Kattintson a rendezés visszavonásához',
+    selectNone: 'Összes visszavonása'
   },
   Modal: {
     okText: 'Alkalmazás',
@@ -109,9 +140,16 @@ export default {
     cancelText: 'Visszavonás'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Keresés',
     itemUnit: 'elem',
-    itemsUnit: 'elemek'
+    itemsUnit: 'elemek',
+    remove: 'Eltávolít',
+    selectCurrent: 'Jelenlegi oldal kiválasztása',
+    removeCurrent: 'Jelenlegi oldal eltávolítása',
+    selectAll: 'Összes adat kiválasztása',
+    removeAll: 'Összes adat eltávolítása',
+    selectInvert: 'Jelenlegi oldal inverze'
   },
   Upload: {
     uploading: 'Feltöltés...',
@@ -122,5 +160,17 @@ export default {
   },
   Empty: {
     description: 'Nincs adat'
+  },
+  Icon: {
+    icon: 'ikon'
+  },
+  Text: {
+    edit: 'Szerkesztés',
+    copy: 'Másolás',
+    copied: 'Másolva',
+    expand: 'Kiterjesztés'
+  },
+  PageHeader: {
+    back: 'Vissza'
   }
 };
