@@ -28,7 +28,7 @@ import { NzDropDownDirective } from './dropdown.directive';
     BidiModule,
     CommonModule,
     OverlayModule,
-    FormsModule,
+    FormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
     NzButtonModule,
     NzMenuModule,
     NzIconModule,

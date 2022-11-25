@@ -6,14 +6,12 @@
 import {
   findOutputsOnElementWithTag,
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 export class TabsOutputRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V11;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

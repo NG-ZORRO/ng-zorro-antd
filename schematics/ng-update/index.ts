@@ -48,39 +48,9 @@ const migrations: NullableDevkitMigration[] = [
   SpaceTemplateRule
 ];
 
-/** Entry point for the migration schematics with target of NG-ZORRO v7 */
-export function updateToV7(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V7, migrations, ruleUpgradeData, postUpdate);
-}
 
-/** Entry point for the migration schematics with target of NG-ZORRO v9 */
-export function updateToV9(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V9, migrations, ruleUpgradeData, postUpdate);
-}
-
-/** Entry point for the migration schematics with target of NG-ZORRO v10 */
-export function updateToV10(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V10, migrations, ruleUpgradeData, postUpdate);
-}
-
-/** Entry point for the migration schematics with target of NG-ZORRO v11 */
-export function updateToV11(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V11, migrations, ruleUpgradeData, postUpdate);
-}
-
-/** Entry point for the migration schematics with target of NG-ZORRO v12 */
-export function updateToV12(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V12, migrations, ruleUpgradeData, postUpdate);
-}
-
-/** Entry point for the migration schematics with target of NG-ZORRO v12 */
-export function updateToV13(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V13, migrations, ruleUpgradeData, postUpdate);
-}
-
-/** Entry point for the migration schematics with target of NG-ZORRO v14 */
-export function updateToV14(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V14, migrations, ruleUpgradeData, postUpdate);
+export function updateToV15(): Rule {
+  return createMigrationSchematicRule(TargetVersion.V15, migrations, ruleUpgradeData, postUpdate);
 }
 
 /** Post-update schematic to be called when update is finished. */

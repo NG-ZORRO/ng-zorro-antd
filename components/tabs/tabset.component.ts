@@ -26,7 +26,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
@@ -473,12 +473,12 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     return tabs.findIndex(tab => {
       const c = tab.linkDirective;
-      return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
+      return c ? isActive(c.routerLink) : false;
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
-    return (link?: RouterLink | RouterLinkWithHref) =>
+  private isLinkActive(router: Router): (link?: RouterLink | RouterLink) => boolean {
+    return (link?: RouterLink | RouterLink) =>
       link
         ? router.isActive(link.urlTree || '', {
             paths: this.nzLinkExact ? 'exact' : 'subset',

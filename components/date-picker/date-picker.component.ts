@@ -278,7 +278,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   private isCustomPlaceHolder: boolean = false;
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
-
+  private isNzDisableFirstChange: boolean = true;
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
@@ -766,8 +766,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.cdr.markForCheck();
+    this.isNzDisableFirstChange = true;
   }
 
   // ------------------------------------------------------------------------
