@@ -6,14 +6,12 @@
 import {
   findInputsOnElementWithTag,
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 export class ModalTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V11;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
     findInputsOnElementWithTag(template.content, 'nzGetContainer', ['nz-modal'])

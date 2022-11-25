@@ -328,6 +328,7 @@ export class NzCascaderComponent
   private isOpening = false;
   private delayMenuTimer: number | null = null;
   private delaySelectTimer: number | null = null;
+  private isNzDisableFirstChange: boolean = true;
 
   get inSearchingMode(): boolean {
     return this.cascaderService.inSearchingMode;
@@ -749,7 +750,8 @@ export class NzCascaderComponent
     if (isDisabled) {
       this.closeMenu();
     }
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
   }
 
   closeMenu(): void {

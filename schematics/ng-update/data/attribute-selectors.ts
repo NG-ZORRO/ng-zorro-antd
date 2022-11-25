@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AttributeSelectorUpgradeData, VersionChanges } from '@angular/cdk/schematics';
+import { AttributeSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
-export const attributeSelectors: VersionChanges<AttributeSelectorUpgradeData> = {};
+export const attributeSelectors: VersionChanges<AttributeSelectorUpgradeData> = {
+  [TargetVersion.V15]: []
+};

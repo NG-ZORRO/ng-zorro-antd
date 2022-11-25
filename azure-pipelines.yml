@@ -16,7 +16,7 @@ stages:
       steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: '16.14.0'
+          versionSpec: '18.12.1'
         displayName: 'Install Node.js'
 
 - stage: build
@@ -26,7 +26,7 @@ stages:
         - task: NodeTool@0
           displayName: 'Install Node.js'
           inputs:
-            versionSpec: '16.14.0' # The version we're installing
+            versionSpec: '18.12.1' # The version we're installing
         - task: Npm@1
           inputs:
             command: 'install'
@@ -84,7 +84,7 @@ stages:
       steps:
         - task: Npm@1
           inputs:
-            command: 'install'
+            command: 'install --legacy-peer-deps'
         - script: npm run test:schematics
 
   dependsOn: env

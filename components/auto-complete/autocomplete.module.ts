@@ -31,6 +31,14 @@ import { NzAutocompleteComponent } from './autocomplete.component';
     NzAutocompleteTriggerDirective,
     NzAutocompleteOptgroupComponent
   ],
-  imports: [BidiModule, CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
+  imports: [
+    BidiModule,
+    CommonModule,
+    OverlayModule,
+    FormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
+    NzOutletModule,
+    NzNoAnimationModule,
+    NzInputModule
+  ]
 })
 export class NzAutocompleteModule {}
