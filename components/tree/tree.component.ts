@@ -89,7 +89,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
         *ngIf="!nzVirtualHeight"
         [class.ant-select-tree-list-holder-inner]="nzSelectMode"
         [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [@.disabled]="beforeInit || noAnimation?.nzNoAnimation"
+        [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@treeCollapseMotion]="nzFlattenNodes.length"
       >

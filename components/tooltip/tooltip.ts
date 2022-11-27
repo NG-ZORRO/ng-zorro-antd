@@ -109,7 +109,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         [class.ant-tooltip-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >

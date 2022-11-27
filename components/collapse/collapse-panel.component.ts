@@ -60,7 +60,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     <div
       class="ant-collapse-content"
       [class.ant-collapse-content-active]="nzActive"
-      [@.disabled]="noAnimation?.nzNoAnimation"
+      [@.disabled]="!!noAnimation?.nzNoAnimation"
       [@collapseMotion]="nzActive ? 'expanded' : 'hidden'"
     >
       <div class="ant-collapse-content-box">

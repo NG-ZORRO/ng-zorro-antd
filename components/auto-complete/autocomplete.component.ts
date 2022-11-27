@@ -62,7 +62,7 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
       >
         <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
           <div style="display: flex; flex-direction: column;">
