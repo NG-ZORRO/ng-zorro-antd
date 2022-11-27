@@ -140,7 +140,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
         [@slideMotion]="'enter'"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
