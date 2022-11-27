@@ -2,6 +2,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FormsModule } from '@angular/forms';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 
-export const moduleList = [ FormsModule, NzTreeSelectModule, NzIconModule , NzSpaceModule];
+export const moduleList = [ FormsModule, NzTreeSelectModule, NzIconModule , NzSpaceModule, NzRadioModule];
