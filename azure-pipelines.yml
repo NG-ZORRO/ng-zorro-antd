@@ -16,13 +16,17 @@ stages:
       steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: '14.16.1'
+          versionSpec: '16.14.0'
         displayName: 'Install Node.js'
 
 - stage: build
   jobs:
     - job: build_site
       steps:
+        - task: NodeTool@0
+          displayName: 'Install Node.js'
+          inputs:
+            versionSpec: '16.14.0' # The version we're installing
         - task: Npm@1
           inputs:
             command: 'install'
