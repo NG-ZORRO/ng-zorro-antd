@@ -111,8 +111,8 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     );
   }
 
-  private isLinkActive(router: Router): (link: RouterLink | RouterLink) => boolean {
-    return (link: RouterLink | RouterLink) =>
+  private isLinkActive(router: Router): (link: RouterLink) => boolean {
+    return (link: RouterLink) =>
       router.isActive(link.urlTree || '', {
         paths: this.nzMatchRouterExact ? 'exact' : 'subset',
         queryParams: this.nzMatchRouterExact ? 'exact' : 'subset',
@@ -157,7 +157,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   ngAfterContentInit(): void {
     this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
-    // this.listOfRouterLinkWithHref.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
     this.updateRouterActive();
   }
 
