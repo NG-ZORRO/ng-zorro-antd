@@ -84,7 +84,7 @@ stages:
       steps:
         - task: Npm@1
           inputs:
-            command: 'install --legacy-peer-deps'
+            command: 'install'
         - script: npm run test:schematics
 
   dependsOn: env
