@@ -15,10 +15,16 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzCronExpressionInputComponent } from './cron-expression-input.component';
 import { NzCronExpressionLabelComponent } from './cron-expression-label.component';
+import { NzCronExpressionPreviewComponent } from './cron-expression-preview.component';
 import { NzCronExpressionComponent } from './cron-expression.component';
 
 @NgModule({
-  declarations: [NzCronExpressionComponent, NzCronExpressionLabelComponent, NzCronExpressionInputComponent],
+  declarations: [
+    NzCronExpressionComponent,
+    NzCronExpressionLabelComponent,
+    NzCronExpressionInputComponent,
+    NzCronExpressionPreviewComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

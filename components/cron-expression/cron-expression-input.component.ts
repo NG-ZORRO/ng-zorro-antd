@@ -11,7 +11,7 @@ import { CronChangeType, TimeType } from './typings';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-input',
-  exportAs: 'nzCronExpression',
+  exportAs: 'nzCronExpressionInput',
   template: `
     <div class="ant-cron-expression-input">
       <input

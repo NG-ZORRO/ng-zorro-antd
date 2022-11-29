@@ -38,3 +38,4 @@ npm install cron-parser
 | `[nzSize]`   | The size of the input box.                       | `'large'｜'small'｜'default'` | `default` |
 | `[nzCollapseDisable]`  | Hide collapse                                    | `boolean`                   | `false`  |
 | `[nzExtra]`     | Render the content on the right                  | `TemplateRef<void>`         | -        |
+| `[nzSemantic]`     | Custom rendering next execution time | `TemplateRef<void>`         | -        |
