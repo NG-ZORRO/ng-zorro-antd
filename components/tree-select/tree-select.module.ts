@@ -24,7 +24,7 @@ import { NzTreeSelectComponent } from './tree-select.component';
     BidiModule,
     CommonModule,
     OverlayModule,
-    FormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
+    FormsModule,
     NzSelectModule,
     NzTreeModule,
     NzIconModule,
