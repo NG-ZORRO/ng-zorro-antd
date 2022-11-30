@@ -58,7 +58,7 @@
     "@commitlint/cli": "^13.0.0",
     "@commitlint/config-angular": "^13.0.0",
     "@nguniversal/builders": "~15.0.0",
-    "@nguniversal/express-engine": "~14.1.0",
+    "@nguniversal/express-engine": "~15.0.0",
     "@schematics/angular": "~15.0.1",
     "@stackblitz/sdk": "^1.5.2",
     "@types/d3": "^6.2.0",
