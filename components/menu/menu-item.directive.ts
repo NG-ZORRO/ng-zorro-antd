@@ -104,11 +104,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   private hasActiveLinks(): boolean {
     const isActiveCheckFn = this.isLinkActive(this.router!);
-    return (
-      (this.routerLink && isActiveCheckFn(this.routerLink)) ||
-      (this.routerLinkWithHref && isActiveCheckFn(this.routerLinkWithHref)) ||
-      this.listOfRouterLink.some(isActiveCheckFn)
-    );
+    return (this.routerLink && isActiveCheckFn(this.routerLink)) || this.listOfRouterLink.some(isActiveCheckFn);
   }
 
   private isLinkActive(router: Router): (link: RouterLink) => boolean {
@@ -128,7 +124,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
-    @Optional() private routerLinkWithHref?: RouterLink,
     @Optional() private router?: Router
   ) {
     if (router) {
