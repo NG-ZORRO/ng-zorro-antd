@@ -7,7 +7,6 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -31,14 +30,6 @@ import { NzAutocompleteComponent } from './autocomplete.component';
     NzAutocompleteTriggerDirective,
     NzAutocompleteOptgroupComponent
   ],
-  imports: [
-    BidiModule,
-    CommonModule,
-    OverlayModule,
-    FormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
-    NzOutletModule,
-    NzNoAnimationModule,
-    NzInputModule
-  ]
+  imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
 })
 export class NzAutocompleteModule {}
