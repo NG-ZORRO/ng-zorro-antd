@@ -13,7 +13,7 @@ import { TimeType, TimeTypeError } from './typings';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-label',
-  exportAs: 'nzCronExpression',
+  exportAs: 'nzCronExpressionLabel',
   template: `
     <div
       class="ant-cron-expression-label"

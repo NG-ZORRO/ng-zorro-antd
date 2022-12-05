@@ -45,9 +45,9 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
     <div class="ant-cron-expression">
       <div class="ant-cron-expression-content">
         <div
-          class="ant-cron-expression-input-group"
-          [class.ant-cron-expression-input-group-lg]="nzSize === 'large'"
-          [class.ant-cron-expression-input-group-sm]="nzSize === 'small'"
+          class="ant-input ant-cron-expression-input-group"
+          [class.ant-input-lg]="nzSize === 'large'"
+          [class.ant-input-sm]="nzSize === 'small'"
           [class.ant-cron-expression-input-group-focus]="focus"
           [class.ant-cron-expression-input-group-error]="!validateForm.valid"
           [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus"
@@ -62,7 +62,12 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
             ></nz-cron-expression-input>
           </ng-container>
         </div>
-        <div class="ant-cron-expression-label-group">
+        <div
+          class="ant-cron-expression-label-group"
+          [class.ant-input-lg]="nzSize === 'large'"
+          [class.ant-cron-expression-label-group-default]="nzSize === 'default'"
+          [class.ant-input-sm]="nzSize === 'small'"
+        >
           <ng-container *ngFor="let label of labels">
             <nz-cron-expression-label
               [type]="label"
@@ -72,29 +77,18 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
             ></nz-cron-expression-label>
           </ng-container>
         </div>
-        <nz-collapse *ngIf="!nzCollapseDisable" [nzBordered]="false">
-          <nz-collapse-panel [nzHeader]="nextDate">
-            <ng-container *ngIf="validateForm.valid">
-              <ul class="ant-cron-expression-preview-date">
-                <li *ngFor="let dateItem of nextTimeList">
-                  {{ dateItem | date: 'YYYY-MM-dd HH:mm:ss' }}
-                </li>
-                <li><a (click)="loadMorePreview()">···</a></li>
-              </ul>
-            </ng-container>
-            <ng-container *ngIf="!validateForm.valid">{{ locale.cronError }}</ng-container>
-          </nz-collapse-panel>
-        </nz-collapse>
+        <nz-cron-expression-preview
+          *ngIf="!nzCollapseDisable"
+          [TimeList]="nextTimeList"
+          [visible]="validateForm.valid"
+          [locale]="locale"
+          [nzSemantic]="nzSemantic"
+          (loadMorePreview)="loadMorePreview()"
+        ></nz-cron-expression-preview>
       </div>
       <div class="ant-cron-expression-map" *ngIf="nzExtra">
         <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
       </div>
-      <ng-template #nextDate>
-        <ng-container *ngIf="validateForm.valid">
-          {{ dateTime | date: 'YYYY-MM-dd HH:mm:ss' }}
-        </ng-container>
-        <ng-container *ngIf="!validateForm.valid">{{ locale.cronError }}</ng-container>
-      </ng-template>
     </div>
   `,
   providers: [
@@ -115,6 +109,7 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
   @Input() nzType: 'linux' | 'spring' = 'linux';
   @Input() @InputBoolean() nzCollapseDisable: boolean = false;
   @Input() nzExtra?: TemplateRef<void> | null = null;
+  @Input() nzSemantic: TemplateRef<void> | null = null;
 
   locale!: NzCronExpressionI18nInterface;
   focus: boolean = false;
@@ -123,7 +118,6 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
   labels: TimeType[] = [];
   interval!: CronExpression<false>;
   nextTimeList: Date[] = [];
-  dateTime: Date = new Date();
   private destroy$ = new Subject<void>();
 
   validateForm!: UntypedFormGroup;
@@ -202,7 +196,6 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
   previewDate(value: CronType): void {
     try {
       this.interval = parseExpression(Object.values(value).join(' '));
-      this.dateTime = this.interval.next().toDate();
       this.nextTimeList = [
         this.interval.next().toDate(),
         this.interval.next().toDate(),

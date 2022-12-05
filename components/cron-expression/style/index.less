@@ -13,18 +13,10 @@
     .@{cron-expression-prefix-cls}-input-group-error {
       border-color: @error-color;
       box-shadow: none;
-
-      &:hover {
-        border-color: @error-color;
-        box-shadow: none;
-      }
     }
 
     .@{cron-expression-prefix-cls}-input-group-error-focus {
-      box-shadow: 0 0 0 2px @error-color-outline;
-      &:hover {
-        box-shadow: 0 0 0 2px @error-color-outline;
-      }
+      box-shadow: 0 0 0 @outline-width @error-color-outline;
     }
   }
 
@@ -36,13 +28,6 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    border: @border-width-base solid @border-color-base;
-    padding: @padding-xss @padding-sm;
-    border-radius: @border-radius-base;
-
-    &:hover {
-      border-color: @primary-color;
-    }
 
     input {
       border: none !important;
@@ -54,19 +39,9 @@
     }
   }
 
-  &-input-group-lg {
-    padding: 6.5px @padding-sm;
-    font-size: @font-size-lg;
-  }
-
-  &-input-group-sm {
-    padding: 0 @padding-sm;
-  }
-
   &-input-group-focus {
     border-color: @primary-color;
-    box-shadow: 0 0 0 2px @primary-color-outline;
-    border-right-width: @border-width-base;
+    box-shadow: 0 0 0 @outline-width @primary-color-outline;
     outline: 0;
   }
 
@@ -79,7 +54,11 @@
     width: 100%;
     flex-wrap: nowrap;
     justify-content: space-around;
-    padding: 0 @padding-sm;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    &-default {
+      padding: 0 @padding-sm;
+    }
   }
 
   &-label-foucs {
@@ -90,16 +69,50 @@
     margin-left: @margin-sm;
   }
 
-  &-preview-date {
-    overflow-y: scroll;
-    height: 132px;
-    margin: 0;
-    padding: 0;
-     li {
-       list-style: none;
-       margin: 0;
-       padding: 0;
-     }
+  &-preview {
+    display: flex;
+    padding: @padding-sm;
+
+    &-dateTime {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+
+      &-center {
+        justify-content: center;
+      }
+    }
+
+    &-content {
+      flex: 0 0 220px;
+      display: flex;
+      align-items: center;
+      padding-left: @padding-md;
+
+      &-date {
+        flex: 1 1 auto;
+      }
+    }
+
+    &-list, &-icon {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    &-list {
+      overflow-y: scroll;
+      height: 132px;
+    }
+
+    &-icon {
+      height: 100%;
+    }
   }
 
   &-error {
@@ -115,12 +128,4 @@
       min-width: 40px;
     }
   }
-}
-
-.ant-collapse > .ant-collapse-item > .ant-collapse-header {
-  padding: @padding-sm;
-}
-
-.ant-collapse-content > .ant-collapse-content-box {
-  padding: @padding-md @padding-lg+@padding-sm;
 }
