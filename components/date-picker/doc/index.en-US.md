@@ -87,7 +87,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | Date | `Date[]` | - |
 | `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzSeparator]` | separator | `string` | `'~'` |
+| `[nzSeparator]` | separator | `string \| TemplateRef` | `'~'` |
 | `(nzOnCalendarChange)` | The start time or the end time of the range change callback | `EventEmitter<Date[]>` | - |
 
 ### nz-range-picker[nzMode="date"]

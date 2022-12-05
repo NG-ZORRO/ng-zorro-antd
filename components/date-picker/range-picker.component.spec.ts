@@ -312,11 +312,19 @@ describe('NzRangePickerComponent', () => {
       expect(queryFromRightPanel('.ant-picker-header-month-btn').textContent!.indexOf('2') > -1).toBeTruthy();
     }));
 
-    it('should support nzSeparator', fakeAsync(() => {
+    it('should support string nzSeparator', fakeAsync(() => {
       fixtureInstance.nzSeparator = '→';
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.ant-picker-range-separator`)).nativeElement.textContent.trim()).toBe(
         '→'
+      );
+    }));
+
+    it('should support ElementRef nzSeparator', fakeAsync(() => {
+      fixtureInstance.useSuite = 6;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.ant-picker-range-separator`)).nativeElement.textContent.trim()).toBe(
+        'TEST_SEPARATOR_REF'
       );
     }));
 
@@ -1216,11 +1224,14 @@ describe('NzRangePickerComponent', () => {
       </ng-container>
 
       <nz-range-picker *ngSwitchCase="5" nzOpen></nz-range-picker>
+
+      <nz-range-picker *ngSwitchCase="6" [nzSeparator]="separatorTemplate"></nz-range-picker>
+      <ng-template #separatorTemplate>TEST_SEPARATOR_REF</ng-template>
     </ng-container>
   `
 })
 class NzTestRangePickerComponent {
-  useSuite!: 1 | 2 | 3 | 4 | 5;
+  useSuite!: 1 | 2 | 3 | 4 | 5 | 6;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
