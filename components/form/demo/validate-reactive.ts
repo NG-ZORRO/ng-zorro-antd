@@ -44,8 +44,10 @@ import { Observable, Observer } from 'rxjs';
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Comment</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
-          <textarea formControlName="comment" nz-input rows="2" placeholder="write any thing"></textarea>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please write something here!">
+          <nz-textarea-count [nzMaxCharacterCount]="2000">
+            <textarea formControlName="comment" nz-input rows="2" placeholder="write any thing"></textarea>
+          </nz-textarea-count>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
