@@ -38,3 +38,4 @@ npm install cron-parser
 | `[nzSize]`     | 设置输入框大小        | `'large'｜'small'｜'default'` | `default` |
 | `[nzCollapseDisable]`  | 隐藏折叠面板         | `boolean`                   | `false`  |
 | `[nzExtra]`     | 自定义渲染右侧的内容 | `TemplateRef<void>`         | -        |
+| `[nzSemantic]`     | 自定义渲染下次执行时间 | `TemplateRef<void>`         | -        |
