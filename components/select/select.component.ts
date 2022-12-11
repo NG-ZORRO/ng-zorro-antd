@@ -245,6 +245,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() @InputBoolean() nzServerSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
+  @Input() @InputBoolean() nzSelectOnTab = false;
   @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
@@ -464,7 +465,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         }
         break;
       case TAB:
-        this.setOpenState(false);
+        if (this.nzSelectOnTab) {
+          if (this.nzOpen) {
+            e.preventDefault();
+            if (isNotNil(this.activatedValue)) {
+              this.onItemClick(this.activatedValue);
+            }
+          }
+        } else {
+          this.setOpenState(false);
+        }
         break;
       case ESCAPE:
         /**
