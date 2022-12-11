@@ -60,5 +60,5 @@ Create dropdown with contextmenu, the detail can be found in the example above
 
 | Property | Description | Arguments | Return Value |
 | --- | --- | --- | --- |
-| create | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
+| create | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
 | close | close dropdown | - | - |
