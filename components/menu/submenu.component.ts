@@ -85,7 +85,7 @@ const listOfHorizontalPositions = [
       nz-submenu-inline-child
       [mode]="mode"
       [nzOpen]="nzOpen"
-      [@.disabled]="noAnimation?.nzNoAnimation"
+      [@.disabled]="!!noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [menuClass]="nzMenuClassName"
       [templateOutlet]="subMenuTemplate"
@@ -110,7 +110,7 @@ const listOfHorizontalPositions = [
           [isMenuInsideDropDown]="isMenuInsideDropDown"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
-          [@.disabled]="noAnimation?.nzNoAnimation"
+          [@.disabled]="!!noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           (subMenuMouseState)="setMouseEnterState($event)"
         ></div>

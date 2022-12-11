@@ -144,6 +144,70 @@ describe('tree', () => {
         expect(component.treeComponent.getMatchedNodeList().length).toEqual(1);
       }));
 
+      [
+        {
+          title:
+            "should display 7 nodes when hideUnMatched=false and virtualHeight = undefined and nzSearchValue = '0-1'",
+          when: { hideUnMatched: false, searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
+        },
+        {
+          title:
+            "should display 7 nodes when hideUnMatched=false and virtualHeight = '300px' and nzSearchValue = '0-1'",
+          when: { hideUnMatched: false, virtualHeight: '300px', searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
+        },
+        {
+          title:
+            "'should display 7 nodes when hideUnMatched=true and virtualHeight = undefined and nzSearchValue = '0-1'",
+          when: { hideUnMatched: true, searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 7 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = undefined",
+          when: { hideUnMatched: true, virtualHeight: '300px' },
+          then: { matchedNodeList: 0, nzFlattenNodes: 3 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = ''",
+          when: { hideUnMatched: true, virtualHeight: '300px', searchValue: '' },
+          then: { matchedNodeList: 0, nzFlattenNodes: 3 }
+        },
+        {
+          title:
+            "should display 4 matched nodes based on nzSearchValue when hideUnMatched=true and virtualHeight = '300px' and nzSearchValue = '0-1'",
+          when: { hideUnMatched: true, virtualHeight: '300px', searchValue: '0-1' },
+          then: { matchedNodeList: 3, nzFlattenNodes: 4 }
+        }
+      ].forEach(({ title, when, then }) => {
+        it(
+          title,
+          fakeAsync(() => {
+            // Given
+            const { component, fixture, nativeElement } = testBed;
+            component.searchValue = when.searchValue;
+            component.virtualHeight = when.virtualHeight;
+            component.hideUnMatched = when.hideUnMatched;
+            // When
+            fixture.detectChanges();
+            tick(300);
+            fixture.detectChanges();
+            // Then
+            expect(component.treeComponent.getMatchedNodeList().length)
+              .withContext('treeComponent.getMatchedNodeList().length')
+              .toBe(then.matchedNodeList);
+            expect(component.treeComponent.nzFlattenNodes.length)
+              .withContext('treeComponent.nzFlattenNodes.length')
+              .toBe(then.nzFlattenNodes);
+            expect(nativeElement.querySelectorAll('nz-tree-node').length)
+              .withContext('number of displayed nz-tree-node elements')
+              .toBe(then.nzFlattenNodes);
+          })
+        );
+      });
+
       it('should match nodes based on nzSearchFunc', fakeAsync(() => {
         const { component, fixture, nativeElement } = testBed;
         component.searchFunc = (data: NzTreeNodeOptions): boolean => data.title === component.searchValue;
@@ -588,6 +652,7 @@ describe('tree', () => {
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
       [nzSearchFunc]="searchFunc"
+      [nzVirtualHeight]="virtualHeight"
       [nzHideUnMatched]="hideUnMatched"
       [nzExpandAll]="expandAll"
       [nzExpandedIcon]="expandedIcon"
@@ -619,6 +684,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultExpandedKeys: string[] = [];
   expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   searchFunc?: (node: NzTreeNodeOptions) => boolean;
+  virtualHeight?: string | boolean = false;
   hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {

@@ -89,7 +89,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
         *ngIf="!nzVirtualHeight"
         [class.ant-select-tree-list-holder-inner]="nzSelectMode"
         [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [@.disabled]="beforeInit || noAnimation?.nzNoAnimation"
+        [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@treeCollapseMotion]="nzFlattenNodes.length"
       >
@@ -485,7 +485,10 @@ export class NzTreeComponent
 
   ngOnInit(): void {
     this.nzTreeService.flattenNodes$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.nzFlattenNodes = data;
+      this.nzFlattenNodes =
+        !!this.nzVirtualHeight && this.nzHideUnMatched && this.nzSearchValue?.length > 0
+          ? data.filter(d => !d.canHide)
+          : data;
       this.cdr.markForCheck();
     });
 

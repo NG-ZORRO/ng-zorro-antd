@@ -136,23 +136,32 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private changeIcon2(): void {
     this.setClassName();
 
-    // We don't need to re-enter the Angular zone for adding classes or attributes through the renderer.
+    // The Angular zone is left deliberately before the SVG is set
+    // since `_changeIcon` spawns asynchronous tasks as promise and
+    // HTTP calls. This is used to reduce the number of change detections
+    // while the icon is being loaded dynamically.
     this.ngZone.runOutsideAngular(() => {
       from(this._changeIcon())
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: svgOrRemove => {
-            // The _changeIcon method would call Renderer to remove the element of the old icon,
-            // which would call `markElementAsRemoved` eventually,
-            // so we should call `detectChanges` to tell Angular remove the DOM node.
-            // #7186
-            this.changeDetectorRef.detectChanges();
+            // Get back into the Angular zone after completing all the tasks.
+            // Since we manually run change detection locally, we have to re-enter
+            // the zone because the change detection might also be run on other local
+            // components, leading them to handle template functions outside of the Angular zone.
+            this.ngZone.run(() => {
+              // The _changeIcon method would call Renderer to remove the element of the old icon,
+              // which would call `markElementAsRemoved` eventually,
+              // so we should call `detectChanges` to tell Angular remove the DOM node.
+              // #7186
+              this.changeDetectorRef.detectChanges();
 
-            if (svgOrRemove) {
-              this.setSVGData(svgOrRemove);
-              this.handleSpin(svgOrRemove);
-              this.handleRotate(svgOrRemove);
-            }
+              if (svgOrRemove) {
+                this.setSVGData(svgOrRemove);
+                this.handleSpin(svgOrRemove);
+                this.handleRotate(svgOrRemove);
+              }
+            });
           },
           error: warn
         });
