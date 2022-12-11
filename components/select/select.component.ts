@@ -451,7 +451,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       case ENTER:
         e.preventDefault();
         if (this.nzOpen) {
-          if (isNotNil(this.activatedValue)) {
+          if (isNotNil(this.activatedValue) && activatedIndex !== -1) {
             this.onItemClick(this.activatedValue);
           }
         } else {
