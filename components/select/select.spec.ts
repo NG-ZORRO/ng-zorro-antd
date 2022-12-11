@@ -276,6 +276,58 @@ describe('select', () => {
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
 
+    it('should select option by enter', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value', nzLabel: 'label' },
+        { nzValue: 'disabledValue', nzLabel: 'disabledLabel', nzDisabled: true }
+      ];
+      component.nzShowSearch = true;
+      component.nzOpen = true;
+
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'label';
+
+      dispatchFakeEvent(inputElement, 'input');
+      flushChanges();
+      expect(component.searchValueChange).toHaveBeenCalledWith('label');
+
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.value).toBe('value');
+    }));
+
+    it('should nzDisabled option works', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value', nzLabel: 'label' },
+        { nzValue: 'disabledValue', nzLabel: 'disabledLabel', nzDisabled: true }
+      ];
+      component.nzShowSearch = true;
+      component.nzOpen = true;
+
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'disabled';
+
+      dispatchFakeEvent(inputElement, 'input');
+      flushChanges();
+      expect(component.searchValueChange).toHaveBeenCalledWith('disabled');
+
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.value).not.toBe('disabledValue');
+    }));
+
     it('should nzBackdrop works', fakeAsync(() => {
       component.nzOpen = true;
       component.nzBackdrop = true;
