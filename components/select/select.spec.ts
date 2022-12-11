@@ -469,6 +469,50 @@ describe('select', () => {
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
       });
     }));
+    it('should select item on TAB when nzSelectOnTab is true', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzSelectOnTab = true;
+      component.listOfOption = [
+        { nzValue: 'value_01', nzLabel: 'label_01' },
+        { nzValue: 'value_02', nzLabel: 'label_02' },
+        { nzValue: 'value_03', nzLabel: 'label_03' }
+      ];
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', TAB, inputElement);
+      flushChanges();
+      expect(component.valueChange).toHaveBeenCalledWith('value_01');
+      flushChanges();
+      expect(component.openChange).toHaveBeenCalledWith(false);
+      expect(component.openChange).toHaveBeenCalledTimes(1);
+    }));
+    it('should close select and keep the same value on TAB when nzSelectOnTab is default(false)', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value_01', nzLabel: 'label_01' },
+        { nzValue: 'value_02', nzLabel: 'label_02' },
+        { nzValue: 'value_03', nzLabel: 'label_03' }
+      ];
+      component.value = 'value_02';
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', TAB, inputElement);
+      flushChanges();
+      expect(component.valueChange).not.toHaveBeenCalled();
+      flushChanges();
+      expect(component.openChange).toHaveBeenCalledWith(false);
+      expect(component.openChange).toHaveBeenCalledTimes(1);
+    }));
   });
   describe('multiple template mode', () => {
     let testBed: ComponentBed<TestSelectTemplateMultipleComponent>;
@@ -1427,6 +1471,7 @@ describe('select', () => {
       [nzBackdrop]="nzBackdrop"
       [(nzOpen)]="nzOpen"
       [nzPlacement]="nzPlacement"
+      [nzSelectOnTab]="nzSelectOnTab"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1488,6 +1533,7 @@ export class TestSelectTemplateDefaultComponent {
   nzDisabled = false;
   nzOpen = false;
   nzBackdrop = false;
+  nzSelectOnTab = false;
   nzPlacement: NzSelectPlacementType | null = 'bottomLeft';
 }
 

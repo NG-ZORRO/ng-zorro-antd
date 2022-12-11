@@ -64,6 +64,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzOptionHeightPx]` | 下拉菜单中每个 Option 的高度 | `number` | `32` |
 | `[nzOptionOverflowSize]` | 下拉菜单中最多展示的 Option 个数，超出部分滚动 | `number` | `8` |
+| `[nzSelectOnTab]` | 允许使用 TAB 键选择项目 | `boolean` | `false` |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |
 | `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<any>` | - |
