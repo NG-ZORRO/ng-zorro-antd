@@ -116,7 +116,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, 
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzFooter?: string | TemplateRef<void>;
   @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
-  @Input() nzRenderItem: TemplateRef<void> | null = null;
+  @Input() nzRenderItem: TemplateRef<{ $implicit: NzSafeAny; index: number }> | null = null;
   @Input() @InputBoolean() nzLoading = false;
   @Input() nzLoadMore: TemplateRef<void> | null = null;
   @Input() nzPagination?: TemplateRef<void>;
