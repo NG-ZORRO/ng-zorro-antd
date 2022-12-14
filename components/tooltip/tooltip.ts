@@ -115,7 +115,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       >
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow">
-            <span class="ant-tooltip-arrow-content" [ngStyle]="_contentStyleMap"></span>
+            <span class="ant-tooltip-arrow-content" [ngStyle]="_arrowStyleMap"></span>
           </div>
           <div class="ant-tooltip-inner" [ngStyle]="_contentStyleMap">
             <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
@@ -133,6 +133,8 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   nzColor?: string | NzPresetColor;
 
   _contentStyleMap: NgStyleInterface = {};
+
+  _arrowStyleMap: NgStyleInterface = {};
 
   constructor(
     cdr: ChangeDetectorRef,
@@ -157,6 +159,8 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
 
     this._contentStyleMap = {
       backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null,
+    };
+    this._arrowStyleMap = {
       '--antd-arrow-background-color': !!this.nzColor && !isColorPreset ? this.nzColor : null
     };
   }
