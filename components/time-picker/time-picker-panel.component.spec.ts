@@ -19,7 +19,7 @@ describe('time-picker-panel', () => {
           NzTestTimePanelComponent,
           NzTestTimePanelDisabledComponent,
           NzTest12HourTimePanelComponent,
-          NzTest12HourTimePanelDisabeledComponent
+          NzTest12HourTimePanelDisabledComponent
         ]
       });
       TestBed.compileComponents();
@@ -302,11 +302,11 @@ describe('time-picker-panel', () => {
   });
   describe('disabled and format 12-hour time-picker-panel', () => {
     let panelElement: DebugElement;
-    let fixture12Hour: ComponentFixture<NzTest12HourTimePanelDisabeledComponent>;
-    let testComponent: NzTest12HourTimePanelDisabeledComponent;
+    let fixture12Hour: ComponentFixture<NzTest12HourTimePanelDisabledComponent>;
+    let testComponent: NzTest12HourTimePanelDisabledComponent;
 
     beforeEach(() => {
-      fixture12Hour = TestBed.createComponent(NzTest12HourTimePanelDisabeledComponent);
+      fixture12Hour = TestBed.createComponent(NzTest12HourTimePanelDisabledComponent);
       testComponent = fixture12Hour.debugElement.componentInstance;
       fixture12Hour.detectChanges();
       panelElement = fixture12Hour.debugElement.query(By.directive(NzTimePickerPanelComponent));
@@ -455,7 +455,7 @@ export class NzTest12HourTimePanelComponent {
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
-export class NzTest12HourTimePanelDisabeledComponent {
+export class NzTest12HourTimePanelDisabledComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
   format = 'hh:mm:ss a';
   value = new Date(0, 0, 0, 1, 1, 1);
