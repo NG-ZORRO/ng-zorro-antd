@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^15.0.0",
-    "@ant-design/icons-angular": "^14.1.0",
+    "@ant-design/icons-angular": "^15.0.0",
     "date-fns": "^2.16.1"
   },
   "peerDependencies": {
