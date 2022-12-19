@@ -28,7 +28,7 @@ export function getValueWithConfig<T>(
  * @breaking-change 14.0.0
  */
 export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
-  Object.assign(instance, params);
+  Object.assign(<{}>instance, params);
 }
 
 export function getConfigFromComponent<T extends ModalOptions>(component: T): ModalOptions {

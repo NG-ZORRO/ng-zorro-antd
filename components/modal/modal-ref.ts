@@ -184,7 +184,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         this.config[loadingKey] = true;
         let doClose: boolean | void | {} = false;
         try {
-          doClose = await result;
+          doClose = (await result) as typeof result;
         } finally {
           this.config[loadingKey] = false;
           this.closeWhitResult(doClose);

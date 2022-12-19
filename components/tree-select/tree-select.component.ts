@@ -340,6 +340,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   positions: ConnectionPositionPair[] = [];
 
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
 
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
@@ -422,8 +423,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.closeDropDown();
+    this.isNzDisableFirstChange = false;
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

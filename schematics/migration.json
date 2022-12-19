@@ -1,40 +1,10 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "migration-v7": {
-      "version": "7",
-      "description": "Updates NG-ZORRO to v7",
-      "factory": "./ng-update/index#updateToV7"
-    },
-    "migration-v9": {
-      "version": "9",
-      "description": "Updates NG-ZORRO to v9 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/5035]",
-      "factory": "./ng-update/index#updateToV9"
-    },
-    "migration-v10": {
-      "version": "10.0.0-0",
-      "description": "Updates NG-ZORRO to v10 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/5775]",
-      "factory": "./ng-update/index#updateToV10"
-    },
-    "migration-v11": {
-      "version": "11.0.0-0",
-      "description": "Updates NG-ZORRO to v11 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/6217]",
-      "factory": "./ng-update/index#updateToV11"
-    },
-    "migration-v12": {
-      "version": "12.0.0-0",
-      "description": "Updates NG-ZORRO to v12 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/6834]",
-      "factory": "./ng-update/index#updateToV12"
-    },
-    "migration-v13": {
-      "version": "13.0.0-0",
-      "description": "Updates NG-ZORRO to v13 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7157]",
-      "factory": "./ng-update/index#updateToV13"
-    },
-    "migration-v14": {
-      "version": "14.0.0-0",
-      "description": "Updates NG-ZORRO to v14 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7613]",
-      "factory": "./ng-update/index#updateToV14"
+    "migration-v15": {
+      "version": "15.0.0-0",
+      "description": "Updates NG-ZORRO to v15 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7726]",
+      "factory": "./ng-update/index#updateToV15"
     },
     "ng-post-update": {
       "description": "Prints out results after ng-update.",

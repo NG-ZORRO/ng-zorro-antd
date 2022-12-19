@@ -137,7 +137,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
+export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {

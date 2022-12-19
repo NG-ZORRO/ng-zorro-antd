@@ -1,5 +1,5 @@
-import 'zone.js';
 import { enableProdMode } from '@angular/core';
+import 'zone.js';
 
 import { environment } from './environments/environment';
 
@@ -8,4 +8,3 @@ if (environment.production) {
 }
 
 export { AppServerModule } from './app/app.server.module';
-export { renderModule } from '@angular/platform-server';

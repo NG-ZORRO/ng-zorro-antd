@@ -48,7 +48,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_DATE_PICKER_POSITIONS, DATE_PICKER_POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
@@ -278,7 +278,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   private isCustomPlaceHolder: boolean = false;
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
-
+  private isNzDisableFirstChange: boolean = true;
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
@@ -632,7 +632,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     // Default value
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
-    this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+    this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       const value = this.datePickerService.value;
       this.datePickerService.initialValue = cloneDate(value);
       if (this.isRange) {
@@ -766,8 +766,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.cdr.markForCheck();
+    this.isNzDisableFirstChange = true;
   }
 
   // ------------------------------------------------------------------------

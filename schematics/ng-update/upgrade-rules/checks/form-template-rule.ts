@@ -5,16 +5,14 @@
 
 import {
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 import { findElementWithTag } from '../../../utils/ng-update/elements';
 
 export class FormTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V9;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

@@ -40,7 +40,9 @@ import { getConfigFromComponent } from './utils';
   template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
+export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
+  implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy
+{
   static ngAcceptInputType_nzMask: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
   static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
