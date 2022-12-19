@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { MethodCallUpgradeData, VersionChanges } from '@angular/cdk/schematics';
+import { MethodCallUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
-export const methodCallChecks: VersionChanges<MethodCallUpgradeData> = {};
+export const methodCallChecks: VersionChanges<MethodCallUpgradeData> = {
+  [TargetVersion.V15]: []
+};

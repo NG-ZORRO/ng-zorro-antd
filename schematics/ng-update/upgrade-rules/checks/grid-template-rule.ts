@@ -7,14 +7,12 @@ import {
   findInputsOnElementWithAttr,
   findInputsOnElementWithTag,
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 export class GridTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V10;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+import { Migration, ResolvedResource, UpgradeData } from '@angular/cdk/schematics';
 
 import { findElementWithoutStructuralDirective } from '../../../utils/ng-update/elements';
 
 export class TabsTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V11;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

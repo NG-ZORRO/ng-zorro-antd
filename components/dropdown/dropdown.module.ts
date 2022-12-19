@@ -8,7 +8,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -28,7 +27,6 @@ import { NzDropDownDirective } from './dropdown.directive';
     BidiModule,
     CommonModule,
     OverlayModule,
-    FormsModule,
     NzButtonModule,
     NzMenuModule,
     NzIconModule,
