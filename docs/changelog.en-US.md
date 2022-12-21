@@ -13,10 +13,38 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 15.0.0
+
+`2022-12-21`
+
+### Install ng-zorro-antd
+
+```bash
+$ cd PROJECT-NAME
+$ ng add ng-zorro-antd@15.0.0
+```
+
+### Bug Fixes
+
+* **drawer:** fix `nzContentParams` definition error ([#7668](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7668)) ([0074013](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0074013f585ba23ed7b9156e379b7c81be445bf1)), closes [#7620](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7620)
+
+
+### Performance Improvements
+
+* **date-picker:** remove unused variable ([#7767](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7767)) ([1572da5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1572da58cdd9629e1aeab3d4c0262dcc91bd597c))
+* **form:** remove a unused variable ([#7766](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7766)) ([162d290](https://github.com/NG-ZORRO/ng-zorro-antd/commit/162d290305a0bee6678c066eddc74e5e919f280c))
+
+
 ## 14.3.0
 
 `2022-12-11`
 
+### Install ng-zorro-antd
+
+```bash
+$ cd PROJECT-NAME
+$ ng add ng-zorro-antd@15.0.0
+```
 ### Bug Fixes
 
 * **tree:** nz-tree-drop-indicator for custom tree node templates ([#7579](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7579)) ([5996019](https://github.com/NG-ZORRO/ng-zorro-antd/commit/59960194773a0c1036c2142e199b9b7633383fea))
