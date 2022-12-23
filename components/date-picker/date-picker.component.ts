@@ -768,7 +768,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.cdr.markForCheck();
-    this.isNzDisableFirstChange = true;
+    this.isNzDisableFirstChange = false;
   }
 
   // ------------------------------------------------------------------------
