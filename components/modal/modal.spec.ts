@@ -7,8 +7,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   Directive,
+  Inject,
   Injector,
-  Input,
   NgModule,
   TemplateRef,
   ViewChild,
@@ -25,7 +25,9 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NZ_MODAL_DATA } from './modal-config';
 import { NzModalRef, NzModalState } from './modal-ref';
 import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
@@ -1702,15 +1704,17 @@ class TestWithServiceComponent {
 
 @Component({
   template: `
-    <div class="modal-content">Hello {{ value }}</div>
+    <div class="modal-content">Hello {{ params?.value }}</div>
     <input />
     <button (click)="destroyModal()">destroy</button>
   `
 })
 class TestWithModalContentComponent {
-  @Input() value?: string;
-
-  constructor(public modalRef: NzModalRef, public modalInjector: Injector) {}
+  constructor(
+    public modalRef: NzModalRef,
+    public modalInjector: Injector,
+    @Inject(NZ_MODAL_DATA) public params: NzSafeAny
+  ) {}
 
   destroyModal(): void {
     this.modalRef.destroy();

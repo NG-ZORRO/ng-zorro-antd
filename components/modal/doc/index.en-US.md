@@ -60,13 +60,9 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |
-| nzComponentParams | Will be instance property when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
+| nzComponentParams | Will be data pass through the `NZ_MODAL_DATA` injection token when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
 | nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
 | nzAutofocus        | autofocus and the position，disabled when is `null` | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
-
-#### Attentions
-
-> The creation or modification of the `nzComponentParams` property does not trigger the `ngOnChanges` life cycle hook of the `nzContent` component.
 
 #### Using service to create Normal Mode modal
 
@@ -127,6 +123,13 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
 | updateConfig(config: ModalOptions): void   | Update the config |
+
+
+#### NZ_MODAL_COMPONENT_PARAMS
+
+> NZ_MODAL_COMPONENT_PARAMS injection token is used to retrieve `nzContentParams` in the custom component.
+
+The dialog created by the service method `NzModalService.xxx()` inject a `NZ_MODAL_COMPONENT_PARAMS` token (if `nzContent` is used as Component) to retrieve the parameters that have used to the '`nzContent` component'
 
 ### ModalButtonOptions (used to customize the bottom button)
 

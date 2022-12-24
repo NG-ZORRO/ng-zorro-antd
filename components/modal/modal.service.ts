@@ -15,13 +15,13 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
-import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, NZ_MODAL_DATA } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { NzModalContainerComponent } from './modal-container.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig } from './utils';
 
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
@@ -188,7 +188,6 @@ export class NzModalService implements OnDestroy {
       const contentRef = modalContainer.attachComponentPortal<T>(
         new ComponentPortal(componentOrTemplateRef, config.nzViewContainerRef, injector)
       );
-      setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
     } else {
       modalContainer.attachStringContent();
@@ -201,7 +200,10 @@ export class NzModalService implements OnDestroy {
 
     return Injector.create({
       parent: userInjector || this.injector,
-      providers: [{ provide: NzModalRef, useValue: modalRef }]
+      providers: [
+        { provide: NzModalRef, useValue: modalRef },
+        { provide: NZ_MODAL_DATA, useValue: config.nzComponentParams }
+      ]
     });
   }
 

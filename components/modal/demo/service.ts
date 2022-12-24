@@ -1,8 +1,8 @@
 /* declarations: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Inject, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService, NZ_MODAL_DATA } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -102,7 +102,7 @@ export class NzDemoModalServiceComponent {
         {
           label: 'change component title from outside',
           onClick: componentInstance => {
-            componentInstance!.title = 'title in inner component is changed';
+            componentInstance!.componentParams.title = 'title in inner component is changed';
           }
         }
       ]
@@ -114,7 +114,7 @@ export class NzDemoModalServiceComponent {
 
     // delay until modal instance created
     setTimeout(() => {
-      instance.subtitle = 'sub title is changed';
+      instance.componentParams.subtitle = 'sub title is changed';
     }, 2000);
   }
 
@@ -180,8 +180,8 @@ export class NzDemoModalServiceComponent {
   selector: 'nz-modal-custom-component',
   template: `
     <div>
-      <h2>{{ title }}</h2>
-      <h4>{{ subtitle }}</h4>
+      <h2>{{ componentParams.title }}</h2>
+      <h4>{{ componentParams.subtitle }}</h4>
       <p>
         <span>Get Modal instance in component</span>
         <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
@@ -190,10 +190,13 @@ export class NzDemoModalServiceComponent {
   `
 })
 export class NzModalCustomComponent {
-  @Input() title?: string;
-  @Input() subtitle?: string;
+  //@Input() title?: string;
+  //@Input() subtitle?: string;
 
-  constructor(private modal: NzModalRef) {}
+  constructor(
+    private modal: NzModalRef,
+    @Inject(NZ_MODAL_DATA) public componentParams: { title?: string; subtitle?: string }
+  ) {}
 
   destroyModal(): void {
     this.modal.destroy({ data: 'this the result data' });

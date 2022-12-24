@@ -21,7 +21,7 @@ export interface StyleObjectLike {
 
 const noopFun = () => void 0;
 
-export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzCentered?: boolean = false;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
@@ -41,7 +41,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
-  nzComponentParams?: Partial<T>;
+  nzComponentParams?: D;
   nzMaskStyle?: StyleObjectLike;
   nzBodyStyle?: StyleObjectLike;
   nzWrapClassName?: string;
