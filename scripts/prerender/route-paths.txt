@@ -153,8 +153,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v14/en
-/docs/migration-v14/zh
+/docs/migration-v15/en
+/docs/migration-v15/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en

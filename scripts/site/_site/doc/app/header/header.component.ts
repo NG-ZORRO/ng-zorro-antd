@@ -119,7 +119,19 @@ export class HeaderComponent implements OnChanges {
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['13.4.x', '12.1.x', '11.4.x', '10.2.x', '9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
+  oldVersionList = [
+    '14.3.x',
+    '13.4.x',
+    '12.1.x',
+    '11.4.x',
+    '10.2.x',
+    '9.3.x',
+    '8.5.x',
+    '7.5.x',
+    '1.8.x',
+    '0.7.x',
+    '0.5.x'
+  ];
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 

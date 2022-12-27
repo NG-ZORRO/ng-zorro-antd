@@ -36,7 +36,7 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 
 ## Angular Support
 
-`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^14.0.0`.
+`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^15.0.0`.
 
 ## Design Specification
 

@@ -50,7 +50,7 @@ English | [简体中文](README-zh_CN.md)
 
 ## 🖥 Environment Support
 
-* Angular `^14.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+* Angular `^15.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 * Server-side Rendering
 * Modern browsers including the following [specific versions](https://angular.io/guide/browser-support)
 * [Electron](http://electron.atom.io/)
