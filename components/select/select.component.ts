@@ -279,6 +279,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private value: NzSafeAny | NzSafeAny[];
   private _nzShowArrow: boolean | undefined;
   private requestId: number = -1;
+  private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   dropDownPosition: NzSelectPlacementType = 'bottomLeft';
@@ -600,8 +601,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
-    if (disabled) {
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
+    if (this.nzDisabled) {
       this.setOpenState(false);
     }
     this.cdr.markForCheck();
