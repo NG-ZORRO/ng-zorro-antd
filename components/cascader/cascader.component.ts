@@ -747,11 +747,11 @@ export class NzCascaderComponent
   }
 
   setDisabledState(isDisabled: boolean): void {
-    if (isDisabled) {
-      this.closeMenu();
-    }
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.isNzDisableFirstChange = false;
+    if (this.nzDisabled) {
+      this.closeMenu();
+    }
   }
 
   closeMenu(): void {
