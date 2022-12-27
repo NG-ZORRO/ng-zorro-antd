@@ -122,6 +122,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   private autoStepTimer?: number;
   private parsedValue?: string | number;
   private value?: number;
+  private isNzDisableFirstChange: boolean = true;
   displayValue?: string | number;
   isFocused = false;
   disabled$ = new Subject<boolean>();
@@ -386,8 +387,9 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
-    this.disabled$.next(disabled);
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
+    this.disabled$.next(this.nzDisabled);
     this.cdr.markForCheck();
   }
 
