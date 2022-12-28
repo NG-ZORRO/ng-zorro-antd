@@ -52,6 +52,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
@@ -72,6 +73,7 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 import { NzGraphModule } from 'ng-zorro-antd/graph';
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 
 @NgModule({
   exports: [
@@ -91,6 +93,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
     NzCheckboxModule,
     NzCollapseModule,
     NzCommentModule,
+    NzCronExpressionModule,
     NzDatePickerModule,
     NzDescriptionsModule,
     NzDividerModule,
@@ -124,6 +127,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
     NzSelectModule,
     NzSkeletonModule,
     NzSliderModule,
+    NzSpaceModule,
     NzSpinModule,
     NzStatisticModule,
     NzStepsModule,

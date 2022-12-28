@@ -575,7 +575,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     script.type = 'text/javascript';
     script.src = source;
     script.onload = async () => {
-      await window.antdIconClassifier.load();
+      await window.antdIconClassifier?.load();
       this.onLoad();
     };
     script.onerror = () => {
@@ -634,7 +634,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   private predict = (imgEl: HTMLImageElement): void => {
     try {
-      const results = window.antdIconClassifier.predict(imgEl);
+      const results = window.antdIconClassifier?.predict(imgEl);
       this.icons = results.map((r: Result) => ({
         score: Math.ceil(r.score * 100),
         type: r.className.replace(/\s/g, '-')
