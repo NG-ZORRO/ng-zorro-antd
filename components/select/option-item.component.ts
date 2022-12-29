@@ -28,7 +28,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: `
     <div class="ant-select-item-option-content">
       <ng-template [ngIf]="customContent" [ngIfElse]="noCustomContent">
-        <ng-template [ngTemplateOutlet]="template"></ng-template>
+        <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: value }"></ng-template>
       </ng-template>
       <ng-template #noCustomContent>{{ label }}</ng-template>
     </div>
