@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzCheckboxGroupComponent } from './checkbox-group.component';
@@ -21,12 +21,66 @@ describe('checkbox', () => {
           NzTestCheckboxGroupFormComponent,
           NzTestCheckboxWrapperComponent,
           NzTestCheckboxSingleRtlComponent,
-          NzTestCheckboxGroupRtlComponent
+          NzTestCheckboxGroupRtlComponent,
+          NzTestDisablingWithFormComponent
         ]
       });
       TestBed.compileComponents();
     })
   );
+  describe('checkbox disabling with forms', () => {
+    let fixture: ComponentFixture<NzTestDisablingWithFormComponent>;
+    let component: NzTestDisablingWithFormComponent;
+    let checkboxFormModel: DebugElement;
+    let checkboxReactiveForm: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDisablingWithFormComponent);
+      component = fixture.componentInstance;
+      const [checkboxFormModelDebugElement, checkboxReactiveFormDebugElement] = fixture.debugElement.queryAll(
+        By.directive(NzCheckboxComponent)
+      );
+      checkboxFormModel = checkboxFormModelDebugElement;
+      checkboxReactiveForm = checkboxReactiveFormDebugElement;
+    });
+
+    it('should be disable by default even if form is enable', () => {
+      fixture.detectChanges();
+      expect(checkboxFormModel.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')).toBe(true);
+      expect(
+        checkboxReactiveForm.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeTruthy();
+    });
+    it('should be enable if form is enable and nzDisable set to false', () => {
+      component.disabled = false;
+      fixture.detectChanges();
+      expect(
+        checkboxFormModel.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeFalsy();
+      expect(
+        checkboxReactiveForm.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeFalsy();
+    });
+    it('should be disable if form is disable and nzDisable set to false', () => {
+      component.disabled = false;
+      component.reactiveFormCheckBox.disable();
+      fixture.detectChanges();
+      expect(
+        checkboxReactiveForm.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeTruthy();
+    });
+    it('should be disable first if nzDisabled set to true then enable when enable function is called', () => {
+      fixture.detectChanges();
+      expect(
+        checkboxReactiveForm.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeTruthy();
+      component.reactiveFormCheckBox.enable();
+      fixture.detectChanges();
+      expect(
+        checkboxReactiveForm.nativeElement.firstElementChild!.classList.contains('ant-checkbox-disabled')
+      ).toBeFalsy();
+    });
+  });
   describe('checkbox basic', () => {
     let fixture: ComponentFixture<NzTestCheckboxSingleComponent>;
     let testComponent: NzTestCheckboxSingleComponent;
@@ -361,6 +415,18 @@ describe('checkbox', () => {
   });
 });
 
+@Component({
+  selector: 'nz-test-disabling-with-form',
+  template: `
+    <label nz-checkbox [nzDisabled]="disabled" [(ngModel)]="formModelCheckBox"> Checkbox from model </label>
+    <label nz-checkbox [nzDisabled]="disabled" [formControl]="reactiveFormCheckBox"> Checkbox from model </label>
+  `
+})
+export class NzTestDisablingWithFormComponent {
+  reactiveFormCheckBox = new FormControl<boolean>(true);
+  formModelCheckBox = true;
+  disabled = true;
+}
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-single-checkbox',
