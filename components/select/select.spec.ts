@@ -2,7 +2,7 @@ import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@ang
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -1402,19 +1402,44 @@ describe('select', () => {
     let testBed: ComponentBed<TestSelectInFormComponent>;
     let component: TestSelectInFormComponent;
     let fixture: ComponentFixture<TestSelectInFormComponent>;
-    let selectElement!: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       testBed = createComponentBed(TestSelectInFormComponent, {
-        imports: [NzSelectModule, NzIconTestModule, NzFormModule, FormsModule]
+        imports: [NzSelectModule, NzIconTestModule, NzFormModule, ReactiveFormsModule]
       });
       component = testBed.component;
       fixture = testBed.fixture;
-      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    }));
+    it('should be disable by default even if form is enable', fakeAsync(() => {
+      component.disabled = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBeTruthy();
+      expect(selectElement.classList).toContain('ant-select-disabled');
+    }));
+    it('should be enable if form is enable and nzDisable set to false', () => {
+      fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBeFalsy();
+      expect(selectElement.classList).not.toContain('ant-select-disabled');
     });
-
+    it('should be disable if form is disabled and nzDisabled set to false', fakeAsync(() => {
+      component.disable();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBeTruthy();
+      expect(selectElement.classList).toContain('ant-select-disabled');
+    }));
     it('should classname correct', () => {
       fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
       expect(selectElement.classList).toContain('ant-select-status-error');
       expect(selectElement.classList).toContain('ant-select-in-form-item');
       expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
@@ -1800,16 +1825,29 @@ export class TestSelectStatusComponent {
 
 @Component({
   template: `
-    <form nz-form>
+    <form nz-form [formGroup]="selectForm">
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-select [nzOptions]="[]"></nz-select>
+          <nz-select formControlName="selectControl" [nzOptions]="[]" [nzDisabled]="disabled"></nz-select>
         </nz-form-control>
       </nz-form-item>
     </form>
   `
 })
 export class TestSelectInFormComponent {
+  selectForm = new FormGroup({
+    selectControl: new FormControl(null)
+  });
   status: NzFormControlStatusType = 'error';
   feedback = true;
+
+  disabled = false;
+
+  disable(): void {
+    this.selectForm.disable();
+  }
+
+  enable(): void {
+    this.selectForm.enable();
+  }
 }
