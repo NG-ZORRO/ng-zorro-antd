@@ -3,8 +3,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,7 +27,15 @@ describe('time-picker', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule, NzFormModule],
+        imports: [
+          BidiModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          NzI18nModule,
+          NzTimePickerModule,
+          NzFormModule
+        ],
         schemas: [NO_ERRORS_SCHEMA],
         declarations: [
           NzTestTimePickerComponent,
@@ -62,6 +70,7 @@ describe('time-picker', () => {
     it('should init work', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.classList).toContain('ant-picker');
+      expect(timeElement.nativeElement.classList).not.toContain('ant-picker-disabled');
     });
     it('should autofocus work', () => {
       fixture.detectChanges();
@@ -84,18 +93,38 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     });
-    it('should disabled work', () => {
-      fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('disabled')).toBeNull();
+    it('should disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('disabled')).toBeDefined();
-      expect(timeElement.nativeElement.querySelector('.ant-picker-clear')).not.toBeTruthy();
-      testComponent.disabled = false;
+
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBe(true);
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-disabled');
+      expect(timeElement.componentInstance.nzDisabled).toBeTruthy();
+      testComponent.nzTimePickerComponent.focus();
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+
       testComponent.nzTimePickerComponent.setDisabledState(false);
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('disabled')).toBeNull();
-    });
+      flush();
+      expect(inputElement.disabled).toBe(false);
+      expect(timeElement.nativeElement.classList).not.toContain('ant-picker-disabled');
+      expect(timeElement.componentInstance.nzDisabled).toBeFalsy();
+      testComponent.nzTimePickerComponent.focus();
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+
+      testComponent.nzTimePickerComponent.setDisabledState(true);
+      fixture.detectChanges();
+      flush();
+      expect(inputElement.disabled).toBe(true);
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-disabled');
+      expect(timeElement.componentInstance.nzDisabled).toBeTruthy();
+      testComponent.nzTimePickerComponent.focus();
+      fixture.detectChanges();
+      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+    }));
     it('should readOnly work', () => {
       testComponent.nzInputReadOnly = true;
       fixture.detectChanges();
@@ -159,7 +188,7 @@ describe('time-picker', () => {
       expect(testComponent.nzTimePickerComponent.inputRef.nativeElement.value).toBe('00:33:00');
     }));
     it('should support ISO string', fakeAsync(() => {
-      testComponent.date = '2020-03-27T13:49:54.917Z';
+      testComponent.date = new Date('2020-03-27T13:49:54.917Z');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -358,15 +387,24 @@ describe('time-picker', () => {
   describe('time-picker in form', () => {
     let testComponent: NzTestTimePickerInFormComponent;
     let fixture: ComponentFixture<NzTestTimePickerInFormComponent>;
-    let timeElement!: HTMLElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerInFormComponent);
       testComponent = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
     });
+    it('should disable if the form is disabled initially and nzDisabled set to false', fakeAsync(() => {
+      testComponent.disable();
+      fixture.detectChanges();
+      flush();
+      const timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(timeElement.componentInstance.nzDisabled).toBe(true);
+      expect(timeElement.nativeElement.classList).toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBe(true);
+    }));
     it('should className correct', () => {
       fixture.detectChanges();
+      const timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
       expect(timeElement.classList).toContain('ant-picker-status-error');
       expect(timeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
 
@@ -447,16 +485,25 @@ export class NzTestTimePickerDirComponent {
 
 @Component({
   template: `
-    <form nz-form>
+    <form nz-form [formGroup]="timePickerForm">
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-time-picker></nz-time-picker>
+          <nz-time-picker formControlName="time" [nzDisabled]="disabled"></nz-time-picker>
         </nz-form-control>
       </nz-form-item>
     </form>
   `
 })
 export class NzTestTimePickerInFormComponent {
+  timePickerForm = new FormGroup({
+    time: new FormControl(new Date())
+  });
   status: NzFormControlStatusType = 'error';
   feedback = true;
+
+  disabled = false;
+
+  disable(): void {
+    this.timePickerForm.disable();
+  }
 }
