@@ -5,10 +5,10 @@ import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormGroup,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup
 } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -790,70 +790,77 @@ describe('nz-slider', () => {
         imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
       });
       fixture = testBed.fixture;
-      fixture.detectChanges();
-
-      testComponent = fixture.debugElement.componentInstance;
-
-      getReferenceFromFixture(fixture);
+      testComponent = fixture.componentInstance;
       sliderControl = testComponent.form.controls.slider;
+      getReferenceFromFixture(fixture);
     });
 
-    it('should have correct initial value', () => {
+    it('should have correct initial value', fakeAsync(() => {
+      fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
       expect(sliderInstance.value).toBe(42);
-    });
+      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
+    }));
 
     it('should not update the control when the value is updated', () => {
       expect(sliderControl.value).toBe(42);
 
       sliderInstance.value = 11;
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(42);
     });
 
-    it('should update the control on click', () => {
+    it('should update the control', () => {
       expect(sliderControl.value).toBe(42);
 
       dispatchClickEventSequence(sliderNativeElement, 0.76);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(76);
-    });
-
-    it('should update the control on slide', () => {
-      expect(sliderControl.value).toBe(42);
 
       dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(19);
-    });
-
-    it('should update the value when the control is set', () => {
-      expect(sliderInstance.value).toBe(42);
 
       sliderControl.setValue(7);
       fixture.detectChanges();
-
+      expect(sliderControl.value).toBe(7);
       expect(sliderInstance.value).toBe(7);
     });
-
-    it('should update the disabled state when control is disabled', () => {
-      expect(sliderInstance.nzDisabled).toBe(false);
-
-      sliderControl.disable();
+    it('should be disable initially even if nzDisable is set to false', () => {
+      testComponent.disable();
       fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
 
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
     });
-
-    it('should update the disabled state when the control is enabled', () => {
-      sliderInstance.nzDisabled = true;
-
-      sliderControl.enable();
+    it('should disable work', () => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
 
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      expect(sliderControl.value).toBe(42);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(42);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(false);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
     });
 
     it('should have the correct control state initially and after interaction', () => {
@@ -1155,7 +1162,7 @@ class MixedSliderComponent {
 @Component({
   template: `
     <form [formGroup]="form">
-      <nz-slider formControlName="slider"></nz-slider>
+      <nz-slider formControlName="slider" [nzDisabled]="disabled"></nz-slider>
     </form>
   `,
   styles: [styles]
@@ -1169,6 +1176,16 @@ class SliderWithFormControlComponent implements OnInit {
     this.form = this.fb.group({
       slider: [42]
     });
+  }
+
+  disabled = false;
+
+  disable(): void {
+    this.form.disable();
+  }
+
+  enable(): void {
+    this.form.enable();
   }
 }
 
