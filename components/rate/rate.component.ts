@@ -288,6 +288,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.isNzDisableFirstChange = false;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: number) => void): void {
