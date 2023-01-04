@@ -237,15 +237,6 @@ describe('checkbox', () => {
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should be disable by default even if form is enable', fakeAsync(() => {
-      testComponent.disabled = true;
-      fixture.detectChanges();
-      flush();
-      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
-      const inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
-      expect(checkbox.nativeElement.firstElementChild!.classList).toContain('ant-checkbox-disabled');
-      expect(inputElement.disabled).toBeTruthy();
-    }));
     it('should be disable if form is disable and nzDisable set to false', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();

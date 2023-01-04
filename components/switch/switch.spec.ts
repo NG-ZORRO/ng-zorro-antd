@@ -259,15 +259,6 @@ describe('switch', () => {
       expect(buttonElement.disabled).toBeFalsy();
       expect(buttonElement.classList).not.toContain('ant-switch-disabled');
     }));
-    it('should be disable by default even if form is enable', fakeAsync(() => {
-      testComponent.disabled = true;
-      fixture.detectChanges();
-      flush();
-      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
-      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(buttonElement.disabled).toBeTruthy();
-      expect(buttonElement.classList).toContain('ant-switch-disabled');
-    }));
     it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();

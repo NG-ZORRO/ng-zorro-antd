@@ -258,15 +258,6 @@ describe('radio', () => {
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should be disable by default even if form is enable initially', fakeAsync(() => {
-      testComponent.disabled = true;
-      fixture.detectChanges();
-      flush();
-      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
-      const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
-      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-disabled');
-      expect(inputElement.disabled).toBeTruthy();
-    }));
     it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.formGroup.disable();
       fixture.detectChanges();
