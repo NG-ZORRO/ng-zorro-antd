@@ -244,83 +244,71 @@ describe('switch', () => {
     let fixture: ComponentFixture<NzTestSwitchFormComponent>;
     let testComponent: NzTestSwitchFormComponent;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchFormComponent);
       testComponent = fixture.debugElement.componentInstance;
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
+    });
+    it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
+      expect(buttonElement.disabled).toBeFalsy();
+      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
     }));
     it('should be disable by default even if form is enable', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
       const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
       const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
       expect(buttonElement.disabled).toBeTruthy();
       expect(buttonElement.classList).toContain('ant-switch-disabled');
     }));
-    it('should be enable if form is enable and nzDisable set to false', fakeAsync(() => {
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
-      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(buttonElement.disabled).toBeFalsy();
-      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
-    }));
-    it('should be disable if form is disable and nzDisable set to false', fakeAsync(() => {
-      testComponent.formGroup.disable();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
-      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(buttonElement.disabled).toBeTruthy();
-      expect(buttonElement.classList).toContain('ant-switch-disabled');
-    }));
-    it('should be disable first if nzDisabled set to true then enable when enable function is called', fakeAsync(() => {
-      testComponent.disabled = true;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
-      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(buttonElement.disabled).toBeTruthy();
-      expect(buttonElement.classList).toContain('ant-switch-disabled');
-      testComponent.formGroup.enable();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(buttonElement.disabled).toBeFalsy();
-      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
-    }));
-    it('should set disabled work', fakeAsync(() => {
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
-      switchElement.nativeElement.click();
-      fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      testComponent.formGroup.get('switchValue')!.setValue(true);
+    it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
       flush();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      flush();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
+
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
+
       switchElement.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      flush();
+      expect(buttonElement.disabled).toBeFalsy();
+      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      flush();
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
     }));
   });
   describe('RTL', () => {
@@ -398,6 +386,10 @@ export class NzTestSwitchFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 
