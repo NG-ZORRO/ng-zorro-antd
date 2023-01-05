@@ -43,16 +43,16 @@ const SPACE_SIZE: {
     <ng-template ngFor let-item let-last="last" let-index="index" [ngForOf]="items">
       <div
         class="ant-space-item"
-        [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+        [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
       >
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
       <span
         *ngIf="nzSplit && !last"
         class="ant-space-split"
-        [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+        [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
       >
         <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
       </span>
