@@ -35,9 +35,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('8px');
+        expect(element.style.marginInlineEnd).toBe('8px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
 
@@ -49,9 +49,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('8px');
+        expect(element.style.marginInlineEnd).toBe('8px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
   });
@@ -61,9 +61,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('8px');
+        expect(element.style.marginInlineEnd).toBe('8px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
 
@@ -73,9 +73,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('16px');
+        expect(element.style.marginInlineEnd).toBe('16px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
 
@@ -85,9 +85,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('24px');
+        expect(element.style.marginInlineEnd).toBe('24px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
   });
@@ -101,9 +101,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('36px');
+        expect(element.style.marginInlineEnd).toBe('36px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
 
@@ -113,9 +113,9 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('18px');
+        expect(element.style.marginInlineEnd).toBe('18px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
   });
@@ -133,11 +133,11 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBeFalsy();
-        expect(element.style.marginBottom).toBeTruthy();
+        expect(element.style.marginInlineEnd).toBeFalsy();
+        expect(element.style.marginBlockEnd).toBeTruthy();
       } else {
-        expect(element.style.marginRight).toBeFalsy();
-        expect(element.style.marginBottom).toBeFalsy();
+        expect(element.style.marginInlineEnd).toBeFalsy();
+        expect(element.style.marginBlockEnd).toBeFalsy();
       }
     });
 
@@ -149,11 +149,11 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBeTruthy();
-        expect(element.style.marginBottom).toBeFalsy();
+        expect(element.style.marginInlineEnd).toBeTruthy();
+        expect(element.style.marginBlockEnd).toBeFalsy();
       } else {
-        expect(element.style.marginRight).toBeFalsy();
-        expect(element.style.marginBottom).toBeFalsy();
+        expect(element.style.marginInlineEnd).toBeFalsy();
+        expect(element.style.marginBlockEnd).toBeFalsy();
       }
     });
   });
@@ -193,15 +193,15 @@ describe('Space', () => {
     items.forEach((item, i) => {
       const element = item.nativeElement as HTMLElement;
       if (i < items.length - 1) {
-        expect(element.style.marginRight).toBe('4px');
+        expect(element.style.marginInlineEnd).toBe('4px');
       } else {
-        expect(element.style.marginRight).toBe('');
+        expect(element.style.marginInlineEnd).toBe('');
       }
     });
 
     splits.forEach(item => {
       const element = item.nativeElement as HTMLElement;
-      expect(element.style.marginRight).toBe('4px');
+      expect(element.style.marginInlineEnd).toBe('4px');
     });
 
     component.show = true;
@@ -215,7 +215,7 @@ describe('Space', () => {
 
     splits.forEach(item => {
       const element = item.nativeElement as HTMLElement;
-      expect(element.style.marginRight).toBe('4px');
+      expect(element.style.marginInlineEnd).toBe('4px');
     });
   });
 });
