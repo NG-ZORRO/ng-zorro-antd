@@ -1,0 +1,59 @@
+---
+category: Components
+subtitle:
+type: Data Display
+title: QRCode
+cols: 1
+experimental: true
+---
+
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
+<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
+</blockquote>
+
+## When To Use
+
+Used when the link needs to be converted into a QR Code.
+
+### Import Module
+
+```ts
+import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
+```
+
+## API
+
+Install `qrcode` in your project first:
+
+```bash
+npm install qrcode
+```
+
+### nz-qrcode
+
+| 参数             | 说明                     | 类型                              | 默认值                            |
+| ---------------- | ------------------------ | --------------------------------- | --------------------------------- |
+| `[nzValue]`      | scanned link             | `string`                          | -                                 |
+| `[nzColor]`      | QRCode Color             | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
+| `[nzSize]`       | QRCode Size              | `number`                          | `160`                             |
+| `[nzIcon]`       | QRCode include logo url  | `string`                          | -                                 |
+| `[nzIconSize]`   | QRCode include logo size | `number`                          | `40`                              |
+| `[nzBordered]`   | Whether has border style | `boolean`                         | `true`                            |
+| `[nzStatus]`     | QRCode status            | `'active'｜'expired' ｜'loading'` | `active`                          |
+| `[nzErrorLevel]` | Error Code Level         | `'L'｜'M'｜'Q'｜'H'`              | `M`                               |
+| `(nzRefresh)`    | callback                 | `EventEmitter<boolean>`           | -                                 |
+
+## Note
+
+### Invalid QR Code
+
+You can configure the QR code size and shorten the link length through `nzSize`
+
+### QR Code error correction level
+
+The ErrorLevel means that the QR code can be scanned normally after being blocked, and the maximum area that can be blocked is the error correction rate.
+
+Generally, the QR code is divided into 4 error correction levels: Level `L` can correct about `7%` errors, Level `M` can correct about `15%` errors, Level `Q` can correct about `25%` errors, and Level `H` can correct about `30%` errors. When the content encoding of the QR code carries less information, in other words, when the value link is short, set different error correction levels, and the generated image will not change.
+
+> For more information, see the: [https://www.qrcode.com/en/about/error_correction](https://www.qrcode.com/en/about/error_correction.html)
