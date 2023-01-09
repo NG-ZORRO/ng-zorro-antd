@@ -13,6 +13,15 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 15.0.1
+
+`2023-01-09`
+
+### Bug Fixes
+
+* **components:** fix errors that some form components can't be disabled ([#7786](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7786)) ([bc673e7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bc673e7deef219de82e5dc23e1318f76a1ef98f6))
+
+
 ## 15.0.0
 
 `2022-12-21`
