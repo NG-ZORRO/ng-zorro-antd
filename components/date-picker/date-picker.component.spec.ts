@@ -6,11 +6,12 @@ import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -271,22 +272,43 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzDisabled', fakeAsync(() => {
-      // Make sure picker clear button shown up
-      fixtureInstance.nzAllowClear = true;
-      fixtureInstance.nzValue = new Date();
-
+      fixtureInstance.useSuite = 4;
       fixtureInstance.nzDisabled = true;
+      fixtureInstance.nzAllowClear = true; // Make sure picker clear button shown up
+      fixtureInstance.nzValue = new Date();
+      fixtureInstance.control = new FormControl(new Date());
+      fixture.detectChanges();
+      flush();
+
+      const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(datePickerElement.classList).toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).toBeNull();
+
+      fixtureInstance.control.enable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('.ant-input-disabled'))).not.toBeNull();
-      expect(debugElement.query(By.css('.ant-picker-clear'))).toBeNull();
+      expect(datePickerElement.classList).not.toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeFalsy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
 
-      fixtureInstance.nzDisabled = false;
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+      fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(debugElement.query(By.css('.ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('.ant-picker-clear'))).not.toBeNull();
+      fixtureInstance.control.disable();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(datePickerElement.classList).toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).toBeNull();
     }));
 
     it('should support nzInputReadOnly', fakeAsync(() => {
@@ -1199,6 +1221,11 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
+      const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(datePickerElement.classList).not.toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
     }));
 
@@ -1405,7 +1432,7 @@ describe('in form', () => {
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
 
       <!-- Suite 4 -->
-      <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
+      <nz-date-picker *ngSwitchCase="4" [formControl]="control" [nzDisabled]="nzDisabled"></nz-date-picker>
 
       <!-- Suite 5 -->
       <ng-container *ngSwitchCase="5">

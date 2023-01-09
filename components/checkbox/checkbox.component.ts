@@ -82,6 +82,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
 
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -119,7 +120,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 

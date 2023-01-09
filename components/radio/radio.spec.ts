@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -243,40 +243,60 @@ describe('radio', () => {
   describe('radio form', () => {
     let fixture: ComponentFixture<NzTestRadioFormComponent>;
     let testComponent: NzTestRadioFormComponent;
-    let radio: DebugElement;
-    let inputElement: HTMLElement;
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioFormComponent);
+      testComponent = fixture.componentInstance;
+    });
+    it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      radio = fixture.debugElement.query(By.directive(NzRadioComponent));
-      inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
+      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
+      const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should set disabled work', fakeAsync(() => {
+    it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
+      testComponent.formGroup.disable();
+      fixture.detectChanges();
       flush();
+      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
+      const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      flush();
+      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
+      const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-disabled');
+      expect(inputElement.disabled).toBeTruthy();
       expect(testComponent.formGroup.get('radio')!.value).toBe(false);
+      inputElement.click();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.get('radio')!.value).toBe(false);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      flush();
+      expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       inputElement.click();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('radio')!.value).toBe(true);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      testComponent.formGroup.get('radio')!.setValue(false);
+
       testComponent.disable();
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
+      expect(radio.nativeElement.firstElementChild!.classList).toContain('ant-radio-disabled');
+      expect(inputElement.disabled).toBeTruthy();
       inputElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('radio')!.value).toBe(false);
+      expect(testComponent.formGroup.get('radio')!.value).toBe(true);
     }));
   });
   describe('radio group form', () => {
@@ -382,7 +402,6 @@ describe('radio', () => {
     });
   });
 });
-
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-radio-single',
@@ -442,12 +461,14 @@ export class NzTestRadioGroupComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <label nz-radio formControlName="radio"></label>
+      <label nz-radio formControlName="radio" [nzDisabled]="disabled"></label>
     </form>
   `
 })
 export class NzTestRadioFormComponent {
   formGroup: UntypedFormGroup;
+
+  disabled = false;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -457,6 +478,10 @@ export class NzTestRadioFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 

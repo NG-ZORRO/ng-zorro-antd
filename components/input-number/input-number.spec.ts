@@ -1,7 +1,7 @@
 import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 
@@ -464,39 +464,64 @@ describe('input number', () => {
   describe('input number form', () => {
     let fixture: ComponentFixture<NzTestInputNumberFormComponent>;
     let testComponent: NzTestInputNumberFormComponent;
-    let inputNumber: DebugElement;
-    let upHandler: HTMLElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInputNumberFormComponent);
+      testComponent = fixture.componentInstance;
+    });
+    it('should be in pristine, untouched, and valid states and be enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
-      upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should set disabled work', fakeAsync(() => {
+    it('should be disable if form disable and nzDisabled set to false initially', fakeAsync(() => {
+      testComponent.disable();
       fixture.detectChanges();
       flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      const upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
       expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
+
+      testComponent.enable();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
-      testComponent.disable();
+      flush();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
+
+      testComponent.disable();
       fixture.detectChanges();
+      flush();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      flush();
       expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
     }));
   });
@@ -598,7 +623,6 @@ describe('input number', () => {
     });
   });
 });
-
 @Component({
   template: `
     <nz-input-number
@@ -648,12 +672,13 @@ export class NzTestReadOnlyInputNumberBasicComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-input-number formControlName="inputNumber" nzMax="10" nzMin="-10"></nz-input-number>
+      <nz-input-number formControlName="inputNumber" nzMax="10" nzMin="-10" [nzDisabled]="disabled"></nz-input-number>
     </form>
   `
 })
 export class NzTestInputNumberFormComponent {
   formGroup: UntypedFormGroup;
+  disabled = false;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -663,6 +688,10 @@ export class NzTestInputNumberFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 

@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzCheckboxGroupComponent } from './checkbox-group.component';
@@ -221,32 +221,60 @@ describe('checkbox', () => {
   describe('checkbox form', () => {
     let fixture: ComponentFixture<NzTestCheckboxFormComponent>;
     let testComponent: NzTestCheckboxFormComponent;
-    let checkbox: DebugElement;
-    let inputElement: HTMLInputElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCheckboxFormComponent);
+      testComponent = fixture.componentInstance;
+    });
+    it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
-      inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
+      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+      const inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(checkbox.nativeElement.firstElementChild!.classList).not.toContain('ant-checkbox-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should set disabled work', fakeAsync(() => {
+    it('should be disable if form is disable and nzDisable set to false', fakeAsync(() => {
+      testComponent.disable();
+      fixture.detectChanges();
       flush();
+      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+      const inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(checkbox.nativeElement.firstElementChild!.classList).toContain('ant-checkbox-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      flush();
+      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
+      const inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
+
+      expect(checkbox.nativeElement.firstElementChild!.classList).toContain('ant-checkbox-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      inputElement.click();
+      flush();
+      fixture.detectChanges();
       expect(testComponent.formGroup.get('checkbox')!.value).toBe(false);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      flush();
+      expect(checkbox.nativeElement.firstElementChild!.classList).not.toContain('ant-checkbox-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       inputElement.click();
       flush();
       fixture.detectChanges();
       expect(testComponent.formGroup.get('checkbox')!.value).toBe(true);
+
       testComponent.disable();
+      fixture.detectChanges();
+      flush();
+      expect(checkbox.nativeElement.firstElementChild!.classList).toContain('ant-checkbox-disabled');
+      expect(inputElement.disabled).toBeTruthy();
       inputElement.click();
       flush();
       fixture.detectChanges();
@@ -425,12 +453,13 @@ export class NzTestCheckboxWrapperComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <label nz-checkbox formControlName="checkbox"></label>
+      <label nz-checkbox formControlName="checkbox" [nzDisabled]="disabled"></label>
     </form>
   `
 })
 export class NzTestCheckboxFormComponent {
   formGroup: UntypedFormGroup;
+  disabled = false;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -440,6 +469,10 @@ export class NzTestCheckboxFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 

@@ -86,6 +86,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
 
   private isNgModel = false;
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
   isChecked = false;
   name: string | null = null;
   isRadioButton = !!this.nzRadioButtonDirective;
@@ -118,7 +119,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   ) {}
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 
