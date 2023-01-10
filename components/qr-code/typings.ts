@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export interface nzQRCodeColor {
+export interface NzQRCodeColor {
   dark: string;
   light: string;
 }

@@ -24,7 +24,8 @@ import { map, takeUntil } from 'rxjs/operators';
 import { toCanvas, toDataURL } from 'qrcode';
 
 import { NzQRCodeI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { nzQRCodeColor } from 'ng-zorro-antd/qr-code/typings';
+
+import { NzQRCodeColor } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,7 +35,7 @@ import { nzQRCodeColor } from 'ng-zorro-antd/qr-code/typings';
     <div class="ant-qrcode-mask" *ngIf="nzStatus !== 'active'">
       <nz-spin *ngIf="nzStatus === 'loading'"></nz-spin>
       <div *ngIf="nzStatus === 'expired'">
-        <p [style.color]="nzColor.dark">{{ locale.qrCodeError }}</p>
+        <p class="ant-qrcode-expired">{{ locale.qrCodeError }}</p>
         <button nz-button nzType="link" (click)="reloadQRCode()">
           <span nz-icon nzType="reload" nzTheme="outline"></span>
           <span>{{ locale.reload }}</span>
@@ -55,7 +56,7 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
   @ViewChild('img', { static: false }) img!: ElementRef;
   @Input() nzValue: string = '';
-  @Input() nzColor: nzQRCodeColor = { dark: '#000', light: '#fff' };
+  @Input() nzColor: NzQRCodeColor = { dark: '#000', light: '#fff' };
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
@@ -118,6 +119,9 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       imgQRCode.crossOrigin = 'anonymous';
 
       this.canvasService().subscribe(context => {
+        if (!context) {
+          return;
+        }
         context.clearRect(0, 0, this.nzSize, this.nzSize);
         context.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, 0, 0, this.nzSize, this.nzSize);
 
@@ -136,8 +140,7 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     });
   }
 
-  canvasService(): Observable<CanvasRenderingContext2D> {
-    // @ts-ignore
+  canvasService(): Observable<CanvasRenderingContext2D | null> {
     return timer(500).pipe(map(() => (<HTMLCanvasElement>this.canvas.nativeElement).getContext('2d')));
   }
 
