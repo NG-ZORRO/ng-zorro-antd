@@ -22,14 +22,7 @@ experimental: true
 import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
 ```
 
-
 ## API
-
-别忘记先安装 qrcode：
-
-```bash
-npm install qrcode
-```
 
 ### nz-qrcode
 
@@ -39,17 +32,18 @@ npm install qrcode
 | `[nzColor]`      | 二维码颜色           | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
 | `[nzSize]`       | 二维码大小           | `number`                          | `160`                             |
 | `[nzIcon]`       | 二维码中 logo 地址   | `string`                          | -                                 |
+| `[nzIconColor]`  | 二维码中 logo 背景色 | `string`                          | `#fff`                            |
 | `[nzIconSize]`   | 二维码中 logo 大小   | `number`                          | `40`                              |
 | `[nzBordered]`   | 是否有边框           | `boolean`                         | `true`                            |
 | `[nzStatus]`     | 二维码状态           | `'active'｜'expired' ｜'loading'` | `active`                          |
 | `[nzErrorLevel]` | 二维码纠错等级       | `'L'｜'M'｜'Q'｜'H'`              | `M`                               |
-| `(nzRefresh)`    | 点击"点击刷新"的回调 | `EventEmitter<boolean>`           | -                                 |
+| `(nzRefresh)`    | 点击"点击刷新"的回调 | `EventEmitter<string>`            | -                                 |
 
 ## 注意
 
 ### 二维码无法识别
 
-可以通过 `nzSize` 配置二维码大小、缩短链接长度
+`nzValue` 保守的上限为 738 或更少的字符串。如果使用纠错等级， `nzValue` 上限会降低。
 
 ### 关于二维码纠错等级
 

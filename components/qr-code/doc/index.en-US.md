@@ -24,31 +24,26 @@ import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
 
 ## API
 
-Install `qrcode` in your project first:
-
-```bash
-npm install qrcode
-```
-
 ### nz-qrcode
 
-| 参数             | 说明                     | 类型                              | 默认值                            |
-| ---------------- | ------------------------ | --------------------------------- | --------------------------------- |
-| `[nzValue]`      | scanned link             | `string`                          | -                                 |
-| `[nzColor]`      | QRCode Color             | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
-| `[nzSize]`       | QRCode Size              | `number`                          | `160`                             |
-| `[nzIcon]`       | QRCode include logo url  | `string`                          | -                                 |
-| `[nzIconSize]`   | QRCode include logo size | `number`                          | `40`                              |
-| `[nzBordered]`   | Whether has border style | `boolean`                         | `true`                            |
-| `[nzStatus]`     | QRCode status            | `'active'｜'expired' ｜'loading'` | `active`                          |
-| `[nzErrorLevel]` | Error Code Level         | `'L'｜'M'｜'Q'｜'H'`              | `M`                               |
-| `(nzRefresh)`    | callback                 | `EventEmitter<boolean>`           | -                                 |
+| 参数             | 说明                                  | 类型                              | 默认值                            |
+| ---------------- | ------------------------------------- | --------------------------------- | --------------------------------- |
+| `[nzValue]`      | scanned link                          | `string`                          | -                                 |
+| `[nzColor]`      | QR code Color                         | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
+| `[nzSize]`       | QR code Size                          | `number`                          | `160`                             |
+| `[nzIcon]`       | QR code include logo url              | `string`                          | -                                 |
+| `[nzIconColor]`  | QR code include logo background color | `string`                          | `#fff`                            |
+| `[nzIconSize]`   | QR code include logo size             | `number`                          | `40`                              |
+| `[nzBordered]`   | Whether has border style              | `boolean`                         | `true`                            |
+| `[nzStatus]`     | QR code status                        | `'active'｜'expired' ｜'loading'` | `active`                          |
+| `[nzErrorLevel]` | Error Code Level                      | `'L'｜'M'｜'Q'｜'H'`              | `M`                               |
+| `(nzRefresh)`    | callback                              | `EventEmitter<string>`            | -                                 |
 
 ## Note
 
 ### Invalid QR Code
 
-You can configure the QR code size and shorten the link length through `nzSize`
+`nzValue` has a conservative upper limit of 738 or fewer strings. If error correction levels are used, the `nzValue` upper limit will be lowered.
 
 ### QR Code error correction level
 

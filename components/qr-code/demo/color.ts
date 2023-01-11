@@ -5,6 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <nz-qrcode nzValue="https://ng.ant.design/" [nzColor]="color"></nz-qrcode>
     <nz-qrcode nzValue="https://ng.ant.design/" [nzColor]="color1"></nz-qrcode>
+    <nz-qrcode
+      nzValue="https://ng.ant.design/"
+      nzIcon="./assets/img/logo.svg"
+      nzErrorLevel="H"
+      [nzColor]="color1"
+      nzIconColor="#f6f6f6"
+    ></nz-qrcode>
   `,
   styles: [
     `

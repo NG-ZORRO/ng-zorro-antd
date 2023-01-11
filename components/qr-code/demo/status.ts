@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoQrCodeStatusComponent {
-  refresh(val: boolean): void {
+  refresh(val: string): void {
     console.log(val);
   }
 }

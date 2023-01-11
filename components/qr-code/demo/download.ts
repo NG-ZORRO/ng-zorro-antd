@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-qr-code-download',
   template: `
     <div id="download">
       <nz-qrcode nzValue="https://ng.ant.design/"></nz-qrcode>
+      <a #download></a>
       <button nz-button nzType="primary" (click)="downloadImg()">Download</button>
     </div>
   `,
@@ -23,15 +24,15 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoQrCodeDownloadComponent {
+  @ViewChild('download', { static: false }) download!: ElementRef;
+
   downloadImg(): void {
     const canvas = document.getElementById('download')?.querySelector<HTMLCanvasElement>('canvas');
     if (canvas) {
-      const a = document.createElement('a');
-      a.href = canvas.toDataURL('image/png');
-      a.download = 'QRCode';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      this.download.nativeElement.href = canvas.toDataURL('image/png');
+      this.download.nativeElement.download = 'ng-zorro-antd';
+      const event = new MouseEvent('click');
+      this.download.nativeElement.dispatchEvent(event);
     }
   }
 }

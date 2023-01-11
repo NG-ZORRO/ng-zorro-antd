@@ -18,13 +18,12 @@ import {
   ChangeDetectorRef,
   OnDestroy
 } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-
-import { toCanvas, toDataURL } from 'qrcode';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzQRCodeI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
+import { drawCanvas, qrCode } from './qrcode';
 import { NzQRCodeColor } from './typings';
 
 @Component({
@@ -44,7 +43,14 @@ import { NzQRCodeColor } from './typings';
     </div>
     <div class="ant-qrcode-content" [style.background-color]="nzColor.light">
       <canvas #canvas [width]="nzSize" [height]="nzSize"></canvas>
-      <img #img [src]="nzIcon" [attr.key]="nzIcon" [style.display]="'none'" crossOrigin="anonymous" [alt]="nzIcon" />
+      <img
+        *ngIf="!!nzIcon"
+        [src]="nzIcon"
+        [attr.key]="nzIcon"
+        [style.display]="'none'"
+        crossOrigin="anonymous"
+        [alt]="nzIcon"
+      />
     </div>
   `,
   host: {
@@ -54,17 +60,17 @@ import { NzQRCodeColor } from './typings';
 })
 export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
-  @ViewChild('img', { static: false }) img!: ElementRef;
   @Input() nzValue: string = '';
   @Input() nzColor: NzQRCodeColor = { dark: '#000', light: '#fff' };
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
+  @Input() nzIconColor: string = '#fff';
   @Input() nzBordered: boolean = true;
   @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
   @Input() nzErrorLevel: 'L' | 'M' | 'Q' | 'H' = 'M';
 
-  @Output() readonly nzRefresh = new EventEmitter<boolean>();
+  @Output() readonly nzRefresh = new EventEmitter<string>();
 
   locale!: NzQRCodeI18nInterface;
   private destroy$ = new Subject<void>();
@@ -91,7 +97,7 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   reloadQRCode(): void {
     this.drawQRCode();
-    this.nzRefresh.emit(true);
+    this.nzRefresh.emit('refresh');
   }
 
   drawQRCode(): void {
@@ -99,49 +105,17 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       return;
     }
 
-    const options = {
-      errorCorrectionLevel: this.nzErrorLevel,
-      margin: 0,
-      width: this.nzSize,
-      color: this.nzColor
-    };
-
-    if (!this.nzIcon) {
-      toCanvas(<HTMLCanvasElement>this.canvas.nativeElement, this.nzValue, options).then(_ => {
-        // console.log(err)
-      });
-      return;
-    }
-
-    toDataURL(this.nzValue, options).then(url => {
-      const imgQRCode = new Image();
-      imgQRCode.src = url;
-      imgQRCode.crossOrigin = 'anonymous';
-
-      this.canvasService().subscribe(context => {
-        if (!context) {
-          return;
-        }
-        context.clearRect(0, 0, this.nzSize, this.nzSize);
-        context.drawImage(imgQRCode, 0, 0, imgQRCode.width, imgQRCode.height, 0, 0, this.nzSize, this.nzSize);
-
-        const iconCoordinate = this.nzSize / 2 - this.nzIconSize / 2;
-
-        context.fillStyle = '#fff';
-
-        context.fillRect(
-          this.nzSize / 2 - this.nzIconSize / 2,
-          this.nzSize / 2 - this.nzIconSize / 2,
-          this.nzIconSize,
-          this.nzIconSize
-        );
-        context.drawImage(this.img.nativeElement, iconCoordinate, iconCoordinate, this.nzIconSize, this.nzIconSize);
-      });
-    });
-  }
-
-  canvasService(): Observable<CanvasRenderingContext2D | null> {
-    return timer(500).pipe(map(() => (<HTMLCanvasElement>this.canvas.nativeElement).getContext('2d')));
+    drawCanvas(
+      this.canvas,
+      qrCode(this.nzValue, this.nzErrorLevel),
+      this.nzSize,
+      10,
+      this.nzColor.light,
+      this.nzColor.dark,
+      this.nzIconSize,
+      this.nzIconColor,
+      this.nzIcon
+    );
   }
 
   ngOnDestroy(): void {

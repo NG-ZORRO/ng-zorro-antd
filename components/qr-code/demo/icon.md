@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-带有 Icon 的二维码。
+带有 icon 的二维码。
 
 ## en-US
 

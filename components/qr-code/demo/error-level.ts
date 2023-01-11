@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoQrCodeErrorLevelComponent {
   options: string[] = ['L', 'M', 'Q', 'H'];
-  errorLevel: 'L' | 'M' | 'Q' | 'H' = 'H';
+  errorLevel: 'L' | 'M' | 'Q' | 'H' = 'L';
 
   handleIndexChange(e: number): void {
     // @ts-ignore
