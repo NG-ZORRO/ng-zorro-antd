@@ -56,6 +56,7 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject();
+  private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @Input() @InputBoolean() nzDisabled = false;
@@ -120,8 +121,9 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
-    this.nzRadioService.setDisabled(isDisabled);
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    this.nzRadioService.setDisabled(this.nzDisabled);
     this.cdr.markForCheck();
   }
 }

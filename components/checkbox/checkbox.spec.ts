@@ -284,26 +284,38 @@ describe('checkbox', () => {
   describe('checkbox group form', () => {
     let fixture: ComponentFixture<NzTestCheckboxGroupFormComponent>;
     let testComponent: NzTestCheckboxGroupFormComponent;
-    let checkboxGroup: DebugElement;
-    let inputElement: HTMLInputElement;
-
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestCheckboxGroupFormComponent);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      checkboxGroup = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
-      inputElement = checkboxGroup.nativeElement.querySelector('input') as HTMLInputElement;
+      testComponent = fixture.componentInstance;
     }));
     it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
+      fixture.detectChanges();
       flush();
+      const checkboxGroupComponent: NzCheckboxGroupComponent = fixture.debugElement.query(
+        By.directive(NzCheckboxGroupComponent)
+      ).componentInstance;
       expect(testComponent.formGroup.get('checkboxGroup')!.valid).toBe(true);
       expect(testComponent.formGroup.get('checkboxGroup')!.pristine).toBe(true);
       expect(testComponent.formGroup.get('checkboxGroup')!.touched).toBe(false);
+      expect(checkboxGroupComponent.nzDisabled).toBeFalsy();
+    }));
+    it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
+      testComponent.formGroup.disable();
+      fixture.detectChanges();
+      flush();
+      const checkboxGroup = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
+      expect(checkboxGroup.componentInstance.nzDisabled).toBeTruthy();
     }));
     it('should set disabled work', fakeAsync(() => {
+      testComponent.nzDisabled = true;
+      fixture.detectChanges();
       flush();
+      const checkboxGroup = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
+      const inputElement = checkboxGroup.nativeElement.querySelector('input') as HTMLInputElement;
+      expect(checkboxGroup.componentInstance.nzDisabled).toBeTruthy();
+
+      inputElement.click();
+      fixture.detectChanges();
       expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
         JSON.stringify([
           { label: 'Apple', value: 'Apple', checked: true },
@@ -311,9 +323,13 @@ describe('checkbox', () => {
           { label: 'Orange', value: 'Orange' }
         ])
       );
-      inputElement.click();
+
+      testComponent.enable();
       fixture.detectChanges();
       flush();
+      expect(checkboxGroup.componentInstance.nzDisabled).toBeFalsy();
+
+      inputElement.click();
       fixture.detectChanges();
       expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
         JSON.stringify([
@@ -322,12 +338,13 @@ describe('checkbox', () => {
           { label: 'Orange', value: 'Orange' }
         ])
       );
+
       testComponent.disable();
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
+      expect(checkboxGroup.componentInstance.nzDisabled).toBeTruthy();
+
       inputElement.click();
-      flush();
       fixture.detectChanges();
       expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
         JSON.stringify([
@@ -479,12 +496,13 @@ export class NzTestCheckboxFormComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-checkbox-group formControlName="checkboxGroup"></nz-checkbox-group>
+      <nz-checkbox-group formControlName="checkboxGroup" [nzDisabled]="nzDisabled"></nz-checkbox-group>
     </form>
   `
 })
 export class NzTestCheckboxGroupFormComponent {
   formGroup: UntypedFormGroup;
+  nzDisabled = false;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -500,6 +518,10 @@ export class NzTestCheckboxGroupFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 
