@@ -31,7 +31,7 @@ import {
   presetColors,
   statusColors
 } from 'ng-zorro-antd/core/color';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -65,7 +65,7 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor?: string | NzStatusColor | NzPresetColor;
+  @Input() nzColor?: NzStringLiteralUnion<NzStatusColor | NzPresetColor>;
   @Input() @InputBoolean() nzChecked = false;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();

@@ -6,11 +6,13 @@
 import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, NgZone, QueryList } from '@angular/core';
 
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
+
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 
-export type NzCarouselEffects = 'fade' | 'scrollx' | string;
-export type NzCarouselDotPosition = 'top' | 'bottom' | 'left' | 'right' | string;
+export type NzCarouselEffects = NzStringLiteralUnion<'fade' | 'scrollx'>;
+export type NzCarouselDotPosition = NzStringLiteralUnion<'top' | 'bottom' | 'left' | 'right'>;
 
 export interface NzCarouselComponentAsSource {
   carouselContents: QueryList<NzCarouselContentDirective>;

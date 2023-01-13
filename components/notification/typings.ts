@@ -6,8 +6,9 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 
+export type NzNotificationType = 'success' | 'info' | 'warning' | 'error' | 'blank';
 export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 
 export interface NzNotificationDataOptions<T = {}> {
@@ -30,7 +31,7 @@ export interface NzNotificationData {
   state?: 'enter' | 'leave';
   template?: TemplateRef<{}>;
   title?: string;
-  type?: 'success' | 'info' | 'warning' | 'error' | 'blank' | string;
+  type?: NzStringLiteralUnion<NzNotificationType>;
 
   // observables exposed to users
   onClose?: Subject<boolean>;

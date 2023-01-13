@@ -26,7 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, NzSizeDSType, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { badgePresetColors } from './preset-colors';
@@ -93,7 +93,7 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzStyle: { [key: string]: string } | null = null;
   @Input() nzText?: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | null | undefined;
-  @Input() nzStatus?: NzBadgeStatusType | string;
+  @Input() nzStatus?: NzStringLiteralUnion<NzBadgeStatusType>;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
   @Input() nzSize: NzSizeDSType = 'default';

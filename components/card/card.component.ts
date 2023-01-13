@@ -22,7 +22,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSizeDSType, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzCardGridDirective } from './card-grid.directive';
@@ -93,7 +93,7 @@ export class NzCardComponent implements OnDestroy, OnInit {
   @Input() nzBodyStyle: NgStyleInterface | null = null;
   @Input() nzCover?: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @Input() nzType: string | 'inner' | null = null;
+  @Input() nzType: NzStringLiteralUnion<'inner'> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;

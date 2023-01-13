@@ -4,3 +4,6 @@
  */
 
 export const tuple = <T extends string[]>(...args: T): T => args;
+
+// https://github.com/Microsoft/TypeScript/issues/29729
+export type NzStringLiteralUnion<T extends string> = T | (string & {});

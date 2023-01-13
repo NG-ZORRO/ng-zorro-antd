@@ -19,6 +19,8 @@ import { take } from 'rxjs/operators';
 
 import { curveBasis, curveLinear, line } from 'd3-shape';
 
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
+
 import { NzGraphEdge, NzGraphEdgeType } from './interface';
 
 @Component({
@@ -40,7 +42,7 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
   @Input() edge!: NzGraphEdge;
-  @Input() edgeType?: NzGraphEdgeType | string;
+  @Input() edgeType?: NzStringLiteralUnion<NzGraphEdgeType>;
 
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphEdge;
