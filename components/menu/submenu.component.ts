@@ -14,6 +14,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Inject,
   Input,
@@ -154,7 +155,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
-  @ContentChildren(NzSubMenuComponent, { descendants: true })
+  // fix errors about circular dependency
+  // Can't construct a query for the property ... since the query selector wasn't defined"
+  @ContentChildren(forwardRef(() => NzSubMenuComponent), { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
   @ContentChildren(NzMenuItemDirective, { descendants: true })
   listOfNzMenuItemDirective: QueryList<NzMenuItemDirective> | null = null;
