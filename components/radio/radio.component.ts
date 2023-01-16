@@ -145,7 +145,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
       this.nzRadioService.disabled$.pipe(takeUntil(this.destroy$)).subscribe(disabled => {
-        this.nzDisabled = disabled;
+        this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+        this.isNzDisableFirstChange = false;
         this.cdr.markForCheck();
       });
       this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
