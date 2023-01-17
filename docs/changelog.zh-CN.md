@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 15.0.3
+
+`2023-01-17`
+
+### Bug Fixes
+
+* **radio:** 修复禁用失效问题 ([#7812](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7812)) ([2b4df9a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2b4df9a833849c481346194c817196bc2697a1ff))
+
+
 ## 15.0.2
 
 `2023-01-15`
