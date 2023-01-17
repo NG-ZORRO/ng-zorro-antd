@@ -313,10 +313,13 @@ describe('radio', () => {
       const radioGroup: NzRadioGroupComponent = fixture.debugElement.query(
         By.directive(NzRadioGroupComponent)
       ).componentInstance;
+      const radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
+      const [firstRadios] = radios;
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
       expect(radioGroup.nzDisabled).toBeFalsy();
+      expect(firstRadios.componentInstance.nzDisabled).toBeTruthy();
     }));
     it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.formGroup.disable();
@@ -513,7 +516,7 @@ export class NzTestRadioFormComponent {
   template: `
     <form [formGroup]="formGroup">
       <nz-radio-group formControlName="radioGroup" [nzDisabled]="nzDisabled">
-        <label nz-radio-button nzValue="A">A</label>
+        <label nz-radio-button nzValue="A" [nzDisabled]="true">A</label>
         <label nz-radio-button nzValue="B">B</label>
         <label nz-radio-button nzValue="C">C</label>
         <label nz-radio-button nzValue="D">D</label>
