@@ -1,3 +1,11 @@
+## [15.0.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.3.0...15.0.3) (2023-01-17)
+
+
+### Bug Fixes
+
+* **radio:** invalid disable state ([#7812](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7812)) ([2b4df9a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2b4df9a833849c481346194c817196bc2697a1ff))
+
+
 ## [15.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.3.0...15.0.2) (2023-01-15)
 
 
