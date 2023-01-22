@@ -634,6 +634,27 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       const value = this.datePickerService.value;
+      const datePickerPreviousValue = this.datePickerService.initialValue;
+
+      // Check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      if (!this.isRange && (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate)) {
+        this.onTouchedFn();
+        return this.close();
+      }
+
+      // check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      if (this.isRange) {
+        const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
+        const [currentStartDate, currentEndDate] = value as CandyDate[];
+        if (
+          previousStartDate?.isSame(currentStartDate?.nativeDate) &&
+          previousEndDate?.isSame(currentEndDate?.nativeDate)
+        ) {
+          this.onTouchedFn();
+          return this.close();
+        }
+      }
+
       this.datePickerService.initialValue = cloneDate(value);
       if (this.isRange) {
         const vAsRange = value as CandyDate[];
