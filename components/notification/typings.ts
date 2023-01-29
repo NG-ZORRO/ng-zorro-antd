@@ -4,11 +4,11 @@
  */
 
 import { TemplateRef } from '@angular/core';
-
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 
-export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
+
+export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;

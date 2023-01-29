@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({
@@ -26,7 +27,14 @@ import { NzAnchorComponent } from './anchor.component';
   exportAs: 'nzLink',
   preserveWhitespaces: false,
   template: `
-    <a #linkTitle (click)="goToClick($event)" href="{{ nzHref }}" class="ant-anchor-link-title" title="{{ titleStr }}">
+    <a
+      #linkTitle
+      class="ant-anchor-link-title"
+      [href]="nzHref"
+      [title]="titleStr"
+      [target]="nzTarget"
+      (click)="goToClick($event)"
+    >
       <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
     </a>
     <ng-content></ng-content>
@@ -36,6 +44,7 @@ import { NzAnchorComponent } from './anchor.component';
 })
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
+  @Input() nzTarget?: string;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;

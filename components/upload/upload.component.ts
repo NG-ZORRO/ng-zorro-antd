@@ -2,7 +2,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,18 +12,21 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  AfterViewInit,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   TemplateRef,
   ViewChild,
+  NgZone,
+  Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -51,7 +56,7 @@ import { NzUploadListComponent } from './upload-list.component';
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
   }
 })
-export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
+export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzLimit: NumberInput;
   static ngAcceptInputType_nzSize: NumberInput;
   static ngAcceptInputType_nzDirectory: BooleanInput;
@@ -173,7 +178,13 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
+  constructor(
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) private document: NzSafeAny,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   // #region upload
 
@@ -278,7 +289,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: NzUploadFile): void => {
     this.uploadComp.abort(file);
     file.status = 'removed';
-    const fnRes = typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
+    const fnRes =
+      typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
     (fnRes instanceof Observable ? fnRes : of(fnRes)).pipe(filter((res: boolean) => res)).subscribe(() => {
       this.nzFileList = this.removeFileItem(file, this.nzFileList);
       this.nzChange.emit({
@@ -336,6 +348,18 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
     });
+  }
+
+  ngAfterViewInit(): void {
+    // fix firefox drop open new tab
+    this.ngZone.runOutsideAngular(() =>
+      fromEvent<MouseEvent>(this.document.body, 'drop')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          event.preventDefault();
+          event.stopPropagation();
+        })
+    );
   }
 
   ngOnChanges(): void {

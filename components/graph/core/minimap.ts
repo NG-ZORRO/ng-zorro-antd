@@ -3,16 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgZone } from '@angular/core';
+
 import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
+
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzZoomTransform } from '../interface';
 
 const FRAC_VIEWPOINT_AREA = 0.8;
 
 export class Minimap {
-  private minimap: HTMLElement;
   private canvas: HTMLCanvasElement;
   private canvasRect: ClientRect;
   private canvasBuffer: HTMLCanvasElement;
@@ -20,29 +24,21 @@ export class Minimap {
   private viewpoint: SVGRectElement;
   private scaleMinimap!: number;
   private scaleMain!: number;
-  private maxWidth: number;
   private translate!: [number, number];
   private viewpointCoord: { x: number; y: number };
   private minimapSize!: { width: number; height: number };
-  private labelPadding: number;
 
-  private svg: SVGSVGElement;
-  private zoomG: SVGGElement;
-  private mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>;
+  private unlisteners: VoidFunction[] = [];
 
   constructor(
-    svg: SVGSVGElement,
-    zoomG: SVGGElement,
-    mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>,
-    minimap: HTMLElement,
-    maxWidth: number,
-    labelPadding: number
+    private ngZone: NgZone,
+    private svg: SVGSVGElement,
+    private zoomG: SVGGElement,
+    private mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>,
+    private minimap: HTMLElement,
+    private maxWidth: number,
+    private labelPadding: number
   ) {
-    this.svg = svg;
-    this.labelPadding = labelPadding;
-    this.zoomG = zoomG;
-    this.mainZoom = mainZoom;
-    this.maxWidth = maxWidth;
     const minimapElement = select(minimap);
     const minimapSvgElement = minimapElement.select('svg');
     const viewpointElement = minimapSvgElement.select('rect');
@@ -59,7 +55,8 @@ export class Minimap {
       this.updateViewpoint();
     };
     this.viewpointCoord = { x: 0, y: 0 };
-    const dragEvent = drag().subject(Object).on('drag', handleEvent);
+    const subject = drag().subject(Object);
+    const dragEvent = subject.on('drag', handleEvent);
     viewpointElement.datum(this.viewpointCoord as NzSafeAny).call(dragEvent as NzSafeAny);
 
     // Make the minimap clickable.
@@ -70,11 +67,20 @@ export class Minimap {
       }
       handleEvent(event);
     });
+    this.unlisteners.push(() => {
+      subject.on('drag', null);
+      minimapSvgElement.on('click', null);
+    });
     this.viewpoint = viewpointElement.node() as SVGRectElement;
     this.minimapSvg = minimapSvgElement.node() as SVGSVGElement;
-    this.minimap = minimap;
     this.canvasBuffer = minimapElement.select('canvas.buffer').node() as HTMLCanvasElement;
     this.update();
+  }
+
+  destroy(): void {
+    while (this.unlisteners.length) {
+      this.unlisteners.pop()!();
+    }
   }
 
   private minimapOffset(): { x: number; y: number } {
@@ -117,15 +123,16 @@ export class Minimap {
 
     for (const k of new Array(document.styleSheets.length).keys()) {
       try {
-        const cssRules = (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
+        const cssRules =
+          (document.styleSheets[k] as NzSafeAny).cssRules || (document.styleSheets[k] as NzSafeAny).rules;
         if (cssRules == null) {
           continue;
         }
         for (const i of new Array(cssRules.length).keys()) {
           // Remove tf-* selectors from the styles.
-          stylesText += cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '') + '\n';
+          stylesText += `${cssRules[i].cssText.replace(/ ?tf-[\w-]+ ?/g, '')}\n`;
         }
-      } catch (e) {
+      } catch (e: NzSafeAny) {
         if (e.name !== 'SecurityError') {
           throw e;
         }
@@ -171,7 +178,7 @@ export class Minimap {
     if (this.translate != null && this.zoom != null) {
       // Update the viewpoint rectangle shape since the aspect ratio of the
       // map has changed.
-      requestAnimationFrame(() => this.zoom());
+      this.ngZone.runOutsideAngular(() => reqAnimFrame(() => this.zoom()));
     }
 
     // Serialize the main svg to a string which will be used as the rendering
@@ -186,28 +193,38 @@ export class Minimap {
 
     zoomGSelection.attr('transform', zoomTransform);
 
-    const image = new Image();
-    image.onload = () => {
+    const image = document.createElement('img');
+    const onLoad = (): void => {
       // Draw the svg content onto the buffer canvas.
       const context = this.canvasBuffer.getContext('2d');
       context!.clearRect(0, 0, this.canvasBuffer.width, this.canvasBuffer.height);
 
       context!.drawImage(image, minimapOffset.x, minimapOffset.y, this.minimapSize.width, this.minimapSize.height);
-      requestAnimationFrame(() => {
-        // Hide the old canvas and show the new buffer canvas.
-        select(this.canvasBuffer).style('display', 'block');
-        select(this.canvas).style('display', 'none');
-        // Swap the two canvases.
-        [this.canvas, this.canvasBuffer] = [this.canvasBuffer, this.canvas];
+
+      this.ngZone.runOutsideAngular(() => {
+        reqAnimFrame(() => {
+          // Hide the old canvas and show the new buffer canvas.
+          select(this.canvasBuffer).style('display', 'block');
+          select(this.canvas).style('display', 'none');
+          // Swap the two canvases.
+          [this.canvas, this.canvasBuffer] = [this.canvasBuffer, this.canvas];
+        });
       });
     };
-    image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXml);
+
+    image.addEventListener('load', onLoad);
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgXml)}`;
+
+    this.unlisteners.push(() => {
+      image.removeEventListener('load', onLoad);
+    });
   }
 
   /**
    * Handles changes in zooming/panning. Should be called from the main svg
    * to notify that a zoom/pan was performed and this minimap will update it's
    * viewpoint rectangle.
+   *
    * @param transform
    */
   zoom(transform?: ZoomTransform | NzZoomTransform): void {

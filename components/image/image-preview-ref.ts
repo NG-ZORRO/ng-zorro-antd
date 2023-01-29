@@ -2,36 +2,55 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
+
+import { ESCAPE, hasModifierKey, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { filter, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewComponent } from './image-preview.component';
 
 export class NzImagePreviewRef {
-  constructor(public previewInstance: NzImagePreviewComponent, private config: NzImagePreviewOptions, private overlayRef: OverlayRef) {
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    public previewInstance: NzImagePreviewComponent,
+    private config: NzImagePreviewOptions,
+    private overlayRef: OverlayRef
+  ) {
     overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => {
-          return (this.config.nzKeyboard as boolean) && event.keyCode === ESCAPE && !hasModifierKey(event);
-        })
+        filter(
+          event =>
+            (this.config.nzKeyboard as boolean) &&
+            (event.keyCode === ESCAPE || event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
+            !hasModifierKey(event)
+        )
       )
       .subscribe(event => {
         event.preventDefault();
-        this.close();
+        if (event.keyCode === ESCAPE) {
+          this.close();
+        }
+        if (event.keyCode === LEFT_ARROW) {
+          this.prev();
+        }
+        if (event.keyCode === RIGHT_ARROW) {
+          this.next();
+        }
       });
 
     overlayRef.detachments().subscribe(() => {
       this.overlayRef.dispose();
     });
 
-    previewInstance.containerClick.pipe(take(1)).subscribe(() => {
+    previewInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       this.close();
     });
 
-    previewInstance.closeClick.pipe(take(1)).subscribe(() => {
+    previewInstance.closeClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
       this.close();
     });
 
@@ -62,6 +81,7 @@ export class NzImagePreviewRef {
   }
 
   private dispose(): void {
+    this.destroy$.next();
     this.overlayRef.dispose();
   }
 }

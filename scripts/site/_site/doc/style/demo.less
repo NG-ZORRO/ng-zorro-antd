@@ -27,12 +27,7 @@
       color: @site-text-color;
     }
   }
-  a.edit-button .anticon {
-    color: @icon-color;
-    &:hover {
-      color: @icon-color-hover;
-    }
-  }
+
   &,
   .code-box-demo {
     background-color: @component-background;
@@ -112,6 +107,23 @@
       right: auto;
       left: -21px;
       padding-right: 0;
+      padding-left: 6px;
+    }
+
+    .anticon {
+      color: @site-text-color-secondary;
+      transition: all 0.3s;
+
+      &:hover {
+        color: @site-text-color;
+      }
+    }
+
+    .ant-row.ant-row-rtl & {
+      right: auto;
+      left: -22px;
+      margin-right: 0;
+      padding-right: 8px;
       padding-left: 6px;
     }
   }
@@ -231,8 +243,9 @@
   }
 
   &-actions {
-    padding-top: 12px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
     border-top: 1px dashed @site-border-color-split;
     opacity: 0.7;
     transition: opacity 0.3s;
@@ -241,7 +254,6 @@
       opacity: 1;
     }
 
-    > i,
     > form,
     > span {
       position: relative;
@@ -310,8 +322,7 @@
     height: 20px;
     overflow: hidden;
     text-indent: -9999px;
-    background: transparent
-      url('https://gw.alipayobjects.com/zos/rmsportal/OtZslpOjYXijshDERXwc.svg') center / 14px
+    background: transparent url('https://gw.alipayobjects.com/zos/rmsportal/OtZslpOjYXijshDERXwc.svg') center / 14px
       no-repeat;
     border: 0;
     cursor: pointer;
@@ -328,8 +339,7 @@
     height: 20px;
     overflow: hidden;
     text-indent: -9999px;
-    background: transparent
-      url('https://gw.alipayobjects.com/zos/rmsportal/DlHbxMCyeuyOrqOdbgik.svg') center / 14px
+    background: transparent url('https://gw.alipayobjects.com/zos/rmsportal/DlHbxMCyeuyOrqOdbgik.svg') center / 14px
       no-repeat;
     border: 0;
     cursor: pointer;
@@ -345,8 +355,7 @@
     height: 20px;
     overflow: hidden;
     text-indent: -9999px;
-    background: transparent
-      url('https://gw.alipayobjects.com/zos/rmsportal/aaYmtdDyHSCkXyLZVgGK.svg') center / 14px
+    background: transparent url('https://gw.alipayobjects.com/zos/rmsportal/aaYmtdDyHSCkXyLZVgGK.svg') center / 14px
       no-repeat;
     border: 0;
     cursor: pointer;

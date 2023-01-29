@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,12 +20,15 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
@@ -53,16 +57,19 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
       <nz-badge-sup
         *ngIf="showSup"
         [nzOffset]="nzOffset"
+        [nzSize]="nzSize"
         [nzTitle]="nzTitle"
         [nzStyle]="nzStyle"
         [nzDot]="nzDot"
         [nzOverflowCount]="nzOverflowCount"
-        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor)"
+        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
         [nzCount]="nzCount"
+        [noAnimation]="!!noAnimation?.nzNoAnimation"
       ></nz-badge-sup>
     </ng-container>
   `,
   host: {
+    class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
@@ -89,17 +96,16 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzStatus?: NzBadgeStatusType | string;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
+  @Input() nzSize: NzSizeDSType = 'default';
 
   constructor(
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-badge');
-  }
+    @Optional() private directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {}
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;

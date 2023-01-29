@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -23,7 +24,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
 import { NzTimelineMode, NzTimelinePosition } from './typings';
@@ -38,7 +38,8 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
   template: `
     <ul
       class="ant-timeline"
-      [class.ant-timeline-right]="nzMode === 'right'"
+      [class.ant-timeline-label]="hasLabelItem"
+      [class.ant-timeline-right]="!hasLabelItem && nzMode === 'right'"
       [class.ant-timeline-alternate]="nzMode === 'alternate' || nzMode === 'custom'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
@@ -59,7 +60,7 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
         <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
           <ng-container *nzStringTemplateOutlet="nzPendingDot">
             {{ nzPendingDot }}
-            <i *ngIf="!nzPendingDot" nz-icon nzType="loading"></i>
+            <span *ngIf="!nzPendingDot" nz-icon nzType="loading"></span>
           </ng-container>
         </div>
         <div class="ant-timeline-item-content">
@@ -84,6 +85,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
   dir: Direction = 'ltr';
+  hasLabelItem = false;
 
   private destroy$ = new Subject<void>();
 
@@ -134,14 +136,26 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   private updateChildren(): void {
     if (this.listOfItems && this.listOfItems.length) {
       const length = this.listOfItems.length;
+      let hasLabelItem = false;
 
-      this.listOfItems.forEach((item, index) => {
+      this.listOfItems.forEach((item: NzTimelineItemComponent, index: number) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position = getInferredTimelineItemPosition(index, this.nzMode);
+
+        if (!hasLabelItem && item.nzLabel) {
+          hasLabelItem = true;
+        }
+
         item.detectChanges();
       });
+
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
+      this.hasLabelItem = hasLabelItem;
+    } else {
+      this.timelineItems = [];
+      this.hasLabelItem = false;
     }
+
     this.cdr.markForCheck();
   }
 }

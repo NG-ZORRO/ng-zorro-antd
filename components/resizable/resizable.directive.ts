@@ -4,12 +4,23 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnDestroy,
+  Output,
+  Renderer2
+} from '@angular/core';
+import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
@@ -25,12 +36,11 @@ export interface NzResizeEvent {
 @Directive({
   selector: '[nz-resizable]',
   exportAs: 'nzResizable',
-  providers: [NzResizableService],
+  providers: [NzResizableService, NzDestroyService],
   host: {
+    class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
-    '[class.nz-resizable-disabled]': 'nzDisabled',
-    '(mouseenter)': 'onMouseenter()',
-    '(mouseleave)': 'onMouseleave()'
+    '[class.nz-resizable-disabled]': 'nzDisabled'
   }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
@@ -59,18 +69,16 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   private ghostElement: HTMLDivElement | null = null;
   private el!: HTMLElement;
   private sizeCache: NzResizeEvent | null = null;
-  private destroy$ = new Subject<void>();
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private nzResizableService: NzResizableService,
     private platform: Platform,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private destroy$: NzDestroyService
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('nz-resizable');
-    this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.nzResizableService.handleMouseDownOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.nzDisabled) {
         return;
       }
@@ -78,33 +86,25 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.nzResizableService.startResizing(event.mouseEvent);
       this.currentHandleEvent = event;
       this.setCursor();
-      this.nzResizeStart.emit({
-        mouseEvent: event.mouseEvent
-      });
+      if (this.nzResizeStart.observers.length) {
+        this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent }));
+      }
       this.elRect = this.el.getBoundingClientRect();
     });
 
-    this.nzResizableService.documentMouseUp$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.nzResizableService.documentMouseUpOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.resizing) {
         this.resizing = false;
-        this.nzResizableService.documentMouseUp$.next();
+        this.nzResizableService.documentMouseUpOutsideAngular$.next();
         this.endResize(event);
       }
     });
 
-    this.nzResizableService.documentMouseMove$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.resizing) {
         this.resize(event);
       }
     });
-  }
-
-  onMouseenter(): void {
-    this.nzResizableService.mouseEntered$.next(true);
-  }
-
-  onMouseleave(): void {
-    this.nzResizableService.mouseEntered$.next(false);
   }
 
   setPosition(): void {
@@ -242,12 +242,16 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
     const size = this.calcSize(width, height, ratio);
     this.sizeCache = { ...size };
-    this.ngZone.run(() => {
-      this.nzResize.emit({
-        ...size,
-        mouseEvent: event
+    // Re-enter the Angular zone and run the change detection only if there're any `nzResize` listeners,
+    // e.g.: `<div nz-resizable (nzResize)="..."></div>`.
+    if (this.nzResize.observers.length) {
+      this.ngZone.run(() => {
+        this.nzResize.emit({
+          ...size,
+          mouseEvent: event
+        });
       });
-    });
+    }
     if (this.nzPreview) {
       this.previewResize(size);
     }
@@ -263,12 +267,16 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
           width: this.elRect.width,
           height: this.elRect.height
         };
-    this.ngZone.run(() => {
-      this.nzResizeEnd.emit({
-        ...size,
-        mouseEvent: event
+    // Re-enter the Angular zone and run the change detection only if there're any `nzResizeEnd` listeners,
+    // e.g.: `<div nz-resizable (nzResizeEnd)="..."></div>`.
+    if (this.nzResizeEnd.observers.length) {
+      this.ngZone.run(() => {
+        this.nzResizeEnd.emit({
+          ...size,
+          mouseEvent: event
+        });
       });
-    });
+    }
     this.sizeCache = null;
     this.currentHandleEvent = null;
   }
@@ -294,16 +302,30 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.platform.isBrowser) {
-      this.el = this.elementRef.nativeElement;
-      this.setPosition();
+    if (!this.platform.isBrowser) {
+      return;
     }
+
+    this.el = this.elementRef.nativeElement;
+    this.setPosition();
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.el, 'mouseenter')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
+        });
+
+      fromEvent(this.el, 'mouseleave')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
+        });
+    });
   }
 
   ngOnDestroy(): void {
     this.ghostElement = null;
     this.sizeCache = null;
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -13,7 +13,7 @@ const MAX_COL = 3;
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'decade-table',
   exportAs: 'decadeTable',
   templateUrl: 'abstract-table.html'
@@ -75,7 +75,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
     return decades;
   }
 
-  getClassMap(cell: DecadeCell): { [key: string]: boolean } {
+  override getClassMap(cell: DecadeCell): { [key: string]: boolean } {
     return {
       [`${this.prefixCls}-cell`]: true,
       [`${this.prefixCls}-cell-in-view`]: !cell.isBiggerThanEnd && !cell.isLowerThanStart,

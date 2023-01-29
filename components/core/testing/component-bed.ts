@@ -1,11 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CommonModule } from '@angular/common';
 import { DebugElement, NgModule, NO_ERRORS_SCHEMA, Type } from '@angular/core';
-import { ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 type ComponentBedOptions = Pick<NgModule, 'providers' | 'declarations' | 'imports'>;
 export interface ComponentBed<T> {
-  bed: TestBedStatic;
+  bed: TestBed;
   fixture: ComponentFixture<T>;
   nativeElement: HTMLElement;
   debugElement: DebugElement;

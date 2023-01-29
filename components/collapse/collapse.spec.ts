@@ -193,7 +193,7 @@ describe('collapse', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-collapse',
   template: `
     <ng-template #headerTemplate>template</ng-template>
@@ -252,7 +252,7 @@ export class NzTestCollapseTemplateComponent {}
         <p>Panel01</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <i nz-icon nzType="caret-right" class="ant-collapse-arrow"></i>
+        <span nz-icon nzType="caret-right" class="ant-collapse-arrow"></span>
       </ng-template>
     </nz-collapse>
   `

@@ -15,7 +15,8 @@ export default {
     prev_5: '5 leathanach roimhe seo',
     next_5: 'Ar Aghaidh 5 Leathanaigh',
     prev_3: '3 leathanach roimhe seo',
-    next_3: 'Ar Aghaidh 3 Leathanaigh'
+    next_3: 'Ar Aghaidh 3 Leathanaigh',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -122,9 +123,9 @@ export default {
     sortTitle: 'Sort',
     expand: 'Expand row',
     collapse: 'Collapse row',
-    triggerDesc: 'Click sort by descend',
-    triggerAsc: 'Click sort by ascend',
-    cancelSort: 'Click to cancel sort'
+    triggerDesc: 'Click to sort descending',
+    triggerAsc: 'Click to sort ascending',
+    cancelSort: 'Click to cancel sorting'
   },
   Modal: {
     okText: 'OK',

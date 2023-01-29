@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzIconService } from 'ng-zorro-antd/icon';
 
 const ngZorroIconLiteral =
@@ -8,7 +9,7 @@ const ngZorroIconLiteral =
   selector: 'nz-demo-icon-namespace',
   template: `
     <div class="icons-list">
-      <i nz-icon nzType="ng-zorro:antd"></i>
+      <span nz-icon nzType="ng-zorro:antd"></span>
     </div>
   `,
   styles: [

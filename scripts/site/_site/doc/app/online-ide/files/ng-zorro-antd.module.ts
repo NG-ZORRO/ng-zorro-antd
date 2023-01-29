@@ -48,9 +48,11 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
@@ -69,6 +71,9 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+import { NzGraphModule } from 'ng-zorro-antd/graph';
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 
 @NgModule({
   exports: [
@@ -88,6 +93,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzCheckboxModule,
     NzCollapseModule,
     NzCommentModule,
+    NzCronExpressionModule,
     NzDatePickerModule,
     NzDescriptionsModule,
     NzDividerModule,
@@ -117,9 +123,11 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzRadioModule,
     NzRateModule,
     NzResultModule,
+    NzSegmentedModule,
     NzSelectModule,
     NzSkeletonModule,
     NzSliderModule,
+    NzSpaceModule,
     NzSpinModule,
     NzStatisticModule,
     NzStepsModule,
@@ -140,6 +148,8 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
+    NzCodeEditorModule,
+    NzGraphModule
   ]
 })
 export class DemoNgZorroAntdModule {

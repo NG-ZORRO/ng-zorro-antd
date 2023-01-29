@@ -1,4 +1,10 @@
-import { UpgradeData } from '@angular/cdk/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { symbolRemoval, UpgradeData } from '@angular/cdk/schematics';
+
 import {
   attributeSelectors,
   classNames,
@@ -21,5 +27,6 @@ export const ruleUpgradeData: UpgradeData = {
   inputNames,
   methodCallChecks,
   outputNames,
-  propertyNames
+  propertyNames,
+  symbolRemoval
 };

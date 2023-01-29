@@ -6,11 +6,17 @@ import { Component, ViewEncapsulation } from '@angular/core';
   template: `
     <div class="example-input">
       <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
-        <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onChange($event)" [nzAutocomplete]="auto" />
+        <input
+          placeholder="input here"
+          nz-input
+          [(ngModel)]="inputValue"
+          (input)="onChange($event)"
+          [nzAutocomplete]="auto"
+        />
       </nz-input-group>
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary" nzSize="large" nzSearch>
-          <i nz-icon nzType="search" nzTheme="outline"></i>
+          <span nz-icon nzType="search" nzTheme="outline"></span>
         </button>
       </ng-template>
       <nz-autocomplete #auto>

@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-icon-twotone',
   template: `
     <div class="icons-list">
-      <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i>
-      <i nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i>
-      <i nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
+      <span nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></span>
+      <span nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></span>
+      <span nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></span>
     </div>
   `,
   styles: [

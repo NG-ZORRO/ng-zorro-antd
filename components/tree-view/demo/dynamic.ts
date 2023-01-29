@@ -1,7 +1,6 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
-import { AfterViewInit, Component } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 
@@ -66,11 +65,7 @@ class DynamicDatasource implements DataSource<FlatNode> {
       this.treeControl.expansionModel.changed.pipe(tap(change => this.handleExpansionChange(change))),
       this.flattenedData
     ];
-    return merge(...changes).pipe(
-      map(() => {
-        return this.expandFlattenedNodes(this.flattenedData.getValue());
-      })
-    );
+    return merge(...changes).pipe(map(() => this.expandFlattenedNodes(this.flattenedData.getValue())));
   }
 
   expandFlattenedNodes(nodes: FlatNode[]): FlatNode[] {
@@ -132,17 +127,17 @@ class DynamicDatasource implements DataSource<FlatNode> {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle *ngIf="!node.loading">
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <nz-tree-node-toggle *ngIf="node.loading" nzTreeNodeNoopToggle>
-          <i nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></i>
+          <span nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></span>
         </nz-tree-node-toggle>
         {{ node.label }}
       </nz-tree-node>
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
+export class NzDemoTreeViewDynamicComponent {
   treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,
     node => node.expandable
@@ -152,7 +147,5 @@ export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
 
   constructor() {}
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
-
-  ngAfterViewInit(): void {}
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

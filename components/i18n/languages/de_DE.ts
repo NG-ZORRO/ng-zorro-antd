@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ Seite',
     jump_to: 'Gehe zu',
     jump_to_confirm: 'bestätigen',
-    page: '',
+    page: 'Seite',
     prev_page: 'Vorherige Seite',
     next_page: 'Nächste Seite',
     prev_5: '5 Seiten zurück',
     next_5: '5 Seiten vor',
     prev_3: '3 Seiten zurück',
-    next_3: '3 Seiten vor'
+    next_3: '3 Seiten vor',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -142,11 +143,11 @@ export default {
     itemUnit: 'Eintrag',
     itemsUnit: 'Einträge',
     remove: 'Entfernen',
-    selectCurrent: 'Aktuelle Seite auswählen',
-    removeCurrent: 'Aktuelle Seite abwählen',
-    selectAll: 'Alle Daten auswählen',
-    removeAll: 'Alle Daten abwählen',
-    selectInvert: 'Aktuelle Auswahl invertieren'
+    selectCurrent: 'Alle auf aktueller Seite auswählen',
+    removeCurrent: 'Auswahl auf aktueller Seite aufheben',
+    selectAll: 'Alle auswählen',
+    removeAll: 'Auswahl aufheben',
+    selectInvert: 'Auswahl umkehren'
   },
   Upload: {
     uploading: 'Hochladen...',
@@ -166,5 +167,8 @@ export default {
   },
   PageHeader: {
     back: 'Zurück'
+  },
+  Image: {
+    preview: 'Vorschau'
   }
 };

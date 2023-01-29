@@ -117,7 +117,13 @@ describe('NzPopover', () => {
 
     <a #changePopover nz-popover nzPopoverTitle="title-change" [nzPopoverContent]="content"></a>
 
-    <a #backdropPopover nz-popover nzPopoverContent="content-string" nzPopoverTrigger="click" [nzPopoverBackdrop]="true"></a>
+    <a
+      #backdropPopover
+      nz-popover
+      nzPopoverContent="content-string"
+      nzPopoverTrigger="click"
+      [nzPopoverBackdrop]="true"
+    ></a>
 
     <ng-template #templateTitle>title-template</ng-template>
 

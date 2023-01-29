@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,7 +16,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Direction } from '@angular/cdk/bidi';
 import { NzCascaderOption } from './typings';
 
 @Component({
@@ -25,19 +25,25 @@ import { NzCascaderOption } from './typings';
   exportAs: 'nzCascaderOption',
   template: `
     <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
-      <ng-template [ngTemplateOutlet]="optionTemplate" [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="optionTemplate"
+        [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"
+      ></ng-template>
     </ng-container>
     <ng-template #defaultOptionTemplate>
-      <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
+      <div
+        class="ant-cascader-menu-item-content"
+        [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"
+      ></div>
     </ng-template>
-    <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
+    <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
+      <span *ngIf="option.loading; else icon" nz-icon nzType="loading"></span>
       <ng-template #icon>
         <ng-container *nzStringTemplateOutlet="expandIcon">
-          <i nz-icon [nzType]="$any(expandIcon)"></i>
+          <span nz-icon [nzType]="$any(expandIcon)"></span>
         </ng-container>
       </ng-template>
-    </span>
+    </div>
   `,
   host: {
     '[attr.title]': 'option.title || optionLabel',
@@ -60,6 +66,7 @@ export class NzCascaderOptionComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item-expanded');
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

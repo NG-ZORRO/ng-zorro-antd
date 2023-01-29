@@ -3,11 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
-
-import { Subject } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

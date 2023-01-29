@@ -1,7 +1,9 @@
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+
 import { NzFormTextComponent } from './form-text.component';
 
 const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormTextComponent] };
@@ -21,8 +23,6 @@ describe('nz-form-text', () => {
 });
 
 @Component({
-  template: `
-    <nz-form-text></nz-form-text>
-  `
+  template: ` <nz-form-text></nz-form-text> `
 })
 export class NzTestFormTextComponent {}

@@ -4,13 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-icon-basic',
   template: `
     <div class="icons-list">
-      <i nz-icon [nzType]="'home'"></i>
-      <i nz-icon [nzType]="'setting'" [nzTheme]="'fill'"></i>
-      <i nz-icon [nzType]="'smile'" [nzTheme]="'outline'"></i>
-      <i nz-icon [nzType]="'sync'" [nzSpin]="true"></i>
-      <i nz-icon [nzType]="'smile'" [nzTheme]="'outline'" [nzRotate]="180"></i>
+      <span nz-icon [nzType]="'home'"></span>
+      <span nz-icon [nzType]="'setting'" [nzTheme]="'fill'"></span>
+      <span nz-icon [nzType]="'smile'" [nzTheme]="'outline'"></span>
+      <span nz-icon [nzType]="'sync'" [nzSpin]="true"></span>
+      <span nz-icon [nzType]="'smile'" [nzTheme]="'outline'" [nzRotate]="180"></span>
       <!-- Loading with new API would spin automatically! -->
-      <i nz-icon [nzType]="'loading'"></i>
+      <span nz-icon [nzType]="'loading'"></span>
     </div>
   `,
   styles: [

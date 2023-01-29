@@ -59,7 +59,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 ### 全局配置
 
-可以通过 `NzConfigService` 进行全局配置。
+可以通过 `NzConfigService` 进行全局配置，详情请见文档中 [全局配置项](/docs/global-config/zh) 章节。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息从顶部弹出时，距离顶部的位置。 | `string` | 24px |
 | nzBottom | 消息从底部弹出时，距离底部的位置。 | `string` | 24px |
-| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string` | `topRight` |
 | nzDirection | 通知的文字方向 | `'ltr' \| 'rtl'` | - |
 
 ### NzNotificationRef

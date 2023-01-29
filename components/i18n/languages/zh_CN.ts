@@ -15,7 +15,8 @@ export default {
     prev_5: '向前 5 页',
     next_5: '向后 5 页',
     prev_3: '向前 3 页',
-    next_3: '向后 3 页'
+    next_3: '向后 3 页',
+    page_size: '页码'
   },
   DatePicker: {
     lang: {
@@ -123,7 +124,10 @@ export default {
     collapse: '关闭行',
     triggerDesc: '点击降序',
     triggerAsc: '点击升序',
-    cancelSort: '取消排序'
+    cancelSort: '取消排序',
+    filterCheckall: '全选',
+    filterSearchPlaceholder: '在筛选项中搜索',
+    selectNone: '清空所有'
   },
   Modal: {
     okText: '确定',
@@ -166,5 +170,29 @@ export default {
   },
   PageHeader: {
     back: '返回'
+  },
+  Image: {
+    preview: '预览'
+  },
+  CronExpression: {
+    cronError: 'cron 表达式不合法',
+    second: '秒',
+    minute: '分钟',
+    hour: '小时',
+    day: '日',
+    month: '月',
+    week: '周',
+    secondError:
+      '<p><span>*</span>任意值</p><p><span>,</span>多个值之间的分隔符</p><p><span>-</span>区间值的连接符</p><p><span>/</span>平均分配</p><p><span>0-59</span>允许范围</p>',
+    minuteError:
+      '<p><span>*</span>任意值</p><p><span>,</span>多个值之间的分隔符</p><p><span>-</span>区间值的连接符</p><p><span>/</span>平均分配</p><p><span>0-59</span>允许范围</p>',
+    hourError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>0-23</span> 允许范围</p>',
+    dayError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-31</span> 允许范围</p>',
+    monthError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-12</span> 允许范围</p>',
+    weekError:
+      '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>?</span> 不指定</p><p><span>0-7</span> 允许范围（0代表周日，1-7依次为周一到周日）</p>'
   }
 };

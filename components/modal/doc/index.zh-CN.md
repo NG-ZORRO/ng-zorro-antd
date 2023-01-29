@@ -153,7 +153,7 @@ nzFooter: [{
   // 是否禁用
   disabled?: boolean | ((this: ModalButtonOptions, contentComponentInstance?: object) => boolean);
   // 按钮点击回调
-  onClick?(this: ModalButtonOptions, contentComponentInstance?: object): void | Promise&lt;void&gt; | any;
+  onClick?(this: ModalButtonOptions, contentComponentInstance?: object): void | Promise<void> | any;
 }]
 ```
 

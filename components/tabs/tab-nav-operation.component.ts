@@ -41,7 +41,7 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       (nzVisibleChange)="menuVisChange($event)"
       (mouseenter)="showItems()"
     >
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu *ngIf="menuOpened">
@@ -55,7 +55,9 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
           (click)="onSelect(item)"
           (contextmenu)="onContextmenu(item, $event)"
         >
-          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">{{ item.tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">
+            {{ item.tab.label }}
+          </ng-container>
         </li>
       </ul>
     </nz-dropdown-menu>

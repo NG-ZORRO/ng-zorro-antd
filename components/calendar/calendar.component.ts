@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
@@ -23,12 +22,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
@@ -87,6 +87,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     </ng-template>
   `,
   host: {
+    class: 'ant-picker-calendar',
     '[class.ant-picker-calendar-full]': 'nzFullscreen',
     '[class.ant-picker-calendar-mini]': '!nzFullscreen',
     '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
@@ -143,10 +144,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-picker-calendar');
-  }
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;

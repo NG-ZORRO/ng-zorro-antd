@@ -15,12 +15,14 @@ import {
   SkipSelf,
   ViewEncapsulation
 } from '@angular/core';
-import { ThemeType } from '@ant-design/icons-angular';
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
-
-import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
+import { ThemeType } from '@ant-design/icons-angular';
+
+import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+
 import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
 
 export interface NzFormTooltipIcon {
@@ -44,7 +46,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
       <ng-content></ng-content>
       <span *ngIf="nzTooltipTitle" class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
         <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
-          <i nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></i>
+          <span nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></span>
         </ng-container>
       </span>
     </label>
@@ -73,7 +75,9 @@ export class NzFormLabelComponent implements OnDestroy {
   }
   // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
   get tooltipIcon(): NzFormTooltipIcon {
-    return this._tooltipIcon !== 'default' ? this._tooltipIcon : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
+    return this._tooltipIcon !== 'default'
+      ? this._tooltipIcon
+      : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 

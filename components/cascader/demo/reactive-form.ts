@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -49,7 +50,7 @@ const options = [
   selector: 'nz-demo-cascader-reactive-form',
   template: `
     <form [formGroup]="form" novalidate>
-      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"> </nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"></nz-cascader>
     </form>
     <br />
     <button nz-button (click)="reset()">Reset</button>
@@ -64,12 +65,12 @@ const options = [
   ]
 })
 export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   nzOptions: NzCascaderOption[] = options;
   changeSubscription: Subscription;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.createForm();
-    const control = this.form.get('name') as FormControl;
+    const control = this.form.get('name') as UntypedFormControl;
     this.changeSubscription = control.valueChanges.subscribe(data => {
       this.onChanges(data);
     });

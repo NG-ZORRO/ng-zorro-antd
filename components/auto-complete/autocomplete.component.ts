@@ -4,6 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -26,14 +27,14 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
+import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
@@ -61,7 +62,7 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
       >
         <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
           <div style="display: flex; flex-direction: column;">
@@ -101,7 +102,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   showPanel: boolean = true;
   isOpen: boolean = false;
-  activeItem!: NzAutocompleteOptionComponent;
+  activeItem: NzAutocompleteOptionComponent | null = null;
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   animationStateChange = new EventEmitter<AnimationEvent>();
@@ -130,9 +131,9 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @ViewChild('content', { static: false }) content?: ElementRef;
 
   private activeItemIndex: number = -1;
-  private selectionChangeSubscription = Subscription.EMPTY;
-  private optionMouseEnterSubscription = Subscription.EMPTY;
-  private dataSourceChangeSubscription = Subscription.EMPTY;
+  private selectionChangeSubscription: Subscription | null = Subscription.EMPTY;
+  private optionMouseEnterSubscription: Subscription | null = Subscription.EMPTY;
+  private dataSourceChangeSubscription: Subscription | null = Subscription.EMPTY;
   /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
@@ -185,9 +186,13 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   ngOnDestroy(): void {
-    this.dataSourceChangeSubscription.unsubscribe();
-    this.selectionChangeSubscription.unsubscribe();
-    this.optionMouseEnterSubscription.unsubscribe();
+    this.dataSourceChangeSubscription!.unsubscribe();
+    this.selectionChangeSubscription!.unsubscribe();
+    this.optionMouseEnterSubscription!.unsubscribe();
+    // Caretaker note: we have to set these subscriptions to `null` since these will be closed subscriptions, but they
+    // still keep references to destinations (which are `SafeSubscriber`s). Destinations keep referencing `next` functions,
+    // which we pass, for instance, to `this.optionSelectionChanges.subscribe(...)`.
+    this.dataSourceChangeSubscription = this.selectionChangeSubscription = this.optionMouseEnterSubscription = null;
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -198,14 +203,18 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   setActiveItem(index: number): void {
-    const activeItem = this.options.toArray()[index];
+    const activeItem = this.options.get(index);
     if (activeItem && !activeItem.active) {
       this.activeItem = activeItem;
       this.activeItemIndex = index;
       this.clearSelectedOptions(this.activeItem);
       this.activeItem.setActiveStyles();
-      this.changeDetectorRef.markForCheck();
+    } else {
+      this.activeItem = null;
+      this.activeItemIndex = -1;
+      this.clearSelectedOptions();
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   setNextItemActive(): void {
@@ -219,9 +228,11 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   getOptionIndex(value: NzSafeAny): number {
-    return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
-      return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
-    }, -1)!;
+    return this.options.reduce(
+      (result: number, current: NzAutocompleteOptionComponent, index: number) =>
+        result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result,
+      -1
+    )!;
   }
 
   getOption(value: NzSafeAny): NzAutocompleteOptionComponent | null {
@@ -256,7 +267,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   private subscribeOptionChanges(): void {
-    this.selectionChangeSubscription.unsubscribe();
+    this.selectionChangeSubscription!.unsubscribe();
     this.selectionChangeSubscription = this.optionSelectionChanges
       .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
       .subscribe((event: NzOptionSelectionChange) => {
@@ -268,7 +279,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
         this.selectionChange.emit(event.source);
       });
 
-    this.optionMouseEnterSubscription.unsubscribe();
+    this.optionMouseEnterSubscription!.unsubscribe();
     this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((event: NzAutocompleteOptionComponent) => {
       event.setActiveStyles();
       this.activeItem = event;

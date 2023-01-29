@@ -1,4 +1,8 @@
-import { Rule, Tree } from '@angular-devkit/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
@@ -9,6 +13,8 @@ import {
   insertImport,
   parseSourceFile
 } from '@angular/cdk/schematics';
+
+import { Rule, Tree } from '@angular-devkit/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
@@ -81,7 +87,8 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
   const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
     `{ provide: NZ_I18N, useValue: ${locale} }`, null);
-  let node: any = nodes[0];  // tslint:disable-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let node: any = nodes[0];
 
   if (!node) {
     return [];

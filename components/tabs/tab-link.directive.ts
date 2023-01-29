@@ -4,7 +4,7 @@
  */
 
 import { Directive, ElementRef, Host, Optional, Self, TemplateRef } from '@angular/core';
-import { RouterLink, RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { TabTemplateContext } from './interfaces';
 
@@ -27,9 +27,5 @@ export class NzTabLinkTemplateDirective {
   exportAs: 'nzTabLink'
 })
 export class NzTabLinkDirective {
-  constructor(
-    public elementRef: ElementRef<HTMLAnchorElement>,
-    @Optional() @Self() public routerLink?: RouterLink,
-    @Optional() @Self() public routerLinkWithHref?: RouterLinkWithHref
-  ) {}
+  constructor(public elementRef: ElementRef<HTMLAnchorElement>, @Optional() @Self() public routerLink?: RouterLink) {}
 }

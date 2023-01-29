@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ page',
     jump_to: 'Aller à',
     jump_to_confirm: 'confirmer',
-    page: '',
+    page: 'Page',
     prev_page: 'Page précédente',
     next_page: 'Page suivante',
     prev_5: '5 Pages précédentes',
     next_5: '5 Pages suivantes',
     prev_3: '3 Pages précédentes',
-    next_3: '3 Pages suivantes'
+    next_3: '3 Pages suivantes',
+    page_size: 'taille de la page'
   },
   DatePicker: {
     lang: {
@@ -107,6 +108,9 @@ export default {
       rangePlaceholder: ['Heure de début', 'Heure de fin']
     }
   },
+  global: {
+    placeholder: 'Sélectionner'
+  },
   Table: {
     filterTitle: 'Filtrer',
     filterConfirm: 'OK',
@@ -119,7 +123,10 @@ export default {
     collapse: 'Réduire la ligne',
     triggerDesc: 'Trier par ordre décroissant',
     triggerAsc: 'Trier par ordre croissant',
-    cancelSort: 'Annuler le tri'
+    cancelSort: 'Annuler le tri',
+    filterEmptyText: 'Aucun filtre',
+    emptyText: 'Aucune donnée',
+    selectNone: 'Désélectionner toutes les données'
   },
   Modal: {
     okText: 'OK',
@@ -133,7 +140,14 @@ export default {
   Transfer: {
     searchPlaceholder: 'Rechercher',
     itemUnit: 'élément',
-    itemsUnit: 'éléments'
+    itemsUnit: 'éléments',
+    titles: ['', ''],
+    remove: 'Désélectionner',
+    selectCurrent: 'Sélectionner la page actuelle',
+    removeCurrent: 'Désélectionner la page actuelle',
+    selectAll: 'Sélectionner toutes les données',
+    removeAll: 'Désélectionner toutes les données',
+    selectInvert: 'Inverser la sélection de la page actuelle'
   },
   Empty: {
     description: 'Aucune donnée'
@@ -153,5 +167,11 @@ export default {
   },
   PageHeader: {
     back: 'Retour'
+  },
+  Icon: {
+    icon: 'icône'
+  },
+  Image: {
+    preview: 'Aperçu'
   }
 };

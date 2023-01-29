@@ -4,11 +4,12 @@
  */
 
 import { Inject, Injectable, Optional } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject, Observable } from 'rxjs';
-import en_US from './languages/en_US';
 
+import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
@@ -25,7 +26,10 @@ export class NzI18nService {
     return this._change.asObservable();
   }
 
-  constructor(@Optional() @Inject(NZ_I18N) locale: NzI18nInterface, @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
+  constructor(
+    @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
+    @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
+  ) {
     this.setLocale(locale || zh_CN);
     this.setDateLocale(dateLocale || null);
   }
@@ -77,6 +81,7 @@ export class NzI18nService {
 
   /**
    * Get locale data
+   *
    * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
    * @param defaultValue default value if the result is not "truthy"
    */

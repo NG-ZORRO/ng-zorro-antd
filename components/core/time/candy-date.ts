@@ -28,6 +28,7 @@ import {
   startOfMonth,
   startOfWeek
 } from 'date-fns';
+
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -60,10 +61,14 @@ export function normalizeRangeValue(
     newStart = hasTimePicker ? end : end.add(-1, type);
     newEnd = end;
   } else if (start && end && !hasTimePicker) {
-    if (activePart === 'left') {
+    if (start.isSame(end, type)) {
       newEnd = newStart.add(1, type);
     } else {
-      newStart = newEnd.add(-1, type);
+      if (activePart === 'left') {
+        newEnd = newStart.add(1, type);
+      } else {
+        newStart = newEnd.add(-1, type);
+      }
     }
   }
   return [newStart, newEnd];

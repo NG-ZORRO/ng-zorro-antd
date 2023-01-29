@@ -12,16 +12,22 @@ export interface AutocompleteOptionGroups {
   template: `
     <div class="example-input">
       <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
-        <input placeholder="input here" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" />
+        <input
+          placeholder="input here"
+          nz-input
+          [(ngModel)]="inputValue"
+          (ngModelChange)="onChange($event)"
+          [nzAutocomplete]="auto"
+        />
       </nz-input-group>
       <ng-template #suffixIcon>
-        <i nz-icon nzType="search"></i>
+        <span nz-icon nzType="search"></span>
       </ng-template>
       <nz-autocomplete #auto>
         <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
           <ng-template #groupTitle>
-            <span
-              >{{ group.title }}
+            <span>
+              {{ group.title }}
               <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
             </span>
           </ng-template>

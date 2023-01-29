@@ -28,6 +28,7 @@ nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w
 | `[nzSize]` | 控件大小。注：标准表单内的输入框大小限制为 `large` | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzAutosize]` | 只可以用于 `textarea`，自适应内容高度，可设置为 `boolean` 或对象：`{ minRows: 2, maxRows: 6 }` | `boolean \| { minRows: number, maxRows: number }` | `false` |
 | `[nzBorderless]` | 是否隐藏边框 | `boolean` | `false` |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 
 ### nz-input-group
 
@@ -40,6 +41,7 @@ nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w
 | `[nzCompact]` | 是否用紧凑模式 | `boolean` | `false` |
 | `[nzSearch]` | 是否用搜索框 | `boolean` | `false` |
 | `[nzSize]` | `nz-input-group` 中所有的 `nz-input` 的大小 | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | 设置校验状态 | `'error' \| 'warning'` | - |
 
 ### nz-textarea-count
 

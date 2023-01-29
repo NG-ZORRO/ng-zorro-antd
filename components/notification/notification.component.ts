@@ -4,6 +4,7 @@
  */
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzMNComponent } from 'ng-zorro-antd/message';
 
@@ -27,33 +28,36 @@ import { NzNotificationData } from './typings';
       (mouseleave)="onLeave()"
     >
       <div *ngIf="!instance.template" class="ant-notification-notice-content">
-        <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }">
+        <div
+          class="ant-notification-notice-content"
+          [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }"
+        >
           <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
             <ng-container [ngSwitch]="instance.type">
-              <i
+              <span
                 *ngSwitchCase="'success'"
                 nz-icon
                 nzType="check-circle"
                 class="ant-notification-notice-icon ant-notification-notice-icon-success"
-              ></i>
-              <i
+              ></span>
+              <span
                 *ngSwitchCase="'info'"
                 nz-icon
                 nzType="info-circle"
                 class="ant-notification-notice-icon ant-notification-notice-icon-info"
-              ></i>
-              <i
+              ></span>
+              <span
                 *ngSwitchCase="'warning'"
                 nz-icon
                 nzType="exclamation-circle"
                 class="ant-notification-notice-icon ant-notification-notice-icon-warning"
-              ></i>
-              <i
+              ></span>
+              <span
                 *ngSwitchCase="'error'"
                 nz-icon
                 nzType="close-circle"
                 class="ant-notification-notice-icon ant-notification-notice-icon-error"
-              ></i>
+              ></span>
             </ng-container>
             <div class="ant-notification-notice-message" [innerHTML]="instance.title"></div>
             <div class="ant-notification-notice-description" [innerHTML]="instance.content"></div>
@@ -69,11 +73,11 @@ import { NzNotificationData } from './typings';
         <span class="ant-notification-notice-close-x">
           <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">
             <ng-container *nzStringTemplateOutlet="instance.options?.nzCloseIcon; let closeIcon">
-              <i nz-icon [nzType]="closeIcon"></i>
+              <span nz-icon [nzType]="closeIcon"></span>
             </ng-container>
           </ng-container>
           <ng-template #iconTpl>
-            <i nz-icon nzType="close" class="ant-notification-close-icon"></i>
+            <span nz-icon nzType="close" class="ant-notification-close-icon"></span>
           </ng-template>
         </span>
       </a>
@@ -81,16 +85,17 @@ import { NzNotificationData } from './typings';
   `
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() instance!: Required<NzNotificationData>;
+  @Input() override instance!: Required<NzNotificationData>;
+  @Input() override index!: number;
   @Input() placement?: string;
-  @Input() index!: number;
-  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+
+  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {
     super(cdr);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.instance.onClick.complete();
   }
@@ -105,10 +110,19 @@ export class NzNotificationComponent extends NzMNComponent implements OnDestroy 
 
   get state(): string | undefined {
     if (this.instance.state === 'enter') {
-      if (this.placement === 'topLeft' || this.placement === 'bottomLeft') {
-        return 'enterLeft';
-      } else {
-        return 'enterRight';
+      switch (this.placement) {
+        case 'topLeft':
+        case 'bottomLeft':
+          return 'enterLeft';
+        case 'topRight':
+        case 'bottomRight':
+          return 'enterRight';
+        case 'top':
+          return 'enterTop';
+        case 'bottom':
+          return 'enterBottom';
+        default:
+          return 'enterRight';
       }
     } else {
       return this.instance.state;

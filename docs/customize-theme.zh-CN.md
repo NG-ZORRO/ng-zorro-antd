@@ -219,7 +219,7 @@ module.exports = {
 * [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
 * [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
-全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less)。
+全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less)。
 
 ## 动态切换主题
 

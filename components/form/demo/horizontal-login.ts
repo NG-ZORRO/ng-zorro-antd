@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-horizontal-login',
@@ -28,16 +28,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   `
 })
 export class NzDemoFormHorizontalLoginComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
+    console.log('submit', this.validateForm.value);
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

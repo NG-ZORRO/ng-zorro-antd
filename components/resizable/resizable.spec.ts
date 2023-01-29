@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -11,7 +11,6 @@ import { NzDemoResizableCustomizeComponent } from './demo/customize';
 import { NzDemoResizableGridComponent } from './demo/grid';
 import { NzDemoResizableLockAspectRatioComponent } from './demo/lock-aspect-ratio';
 import { NzDemoResizablePreviewComponent } from './demo/preview';
-
 import { NzResizableDirective } from './resizable.directive';
 import { NzResizableModule } from './resizable.module';
 import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';
@@ -62,19 +61,28 @@ describe('resizable', () => {
       });
     });
 
-    it('should add hover class when mouseenter', () => {
+    it('should toggle the `nz-resizable-handle-box-hover` class when `mouseenter` and `mouseleave` events are fired and should not run change detection', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
       dispatchMouseEvent(resizableEle, 'mouseenter');
-      fixture.detectChanges();
       const handles = resizableEle.querySelectorAll('.nz-resizable-handle');
       expect(handles.length).toBe(8);
       handles.forEach(e => {
         expect(e.classList).toContain('nz-resizable-handle-box-hover');
       });
       dispatchMouseEvent(resizableEle, 'mouseleave');
-      fixture.detectChanges();
       handles.forEach(e => {
         expect(e.classList).not.toContain('nz-resizable-handle-box-hover');
       });
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
+    });
+
+    it('should not run change detection on `mousedown` event on the `nz-resize-handle`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
+      const nzResizeHandle = resizableEle.querySelector('nz-resize-handle')!;
+      dispatchMouseEvent(nzResizeHandle, 'mousedown');
+      expect(appRef.tick).toHaveBeenCalledTimes(0);
     });
 
     it('should maximum size work', fakeAsync(() => {

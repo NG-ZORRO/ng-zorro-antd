@@ -101,8 +101,8 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | `type` | node type(group: 0, node: 1) | `number` |
 | `parentNodeName` | parentNode name | `string` |
 | `coreBox` | coreBox | `{ width: number;  height: number; }` |
-| `x` | x-offset | `number` |
-| `y` | y-offset | `number` |
+| `xOffset` | x-offset | `number` |
+| `yOffset` | y-offset | `number` |
 | `width` | width | `number` |
 | `height` | height | `number` |
 | `[key: string]`| user inputs | `any` |

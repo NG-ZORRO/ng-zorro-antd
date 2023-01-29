@@ -8,7 +8,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  ElementRef,
   OnDestroy,
   OnInit,
   Optional,
@@ -17,6 +16,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzSiderComponent } from './sider.component';
 
 @Component({
@@ -25,10 +25,9 @@ import { NzSiderComponent } from './sider.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
+    class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
   }
@@ -39,10 +38,7 @@ export class NzLayoutComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-layout');
-  }
+  constructor(@Optional() private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

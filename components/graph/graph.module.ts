@@ -5,6 +5,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -19,21 +20,29 @@ import { NzGraphNodeDirective } from './graph-node.directive';
 import { NzGraphZoomDirective } from './graph-zoom.directive';
 import { NzGraphComponent } from './graph.component';
 
-const COMPONENTS = [
-  NzGraphComponent,
-  NzGraphMinimapComponent,
-  NzGraphDefsComponent,
-  NzGraphNodeDirective,
-  NzGraphGroupNodeDirective,
-  NzGraphZoomDirective,
-  NzGraphNodeComponent,
-  NzGraphEdgeComponent,
-  NzGraphEdgeDirective
-];
-
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [
+    NzGraphComponent,
+    NzGraphMinimapComponent,
+    NzGraphDefsComponent,
+    NzGraphNodeDirective,
+    NzGraphGroupNodeDirective,
+    NzGraphZoomDirective,
+    NzGraphNodeComponent,
+    NzGraphEdgeComponent,
+    NzGraphEdgeDirective
+  ],
   imports: [CommonModule, NzIconModule, NzSpinModule, NzNoAnimationModule],
-  exports: [...COMPONENTS]
+  exports: [
+    NzGraphComponent,
+    NzGraphMinimapComponent,
+    NzGraphDefsComponent,
+    NzGraphNodeDirective,
+    NzGraphGroupNodeDirective,
+    NzGraphZoomDirective,
+    NzGraphNodeComponent,
+    NzGraphEdgeComponent,
+    NzGraphEdgeDirective
+  ]
 })
 export class NzGraphModule {}

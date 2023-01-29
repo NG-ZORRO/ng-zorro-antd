@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
@@ -12,14 +12,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">Nickname</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">
+          Nickname
+        </nz-form-label>
         <nz-form-control [nzSpan]="8" nzErrorTip="Please input your nickname">
           <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">Nickname is required</label>
+          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">
+            Nickname is required
+          </label>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -31,12 +35,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   `
 })
 export class NzDemoFormDynamicRuleComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm!: UntypedFormGroup;
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
@@ -51,7 +61,7 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
     this.validateForm.get('nickname')!.updateValueAndValidity();
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

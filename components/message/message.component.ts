@@ -14,6 +14,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+
 import { moveUpMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzMNComponent } from './base';
@@ -37,11 +38,11 @@ import { NzMessageData } from './typings';
       <div class="ant-message-notice-content">
         <div class="ant-message-custom-content" [ngClass]="'ant-message-' + instance.type">
           <ng-container [ngSwitch]="instance.type">
-            <i *ngSwitchCase="'success'" nz-icon nzType="check-circle"></i>
-            <i *ngSwitchCase="'info'" nz-icon nzType="info-circle"></i>
-            <i *ngSwitchCase="'warning'" nz-icon nzType="exclamation-circle"></i>
-            <i *ngSwitchCase="'error'" nz-icon nzType="close-circle"></i>
-            <i *ngSwitchCase="'loading'" nz-icon nzType="loading"></i>
+            <span *ngSwitchCase="'success'" nz-icon nzType="check-circle"></span>
+            <span *ngSwitchCase="'info'" nz-icon nzType="info-circle"></span>
+            <span *ngSwitchCase="'warning'" nz-icon nzType="exclamation-circle"></span>
+            <span *ngSwitchCase="'error'" nz-icon nzType="close-circle"></span>
+            <span *ngSwitchCase="'loading'" nz-icon nzType="loading"></span>
           </ng-container>
           <ng-container *nzStringTemplateOutlet="instance.content">
             <span [innerHTML]="instance.content"></span>
@@ -52,8 +53,8 @@ import { NzMessageData } from './typings';
   `
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
-  @Input() instance!: Required<NzMessageData>;
-  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  @Input() override instance!: Required<NzMessageData>;
+  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {
     super(cdr);

@@ -25,6 +25,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzId]` | input id attribute inside the component| `string` | - |
 | `[nzAllowClear]` | Whether allow clear | `boolean` | `false` |
 | `[nzPlaceHolder]` | Placeholder of the select input | `string` | - |
+| `[nzPlacement]` | The position where the selection box pops up | `bottomLeft` `bottomRight` `topLeft` `topRight` | bottomLeft |
 | `[nzDisabled]` | Disabled or not | `boolean` | `false` |
 | `[nzShowIcon]` | Shows the icon before a TreeNode's title. There is no default style | `boolean` | `false` |
 | `[nzShowSearch]` | Whether to display a search input in the dropdown menu(valid only in the single mode) | `boolean` | `false` | ✅ |
@@ -35,6 +36,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzMultiple]` | Support multiple or not, will be `true` when enable `nzCheckable`. | `boolean` | `false` |
 | `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` | ✅ |
 | `[nzSize]` | To set the size of the select input | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
+| `[nzStatus]` | Set validation status	 | `'error' \| 'warning'` | - |  |
 | `[nzCheckable]` | Whether to show checkbox on the treeNodes | `boolean` | `false` |
 | `[nzCheckStrictly]` | Check treeNode precisely; parent treeNode and children treeNodes are not associated | `boolean` | `false` |
 | `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` | |

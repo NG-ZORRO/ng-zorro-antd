@@ -7,7 +7,6 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -19,8 +18,18 @@ import { NzAutocompleteTriggerDirective } from './autocomplete-trigger.directive
 import { NzAutocompleteComponent } from './autocomplete.component';
 
 @NgModule({
-  declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-  exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-  imports: [BidiModule, CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
+  declarations: [
+    NzAutocompleteComponent,
+    NzAutocompleteOptionComponent,
+    NzAutocompleteTriggerDirective,
+    NzAutocompleteOptgroupComponent
+  ],
+  exports: [
+    NzAutocompleteComponent,
+    NzAutocompleteOptionComponent,
+    NzAutocompleteTriggerDirective,
+    NzAutocompleteOptgroupComponent
+  ],
+  imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
 })
 export class NzAutocompleteModule {}

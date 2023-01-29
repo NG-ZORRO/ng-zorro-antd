@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
-import { NzBreadCrumbComponent } from './breadcrumb.component';
+import { NzBreadcrumb } from './breadcrumb';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +19,7 @@ import { NzBreadCrumbComponent } from './breadcrumb.component';
     <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
         <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
-        <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
+        <span *ngIf="!!nzOverlay" nz-icon nzType="down"></span>
       </span>
     </ng-container>
 
@@ -42,5 +42,5 @@ export class NzBreadCrumbItemComponent {
    */
   @Input() nzOverlay?: NzDropdownMenuComponent;
 
-  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
+  constructor(public nzBreadCrumbComponent: NzBreadcrumb) {}
 }

@@ -19,12 +19,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
 
@@ -49,9 +50,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
       [@slideAlertMotion]
       (@slideAlertMotion.done)="onFadeAnimationDone()"
     >
-      <ng-container *ngIf="nzShowIcon">
-        <i nz-icon class="ant-alert-icon" [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></i>
-      </ng-container>
+      <div *ngIf="nzShowIcon" class="ant-alert-icon">
+        <ng-container *ngIf="nzIcon; else iconDefaultTemplate">
+          <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
+        </ng-container>
+        <ng-template #iconDefaultTemplate>
+          <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
+        </ng-template>
+      </div>
       <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
         <span class="ant-alert-message" *ngIf="nzMessage">
           <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
@@ -60,9 +66,18 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
           <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
         </span>
       </div>
-      <button type="button" tabindex="0" *ngIf="nzCloseable || nzCloseText" class="ant-alert-close-icon" (click)="closeAlert()">
+      <div class="ant-alert-action" *ngIf="nzAction">
+        <ng-container *nzStringTemplateOutlet="nzAction">{{ nzAction }}</ng-container>
+      </div>
+      <button
+        type="button"
+        tabindex="0"
+        *ngIf="nzCloseable || nzCloseText"
+        class="ant-alert-close-icon"
+        (click)="closeAlert()"
+      >
         <ng-template #closeDefaultTemplate>
-          <i nz-icon nzType="close"></i>
+          <span nz-icon nzType="close"></span>
         </ng-template>
         <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
           <ng-container *nzStringTemplateOutlet="nzCloseText">
@@ -83,6 +98,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzBanner: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
+  @Input() nzAction: string | TemplateRef<void> | null = null;
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
   @Input() nzIconType: string | null = null;
   @Input() nzMessage: string | TemplateRef<void> | null = null;
@@ -92,6 +108,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @WithConfig() @InputBoolean() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzBanner = false;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
@@ -101,7 +118,11 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   private isShowIconSet = false;
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

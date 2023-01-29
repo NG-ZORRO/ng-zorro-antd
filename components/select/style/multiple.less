@@ -1,4 +1,5 @@
-@import './index';
+@import (reference) '../../style/themes/index';
+@select-prefix-cls: ~'@{ant-prefix}-select';
 
 @select-overflow-prefix-cls: ~'@{select-prefix-cls}-selection-overflow';
 @select-multiple-item-border-width: 1px;
@@ -24,6 +25,7 @@
 
   &-item {
     flex: none;
+    align-self: center;
     max-width: 100%;
   }
 }
@@ -71,10 +73,7 @@
 
       height: @select-multiple-item-height;
       margin-top: @select-multiple-item-spacing-half;
-      margin-inline-end: @input-padding-vertical-base;
       margin-bottom: @select-multiple-item-spacing-half;
-      padding-inline-start: @padding-xs;
-      padding-inline-end: (@padding-xs / 2);
       line-height: @select-multiple-item-height - @select-multiple-item-border-width * 2;
       background: @select-selection-item-bg;
       border: 1px solid @select-selection-item-border-color;
@@ -82,6 +81,9 @@
       cursor: default;
       transition: font-size 0.3s, line-height 0.3s, height 0.3s;
       user-select: none;
+      margin-inline-end: @input-padding-vertical-base;
+      padding-inline-start: @padding-xs;
+      padding-inline-end: (@padding-xs / 2);
 
       .@{select-prefix-cls}-disabled& {
         color: @select-multiple-item-disabled-color;
@@ -108,7 +110,7 @@
         cursor: pointer;
 
         > .@{iconfont-css-prefix} {
-          vertical-align: -0.2em;
+          vertical-align: middle;
         }
 
         &:hover {
@@ -127,8 +129,6 @@
     .@{select-prefix-cls}-selection-search {
       position: relative;
       max-width: 100%;
-      margin-top: @select-multiple-item-spacing-half;
-      margin-bottom: @select-multiple-item-spacing-half;
       margin-inline-start: @input-padding-horizontal-base - @input-padding-vertical-base;
 
       &-input,
@@ -183,8 +183,8 @@
         }
 
         .@{select-prefix-cls}-selection-search {
-          height: @select-selection-height + @select-multiple-padding;
-          line-height: @select-selection-height + @select-multiple-padding;
+          height: @select-selection-height;
+          line-height: @select-selection-height;
 
           &-input,
           &-mirror {
@@ -203,10 +203,9 @@
       .@{select-prefix-cls}-selection-placeholder {
         left: @input-padding-horizontal-sm;
       }
-      // https://github.com/ant-design/ant-design/issues/22906
-      .@{select-prefix-cls}-selection-search:first-child
-        .@{select-prefix-cls}-selection-search-input {
-        margin-left: 3px;
+      // https://github.com/ant-design/ant-design/issues/29559
+      .@{select-prefix-cls}-selection-search {
+        margin-inline-start: 3px;
       }
     }
     &.@{select-prefix-cls}-lg {

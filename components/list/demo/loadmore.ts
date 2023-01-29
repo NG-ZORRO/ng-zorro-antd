@@ -1,6 +1,9 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 const count = 5;
@@ -26,7 +29,13 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
             <nz-list-item-action><a (click)="edit(item)">more</a></nz-list-item-action>
           </ul>
         </ng-container>
-        <nz-skeleton *ngIf="item.loading" [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="true"> </nz-skeleton>
+        <nz-skeleton
+          *ngIf="item.loading"
+          [nzAvatar]="true"
+          [nzActive]="true"
+          [nzTitle]="false"
+          [nzLoading]="true"
+        ></nz-skeleton>
       </nz-list-item>
       <div class="loadmore" nz-list-load-more>
         <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
@@ -64,17 +73,23 @@ export class NzDemoListLoadmoreComponent implements OnInit {
   }
 
   getData(callback: (res: any) => void): void {
-    this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
+    this.http
+      .get(fakeDataUrl)
+      .pipe(catchError(() => of({ results: [] })))
+      .subscribe((res: any) => callback(res));
   }
 
   onLoadMore(): void {
     this.loadingMore = true;
     this.list = this.data.concat([...Array(count)].fill({}).map(() => ({ loading: true, name: {} })));
-    this.http.get(fakeDataUrl).subscribe((res: any) => {
-      this.data = this.data.concat(res.results);
-      this.list = [...this.data];
-      this.loadingMore = false;
-    });
+    this.http
+      .get(fakeDataUrl)
+      .pipe(catchError(() => of({ results: [] })))
+      .subscribe((res: any) => {
+        this.data = this.data.concat(res.results);
+        this.list = [...this.data];
+        this.loadingMore = false;
+      });
   }
 
   edit(item: any): void {

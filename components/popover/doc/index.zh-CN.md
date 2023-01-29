@@ -24,6 +24,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzPopoverArrowPointAtCenter]` | 箭头指向锚点的中心 | `boolean` | `false` |
 | `[nzPopoverTitle]` | 标题 | `string \| TemplateRef<void>` | - |
 | `[nzPopoverContent]` | 用于定义内容 | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |

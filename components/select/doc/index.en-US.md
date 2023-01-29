@@ -38,8 +38,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzOpen]` | dropdown expand state, double binding | `boolean` | `false` |
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
 | `[nzDisabled]` | Whether disabled select | `boolean` | `false` |
-| `[nzDropdownClassName]` | className of dropdown menu | `string` | - |
-| `[nzDropdownMatchSelectWidth]` | Whether dropdown's with is same with select. | `boolean` | `true` |
+| `[nzDropdownClassName]` | className of dropdown menu | `string \| string[]` | - |
+| `[nzDropdownMatchSelectWidth]` | Whether dropdown's width is same width than select. | `boolean` | `true` |
 | `[nzDropdownStyle]` | style of dropdown menu | `object` | - |
 | `[nzCustomTemplate]` | The custom template of select | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
 | `[nzServerSearch]` | nz-option will not be filtered when set to true | `boolean` | `false` |
@@ -51,6 +51,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true`(for single select), `false`(for multiple select) |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<any> \| string` | - |  ✅ |
 | `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<any>` | - |
 | `[nzClearIcon]` | The custom clear icon | `TemplateRef<any>` | - |
@@ -58,10 +59,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
 | `[nzLoading]` | indicate loading state | `boolean` | false |
 | `[nzMaxTagCount]` | Max tag count to show| `number` | - |
-| `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
+| `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | `TemplateRef<{ $implicit: any[] }>` | - |
 | `[nzOptionHeightPx]` | Each option height inside the dropdown | `number` | `32` |
 | `[nzOptionOverflowSize]` | Max option size inside the dropdown, overflow when exceed the size | `number` | `8` |
+| `[nzSelectOnTab]` | Allows to select an item with TAB key | `boolean` | `false` |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
 | `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<any>` | - |
@@ -74,16 +76,16 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDisabled]` | Disable this option | `boolean` | `false` |
-| `[nzLabel]` | The text show in nz-select and dropdown menu | `string` | - |
+| `[nzLabel]` | The text show in nz-select and dropdown menu | `string  \| number` | - |
 | `[nzValue]` | The value passed to ngModel of nz-select | `any ` | - |
 | `[nzHide]` | Whether hide the option in the option list | `boolean` | `false` |
-| `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will relace nzLabel when it was set to true | `boolean` | `false` |
+| `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will replace nzLabel when it was set to true | `boolean` | `false` |
 
 ### nz-option-group
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzLabel]` | Group label | `string \| TemplateRef<void>` | - |
+| `[nzLabel]` | Group label | `string  \| number \| TemplateRef<void>` | - |
 
 ## Methods
 

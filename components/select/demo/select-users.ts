@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-select-select-users',
@@ -19,7 +19,8 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
         <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
       </ng-container>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
+        <span nz-icon nzType="loading" class="loading-icon"></span>
+        Loading Data...
       </nz-option>
     </nz-select>
   `,
@@ -50,16 +51,15 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // tslint:disable:no-any
-    const getRandomNameList = (name: string) =>
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const getRandomNameList = (name: string): Observable<any> =>
       this.http
         .get(`${this.randomUserUrl}`)
-        .pipe(map((res: any) => res.results))
         .pipe(
-          map((list: any) => {
-            return list.map((item: any) => `${item.name.first} ${name}`);
-          })
-        );
+          catchError(() => of({ results: [] })),
+          map((res: any) => res.results)
+        )
+        .pipe(map((list: any) => list.map((item: any) => `${item.name.first} ${name}`)));
     const optionList$: Observable<string[]> = this.searchChange$
       .asObservable()
       .pipe(debounceTime(500))

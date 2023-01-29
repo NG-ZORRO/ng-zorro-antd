@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
@@ -51,7 +51,7 @@ describe('NzYearPickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(document.body, 'click');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -131,6 +131,17 @@ describe('NzYearPickerComponent', () => {
       });
     }));
 
+    it('should nz-year-picker work', fakeAsync(() => {
+      fixtureInstance.useSuite = 5;
+      fixture.whenRenderingDone().then(() => {
+        tick(500);
+        fixture.detectChanges();
+        expect(getPickerContainer()).not.toBeNull();
+        const pickerInput = getPickerInput(fixture.debugElement);
+        expect(pickerInput).not.toBeNull();
+      });
+    }));
+
     it('should support nzCompact', () => {
       fixtureInstance.useSuite = 4;
       fixture.detectChanges();
@@ -150,7 +161,9 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
 
       openPickerByClickTrigger();
-      const disabledCell = overlayContainerElement.querySelector('.ant-picker-year-panel tr td.ant-picker-cell-disabled')!;
+      const disabledCell = overlayContainerElement.querySelector(
+        '.ant-picker-year-panel tr td.ant-picker-cell-disabled'
+      )!;
       expect(disabledCell.textContent).toContain('2013');
     }));
 
@@ -197,7 +210,7 @@ describe('NzYearPickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(document.body, 'click');
+      dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focusout');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
@@ -319,7 +332,9 @@ describe('NzYearPickerComponent', () => {
   }
 
   function getSecondYearCell(): HTMLElement {
-    return queryFromOverlay('.ant-picker-year-panel td.ant-picker-cell:nth-child(2) .ant-picker-cell-inner') as HTMLElement;
+    return queryFromOverlay(
+      '.ant-picker-year-panel td.ant-picker-cell:nth-child(2) .ant-picker-cell-inner'
+    ) as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -369,11 +384,13 @@ describe('NzYearPickerComponent', () => {
         <nz-date-picker nzMode="year" style="width: 200px;"></nz-date-picker>
         <input nz-input type="text" style="width: 200px;" />
       </nz-input-group>
+
+      <nz-year-picker *ngSwitchCase="5" nzOpen [(ngModel)]="modelValue"></nz-year-picker>
     </ng-container>
   `
 })
 class NzTestYearPickerComponent {
-  useSuite?: 1 | 2 | 3 | 4;
+  useSuite?: 1 | 2 | 3 | 4 | 5;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
@@ -381,7 +398,7 @@ class NzTestYearPickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate?: (d: Date) => boolean;
-  nzLocale: any; // tslint:disable-line:no-any
+  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   nzPlaceHolder?: string;
   nzPopupStyle?: NgStyleInterface;
   nzDropdownClassName?: string;

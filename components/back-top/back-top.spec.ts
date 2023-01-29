@@ -1,7 +1,8 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 
 import { NzBackTopComponent } from './back-top.component';
@@ -46,7 +47,7 @@ describe('Component:nz-back-top', () => {
     component = fixture.componentInstance.nzBackTopComponent;
     componentObject = new NzBackTopPageObject();
     debugElement = fixture.debugElement;
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     scrollService = TestBed.inject(NzScrollService) as any;
   });
 
@@ -142,6 +143,22 @@ describe('Component:nz-back-top', () => {
         componentObject.clickBackTop();
       }));
     });
+
+    describe('change detection behavior', () => {
+      it('should not run change detection if there are no `nzClick` listeners', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+
+        const backTopButton = componentObject.backTopButton().nativeElement;
+        backTopButton.dispatchEvent(new MouseEvent('click'));
+        expect(appRef.tick).not.toHaveBeenCalled();
+
+        component.nzClick.subscribe();
+
+        backTopButton.dispatchEvent(new MouseEvent('click'));
+        expect(appRef.tick).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('[nzTarget]', () => {
@@ -161,10 +178,10 @@ describe('Component:nz-back-top', () => {
     }));
 
     it('element scroll shows the button', fakeAsync(() => {
-      const throttleTime = 50;
+      const time = 50;
 
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(throttleTime + 1);
+      tick(time + 1);
       fixture.detectChanges();
 
       expect(componentObject.backTopButton() === null).toBe(false);
@@ -173,10 +190,10 @@ describe('Component:nz-back-top', () => {
     it('element (use string id) scroll shows the button', fakeAsync(() => {
       component.nzTarget = '#fakeTarget';
 
-      const throttleTime = 50;
+      const time = 50;
 
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(throttleTime + 1);
+      tick(time + 1);
       fixture.detectChanges();
 
       expect(componentObject.backTopButton() === null).toBe(false);

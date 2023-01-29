@@ -21,23 +21,26 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>File</span>
           </li>
         </ul>
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
+          <span
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></span>
         </nz-header>
         <nz-content>
           <nz-breadcrumb>
             <nz-breadcrumb-item>User</nz-breadcrumb-item>
             <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <div class="inner-content">
-            Bill is a cat.
-          </div>
+          <div class="inner-content">Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>

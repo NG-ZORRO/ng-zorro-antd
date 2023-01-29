@@ -54,7 +54,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzKeyboard      | 是否支持键盘 esc 关闭 | `boolean` | `true` |
+| nzKeyboard      | 是否支持键盘 esc 关闭、左右键切换图片 | `boolean` | `true` |
 | nzMaskClosable      | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzCloseOnNavigation      | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用HashLocationStrategy）。 | `boolean` | `true` |
 | nzZIndex      | 设置预览层的 z-index | `number` | 1000 |

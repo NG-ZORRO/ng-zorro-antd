@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
 
 @Component({
@@ -20,11 +29,11 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
       <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger"></ng-template>
     </ng-container>
     <ng-template #defaultTrigger>
-      <i nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
-      <i nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
+      <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></span>
+      <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></span>
     </ng-template>
     <ng-template #defaultZeroTrigger>
-      <i nz-icon nzType="bars"></i>
+      <span nz-icon nzType="bars"></span>
     </ng-template>
   `,
   host: {
@@ -47,7 +56,8 @@ export class NzSiderTriggerComponent implements OnChanges, OnInit {
   isZeroTrigger = false;
   isNormalTrigger = false;
   updateTriggerType(): void {
-    this.isZeroTrigger = this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
+    this.isZeroTrigger =
+      this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
     this.isNormalTrigger = this.nzCollapsedWidth !== 0;
   }
   ngOnInit(): void {

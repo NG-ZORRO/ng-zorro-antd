@@ -5,7 +5,7 @@ const tags = process.env && process.env['NG_TEST_TAGS'];
 const processENV = require('process');
 processENV.env.CHROME_BIN = require('puppeteer').executablePath();
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular', 'viewport'],
@@ -14,7 +14,7 @@ module.exports = function(config) {
       require('karma-chrome-launcher'),
       require('karma-spec-reporter'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
+      require('karma-coverage'),
       require('karma-junit-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
       require('karma-viewport')
@@ -24,12 +24,12 @@ module.exports = function(config) {
         random: false
       },
       clearContext: true, // leave Jasmine Spec Runner output visible in browser
-      ...tags && { args: [tags] }
+      ...(tags && { args: [tags] })
     },
-    coverageIstanbulReporter: {
+    coverageReporter: {
+      subdir: '.',
       dir: require('path').join(__dirname, '../coverage-report'),
-      reports: ['html', 'lcovonly', 'text-summary', 'cobertura'],
-      fixWebpackSourcePaths: true
+      reporters: [{ type: 'html' }, { type: 'text-summary' }, { type: 'lcovonly' }, { type: 'cobertura' }]
     },
     reporters: ['progress', 'kjhtml', 'spec', 'junit'],
     junitReporter: {
@@ -51,10 +51,11 @@ module.exports = function(config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: ['--disable-gpu', '--no-sandbox']
       }
     },
     singleRun: false,
+    browserDisconnectTimeout: 1000 * 60 * 10, // (Default: 2000)
     browserNoActivityTimeout: 1000 * 60 // (Default: 10000)
   });
 };

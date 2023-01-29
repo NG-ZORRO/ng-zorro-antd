@@ -6,7 +6,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -14,11 +13,12 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
-  selector: 'div[nz-pagination-options]',
+  selector: 'li[nz-pagination-options]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,7 +42,8 @@ import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
       <input [disabled]="disabled" (keydown.enter)="jumpToPageViaInput($event)" />
       {{ locale.page }}
     </div>
-  `
+  `,
+  host: { class: 'ant-pagination-options' }
 })
 export class NzPaginationOptionsComponent implements OnChanges {
   @Input() nzSize: 'default' | 'small' = 'default';
@@ -58,10 +59,7 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-pagination-options');
-  }
+  constructor() {}
 
   onPageSizeChange(size: number): void {
     if (this.pageSize !== size) {
@@ -83,12 +81,10 @@ export class NzPaginationOptionsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { pageSize, pageSizeOptions, locale } = changes;
     if (pageSize || pageSizeOptions || locale) {
-      this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map(item => {
-        return {
-          value: item,
-          label: `${item} ${this.locale.items_per_page}`
-        };
-      });
+      this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map(item => ({
+        value: item,
+        label: `${item} ${this.locale.items_per_page}`
+      }));
     }
   }
 }

@@ -1,7 +1,9 @@
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+
 import { NzFormSplitComponent } from './form-split.component';
 
 const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormSplitComponent] };
@@ -21,8 +23,6 @@ describe('nz-form-split', () => {
 });
 
 @Component({
-  template: `
-    <nz-form-split></nz-form-split>
-  `
+  template: ` <nz-form-split></nz-form-split> `
 })
 export class NzTestFormSplitComponent {}

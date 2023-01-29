@@ -10,7 +10,7 @@ import { PanelSelector } from './interface';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'year-header', // tslint:disable-line:component-selector
+  selector: 'year-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'yearHeader',
   templateUrl: './abstract-panel-header.html'
 })
@@ -23,11 +23,11 @@ export class YearHeaderComponent extends AbstractPanelHeader {
     return this.startYear + 9;
   }
 
-  superPrevious(): void {
+  override superPrevious(): void {
     this.changeValue(this.value.addYears(-10));
   }
 
-  superNext(): void {
+  override superNext(): void {
     this.changeValue(this.value.addYears(10));
   }
 

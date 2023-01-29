@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-mention [nzSuggestions]="webFrameworks" [nzValueWith]="valueWith" (nzOnSelect)="onSelect($event)">
-      <input nz-input nzMentionTrigger [(ngModel)]="inputValue" />
+      <textarea rows="1" nz-input nzMentionTrigger [(ngModel)]="inputValue"></textarea>
       <ng-container *nzMentionSuggestion="let framework">
         <nz-avatar nzSize="small" [nzText]="framework.name" [nzSrc]="framework.icon"></nz-avatar>
         <span>{{ framework.name }} - {{ framework.type }}</span>
@@ -32,7 +32,7 @@ export class NzDemoMentionAvatarComponent {
     { name: 'Flask', type: 'Python', icon: 'https://zos.alipayobjects.com/rmsportal/xaypBUijfnpAlXE.png' }
   ];
 
-  valueWith = (data: { name: string; type: string; icon: string }) => data.name;
+  valueWith = (data: { name: string; type: string; icon: string }): string => data.name;
 
   onSelect(value: string): void {
     console.log(value);

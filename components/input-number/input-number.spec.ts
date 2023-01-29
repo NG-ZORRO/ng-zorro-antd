@@ -1,19 +1,28 @@
-import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { take } from 'rxjs/operators';
 
-import { createKeyboardEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 
+import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
 
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
+      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule, NzFormModule],
+      declarations: [
+        NzTestInputNumberBasicComponent,
+        NzTestInputNumberFormComponent,
+        NzTestReadOnlyInputNumberBasicComponent,
+        NzTestInputNumberStatusComponent,
+        NzTestInputNumberInFormComponent
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -53,6 +62,13 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
+    });
+    it('should border work', () => {
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement!.classList).not.toContain('ant-input-number-borderless');
+      testComponent.bordered = false;
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement!.classList).toContain('ant-input-number-borderless');
     });
     it('should focus className correct', fakeAsync(() => {
       fixture.detectChanges();
@@ -370,7 +386,7 @@ describe('input number', () => {
       expect(testComponent.value).toBe(-10);
     });
     it('should update value immediately after formatter changed', () => {
-      const newFormatter = (v: number) => `${v} %`;
+      const newFormatter = (v: number): string => `${v} %`;
       const initValue = 1;
       const component = testComponent.nzInputNumberComponent;
       fixture.detectChanges();
@@ -395,49 +411,218 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
     });
+    describe('change detection behavior', () => {
+      it('should not run change detection on keyup and keydown events', done => {
+        const ngZone = TestBed.inject(NgZone);
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        spyOn(inputNumber.componentInstance, 'stop').and.callThrough();
+
+        inputElement.dispatchEvent(new KeyboardEvent('keyup'));
+        expect(appRef.tick).toHaveBeenCalledTimes(0);
+        expect(inputNumber.componentInstance.stop).toHaveBeenCalled();
+
+        inputElement.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            keyCode: TAB
+          })
+        );
+        expect(appRef.tick).toHaveBeenCalledTimes(0);
+
+        inputElement.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            keyCode: ENTER
+          })
+        );
+
+        ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
+          expect(appRef.tick).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
+      it('should not run change detection when `mouseup` and `mouseleave` events are dispatched on handlers', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        spyOn(inputNumber.componentInstance, 'stop').and.callThrough();
+
+        const mouseupEvent = createMouseEvent('mouseup');
+        const mouseleaveEvent = createMouseEvent('mouseleave');
+
+        upHandler.dispatchEvent(mouseupEvent);
+        upHandler.dispatchEvent(mouseleaveEvent);
+
+        downHandler.dispatchEvent(mouseupEvent);
+        downHandler.dispatchEvent(mouseleaveEvent);
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+        // We have dispatched 4 events that are followed by calling `stop()`.
+        expect(inputNumber.componentInstance.stop).toHaveBeenCalledTimes(4);
+      });
+    });
   });
 
   describe('input number form', () => {
     let fixture: ComponentFixture<NzTestInputNumberFormComponent>;
     let testComponent: NzTestInputNumberFormComponent;
-    let inputNumber: DebugElement;
-    let upHandler: HTMLElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInputNumberFormComponent);
+      testComponent = fixture.componentInstance;
+    });
+    it('should be in pristine, untouched, and valid states and be enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
-      upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
     }));
-    it('should set disabled work', fakeAsync(() => {
+    it('should be disable if form disable and nzDisabled set to false initially', fakeAsync(() => {
+      testComponent.disable();
       fixture.detectChanges();
       flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      flush();
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      const upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
       expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
+
+      testComponent.enable();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
-      testComponent.disable();
+      flush();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
+
+      testComponent.disable();
       fixture.detectChanges();
+      flush();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      flush();
       expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
     }));
   });
-});
+  describe('input number readOnly', () => {
+    let fixture: ComponentFixture<NzTestReadOnlyInputNumberBasicComponent>;
+    let testComponent: NzTestReadOnlyInputNumberBasicComponent;
+    let inputNumber: DebugElement;
+    let inputElement: HTMLInputElement;
 
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestReadOnlyInputNumberBasicComponent);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      inputElement = inputNumber.nativeElement.querySelector('input');
+    }));
+    it('should readOnly work', () => {
+      fixture.detectChanges();
+      testComponent.readonly = true;
+      testComponent.nzInputNumberComponent.nzReadOnly = true;
+      testComponent.nzInputNumberComponent.ngAfterViewInit();
+      fixture.detectChanges();
+      expect(inputElement.attributes.getNamedItem('readOnly')!.name).toBe('readonly');
+      testComponent.readonly = false;
+      fixture.detectChanges();
+      expect(inputElement.attributes.getNamedItem('readOnly')).toBe(null);
+    });
+  });
+
+  describe('input number status', () => {
+    let fixture: ComponentFixture<NzTestInputNumberStatusComponent>;
+    let testComponent: NzTestInputNumberStatusComponent;
+    let inputNumber: DebugElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestInputNumberStatusComponent);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+    }));
+    it('should status work', () => {
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).toContain('ant-input-number-status-error');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).toContain('ant-input-number-status-warning');
+
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.className).not.toContain('ant-input-number-status-warning');
+    });
+  });
+
+  describe('input number in form', () => {
+    let fixture: ComponentFixture<NzTestInputNumberInFormComponent>;
+    let testComponent: NzTestInputNumberInFormComponent;
+    let inputNumber: DebugElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestInputNumberInFormComponent);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+    }));
+    it('should className correct', () => {
+      const feedbackElement = fixture.nativeElement.querySelector('nz-form-item-feedback-icon');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-status-error');
+      expect(feedbackElement.classList).toContain('ant-form-item-feedback-icon-error');
+
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-status-success');
+      expect(feedbackElement.classList).toContain('ant-form-item-feedback-icon-success');
+
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-status-warning');
+      expect(feedbackElement.classList).toContain('ant-form-item-feedback-icon-warning');
+
+      testComponent.status = 'validating';
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-status-validating');
+      expect(feedbackElement.classList).toContain('ant-form-item-feedback-icon-validating');
+
+      testComponent.feedback = false;
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+    });
+  });
+});
 @Component({
   template: `
     <nz-input-number
@@ -454,8 +639,8 @@ describe('input number', () => {
       [nzParser]="parser"
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
-    >
-    </nz-input-number>
+      [nzBorderless]="!bordered"
+    ></nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {
@@ -468,24 +653,34 @@ export class NzTestInputNumberBasicComponent {
   size = 'default';
   placeholder = 'placeholder';
   step = 1;
+  bordered = true;
   precision?: number = 2;
   precisionMode?: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
-  formatter = (value: number) => (value !== null ? `${value}` : '');
-  parser = (value: number) => value;
+  formatter = (value: number): string => (value !== null ? `${value}` : '');
+  parser = (value: number): number => value;
   modelChange = jasmine.createSpy('change callback');
+}
+
+@Component({
+  template: ` <nz-input-number [nzReadOnly]="readonly"></nz-input-number> `
+})
+export class NzTestReadOnlyInputNumberBasicComponent {
+  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent!: NzInputNumberComponent;
+  readonly = false;
 }
 
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-input-number formControlName="inputNumber" nzMax="10" nzMin="-10"></nz-input-number>
+      <nz-input-number formControlName="inputNumber" nzMax="10" nzMin="-10" [nzDisabled]="disabled"></nz-input-number>
     </form>
   `
 })
 export class NzTestInputNumberFormComponent {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
+  disabled = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
       inputNumber: [1]
     });
@@ -494,4 +689,31 @@ export class NzTestInputNumberFormComponent {
   disable(): void {
     this.formGroup.disable();
   }
+
+  enable(): void {
+    this.formGroup.enable();
+  }
+}
+
+@Component({
+  template: ` <nz-input-number [nzStatus]="status"></nz-input-number> `
+})
+export class NzTestInputNumberStatusComponent {
+  status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+          <nz-input-number></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestInputNumberInFormComponent {
+  status: NzFormControlStatusType = 'error';
+  feedback = true;
 }

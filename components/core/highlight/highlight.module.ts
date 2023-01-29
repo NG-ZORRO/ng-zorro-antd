@@ -5,6 +5,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { NzHighlightPipe } from './highlight.pipe';
 
 @NgModule({

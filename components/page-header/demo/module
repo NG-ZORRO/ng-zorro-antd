@@ -10,6 +10,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 export const moduleList = [
   NzPageHeaderModule,
@@ -23,5 +24,6 @@ export const moduleList = [
   NzDropDownModule,
   NzIconModule,
   NzStatisticModule,
-  NzGridModule
+  NzGridModule,
+  NzSpaceModule
 ];

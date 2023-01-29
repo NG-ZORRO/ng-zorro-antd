@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
@@ -12,7 +13,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
       (nzChange)="handleChange($event)"
     >
       <p class="ant-upload-drag-icon">
-        <i nz-icon nzType="inbox"></i>
+        <span nz-icon nzType="inbox"></span>
       </p>
       <p class="ant-upload-text">Click or drag file to this area to upload</p>
       <p class="ant-upload-hint">

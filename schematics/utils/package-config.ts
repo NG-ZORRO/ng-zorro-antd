@@ -1,9 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Tree } from '@angular-devkit/schematics';
 
 /**
  * Sorts the keys of the given object.
+ *
  * @returns A new object instance with sorted keys
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 function sortObjectByKeys(obj: object): object {
   return Object.keys(obj)
     .sort()

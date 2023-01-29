@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ page',
     jump_to: 'Go to',
     jump_to_confirm: 'confirm',
-    page: '',
+    page: 'Page',
     prev_page: 'Previous Page',
     next_page: 'Next Page',
     prev_5: 'Previous 5 Pages',
     next_5: 'Next 5 Pages',
     prev_3: 'Previous 3 Pages',
-    next_3: 'Next 3 Pages'
+    next_3: 'Next 3 Pages',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -124,9 +125,12 @@ export default {
     sortTitle: 'Sort',
     expand: 'Expand row',
     collapse: 'Collapse row',
-    triggerDesc: 'Click sort by descend',
-    triggerAsc: 'Click sort by ascend',
-    cancelSort: 'Click to cancel sort'
+    triggerDesc: 'Click to sort descending',
+    triggerAsc: 'Click to sort ascending',
+    cancelSort: 'Click to cancel sorting',
+    filterCheckall: 'Select all items',
+    filterSearchPlaceholder: 'Search in filters',
+    selectNone: 'Clear all data'
   },
   Modal: {
     okText: 'OK',
@@ -170,5 +174,29 @@ export default {
   },
   PageHeader: {
     back: 'Back'
+  },
+  Image: {
+    preview: 'Preview'
+  },
+  CronExpression: {
+    cronError: 'Invalid cron expression',
+    second: 'second',
+    minute: 'minute',
+    hour: 'hour',
+    day: 'day',
+    month: 'month',
+    week: 'week',
+    secondError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
+    minuteError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
+    hourError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-23</span>Allowable range</p>',
+    dayError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-31</span>Allowable range</p>',
+    monthError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-12</span>Allowable range</p>',
+    weekError:
+      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><span>?</span> Not specify</p><p><p><span>0-7</span>Allowable range (0 represents Sunday, 1-7 are Monday to Sunday)</p>'
   }
 };

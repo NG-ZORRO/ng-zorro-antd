@@ -22,12 +22,13 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -52,7 +53,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         [ngStyle]="nzOverlayStyle"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"

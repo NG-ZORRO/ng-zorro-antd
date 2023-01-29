@@ -10,7 +10,6 @@ import {
   Component,
   ContentChild,
   ContentChildren,
-  ElementRef,
   Input,
   OnDestroy,
   OnInit,
@@ -19,11 +18,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
 import { NzCardGridDirective } from './card-grid.directive';
 import { NzCardTabComponent } from './card-tab.component';
 
@@ -67,6 +68,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     </ul>
   `,
   host: {
+    class: 'ant-card',
     '[class.ant-card-loading]': 'nzLoading',
     '[class.ant-card-bordered]': 'nzBorderless === false && nzBordered',
     '[class.ant-card-hoverable]': 'nzHoverable',
@@ -104,12 +106,8 @@ export class NzCardComponent implements OnDestroy, OnInit {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
     @Optional() private directionality: Directionality
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-card');
-
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

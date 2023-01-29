@@ -21,12 +21,18 @@ import { Component } from '@angular/core';
     </nz-button-group>
     <h4>With Icon</h4>
     <nz-button-group>
-      <button nz-button nzType="primary"><i nz-icon nzType="left"></i> Go back</button>
-      <button nz-button nzType="primary">Go forward<i nz-icon nzType="right"></i></button>
+      <button nz-button nzType="primary">
+        <span nz-icon nzType="left"></span>
+        Go back
+      </button>
+      <button nz-button nzType="primary">
+        Go forward
+        <span nz-icon nzType="right"></span>
+      </button>
     </nz-button-group>
     <nz-button-group>
-      <button nz-button nzType="primary"><i nz-icon nzType="cloud"></i></button>
-      <button nz-button nzType="primary"><i nz-icon nzType="cloud-download"></i></button>
+      <button nz-button nzType="primary"><span nz-icon nzType="cloud"></span></button>
+      <button nz-button nzType="primary"><span nz-icon nzType="cloud-download"></span></button>
     </nz-button-group>
   `,
   styles: [

@@ -1,9 +1,9 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
-
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
+
+import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -45,7 +45,7 @@ class FilteredTreeResult {
  */
 function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
   const needsToExpanded = new Set<TreeNode>();
-  const _filter = (node: TreeNode, result: TreeNode[]) => {
+  const _filter = (node: TreeNode, result: TreeNode[]): TreeNode[] => {
     if (node.name.search(value) !== -1) {
       result.push(node);
       return result;
@@ -71,7 +71,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       <input type="text" nz-input placeholder="Search" ngModel (ngModelChange)="searchValue$.next($event)" />
     </nz-input-group>
     <ng-template #suffixIcon>
-      <i nz-icon nzType="search"></i>
+      <span nz-icon nzType="search"></span>
     </ng-template>
 
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
@@ -82,7 +82,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
       </nz-tree-node>
@@ -108,7 +108,7 @@ export class NzDemoTreeViewSearchComponent {
   originData$ = new BehaviorSubject(TREE_DATA);
   searchValue$ = new BehaviorSubject<string>('');
 
-  transformer = (node: TreeNode, level: number) => {
+  transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
       existingNode && existingNode.name === node.name
@@ -116,7 +116,7 @@ export class NzDemoTreeViewSearchComponent {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level
+            level
           };
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
@@ -169,5 +169,5 @@ export class NzDemoTreeViewSearchComponent {
     });
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

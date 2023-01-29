@@ -39,6 +39,13 @@ import { Component } from '@angular/core';
         <div nz-col nzSpan="4">col-4</div>
         <div nz-col nzSpan="4">col-4</div>
       </div>
+      <p>sub-element align evenly</p>
+      <div nz-row nzJustify="space-evenly">
+        <div nz-col nzSpan="4">col-4</div>
+        <div nz-col nzSpan="4">col-4</div>
+        <div nz-col nzSpan="4">col-4</div>
+        <div nz-col nzSpan="4">col-4</div>
+      </div>
     </div>
   `,
   styles: [

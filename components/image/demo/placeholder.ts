@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-image-placeholder',
   template: `
     <nz-space [nzSize]="12">
-      <nz-space-item><img nz-image width="200px" height="200px" [nzSrc]="src" [nzPlaceholder]="placeholder" /></nz-space-item>
-      <nz-space-item><button nz-button nzType="primary" (click)="onReload()">Reload</button></nz-space-item>
+      <img *nzSpaceItem nz-image width="200px" height="200px" [nzSrc]="src" [nzPlaceholder]="placeholder" />
+      <button *nzSpaceItem nz-button nzType="primary" (click)="onReload()">Reload</button>
     </nz-space>
   `
 })

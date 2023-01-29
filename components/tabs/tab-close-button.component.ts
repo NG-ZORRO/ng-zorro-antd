@@ -11,7 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: 'nz-tab-close-button, button[nz-tab-close-button]',
   template: `
     <ng-container *nzStringTemplateOutlet="closeIcon; let icon">
-      <i nz-icon [nzType]="icon" nzTheme="outline"></i>
+      <span nz-icon [nzType]="icon" nzTheme="outline"></span>
     </ng-container>
   `,
   host: {

@@ -3,14 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef } from '@angular/core';
+import { Directive } from '@angular/core';
 
 @Directive({
-  selector: 'a[nz-dropdown]'
+  selector: 'a[nz-dropdown]',
+  host: {
+    class: 'ant-dropdown-link'
+  }
 })
 export class NzDropDownADirective {
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-dropdown-link');
-  }
+  constructor() {}
 }

@@ -50,6 +50,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzShowInput]` | Whether show input | `boolean` | `true` |
 | `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean\|NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | `'large'\|'small'\|'default'` | `'default'` | ✅ |
+| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
 | `[nzSuffixIcon]` | 	The custom suffix icon | `string\|TemplateRef<void>` | - |
 | `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
@@ -64,6 +65,28 @@ When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 | `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
 | `sorter` | Optional | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
 
+The default filter is like:
+
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
+
+For example, if you would like to ignore lower or upper case, you could use a filter function like this:
+
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  })
+}
+```
+
 #### Methods
 
 | Name | Description |
@@ -71,3 +94,10 @@ When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 | blur() | remove focus |
 | focus() | get focus |
 | closeMenu() | hide the menu |
+
+
+## FAQ
+
+### Q: An error is thrown when `nzLoadData` is used.
+
+When you pass a function to `nzLoadData`, this function becomes a property of `NzCascaderComponent`. When the cascader component calls this method, `this` in in the function is bound to nothing. To fix this, you should pass an arrow function or use `Function.bind` to bind `this`. [An example](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983).

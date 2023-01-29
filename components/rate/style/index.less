@@ -17,7 +17,8 @@
 
   &-disabled &-star {
     cursor: default;
-    &:hover {
+    
+    > div:hover {
       transform: scale(1);
     }
   }
@@ -27,19 +28,24 @@
     display: inline-block;
     color: inherit;
     cursor: pointer;
-    transition: all 0.3s;
 
     &:not(:last-child) {
       margin-right: 8px;
     }
 
     > div {
+      transition: all 0.3s, outline 0s;
+
+      &:hover {
+        transform: @rate-star-hover-scale;
+      }
+
       &:focus {
         outline: 0;
       }
 
-      &:hover,
-      &:focus {
+      &:focus-visible {
+        outline: 1px dashed @rate-star-color;
         transform: @rate-star-hover-scale;
       }
     }

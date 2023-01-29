@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -25,15 +26,15 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { map, takeUntil, throttleTime } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
 
-import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { auditTime, map, takeUntil } from 'rxjs/operators';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
 
@@ -98,6 +99,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     private ngZone: NgZone,
     private platform: Platform,
     private renderer: Renderer2,
+    private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
   ) {
@@ -142,17 +144,16 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     }
 
     this.removeListeners();
-    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() => {
-      return merge(
+    const el = this.target === window ? this.document.body : (this.target as Element);
+    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
+      merge(
         ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
-        this.offsetChanged$.pipe(
-          takeUntil(this.destroy$),
-          map(() => ({}))
-        )
+        this.offsetChanged$.pipe(map(() => ({}))),
+        this.nzResizeObserver.observe(el)
       )
-        .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
-        .subscribe(e => this.updatePosition(e as Event));
-    });
+        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
+        .subscribe(e => this.updatePosition(e as Event))
+    );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 
@@ -274,7 +275,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         width,
         height: elemSize.height
       });
-    } else if (scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight && offsetMode.bottom) {
+    } else if (
+      scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight &&
+      offsetMode.bottom
+    ) {
       const targetBottomOffset = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
       const width = elemOffset.width;
       this.setAffixStyle(e, {

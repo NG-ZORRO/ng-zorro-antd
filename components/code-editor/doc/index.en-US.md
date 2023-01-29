@@ -91,9 +91,9 @@ You can set the default configuration of the `CodeEditor` component through the 
 
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |
-| `assetsRoot` | Where should the component load resource of monaco editor | `string` \| `SageUrl` | - |
-| `defaultEditorOption` | Default options. [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
-| `onLoad` | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable | `() => void` | - |
+| `assetsRoot` | Where should the component load resource of monaco editor | `string` \| `SafeUrl` | - |
+| `defaultEditorOption` | Default options. [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html) | `IEditorConstructionOptions` | `{}` |
+| `onLoad` | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable (`window.MonacoEnvironment = { globalAP: true }` is required if monaco-editor's version is greater or equal to 0.22.0) | `() => void` | - |
 | `onFirstEditorInit` | The hook invoked when the first monaco editor is initialized | `() => void` | - |
 | `onInit` | The hook invoked every time a monaco editor is initialized | `() => void`  | - |
 | `useStaticLoading` | Load monaco editor statically | `boolean` | `false` |

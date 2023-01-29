@@ -59,7 +59,7 @@ Methods for destruction are also provided:
 
 ### Global Configuration
 
-You can use `NzConfigService` to configure this component globally.
+You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
 
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ You can use `NzConfigService` to configure this component globally.
 | nzAnimate | Whether to turn on animation | `boolean` | `true` |
 | nzTop | The top of the notification when it pops up from the top. | `string` | 24px |
 | nzBottom | The bottom of the notification when it pops up from the bottom. | `string` | 24px |
-| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string` | `topRight` |
 | nzDirection | Direction of the text in the notification | `'ltr' \| 'rtl'` | - |
 
 ### NzNotificationRef

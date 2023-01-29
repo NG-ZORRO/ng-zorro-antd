@@ -15,13 +15,13 @@ import { transCompatFormat } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
   exportAs: 'dateTable',
   templateUrl: './abstract-table.html'
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() locale!: NzCalendarI18nInterface;
+  @Input() override locale!: NzCalendarI18nInterface;
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
     super();
@@ -80,11 +80,11 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const cell: DateCell = {
           trackByIndex: day,
           value: date.nativeDate,
-          label: label,
+          label,
           isSelected: false,
           isDisabled: false,
           isToday: false,
-          title: title,
+          title,
           cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
@@ -103,8 +103,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         row.dateCells.push(cell);
       }
       row.classMap = {
-        [`ant-picker-week-panel-row`]: this.showWeek,
-        [`ant-picker-week-panel-row-selected`]: this.showWeek && row.isActive
+        [`ant-picker-week-panel-row`]: this.canSelectWeek,
+        [`ant-picker-week-panel-row-selected`]: this.canSelectWeek && row.isActive
       };
       weekRows.push(row);
     }
@@ -112,7 +112,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   addCellProperty(cell: DateCell, date: CandyDate): void {
-    if (this.hasRangeValue() && !this.showWeek) {
+    if (this.hasRangeValue() && !this.canSelectWeek) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
       // Selected
@@ -146,7 +146,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     cell.classMap = this.getClassMap(cell);
   }
 
-  getClassMap(cell: DateCell): { [key: string]: boolean } {
+  override getClassMap(cell: DateCell): { [key: string]: boolean } {
     const date = new CandyDate(cell.value);
     return {
       ...super.getClassMap(cell),

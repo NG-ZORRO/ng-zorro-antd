@@ -5,24 +5,32 @@ import { Component } from '@angular/core';
   template: `
     <nz-switch [(ngModel)]="loading"></nz-switch>
     <nz-card style="width: 300px;margin-top: 16px" [nzLoading]="loading">
-      <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description"></nz-card-meta>
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;margin-top: 16px" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
       <nz-skeleton [nzActive]="true" [nzLoading]="loading" [nzAvatar]="{ size: 'large' }">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description"></nz-card-meta>
+        <nz-card-meta
+          [nzAvatar]="avatarTemplate"
+          nzTitle="Card title"
+          nzDescription="This is the description"
+        ></nz-card-meta>
       </nz-skeleton>
     </nz-card>
     <ng-template #avatarTemplate>
       <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
     </ng-template>
     <ng-template #actionSetting>
-      <i nz-icon nzType="setting"></i>
+      <span nz-icon nzType="setting"></span>
     </ng-template>
     <ng-template #actionEdit>
-      <i nz-icon nzType="edit"></i>
+      <span nz-icon nzType="edit"></span>
     </ng-template>
     <ng-template #actionEllipsis>
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </ng-template>
   `
 })
