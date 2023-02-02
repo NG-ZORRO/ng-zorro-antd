@@ -104,7 +104,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
     if (isImageFileType(file.type!)) {
       return true;
     }
-    const url: string = (file.thumbUrl || file.url || '') as string;
+    const url: string = (file.filename || file.name || file.thumbUrl || file.url || '') as string;
     if (!url) {
       return false;
     }
