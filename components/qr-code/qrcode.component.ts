@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzQRCodeI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { drawCanvas, qrCode } from './qrcode';
+import { drawCanvas, plotQrCodeData } from './qrcode';
 import { NzQRCodeColor } from './typings';
 
 @Component({
@@ -42,12 +42,12 @@ import { NzQRCodeColor } from './typings';
       </div>
     </div>
     <div class="ant-qrcode-content" [style.background-color]="nzColor.light">
-      <canvas #canvas [width]="nzSize" [height]="nzSize"></canvas>
+      <canvas #canvas></canvas>
       <img
         *ngIf="!!nzIcon"
         [src]="nzIcon"
         [attr.key]="nzIcon"
-        [style.display]="'none'"
+        style="display: none;"
         crossOrigin="anonymous"
         [alt]="nzIcon"
       />
@@ -65,7 +65,6 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
-  @Input() nzIconColor: string = '#fff';
   @Input() nzBordered: boolean = true;
   @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
   @Input() nzErrorLevel: 'L' | 'M' | 'Q' | 'H' = 'M';
@@ -87,33 +86,32 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   ngOnChanges(changes: SimpleChanges): void {
     const { nzValue, nzIcon, nzErrorLevel } = changes;
     if ((nzValue || nzIcon || nzErrorLevel) && this.canvas) {
-      this.drawQRCode();
+      this.drawCanvasQRCode();
     }
   }
 
   ngAfterViewInit(): void {
-    this.drawQRCode();
+    this.drawCanvasQRCode();
   }
 
   reloadQRCode(): void {
-    this.drawQRCode();
+    this.drawCanvasQRCode();
     this.nzRefresh.emit('refresh');
   }
 
-  drawQRCode(): void {
+  drawCanvasQRCode(): void {
     if (!this.nzValue) {
       return;
     }
 
     drawCanvas(
       this.canvas,
-      qrCode(this.nzValue, this.nzErrorLevel),
+      plotQrCodeData(this.nzValue, this.nzErrorLevel),
       this.nzSize,
       10,
       this.nzColor.light,
       this.nzColor.dark,
       this.nzIconSize,
-      this.nzIconColor,
       this.nzIcon
     );
   }

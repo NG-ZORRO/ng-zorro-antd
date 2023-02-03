@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
       nzIcon="./assets/img/logo.svg"
       nzErrorLevel="H"
       [nzColor]="color1"
-      nzIconColor="#f6f6f6"
     ></nz-qrcode>
   `,
   styles: [

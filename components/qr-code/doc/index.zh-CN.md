@@ -32,7 +32,6 @@ import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
 | `[nzColor]`      | 二维码颜色           | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
 | `[nzSize]`       | 二维码大小           | `number`                          | `160`                             |
 | `[nzIcon]`       | 二维码中 logo 地址   | `string`                          | -                                 |
-| `[nzIconColor]`  | 二维码中 logo 背景色 | `string`                          | `#fff`                            |
 | `[nzIconSize]`   | 二维码中 logo 大小   | `number`                          | `40`                              |
 | `[nzBordered]`   | 是否有边框           | `boolean`                         | `true`                            |
 | `[nzStatus]`     | 二维码状态           | `'active'｜'expired' ｜'loading'` | `active`                          |

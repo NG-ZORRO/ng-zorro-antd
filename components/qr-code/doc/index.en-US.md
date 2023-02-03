@@ -32,7 +32,6 @@ import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
 | `[nzColor]`      | QR code Color                         | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
 | `[nzSize]`       | QR code Size                          | `number`                          | `160`                             |
 | `[nzIcon]`       | QR code include logo url              | `string`                          | -                                 |
-| `[nzIconColor]`  | QR code include logo background color | `string`                          | `#fff`                            |
 | `[nzIconSize]`   | QR code include logo size             | `number`                          | `40`                              |
 | `[nzBordered]`   | Whether has border style              | `boolean`                         | `true`                            |
 | `[nzStatus]`     | QR code status                        | `'active'｜'expired' ｜'loading'` | `active`                          |
