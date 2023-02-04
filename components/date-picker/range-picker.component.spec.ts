@@ -392,6 +392,29 @@ describe('NzRangePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
     }));
+    it('should not call nzOnChange if values do not change', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const leftInput = getPickerInput(fixture.debugElement);
+      const rightInput = getRangePickerRightInput(fixture.debugElement);
+      typeInElement('2018-11-11 00:00:00', leftInput);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      typeInElement('2018-11-11 00:00:00', rightInput);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      triggerInputBlur();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(nzOnChange).not.toHaveBeenCalled();
+    }));
 
     it('should support nzInline', fakeAsync(() => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');

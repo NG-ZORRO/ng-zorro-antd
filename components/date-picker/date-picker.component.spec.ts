@@ -193,6 +193,25 @@ describe('NzDatePickerComponent', () => {
       expect(isSameDay(new Date('2021-04-12'), result)).toBeTruthy();
       expect(getPickerContainer()).toBeNull();
     }));
+    it("should not send onChangeEvent if value doesn't change", fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.useSuite = 5;
+      fixtureInstance.firstValue = new Date('2021-04-12');
+      fixture.detectChanges();
+
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+      typeInElement('2021-04-12', getPickerInput(fixture.debugElement));
+      fixture.detectChanges();
+
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      expect(nzOnChange).not.toHaveBeenCalled();
+      expect(getPickerContainer()).toBeNull();
+    }));
 
     it('should support changing language at runtime', fakeAsync(() => {
       fixture.detectChanges();
