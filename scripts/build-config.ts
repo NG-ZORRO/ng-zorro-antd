@@ -22,6 +22,11 @@ export function findBuildConfig(): string {
   let currentDir = process.cwd();
 
   while (!existsSync(resolve(currentDir, BUILD_CONFIG_FILENAME))) {
+    if (currentDir === '/') {
+      console.error('Can not find build-config.js');
+      break;
+    }
+
     currentDir = dirname(currentDir);
   }
 
