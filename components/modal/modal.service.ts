@@ -15,7 +15,7 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
-import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, NZ_MODAL_DATA } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { NzModalContainerComponent } from './modal-container.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
@@ -51,7 +51,7 @@ export class NzModalService implements OnDestroy {
     @Optional() private directionality: Directionality
   ) {}
 
-  create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
+  create<T, D, R = NzSafeAny>(config: ModalOptions<T, D, R>): NzModalRef<T, R> {
     return this.open<T, R>(config.nzContent as ComponentType<T>, config);
   }
 
@@ -147,7 +147,8 @@ export class NzModalService implements OnDestroy {
       parent: userInjector || this.injector,
       providers: [
         { provide: OverlayRef, useValue: overlayRef },
-        { provide: ModalOptions, useValue: config }
+        { provide: ModalOptions, useValue: config },
+        { provide: NZ_MODAL_DATA, useValue: config.nzData }
       ]
     });
 
@@ -201,7 +202,10 @@ export class NzModalService implements OnDestroy {
 
     return Injector.create({
       parent: userInjector || this.injector,
-      providers: [{ provide: NzModalRef, useValue: modalRef }]
+      providers: [
+        { provide: NzModalRef, useValue: modalRef },
+        { provide: NZ_MODAL_DATA, useValue: config.nzData }
+      ]
     });
   }
 

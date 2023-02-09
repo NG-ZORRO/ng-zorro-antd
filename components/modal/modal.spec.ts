@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Directive,
+  Inject,
   Injector,
   Input,
   NgModule,
@@ -25,6 +26,7 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
+import { NZ_MODAL_DATA } from 'ng-zorro-antd/modal/modal-config';
 
 import { NzModalRef, NzModalState } from './modal-ref';
 import { NzModalComponent } from './modal.component';
@@ -691,6 +693,24 @@ describe('NzModal', () => {
     flushMicrotasks();
 
     expect(modalRef.getBackdropElement()!.style.color).toBe('rgb(255, 0, 0)');
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should set the ngData of the modal', fakeAsync(() => {
+    const text = `Hello`;
+    const modalRef = modalService.create<TestModalWithDataElementsComponent, ModalData>({
+      nzContent: TestModalWithDataElementsComponent,
+      nzData: {
+        text
+      }
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    expect(modalRef.componentInstance?.data.text).toBe(text);
+
     modalRef.close();
     fixture.detectChanges();
     flush();
@@ -1754,6 +1774,15 @@ class TestModalComponent {
 
 @Component({ template: '<p>Modal</p>' })
 class TestModalWithoutFocusableElementsComponent {}
+
+interface ModalData {
+  text: string;
+}
+
+@Component({ template: '<p>{{ data.text }}</p>' })
+class TestModalWithDataElementsComponent {
+  constructor(@Inject(NZ_MODAL_DATA) public data: ModalData) {}
+}
 
 const TEST_DIRECTIVES = [
   TestWithServiceComponent,

@@ -21,7 +21,7 @@ export interface StyleObjectLike {
 
 const noopFun = () => void 0;
 
-export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzCentered?: boolean = false;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
@@ -57,6 +57,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   // Template use only
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
+  nzData?: D | null;
 
   // Confirm
   nzIconType?: string = 'question-circle';

@@ -1,8 +1,8 @@
 /* declarations: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core'
 
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NZ_MODAL_DATA, NzModalRef, NzModalService } from 'ng-zorro-antd/modal'
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -89,13 +89,16 @@ export class NzDemoModalServiceComponent {
   }
 
   createComponentModal(): void {
-    const modal = this.modal.create({
+    const modal = this.modal.create<NzModalCustomComponent, CustomModalData>({
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
         title: 'title in component',
         subtitle: 'component sub title，will be changed after 2 sec'
+      },
+      nzData: {
+        text: 'nzData in component'
       },
       nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000)),
       nzFooter: [
@@ -176,12 +179,17 @@ export class NzDemoModalServiceComponent {
   }
 }
 
+interface CustomModalData {
+  text: string;
+}
+
 @Component({
   selector: 'nz-modal-custom-component',
   template: `
     <div>
       <h2>{{ title }}</h2>
       <h4>{{ subtitle }}</h4>
+      <h4>{{ data.text }}</h4>
       <p>
         <span>Get Modal instance in component</span>
         <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
@@ -193,7 +201,7 @@ export class NzModalCustomComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
 
-  constructor(private modal: NzModalRef) {}
+  constructor(private modal: NzModalRef, @Inject(NZ_MODAL_DATA) public data: CustomModalData) {}
 
   destroyModal(): void {
     this.modal.destroy({ data: 'this the result data' });
