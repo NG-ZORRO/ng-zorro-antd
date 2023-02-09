@@ -1,8 +1,8 @@
 /* declarations: NzModalCustomComponent */
 
-import { Component, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core'
+import { Component, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { NZ_MODAL_DATA, NzModalRef, NzModalService } from 'ng-zorro-antd/modal'
+import { NZ_MODAL_DATA, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-service',
