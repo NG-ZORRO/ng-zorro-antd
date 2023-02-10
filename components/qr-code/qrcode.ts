@@ -21,13 +21,17 @@ const DEFAULT_FGCOLOR = '#000000';
 const DEFAULT_ICONSIZE = 40;
 const DEFAULT_LEVEL = 'L';
 
-export const plotQrCodeData = (value: string, level = DEFAULT_LEVEL): qrcodegen.QrCode => {
+export const plotQrCodeData = (value: string, level = DEFAULT_LEVEL): qrcodegen.QrCode | null => {
+  if (!value) {
+    console.warn('nzValue is null');
+    return null;
+  }
   return qrcodegen.QrCode.encodeText(value, ERROR_LEVEL_MAP[level]);
 };
 
 export function drawCanvas(
   canvas: ElementRef,
-  value: qrcodegen.QrCode,
+  value: qrcodegen.QrCode | null,
   size = DEFAULT_SIZE,
   scale = DEFAULT_SCALE,
   lightColor = DEFAULT_BGCOLOR,
@@ -36,10 +40,15 @@ export function drawCanvas(
   icon?: string
 ): void {
   const ctx = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
-  canvas.nativeElement.width = value.size * scale;
-  canvas.nativeElement.height = value.size * scale;
   canvas.nativeElement.style.width = `${size}px`;
   canvas.nativeElement.style.height = `${size}px`;
+  if (!value) {
+    ctx.fillStyle = lightColor;
+    ctx.fillRect(0, 0, canvas.nativeElement.width, canvas.nativeElement.height);
+    return;
+  }
+  canvas.nativeElement.width = value.size * scale;
+  canvas.nativeElement.height = value.size * scale;
   if (!icon) {
     for (let y = 0; y < value.size; y++) {
       for (let x = 0; x < value.size; x++) {

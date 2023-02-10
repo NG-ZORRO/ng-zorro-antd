@@ -54,7 +54,7 @@ import { NzQRCodeColor } from './typings';
     </div>
   `,
   host: {
-    '[class.ant-qrcode]': `true`,
+    class: 'ant-qrcode',
     '[class.ant-qrcode-border]': `nzBordered`
   }
 })
@@ -100,10 +100,6 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   drawCanvasQRCode(): void {
-    if (!this.nzValue) {
-      return;
-    }
-
     drawCanvas(
       this.canvas,
       plotQrCodeData(this.nzValue, this.nzErrorLevel),
