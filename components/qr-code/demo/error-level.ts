@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-qr-code-error-level',
   template: `
-    <nz-qrcode nzValue="https://ng.ant.design/" [nzErrorLevel]="errorLevel"></nz-qrcode>
+    <nz-qrcode nzValue="https://github.com/NG-ZORRO/ng-zorro-antd/issues" [nzErrorLevel]="errorLevel"></nz-qrcode>
     <nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)"></nz-segmented>
   `,
   styles: [
@@ -21,11 +21,10 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoQrCodeErrorLevelComponent {
-  options: string[] = ['L', 'M', 'Q', 'H'];
+  options: Array<'L' | 'M' | 'Q' | 'H'> = ['L', 'M', 'Q', 'H'];
   errorLevel: 'L' | 'M' | 'Q' | 'H' = 'L';
 
   handleIndexChange(e: number): void {
-    // @ts-ignore
     this.errorLevel = this.options[e];
   }
 }

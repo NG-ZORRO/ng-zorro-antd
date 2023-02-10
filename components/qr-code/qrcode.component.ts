@@ -84,8 +84,8 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzValue, nzIcon, nzErrorLevel } = changes;
-    if ((nzValue || nzIcon || nzErrorLevel) && this.canvas) {
+    const { nzValue, nzIcon, nzErrorLevel, nzSize, nzIconSize, nzColor } = changes;
+    if ((nzValue || nzIcon || nzErrorLevel || nzSize || nzIconSize || nzColor) && this.canvas) {
       this.drawCanvasQRCode();
     }
   }

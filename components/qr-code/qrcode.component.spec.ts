@@ -55,7 +55,7 @@ describe('nz-qrcode', () => {
       testComponent.size = 200;
       fixture.detectChanges();
       const widthView = resultEl.nativeElement.querySelector('.ant-qrcode-content > canvas');
-      expect(widthView.width === 200).toBe(true);
+      expect(widthView.style.width).toBe('200px');
     });
 
     it('qr code bgColor', () => {
