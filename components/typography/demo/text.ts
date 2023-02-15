@@ -16,9 +16,7 @@ import { Component } from '@angular/core';
     <span nz-typography><del>Ant Design (delete)</del></span>
     <span nz-typography><strong>Ant Design (strong)</strong></span>
     <span nz-typography>
-      <a href="https://ng.ant.design/" target="_blank">
-        Ant Design
-      </a>
+      <a href="https://ng.ant.design/" target="_blank">Ant Design</a>
     </span>
   `,
   styles: [
