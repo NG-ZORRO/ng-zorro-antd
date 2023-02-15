@@ -34,10 +34,10 @@ import { NzQRCodeColor } from './typings';
     <div class="ant-qrcode-mask" *ngIf="nzStatus !== 'active'">
       <nz-spin *ngIf="nzStatus === 'loading'"></nz-spin>
       <div *ngIf="nzStatus === 'expired'">
-        <p class="ant-qrcode-expired">{{ locale.qrCodeError }}</p>
+        <p class="ant-qrcode-expired">{{ locale.expired }}</p>
         <button nz-button nzType="link" (click)="reloadQRCode()">
           <span nz-icon nzType="reload" nzTheme="outline"></span>
-          <span>{{ locale.reload }}</span>
+          <span>{{ locale.refresh }}</span>
         </button>
       </div>
     </div>

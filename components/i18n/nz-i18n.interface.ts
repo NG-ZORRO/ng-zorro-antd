@@ -154,8 +154,8 @@ export interface NzCronExpressionCronErrorI18n {
 export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
 
 export interface NzQRCodeI18nInterface {
-  qrCodeError: string;
-  reload: string;
+  expired: string;
+  refresh: string;
 }
 
 export interface NzI18nInterface {
