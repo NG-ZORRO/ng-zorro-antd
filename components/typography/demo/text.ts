@@ -18,7 +18,6 @@ import { Component } from '@angular/core';
     <span nz-typography>
       <a href="https://ng.ant.design/" target="_blank">
         Ant Design
-        <Link />
       </a>
     </span>
   `,
