@@ -3,6 +3,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './typings';
 export * from './qrcode.component';
 export * from './qrcode.module';

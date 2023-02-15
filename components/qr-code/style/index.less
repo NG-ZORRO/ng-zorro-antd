@@ -6,6 +6,12 @@
 .@{qrcode-prefix-cls} {
   display: inline-block;
   position: relative;
+  background-color: @white;
+  padding: @padding-sm;
+
+  &>canvas {
+    display: block;
+  }
 }
 
 .@{qrcode-prefix-cls}-border {
@@ -13,15 +19,10 @@
   border: @border-width-base @border-style-base @border-color-split;
 }
 
-.@{qrcode-prefix-cls}-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: @padding-sm;
-}
-
 .@{qrcode-prefix-cls}-mask {
   position: absolute;
+  top: 0;
+  right: 0;
   z-index: 10;
   display: flex;
   flex-direction: column;

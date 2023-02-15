@@ -23,13 +23,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzQRCodeI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { drawCanvas, plotQrCodeData } from './qrcode';
-import { NzQRCodeColor } from './typings';
+import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-qrcode',
-  exportAs: 'nzQrCode',
+  exportAs: 'nzQRCode',
   template: `
     <div class="ant-qrcode-mask" *ngIf="nzStatus !== 'active'">
       <nz-spin *ngIf="nzStatus === 'loading'"></nz-spin>
@@ -41,33 +40,23 @@ import { NzQRCodeColor } from './typings';
         </button>
       </div>
     </div>
-    <div class="ant-qrcode-content" [style.background-color]="nzColor.light">
-      <canvas #canvas></canvas>
-      <img
-        *ngIf="!!nzIcon"
-        [src]="nzIcon"
-        [attr.key]="nzIcon"
-        style="display: none;"
-        crossOrigin="anonymous"
-        [alt]="nzIcon"
-      />
-    </div>
+    <canvas #canvas></canvas>
   `,
   host: {
     class: 'ant-qrcode',
     '[class.ant-qrcode-border]': `nzBordered`
   }
 })
-export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
+export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @Input() nzValue: string = '';
-  @Input() nzColor: NzQRCodeColor = { dark: '#000', light: '#fff' };
+  @Input() nzColor: string = '#000000';
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
   @Input() nzBordered: boolean = true;
   @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
-  @Input() nzErrorLevel: 'L' | 'M' | 'Q' | 'H' = 'M';
+  @Input() nzLevel: keyof typeof ERROR_LEVEL_MAP = 'M';
 
   @Output() readonly nzRefresh = new EventEmitter<string>();
 
@@ -84,8 +73,8 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzValue, nzIcon, nzErrorLevel, nzSize, nzIconSize, nzColor } = changes;
-    if ((nzValue || nzIcon || nzErrorLevel || nzSize || nzIconSize || nzColor) && this.canvas) {
+    const { nzValue, nzIcon, nzLevel, nzSize, nzIconSize, nzColor } = changes;
+    if ((nzValue || nzIcon || nzLevel || nzSize || nzIconSize || nzColor) && this.canvas) {
       this.drawCanvasQRCode();
     }
   }
@@ -101,12 +90,11 @@ export class NzQrCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   drawCanvasQRCode(): void {
     drawCanvas(
-      this.canvas,
-      plotQrCodeData(this.nzValue, this.nzErrorLevel),
+      this.canvas.nativeElement,
+      plotQRCodeData(this.nzValue, this.nzLevel),
       this.nzSize,
       10,
-      this.nzColor.light,
-      this.nzColor.dark,
+      this.nzColor,
       this.nzIconSize,
       this.nzIcon
     );

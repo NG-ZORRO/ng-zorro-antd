@@ -10,11 +10,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
-import { NzQrCodeComponent } from './qrcode.component';
+import { NzQRCodeComponent } from './qrcode.component';
 
 @NgModule({
-  declarations: [NzQrCodeComponent],
-  exports: [NzQrCodeComponent],
+  declarations: [NzQRCodeComponent],
+  exports: [NzQRCodeComponent],
   imports: [NzSpinModule, CommonModule, NzButtonModule, NzIconModule]
 })
-export class NzQrCodeModule {}
+export class NzQRCodeModule {}

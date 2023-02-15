@@ -1,16 +1,9 @@
 ---
 category: Components
-subtitle:
 type: Data Display
 title: QRCode
-cols: 1
-experimental: true
+cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
 ---
-
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
 
 ## When To Use
 
@@ -19,24 +12,24 @@ Used when the link needs to be converted into a QR Code.
 ### Import Module
 
 ```ts
-import { NzQrCodeModule } from 'ng-zorro-antd/qr-code';
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 ```
 
 ## API
 
 ### nz-qrcode
 
-| 参数             | 说明                                  | 类型                              | 默认值                            |
-| ---------------- | ------------------------------------- | --------------------------------- | --------------------------------- |
-| `[nzValue]`      | scanned link                          | `string`                          | -                                 |
-| `[nzColor]`      | QR code Color                         | `{ dark: string, light: string }` | `{ dark: '#000', light: '#fff' }` |
-| `[nzSize]`       | QR code Size                          | `number`                          | `160`                             |
-| `[nzIcon]`       | QR code include logo url              | `string`                          | -                                 |
-| `[nzIconSize]`   | QR code include logo size             | `number`                          | `40`                              |
-| `[nzBordered]`   | Whether has border style              | `boolean`                         | `true`                            |
-| `[nzStatus]`     | QR code status                        | `'active'｜'expired' ｜'loading'` | `active`                          |
-| `[nzErrorLevel]` | Error Code Level                      | `'L'｜'M'｜'Q'｜'H'`              | `M`                               |
-| `(nzRefresh)`    | callback                              | `EventEmitter<string>`            | -                                 |
+| 参数           | 说明                                | 类型                              | 默认值   |
+| -------------- | ----------------------------------- | --------------------------------- | -------- |
+| `[nzValue]`    | scanned link                        | `string`                          | -        |
+| `[nzColor]`    | QR code Color                       | `string`                          | `#000`   |
+| `[nzSize]`     | QR code Size                        | `number`                          | `160`    |
+| `[nzIcon]`     | Icon address in QR code             | `string`                          | -        |
+| `[nzIconSize]` | The size of the icon in the QR code | `number`                          | `40`     |
+| `[nzBordered]` | Whether has border style            | `boolean`                         | `true`   |
+| `[nzStatus]`   | QR code status                      | `'active'｜'expired' ｜'loading'` | `active` |
+| `[nzLevel]`    | Error Code Level                    | `'L'｜'M'｜'Q'｜'H'`              | `M`      |
+| `(nzRefresh)`  | callback                            | `EventEmitter<string>`            | -        |
 
 ## Note
 

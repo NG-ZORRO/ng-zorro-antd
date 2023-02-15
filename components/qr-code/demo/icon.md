@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-QRCode with Icon.
+QRCode with icon.
