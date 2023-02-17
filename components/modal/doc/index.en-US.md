@@ -125,11 +125,11 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 | updateConfig(config: ModalOptions): void   | Update the config |
 
 
-#### NZ_MODAL_COMPONENT_PARAMS
+#### NZ_MODAL_DATA
 
-> NZ_MODAL_COMPONENT_PARAMS injection token is used to retrieve `nzContentParams` in the custom component.
+> NZ_MODAL_DATA injection token is used to retrieve `nzContentParams` in the custom component.
 
-The dialog created by the service method `NzModalService.xxx()` inject a `NZ_MODAL_COMPONENT_PARAMS` token (if `nzContent` is used as Component) to retrieve the parameters that have used to the '`nzContent` component'
+The dialog created by the service method `NzModalService.xxx()` inject a `NZ_MODAL_DATA` token (if `nzContent` is used as Component) to retrieve the parameters that have used to the '`nzContent` component'
 
 ### ModalButtonOptions (used to customize the bottom button)
 
