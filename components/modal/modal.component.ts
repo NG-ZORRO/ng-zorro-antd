@@ -56,6 +56,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
   static ngAcceptInputType_nzOkDanger: BooleanInput;
   static ngAcceptInputType_nzCentered: BooleanInput;
+  static ngAcceptInputType_nzDragging: BooleanInput;
 
   @Input() @InputBoolean() nzMask?: boolean;
   @Input() @InputBoolean() nzMaskClosable?: boolean;
@@ -69,6 +70,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzCentered = false;
+  @Input() @InputBoolean() nzDragging = false;
   @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
   @Input() nzComponentParams?: T;
   @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;

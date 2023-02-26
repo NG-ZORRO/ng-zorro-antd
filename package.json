@@ -28,6 +28,7 @@
     "@angular/cdk": "^15.0.0",
     "@ant-design/icons-angular": "^15.0.0",
     "@ctrl/tinycolor": "^3.4.1",
+    "ajv": "^7.2.4",
     "date-fns": "^2.16.1",
     "ngx-quicklink": "^0.3.0"
   },

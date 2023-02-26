@@ -4,6 +4,7 @@
  */
 
 import { BidiModule } from '@angular/cdk/bidi';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
@@ -32,6 +33,7 @@ import { NzModalService } from './modal.service';
     CommonModule,
     BidiModule,
     OverlayModule,
+    DragDropModule,
     NzOutletModule,
     PortalModule,
     NzI18nModule,

@@ -40,9 +40,14 @@ import { ModalOptions } from './modal-types';
       [ngStyle]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
-      <div class="ant-modal-content">
+      <div
+        cdkDragBoundary="nz-modal-container"
+        cdkDrag
+        [cdkDragDisabled]="!config.nzDragging"
+        class="ant-modal-content"
+      >
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
-        <div *ngIf="config.nzTitle" nz-modal-title></div>
+        <div *ngIf="config.nzTitle" cdkDragHandle nz-modal-title></div>
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet></ng-template>
           <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
@@ -94,5 +99,6 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
 
   ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);
+    console.log(this.config);
   }
 }
