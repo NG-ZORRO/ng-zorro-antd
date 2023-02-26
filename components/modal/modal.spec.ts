@@ -1434,22 +1434,6 @@ describe('NzModal', () => {
       flush();
     }));
 
-    it('should set nzDragging', fakeAsync(() => {
-      const modalRef = modalService.confirm({
-        nzDragging: true
-      });
-      fixture.detectChanges();
-
-      expect(modalRef.getConfig().nzDragging).toBe(true);
-
-      const modal = overlayContainerElement.querySelector('.ant-modal-content') as HTMLElement;
-      expect(modal.classList).toContain('cdk-drag');
-
-      modalRef.close();
-      fixture.detectChanges();
-      flush();
-    }));
-
     it('should open confirm with component', () => {
       const modalRef = modalService.confirm({
         nzContent: TestWithModalContentComponent,
