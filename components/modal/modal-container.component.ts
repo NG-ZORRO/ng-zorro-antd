@@ -99,6 +99,5 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
 
   ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);
-    console.log(this.config);
   }
 }
