@@ -457,6 +457,40 @@ describe('NzModal', () => {
     flush();
   }));
 
+  it('should apply nzCentered global config work', fakeAsync(() => {
+    configService.set('modal', { nzCentered: true });
+
+    let modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    let modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.classList.contains('ant-modal-centered')).toBe(true);
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+
+    configService.set('modal', { nzCentered: false });
+
+    modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.classList.contains('ant-modal-centered')).toBe(false);
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
   it(
     'should not close when clicking on the modal wrap and ' + 'nzMaskClosable or nzMask is false',
     fakeAsync(() => {

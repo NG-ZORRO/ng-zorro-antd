@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { ModalOptions } from './modal-types';
 
 export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalOptions): ModalOptions {
@@ -105,3 +107,12 @@ export function getConfigFromComponent<T extends ModalOptions>(component: T): Mo
     nzAutofocus
   };
 }
+
+export const omit = <T extends object, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Omit<T, K> =>
+  Object.keys(obj)
+    .filter(k => !keys.includes(k as K))
+    .reduce((acc, key) => {
+      acc[key] = obj[key as K];
+
+      return acc;
+    }, {} as NzSafeAny);

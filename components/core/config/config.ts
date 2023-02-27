@@ -234,6 +234,9 @@ export interface ModalConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
   nzCloseOnNavigation?: boolean;
+  nzCentered?: boolean;
+  nzClosable?: boolean;
+  nzNoAnimation?: boolean;
   nzDirection?: Direction;
 }
 

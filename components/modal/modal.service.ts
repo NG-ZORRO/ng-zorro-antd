@@ -10,7 +10,7 @@ import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { ModalConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
@@ -21,7 +21,7 @@ import { NzModalContainerComponent } from './modal-container.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig, omit, setContentInstanceParams } from './utils';
 
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
@@ -92,7 +92,11 @@ export class NzModalService implements OnDestroy {
   }
 
   private open<T, R>(componentOrTemplateRef: ContentType<T>, config?: ModalOptions): NzModalRef<T, R> {
-    const configMerged = applyConfigDefaults(config || {}, new ModalOptions());
+    const globalConfig = (this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {}) as ModalConfig;
+    const omittedGlobalConfig = omit(globalConfig, 'nzMask', 'nzMaskClosable', 'nzCloseOnNavigation', 'nzDirection');
+    const configMergedWithGlobal = applyConfigDefaults(config || {}, omittedGlobalConfig);
+    const configMerged = applyConfigDefaults(configMergedWithGlobal, new ModalOptions());
+
     const overlayRef = this.createOverlay(configMerged);
     const modalContainer = this.attachModalContainer(overlayRef, configMerged);
     const modalRef = this.attachModalContent<T, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
