@@ -6,11 +6,12 @@ title: WaterMark
 cover: https://img.alicdn.com/imgextra/i3/O1CN0194FGAd1FlrwQShfR8_!!6000000000528-0-tps-952-502.jpg
 ---
 
-Set components spacing.
+Add specific text or patterns to the page.
 
 ## When To Use
 
-Avoid components clinging together and set a unified space.
+- Use when the page needs to be watermarked to identify the copyright.
+- Suitable for preventing information theft.
 
 ```ts
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';

@@ -219,6 +219,9 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   }
 
   renderWatermark(): void {
+    if (!this.nzContent && !this.nzImage) {
+      return;
+    }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 

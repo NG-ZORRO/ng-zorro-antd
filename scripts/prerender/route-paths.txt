@@ -131,6 +131,8 @@
 /components/upload/zh
 /components/qr-code/en
 /components/qr-code/zh
+/components/water-mark/en
+/components/water-mark/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en

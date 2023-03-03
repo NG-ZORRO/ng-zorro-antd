@@ -7,14 +7,12 @@ cols: 1
 cover: https://img.alicdn.com/imgextra/i3/O1CN0194FGAd1FlrwQShfR8_!!6000000000528-0-tps-952-502.jpg
 ---
 
-设置组件之间的间距。
+给页面的某个区域加上水印。
 
 ## 何时使用
 
-避免组件紧贴在一起，拉开统一的空间。
-
-- 适合行内元素的水平间距。
-- 可以设置各种水平对齐方式。
+- 页面需要添加水印标识版权时使用。
+- 适用于防止信息盗用。
 
 ```ts
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
