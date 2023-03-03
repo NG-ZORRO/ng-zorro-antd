@@ -15,8 +15,8 @@ export function toLowercaseSeparator(key: keyof MarkStyleCanvasType): string {
 }
 
 export function getStyleStr(style: MarkStyleCanvasType): string {
-  const styleCss: string[] = Object.keys(style).map(
-    // @ts-ignore
+  const keys = Object.keys(style) as Array<keyof MarkStyleCanvasType>;
+  const styleCss: string[] = keys.map(
     (key: keyof MarkStyleCanvasType) => `${toLowercaseSeparator(key)}: ${style[key]};`
   );
   return styleCss.join(' ');

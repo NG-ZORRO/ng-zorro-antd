@@ -45,9 +45,9 @@ import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
 
 ## FAQ
 
-### 处理异常图片水印
+### Handle abnormal image watermarks
 
-当使用图片水印且图片加载异常时，可以同时添加 `nzContent` 防止水印失效。
+When using an image watermark and the image loads abnormally, you can add `nzContent` at the same time to prevent the watermark from becoming invalid.
 
 ```ts
 <nz-water-mark

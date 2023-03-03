@@ -1,6 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { FontType } from 'ng-zorro-antd/water-mark';
+
 @Component({
   selector: 'nz-demo-water-mark-custom',
   template: `
@@ -49,7 +52,18 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
         <nz-form-item>
           <nz-form-label>Color</nz-form-label>
           <nz-form-control>
-            <input nz-input type="text" formControlName="color" />
+            <div
+              class="theme-pick-wrap"
+              nz-popover
+              [nzPopoverTrigger]="'click'"
+              nzPopoverOverlayClassName="theme-color-content"
+              [nzPopoverContent]="colorTpl"
+            >
+              <div class="theme-pick" [ngStyle]="{ background: color }"></div>
+            </div>
+            <ng-template #colorTpl>
+              <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
+            </ng-template>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -106,14 +120,30 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
         margin-right: 12px;
         width: 40%;
       }
+
+      .theme-pick-wrap {
+        padding: 4px;
+        background: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .theme-pick {
+        width: 80px;
+        height: 16px;
+        border-radius: 2px;
+      }
     `
   ]
 })
 export class NzDemoWaterMarkCustomComponent implements OnInit {
   validateForm!: UntypedFormGroup;
   content: string = 'NG Ant Design';
-  font = {
-    color: '#e6e6e6',
+  color: string = 'rgba(0,0,0,.15)';
+  font: FontType = {
+    color: 'rgba(0,0,0,.15)',
     fontSize: 16
   };
   zIndex: number = 11;
@@ -126,21 +156,20 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       content: ['NG Ant Design'],
-      color: ['#e6e6e6'],
       fontSize: [16],
       zIndex: [11],
       rotate: [-22],
       gapX: [100],
       gapY: [100],
-      offsetX: [],
-      offsetY: []
+      offsetX: [50],
+      offsetY: [50]
     });
 
     this.validateForm.valueChanges.subscribe(item => {
       this.content = item.content;
       this.font = {
-        color: item.color,
-        fontSize: item.fontSize
+        fontSize: item.fontSize,
+        color: this.color
       };
       this.zIndex = item.zIndex;
       this.rotate = item.rotate;
@@ -148,5 +177,14 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
       this.offset = [item.offsetX, item.offsetY];
       this.cdr.markForCheck();
     });
+  }
+
+  changeColor(value: NzSafeAny): void {
+    this.color = value.color.hex;
+    this.font = {
+      fontSize: this.validateForm.get('fontSize')?.value,
+      color: value.color.hex
+    };
+    this.cdr.markForCheck();
   }
 }

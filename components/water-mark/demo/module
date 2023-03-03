@@ -5,5 +5,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { ColorSketchModule } from "ngx-color/sketch";
 
-export const moduleList = [ NzWaterMarkModule, NzTypographyModule, NzFormModule, NzInputModule, NzInputNumberModule, NzSliderModule, NzDividerModule ];
+export const moduleList = [ NzWaterMarkModule, NzTypographyModule, NzFormModule, NzInputModule, NzInputNumberModule, NzSliderModule, NzDividerModule, NzPopoverModule, ColorSketchModule ];

@@ -48,9 +48,9 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   @Input() nzGap: [number, number] = [100, 100];
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
 
-  stopObservation: boolean = false;
   @ViewChild('watermark', { static: false }) containerElement!: ElementRef<HTMLDivElement>;
   waterMarkElement: HTMLDivElement = document.createElement('div');
+  stopObservation: boolean = false;
 
   observer = new MutationObserver(mutations => {
     if (this.stopObservation) {
