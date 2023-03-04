@@ -5,12 +5,12 @@
 
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, Router, RouterLink, RouterOutlet, Routes } from '@angular/router';
+import { provideRouter, Router, RouterLink, RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
@@ -879,6 +879,67 @@ describe('NzTabSet', () => {
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
     }));
   });
+
+  describe('dynamic router tabs', () => {
+    let fixture: ComponentFixture<DynamicRouterTabsTestComponent>;
+    let router: Router;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([
+            {
+              path: '',
+              pathMatch: 'full',
+              redirectTo: 'one'
+            },
+            {
+              path: 'one',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'two',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'three',
+              component: DynamicRouterTabsTestComponent
+            }
+          ])
+        ]
+      });
+
+      router = TestBed.inject(Router);
+      fixture = TestBed.createComponent(DynamicRouterTabsTestComponent);
+    });
+
+    it('should update active tab when tabs changed', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      router.initialNavigation();
+      tick();
+      fixture.detectChanges();
+
+      const comp = fixture.componentInstance;
+
+      router.navigate(['three']);
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      comp.tabs = comp.lazyTabs;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+
+      expect(comp.selectedIdx).toBe(2);
+
+      flush();
+    }));
+  });
 });
 
 @Component({
@@ -1137,6 +1198,40 @@ class TabSetWithIndirectDescendantTabsTestComponent {
 })
 export class RouterTabsTestComponent {
   handleSelection(_event: number): void {}
+}
+
+@Component({
+  template: ` <nz-tabset nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
+      @for (tab of tabs; track tab.title) {
+        <nz-tab>
+          <a *nzTabLink nz-tab-link [routerLink]="tab.route">{{ tab.title }}</a>
+          {{ tab.title }}
+        </nz-tab>
+      }
+    </nz-tabset>
+    <router-outlet></router-outlet>`,
+  imports: [CommonModule, RouterModule, NzTabsModule],
+  standalone: true
+})
+export class DynamicRouterTabsTestComponent {
+  selectedIdx = 0;
+  tabs = [
+    {
+      title: 'one',
+      route: ['one']
+    },
+    {
+      title: 'two',
+      route: ['two']
+    }
+  ];
+  readonly lazyTabs = [
+    ...this.tabs,
+    {
+      title: 'three',
+      route: ['three']
+    }
+  ];
 }
 
 const routes: Routes = [
