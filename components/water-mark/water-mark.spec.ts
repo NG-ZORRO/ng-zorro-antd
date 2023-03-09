@@ -34,7 +34,7 @@ describe('water-mark', () => {
       testComponent.nzContent = 'NG Ant Design';
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('.water-mark > div');
-      expect(view.firstElementChild.tagName).toBe('DIV');
+      expect(view.tagName).toBe('DIV');
     });
 
     it('image water-mark', () => {
@@ -42,21 +42,21 @@ describe('water-mark', () => {
         'https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg';
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('.water-mark > div');
-      expect(view.firstElementChild.tagName).toBe('DIV');
+      expect(view.tagName).toBe('DIV');
     });
 
     it('Invalid image water-mark', () => {
       testComponent.nzImage = 'https://img.alicdn.com/test.svg';
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('.water-mark > div');
-      expect(view.firstElementChild.tagName).toBe('DIV');
+      expect(view.tagName).toBe('DIV');
     });
 
     it('offset water-mark', () => {
       testComponent.nzContent = ['Angular', 'NG Ant Design'];
       testComponent.nzOffset = [200, 200];
       fixture.detectChanges();
-      const view = resultEl.nativeElement.querySelector('.water-mark > div > div');
+      const view = resultEl.nativeElement.querySelector('.water-mark > div');
       expect(view?.style.left).toBe('150px');
       expect(view?.style.top).toBe('150px');
       expect(view?.style.width).toBe('calc(100% - 150px)');
@@ -69,14 +69,14 @@ describe('water-mark', () => {
       testComponent.nzWidth = 200;
       testComponent.nzHeight = 200;
       fixture.detectChanges();
-      const view = resultEl.nativeElement.querySelector('.water-mark > div > div');
+      const view = resultEl.nativeElement.querySelector('.water-mark > div');
       expect(view?.style.backgroundSize).toBe('600px');
     });
 
     it('MutationObserver should work properly', fakeAsync(() => {
       testComponent.nzContent = 'NG Ant Design';
       fixture.detectChanges();
-      const view = resultEl.nativeElement.querySelector('.water-mark > div > div');
+      const view = resultEl.nativeElement.querySelector('.water-mark > div');
       view?.remove();
       tick(100);
       expect(view).toBeTruthy();
@@ -85,7 +85,7 @@ describe('water-mark', () => {
     it('Observe the modification of style', fakeAsync(() => {
       testComponent.nzContent = 'NG Ant Design';
       fixture.detectChanges();
-      const view = resultEl.nativeElement.querySelector('.water-mark > div > div');
+      const view = resultEl.nativeElement.querySelector('.water-mark > div');
       view?.setAttribute('style', '');
       tick(100);
       expect(view.style).toBeTruthy();

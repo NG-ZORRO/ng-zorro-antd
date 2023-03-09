@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { ColorEvent } from 'ngx-color/color-wrap.component';
+
 import { FontType } from 'ng-zorro-antd/water-mark';
 
 @Component({
@@ -149,7 +150,7 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
   zIndex: number = 11;
   rotate: number = -22;
   gap: [number, number] = [100, 100];
-  offset!: [number, number];
+  offset: [number, number] = [50, 50];
 
   constructor(private fb: UntypedFormBuilder, private cdr: ChangeDetectorRef) {}
 
@@ -179,7 +180,7 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
     });
   }
 
-  changeColor(value: NzSafeAny): void {
+  changeColor(value: ColorEvent): void {
     this.color = value.color.hex;
     this.font = {
       fontSize: this.validateForm.get('fontSize')?.value,
