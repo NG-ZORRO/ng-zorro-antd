@@ -35,6 +35,7 @@ stages:
             export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
             echo 'version' >> dist/browser/.surgeignore
             echo 'issue-helper' >> dist/browser/.surgeignore
+            ls ./dist/browser
             npx surge --project ./dist/browser --domain $DEPLOY_DOMAIN
             tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
 
