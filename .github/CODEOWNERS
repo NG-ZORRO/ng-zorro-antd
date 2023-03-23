@@ -73,6 +73,7 @@ components/water-mark/**                  @OriginRing
 components/color-picker/**                @OriginRing
 components/hash-code/**                   @OriginRing
 components/flex/**                        @ParsaArvanehPA
+components/float-button/**                @OriginRing
 
 # The `components/core/*` owners
 components/core/config/**                 @simplejason

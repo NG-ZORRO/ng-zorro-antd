@@ -1,0 +1,4 @@
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+export const moduleList = [ NzFloatButtonModule, NzToolTipModule ];
