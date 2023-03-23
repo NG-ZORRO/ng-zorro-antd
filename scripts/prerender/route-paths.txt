@@ -133,6 +133,8 @@
 /components/color-picker/zh
 /components/hash-code/en
 /components/hash-code/zh
+/components/float-button/en
+/components/float-button/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
