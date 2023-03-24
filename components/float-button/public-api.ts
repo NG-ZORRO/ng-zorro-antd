@@ -4,4 +4,7 @@
  */
 
 export * from './float-button.component';
+export * from './float-button-content.component';
+export * from './float-button-group.component';
+export * from './float-button-top.component';
 export * from './float-button.module';

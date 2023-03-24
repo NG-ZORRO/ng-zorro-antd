@@ -34,12 +34,12 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
 
 ### nz-float-button-group
 
-| 参数               | 说明                             | 类型                 | 默认值   |
-| ------------------ | -------------------------------- | -------------------- | -------- |
-| `[nzShape]`        | 设置按钮组形状                   | `circle` ｜`square`  | `circle` |
-| `[nzTrigger]`      | 触发方式（有触发方式为菜单模式） | `click`｜`hover`     | -        |
-| `[nzOpen]`         | 受控展开                         | `boolean`            | -        |
-| `(nzOnOpenChange)` | 展开收起时的回调                 | `EventEmitter<void>` | -        |
+| 参数               | 说明                             | 类型                    | 默认值   |
+| ------------------ | -------------------------------- | ----------------------- | -------- |
+| `[nzShape]`        | 设置按钮组形状                   | `circle` ｜`square`     | `circle` |
+| `[nzTrigger]`      | 触发方式（有触发方式为菜单模式） | `click`｜`hover`        | -        |
+| `[nzOpen]`         | 受控展开                         | `boolean`               | -        |
+| `(nzOnOpenChange)` | 展开收起时的回调                 | `EventEmitter<boolean>` | -        |
 
 ### nz-float-button-top
 

@@ -43,7 +43,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzFloatButtonTop',
   animations: [fadeMotion],
   template: `
-    <div #backTop [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
+    <div #backTop class="ant-float-btn-top" @fadeMotion *ngIf="visible">
       <nz-float-button
         [nzIcon]="nzIcon || top"
         [nzDescription]="nzDescription"

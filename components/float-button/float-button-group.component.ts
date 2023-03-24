@@ -34,35 +34,26 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
         <ng-container *ngSwitchDefault>
           <nz-float-button
             *ngIf="!isOpen"
-            [nzHref]="nzHref"
-            [nzTarget]="nzTarget"
             [nzType]="nzType"
             [nzIcon]="nzIcon"
             [nzDescription]="nzDescription"
-            (click)="clickOpenMenu()"
+            (nzOnClick)="clickOpenMenu()"
             (mouseover)="hoverOpenMenu()"
           ></nz-float-button>
           <nz-float-button
             *ngIf="isOpen"
             [nzType]="nzType"
             [nzIcon]="close"
-            (click)="clickCloseMenu()"
+            (nzOnClick)="clickCloseMenu()"
           ></nz-float-button>
         </ng-container>
         <nz-float-button
           *ngSwitchCase="'close'"
-          [nzHref]="nzHref"
-          [nzTarget]="nzTarget"
           [nzType]="nzType"
           [nzIcon]="nzIcon"
           [nzDescription]="nzDescription"
         ></nz-float-button>
-        <nz-float-button
-          *ngSwitchCase="'open'"
-          [nzType]="nzType"
-          [nzIcon]="close"
-          (click)="clickCloseMenu()"
-        ></nz-float-button>
+        <nz-float-button *ngSwitchCase="'open'" [nzType]="nzType" [nzIcon]="close"></nz-float-button>
       </ng-container>
     </ng-container>
     <ng-template #close>
@@ -90,7 +81,7 @@ export class NzFloatButtonGroupComponent implements OnInit {
   @Input() nzShape: 'circle' | 'square' = 'circle';
   @Input() nzTrigger: 'click' | 'hover' | null = null;
   @Input() nzOpen: boolean | null = null;
-  @Output() readonly NzOnOpenChange = new EventEmitter<boolean>();
+  @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
   isOpen: boolean = false;
   dir: Direction = 'ltr';
 
@@ -128,7 +119,8 @@ export class NzFloatButtonGroupComponent implements OnInit {
       return;
     }
     this.isOpen = true;
-    this.NzOnOpenChange.emit(true);
+    this.nzOnOpenChange.emit(true);
+    this.cdr.markForCheck();
   }
 
   hoverOpenMenu(): void {
@@ -136,7 +128,8 @@ export class NzFloatButtonGroupComponent implements OnInit {
       return;
     }
     this.isOpen = true;
-    this.NzOnOpenChange.emit(true);
+    this.nzOnOpenChange.emit(true);
+    this.cdr.markForCheck();
   }
 
   clickCloseMenu(): void {
@@ -144,7 +137,8 @@ export class NzFloatButtonGroupComponent implements OnInit {
       return;
     }
     this.isOpen = false;
-    this.NzOnOpenChange.emit(false);
+    this.nzOnOpenChange.emit(false);
+    this.cdr.markForCheck();
   }
 
   hoverCloseMenu(): void {
@@ -152,6 +146,7 @@ export class NzFloatButtonGroupComponent implements OnInit {
       return;
     }
     this.isOpen = false;
-    this.NzOnOpenChange.emit(false);
+    this.nzOnOpenChange.emit(false);
+    this.cdr.markForCheck();
   }
 }
