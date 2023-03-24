@@ -33,12 +33,12 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
 
 ### nz-float-button-group
 
-| Property           | Description                                   | Type                 | Default  |
-| ------------------ | --------------------------------------------- | -------------------- | -------- |
-| `[nzShape]`        | Set button group shape                        | `circle` ｜`square`  | `circle` |
-| `[nzTrigger]`      | Which action can trigger menu open/close      | `click`｜`hover`     | -        |
-| `[nzOpen]`         | Whether the menu is visible or not            | `boolean`            | -        |
-| `(nzOnOpenChange)` | Callback executed when active menu is changed | `EventEmitter<void>` | -        |
+| Property           | Description                                   | Type                    | Default  |
+| ------------------ | --------------------------------------------- | ----------------------- | -------- |
+| `[nzShape]`        | Set button group shape                        | `circle` ｜`square`     | `circle` |
+| `[nzTrigger]`      | Which action can trigger menu open/close      | `click`｜`hover`        | -        |
+| `[nzOpen]`         | Whether the menu is visible or not            | `boolean`               | -        |
+| `(nzOnOpenChange)` | Callback executed when active menu is changed | `EventEmitter<boolean>` | -        |
 
 ### nz-float-button-top
 

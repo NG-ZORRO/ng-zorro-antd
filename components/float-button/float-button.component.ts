@@ -32,7 +32,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
         [nzType]="nzType"
         [class.ant-float-btn-default]="nzType === 'default'"
         class="ant-float-btn-inner"
-        (click)="nzOnClick.emit()"
+        (click)="nzOnClick.emit(true)"
       >
         <nz-float-button-content
           [nzIcon]="nzIcon"
@@ -47,7 +47,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
         [nzType]="nzType"
         [class.ant-float-btn-default]="nzType === 'default'"
         class="ant-float-btn-inner"
-        (click)="nzOnClick.emit()"
+        (click)="nzOnClick.emit(true)"
       >
         <nz-float-button-content
           [nzIcon]="nzIcon"
@@ -72,7 +72,7 @@ export class NzFloatButtonComponent implements OnInit {
   @Input() nzShape: 'circle' | 'square' = 'circle';
   @Input() nzIcon: TemplateRef<void> | null = null;
   @Input() nzDescription: TemplateRef<void> | null = null;
-  @Output() readonly nzOnClick = new EventEmitter<void>();
+  @Output() readonly nzOnClick = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
 
   constructor(
