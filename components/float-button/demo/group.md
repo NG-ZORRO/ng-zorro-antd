@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 4
 title:
   zh-CN: 浮动按钮组
   en-US: FloatButton Group
