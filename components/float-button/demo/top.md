@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 7
 title:
   zh-CN: 返回顶部
   en-US: Back Top
