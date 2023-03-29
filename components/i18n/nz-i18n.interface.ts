@@ -153,6 +153,11 @@ export interface NzCronExpressionCronErrorI18n {
 
 export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
 
+export interface NzQRCodeI18nInterface {
+  expired: string;
+  refresh: string;
+}
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -168,6 +173,7 @@ export interface NzI18nInterface {
   Empty: NzEmptyI18nInterface;
   Text?: NzTextI18nInterface;
   CronExpression?: NzCronExpressionI18nInterface;
+  QRCode?: NzQRCodeI18nInterface;
 }
 
 export type DateLocale = Locale;

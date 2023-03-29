@@ -129,6 +129,8 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
+/components/qr-code/en
+/components/qr-code/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -171,3 +173,5 @@
 /experimental/pipes/zh
 /experimental/resizable/zh
 /experimental/resizable/en
+/experimental/cron-expression/zh
+/experimental/cron-expression/en
