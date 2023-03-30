@@ -19,7 +19,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 ### nz-qrcode
 
-| 参数           | 说明                                | 类型                              | 默认值   |
+| Property       | Description                         | Type                              | Default  |
 | -------------- | ----------------------------------- | --------------------------------- | -------- |
 | `[nzValue]`    | scanned link                        | `string`                          | -        |
 | `[nzColor]`    | QR code Color                       | `string`                          | `#000`   |
