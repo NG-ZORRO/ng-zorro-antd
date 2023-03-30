@@ -4,7 +4,7 @@ title: v15 Migration Guide
 toc: false
 ---
 
-This document will help you upgrade from `ng-zorro-antd` 13.x version to 14.x version.
+This document will help you upgrade from `ng-zorro-antd` 14.x version to 15.x version.
 
 ## Before upgrade
 
