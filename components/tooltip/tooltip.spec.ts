@@ -346,7 +346,7 @@ describe('arrow', () => {
     component = testBed.component;
   }));
 
-  fit('should support arrow pointing at center', () => {
+  it('should support arrow pointing at center', () => {
     const overlayElement = getOverlayElementForTooltip(component.tooltipDirective);
 
     expect(overlayElement.querySelector('.ant-tooltip-arrow')).toBeTruthy();
