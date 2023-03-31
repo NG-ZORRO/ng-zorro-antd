@@ -28,6 +28,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
 
+export type NzLabelAlignType = 'left' | 'right';
+
 export const DefaultTooltipIcon = {
   type: 'question-circle',
   theme: 'outline'
@@ -53,6 +55,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
   @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
+  @Input() nzLabelAlign: NzLabelAlignType = 'right';
 
   dir: Direction = 'ltr';
   destroy$ = new Subject();
