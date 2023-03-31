@@ -23,7 +23,7 @@ import { ThemeType } from '@ant-design/icons-angular';
 import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 
-import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
+import { DefaultTooltipIcon, NzFormDirective, NzLabelAlignType } from './form.directive';
 
 export interface NzFormTooltipIcon {
   type: NzTSType;
@@ -50,7 +50,10 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
         </ng-container>
       </span>
     </label>
-  `
+  `,
+  host: {
+    '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`
+  }
 })
 export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
@@ -81,6 +84,17 @@ export class NzFormLabelComponent implements OnDestroy {
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 
+  @Input()
+  set nzLabelAlign(value: NzLabelAlignType) {
+    this.labelAlign = value;
+  }
+
+  get nzLabelAlign(): NzLabelAlignType {
+    return this.labelAlign !== 'default' ? this.labelAlign : this.nzFormDirective?.nzLabelAlign || 'right';
+  }
+
+  private labelAlign: NzLabelAlignType | 'default' = 'default';
+
   private destroy$ = new Subject();
 
   constructor(
@@ -104,6 +118,14 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzTooltipIcon')
         .pipe(
           filter(() => this._tooltipIcon === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+
+      this.nzFormDirective
+        .getInputObservable('nzLabelAlign')
+        .pipe(
+          filter(() => this.labelAlign === 'default'),
           takeUntil(this.destroy$)
         )
         .subscribe(() => this.cdr.markForCheck());
