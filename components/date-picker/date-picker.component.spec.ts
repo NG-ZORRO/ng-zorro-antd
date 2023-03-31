@@ -29,7 +29,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormModule } from '../form';
@@ -602,19 +602,7 @@ describe('NzDatePickerComponent', () => {
       triggerInputBlur();
       fixture.detectChanges();
       tick(500);
-      fixture.detectChanges();
-      fixtureInstance.nzPlacement = 'topLeft';
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-      element = queryFromOverlay('.ant-picker-dropdown');
-      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
-      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
-      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
-      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
-      triggerInputBlur();
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+
       fixtureInstance.nzPlacement = 'bottomRight';
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -623,10 +611,16 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(true);
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
-      triggerInputBlur();
+
+      fixtureInstance.nzPlacement = 'topLeft';
       fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+
       fixtureInstance.nzPlacement = 'topRight';
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -635,6 +629,11 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(true);
+
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
     }));
 
     it('should support nzShowWeekNumber', fakeAsync(() => {

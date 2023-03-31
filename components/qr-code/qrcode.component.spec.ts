@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -31,7 +32,7 @@ describe('nz-qrcode', () => {
 
     beforeEach(() => {
       testBed = createComponentBed(NzTestQrCodeBasicComponent, {
-        imports: [NzQRCodeModule]
+        imports: [NzQRCodeModule, HttpClientTestingModule]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();
