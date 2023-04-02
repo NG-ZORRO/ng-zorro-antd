@@ -7,11 +7,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
   Optional,
-  Renderer2,
   SkipSelf,
   ViewEncapsulation
 } from '@angular/core';
@@ -52,6 +50,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
     </label>
   `,
   host: {
+    class: 'ant-form-item-label',
     '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`
   }
 })
@@ -97,14 +96,7 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    @Optional() @SkipSelf() private nzFormDirective: NzFormDirective
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
-
+  constructor(private cdr: ChangeDetectorRef, @Optional() @SkipSelf() private nzFormDirective: NzFormDirective) {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')
