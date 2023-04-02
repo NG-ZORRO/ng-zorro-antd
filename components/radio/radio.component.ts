@@ -214,6 +214,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
             return;
           }
           this.ngZone.run(() => {
+            this.focus();
             this.nzRadioService?.select(this.nzValue);
             if (this.isNgModel) {
               this.isChecked = true;
