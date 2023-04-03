@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -16,7 +17,9 @@ import {
   EventEmitter,
   OnInit,
   ChangeDetectorRef,
-  OnDestroy
+  OnDestroy,
+  Inject,
+  PLATFORM_ID
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,7 +43,9 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
         </button>
       </div>
     </div>
-    <canvas #canvas></canvas>
+    <ng-container *ngIf="isBrowser">
+      <canvas #canvas></canvas>
+    </ng-container>
   `,
   host: {
     class: 'ant-qrcode',
@@ -61,9 +66,19 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Output() readonly nzRefresh = new EventEmitter<string>();
 
   locale!: NzQRCodeI18nInterface;
+  // https://github.com/angular/universal-starter/issues/538#issuecomment-365518693
+  // canvas is not supported by the SSR DOM
+  isBrowser = true;
   private destroy$ = new Subject<void>();
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.cdr.markForCheck();
+  }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -89,15 +104,17 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   drawCanvasQRCode(): void {
-    drawCanvas(
-      this.canvas.nativeElement,
-      plotQRCodeData(this.nzValue, this.nzLevel),
-      this.nzSize,
-      10,
-      this.nzColor,
-      this.nzIconSize,
-      this.nzIcon
-    );
+    if (this.canvas) {
+      drawCanvas(
+        this.canvas.nativeElement,
+        plotQRCodeData(this.nzValue, this.nzLevel),
+        this.nzSize,
+        10,
+        this.nzColor,
+        this.nzIconSize,
+        this.nzIcon
+      );
+    }
   }
 
   ngOnDestroy(): void {

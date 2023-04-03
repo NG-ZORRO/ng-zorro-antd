@@ -65,6 +65,8 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
+import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
 
 @NgModule({
   exports: [
@@ -132,7 +134,9 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzTreeSelectModule,
     NzTypographyModule,
     NzUploadModule,
-    NzWaveModule
+    NzWaveModule,
+    NzQRCodeModule,
+    NzWaterMarkModule
   ]
 })
 export class SiteNgZorroAntdModule {}
