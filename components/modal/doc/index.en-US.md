@@ -56,15 +56,68 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | `nzOnCancel`        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | `nzOnOk`            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | `nzContent`         | Content | string / TemplateRef / Component / ng-content | - |
-| `nzComponentParams` | Deprecated, will be removed to the next major version, prefer using nzData. Will be instance property when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
+| `nzComponentParams` | Deprecated, will be removed to the next major version, prefer using `nzData`. Will be instance property when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
 | `nzData`            | Will be a template variable when `nzContent` is `TemplateRef`  | `object`, will be the value of the injection token NZ_MODAL_DATA when `nzContent` is a component| - |
 | `nzIconType`        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
 | `nzAutofocus`        | autofocus and the position，disabled when is `null` | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
 #### NZ_MODAL_DATA
 
-> NZ_MODAL_DATA injection token is used to retrieve `nzData` in the custom component.
+> `NZ_MODAL_DATA` [InjectionToken](https://angular.io/api/core/InjectionToken) is used to retrieve `nzData` in the custom component.
 The dialog created by the service method `NzModalService.create()` inject a `NZ_MODAL_DATA` token (if `nzContent` is used as Component) to retrieve the parameters that have used to the '`nzContent` component'
+
+```ts
+import { NzModalService, NzModalModule, NZ_MODAL_DATA } from 'ng-zorro-antd/modal'
+
+interface ModalData {
+  name: string
+}
+
+interface ModalResult {
+  name: string
+}
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, NzModalModule],
+  template: `<button (click)="open()"></button>`,
+})
+export class ReceiptDetailDialogComponent {
+  constructor(
+      private _nzModalService: NzModalService) {}
+
+  open(){
+      this._nzModalService.create<MyModalComponent, ModalData, ModalResult>({
+        nzContent: MyModalComponent,
+        nzData: {
+            name: 'Jack'
+        },
+      }).afterClose.subscribe(console.log) // Result: {name: "Jack ❤️ angular"}
+  }
+}
+
+@Component({
+  selector: 'app-my-modal',
+  standalone: true,
+  imports: [CommonModule, NzModalModule],
+  template: `
+  <p>{{ data.name }}</p>
+  <button (click)="close()"></button>
+  `,
+})
+export class MyModalComponent {
+  constructor(
+      private _nzModalRef: NzModalRef,
+      @Inject(NZ_MODAL_DATA) public data: ModalData) {}
+
+  close(){
+    this._nzModalRef.close({
+      name: `${this.data.name} ❤️ angular`
+    })
+  }
+}
+```
 
 #### Attentions
 

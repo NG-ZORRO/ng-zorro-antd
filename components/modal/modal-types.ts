@@ -42,9 +42,10 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
 
-  /**@deprecated
+  /**
+   * @deprecated
    * it's better to use nzData for the future, to respect naming convention from Angular team
-   * must be remove for the nex major version
+   * must be removed for the nex major version
    */
   nzComponentParams?: Partial<T>;
   nzData?: D;
