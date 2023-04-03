@@ -108,7 +108,7 @@ export class ReceiptDetailDialogComponent {
 })
 export class MyModalComponent {
   constructor(
-      private _nzModalRef: NzModalRef,
+      private _nzModalRef: NzModalRef<MyModalComponent, ModalResult>,
       @Inject(NZ_MODAL_DATA) public data: ModalData) {}
 
   close(){
