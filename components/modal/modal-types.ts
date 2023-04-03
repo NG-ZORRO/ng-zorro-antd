@@ -45,7 +45,7 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   /**
    * @deprecated
    * it's better to use nzData for the future, to respect naming convention from Angular team
-   * must be removed for the nex major version
+   * must be remove for the nex major version
    */
   nzComponentParams?: Partial<T>;
   nzData?: D;
