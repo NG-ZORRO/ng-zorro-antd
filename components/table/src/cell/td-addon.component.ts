@@ -42,6 +42,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [nzDisabled]="nzDisabled"
       [ngModel]="nzChecked"
       [nzIndeterminate]="nzIndeterminate"
+      [attr.aria-label]="nzLabel"
       (ngModelChange)="onCheckedChange($event)"
     ></label>
     <ng-content></ng-content>
@@ -59,6 +60,7 @@ export class NzTdAddOnComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzLabel: string | null = null;
   @Input() nzIndentSize = 0;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;

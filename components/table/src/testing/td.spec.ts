@@ -137,6 +137,12 @@ describe('nz-td', () => {
         }).createComponent(NzTestDisableTdComponent);
       }).toThrow();
     });
+    it('should add aria-label', () => {
+      testComponent.label = 'test-label';
+      fixture.detectChanges();
+      console.log(td.nativeElement.querySelector('label').attributes.getNamedItem('aria-label').value);
+      expect(td.nativeElement.querySelector('label').attributes.getNamedItem('aria-label').value).toBe('test-label'); //toContain('test-label');
+    });
   });
 });
 
@@ -145,6 +151,7 @@ describe('nz-td', () => {
     <td
       [(nzChecked)]="checked"
       [nzIndeterminate]="indeterminate"
+      [nzLabel]="label"
       (nzCheckedChange)="checkedChange($event)"
       [nzDisabled]="disabled"
       [(nzExpand)]="expand"
@@ -165,6 +172,7 @@ export class NzTestTdComponent {
   indentSize?: number;
   left?: string | number;
   right?: string | number;
+  label?: string | null;
 }
 
 @Component({

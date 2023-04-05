@@ -29,6 +29,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [checked]="nzChecked"
       [disabled]="nzDisabled"
       [indeterminate]="nzIndeterminate"
+      [label]="nzLabel"
       [listOfSelections]="nzSelections"
       [showCheckbox]="nzShowCheckbox"
       [showRowSelection]="nzShowRowSelection"
@@ -46,6 +47,7 @@ export class NzThSelectionComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzLabel: string | null = null;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
