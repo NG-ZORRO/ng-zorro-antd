@@ -363,7 +363,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     let listOfGroupLabel: Array<string | number | TemplateRef<NzSafeAny> | null> = [];
     if (this.isReactiveDriven) {
-      listOfGroupLabel = [...new Set(this.nzOptions.filter(o => o.groupLabel).map(o => o.groupLabel!))];
+      listOfGroupLabel = [...new Set(this.nzOptions?.filter(o => o.groupLabel).map(o => o.groupLabel!))];
     } else {
       if (this.listOfNzOptionGroupComponent) {
         listOfGroupLabel = this.listOfNzOptionGroupComponent.map(o => o.nzLabel);
