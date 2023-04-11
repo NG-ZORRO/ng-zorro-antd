@@ -2,7 +2,7 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
@@ -205,42 +205,63 @@ describe('rate', () => {
   describe('rate form', () => {
     let fixture: ComponentFixture<NzTestRateFormComponent>;
     let testComponent: NzTestRateFormComponent;
-    let rate: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRateFormComponent);
+      testComponent = fixture.componentInstance;
+    });
+    it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      rate = fixture.debugElement.query(By.directive(NzRateComponent));
-    }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
+      const rate = fixture.debugElement.query(By.directive(NzRateComponent));
       expect(testComponent.formGroup.valid).toBe(true);
       expect(testComponent.formGroup.pristine).toBe(true);
       expect(testComponent.formGroup.touched).toBe(false);
+      expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-disabled');
     }));
-    it('should set disabled work', fakeAsync(() => {
-      flush();
-      expect(testComponent.formGroup.get('rate')!.value).toBe(1);
-      rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      fixture.detectChanges();
-      expect(testComponent.formGroup.get('rate')!.value).toBe(4);
+    it('should be disable if form is enable and nzDisable set to true initially', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
       flush();
-      fixture.detectChanges();
-      testComponent.formGroup.get('rate')!.setValue(2);
+      const rate = fixture.debugElement.query(By.directive(NzRateComponent));
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
+    }));
+    it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
       flush();
+      const rate = fixture.debugElement.query(By.directive(NzRateComponent));
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      flush();
+
+      const rate = fixture.debugElement.query(By.directive(NzRateComponent));
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
+      expect(testComponent.formGroup.get('rate')!.value).toBe(1);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('rate')!.value).toBe(2);
+      expect(testComponent.formGroup.get('rate')!.value).toBe(1);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      flush();
+      expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-disabled');
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.get('rate')!.value).toBe(4);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      flush();
+      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
+      rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
+      fixture.detectChanges();
+      expect(testComponent.formGroup.get('rate')!.value).toBe(4);
     }));
   });
-
   describe('RTL', () => {
     let fixture: ComponentFixture<NzTestRateRtlComponent>;
     let rate: DebugElement;
@@ -260,7 +281,6 @@ describe('rate', () => {
       expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
     }));
   });
-
   describe('rate character', () => {
     let fixture: ComponentFixture<NzTestRateCharacterComponent>;
     let rate: DebugElement;
@@ -281,7 +301,6 @@ describe('rate', () => {
     });
   });
 });
-
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-rate',
@@ -319,12 +338,14 @@ export class NzTestRateBasicComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-rate formControlName="rate"></nz-rate>
+      <nz-rate formControlName="rate" [nzDisabled]="disabled"></nz-rate>
     </form>
   `
 })
 export class NzTestRateFormComponent {
   formGroup: UntypedFormGroup;
+
+  disabled = false;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -334,6 +355,10 @@ export class NzTestRateFormComponent {
 
   disable(): void {
     this.formGroup.disable();
+  }
+
+  enable(): void {
+    this.formGroup.enable();
   }
 }
 @Component({

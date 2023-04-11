@@ -105,7 +105,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [open]="nzOpen"
       [disabled]="nzDisabled"
       [mode]="nzMode"
-      [@.disabled]="noAnimation?.nzNoAnimation"
+      [@.disabled]="!!noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [maxTagPlaceholder]="nzMaxTagPlaceholder"
       [removeIcon]="nzRemoveIcon"
@@ -164,7 +164,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
         [class.ant-select-dropdown-placement-bottomRight]="dropDownPosition === 'bottomRight'"
         [class.ant-select-dropdown-placement-topRight]="dropDownPosition === 'topRight'"
         [@slideMotion]="'enter'"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [listOfContainerItem]="listOfContainerItem"
         [menuItemSelectedIcon]="nzMenuItemSelectedIcon"
@@ -245,6 +245,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() @InputBoolean() nzServerSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
+  @Input() @InputBoolean() nzSelectOnTab = false;
   @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
@@ -278,6 +279,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private value: NzSafeAny | NzSafeAny[];
   private _nzShowArrow: boolean | undefined;
   private requestId: number = -1;
+  private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   dropDownPosition: NzSelectPlacementType = 'bottomLeft';
@@ -355,6 +357,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     const activatedItem =
       listOfContainerItem.find(item => item.nzLabel === this.searchValue) ||
+      listOfContainerItem.find(item => this.compareWith(item.nzValue, this.activatedValue)) ||
       listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) ||
       listOfContainerItem[0];
     this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
@@ -449,7 +452,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       case ENTER:
         e.preventDefault();
         if (this.nzOpen) {
-          if (isNotNil(this.activatedValue)) {
+          if (isNotNil(this.activatedValue) && activatedIndex !== -1) {
             this.onItemClick(this.activatedValue);
           }
         } else {
@@ -463,7 +466,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         }
         break;
       case TAB:
-        this.setOpenState(false);
+        if (this.nzSelectOnTab) {
+          if (this.nzOpen) {
+            e.preventDefault();
+            if (isNotNil(this.activatedValue)) {
+              this.onItemClick(this.activatedValue);
+            }
+          }
+        } else {
+          this.setOpenState(false);
+        }
         break;
       case ESCAPE:
         /**
@@ -589,8 +601,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
-    if (disabled) {
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
+    if (this.nzDisabled) {
       this.setOpenState(false);
     }
     this.cdr.markForCheck();

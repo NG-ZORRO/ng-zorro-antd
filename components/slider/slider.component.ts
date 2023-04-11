@@ -168,6 +168,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private dragMove_?: Subscription | null;
   private dragEnd_?: Subscription | null;
   private destroy$ = new Subject();
+  private isNzDisableFirstChange = true;
 
   constructor(
     private sliderService: NzSliderService,
@@ -231,8 +232,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
     this.toggleDragDisabled(isDisabled);
+    this.cdr.markForCheck();
   }
 
   /**

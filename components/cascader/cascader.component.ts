@@ -140,7 +140,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
         [@slideMotion]="'enter'"
-        [@.disabled]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
@@ -328,6 +328,7 @@ export class NzCascaderComponent
   private isOpening = false;
   private delayMenuTimer: number | null = null;
   private delaySelectTimer: number | null = null;
+  private isNzDisableFirstChange: boolean = true;
 
   get inSearchingMode(): boolean {
     return this.cascaderService.inSearchingMode;
@@ -746,10 +747,11 @@ export class NzCascaderComponent
   }
 
   setDisabledState(isDisabled: boolean): void {
-    if (isDisabled) {
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    if (this.nzDisabled) {
       this.closeMenu();
     }
-    this.nzDisabled = isDisabled;
   }
 
   closeMenu(): void {

@@ -16,7 +16,7 @@ import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerServiceModule } from './drawer.service.module';
 
-export class DrawerBuilderForService<T, R> {
+export class DrawerBuilderForService<T extends {}, R> {
   private drawerRef: NzDrawerComponent<T, R> | null;
   private overlayRef: OverlayRef;
   private unsubscribe$ = new Subject<void>();
@@ -65,7 +65,7 @@ export class DrawerBuilderForService<T, R> {
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 
-  create<T = NzSafeAny, D = undefined, R = NzSafeAny>(
+  create<T extends {} = NzSafeAny, D = undefined, R = NzSafeAny>(
     options: NzDrawerOptions<T, D extends undefined ? {} : D>
   ): NzDrawerRef<T, R> {
     return new DrawerBuilderForService<T, R>(this.overlay, options).getInstance();

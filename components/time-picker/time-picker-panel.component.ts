@@ -90,7 +90,6 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       <ul *ngIf="nzUse12Hours" #use12HoursListElement class="ant-picker-time-panel-column" style="position: relative;">
         <ng-container *ngFor="let range of use12HoursRange">
           <li
-            *ngIf="!nzHideDisabledOptions"
             (click)="select12Hours(range)"
             class="ant-picker-time-panel-cell"
             [class.ant-picker-time-panel-cell-selected]="isSelected12Hours(range)"

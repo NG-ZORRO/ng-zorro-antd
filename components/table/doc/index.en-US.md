@@ -66,7 +66,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzData]` | Data record array to be rendered | `T[]` | - |
 | `[nzFrontPagination]` | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean` | `true` |
-| `[nzTotal]` | Total data count. Should set when `nzServerRender` is `true` | `number` | - |
+| `[nzTotal]` | Total data count. Should set when `nzFrontPagination` is `false` | `number` | - |
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether to show pagination component at bottom of the table | `boolean` | `true` |
@@ -123,6 +123,7 @@ Sort property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzShowSort]` | Whether to display sorting | `boolean` | - |
 | `[nzSortFn]` | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting  | `NzTableSortFn<T> \| boolean` | - |
 | `[nzSortOrder]` | Sort direction | `'ascend' \| 'descend' \| null` | - |
 | `[nzSortDirections]` | Supported sort order, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |

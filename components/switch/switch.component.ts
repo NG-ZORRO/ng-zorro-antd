@@ -97,6 +97,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange = true;
 
   updateValue(value: boolean): void {
     if (this.isChecked !== value) {
@@ -207,7 +208,8 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 }

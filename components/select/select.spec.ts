@@ -2,7 +2,7 @@ import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@ang
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -276,6 +276,58 @@ describe('select', () => {
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
 
+    it('should select option by enter', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value', nzLabel: 'label' },
+        { nzValue: 'disabledValue', nzLabel: 'disabledLabel', nzDisabled: true }
+      ];
+      component.nzShowSearch = true;
+      component.nzOpen = true;
+
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'label';
+
+      dispatchFakeEvent(inputElement, 'input');
+      flushChanges();
+      expect(component.searchValueChange).toHaveBeenCalledWith('label');
+
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.value).toBe('value');
+    }));
+
+    it('should nzDisabled option works', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value', nzLabel: 'label' },
+        { nzValue: 'disabledValue', nzLabel: 'disabledLabel', nzDisabled: true }
+      ];
+      component.nzShowSearch = true;
+      component.nzOpen = true;
+
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'disabled';
+
+      dispatchFakeEvent(inputElement, 'input');
+      flushChanges();
+      expect(component.searchValueChange).toHaveBeenCalledWith('disabled');
+
+      dispatchKeyboardEvent(inputElement, 'keydown', ENTER, inputElement);
+      flushChanges();
+      expect(component.value).not.toBe('disabledValue');
+    }));
+
     it('should nzBackdrop works', fakeAsync(() => {
       component.nzOpen = true;
       component.nzBackdrop = true;
@@ -468,6 +520,50 @@ describe('select', () => {
         flushChanges();
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
       });
+    }));
+    it('should select item on TAB when nzSelectOnTab is true', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzSelectOnTab = true;
+      component.listOfOption = [
+        { nzValue: 'value_01', nzLabel: 'label_01' },
+        { nzValue: 'value_02', nzLabel: 'label_02' },
+        { nzValue: 'value_03', nzLabel: 'label_03' }
+      ];
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', TAB, inputElement);
+      flushChanges();
+      expect(component.valueChange).toHaveBeenCalledWith('value_01');
+      flushChanges();
+      expect(component.openChange).toHaveBeenCalledWith(false);
+      expect(component.openChange).toHaveBeenCalledTimes(1);
+    }));
+    it('should close select and keep the same value on TAB when nzSelectOnTab is default(false)', fakeAsync(() => {
+      const flushChanges = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 'value_01', nzLabel: 'label_01' },
+        { nzValue: 'value_02', nzLabel: 'label_02' },
+        { nzValue: 'value_03', nzLabel: 'label_03' }
+      ];
+      component.value = 'value_02';
+      component.nzOpen = true;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keydown', TAB, inputElement);
+      flushChanges();
+      expect(component.valueChange).not.toHaveBeenCalled();
+      flushChanges();
+      expect(component.openChange).toHaveBeenCalledWith(false);
+      expect(component.openChange).toHaveBeenCalledTimes(1);
     }));
   });
   describe('multiple template mode', () => {
@@ -1306,19 +1402,21 @@ describe('select', () => {
     let testBed: ComponentBed<TestSelectInFormComponent>;
     let component: TestSelectInFormComponent;
     let fixture: ComponentFixture<TestSelectInFormComponent>;
-    let selectElement!: HTMLElement;
 
     beforeEach(() => {
       testBed = createComponentBed(TestSelectInFormComponent, {
-        imports: [NzSelectModule, NzIconTestModule, NzFormModule, FormsModule]
+        imports: [NzSelectModule, NzIconTestModule, NzFormModule, ReactiveFormsModule]
       });
       component = testBed.component;
       fixture = testBed.fixture;
-      selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
     });
-
-    it('should classname correct', () => {
+    it('should classname correct and be disable initially', () => {
       fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(inputElement.disabled).toBeFalsy();
+      expect(selectElement.classList).not.toContain('ant-select-disabled');
       expect(selectElement.classList).toContain('ant-select-status-error');
       expect(selectElement.classList).toContain('ant-select-in-form-item');
       expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
@@ -1335,6 +1433,26 @@ describe('select', () => {
       fixture.detectChanges();
       expect(selectElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
+    it('should be disable by default even if form is enable', fakeAsync(() => {
+      component.disabled = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBeTruthy();
+      expect(selectElement.classList).toContain('ant-select-disabled');
+    }));
+    it('should be disable if form is disabled and nzDisabled set to false', fakeAsync(() => {
+      component.disable();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      const inputElement = testBed.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+      expect(inputElement.disabled).toBeTruthy();
+      expect(selectElement.classList).toContain('ant-select-disabled');
+    }));
   });
   describe('placement', () => {
     let testBed: ComponentBed<TestSelectTemplateDefaultComponent>;
@@ -1427,6 +1545,7 @@ describe('select', () => {
       [nzBackdrop]="nzBackdrop"
       [(nzOpen)]="nzOpen"
       [nzPlacement]="nzPlacement"
+      [nzSelectOnTab]="nzSelectOnTab"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1488,6 +1607,7 @@ export class TestSelectTemplateDefaultComponent {
   nzDisabled = false;
   nzOpen = false;
   nzBackdrop = false;
+  nzSelectOnTab = false;
   nzPlacement: NzSelectPlacementType | null = 'bottomLeft';
 }
 
@@ -1702,16 +1822,29 @@ export class TestSelectStatusComponent {
 
 @Component({
   template: `
-    <form nz-form>
+    <form nz-form [formGroup]="selectForm">
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-select [nzOptions]="[]"></nz-select>
+          <nz-select formControlName="selectControl" [nzOptions]="[]" [nzDisabled]="disabled"></nz-select>
         </nz-form-control>
       </nz-form-item>
     </form>
   `
 })
 export class TestSelectInFormComponent {
+  selectForm = new FormGroup({
+    selectControl: new FormControl(null)
+  });
   status: NzFormControlStatusType = 'error';
   feedback = true;
+
+  disabled = false;
+
+  disable(): void {
+    this.selectForm.disable();
+  }
+
+  enable(): void {
+    this.selectForm.enable();
+  }
 }

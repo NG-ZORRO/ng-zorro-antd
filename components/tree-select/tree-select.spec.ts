@@ -4,7 +4,7 @@ import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -603,8 +603,8 @@ describe('tree-select component', () => {
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
     });
     it('should display', fakeAsync(() => {
-      treeSelect.nativeElement.click();
       fixture.detectChanges();
+      treeSelect.nativeElement.click();
       flush();
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('span.anticon.anticon-frown-o')).toBeTruthy();

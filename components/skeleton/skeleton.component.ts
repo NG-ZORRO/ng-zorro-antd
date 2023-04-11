@@ -7,11 +7,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -32,6 +30,7 @@ import {
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
   host: {
+    class: 'ant-skeleton',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive',
     '[class.ant-skeleton-round]': '!!nzRound'
@@ -71,9 +70,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-skeleton');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);

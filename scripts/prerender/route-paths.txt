@@ -129,6 +129,10 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
+/components/qr-code/en
+/components/qr-code/zh
+/components/water-mark/en
+/components/water-mark/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -153,8 +157,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v14/en
-/docs/migration-v14/zh
+/docs/migration-v15/en
+/docs/migration-v15/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en
@@ -171,3 +175,5 @@
 /experimental/pipes/zh
 /experimental/resizable/zh
 /experimental/resizable/en
+/experimental/cron-expression/zh
+/experimental/cron-expression/en

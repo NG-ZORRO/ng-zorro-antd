@@ -19,22 +19,28 @@ export class OnlineIdeService {
   document: Document;
   template = 'angular-cli' as const;
   dependencies = {
-    '@angular/animations': '^14.1.0',
-    '@angular/cdk': '^14.1.0',
-    '@angular/common': '^14.1.0',
-    '@angular/compiler': '^14.1.0',
-    '@angular/core': '^14.1.0',
-    '@angular/forms': '^14.1.0',
-    '@angular/platform-browser': '^14.1.0',
-    '@angular/platform-browser-dynamic': '^14.1.0',
-    '@angular/router': '^14.1.0',
-    '@ant-design/icons-angular': '^14.1.0',
+    '@angular/animations': '^15.0.0',
+    '@angular/cdk': '^15.0.0',
+    '@angular/common': '^15.0.0',
+    '@angular/compiler': '^15.0.0',
+    '@angular/core': '^15.0.0',
+    '@angular/forms': '^15.0.0',
+    '@angular/platform-browser': '^15.0.0',
+    '@angular/platform-browser-dynamic': '^15.0.0',
+    '@angular/router': '^15.0.0',
+    '@ant-design/icons-angular': '^15.0.0',
     rxjs: '~6.6.3',
     'core-js': '~3.6.5',
     'date-fns': '^2.16.1',
     tslib: '^2.0.0',
     'zone.js': '~0.11.1',
-    'ng-zorro-antd': `^${VERSION.full}`
+    'ng-zorro-antd': `^${VERSION.full}`,
+    // demo needs
+    d3: '^6.3.1',
+    dagre: '^0.8.5',
+    'dagre-compound': '^0.0.8',
+    'cron-parser': '^4.6.0',
+    'monaco-editor': '^0.33.0'
   };
 
   // tslint:disable-next-line:no-any

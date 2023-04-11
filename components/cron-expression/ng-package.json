@@ -1,0 +1,6 @@
+{
+  "lib": {
+    "entryFile": "public-api.ts"
+  },
+  "allowedNonPeerDependencies": ["cron-parser"]
+}

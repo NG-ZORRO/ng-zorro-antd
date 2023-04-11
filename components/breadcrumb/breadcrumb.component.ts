@@ -48,7 +48,10 @@ export interface BreadcrumbOption {
         <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
       </nz-breadcrumb-item>
     </ng-container>
-  `
+  `,
+  host: {
+    class: 'ant-breadcrumb'
+  }
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   static ngAcceptInputType_nzAutoGenerate: BooleanInput;
@@ -69,9 +72,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
     private elementRef: ElementRef,
     private renderer: Renderer2,
     @Optional() private directionality: Directionality
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {

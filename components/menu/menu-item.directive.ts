@@ -18,7 +18,7 @@ import {
   QueryList,
   SimpleChanges
 } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -65,7 +65,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   @Input() @InputBoolean() nzMatchRouterExact = false;
   @Input() @InputBoolean() nzMatchRouter = false;
   @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;
-  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref!: QueryList<RouterLinkWithHref>;
 
   /** clear all item selected status except this */
   clickMenuItem(e: MouseEvent): void {
@@ -90,13 +89,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   private updateRouterActive(): void {
-    if (
-      !this.listOfRouterLink ||
-      !this.listOfRouterLinkWithHref ||
-      !this.router ||
-      !this.router.navigated ||
-      !this.nzMatchRouter
-    ) {
+    if (!this.listOfRouterLink || !this.router || !this.router.navigated || !this.nzMatchRouter) {
       return;
     }
     Promise.resolve().then(() => {
@@ -111,16 +104,11 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   private hasActiveLinks(): boolean {
     const isActiveCheckFn = this.isLinkActive(this.router!);
-    return (
-      (this.routerLink && isActiveCheckFn(this.routerLink)) ||
-      (this.routerLinkWithHref && isActiveCheckFn(this.routerLinkWithHref)) ||
-      this.listOfRouterLink.some(isActiveCheckFn) ||
-      this.listOfRouterLinkWithHref.some(isActiveCheckFn)
-    );
+    return (this.routerLink && isActiveCheckFn(this.routerLink)) || this.listOfRouterLink.some(isActiveCheckFn);
   }
 
-  private isLinkActive(router: Router): (link: RouterLink | RouterLinkWithHref) => boolean {
-    return (link: RouterLink | RouterLinkWithHref) =>
+  private isLinkActive(router: Router): (link: RouterLink) => boolean {
+    return (link: RouterLink) =>
       router.isActive(link.urlTree || '', {
         paths: this.nzMatchRouterExact ? 'exact' : 'subset',
         queryParams: this.nzMatchRouterExact ? 'exact' : 'subset',
@@ -136,7 +124,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
-    @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
   ) {
     if (router) {
@@ -165,7 +152,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   ngAfterContentInit(): void {
     this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
-    this.listOfRouterLinkWithHref.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
     this.updateRouterActive();
   }
 

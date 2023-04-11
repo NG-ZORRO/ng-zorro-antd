@@ -1,0 +1,131 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@cron-expression-prefix-cls: ~'@{ant-prefix}-cron-expression';
+
+.@{cron-expression-prefix-cls} {
+  display: flex;
+  flex-wrap: nowrap;
+
+  &-content{
+    width: 100%;
+
+    .@{cron-expression-prefix-cls}-input-group-error {
+      border-color: @error-color;
+      box-shadow: none;
+    }
+
+    .@{cron-expression-prefix-cls}-input-group-error-focus {
+      box-shadow: 0 0 0 @outline-width @error-color-outline;
+    }
+  }
+
+  nz-cron-expression-input{
+    width: 20%;
+  }
+
+  &-input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    input {
+      border: none !important;
+      box-shadow: none !important;
+      width: 100%;
+      outline: none;
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+
+  &-input-group-focus {
+    border-color: @primary-color;
+    box-shadow: 0 0 0 @outline-width @primary-color-outline;
+    outline: 0;
+  }
+
+  nz-cron-expression-label {
+    width: 20%;
+  }
+
+  &-label-group {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    &-default {
+      padding: 0 @padding-sm;
+    }
+  }
+
+  &-label-foucs {
+    color: @primary-color;
+  }
+
+  &-map {
+    margin-left: @margin-sm;
+  }
+
+  &-preview {
+    display: flex;
+    padding: @padding-sm;
+
+    &-dateTime {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+
+      &-center {
+        justify-content: center;
+      }
+    }
+
+    &-content {
+      flex: 0 0 220px;
+      display: flex;
+      align-items: center;
+      padding-left: @padding-md;
+
+      &-date {
+        flex: 1 1 auto;
+      }
+    }
+
+    &-list, &-icon {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    &-list {
+      overflow-y: scroll;
+      height: 132px;
+    }
+
+    &-icon {
+      height: 100%;
+    }
+  }
+
+  &-error {
+    color: @error-color;
+  }
+
+  &-hint {
+    p {
+      display: flex;
+    }
+    span {
+      display: inline-block;
+      min-width: 40px;
+    }
+  }
+}

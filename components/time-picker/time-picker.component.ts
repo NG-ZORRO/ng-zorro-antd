@@ -149,6 +149,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
   isInit = false;
   focused = false;
   inputValue: string = '';
@@ -440,7 +441,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 

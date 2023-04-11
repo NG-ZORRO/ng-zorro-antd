@@ -86,6 +86,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
 
   private isNgModel = false;
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
   isChecked = false;
   name: string | null = null;
   isRadioButton = !!this.nzRadioButtonDirective;
@@ -118,7 +119,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   ) {}
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 
@@ -143,7 +145,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
       this.nzRadioService.disabled$.pipe(takeUntil(this.destroy$)).subscribe(disabled => {
-        this.nzDisabled = disabled;
+        this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+        this.isNzDisableFirstChange = false;
         this.cdr.markForCheck();
       });
       this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
@@ -211,6 +214,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
             return;
           }
           this.ngZone.run(() => {
+            this.focus();
             this.nzRadioService?.select(this.nzValue);
             if (this.isNgModel) {
               this.isChecked = true;

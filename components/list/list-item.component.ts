@@ -9,11 +9,9 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   HostBinding,
   Input,
   OnDestroy,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -63,7 +61,10 @@ import { NzListComponent } from './list.component';
   `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'ant-list-item'
+  }
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzNoFlex: BooleanInput;
@@ -82,14 +83,7 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
-  constructor(
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    private parentComp: NzListComponent,
-    private cdr: ChangeDetectorRef
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-list-item');
-  }
+  constructor(private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {

@@ -89,7 +89,7 @@ registerLocaleData(zh);
 | --- | --- | --- | --- |
 | `[(ngModel)]` | 日期 | `Date[]` | - |
 | `[nzRanges]` | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzSeparator]` | 分隔符 | `string` | `'~'` |
+| `[nzSeparator]` | 分隔符 | `string \| TemplateRef`                        | `'~'` |
 | `(nzOnCalendarChange)` | 待选日期发生变化的回调 | `EventEmitter<Date[]>` | - |
 
 ### nz-range-picker[nzMode="date"]

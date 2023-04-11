@@ -160,6 +160,7 @@ export interface CarouselConfig {
   nzEffect?: 'scrollx' | 'fade' | string;
   nzEnableSwipe?: boolean;
   nzVertical?: boolean;
+  nzLoop?: boolean;
 }
 
 export interface CascaderConfig {

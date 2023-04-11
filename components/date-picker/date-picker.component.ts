@@ -26,8 +26,8 @@ import {
   Host,
   Inject,
   Input,
+  NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -40,7 +40,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { of as observableOf, Subject } from 'rxjs';
+import { fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -48,7 +48,8 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_DATE_PICKER_POSITIONS, DATE_PICKER_POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
@@ -123,11 +124,13 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         </div>
         <div #separatorElement class="{{ prefixCls }}-range-separator">
           <span class="{{ prefixCls }}-separator">
-            <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="nzSeparator; let separator">
+              <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
+              <ng-template #defaultSeparator>
+                <span nz-icon nzType="swap-right" nzTheme="outline"></span>
+              </ng-template>
+            </ng-container>
           </span>
-          <ng-template #defaultSeparator>
-            <span nz-icon nzType="swap-right" nzTheme="outline"></span>
-          </ng-template>
         </div>
         <div class="{{ prefixCls }}-input">
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
@@ -239,6 +242,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     '(click)': 'onClickInputBox($event)'
   },
   providers: [
+    NzDestroyService,
     DatePickerService,
     {
       provide: NG_VALUE_ACCESSOR,
@@ -248,7 +252,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   ],
   animations: [slideMotion]
 })
-export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit, ControlValueAccessor {
+export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
@@ -272,11 +276,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   hasFeedback: boolean = false;
 
   public panelMode: NzDateMode | NzDateMode[] = 'date';
-  private destroyed$: Subject<void> = new Subject();
   private isCustomPlaceHolder: boolean = false;
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
-
+  private isNzDisableFirstChange: boolean = true;
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
@@ -301,7 +304,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() @InputBoolean() nzShowNow: boolean = true;
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() @WithConfig() nzSeparator?: string = undefined;
+  @Input() @WithConfig() nzSeparator?: string | TemplateRef<NzSafeAny> = undefined;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
@@ -356,19 +359,33 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (this.isRange && this.platform.isBrowser) {
       this.nzResizeObserver
         .observe(this.elementRef)
-        .pipe(takeUntil(this.destroyed$))
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.updateInputWidthAndArrowLeft();
         });
     }
 
-    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroyed$)).subscribe(partType => {
+    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
       if (partType) {
         this.datePickerService.activeInput = partType;
       }
       this.focus();
       this.updateInputWidthAndArrowLeft();
     });
+
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() =>
+        // prevent mousedown event to trigger focusout event when click in date picker
+        // see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/7450
+        fromEvent(this.elementRef.nativeElement, 'mousedown')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(event => {
+            if ((event.target as HTMLInputElement).tagName.toLowerCase() !== 'input') {
+              event.preventDefault();
+            }
+          })
+      );
+    }
   }
 
   updateInputWidthAndArrowLeft(): void {
@@ -418,7 +435,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   // blur event has not the relatedTarget in IE11, use focusout instead.
   onFocusout(event: FocusEvent): void {
     event.preventDefault();
-    if (!this.elementRef.nativeElement.contains(event.relatedTarget)) {
+    if (!this.elementRef.nativeElement.contains(<Node>event.relatedTarget)) {
       this.checkAndClose();
     }
     this.renderClass(false);
@@ -584,10 +601,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private elementRef: ElementRef<HTMLElement>,
     private dateHelper: DateHelperService,
     private nzResizeObserver: NzResizeObserver,
     private platform: Platform,
+    private destroy$: NzDestroyService,
     @Inject(DOCUMENT) doc: NzSafeAny,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
@@ -606,7 +625,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
         }),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroyed$)
+        takeUntil(this.destroy$)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -614,14 +633,35 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     // Subscribe the every locale change if the nzLocale is not handled by user
     if (!this.nzLocale) {
-      this.i18n.localeChange.pipe(takeUntil(this.destroyed$)).subscribe(() => this.setLocale());
+      this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => this.setLocale());
     }
 
     // Default value
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
-    this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+    this.datePickerService.emitValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const value = this.datePickerService.value;
+      const datePickerPreviousValue = this.datePickerService.initialValue;
+
+      // Check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      if (!this.isRange && (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate)) {
+        this.onTouchedFn();
+        return this.close();
+      }
+
+      // check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      if (this.isRange) {
+        const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
+        const [currentStartDate, currentEndDate] = value as CandyDate[];
+        if (
+          previousStartDate?.isSame(currentStartDate?.nativeDate) &&
+          previousEndDate?.isSame(currentEndDate?.nativeDate)
+        ) {
+          this.onTouchedFn();
+          return this.close();
+        }
+      }
+
       this.datePickerService.initialValue = cloneDate(value);
       if (this.isRange) {
         const vAsRange = value as CandyDate[];
@@ -642,7 +682,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.close();
     });
 
-    this.directionality.change?.pipe(takeUntil(this.destroyed$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -650,7 +690,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
     });
   }
@@ -692,11 +732,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (nzPlacement) {
       this.setPlacement(this.nzPlacement);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   setModeAndFormat(): void {
@@ -753,8 +788,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.cdr.markForCheck();
+    this.isNzDisableFirstChange = false;
   }
 
   // ------------------------------------------------------------------------

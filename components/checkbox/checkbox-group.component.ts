@@ -70,6 +70,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
 
   trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
@@ -125,7 +126,8 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 }

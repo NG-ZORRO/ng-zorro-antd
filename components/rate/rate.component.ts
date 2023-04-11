@@ -111,6 +111,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   private hoverValue = 0;
   private isFocused = false;
   private _value = 0;
+  private isNzDisableFirstChange: boolean = true;
 
   get nzValue(): number {
     return this._value;
@@ -285,7 +286,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: number) => void): void {

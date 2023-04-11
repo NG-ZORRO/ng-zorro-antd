@@ -6,11 +6,12 @@ import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -28,7 +29,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormModule } from '../form';
@@ -192,6 +193,25 @@ describe('NzDatePickerComponent', () => {
       expect(isSameDay(new Date('2021-04-12'), result)).toBeTruthy();
       expect(getPickerContainer()).toBeNull();
     }));
+    it("should not send onChangeEvent if value doesn't change", fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.useSuite = 5;
+      fixtureInstance.firstValue = new Date('2021-04-12');
+      fixture.detectChanges();
+
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
+      typeInElement('2021-04-12', getPickerInput(fixture.debugElement));
+      fixture.detectChanges();
+
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      expect(nzOnChange).not.toHaveBeenCalled();
+      expect(getPickerContainer()).toBeNull();
+    }));
 
     it('should support changing language at runtime', fakeAsync(() => {
       fixture.detectChanges();
@@ -219,6 +239,28 @@ describe('NzDatePickerComponent', () => {
 
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should prevent default on the mousedown event when mouse down in date picker', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const event = new MouseEvent('mousedown');
+      spyOn(event, 'preventDefault').and.callThrough();
+      fixture.nativeElement.querySelector(`.${PREFIX_CLASS}`).dispatchEvent(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+    }));
+
+    it('should execute default on the mousedown event when mouse down in date picker input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const event = new MouseEvent('mousedown');
+      spyOn(event, 'preventDefault').and.callThrough();
+      fixture.nativeElement.querySelector(`.${PREFIX_CLASS} input`).dispatchEvent(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
@@ -249,22 +291,43 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzDisabled', fakeAsync(() => {
-      // Make sure picker clear button shown up
-      fixtureInstance.nzAllowClear = true;
-      fixtureInstance.nzValue = new Date();
-
+      fixtureInstance.useSuite = 4;
       fixtureInstance.nzDisabled = true;
+      fixtureInstance.nzAllowClear = true; // Make sure picker clear button shown up
+      fixtureInstance.nzValue = new Date();
+      fixtureInstance.control = new FormControl(new Date());
+      fixture.detectChanges();
+      flush();
+
+      const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(datePickerElement.classList).toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).toBeNull();
+
+      fixtureInstance.control.enable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('.ant-input-disabled'))).not.toBeNull();
-      expect(debugElement.query(By.css('.ant-picker-clear'))).toBeNull();
+      expect(datePickerElement.classList).not.toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeFalsy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).not.toBeNull();
 
-      fixtureInstance.nzDisabled = false;
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+      fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(debugElement.query(By.css('.ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('.ant-picker-clear'))).not.toBeNull();
+      fixtureInstance.control.disable();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(datePickerElement.classList).toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeTruthy();
+      openPickerByClickTrigger();
+      expect(getPickerContainer()).toBeNull();
     }));
 
     it('should support nzInputReadOnly', fakeAsync(() => {
@@ -539,19 +602,7 @@ describe('NzDatePickerComponent', () => {
       triggerInputBlur();
       fixture.detectChanges();
       tick(500);
-      fixture.detectChanges();
-      fixtureInstance.nzPlacement = 'topLeft';
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-      element = queryFromOverlay('.ant-picker-dropdown');
-      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
-      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
-      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
-      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
-      triggerInputBlur();
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+
       fixtureInstance.nzPlacement = 'bottomRight';
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -560,10 +611,16 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(true);
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
-      triggerInputBlur();
+
+      fixtureInstance.nzPlacement = 'topLeft';
       fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      openPickerByClickTrigger();
+      element = queryFromOverlay('.ant-picker-dropdown');
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
+
       fixtureInstance.nzPlacement = 'topRight';
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -572,6 +629,11 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-bottomRight')).toBe(false);
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(true);
+
+      triggerInputBlur();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
     }));
 
     it('should support nzShowWeekNumber', fakeAsync(() => {
@@ -1177,6 +1239,11 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
+      const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+      const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+
+      expect(datePickerElement.classList).not.toContain('ant-picker-disabled');
+      expect(inputElement.disabled).toBeFalsy();
       expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
     }));
 
@@ -1383,7 +1450,7 @@ describe('in form', () => {
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
 
       <!-- Suite 4 -->
-      <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
+      <nz-date-picker *ngSwitchCase="4" [formControl]="control" [nzDisabled]="nzDisabled"></nz-date-picker>
 
       <!-- Suite 5 -->
       <ng-container *ngSwitchCase="5">

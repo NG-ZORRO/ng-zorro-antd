@@ -1,0 +1,39 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@qrcode-prefix-cls: ~'@{ant-prefix}-qrcode';
+
+.@{qrcode-prefix-cls} {
+  display: inline-block;
+  position: relative;
+  background-color: @white;
+  padding: @padding-sm;
+
+  &>canvas {
+    display: block;
+  }
+}
+
+.@{qrcode-prefix-cls}-border {
+  border-radius: @border-radius-base;
+  border: @border-width-base @border-style-base @border-color-split;
+}
+
+.@{qrcode-prefix-cls}-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: fade(@white, 96%);
+}
+
+.@{qrcode-prefix-cls}-expired {
+  color: fade(@black, 85%);
+}
