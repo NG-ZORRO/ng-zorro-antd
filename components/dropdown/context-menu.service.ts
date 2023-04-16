@@ -7,7 +7,7 @@ import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overla
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, NgZone } from '@angular/core';
 import { fromEvent, merge, Subscription } from 'rxjs';
-import { filter, first, take } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
@@ -55,14 +55,12 @@ export class NzContextMenuService {
           fromEvent<MouseEvent>(document, 'click').pipe(
             filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
             /** handle firefox contextmenu event **/
-            filter(event => event.button !== 2),
-            take(1)
+            filter(event => event.button !== 2)
           ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-            filter(event => event.key === 'Escape'),
-            first()
-          )
-        ).subscribe(() => this.ngZone.run(() => this.close()))
+          fromEvent<KeyboardEvent>(document, 'keydown').pipe(filter(event => event.key === 'Escape'))
+        )
+          .pipe(first())
+          .subscribe(() => this.ngZone.run(() => this.close()))
       )
     );
 
