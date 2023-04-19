@@ -351,13 +351,10 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   handleDragEnd(e: DragEvent): void {
     e.preventDefault();
     this.ngZone.run(() => {
-      // if user do not custom beforeDrop
-      if (!this.nzBeforeDrop) {
-        // clear dragging state
-        this.draggingKey = null;
-        const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
-        this.nzOnDragEnd.emit(eventNext);
-      }
+      // clear dragging state
+      this.draggingKey = null;
+      const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
+      this.nzOnDragEnd.emit(eventNext);
     });
   }
 
