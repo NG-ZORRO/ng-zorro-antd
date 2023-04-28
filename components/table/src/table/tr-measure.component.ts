@@ -59,7 +59,7 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
                 this.nzResizeObserver.observe(item).pipe(
                   map(([entry]) => {
                     const { width } = entry.target.getBoundingClientRect();
-                    return Math.floor(width);
+                    return Math.floor(width) > 0 ? Math.floor(width) : null;
                   })
                 )
               )
