@@ -58,6 +58,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzDisableAutoTips]`| Set default props `[nzDisableAutoTip]` value of `nz-form-control` | `boolean` | `false` | ✅ |
 | `[nzNoColon]`| Set default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
 | `[nzTooltipIcon]`| Set default props `[nzTooltipIcon]` value of `nz-form-label` | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅ |
+| `[nzLabelAlign]`| Set default props `[nzLabelAlign]` value of `nz-form-label` | `'left' \| 'right'` | `'right'` |
 
 ### nz-form-item
 
@@ -78,6 +79,8 @@ The label of the form item, optional.
 | `[nzFor]`| The `for` property of `label` | `string` | - |
 | `[nzTooltipTitle]`| Set tooltip info | `string \| TemplateRef<void>` | - |
 | `[nzTooltipIcon]`| Set icon of tooltip info | `string \| NzFormTooltipIcon` | - |
+| `[nzLabelAlign]`| The text align of label | `'left' \| 'right'` | `'right'` |
+
 
 ### nz-form-control
 > Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.

@@ -9,7 +9,6 @@ import {
   ContentChild,
   ElementRef,
   Input,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -48,7 +47,10 @@ import {
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'ant-list-item-meta'
+  }
 })
 export class NzListItemMetaComponent {
   avatarStr = '';
@@ -70,7 +72,6 @@ export class NzListItemMetaComponent {
 
   @ContentChild(DescriptionComponent) descriptionComponent?: DescriptionComponent;
   @ContentChild(TitleComponent) titleComponent?: TitleComponent;
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
-  }
+
+  constructor(public elementRef: ElementRef) {}
 }

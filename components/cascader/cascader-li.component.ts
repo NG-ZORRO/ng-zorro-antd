@@ -11,7 +11,6 @@ import {
   ElementRef,
   Input,
   OnInit,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -46,6 +45,7 @@ import { NzCascaderOption } from './typings';
     </div>
   `,
   host: {
+    class: 'ant-cascader-menu-item ant-cascader-menu-item-expanded',
     '[attr.title]': 'option.title || optionLabel',
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
@@ -64,9 +64,7 @@ export class NzCascaderOptionComponent implements OnInit {
 
   readonly nativeElement: HTMLElement;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
-    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item-expanded');
+  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef) {
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

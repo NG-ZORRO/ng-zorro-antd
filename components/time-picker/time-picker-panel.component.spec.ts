@@ -343,6 +343,15 @@ describe('time-picker-panel', () => {
       expect(listHourLi[6].classList).toContain('ant-picker-time-panel-cell-disabled');
       expect(listHourLi[7].classList).toContain('ant-picker-time-panel-cell-disabled');
       expect(listHourLi[8].classList).toContain('ant-picker-time-panel-cell-disabled');
+
+      fixture12Hour.detectChanges();
+      tick(500);
+      flush();
+      listHourLi = panelElement.nativeElement
+        .querySelectorAll('.ant-picker-time-panel-column')[3]
+        .querySelectorAll('li');
+
+      expect(listHourLi.length).not.toBe(0);
     }));
   });
 });
@@ -451,6 +460,7 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledHours]="disabledHours"
       [nzDisabledMinutes]="disabledMinutes"
       [nzDisabledSeconds]="disabledSeconds"
+      [nzHideDisabledOptions]="false"
     ></nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']

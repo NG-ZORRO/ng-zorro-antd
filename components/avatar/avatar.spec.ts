@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -224,6 +224,20 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
     });
+
+    it('should set `lineHeight` on the text element considering `nzSize`', fakeAsync(() => {
+      const size = 64;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      context.nzSize = size;
+      context.nzText = 'LongUsername';
+      fixture.detectChanges();
+      flush();
+      const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      const scale = getScaleFromCSSTransform(textEl.style.transform);
+      expect(scale).toBeLessThan(1);
+      expect(textEl.style.lineHeight).toEqual(`${size}px`);
+    }));
   });
 
   describe('order: image > icon > text', () => {

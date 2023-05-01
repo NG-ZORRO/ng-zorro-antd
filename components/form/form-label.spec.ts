@@ -59,6 +59,15 @@ describe('nz-form-label', () => {
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
       expect(label.nativeElement.querySelector('.anticon-info-circle')).toBeDefined();
     });
+    it('should label align work', () => {
+      expect(label.nativeElement.classList).not.toContain('ant-form-item-label-left');
+
+      testComponent.align = 'left';
+
+      testBed.fixture.detectChanges();
+
+      expect(label.nativeElement.classList).toContain('ant-form-item-label-left');
+    });
   });
 });
 
@@ -70,6 +79,7 @@ describe('nz-form-label', () => {
       [nzRequired]="required"
       [nzTooltipTitle]="tooltipTitle"
       [nzTooltipIcon]="tooltipIcon"
+      [nzLabelAlign]="align"
     ></nz-form-label>
   `
 })
@@ -79,4 +89,5 @@ export class NzTestFormLabelComponent {
   noColon = false;
   tooltipTitle?: string;
   tooltipIcon?: string | NzFormTooltipIcon;
+  align = 'right';
 }

@@ -1,8 +1,13 @@
 /* declarations: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService, NZ_MODAL_DATA } from 'ng-zorro-antd/modal';
+
+interface IModalData {
+  favoriteLibrary: string;
+  favoriteFramework: string;
+}
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -89,13 +94,17 @@ export class NzDemoModalServiceComponent {
   }
 
   createComponentModal(): void {
-    const modal = this.modal.create({
+    const modal = this.modal.create<NzModalCustomComponent, IModalData>({
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
         title: 'title in component',
         subtitle: 'component sub title，will be changed after 2 sec'
+      },
+      nzData: {
+        favoriteLibrary: 'angular',
+        favoriteFramework: 'angular'
       },
       nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000)),
       nzFooter: [
@@ -182,6 +191,10 @@ export class NzDemoModalServiceComponent {
     <div>
       <h2>{{ title }}</h2>
       <h4>{{ subtitle }}</h4>
+      <p
+        >My favorite framework is {{ nzModalData.favoriteFramework }} and my favorite library is
+        {{ nzModalData.favoriteLibrary }}
+      </p>
       <p>
         <span>Get Modal instance in component</span>
         <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
@@ -193,9 +206,10 @@ export class NzModalCustomComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
 
-  constructor(private modal: NzModalRef) {}
+  readonly #modal = inject(NzModalRef);
+  readonly nzModalData: IModalData = inject(NZ_MODAL_DATA);
 
   destroyModal(): void {
-    this.modal.destroy({ data: 'this the result data' });
+    this.#modal.destroy({ data: 'this the result data' });
   }
 }

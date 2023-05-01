@@ -30,6 +30,7 @@ import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
   selector: 'input[nz-input],textarea[nz-input]',
   exportAs: 'nzInput',
   host: {
+    class: 'ant-input',
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-borderless]': 'nzBorderless',
     '[class.ant-input-lg]': `nzSize === 'large'`,
@@ -74,9 +75,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     @Optional() private directionality: Directionality,
     @Optional() private nzFormStatusService?: NzFormStatusService,
     @Optional() public nzFormNoStatusService?: NzFormNoStatusService
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-input');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges

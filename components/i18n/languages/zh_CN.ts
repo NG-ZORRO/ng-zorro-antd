@@ -194,5 +194,9 @@ export default {
       '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>1-12</span> 允许范围</p>',
     weekError:
       '<p><span>*</span> 任意值</p><p><span>,</span> 多个值之间的分隔符</p><p><span>-</span> 区间值的连接符</p><p><span>/</span> 平均分配</p><p><span>?</span> 不指定</p><p><span>0-7</span> 允许范围（0代表周日，1-7依次为周一到周日）</p>'
+  },
+  QRCode: {
+    expired: '二维码过期',
+    refresh: '点击刷新'
   }
 };

@@ -198,5 +198,9 @@ export default {
       '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-12</span>Allowable range</p>',
     weekError:
       '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><span>?</span> Not specify</p><p><p><span>0-7</span>Allowable range (0 represents Sunday, 1-7 are Monday to Sunday)</p>'
+  },
+  QRCode: {
+    expired: 'QR code expired',
+    refresh: 'Refresh'
   }
 };

@@ -4,17 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  Renderer2,
-  SimpleChange,
-  SimpleChanges
-} from '@angular/core';
+import { Directive, Input, OnChanges, OnDestroy, Optional, SimpleChange, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
@@ -28,6 +18,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
 
+export type NzLabelAlignType = 'left' | 'right';
+
 export const DefaultTooltipIcon = {
   type: 'question-circle',
   theme: 'outline'
@@ -37,6 +29,7 @@ export const DefaultTooltipIcon = {
   selector: '[nz-form]',
   exportAs: 'nzForm',
   host: {
+    class: 'ant-form',
     '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
@@ -53,6 +46,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
   @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
+  @Input() nzLabelAlign: NzLabelAlignType = 'right';
 
   dir: Direction = 'ltr';
   destroy$ = new Subject();
@@ -65,14 +59,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private directionality: Directionality
-  ) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-form');
-
+  constructor(public nzConfigService: NzConfigService, @Optional() private directionality: Directionality) {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;

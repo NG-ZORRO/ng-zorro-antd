@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Directive,
+  Inject,
   Injector,
   Input,
   NgModule,
@@ -26,6 +27,7 @@ import {
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
 
+import { NZ_MODAL_DATA } from './modal-config';
 import { NzModalRef, NzModalState } from './modal-ref';
 import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
@@ -137,6 +139,23 @@ describe('NzModal', () => {
     modalRef.close();
   });
 
+  it('should open a modal with data', () => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzComponentParams: {
+        value: 'Modal'
+      },
+      nzData: 'NG-ZORRO'
+    });
+    fixture.detectChanges();
+    const modalContentElement = overlayContainerElement.querySelector('.modal-data');
+    expect(modalContentElement).toBeTruthy();
+    expect(modalContentElement!.textContent?.toString().includes('NG-ZORRO')).toBeTruthy();
+    expect(modalRef.getContentComponent() instanceof TestWithModalContentComponent).toBe(true);
+    expect(modalRef.getContentComponent().modalRef).toBe(modalRef);
+    modalRef.close();
+  });
+
   it('should open modal with template', () => {
     fixture.componentInstance.value = 'Modal';
     fixture.detectChanges();
@@ -147,6 +166,50 @@ describe('NzModal', () => {
     const modalContentElement = overlayContainerElement.querySelector('.modal-template-content');
     expect(modalContentElement).toBeTruthy();
     expect(modalContentElement!.textContent).toBe('Hello Modal');
+    expect(fixture.componentInstance.modalRef).toBe(modalRef);
+    modalRef.close();
+  });
+
+  it('should open modal with template and pass data', () => {
+    fixture.componentInstance.value = 'Modal';
+    fixture.detectChanges();
+    const modalRef = modalService.create({
+      nzContent: fixture.componentInstance.templateRef,
+      nzData: 'NG-ZORRO'
+    });
+    fixture.detectChanges();
+    const modalContentElement = overlayContainerElement.querySelector('.modal-template-data');
+    expect(modalContentElement).toBeTruthy();
+    expect(modalContentElement!.textContent?.includes('NG-ZORRO')).toBeTruthy();
+    expect(fixture.componentInstance.modalRef).toBe(modalRef);
+    modalRef.close();
+  });
+  it('should open modal with template and pass value of Nz data even if nzComponentParams is set', () => {
+    fixture.componentInstance.value = 'Modal';
+    fixture.detectChanges();
+    const modalRef = modalService.create({
+      nzContent: fixture.componentInstance.templateRef,
+      nzData: 'NG-ZORRO',
+      nzComponentParams: 'Angular Material'
+    });
+    fixture.detectChanges();
+    const modalContentElement = overlayContainerElement.querySelector('.modal-template-data');
+    expect(modalContentElement).toBeTruthy();
+    expect(modalContentElement!.textContent?.includes('NG-ZORRO')).toBeTruthy();
+    expect(fixture.componentInstance.modalRef).toBe(modalRef);
+    modalRef.close();
+  });
+  it('should open modal with template and pass value of nzComponentParams if nzData is not defined', () => {
+    fixture.componentInstance.value = 'Modal';
+    fixture.detectChanges();
+    const modalRef = modalService.create({
+      nzContent: fixture.componentInstance.templateRef,
+      nzComponentParams: 'NG-ZORRO'
+    });
+    fixture.detectChanges();
+    const modalContentElement = overlayContainerElement.querySelector('.modal-template-data');
+    expect(modalContentElement).toBeTruthy();
+    expect(modalContentElement!.textContent?.includes('NG-ZORRO')).toBeTruthy();
     expect(fixture.componentInstance.modalRef).toBe(modalRef);
     modalRef.close();
   });
@@ -1681,8 +1744,9 @@ class TestWithOnPushViewContainerComponent {
 
 @Component({
   template: `
-    <ng-template let-modalRef="modalRef">
+    <ng-template let-modalRef="modalRef" let-data>
       <span class="modal-template-content">Hello {{ value }}</span>
+      <span class="modal-template-data">My favorite UI framework is {{ data }}</span>
       {{ setModalRef(modalRef) }}
     </ng-template>
   `
@@ -1703,6 +1767,7 @@ class TestWithServiceComponent {
 @Component({
   template: `
     <div class="modal-content">Hello {{ value }}</div>
+    <div class="modal-data">My favorite UI Library is {{ nzModalData }}</div>
     <input />
     <button (click)="destroyModal()">destroy</button>
   `
@@ -1710,7 +1775,11 @@ class TestWithServiceComponent {
 class TestWithModalContentComponent {
   @Input() value?: string;
 
-  constructor(public modalRef: NzModalRef, public modalInjector: Injector) {}
+  nzModalData: string;
+
+  constructor(public modalRef: NzModalRef, public modalInjector: Injector, @Inject(NZ_MODAL_DATA) nzData: string) {
+    this.nzModalData = nzData;
+  }
 
   destroyModal(): void {
     this.modalRef.destroy();

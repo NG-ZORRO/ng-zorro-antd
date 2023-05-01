@@ -21,7 +21,7 @@ export interface StyleObjectLike {
 
 const noopFun = () => void 0;
 
-export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzCentered?: boolean = false;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
@@ -41,7 +41,13 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
+
+  /**@deprecated
+   * it's better to use nzData for the future, to respect naming convention from Angular team
+   * must be remove for the nex major version
+   */
   nzComponentParams?: Partial<T>;
+  nzData?: D;
   nzMaskStyle?: StyleObjectLike;
   nzBodyStyle?: StyleObjectLike;
   nzWrapClassName?: string;
