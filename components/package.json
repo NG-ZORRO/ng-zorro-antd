@@ -73,10 +73,6 @@
     "./*.less": {
       "less": "./*.less"
     },
-    "./icon/style/*": {
-      "less": "./icon/style/*.less",
-      "style": "./icon/style/index.min.css"
-    },
     "./affix/style/*": {
       "less":  "./affix/style/*.less",
       "style":  "./affix/style/index.min.css"
@@ -88,6 +84,10 @@
     "./anchor/style/*": {
       "less":  "./anchor/style/*.less",
       "style":  "./anchor/style/index.min.css"
+    },
+    "./auto-complete/style/*": {
+      "less":  "./auto-complete/style/*.less",
+      "style":  "./auto-complete/style/index.min.css"
     },
     "./avatar/style/*":  {
       "less":  "./avatar/style/*.less",
@@ -109,6 +109,10 @@
       "less":  "./button/style/*.less",
       "style":  "./button/style/index.min.css"
     },
+    "./calendar/style/*":  {
+      "less":  "./calendar/style/*.less",
+      "style":  "./calendar/style/index.min.css"
+    },
     "./card/style/*": {
       "less":  "./card/style/*.less",
       "style":  "./card/style/index.min.css"
@@ -116,6 +120,10 @@
     "./carousel/style/*":  {
       "less":  "./carousel/style/*.less",
       "style":  "./carousel/style/index.min.css"
+    },
+    "./cascader/style/*":  {
+      "less":  "./cascader/style/*.less",
+      "style":  "./cascader/style/index.min.css"
     },
     "./checkbox/style/*": {
       "less":  "./checkbox/style/*.less",
@@ -128,6 +136,10 @@
     "./comment/style/*": {
       "less":  "./comment/style/*.less",
       "style":  "./comment/style/index.min.css"
+    },
+    "./cron-expression/style/*":  {
+      "less":  "./cron-expression/style/*.less",
+      "style":  "./cron-expression/style/index.min.css"
     },
     "./date-picker/style/*":  {
       "less":  "./date-picker/style/*.less",
@@ -153,9 +165,21 @@
       "less":  "./empty/style/*.less",
       "style":  "./empty/style/index.min.css"
     },
+    "./graph/style/*":  {
+      "less":  "./graph/style/*.less",
+      "style":  "./graph/style/index.min.css"
+    },
     "./grid/style/*":  {
       "less":  "./grid/style/*.less",
       "style":  "./grid/style/index.min.css"
+    },
+    "./icon/style/*": {
+      "less": "./icon/style/*.less",
+      "style": "./icon/style/index.min.css"
+    },
+    "./image/style/*": {
+      "less":  "./image/style/*.less",
+      "style":  "./image/style/index.min.css"
     },
     "./input/style/*": {
       "less":  "./input/style/*.less",
@@ -217,6 +241,10 @@
       "less":  "./progress/style/*.less",
       "style":  "./progress/style/index.min.css"
     },
+    "./qr-code/style/*": {
+      "less":  "./qr-code/style/*.less",
+      "style":  "./qr-code/style/index.min.css"
+    },
     "./radio/style/*":  {
       "less":  "./radio/style/*.less",
       "style":  "./radio/style/index.min.css"
@@ -224,6 +252,14 @@
     "./rate/style/*": {
       "less":  "./rate/style/*.less",
       "style":  "./rate/style/index.min.css"
+    },
+    "./resizable/style/*": {
+      "less":  "./resizable/style/*.less",
+      "style":  "./resizable/style/index.min.css"
+    },
+    "./result/style/*": {
+      "less":  "./result/style/*.less",
+      "style":  "./result/style/index.min.css"
     },
     "./select/style/*":  {
       "less":  "./select/style/*.less",
@@ -240,6 +276,10 @@
     "./slider/style/*": {
       "less":  "./slider/style/*.less",
       "style":  "./slider/style/index.min.css"
+    },
+    "./space/style/*":  {
+      "less":  "./space/style/*.less",
+      "style":  "./space/style/index.min.css"
     },
     "./spin/style/*":  {
       "less":  "./spin/style/*.less",
@@ -285,26 +325,6 @@
       "less":  "./transfer/style/*.less",
       "style":  "./transfer/style/index.min.css"
     },
-    "./typography/style/*": {
-      "less":  "./typography/style/*.less",
-      "style":  "./typography/style/index.min.css"
-    },
-    "./upload/style/*":  {
-      "less":  "./upload/style/*.less",
-      "style":  "./upload/style/index.min.css"
-    },
-    "./auto-complete/style/*": {
-      "less":  "./auto-complete/style/*.less",
-      "style":  "./auto-complete/style/index.min.css"
-    },
-    "./cascader/style/*":  {
-      "less":  "./cascader/style/*.less",
-      "style":  "./cascader/style/index.min.css"
-    },
-    "./tree-view/style/*": {
-      "less":  "./tree-view/style/*.less",
-      "style":  "./tree-view/style/index.min.css"
-    },
     "./tree/style/*":  {
       "less":  "./tree/style/*.less",
       "style":  "./tree/style/index.min.css"
@@ -313,25 +333,21 @@
       "less":  "./tree-select/style/*.less",
       "style":  "./tree-select/style/index.min.css"
     },
-    "./calendar/style/*":  {
-      "less":  "./calendar/style/*.less",
-      "style":  "./calendar/style/index.min.css"
+    "./tree-view/style/*": {
+      "less":  "./tree-view/style/*.less",
+      "style":  "./tree-view/style/index.min.css"
     },
-    "./result/style/*": {
-      "less":  "./result/style/*.less",
-      "style":  "./result/style/index.min.css"
+    "./typography/style/*": {
+      "less":  "./typography/style/*.less",
+      "style":  "./typography/style/index.min.css"
     },
-    "./space/style/*":  {
-      "less":  "./space/style/*.less",
-      "style":  "./space/style/index.min.css"
+    "./upload/style/*":  {
+      "less":  "./upload/style/*.less",
+      "style":  "./upload/style/index.min.css"
     },
-    "./image/style/*": {
-      "less":  "./image/style/*.less",
-      "style":  "./image/style/index.min.css"
-    },
-    "./cron-expression/style/*":  {
-      "less":  "./cron-expression/style/*.less",
-      "style":  "./cron-expression/style/index.min.css"
+    "./water-mark/style/*":  {
+      "less":  "./water-mark/style/*.less",
+      "style":  "./water-mark/style/index.min.css"
     }
   }
 }
