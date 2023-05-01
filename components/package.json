@@ -125,6 +125,10 @@
       "less":  "./cascader/style/*.less",
       "style":  "./cascader/style/index.min.css"
     },
+    "./code-editor/style/*": {
+      "less":  "./code-editor/style/*.less",
+      "style":  "./code-editor/style/index.min.css"
+    },
     "./checkbox/style/*": {
       "less":  "./checkbox/style/*.less",
       "style":  "./checkbox/style/index.min.css"
@@ -165,6 +169,10 @@
       "less":  "./empty/style/*.less",
       "style":  "./empty/style/index.min.css"
     },
+    "./form/style/*": {
+      "less":  "./form/style/*.less",
+      "style":  "./form/style/index.min.css"
+    },
     "./graph/style/*":  {
       "less":  "./graph/style/*.less",
       "style":  "./graph/style/index.min.css"
@@ -193,21 +201,17 @@
       "less":  "./layout/style/*.less",
       "style":  "./layout/style/index.min.css"
     },
-    "./form/style/*":  {
-      "less":  "./form/style/*.less",
-      "style":  "./form/style/index.min.css"
-    },
     "./list/style/*": {
       "less":  "./list/style/*.less",
       "style":  "./list/style/index.min.css"
     },
-    "./menu/style/*":  {
-      "less":  "./menu/style/*.less",
-      "style":  "./menu/style/index.min.css"
-    },
     "./mention/style/*": {
       "less":  "./mention/style/*.less",
       "style":  "./mention/style/index.min.css"
+    },
+    "./menu/style/*":  {
+      "less":  "./menu/style/*.less",
+      "style":  "./menu/style/index.min.css"
     },
     "./message/style/*":  {
       "less":  "./message/style/*.less",
@@ -261,21 +265,21 @@
       "less":  "./result/style/*.less",
       "style":  "./result/style/index.min.css"
     },
-    "./select/style/*":  {
-      "less":  "./select/style/*.less",
-      "style":  "./select/style/index.min.css"
+    "./skeleton/style/*":  {
+      "less":  "./skeleton/style/*.less",
+      "style":  "./skeleton/style/index.min.css"
+    },
+    "./slider/style/*":  {
+      "less":  "./slider/style/*.less",
+      "style":  "./slider/style/index.min.css"
     },
     "./segmented/style/*": {
       "less":  "./segmented/style/*.less",
       "style":  "./segmented/style/index.min.css"
     },
-    "./skeleton/style/*":  {
-      "less":  "./skeleton/style/*.less",
-      "style":  "./skeleton/style/index.min.css"
-    },
-    "./slider/style/*": {
-      "less":  "./slider/style/*.less",
-      "style":  "./slider/style/index.min.css"
+    "./select/style/*":  {
+      "less":  "./select/style/*.less",
+      "style":  "./select/style/index.min.css"
     },
     "./space/style/*":  {
       "less":  "./space/style/*.less",
