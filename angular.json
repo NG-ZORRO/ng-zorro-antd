@@ -89,7 +89,8 @@
             "main": "./site/doc/main.server.ts",
             "tsConfig": "./site/doc/tsconfig.server.json",
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
