@@ -80,6 +80,8 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     this.cdr.markForCheck();
   }
 
+  // test
+
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('QRCode');
