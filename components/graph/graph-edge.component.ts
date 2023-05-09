@@ -39,7 +39,7 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
-  @Input() edge!: NzGraphEdge;
+  @Input({ required: true }) edge!: NzGraphEdge;
   @Input() edgeType?: NzGraphEdgeType | string;
 
   @Input() customTemplate?: TemplateRef<{

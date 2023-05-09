@@ -57,7 +57,7 @@ export class NzTreeNodeSwitcherComponent {
   @Input() nzShowLine?: boolean;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzSelectMode = false;
-  @Input() context!: NzTreeNode;
+  @Input({ required: true }) context!: NzTreeNode;
   @Input() isLeaf?: boolean;
   @Input() isLoading?: boolean;
   @Input() isExpanded?: boolean;

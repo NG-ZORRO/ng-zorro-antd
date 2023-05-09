@@ -156,19 +156,19 @@ import { PREFIX_CLASS } from './util';
   `
 })
 export class InnerPopupComponent implements OnChanges {
-  @Input() activeDate!: CandyDate;
-  @Input() endPanelMode!: NzDateMode;
-  @Input() panelMode!: NzDateMode;
-  @Input() showWeek!: boolean;
+  @Input({ required: true }) activeDate!: CandyDate;
+  @Input({ required: true }) endPanelMode!: NzDateMode;
+  @Input({ required: true }) panelMode!: NzDateMode;
+  @Input({ required: true }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showTimePicker!: boolean;
+  @Input({ required: true }) showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue!: CandyDate[]; // Range ONLY
-  @Input() hoverValue!: CandyDate[]; // Range ONLY
-  @Input() value!: CandyDate;
-  @Input() partType!: RangePartType;
+  @Input({ required: true }) hoverValue!: CandyDate[]; // Range ONLY
+  @Input({ required: true }) value!: CandyDate;
+  @Input({ required: true }) partType!: RangePartType;
 
   @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
   // TODO: name is not proper

@@ -21,7 +21,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   MAX_COL = 7;
 
   @Input() prefixCls: string = 'ant-picker';
-  @Input() value!: CandyDate;
+  @Input({ required: true }) value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() showWeek: boolean = false;

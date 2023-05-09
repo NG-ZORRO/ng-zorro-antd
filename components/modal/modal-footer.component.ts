@@ -77,7 +77,7 @@ export class NzModalFooterComponent implements OnDestroy {
   locale!: NzModalI18nInterface;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
-  @Input() modalRef!: NzModalRef;
+  @Input({ required: true }) modalRef!: NzModalRef;
   private destroy$ = new Subject<void>();
 
   constructor(private i18n: NzI18nService, public config: ModalOptions) {

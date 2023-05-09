@@ -131,8 +131,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   @Input() isSelected: boolean = false;
   @Input() isDisabled: boolean = false;
   @Input() isMatched: boolean = false;
-  @Input() isExpanded!: boolean;
-  @Input() isLeaf!: boolean;
+  @Input({ required: true }) isExpanded!: boolean;
+  @Input({ required: true }) isLeaf!: boolean;
   @Input() isChecked?: boolean;
   @Input() isHalfChecked?: boolean;
   @Input() isDisableCheckbox?: boolean;
@@ -140,7 +140,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   @Input() canHide?: boolean;
   @Input() isStart: boolean[] = [];
   @Input() isEnd: boolean[] = [];
-  @Input() nzTreeNode!: NzTreeNode;
+  @Input({ required: true }) nzTreeNode!: NzTreeNode;
   @Input() @InputBoolean() nzShowLine?: boolean;
   @Input() @InputBoolean() nzShowExpand?: boolean;
   @Input() @InputBoolean() nzCheckable?: boolean;

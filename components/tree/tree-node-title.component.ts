@@ -66,20 +66,20 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
   }
 })
 export class NzTreeNodeTitleComponent implements OnChanges {
-  @Input() searchValue!: string;
+  @Input({ required: true }) searchValue!: string;
   @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
-  @Input() draggable!: boolean;
-  @Input() showIcon!: boolean;
+  @Input({ required: true }) draggable!: boolean;
+  @Input({ required: true }) showIcon!: boolean;
   @Input() selectMode = false;
-  @Input() context!: NzTreeNode;
-  @Input() icon!: string;
-  @Input() title!: string;
-  @Input() isLoading!: boolean;
-  @Input() isSelected!: boolean;
-  @Input() isDisabled!: boolean;
-  @Input() isMatched!: boolean;
-  @Input() isExpanded!: boolean;
-  @Input() isLeaf!: boolean;
+  @Input({ required: true }) context!: NzTreeNode;
+  @Input({ required: true }) icon!: string;
+  @Input({ required: true }) title!: string;
+  @Input({ required: true }) isLoading!: boolean;
+  @Input({ required: true }) isSelected!: boolean;
+  @Input({ required: true }) isDisabled!: boolean;
+  @Input({ required: true }) isMatched!: boolean;
+  @Input({ required: true }) isExpanded!: boolean;
+  @Input({ required: true }) isLeaf!: boolean;
   // Drag indicator
   @Input() showIndicator = true;
   @Input() dragPosition?: number;

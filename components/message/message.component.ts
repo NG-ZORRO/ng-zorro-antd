@@ -53,7 +53,7 @@ import { NzMessageData } from './typings';
   `
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
-  @Input() override instance!: Required<NzMessageData>;
+  @Input({ required: true }) override instance!: Required<NzMessageData>;
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   constructor(cdr: ChangeDetectorRef) {

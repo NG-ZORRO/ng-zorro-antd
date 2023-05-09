@@ -701,7 +701,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   `
 })
 export class NzPageDemoIconCopiedCodeComponent {
-  @Input() copiedCode!: string;
+  @Input({ required: true }) copiedCode!: string;
   @ViewChild('templateRef', { static: true }) templateRef!: TemplateRef<void>;
 }
 

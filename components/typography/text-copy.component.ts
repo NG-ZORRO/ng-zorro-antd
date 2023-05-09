@@ -57,7 +57,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copedIcon: NzTSType = 'check';
   private destroy$ = new Subject();
 
-  @Input() text!: string;
+  @Input({ required: true }) text!: string;
   @Input() tooltips?: [NzTSType, NzTSType] | null;
   @Input() icons: [NzTSType, NzTSType] = ['copy', 'check'];
 

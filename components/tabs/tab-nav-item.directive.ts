@@ -13,7 +13,7 @@ import { NzTabComponent } from './tab.component';
 })
 export class NzTabNavItemDirective implements FocusableOption {
   @Input() disabled: boolean = false;
-  @Input() tab!: NzTabComponent;
+  @Input({ required: true }) tab!: NzTabComponent;
   @Input() active: boolean = false;
   private el!: HTMLElement;
   private parentElement!: HTMLElement;

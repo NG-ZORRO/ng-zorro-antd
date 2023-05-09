@@ -85,7 +85,7 @@ import { NzNotificationData } from './typings';
   `
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() override instance!: Required<NzNotificationData>;
+  @Input({ required: true }) override instance!: Required<NzNotificationData>;
   @Input() override index!: number;
   @Input() placement?: string;
 

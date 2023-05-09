@@ -140,9 +140,16 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<void> | null = null;
-  @Input() render: TemplateRef<void> | null = null;
-  @Input() footer: TemplateRef<void> | null = null;
+  @Input() renderList: TemplateRef<{
+    $implicit: TransferItem[];
+    direction: TransferDirection;
+    disabled: boolean;
+    onItemSelectAll: (status: boolean) => void;
+    onItemSelect: (item: TransferItem) => void;
+    stat: { checkAll: boolean; checkHalf: boolean; checkCount: number; shownCount: number };
+  }> | null = null;
+  @Input() render: TemplateRef<{ $implicit: TransferItem }> | null = null;
+  @Input() footer: TemplateRef<{ $implicit: TransferDirection }> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();

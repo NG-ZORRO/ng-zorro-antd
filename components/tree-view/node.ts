@@ -130,7 +130,7 @@ export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
-  @Input() data!: NzTreeVirtualNodeData<T>;
+  @Input({ required: true }) data!: NzTreeVirtualNodeData<T>;
 
   constructor(private _viewContainerRef: ViewContainerRef) {}
 

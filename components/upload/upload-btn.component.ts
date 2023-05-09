@@ -44,7 +44,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   private destroy = false;
   private destroy$ = new Subject<void>();
   @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
-  @Input() options!: ZipButtonOptions;
+  @Input({ required: true }) options!: ZipButtonOptions;
 
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {

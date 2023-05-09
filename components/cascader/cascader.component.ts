@@ -260,7 +260,7 @@ export class NzCascaderComponent
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
-  @Input() nzLabelRender: TemplateRef<void> | null = null;
+  @Input() nzLabelRender: TemplateRef<{}> | null = null;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';

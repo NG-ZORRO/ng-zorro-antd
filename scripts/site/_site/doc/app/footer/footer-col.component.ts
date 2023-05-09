@@ -17,7 +17,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   }
 })
 export class FooterColComponent {
-  @Input() title!: string;
+  @Input({ required: true }) title!: string;
   @Input() imgSrc!: string;
   @Input() imgAlt!: string;
 }

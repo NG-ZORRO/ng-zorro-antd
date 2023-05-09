@@ -53,7 +53,7 @@ interface Info {
   }
 })
 export class NzGraphNodeComponent implements OnInit, OnDestroy {
-  @Input() node!: NzGraphNode | NzGraphGroupNode;
+  @Input({ required: true }) node!: NzGraphNode | NzGraphGroupNode;
   @Input() @InputBoolean() noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;

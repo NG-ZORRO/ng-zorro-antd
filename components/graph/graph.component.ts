@@ -149,7 +149,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    * Provides a stream containing the latest data array to render.
    * Data source can be an observable of NzGraphData, or a NzGraphData to render.
    */
-  @Input() nzGraphData!: NzGraphData;
+  @Input({ required: true }) nzGraphData!: NzGraphData;
   @Input() nzRankDirection: NzRankDirection = 'LR';
   @Input() nzGraphLayoutConfig?: NzGraphLayoutConfig;
   @Input() @InputBoolean() nzAutoSize = false;

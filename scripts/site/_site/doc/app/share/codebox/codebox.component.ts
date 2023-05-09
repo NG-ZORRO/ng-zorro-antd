@@ -28,11 +28,11 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   codeLoaded = false;
   onlineIDELoading = false;
   copyLoading = false;
-  @Input() nzTitle!: string;
+  @Input({ required: true }) nzTitle!: string;
   @Input() nzExpanded = false;
-  @Input() nzHref!: string;
-  @Input() nzLink!: string;
-  @Input() nzId!: string;
+  @Input({ required: true }) nzHref!: string;
+  @Input({ required: true }) nzLink!: string;
+  @Input({ required: true }) nzId!: string;
   @Input() nzIframeHeight: number | null = 360;
   @Input() nzComponentName = '';
   @Input() nzSelector = '';

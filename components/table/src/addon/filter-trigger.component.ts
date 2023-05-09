@@ -58,7 +58,7 @@ export class NzFilterTriggerComponent implements OnInit {
   static ngAcceptInputType_nzBackdrop: BooleanInput;
 
   @Input() nzActive = false;
-  @Input() nzDropdownMenu!: NzDropdownMenuComponent;
+  @Input({ required: true }) nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
 
   @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;

@@ -35,11 +35,11 @@ export class NzSliderMarksComponent implements OnChanges {
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[] = [];
-  @Input() min!: number;
-  @Input() max!: number;
+  @Input({ required: true }) min!: number;
+  @Input({ required: true }) max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
-  @Input() reverse!: boolean;
+  @Input({ required: true }) reverse!: boolean;
 
   marks: NzDisplayedMark[] = [];
 

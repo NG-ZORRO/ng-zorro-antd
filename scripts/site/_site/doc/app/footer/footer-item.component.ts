@@ -32,8 +32,8 @@ export class FooterItemComponent implements OnInit {
   @Input() imgSrc!: string;
   @Input() imgAlt!: string;
   @Input() icon!: string;
-  @Input() link!: string;
-  @Input() title!: string;
+  @Input({ required: true }) link!: string;
+  @Input({ required: true }) title!: string;
   @Input() description!: string;
 
   constructor() {}

@@ -54,11 +54,11 @@ import { NzCascaderOption } from './typings';
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
-  @Input() option!: NzCascaderOption;
+  @Input({ required: true }) option!: NzCascaderOption;
   @Input() activated = false;
-  @Input() highlightText!: string;
+  @Input({ required: true }) highlightText!: string;
   @Input() nzLabelProperty = 'label';
-  @Input() columnIndex!: number;
+  @Input({ required: true }) columnIndex!: number;
   @Input() expandIcon: string | TemplateRef<void> = '';
   @Input() dir: Direction = 'ltr';
 

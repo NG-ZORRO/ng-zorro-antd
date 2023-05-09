@@ -66,7 +66,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
-  @Input() nzAutocomplete!: NzAutocompleteComponent;
+  @Input({ required: true }) nzAutocomplete!: NzAutocompleteComponent;
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};

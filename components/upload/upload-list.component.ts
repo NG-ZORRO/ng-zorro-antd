@@ -70,14 +70,14 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
   }
 
   @Input() locale: NzSafeAny = {};
-  @Input() listType!: NzUploadListType;
+  @Input({ required: true }) listType!: NzUploadListType;
   @Input()
   set items(list: NzUploadFile[]) {
     this.list = list;
   }
-  @Input() icons!: NzShowUploadList;
+  @Input({ required: true }) icons!: NzShowUploadList;
   @Input() onPreview?: (file: NzUploadFile) => void;
-  @Input() onRemove!: (file: NzUploadFile) => void;
+  @Input({ required: true }) onRemove!: (file: NzUploadFile) => void;
   @Input() onDownload?: (file: NzUploadFile) => void;
   @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() previewIsImage?: (file: NzUploadFile) => boolean;

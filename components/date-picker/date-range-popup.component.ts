@@ -144,19 +144,19 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   `
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isRange!: boolean;
+  @Input({ required: true }) isRange!: boolean;
   @Input() inline: boolean = false;
-  @Input() showWeek!: boolean;
+  @Input({ required: true }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() disabledDate?: DisabledDateFn;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
-  @Input() showToday!: boolean;
-  @Input() showNow!: boolean;
-  @Input() showTime!: SupportTimeOptions | boolean;
+  @Input({ required: true }) showToday!: boolean;
+  @Input({ required: true }) showNow!: boolean;
+  @Input({ required: true }) showTime!: SupportTimeOptions | boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() ranges?: PresetRanges;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
-  @Input() panelMode!: NzDateMode | NzDateMode[];
+  @Input({ required: true }) panelMode!: NzDateMode | NzDateMode[];
   @Input() defaultPickerValue!: CompatibleDate | undefined | null;
   @Input() dir: Direction = 'ltr';
 
