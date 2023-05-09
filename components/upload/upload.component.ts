@@ -117,7 +117,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
-  @Input() nzFileListRender: TemplateRef<Object> | null = null;
+  @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
