@@ -119,7 +119,7 @@
     "minimist": "^1.2.5",
     "monaco-editor": "^0.33.0",
     "ng-packagr": "^16.0.0",
-    "ngx-color": "^6.2.0",
+    "ngx-color": "^8.0.3",
     "node-prismjs": "^0.1.2",
     "parse5": "^6.0.1",
     "postcss": "^8.2.4",
