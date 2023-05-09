@@ -94,7 +94,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() nzCharacter!: TemplateRef<Object>;
+  @Input() nzCharacter!: TemplateRef<{ $implicit: number }>;
   @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
