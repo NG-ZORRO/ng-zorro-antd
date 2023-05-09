@@ -435,6 +435,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   // blur event has not the relatedTarget in IE11, use focusout instead.
   onFocusout(event: FocusEvent): void {
     event.preventDefault();
+    this.onTouchedFn();
     if (!this.elementRef.nativeElement.contains(<Node>event.relatedTarget)) {
       this.checkAndClose();
     }

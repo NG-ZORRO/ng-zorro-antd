@@ -330,6 +330,21 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should mark the control touched when user loseFocus of datePicker', fakeAsync(() => {
+      fixtureInstance.useSuite = 4;
+      fixtureInstance.control = new FormControl<Date | null>(null);
+      fixture.detectChanges();
+      flush();
+      const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+      openPickerByClickTrigger();
+      expect(datePickerElement.classList).toContain('ng-untouched');
+      triggerInputBlur();
+      fixture.detectChanges();
+      flush();
+      expect(datePickerElement.classList).toContain('ng-touched');
+      expect(fixtureInstance.control.touched).toBeTruthy();
+    }));
+
     it('should support nzInputReadOnly', fakeAsync(() => {
       fixtureInstance.nzInputReadOnly = true;
       fixture.detectChanges();
