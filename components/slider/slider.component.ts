@@ -234,7 +234,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
     this.isNzDisableFirstChange = false;
-    this.toggleDragDisabled(isDisabled);
+    this.toggleDragDisabled(this.nzDisabled);
     this.cdr.markForCheck();
   }
 
