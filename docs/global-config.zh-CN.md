@@ -7,10 +7,16 @@ title: 全局配置项
 
 ## 如何使用
 
-想要为某些组件提供默认配置项，请在根注入器中根据注入令牌 `NZ_CONFIG` 提供一个符合 `NzConfig` 接口的对象，例如：
+想要为某些组件提供默认配置项有两种提供方法
+
+1. 在根注入器中根据注入令牌 `NZ_CONFIG` 提供一个符合 `NzConfig` 接口的对象。
+
+2. 使用 `provideNzConfig` 函数，传入一个符合 `NzConfig` 接口的对象。
+
+例如：
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, NZ_CONFIG, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   // 注意组件名称没有 nz 前缀
@@ -25,6 +31,8 @@ const ngZorroConfig: NzConfig = {
   ],
   providers: [
     { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
+    // 或者
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })

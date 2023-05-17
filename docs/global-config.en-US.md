@@ -7,10 +7,16 @@ We add a **global configuration** support to many components. You can define the
 
 ## How to Use?
 
-In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
+There are two ways to provide default configuration items for certain components.
+
+1. pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector
+
+2. use `provideNzConfig` function. object providing implements interface `NzConfig`
+
+For example:
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, NZ_CONFIG, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
@@ -24,6 +30,8 @@ const ngZorroConfig: NzConfig = {
   ],
   providers: [
     { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    // or
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })
