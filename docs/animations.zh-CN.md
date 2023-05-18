@@ -65,19 +65,15 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 ### 关闭波浪效果
 
-部分组件（如：Button）为了支持波纹效果，使用了动态样式，因此无法直接使用样式覆盖。但是你可以通过设置提供商 `NZ_WAVE_GLOBAL_CONFIG`
+部分组件（如：Button）为了支持波纹效果，使用了动态样式，因此无法直接使用样式覆盖。但是你可以通过 `provideNzWave`
 或者使用 `NoopAnimationsModule` 来关闭波浪效果。
 
 ```ts
+import { provideNzWave } from 'ng-zorro-antd/core/wave';
+
 @NgModule({
-  ...
-  providers   : [
-      ...,
-      {
-        provide: NZ_WAVE_GLOBAL_CONFIG, useValue: {
-          disabled: true
-        }
-      }
+  providers: [
+    provideNzWave({ disabled: true })
    ]
 })
 ```
