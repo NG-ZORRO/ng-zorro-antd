@@ -108,7 +108,7 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
   "assets": [
     {
       "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons-angular/inline-svg/",
+      "input": "./node_modules/@ant-design/icons-svg/inline-svg/",
       "output": "/assets/"
     }
   ]
