@@ -36,7 +36,7 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   @Input() nzFormatter: (cur: number, max: number) => string = (c, m) => `${c}${m > 0 ? `/${m}` : ``}`;
 
   private configChange$ = new Subject();
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLElement>) {}
 
@@ -68,7 +68,7 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.configChange$.complete();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

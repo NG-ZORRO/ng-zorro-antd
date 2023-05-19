@@ -94,7 +94,7 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private labelAlign: NzLabelAlignType | 'default' = 'default';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   constructor(private cdr: ChangeDetectorRef, @Optional() @SkipSelf() private nzFormDirective: NzFormDirective) {
     if (this.nzFormDirective) {
@@ -125,7 +125,7 @@ export class NzFormLabelComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

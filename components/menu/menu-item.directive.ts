@@ -19,7 +19,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -53,7 +53,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
   static ngAcceptInputType_nzMatchRouter: BooleanInput;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
@@ -162,7 +162,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

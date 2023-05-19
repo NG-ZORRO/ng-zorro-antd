@@ -81,7 +81,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
-  private offsetChanged$ = new ReplaySubject(1);
+  private offsetChanged$ = new ReplaySubject<void>(1);
   private destroy$ = new Subject<void>();
   private timeout?: number;
   private document: Document;
