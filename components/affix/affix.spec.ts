@@ -537,6 +537,7 @@ describe('affix RTL', () => {
     tick(30);
     fixture.detectChanges();
     expect(el.querySelector('.ant-affix')?.classList).toContain('ant-affix-rtl');
+    fixture.destroy();
   }));
 });
 @Component({
