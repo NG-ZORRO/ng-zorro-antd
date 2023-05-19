@@ -21,7 +21,7 @@ export class DatePickerService implements OnDestroy {
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
   emitValue$ = new Subject<void>();
-  inputPartChange$ = new Subject<RangePartType>();
+  inputPartChange$ = new Subject<RangePartType | null>();
 
   initValue(reset: boolean = false): void {
     if (reset) {

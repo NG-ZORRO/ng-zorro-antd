@@ -49,7 +49,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() nzLabelAlign: NzLabelAlignType = 'right';
 
   dir: Direction = 'ltr';
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   private inputChanges$ = new Subject<SimpleChanges>();
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
@@ -72,7 +72,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
 
   ngOnDestroy(): void {
     this.inputChanges$.complete();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

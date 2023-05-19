@@ -31,7 +31,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   static ngAcceptInputType_nzDirectoryTree: BooleanInput;
   static ngAcceptInputType_nzBlockNode: BooleanInput;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
   @Input('nzTreeControl') override treeControl!: TreeControl<T, NzSafeAny>;
@@ -68,7 +68,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

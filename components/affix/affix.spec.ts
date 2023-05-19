@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -84,9 +84,11 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it('wraps content with affix', () => {
+    it('wraps content with affix', fakeAsync(() => {
       expect(componentObject.content() === null).toBe(false);
-    });
+      setupInitialState();
+      discardPeriodicTasks();
+    }));
 
     describe('when scrolled within top offset', () => {
       it('scrolls with the content', fakeAsync(() => {

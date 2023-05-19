@@ -19,7 +19,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -80,7 +80,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   static ngAcceptInputType_nzCustomFilter: BooleanInput;
 
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
-  calcOperatorChange$ = new Subject();
+  calcOperatorChange$ = new Subject<void>();
   nzFilterValue: NzTableFilterValue = null;
   sortOrder: NzTableSortOrder = null;
   sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
