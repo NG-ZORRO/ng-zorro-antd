@@ -82,7 +82,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
   private offsetChanged$ = new ReplaySubject<void>(1);
-  private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<boolean>();
   private timeout?: number;
   private document: Document;
 
@@ -160,7 +160,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
