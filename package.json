@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^16.0.0",
-    "@ant-design/icons-angular": "^15.0.0",
+    "@ant-design/icons-angular": "16.0.0-beta.0",
     "@ctrl/tinycolor": "^3.4.1",
     "date-fns": "^2.16.1",
     "ngx-quicklink": "^0.4.2"
