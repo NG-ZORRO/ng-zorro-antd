@@ -6,6 +6,8 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
+
 export type NzMessageType = 'success' | 'info' | 'warning' | 'error' | 'loading';
 
 export interface NzMessageDataOptions {
@@ -15,7 +17,7 @@ export interface NzMessageDataOptions {
 }
 
 export interface NzMessageData {
-  type?: NzMessageType | string;
+  type?: NzStringLiteralUnion<NzMessageType>;
   content?: string | TemplateRef<void>;
   messageId?: string;
   createdAt?: Date;

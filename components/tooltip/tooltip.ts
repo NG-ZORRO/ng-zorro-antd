@@ -25,7 +25,7 @@ import {
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzStringLiteralUnion, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import {
@@ -130,7 +130,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
   nzTitleContext: Object | null = null;
 
-  nzColor?: string | NzPresetColor;
+  nzColor?: NzStringLiteralUnion<NzPresetColor>;
 
   _contentStyleMap: NgStyleInterface = {};
 

@@ -7,11 +7,12 @@ import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { NzMNService } from 'ng-zorro-antd/message';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
 import { NzNotificationServiceModule } from './notification.service.module';
-import { NzNotificationData, NzNotificationDataOptions, NzNotificationRef } from './typings';
+import { NzNotificationData, NzNotificationDataOptions, NzNotificationRef, NzNotificationType } from './typings';
 
 let notificationId = 0;
 
@@ -47,7 +48,7 @@ export class NzNotificationService extends NzMNService {
   }
 
   create(
-    type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string,
+    type: NzStringLiteralUnion<NzNotificationType>,
     title: string,
     content: string,
     options?: NzNotificationDataOptions

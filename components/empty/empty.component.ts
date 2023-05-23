@@ -18,10 +18,11 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
-type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
+type NzEmptyNotFoundImageType = NzStringLiteralUnion<typeof NzEmptyDefaultImages[number]> | null | TemplateRef<void>;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -15,7 +15,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
@@ -79,7 +79,7 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
   }
 })
 export class NzPaginationItemComponent implements OnChanges {
-  static ngAcceptInputType_type: PaginationItemType | string | null | undefined;
+  static ngAcceptInputType_type: NzStringLiteralUnion<PaginationItemType> | null | undefined;
   static ngAcceptInputType_index: number | null | undefined;
 
   @Input() active = false;
@@ -87,7 +87,7 @@ export class NzPaginationItemComponent implements OnChanges {
   @Input() index: number | null = null;
   @Input() disabled = false;
   @Input() direction = 'ltr';
-  @Input() type: PaginationItemType | string | null = null;
+  @Input() type: NzStringLiteralUnion<PaginationItemType> | null = null;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Output() readonly diffIndex = new EventEmitter<number>();
   @Output() readonly gotoIndex = new EventEmitter<number>();

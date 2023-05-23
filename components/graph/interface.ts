@@ -14,8 +14,9 @@ import {
   LayoutConfig
 } from 'dagre-compound';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 
+// TODO: Convert to string literal type
 export enum NzGraphEdgeType {
   LINE = 'line',
   CURVE = 'curve'
@@ -87,7 +88,7 @@ export interface NzGraphBaseLayout {
     maxLabelWidth: number;
   };
   defaultEdge: {
-    type: NzGraphEdgeType | string; // Need to support extensions
+    type: NzStringLiteralUnion<NzGraphEdgeType>; // Need to support extensions
   };
 }
 

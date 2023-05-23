@@ -7,11 +7,12 @@ import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
+import { NzStringLiteralUnion } from 'ng-zorro-antd/core/types';
 
 import { NzMNService } from './base';
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageServiceModule } from './message.service.module';
-import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
+import { NzMessageData, NzMessageDataOptions, NzMessageRef, NzMessageType } from './typings';
 
 @Injectable({
   providedIn: NzMessageServiceModule
@@ -45,7 +46,7 @@ export class NzMessageService extends NzMNService {
   }
 
   create(
-    type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string,
+    type: NzStringLiteralUnion<NzMessageType>,
     content: string | TemplateRef<void>,
     options?: NzMessageDataOptions
   ): NzMessageRef {
