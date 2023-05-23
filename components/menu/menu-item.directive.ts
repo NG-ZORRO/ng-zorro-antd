@@ -11,17 +11,18 @@ import {
   Directive,
   Inject,
   Input,
+  NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Optional,
   QueryList,
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, from, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -44,16 +45,16 @@ import { NzSubmenuService } from './submenu.service';
     '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
     '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
-  }
+  },
+  providers: [NzDestroyService]
 })
-export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+export class NzMenuItemDirective implements OnInit, OnChanges, AfterContentInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzSelected: BooleanInput;
   static ngAcceptInputType_nzDanger: BooleanInput;
   static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
   static ngAcceptInputType_nzMatchRouter: BooleanInput;
 
-  private destroy$ = new Subject();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
@@ -92,13 +93,22 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     if (!this.listOfRouterLink || !this.router || !this.router.navigated || !this.nzMatchRouter) {
       return;
     }
-    Promise.resolve().then(() => {
-      const hasActiveLinks = this.hasActiveLinks();
-      if (this.nzSelected !== hasActiveLinks) {
-        this.nzSelected = hasActiveLinks;
-        this.setSelectedState(this.nzSelected);
-        this.cdr.markForCheck();
-      }
+    this.ngZone.runOutsideAngular(() => {
+      from(Promise.resolve())
+        // Use `takeUntil` on the microtask so we don't run change detection
+        // unexpectedly when the view is destroyed before the microtask is resolved.
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          const hasActiveLinks = this.hasActiveLinks();
+          if (this.nzSelected === hasActiveLinks) {
+            return;
+          }
+          this.ngZone.run(() => {
+            this.nzSelected = hasActiveLinks;
+            this.setSelectedState(this.nzSelected);
+            this.cdr.markForCheck();
+          });
+        });
     });
   }
 
@@ -119,21 +129,23 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   constructor(
     private nzMenuService: MenuService,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
+    private destroy$: NzDestroyService,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
     @Optional() private router?: Router
   ) {
-    if (router) {
-      this.router!.events.pipe(
-        takeUntil(this.destroy$),
-        filter(e => e instanceof NavigationEnd)
-      ).subscribe(() => {
+    router?.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        takeUntil(destroy$)
+      )
+      .subscribe(() => {
         this.updateRouterActive();
       });
-    }
   }
 
   ngOnInit(): void {
@@ -145,13 +157,15 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
   }
 
   ngAfterContentInit(): void {
-    this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.listOfRouterLink.changes.subscribe(() => this.updateRouterActive());
     this.updateRouterActive();
   }
 
@@ -159,10 +173,5 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     if (changes.nzSelected) {
       this.setSelectedState(this.nzSelected);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
