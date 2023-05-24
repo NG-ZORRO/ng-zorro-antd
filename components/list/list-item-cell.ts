@@ -15,8 +15,8 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { defer, exhaustMap, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
+import { startWith, take, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
@@ -69,7 +69,7 @@ export class NzListItemActionsComponent implements OnChanges {
     return this.ngZone.onStable.pipe(
       take(1),
       this.enterZone(),
-      switchMap(() => this.contentChildrenChanges$)
+      exhaustMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
     );
   });
 
