@@ -19,8 +19,7 @@ import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 
 import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-
-import { NzSafeAny } from '../core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
