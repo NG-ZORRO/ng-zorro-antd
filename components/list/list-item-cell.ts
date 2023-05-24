@@ -15,10 +15,12 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { defer, exhaustMap, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
-import { startWith, take, takeUntil } from 'rxjs/operators';
+import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
+import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+
+import { NzSafeAny } from '../core/types';
 
 @Component({
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
@@ -62,7 +64,7 @@ export class NzListItemActionsComponent implements OnChanges {
 
   actions: Array<TemplateRef<void>> = [];
   private inputActionChanges$ = new Subject<null>();
-  private contentChildrenChanges$: Observable<null> = defer(() => {
+  private contentChildrenChanges$: Observable<NzSafeAny> = defer(() => {
     if (this.nzListItemActions) {
       return of(null);
     }
