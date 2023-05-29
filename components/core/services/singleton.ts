@@ -47,6 +47,12 @@ export class NzSingletonService {
     }
   }
 
+  unregisterSingletonWithKey(key: string): void {
+    if (this.singletonRegistry.has(key)) {
+      this.singletonRegistry.delete(key);
+    }
+  }
+
   getSingletonWithKey<T>(key: string): T | null {
     return this.singletonRegistry.has(key) ? (this.singletonRegistry.get(key)!.target as T) : null;
   }
