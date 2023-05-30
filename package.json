@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@angular/cdk": "^16.0.0",
-    "@ant-design/icons-angular": "16.0.0-beta.0",
+    "@ant-design/icons-angular": "^16.0.0",
     "@ctrl/tinycolor": "^3.4.1",
     "date-fns": "^2.16.1",
     "ngx-quicklink": "^0.4.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "16.0.0-beta.0",
+    "@angular-builders/custom-webpack": "16.0.0-beta.1",
     "@angular-devkit/build-angular": "~16.0.0",
     "@angular-devkit/core": "~16.0.0",
     "@angular-devkit/schematics": "~16.0.0",
