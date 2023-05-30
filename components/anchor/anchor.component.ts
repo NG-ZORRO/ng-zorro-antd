@@ -112,7 +112,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private handleScrollTimeoutID = -1;
 
   constructor(
@@ -143,7 +143,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   ngOnDestroy(): void {
     clearTimeout(this.handleScrollTimeoutID);
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
@@ -151,7 +151,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.zone.runOutsideAngular(() => {
       fromEvent(this.getContainer(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
         .pipe(throttleTime(50), takeUntil(this.destroy$))

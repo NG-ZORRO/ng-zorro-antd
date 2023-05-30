@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
+import { Platform, normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -25,7 +25,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, fromEvent } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
@@ -64,7 +64,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzVisibilityHeight: NumberInput;
   static ngAcceptInputType_nzDuration: NumberInput;
 
-  private scrollListenerDestroy$ = new Subject();
+  private scrollListenerDestroy$ = new Subject<boolean>();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
@@ -137,7 +137,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.scrollListenerDestroy$.next();
+    this.scrollListenerDestroy$.next(true);
     this.handleScroll();
     this.zone.runOutsideAngular(() => {
       fromEvent(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
@@ -147,7 +147,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.scrollListenerDestroy$.next();
+    this.scrollListenerDestroy$.next(true);
     this.scrollListenerDestroy$.complete();
   }
 

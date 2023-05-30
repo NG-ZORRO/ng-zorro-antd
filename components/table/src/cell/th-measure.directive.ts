@@ -12,7 +12,7 @@ import { isNil } from 'ng-zorro-antd/core/util';
   selector: 'th'
 })
 export class NzThMeasureDirective implements OnChanges {
-  changes$ = new Subject();
+  changes$ = new Subject<void>();
   @Input() nzWidth: string | null = null;
   @Input() colspan: string | number | null = null;
   @Input() colSpan: string | number | null = null;

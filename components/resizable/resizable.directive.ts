@@ -16,7 +16,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -92,13 +92,15 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.elRect = this.el.getBoundingClientRect();
     });
 
-    this.nzResizableService.documentMouseUpOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
-      if (this.resizing) {
-        this.resizing = false;
-        this.nzResizableService.documentMouseUpOutsideAngular$.next();
-        this.endResize(event);
-      }
-    });
+    this.nzResizableService.documentMouseUpOutsideAngular$
+      .pipe(takeUntil(this.destroy$), filter(Boolean))
+      .subscribe(event => {
+        if (this.resizing) {
+          this.resizing = false;
+          this.nzResizableService.documentMouseUpOutsideAngular$.next(null);
+          this.endResize(event);
+        }
+      });
 
     this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.resizing) {
