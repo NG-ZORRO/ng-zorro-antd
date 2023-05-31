@@ -31,7 +31,7 @@ export class NzFormItemComponent implements OnDestroy, OnDestroy {
   hasFeedback = false;
   withHelpClass = false;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   setWithHelpViaTips(value: boolean): void {
     this.withHelpClass = value;
@@ -51,7 +51,7 @@ export class NzFormItemComponent implements OnDestroy, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

@@ -27,7 +27,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, defer, merge } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -137,7 +137,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
-      return merge<NzOptionSelectionChange>(...this.options.map(option => option.selectionChange));
+      return merge<NzOptionSelectionChange[]>(...this.options.map(option => option.selectionChange));
     }
     return this.ngZone.onStable.asObservable().pipe(
       take(1),
@@ -146,7 +146,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   });
   readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
     if (this.options) {
-      return merge<NzAutocompleteOptionComponent>(...this.options.map(option => option.mouseEntered));
+      return merge<NzAutocompleteOptionComponent[]>(...this.options.map(option => option.mouseEntered));
     }
     return this.ngZone.onStable.asObservable().pipe(
       take(1),
