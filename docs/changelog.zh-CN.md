@@ -13,6 +13,27 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 16.0.0
+
+`2023-05-31`
+
+### 安装 ng-zorro-antd
+
+> 对于 `standalone` 模式请手动参考文档添加
+
+```bash
+$ cd PROJECT-NAME
+$ ng add ng-zorro-antd@16.0.0
+```
+
+### Bug Fixes
+
+* **date-picker:** 修复 `ng-untouched` 问题 ([#7922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7922)) ([9ebcf72](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9ebcf72bde75b735c0798bc66bb62226b7f29536))
+* **date-picker:** 修复跨年选择周期显示不正确问题 ([#7923](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7923)) ([e7f9538](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e7f953822133ce31d2523a48766dfe6572f95430))
+* **datepicker:** 修复 `ngModel` 未更新问题 ([#7948](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7948)) ([100796c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/100796c74cd75de9cebbf89cb58f4bf3cc58b746))
+* **slider:** 修复首个禁用失效问题 ([#7947](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7947)) ([ad2faf4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ad2faf4c67cb6e7bc1b12646d0ceb9153a59d75c)), closes [#7943](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7943)
+
+
 ## 15.1.0
 
 `2023-04-02`
