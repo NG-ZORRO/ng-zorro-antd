@@ -3,7 +3,7 @@
   "schematics": {
     "migration-v16": {
       "version": "16.0.0-0",
-      "description": "Updates NG-ZORRO to v16 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7726]",
+      "description": "Updates NG-ZORRO to v16 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/7929]",
       "factory": "./ng-update/index#updateToV16"
     },
     "ng-post-update": {
