@@ -886,15 +886,6 @@ describe('auto-complete', () => {
     }));
   });
 
-  describe('Fallback positions', () => {
-    let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
-      fixture.detectChanges();
-    });
-  });
-
   describe('misc', () => {
     let fixture: ComponentFixture<NzTestAutocompleteWithoutPanelComponent>;
 
