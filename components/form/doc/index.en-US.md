@@ -59,6 +59,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzNoColon]`| Set default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
 | `[nzTooltipIcon]`| Set default props `[nzTooltipIcon]` value of `nz-form-label` | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅ |
 | `[nzLabelAlign]`| Set default props `[nzLabelAlign]` value of `nz-form-label` | `'left' \| 'right'` | `'right'` |
+| `[nzLabelWrap]`| Set default props `[nzLabelWrap]` value of `nz-form-label` | `boolean` | `false` |
+
 
 ### nz-form-item
 
@@ -80,6 +82,7 @@ The label of the form item, optional.
 | `[nzTooltipTitle]`| Set tooltip info | `string \| TemplateRef<void>` | - |
 | `[nzTooltipIcon]`| Set icon of tooltip info | `string \| NzFormTooltipIcon` | - |
 | `[nzLabelAlign]`| The text align of label | `'left' \| 'right'` | `'right'` |
+| `[nzLabelWrap]`| whether label can be wrap | `boolean` | `false` |
 
 
 ### nz-form-control
