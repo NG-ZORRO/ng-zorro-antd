@@ -21,7 +21,7 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -101,7 +101,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
 
   setInlineCollapsed(inlineCollapsed: boolean): void {
@@ -178,7 +178,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

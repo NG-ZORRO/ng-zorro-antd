@@ -4,7 +4,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
 
 import {
@@ -17,7 +17,7 @@ import {
 
 @Injectable()
 export class NzTableDataService<T> implements OnDestroy {
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
@@ -129,7 +129,7 @@ export class NzTableDataService<T> implements OnDestroy {
   }
   constructor() {}
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

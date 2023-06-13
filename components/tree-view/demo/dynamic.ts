@@ -1,7 +1,7 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
-import { BehaviorSubject, merge, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, merge, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 
 interface FlatNode {
@@ -63,7 +63,7 @@ class DynamicDatasource implements DataSource<FlatNode> {
     const changes = [
       collectionViewer.viewChange,
       this.treeControl.expansionModel.changed.pipe(tap(change => this.handleExpansionChange(change))),
-      this.flattenedData
+      this.flattenedData.asObservable()
     ];
     return merge(...changes).pipe(map(() => this.expandFlattenedNodes(this.flattenedData.getValue())));
   }

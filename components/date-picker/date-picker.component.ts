@@ -435,6 +435,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   // blur event has not the relatedTarget in IE11, use focusout instead.
   onFocusout(event: FocusEvent): void {
     event.preventDefault();
+    this.onTouchedFn();
     if (!this.elementRef.nativeElement.contains(<Node>event.relatedTarget)) {
       this.checkAndClose();
     }
@@ -640,11 +641,15 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      const granularityComparaison = this.showTime ? 'second' : 'day';
       const value = this.datePickerService.value;
       const datePickerPreviousValue = this.datePickerService.initialValue;
 
       // Check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
-      if (!this.isRange && (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate)) {
+      if (
+        !this.isRange &&
+        (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate, granularityComparaison)
+      ) {
         this.onTouchedFn();
         return this.close();
       }
@@ -654,8 +659,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
         const [currentStartDate, currentEndDate] = value as CandyDate[];
         if (
-          previousStartDate?.isSame(currentStartDate?.nativeDate) &&
-          previousEndDate?.isSame(currentEndDate?.nativeDate)
+          previousStartDate?.isSame(currentStartDate?.nativeDate, granularityComparaison) &&
+          previousEndDate?.isSame(currentEndDate?.nativeDate, granularityComparaison)
         ) {
           this.onTouchedFn();
           return this.close();
@@ -738,7 +743,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     const inputFormats: { [key in NzDateMode]?: string } = {
       year: 'yyyy',
       month: 'yyyy-MM',
-      week: this.i18n.getDateLocale() ? 'RRRR-II' : 'yyyy-ww', // Format for week
+      week: 'YYYY-ww',
       date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
     };
 

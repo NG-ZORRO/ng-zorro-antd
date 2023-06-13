@@ -37,7 +37,7 @@ describe('ng-component schematic', () => {
 
   it('should create a component', async () => {
     const options = { ...defaultOptions };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const files = tree.files;
 
     expect(files).toEqual(
@@ -52,7 +52,7 @@ describe('ng-component schematic', () => {
 
   it('should create a flat component', async () => {
     const options = { ...defaultOptions, flat: true };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const files = tree.files;
 
     expect(files).toEqual(
@@ -80,7 +80,7 @@ describe('ng-component schematic', () => {
       export class ClosestModule { }
     `
     );
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const fooModuleContent = tree.readContent(closestModule);
 
     expect(fooModuleContent).toMatch(/import { TestComponent } from '.\/test.component'/);
@@ -102,7 +102,7 @@ describe('ng-component schematic', () => {
     `
     );
 
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const fooModuleContent = tree.readContent(testModule);
 
     expect(fooModuleContent).toMatch(/import { TestTestComponent } from '.\/test.component'/);
@@ -110,7 +110,7 @@ describe('ng-component schematic', () => {
 
   it('should set classname with the specified module', async () => {
     const options = { ...defaultOptions, classnameWithModule: true, module: 'app.module.ts' };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
 
     const appModuleContent = tree.readContent('/projects/ng-zorro/src/app/app.module.ts');
 

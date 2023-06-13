@@ -1,6 +1,6 @@
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
@@ -77,7 +77,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should dropdown close when scroll', fakeAsync(() => {
-    const scrolledSubject = new Subject();
+    const scrolledSubject = new Subject<void>();
     const fixture = createComponent(
       NzTestDropdownContextMenuComponent,
       [{ provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }],
