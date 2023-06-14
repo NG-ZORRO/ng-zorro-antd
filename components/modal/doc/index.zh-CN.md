@@ -175,6 +175,22 @@ nzFooter: [{
 </ng-template>
 ```
 
+### [nzModalContent]
+
+自定义内容。
+
+```html
+<div *nzModalContent>
+  Custom Modal Content
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalContent]>
+  Custom Modal Content
+</ng-template>
+```
+
 ### [nzModalFooter]
 
 自定义页脚。

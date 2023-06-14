@@ -176,6 +176,22 @@ Customize the title.
 </ng-template>
 ```
 
+### [nzModalContent]
+
+Customize the content.
+
+```html
+<div *nzModalContent>
+  Custom Modal Content
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalContent]>
+  Custom Modal Content
+</ng-template>
+```
+
 ### [nzModalFooter]
 
 Customize the footer.
