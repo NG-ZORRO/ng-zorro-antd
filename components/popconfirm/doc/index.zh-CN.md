@@ -22,24 +22,25 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 ### [nz-popconfirm]
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzPopconfirmArrowPointAtCenter]` | 箭头指向锚点的中心 | `boolean` | `false` |
-| `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'click'` |
-| `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
-| `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
-| `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
-| `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头 | `boolean` | `true` |
-| `[nzPopconfirmPlacement]` | 确认框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
-| `[nzPopconfirmOrigin]` | 确认框定位元素 | `ElementRef` | - |
-| `[nzPopconfirmVisible]` | 显示隐藏确认框 | `boolean` | `false` |
-| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
-| `[nzPopconfirmMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15` |
-| `[nzPopconfirmMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
-| `[nzPopconfirmOverlayClassName]` | 卡片类名 | `string` | - |
-| `[nzPopconfirmOverlayStyle]` | 卡片样式 | `object` | - |
-| `[nzPopconfirmBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false` |
+| 参数 | 说明 | 类型 | 默认值               |
+| --- | --- | --- |-------------------|
+| `[nzPopconfirmArrowPointAtCenter]` | 箭头指向锚点的中心 | `boolean` | `false`           |
+| `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<any>` | - |
+| `[nzPopconfirmTitleContext]` | 确认框描述的上下文 | `object` | -                 |
+| `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \         | 'hover' \| null` | `'click'` |
+| `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \          | 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
+| `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | -                 |
+| `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false`           |
+| `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头 | `boolean` | `true`            |
+| `[nzPopconfirmPlacement]` | 确认框位置 | `'top' \| 'left' \          | 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopconfirmOrigin]` | 确认框定位元素 | `ElementRef` | -                 |
+| `[nzPopconfirmVisible]` | 显示隐藏确认框 | `boolean` | `false`           |
+| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | -                 |
+| `[nzPopconfirmMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15`            |
+| `[nzPopconfirmMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1`             |
+| `[nzPopconfirmOverlayClassName]` | 卡片类名 | `string` | -                 |
+| `[nzPopconfirmOverlayStyle]` | 卡片样式 | `object` | -                 |
+| `[nzPopconfirmBackdrop]` | 浮层是否应带有背景板 | `boolean` | `false`           |
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
