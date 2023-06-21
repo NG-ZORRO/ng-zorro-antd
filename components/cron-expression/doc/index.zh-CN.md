@@ -36,6 +36,8 @@ npm install cron-parser
 |----------------|----------------|-----------------------------|----------|
 | `[nzType]` | cron 规则类型      | `'linux'｜'spring'`          | `linux`  |
 | `[nzSize]`     | 设置输入框大小        | `'large'｜'small'｜'default'` | `default` |
+| `[nzDisabled]`     | 禁用 | `boolean` | `false`   |
+| `[nzBorderless]`     | 是否隐藏边框        | `boolean` | `false`   |
 | `[nzCollapseDisable]`  | 隐藏折叠面板         | `boolean`                   | `false`  |
 | `[nzExtra]`     | 自定义渲染右侧的内容 | `TemplateRef<void>`         | -        |
 | `[nzSemantic]`     | 自定义渲染下次执行时间 | `TemplateRef<void>`         | -        |
