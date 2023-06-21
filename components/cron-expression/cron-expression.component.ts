@@ -126,6 +126,7 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
   labels: TimeType[] = [];
   interval!: CronExpression<false>;
   nextTimeList: Date[] = [];
+  private isNzDisableFirstChange: boolean = true;
   private destroy$ = new Subject<void>();
 
   validateForm!: UntypedFormGroup;
@@ -162,6 +163,12 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
     } else {
       return of({ error: true });
     }
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    this.cdr.markForCheck();
   }
 
   constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
