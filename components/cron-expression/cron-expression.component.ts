@@ -30,7 +30,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { CronExpression, parseExpression } from 'cron-parser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -48,14 +48,17 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
           class="ant-input ant-cron-expression-input-group"
           [class.ant-input-lg]="nzSize === 'large'"
           [class.ant-input-sm]="nzSize === 'small'"
-          [class.ant-cron-expression-input-group-focus]="focus"
-          [class.ant-cron-expression-input-group-error]="!validateForm.valid"
-          [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus"
+          [class.ant-input-borderless]="nzBorderless"
+          [class.ant-cron-expression-input-group-focus]="focus && !nzBorderless"
+          [class.ant-input-status-error]="!validateForm.valid && !nzBorderless"
+          [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus && !nzBorderless"
+          [class.ant-input-disabled]="nzDisabled"
         >
           <ng-container *ngFor="let label of labels">
             <nz-cron-expression-input
               [value]="this.validateForm.controls[label].value"
               [label]="label"
+              [disabled]="nzDisabled"
               (focusEffect)="focusEffect($event)"
               (blurEffect)="blurEffect()"
               (getValue)="getValue($event)"
@@ -105,11 +108,16 @@ import { CronChangeType, CronType, NzCronExpressionSize, TimeType } from './typi
   ]
 })
 export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, AsyncValidator, OnDestroy {
+  static ngAcceptInputType_nzBorderless: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   @Input() nzSize: NzCronExpressionSize = 'default';
   @Input() nzType: 'linux' | 'spring' = 'linux';
   @Input() @InputBoolean() nzCollapseDisable: boolean = false;
   @Input() nzExtra?: TemplateRef<void> | null = null;
   @Input() nzSemantic: TemplateRef<void> | null = null;
+  @Input() @InputBoolean() nzBorderless = false;
+  @Input() @InputBoolean() nzDisabled = false;
 
   locale!: NzCronExpressionI18nInterface;
   focus: boolean = false;
