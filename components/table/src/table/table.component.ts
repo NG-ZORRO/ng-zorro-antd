@@ -297,10 +297,12 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       this.listOfAutoColWidth = listOfWidth;
       this.cdr.markForCheck();
     });
-    this.nzTableStyleService.manualWidthConfigPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
-      this.listOfManualColWidth = listOfWidth;
-      this.cdr.markForCheck();
-    });
+    this.nzTableStyleService.manualWidthConfigPx$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ manualWidth, columnCount }) => {
+        this.listOfManualColWidth = manualWidth.concat(new Array(columnCount - manualWidth.length).fill(null));
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

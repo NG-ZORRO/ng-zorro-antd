@@ -59,6 +59,12 @@ describe('nz-thead', () => {
       upButtons[2].click();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(3);
     });
+    it('should show correct colgroup', () => {
+      fixture.detectChanges();
+      const colgroup = table.nativeElement.querySelector('colgroup');
+      const cols = colgroup.querySelectorAll('col');
+      expect(cols.length).toBe(6);
+    });
   });
 });
 
@@ -66,9 +72,12 @@ describe('nz-thead', () => {
   template: `
     <nz-table>
       <thead (nzSortOrderChange)="sortChange($event)">
-        <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
-        <th nzColumnKey="second" [nzSortFn]="filterFn">></th>
-        <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
+        <tr>
+          <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
+          <th nzColumnKey="second" [nzSortFn]="filterFn"></th>
+          <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn"></th>
+          <th colspan="2">col with colSpan</th>
+        </tr>
       </thead>
     </nz-table>
   `

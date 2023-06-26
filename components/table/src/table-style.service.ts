@@ -22,15 +22,19 @@ export class NzTableStyleService {
   noResult$ = new ReplaySubject<string | TemplateRef<NzSafeAny> | undefined>(1);
   private listOfThWidthConfigPx$ = new BehaviorSubject<ReadonlyArray<string | null>>([]);
   private tableWidthConfigPx$ = new BehaviorSubject<ReadonlyArray<string | null>>([]);
-  manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$]).pipe(
-    map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
+  manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$, this.columnCount$]).pipe(
+    map(([widthConfig, listOfWidth, columnCount]) => {
+      return { manualWidth: widthConfig.length ? widthConfig : listOfWidth, columnCount };
+    })
   );
   private listOfAutoWidthPx$ = new ReplaySubject<readonly string[]>(1);
   listOfListOfThWidthPx$ = merge(
     /** init with manual width **/
-    this.manualWidthConfigPx$,
+    this.manualWidthConfigPx$.pipe(
+      map(({ manualWidth, columnCount }) => manualWidth.concat(new Array(columnCount - manualWidth.length).fill(null)))
+    ),
     combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
-      map(([autoWidth, manualWidth]) => {
+      map(([autoWidth, { manualWidth, columnCount }]) => {
         /** use autoWidth until column length match **/
         if (autoWidth.length === manualWidth.length) {
           return autoWidth.map((width, index) => {
@@ -41,7 +45,7 @@ export class NzTableStyleService {
             }
           });
         } else {
-          return manualWidth;
+          return manualWidth.concat(new Array(columnCount - manualWidth.length).fill(null));
         }
       })
     )

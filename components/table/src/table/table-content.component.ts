@@ -14,7 +14,9 @@ import { NzTableLayout } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth" />
+    <colgroup>
+      <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth" />
+    </colgroup>
     <thead class="ant-table-thead" *ngIf="theadTemplate">
       <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
     </thead>
