@@ -7,6 +7,8 @@ import { AfterContentInit, ContentChildren, Directive, OnDestroy, Optional, Quer
 import { combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
+import { measureScrollbar } from 'ng-zorro-antd/core/util';
+
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
 import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';
@@ -80,17 +82,24 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
             }
           });
         });
-      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$])
+      combineLatest([
+        this.nzTableStyleService.listOfListOfThWidth$,
+        this.listOfFixedRightColumnChanges$,
+        this.nzTableStyleService.hasVerticalScrollBar$
+      ])
         .pipe(takeUntil(this.destroy$))
-        .subscribe(([listOfAutoWidth, listOfRightCell]) => {
+        .subscribe(([listOfAutoWidth, listOfRightCell, hasVerticalScrollVBar]) => {
+          const scrollBarWidth = measureScrollbar('vertical');
           listOfRightCell.forEach((_, index) => {
             const cell = listOfRightCell[listOfRightCell.length - index - 1];
             if (cell.isAutoRight) {
               const currentArray = listOfRightCell.slice(listOfRightCell.length - index, listOfRightCell.length);
               const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || cur.colSpan || 1), 0);
-              const width = listOfAutoWidth
-                .slice(listOfAutoWidth.length - count, listOfAutoWidth.length)
-                .reduce((pre, cur) => pre + cur, 0);
+              const width =
+                listOfAutoWidth
+                  .slice(listOfAutoWidth.length - count, listOfAutoWidth.length)
+                  .reduce((pre, cur) => pre + cur, 0) +
+                (cell.isInsideTableThead() && hasVerticalScrollVBar ? scrollBarWidth : 0);
               cell.setAutoRightWidth(`${width}px`);
             }
           });

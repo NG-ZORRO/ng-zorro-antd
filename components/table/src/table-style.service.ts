@@ -14,6 +14,7 @@ import { NzThMeasureDirective } from './cell/th-measure.directive';
 @Injectable()
 export class NzTableStyleService {
   theadTemplate$ = new ReplaySubject<TemplateRef<NzSafeAny>>(1);
+  hasVerticalScrollBar$ = new ReplaySubject<boolean>(1);
   hasFixLeft$ = new ReplaySubject<boolean>(1);
   hasFixRight$ = new ReplaySubject<boolean>(1);
   hostWidth$ = new ReplaySubject<number>(1);
@@ -29,10 +30,12 @@ export class NzTableStyleService {
   listOfListOfThWidthPx$ = merge(
     /** init with manual width **/
     this.manualWidthConfigPx$,
-    combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
-      map(([autoWidth, manualWidth]) => {
+    combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$, this.columnCount$]).pipe(
+      map(([autoWidth, manualWidth, columnCount]) => {
         /** use autoWidth until column length match **/
-        if (autoWidth.length === manualWidth.length) {
+        if (manualWidth.every(width => width === null)) {
+          return autoWidth;
+        } else if (autoWidth.length === manualWidth.length) {
           return autoWidth.map((width, index) => {
             if (width === '0px') {
               return manualWidth[index] || null;
@@ -41,7 +44,7 @@ export class NzTableStyleService {
             }
           });
         } else {
-          return manualWidth;
+          return [...manualWidth, ...new Array(columnCount - manualWidth.length).fill(null)];
         }
       })
     )
@@ -60,6 +63,10 @@ export class NzTableStyleService {
 
   setHasFixRight(hasFixRight: boolean): void {
     this.hasFixRight$.next(hasFixRight);
+  }
+
+  setHasVerticalScrollBar(hasVerticalScrollBar: boolean): void {
+    this.hasVerticalScrollBar$.next(hasVerticalScrollBar);
   }
 
   setTableWidthConfig(widthConfig: ReadonlyArray<string | null>): void {

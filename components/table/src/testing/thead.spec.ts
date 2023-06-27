@@ -67,8 +67,8 @@ describe('nz-thead', () => {
     <nz-table>
       <thead (nzSortOrderChange)="sortChange($event)">
         <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
-        <th nzColumnKey="second" [nzSortFn]="filterFn">></th>
-        <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
+        <th nzColumnKey="second" [nzSortFn]="filterFn"></th>
+        <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn"></th>
       </thead>
     </nz-table>
   `
