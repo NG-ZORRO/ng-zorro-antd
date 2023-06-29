@@ -780,8 +780,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   onTouchedFn: OnTouchedType = () => void 0;
 
   writeValue(value: CompatibleDate): void {
-    this.setValue(value);
-    this.cdr.markForCheck();
+    if (value) {
+      this.setValue(value);
+      this.cdr.markForCheck();
+    }
   }
 
   registerOnChange(fn: OnChangeType): void {
@@ -839,9 +841,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
-    const newValue: CompatibleValue = this.datePickerService.makeValue(value);
-    this.datePickerService.setValue(newValue);
-    this.datePickerService.initialValue = newValue;
+    const initialDate = value;
+    const currentDate = Array.isArray(value) ? [...value] : new Date(initialDate as Date);
+    this.datePickerService.setValue(this.datePickerService.makeValue(currentDate));
+    this.datePickerService.initialValue = this.datePickerService.makeValue(initialDate);
     this.cdr.detectChanges();
   }
 

@@ -472,6 +472,11 @@ describe('affix-extra', () => {
     context = fixture.componentInstance;
     dl = fixture.debugElement;
   });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
   it('#getOffset', () => {
     const ret = fixture.componentInstance.nzAffixComponent.getOffset(
       fixture.debugElement.query(By.css('#affix')).nativeElement,
