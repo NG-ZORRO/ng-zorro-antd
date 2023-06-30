@@ -5,7 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
-import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
@@ -218,9 +218,12 @@ describe('NzNotification', () => {
   });
 
   it('should update an existing notification when keys are matched', () => {
-    notificationService.create('', '', 'EXISTS', { nzKey: 'exists' });
+    let messageId: string | null = null;
+    messageId = notificationService.create('', '', 'EXISTS', { nzKey: 'exists' }).messageId;
     expect(overlayContainerElement.textContent).toContain('EXISTS');
-    notificationService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' });
+    expect(messageId).toEqual('exists');
+    messageId = notificationService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' }).messageId;
+    expect(messageId).toEqual('exists');
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
     expect(overlayContainerElement.textContent).toContain('Title');
     expect(overlayContainerElement.textContent).toContain('SHOULD NOT CHANGE');

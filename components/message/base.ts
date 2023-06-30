@@ -101,7 +101,17 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   }
 
   remove(id: string, userAction: boolean = false): void {
-    this.instances.some((instance, index) => {
+    this.instances
+      .map((instance, index) => ({ index, instance }))
+      .filter(({ instance }) => instance.messageId === id)
+      .forEach(({ index, instance }) => {
+        this.instances.splice(index, 1);
+        this.instances = [...this.instances];
+        this.onRemove(instance, userAction);
+        this.readyInstances();
+      });
+
+    /* this.instances.some((instance, index) => {
       if (instance.messageId === id) {
         this.instances.splice(index, 1);
         this.instances = [...this.instances];
@@ -110,7 +120,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
         return true;
       }
       return false;
-    });
+    }); **/
   }
 
   removeAll(): void {

@@ -14,14 +14,16 @@ export class NzDemoNotificationUpdateComponent {
   constructor(private notification: NzNotificationService) {}
 
   createAutoUpdatingNotifications(): void {
-    this.notification.blank('Notification Title', 'Description.', {
+    let notificationRef = this.notification.blank('Notification Title', 'Description.', {
       nzKey: 'key'
     });
+    console.log(notificationRef);
 
     setTimeout(() => {
-      this.notification.blank('New Title', 'New description', {
+      notificationRef = this.notification.blank('New Title', 'New description', {
         nzKey: 'key'
       });
+      console.log(notificationRef);
     }, 1000);
   }
 }
