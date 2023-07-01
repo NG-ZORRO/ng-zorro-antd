@@ -43,7 +43,6 @@ export function drawCanvas(
 ): void {
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   const formattedPadding = formatPadding(padding);
-  console.log(`padding: ${formattedPadding}`);
   canvas.style.width = `${size}px`;
   canvas.style.height = `${size}px`;
   if (!value) {
