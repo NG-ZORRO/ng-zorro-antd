@@ -110,17 +110,6 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
         this.onRemove(instance, userAction);
         this.readyInstances();
       });
-
-    /* this.instances.some((instance, index) => {
-      if (instance.messageId === id) {
-        this.instances.splice(index, 1);
-        this.instances = [...this.instances];
-        this.onRemove(instance, userAction);
-        this.readyInstances();
-        return true;
-      }
-      return false;
-    }); **/
   }
 
   removeAll(): void {
