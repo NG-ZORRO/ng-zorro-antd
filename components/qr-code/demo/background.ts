@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-qr-code-background',
   template: `
-    <nz-qrcode nzBackgroundColor="#ff6600" nzValue="https://ng.ant.design/"></nz-qrcode>
-    <nz-qrcode nzBackgroundColor="#1677ff" nzValue="https://ng.ant.design/"></nz-qrcode>
+    <nz-qrcode nzBgColor="#ff6600" nzValue="https://ng.ant.design/"></nz-qrcode>
+    <nz-qrcode nzBgColor="#1677ff" nzValue="https://ng.ant.design/"></nz-qrcode>
   `,
   styles: [
     `

@@ -57,7 +57,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzValue: string = '';
   @Input() nzPadding: number | number[] = 10;
   @Input() nzColor: string = '#000000';
-  @Input() nzBackgroundColor: string = '#FFFFFF';
+  @Input() nzBgColor: string = '#FFFFFF';
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
@@ -114,7 +114,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         10,
         this.nzPadding,
         this.nzColor,
-        this.nzBackgroundColor,
+        this.nzBgColor,
         this.nzIconSize,
         this.nzIcon
       );

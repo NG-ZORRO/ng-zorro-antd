@@ -24,7 +24,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 | -------------- |--------------|-----------------------------------| -------- |
 | `[nzValue]`    | 扫描后的地址       | `string`                          | -        |
 | `[nzColor]`    | 二维码颜色        | `string`                          | `#000`   |
-| `[nzBackgroundColor]` | 二维码背景颜色      | `string`                        | `#fff`   |
+| `[nzBgColor]` | 二维码背景颜色      | `string`                        | `#fff`   |
 | `[nzSize]`     | 二维码大小        | `number`                          | `160`    |
 | `[nzPadding]`  | 二维码填充        | `number \| number[]`              | `10`     |
 | `[nzIcon]`     | 二维码中 icon 地址 | `string`                          | -        |

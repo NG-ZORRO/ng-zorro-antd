@@ -23,7 +23,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 |-----------------------|-------------------------------------|---------------------------------|----------|
 | `[nzValue]`           | scanned link                        | `string`                        | -        |
 | `[nzColor]`           | QR code Color                       | `string`                        | `#000`   |
-| `[nzBackgroundColor]` | QR code background color            | `string`                        | `#fff`   |
+| `[nzBgColor]` | QR code background color            | `string`                        | `#fff`   |
 | `[nzSize]`            | QR code Size                        | `number`                        | `160`    |
 | `[nzPadding]`         | QR code Padding                     | `number \| number[]`            | `10`     |
 | `[nzIcon]`            | Icon address in QR code             | `string`                        | -        |
