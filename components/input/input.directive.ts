@@ -37,7 +37,7 @@ import { InputBoolean, getStatusClassNames } from 'ng-zorro-antd/core/util';
     '[class.ant-input-sm]': `nzSize === 'small'`,
     '[attr.disabled]': 'disabled || null',
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
-    '[class.ant-input-stepperless]': `!nzStepperless`
+    '[class.ant-input-stepperless]': `nzStepperless`
   }
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
@@ -45,7 +45,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzBorderless: BooleanInput;
   @Input() @InputBoolean() nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() @InputBoolean() nzStepperless: boolean = false;
+  @Input() @InputBoolean() nzStepperless: boolean = true;
   @Input() nzStatus: NzStatus = '';
   @Input()
   get disabled(): boolean {

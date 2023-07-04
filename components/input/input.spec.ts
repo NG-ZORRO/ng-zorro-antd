@@ -65,7 +65,7 @@ describe('input', () => {
       it('should nzStepperLess work', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
-        testComponent.showStepper = true;
+        testComponent.stepperless = false;
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
@@ -211,12 +211,12 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="showStepper" /> `
+  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" /> `
 })
 export class NzTestInputWithInputComponent {
   size = 'default';
   disabled = false;
-  showStepper = false;
+  stepperless = true;
 }
 
 @Component({
