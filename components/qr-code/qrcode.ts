@@ -62,6 +62,7 @@ export function drawCanvas(
     iconImg.width = iconSize * (canvas.width / size);
     iconImg.height = iconSize * (canvas.width / size);
     iconImg.onload = () => {
+      drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
       drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
       const iconCoordinate = canvas.width / 2 - (iconSize * (canvas.width / size)) / 2;
 
@@ -74,7 +75,10 @@ export function drawCanvas(
         iconSize * (canvas.width / size)
       );
     };
-    iconImg.onerror = () => drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
+    iconImg.onerror = () => {
+      drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
+      drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
+    };
   }
 }
 
@@ -109,7 +113,7 @@ export function drawCanvasBackground(
   }
 }
 
-function formatPadding(padding: number | number[]): number[] {
+export function formatPadding(padding: number | number[]): number[] {
   if (Array.isArray(padding)) {
     // Build an array of 4 elements and repeat values from padding as necessary to set the value of the array
     return Array(4)
