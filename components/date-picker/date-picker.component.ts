@@ -22,7 +22,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Inject,
   Input,
@@ -37,7 +36,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -50,7 +50,7 @@ import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/f
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -61,7 +61,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -839,9 +839,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
-    const newValue: CompatibleValue = this.datePickerService.makeValue(value);
+    const newValue = this.datePickerService.makeValue(value);
     this.datePickerService.setValue(newValue);
-    this.datePickerService.initialValue = newValue;
+    this.datePickerService.initialValue = cloneDate(newValue);
     this.cdr.detectChanges();
   }
 
