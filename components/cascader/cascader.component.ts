@@ -788,9 +788,8 @@ export class NzCascaderComponent
 
     if (this.isLabelRenderTemplate) {
       this.labelRenderContext = { labels, selectedOptions };
-    } else {
-      this.labelRenderText = defaultDisplayRender.call(this, labels);
     }
+    this.labelRenderText = defaultDisplayRender.call(this, labels);
   }
 
   private setDropdownStyles(): void {
