@@ -1,0 +1,6 @@
+import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
+export const moduleList = [ NzColorPickerModule, NzFormModule, NzInputModule, NzButtonModule ];
