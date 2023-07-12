@@ -66,7 +66,7 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   constructor(private el: ElementRef, @Inject(DOCUMENT) private document: Document, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.observer.observe(this.waterMarkElement, {
+    this.observer.observe(this.el.nativeElement, {
       subtree: true,
       childList: true,
       attributeFilter: ['style', 'class']
