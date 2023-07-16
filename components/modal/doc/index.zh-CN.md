@@ -61,14 +61,9 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
 | nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
 | nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | - |
-| nzComponentParams | 当 `nzContent` 为组件时将作为实例属性，为 `TemplateRef` 时将作为模版变量 | `object` | - |
 | nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | `string` | `'question-circle'` |
 | nzAutofocus        | 自动聚焦及聚焦位置，为 `null` 时禁用 | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
-
-#### 注意
-
-> `nzComponentParams` 属性的创建或修改不会触发 `nzContent` 组件的 `ngOnChanges` 生命周期钩子。
 
 #### 采用服务方式创建普通模式对话框
 

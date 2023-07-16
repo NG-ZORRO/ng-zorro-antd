@@ -21,16 +21,6 @@ export function getValueWithConfig<T>(
     : userValue;
 }
 
-/**
- * Assign the params into the content component instance.
- *
- * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 14.0.0
- */
-export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
-  Object.assign(<{}>instance, params);
-}
-
 export function getConfigFromComponent<T extends ModalOptions>(component: T): ModalOptions {
   const {
     nzCentered,
@@ -44,7 +34,6 @@ export function getConfigFromComponent<T extends ModalOptions>(component: T): Mo
     nzKeyboard,
     nzNoAnimation,
     nzContent,
-    nzComponentParams,
     nzFooter,
     nzZIndex,
     nzWidth,
@@ -80,7 +69,6 @@ export function getConfigFromComponent<T extends ModalOptions>(component: T): Mo
     nzKeyboard,
     nzNoAnimation,
     nzContent,
-    nzComponentParams,
     nzFooter,
     nzZIndex,
     nzWidth,
