@@ -97,6 +97,11 @@ describe('nz-cron-expression', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(6);
       expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(6);
+
+      fixture.componentRef.instance.nzType = 'linux';
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(5);
+      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(5);
     });
   });
 
