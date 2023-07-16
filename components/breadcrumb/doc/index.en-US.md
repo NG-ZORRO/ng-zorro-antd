@@ -46,7 +46,7 @@ For lazy loading modules, you should write `data` in parent module like this:
 ```ts
 {
   path: 'first',
-  loadChildren: './first/first.module#FirstModule',
+  loadChildren: () => import('./first/first.module').then(m => m.FirstModule),
   data: {
     breadcrumb: 'First'
   },
