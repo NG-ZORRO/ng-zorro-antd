@@ -45,7 +45,8 @@ interface NzResizeEvent {
   width?: number;
   height?: number;
   col?: number;
-  mouseEvent?: MouseEvent
+  direction?: NzResizeDirection;
+  mouseEvent?: MouseEvent;
 }
 ```
 

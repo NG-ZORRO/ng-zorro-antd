@@ -24,13 +24,14 @@ import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
-import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
+import { NzResizeDirection, NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 export interface NzResizeEvent {
   width?: number;
   height?: number;
   col?: number;
   mouseEvent?: MouseEvent | TouchEvent;
+  direction?: NzResizeDirection;
 }
 
 @Directive({
@@ -87,7 +88,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.currentHandleEvent = event;
       this.setCursor();
       if (this.nzResizeStart.observers.length) {
-        this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent }));
+        this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent, direction: event.direction }));
       }
       this.elRect = this.el.getBoundingClientRect();
     });
@@ -250,7 +251,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.ngZone.run(() => {
         this.nzResize.emit({
           ...size,
-          mouseEvent: event
+          mouseEvent: event,
+          direction: this.currentHandleEvent!.direction
         });
       });
     }
@@ -275,7 +277,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.ngZone.run(() => {
         this.nzResizeEnd.emit({
           ...size,
-          mouseEvent: event
+          mouseEvent: event,
+          direction: this.currentHandleEvent!.direction
         });
       });
     }
