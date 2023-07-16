@@ -49,7 +49,8 @@ describe('context-menu', () => {
     expect(() => {
       const fakeEvent = createMouseEvent('contextmenu', 300, 300);
       const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      expect(viewRef).toBeTruthy();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
