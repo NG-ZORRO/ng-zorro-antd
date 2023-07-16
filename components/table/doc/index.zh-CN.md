@@ -68,6 +68,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzData]` | 数据数组 | `T[]` | - |
 | `[nzFrontPagination]` | 是否在前端对数据进行分页，如果在服务器分页数据或者需要在前端显示全部数据时传入 false | `boolean` | `true` |
 | `[nzTotal]` | 当前总数据，在服务器渲染时需要传入 | `number` | - |
+| `[nzCustomColumn]` | 控制表格列的展示与排序，(开启后 `nzWidthConfig` 和 `th` 的 `[nzWidth]` 将不生效) | `NzCustomColumn[]` | - |
 | `[nzPageIndex]` | 当前页码，可双向绑定 | `number` | - |
 | `[nzPageSize]` | 每页展示多少数据，可双向绑定 | `number` | - |
 | `[nzShowPagination]` | 是否显示分页器 | `boolean` | `true` |
@@ -99,6 +100,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `(nzPageIndexChange)` | 当前页码改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<T[]>` | - |
+| `(nzCustomColumnChange)` | 当表格重新排序后的回调 | `EventEmitter<NzCustomColumn[]>` | - |
 | `(nzQueryParams)` | 当服务端分页、筛选、排序时，用于获得参数，具体见示例 | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
@@ -148,6 +150,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzLeft]` | 左侧距离，用于固定左侧列，当为 `true` 时自动计算，为 `false` 时停止固定 | `string \| boolean` | `false` |
 | `[nzRight]` | 右侧距离，用于固定右侧列，当为 `true` 时自动计算，为 `false` 时停止固定 | `string \| boolean` | `false` |
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
+| `[nzCellControl]` | 设置列的位置，该值为 `NzCustomColumn` 类型中 `value` 字段的值 | `string`  | - |
 | `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
 | `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
 | `[colSpan]` | 每单元格中扩展列的数量 | `number` | `null` |
@@ -190,6 +193,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzLeft]` | 左侧距离，用于固定左侧列，当为 `true` 时自动计算，为 `false` 时停止固定 | `string \| boolean` | `false` |
 | `[nzRight]` | 右侧距离，用于固定右侧列，当为 `true` 时自动计算，为 `false` 时停止固定 | `string \| boolean` | `false` |
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
+| `[nzCellControl]` | 设置列的位置，该值为 `NzCustomColumn` 类型中 `value` 字段的值 | `string`  | - |
 | `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
 | `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
 
