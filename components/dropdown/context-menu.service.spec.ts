@@ -1,3 +1,4 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
@@ -5,7 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 
-import { createMouseEvent } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, createMouseEvent, dispatchEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuService } from './context-menu.service';
@@ -114,6 +115,27 @@ describe('context-menu', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('1st menu item');
       document.body.click();
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toBe('');
+    }).not.toThrowError();
+  }));
+  it('should backdrop work with keyboard event ESCAPE', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const keyboardEvent = createKeyboardEvent('keydown', ESCAPE, undefined, 'Escape');
+    fixture.detectChanges();
+    expect(overlayContainerElement.textContent).toBe('');
+    fixture.detectChanges();
+    expect(() => {
+      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+      const component = fixture.componentInstance;
+      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('1st menu item');
+      dispatchEvent(document.body, keyboardEvent);
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
