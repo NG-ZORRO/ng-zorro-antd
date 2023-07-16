@@ -654,7 +654,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         return this.close();
       }
 
-      // check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      // check if the value has change for a range picker, let us to avoid notify the control for nothing
       if (this.isRange) {
         const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
         const [currentStartDate, currentEndDate] = value as CandyDate[];
