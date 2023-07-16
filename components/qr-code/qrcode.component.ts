@@ -55,7 +55,9 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
 export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @Input() nzValue: string = '';
+  @Input() nzPadding: number | number[] = 10;
   @Input() nzColor: string = '#000000';
+  @Input() nzBgColor: string = '#FFFFFF';
   @Input() nzSize: number = 160;
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
@@ -110,7 +112,9 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         plotQRCodeData(this.nzValue, this.nzLevel),
         this.nzSize,
         10,
+        this.nzPadding,
         this.nzColor,
+        this.nzBgColor,
         this.nzIconSize,
         this.nzIcon
       );
