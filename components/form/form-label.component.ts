@@ -51,12 +51,14 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   `,
   host: {
     class: 'ant-form-item-label',
-    '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`
+    '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`,
+    '[class.ant-form-item-label-wrap]': `nzLabelWrap`
   }
 })
 export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
+  static ngAcceptInputType_nzLabelWrap: BooleanInput;
 
   @Input() nzFor?: string;
   @Input() @InputBoolean() nzRequired = false;
@@ -94,6 +96,17 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private labelAlign: NzLabelAlignType | 'default' = 'default';
 
+  @Input()
+  set nzLabelWrap(value: boolean) {
+    this.labelWrap = toBoolean(value);
+  }
+
+  get nzLabelWrap(): boolean {
+    return this.labelWrap !== 'default' ? this.labelWrap : this.nzFormDirective?.nzLabelWrap;
+  }
+
+  private labelWrap: boolean | 'default' = 'default';
+
   private destroy$ = new Subject<boolean>();
 
   constructor(private cdr: ChangeDetectorRef, @Optional() @SkipSelf() private nzFormDirective: NzFormDirective) {
@@ -118,6 +131,14 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzLabelAlign')
         .pipe(
           filter(() => this.labelAlign === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+
+      this.nzFormDirective
+        .getInputObservable('nzLabelWrap')
+        .pipe(
+          filter(() => this.labelWrap === 'default'),
           takeUntil(this.destroy$)
         )
         .subscribe(() => this.cdr.markForCheck());
