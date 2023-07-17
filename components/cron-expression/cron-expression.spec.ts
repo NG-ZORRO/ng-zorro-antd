@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
@@ -167,22 +167,12 @@ export class NzTestCronExpressionTypeComponent {
 }
 
 @Component({
-  template: `
-    <form [formGroup]="formGroup">
-      <nz-cron-expression formControlName="cron"></nz-cron-expression>
-    </form>
-  `
+  template: `<nz-cron-expression [formControl]="formControl"></nz-cron-expression>`
 })
 export class NzTestCronExpressionFormComponent {
-  formGroup: UntypedFormGroup;
-
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      cron: ['1 1 1 * *']
-    });
-  }
+  formControl = new FormControl('1 1 1 * *');
 
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 }
