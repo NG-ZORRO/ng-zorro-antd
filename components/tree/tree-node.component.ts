@@ -361,7 +361,6 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
         // clear dragging state
         this.draggingKey = null;
         this.markForCheck();
-        console.log('end');
       }
     });
   }
