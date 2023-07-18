@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
     `
       nz-qrcode {
         margin-right: 12px;
-        background-color: #f6f6f6;
       }
     `
   ]
