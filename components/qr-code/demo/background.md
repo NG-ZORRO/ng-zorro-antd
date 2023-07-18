@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 title:
   zh-CN: 具有自定义背景颜色
   en-US: With custom background color

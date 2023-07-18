@@ -55,7 +55,7 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
 export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @Input() nzValue: string = '';
-  @Input() nzPadding: number | number[] = 10;
+  @Input() nzPadding: number | number[] = 0;
   @Input() nzColor: string = '#000000';
   @Input() nzBgColor: string = '#FFFFFF';
   @Input() nzSize: number = 160;
@@ -75,6 +75,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   constructor(
     private i18n: NzI18nService,
+    private el: ElementRef,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -83,6 +84,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnInit(): void {
+    this.el.nativeElement.style.backgroundColor = this.nzBgColor;
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('QRCode');
       this.cdr.markForCheck();
@@ -90,9 +92,13 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzValue, nzIcon, nzLevel, nzSize, nzIconSize, nzColor } = changes;
-    if ((nzValue || nzIcon || nzLevel || nzSize || nzIconSize || nzColor) && this.canvas) {
+    const { nzValue, nzIcon, nzLevel, nzSize, nzIconSize, nzColor, nzPadding, nzBgColor } = changes;
+    if ((nzValue || nzIcon || nzLevel || nzSize || nzIconSize || nzColor || nzPadding || nzBgColor) && this.canvas) {
       this.drawCanvasQRCode();
+    }
+
+    if (nzBgColor) {
+      this.el.nativeElement.style.backgroundColor = this.nzBgColor;
     }
   }
 

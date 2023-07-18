@@ -20,19 +20,19 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 ### nz-qrcode
 
-| 参数           | 说明           | 类型                                | 默认值   |
-| -------------- |--------------|-----------------------------------| -------- |
-| `[nzValue]`    | 扫描后的地址       | `string`                          | -        |
-| `[nzColor]`    | 二维码颜色        | `string`                          | `#000`   |
-| `[nzBgColor]` | 二维码背景颜色      | `string`                        | `#fff`   |
-| `[nzSize]`     | 二维码大小        | `number`                          | `160`    |
-| `[nzPadding]`  | 二维码填充        | `number \| number[]`              | `10`     |
-| `[nzIcon]`     | 二维码中 icon 地址 | `string`                          | -        |
-| `[nzIconSize]` | 二维码中 icon 大小 | `number`                          | `40`     |
-| `[nzBordered]` | 是否有边框        | `boolean`                         | `true`   |
-| `[nzStatus]`   | 二维码状态        | `'active'｜'expired' ｜'loading'`   | `active` |
-| `[nzLevel]`    | 二维码容错等级      | `'L'｜'M'｜'Q'｜'H'`                 | `M`      |
-| `(nzRefresh)`  | 点击"点击刷新"的回调  | `EventEmitter<string>`            | -        |
+| 参数           | 说明           | 类型                                | 默认值       |
+| -------------- |--------------|-----------------------------------|-----------|
+| `[nzValue]`    | 扫描后的地址       | `string`                          | -         |
+| `[nzColor]`    | 二维码颜色        | `string`                          | `#000`    |
+| `[nzBgColor]` | 二维码背景颜色      | `string`                        | `#FFFFFF` |
+| `[nzSize]`     | 二维码大小        | `number`                          | `160`     |
+| `[nzPadding]`  | 二维码填充        | `number \| number[]`              | `0`       |
+| `[nzIcon]`     | 二维码中 icon 地址 | `string`                          | -         |
+| `[nzIconSize]` | 二维码中 icon 大小 | `number`                          | `40`      |
+| `[nzBordered]` | 是否有边框        | `boolean`                         | `true`    |
+| `[nzStatus]`   | 二维码状态        | `'active'｜'expired' ｜'loading'`   | `active`  |
+| `[nzLevel]`    | 二维码容错等级      | `'L'｜'M'｜'Q'｜'H'`                 | `M`       |
+| `(nzRefresh)`  | 点击"点击刷新"的回调  | `EventEmitter<string>`            | -         |
 
 ## 注意
 
