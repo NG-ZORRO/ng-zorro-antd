@@ -1,15 +1,9 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import {
-  AbstractControl,
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-  UntypedFormGroup
-} from '@angular/forms';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -791,7 +785,7 @@ describe('nz-slider', () => {
       });
       fixture = testBed.fixture;
       testComponent = fixture.componentInstance;
-      sliderControl = testComponent.form.controls.slider;
+      sliderControl = testComponent.formControl;
       getReferenceFromFixture(fixture);
     });
 
@@ -1161,31 +1155,23 @@ class MixedSliderComponent {
 
 @Component({
   template: `
-    <form [formGroup]="form">
-      <nz-slider formControlName="slider" [nzDisabled]="disabled"></nz-slider>
+    <form>
+      <nz-slider [formControl]="formControl" [nzDisabled]="disabled"></nz-slider>
     </form>
   `,
   styles: [styles]
 })
-class SliderWithFormControlComponent implements OnInit {
-  form!: UntypedFormGroup;
-
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      slider: [42]
-    });
-  }
+class SliderWithFormControlComponent {
+  formControl = new FormControl(42);
 
   disabled = false;
 
   disable(): void {
-    this.form.disable();
+    this.formControl.disable();
   }
 
   enable(): void {
-    this.form.enable();
+    this.formControl.enable();
   }
 }
 
