@@ -7,6 +7,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { isNil } from 'ng-zorro-antd/core/util';
 
+/**
+ * @deprecated v17.0.0 - Use Nullish coalescing operator (??) instead of `NzSafeNullPipe`.
+ */
 @Pipe({
   name: 'nzSafeNull'
 })
