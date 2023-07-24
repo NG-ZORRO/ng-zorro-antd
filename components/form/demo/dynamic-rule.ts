@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
@@ -12,7 +12,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">
+        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.controls.required.value">
           Nickname
         </nz-form-label>
         <nz-form-control [nzSpan]="8" nzErrorTip="Please input your nickname">
@@ -34,8 +34,16 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     </form>
   `
 })
-export class NzDemoFormDynamicRuleComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormDynamicRuleComponent {
+  validateForm: FormGroup<{
+    name: FormControl<string>;
+    nickname: FormControl<string>;
+    required: FormControl<boolean>;
+  }> = this.fb.group({
+    name: ['', [Validators.required]],
+    nickname: [''],
+    required: [false]
+  });
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -52,22 +60,14 @@ export class NzDemoFormDynamicRuleComponent implements OnInit {
 
   requiredChange(required: boolean): void {
     if (!required) {
-      this.validateForm.get('nickname')!.clearValidators();
-      this.validateForm.get('nickname')!.markAsPristine();
+      this.validateForm.controls.nickname.clearValidators();
+      this.validateForm.controls.nickname.markAsPristine();
     } else {
-      this.validateForm.get('nickname')!.setValidators(Validators.required);
-      this.validateForm.get('nickname')!.markAsDirty();
+      this.validateForm.controls.nickname.setValidators(Validators.required);
+      this.validateForm.controls.nickname.markAsDirty();
     }
-    this.validateForm.get('nickname')!.updateValueAndValidity();
+    this.validateForm.controls.nickname.updateValueAndValidity();
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      name: [null, [Validators.required]],
-      nickname: [null],
-      required: [false]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }
