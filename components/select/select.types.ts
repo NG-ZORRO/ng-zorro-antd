@@ -26,6 +26,7 @@ export interface NzSelectOptionInterface {
   disabled?: boolean;
   hide?: boolean;
   groupLabel?: string | number | TemplateRef<NzSafeAny> | null;
+  key?: string | number;
 }
 
 export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
