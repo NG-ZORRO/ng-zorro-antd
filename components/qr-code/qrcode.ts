@@ -14,7 +14,9 @@ export const ERROR_LEVEL_MAP: { [index in 'L' | 'M' | 'Q' | 'H']: qrcodegen.QrCo
 
 const DEFAULT_SIZE = 160;
 const DEFAULT_SCALE = 10;
+const DEFAULT_PADDING = 10;
 const DEFAULT_COLOR = '#000000';
+const DEFAULT_BACKGROUND_COLOR = '#FFFFFF';
 const DEFAULT_ICONSIZE = 40;
 const DEFAULT_LEVEL: keyof typeof ERROR_LEVEL_MAP = 'M';
 
@@ -33,11 +35,14 @@ export function drawCanvas(
   value: qrcodegen.QrCode | null,
   size = DEFAULT_SIZE,
   scale = DEFAULT_SCALE,
+  padding: number | number[] = DEFAULT_PADDING,
   color = DEFAULT_COLOR,
+  backgroundColor = DEFAULT_BACKGROUND_COLOR,
   iconSize = DEFAULT_ICONSIZE,
   icon?: string
 ): void {
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+  const formattedPadding = formatPadding(padding);
   canvas.style.width = `${size}px`;
   canvas.style.height = `${size}px`;
   if (!value) {
@@ -45,10 +50,11 @@ export function drawCanvas(
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     return;
   }
-  canvas.width = value.size * scale;
-  canvas.height = value.size * scale;
+  canvas.width = value.size * scale + formattedPadding[1] + formattedPadding[3];
+  canvas.height = value.size * scale + formattedPadding[0] + formattedPadding[2];
   if (!icon) {
-    drawCanvasColor(ctx, value, scale, color);
+    drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
+    drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
   } else {
     const iconImg = new Image();
     iconImg.src = icon;
@@ -56,7 +62,8 @@ export function drawCanvas(
     iconImg.width = iconSize * (canvas.width / size);
     iconImg.height = iconSize * (canvas.width / size);
     iconImg.onload = () => {
-      drawCanvasColor(ctx, value, scale, color);
+      drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
+      drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
       const iconCoordinate = canvas.width / 2 - (iconSize * (canvas.width / size)) / 2;
 
       ctx.fillRect(iconCoordinate, iconCoordinate, iconSize * (canvas.width / size), iconSize * (canvas.width / size));
@@ -68,7 +75,10 @@ export function drawCanvas(
         iconSize * (canvas.width / size)
       );
     };
-    iconImg.onerror = () => drawCanvasColor(ctx, value, scale, color);
+    iconImg.onerror = () => {
+      drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
+      drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
+    };
   }
 }
 
@@ -76,12 +86,40 @@ export function drawCanvasColor(
   ctx: CanvasRenderingContext2D,
   value: qrcodegen.QrCode,
   scale: number,
+  padding: number[],
+  backgroundColor: string,
   color: string
 ): void {
   for (let y = 0; y < value.size; y++) {
     for (let x = 0; x < value.size; x++) {
-      ctx.fillStyle = value.getModule(x, y) ? color : 'rgba(0, 0, 0, 0)';
+      ctx.fillStyle = value.getModule(x, y) ? color : backgroundColor;
+      ctx.fillRect(padding[3] + x * scale, padding[0] + y * scale, scale, scale);
+    }
+  }
+}
+
+export function drawCanvasBackground(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  scale: number,
+  backgroundColor: string
+): void {
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      ctx.fillStyle = backgroundColor;
       ctx.fillRect(x * scale, y * scale, scale, scale);
     }
+  }
+}
+
+export function formatPadding(padding: number | number[]): number[] {
+  if (Array.isArray(padding)) {
+    // Build an array of 4 elements and repeat values from padding as necessary to set the value of the array
+    return Array(4)
+      .fill(0)
+      .map((_, index) => padding[index % padding.length]);
+  } else {
+    return [padding, padding, padding, padding];
   }
 }

@@ -31,6 +31,7 @@ import { NzTableSelectionComponent } from './addon/selection.component';
 import { NzTableSortersComponent } from './addon/sorters.component';
 import { NzCellFixedDirective } from './cell/cell-fixed.directive';
 import { NzTableCellDirective } from './cell/cell.directive';
+import { NzCustomColumnDirective } from './cell/custom-column.directive';
 import { NzTdAddOnComponent } from './cell/td-addon.component';
 import { NzThAddOnComponent } from './cell/th-addon.component';
 import { NzThMeasureDirective } from './cell/th-measure.directive';
@@ -64,6 +65,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzTrExpandDirective,
     NzTableVirtualScrollDirective,
     NzCellFixedDirective,
+    NzCustomColumnDirective,
     NzTableContentComponent,
     NzTableTitleFooterComponent,
     NzTableInnerDefaultComponent,
@@ -92,6 +94,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzTrDirective,
     NzTableVirtualScrollDirective,
     NzCellFixedDirective,
+    NzCustomColumnDirective,
     NzFilterTriggerComponent,
     NzTrExpandDirective,
     NzCellBreakWordDirective,

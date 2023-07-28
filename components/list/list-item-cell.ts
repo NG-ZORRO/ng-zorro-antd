@@ -16,9 +16,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
@@ -62,14 +63,14 @@ export class NzListItemActionsComponent implements OnChanges {
 
   actions: Array<TemplateRef<void>> = [];
   private inputActionChanges$ = new Subject<null>();
-  private contentChildrenChanges$: Observable<null> = defer(() => {
+  private contentChildrenChanges$: Observable<NzSafeAny> = defer(() => {
     if (this.nzListItemActions) {
       return of(null);
     }
     return this.ngZone.onStable.pipe(
       take(1),
       this.enterZone(),
-      switchMap(() => this.contentChildrenChanges$)
+      exhaustMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
     );
   });
 

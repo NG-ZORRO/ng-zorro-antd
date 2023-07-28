@@ -35,6 +35,8 @@ npm install cron-parser
 | Parameter  | Description                                      | Type  | Default     |
 |-------------|--------------------------------------------------|-------------|---------|
 | `[nzType]` | Cron rule type                                   | `'linux'｜'spring'`          | `linux`  |
+| `[nzDisabled]`     | Disable | `boolean` | `false`   |
+| `[nzBorderless]`     | Whether to hide the border        | `boolean` | `false`   |
 | `[nzSize]`   | The size of the input box.                       | `'large'｜'small'｜'default'` | `default` |
 | `[nzCollapseDisable]`  | Hide collapse                                    | `boolean`                   | `false`  |
 | `[nzExtra]`     | Render the content on the right                  | `TemplateRef<void>`         | -        |

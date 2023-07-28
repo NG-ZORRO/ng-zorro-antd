@@ -70,7 +70,7 @@ export class NzNotificationService extends NzMNService {
       ...message,
       ...{
         createdAt: new Date(),
-        messageId: this.generateMessageId(),
+        messageId: options?.nzKey || this.generateMessageId(),
         options
       }
     });
