@@ -1,14 +1,15 @@
-@media screen and (max-width:767px){
+@media screen and (max-width:767px) {
   .pic-plus img {
     width: 120px;
     height: auto;
   }
 }
 
-.pic-plus > * {
+.pic-plus>* {
   display: inline-block !important;
   vertical-align: middle;
 }
+
 .pic-plus span {
   font-size: 30px;
   color: #aaa;
@@ -82,7 +83,8 @@
   padding: 24px;
 }
 
-body[data-theme='dark'], [data-theme='dark'] * {
+body[data-theme='dark'],
+[data-theme='dark'] * {
   scrollbar-color: #434343 #262626;
 
   &::-webkit-scrollbar {
@@ -94,9 +96,10 @@ body[data-theme='dark'], [data-theme='dark'] * {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color:  #434343;
+    background-color: #434343;
     border-radius: 6px;
     border: 2px solid #262626;
+
     :hover {
       background-color: #262626;
     }
@@ -115,6 +118,11 @@ label {
     margin-left: 8px;
     font-weight: normal;
     text-transform: uppercase;
+
+    &.standalone {
+      color: @gold-6;
+      border: 2px solid @gold-6;
+    }
 
     &.directive {
       color: @magenta-6;
@@ -142,7 +150,7 @@ label {
   }
 
   .head-example {
-    background: rgba(255,255,255,.12) !important;
+    background: rgba(255, 255, 255, .12) !important;
   }
 
   .popover-menu .ant-popover-inner-content #nav a {
@@ -158,7 +166,7 @@ label {
   }
 
   .site-page-header-ghost-wrapper {
-    background-color: rgba(255,255,255,0.08);
+    background-color: rgba(255, 255, 255, 0.08);
   }
 
   .drawer-content-wrapper {
@@ -197,6 +205,7 @@ label {
       font-size: 20px;
       line-height: 28px;
     }
+
     .resource-card-description {
       margin: 0 20px 20px 20px;
       color: #697b8c;
