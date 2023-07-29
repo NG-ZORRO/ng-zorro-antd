@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform } from '@angular/cdk/platform';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -45,6 +45,8 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
+  standalone: true,
+  imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>
       <ng-content></ng-content>
