@@ -56,6 +56,26 @@ export class NzTreeBaseService {
   }
 
   /**
+   * get checked node keys
+   */
+  getCheckedNodeKeys(): NzTreeNodeKey[] {
+    const keys: NzTreeNodeKey[] = [];
+    const checkedNodes = this.getCheckedNodeList();
+
+    const calc = (nodes: NzTreeNode[]): void => {
+      nodes.forEach(node => {
+        keys.push(node.key);
+        if (node.children.length < 1) return;
+        calc(node.children);
+      });
+    };
+
+    calc(checkedNodes);
+
+    return keys;
+  }
+
+  /**
    * return checked nodes
    */
   getCheckedNodeList(): NzTreeNode[] {
