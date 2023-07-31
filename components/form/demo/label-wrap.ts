@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 @Component({
   selector: 'nz-demo-form-label-wrap',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="validateForm" nzNoColon nzLabelAlign="left" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label nzRequired nzFor="user" nzSpan="3"> Normal text label </nz-form-label>
         <nz-form-control nzErrorTip="Please input your username!" nzSpan="8">
