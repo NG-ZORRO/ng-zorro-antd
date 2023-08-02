@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzResizeEvent, NzResizeHandleOption } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-grid',
@@ -16,7 +16,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
         [nzGridColumnCount]="24"
         [nzSpan]="col"
       >
-        <nz-resize-handles [nzDirections]="['right']"></nz-resize-handles>
+        <nz-resize-handles [nzDirections]="directions"></nz-resize-handles>
         col-{{ col }}
       </div>
       <div class="col right" nz-col [nzSpan]="24 - col">col-{{ 24 - col }}</div>
@@ -44,6 +44,12 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 export class NzDemoResizableGridComponent {
   col = 8;
   id = -1;
+  directions: NzResizeHandleOption[] = [
+    {
+      direction: 'right',
+      cursorType: 'grid'
+    }
+  ];
 
   onResize({ col }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
