@@ -37,7 +37,7 @@ import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zor
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
@@ -159,8 +159,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   // Can't construct a query for the property ... since the query selector wasn't defined"
   @ContentChildren(forwardRef(() => NzSubMenuComponent), { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
-  @ContentChildren(NzMenuItemDirective, { descendants: true })
-  listOfNzMenuItemDirective: QueryList<NzMenuItemDirective> | null = null;
+  @ContentChildren(NzMenuItemComponent, { descendants: true })
+  listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
   private level = this.nzSubmenuService.level;
   private destroy$ = new Subject<void>();
   position = 'right';

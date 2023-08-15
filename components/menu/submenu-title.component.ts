@@ -30,7 +30,7 @@ import { NzMenuModeType } from './menu.types';
   template: `
     <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></span>
     <ng-container *nzStringTemplateOutlet="nzTitle">
-      <span>{{ nzTitle }}</span>
+      <span class="ant-menu-title-content">{{ nzTitle }}</span>
     </ng-container>
     <ng-content></ng-content>
     <span

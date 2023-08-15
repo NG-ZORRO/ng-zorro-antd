@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
@@ -88,15 +88,15 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
   static ngAcceptInputType_nzSelectable: BooleanInput;
 
-  @ContentChildren(NzMenuItemDirective, { descendants: true })
-  listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemComponent, { descendants: true })
+  listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
   @Input() nzMode: NzMenuModeType = 'vertical';
   @Input() @InputBoolean() nzInlineCollapsed = false;
   @Input() @InputBoolean() nzSelectable = !this.isMenuInsideDropDown;
-  @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
+  @Output() readonly nzClick = new EventEmitter<NzMenuItemComponent>();
   actualMode: NzMenuModeType = 'vertical';
   dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
