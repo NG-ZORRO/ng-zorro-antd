@@ -93,11 +93,11 @@ export function getStyle(globalPrefixCls: string, theme: Theme): string {
   `.trim();
 }
 
-export function registerTheme(globalPrefixCls: string, theme: Theme): void {
+export function registerTheme(globalPrefixCls: string, theme: Theme, cspNonce: string | null | undefined): void {
   const style = getStyle(globalPrefixCls, theme);
 
   if (canUseDom()) {
-    updateCSS(style, `${dynamicStyleMark}-dynamic-theme`);
+    updateCSS(style, `${dynamicStyleMark}-dynamic-theme`, { cspNonce });
   } else {
     warn(`NzConfigService: SSR do not support dynamic theme with css variables.`);
   }

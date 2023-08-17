@@ -4,6 +4,7 @@
  */
 
 import {
+  CSP_NONCE,
   Directive,
   ElementRef,
   Inject,
@@ -61,7 +62,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     private elementRef: ElementRef,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
-    @Inject(PLATFORM_ID) private platformId: NzSafeAny
+    @Inject(PLATFORM_ID) private platformId: NzSafeAny,
+    @Optional() @Inject(CSP_NONCE) private cspNonce?: string | null
   ) {
     this.waveDisabled = this.isConfigDisabled();
   }
@@ -93,7 +95,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
         this.elementRef.nativeElement,
         this.ngZone,
         this.nzWaveExtraNode,
-        this.platformId
+        this.platformId,
+        this.cspNonce
       );
     }
   }
