@@ -15,15 +15,14 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { select, Selection } from 'd3-selection';
-import { transition as d3Transition } from 'd3-transition';
+import { Selection } from 'd3-selection';
+import { transition } from 'd3-transition';
 import { zoom, ZoomBehavior, zoomIdentity, zoomTransform } from 'd3-zoom';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { calculateTransform } from './core/utils';
 import { NzZoomTransform, RelativePositionInfo } from './interface';
-Selection.bind('transition', d3Transition);
 
 @Directive({
   selector: '[nz-graph-zoom]',
@@ -63,7 +62,9 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
     this.svgElement = this.element.nativeElement.querySelector('svg') as SVGSVGElement;
     this.gZoomElement = this.element.nativeElement.querySelector('svg > g') as SVGGElement;
     const { width, height } = this.element.nativeElement.getBoundingClientRect();
-    this.svgSelection = select(this.svgElement);
+    this.svgSelection = transition()
+      .selection()
+      .select(() => this.svgElement);
     this.zoomBehavior = zoom()
       .extent([
         [0, 0],
