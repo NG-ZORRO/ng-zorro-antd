@@ -84,6 +84,10 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 | nzOffsetX           | The the X coordinate offset(px).                                                                                                                                                                               | `number`                                                           | `0`         |
 | nzOffsetY           | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                                 | `number`                                                           | `0`         |
 
+
+### NZ_DRAWER_DATA
+
+NZ_DRAWER_DATA injection token is used to retrieve nzData in the custom component. The drawer created by the service method NzDrawerService.create() inject a NZ_DRAWER_DATA token (if nzContent is used as Component) to retrieve the parameters that have used to the 'nzContent component'
 ### NzDrawerRef
 
 #### Methods
