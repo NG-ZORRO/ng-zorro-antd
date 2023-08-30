@@ -1,12 +1,12 @@
-// Configuration for IDEs only.
-
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "ng-zorro-antd/*": ["./*"]
+      "ng-zorro-antd/*": [
+        "./*"
+      ]
     },
     "alwaysStrict": true,
     "strictFunctionTypes": true
