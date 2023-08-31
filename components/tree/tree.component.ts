@@ -20,10 +20,10 @@ import {
   Optional,
   Output,
   SimpleChange,
-  SkipSelf,
   TemplateRef,
   ViewChild,
-  forwardRef
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -48,11 +48,10 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzTreeService } from './tree.service';
 
-export function NzTreeServiceFactory(
-  higherOrderService: NzTreeBaseService,
-  treeService: NzTreeService
-): NzTreeBaseService {
-  return higherOrderService ? higherOrderService : treeService;
+export function NzTreeServiceFactory(): NzTreeBaseService {
+  const higherOrderService = inject(NzTreeHigherOrderServiceToken, { skipSelf: true, optional: true });
+  const treeService = inject(NzTreeService);
+  return higherOrderService ?? treeService;
 }
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
@@ -148,8 +147,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NzTreeService,
     {
       provide: NzTreeBaseService,
-      useFactory: NzTreeServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), NzTreeHigherOrderServiceToken], NzTreeService]
+      useFactory: NzTreeServiceFactory
     },
     {
       provide: NG_VALUE_ACCESSOR,

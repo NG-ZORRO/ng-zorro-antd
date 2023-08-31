@@ -19,7 +19,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
-  SkipSelf
+  inject
 } from '@angular/core';
 import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,14 +33,15 @@ import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.tok
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
-export function MenuServiceFactory(
-  serviceInsideDropDown: MenuService,
-  serviceOutsideDropDown: MenuService
-): MenuService {
-  return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
+export function MenuServiceFactory(): MenuService {
+  const serviceInsideDropDown = inject(MenuService, { skipSelf: true, optional: true });
+  const serviceOutsideDropDown = inject(NzMenuServiceLocalToken);
+  return serviceInsideDropDown ?? serviceOutsideDropDown;
 }
-export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean {
-  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+
+export function MenuDropDownTokenFactory(): boolean {
+  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { skipSelf: true, optional: true });
+  return isMenuInsideDropDownToken ?? false;
 }
 
 @Directive({
@@ -54,14 +55,12 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
     /** use the top level service **/
     {
       provide: MenuService,
-      useFactory: MenuServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), MenuService], NzMenuServiceLocalToken]
+      useFactory: MenuServiceFactory
     },
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuDropDownTokenFactory,
-      deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
+      useFactory: MenuDropDownTokenFactory
     }
   ],
   host: {

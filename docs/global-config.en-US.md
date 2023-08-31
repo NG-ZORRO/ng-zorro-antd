@@ -73,12 +73,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -95,8 +92,7 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
@@ -136,8 +132,9 @@ You can also use `useFactory` to combine the global configuration with the local
     NzConfigService,
     {
       provide: NZ_CONFIG,
-      useFactory: (nzConfigService: NzConfigService) => {
-        const globalConfig = nzConfigService.getConfig();
+      useFactory: () => {
+        // get global NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
             nzBorderless: true
@@ -150,8 +147,6 @@ You can also use `useFactory` to combine the global configuration with the local
         };
         return mergedConfig;
       },
-      // get global NzConfigService
-      deps: [[new SkipSelf(), NzConfigService]]
     }
   ]
 })
