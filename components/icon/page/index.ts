@@ -4,17 +4,7 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import {
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit,
-  ComponentFactoryResolver,
-  Input,
-  ViewChild,
-  TemplateRef,
-  ViewContainerRef
-} from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
@@ -557,8 +547,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   private getCopiedStringTemplateRef(copiedString: string): TemplateRef<void> {
     this.viewContainerRef.clear();
-    const factory = this.componentFactoryResolver.resolveComponentFactory(NzPageDemoIconCopiedCodeComponent);
-    const componentRef = this.viewContainerRef.createComponent(factory);
+    const componentRef = this.viewContainerRef.createComponent(NzPageDemoIconCopiedCodeComponent);
     componentRef.instance.copiedCode = copiedString;
 
     return componentRef.instance.templateRef;
@@ -670,7 +659,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Inject(DOCUMENT) private dom: any,
     private _iconService: NzIconService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private message: NzMessageService,
     private viewContainerRef: ViewContainerRef
   ) {
