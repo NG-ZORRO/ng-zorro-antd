@@ -4,9 +4,8 @@
  */
 
 export * from './base';
-export * from './message.service';
-export * from './message.service.module';
-export * from './message.module';
-export * from './message.component';
-export * from './typings';
 export * from './message-container.component';
+export * from './message.component';
+export * from './message.module';
+export * from './message.service';
+export * from './typings';
