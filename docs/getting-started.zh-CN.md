@@ -153,6 +153,10 @@ export class AppModule { }
 <button nz-button nzType="primary">Primary</button>
 ```
 
+# 注意事项
+
+- `ng-zorro-antd` 已经包含了 `@angular/cdk/overlay-prebuilt.css` 浮层样式，无需额外导入。
+
 ## 其他
 
 - [国际化配置](/docs/i18n/zh)
