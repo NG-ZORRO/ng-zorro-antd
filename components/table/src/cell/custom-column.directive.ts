@@ -33,7 +33,7 @@ export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
             if (!v?.fixWidth) {
               this.renderer.setStyle(this.el.nativeElement, 'flex', `1 1 ${v.width}px`);
             } else {
-              this.renderer.setStyle(this.el.nativeElement, 'flex', `0 0 ${v.width}px`);
+              this.renderer.setStyle(this.el.nativeElement, 'flex', `1 0 ${v.width}px`);
             }
           }
         });
