@@ -630,7 +630,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           nzCustomContent: item.label instanceof TemplateRef,
           groupLabel: item.groupLabel || null,
           type: 'item',
-          key: item.value
+          key: item.key === undefined ? item.value : item.key
         };
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
@@ -757,7 +757,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         )
         .subscribe(() => {
           const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
-            const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
+            const { template, nzLabel, nzValue, nzKey, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
             return {
               template,
               nzLabel,
@@ -767,7 +767,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
               nzCustomContent,
               groupLabel,
               type: 'item',
-              key: nzValue
+              key: nzKey === undefined ? nzValue : nzKey
             };
           });
           this.listOfTemplateItem$.next(listOfOptionInterface);

@@ -45,6 +45,7 @@ export class NzOptionComponent implements OnChanges, OnInit {
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzLabel: string | number | null = null;
   @Input() nzValue: NzSafeAny | null = null;
+  @Input() nzKey?: string | number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzHide = false;
   @Input() @InputBoolean() nzCustomContent = false;
