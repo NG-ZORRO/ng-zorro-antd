@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-coordinated',
@@ -40,8 +40,14 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     `
   ]
 })
-export class NzDemoFormCoordinatedComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormCoordinatedComponent {
+  validateForm: FormGroup<{
+    note: FormControl<string | null>;
+    gender: FormControl<'male' | 'male' | null>;
+  }> = this.fb.group({
+    note: this.fb.control<string | null>(null, Validators.required),
+    gender: this.fb.control<'male' | 'male' | null>(null, Validators.required)
+  });
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -57,15 +63,8 @@ export class NzDemoFormCoordinatedComponent implements OnInit {
   }
 
   genderChange(value: string): void {
-    this.validateForm.get('note')!.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
+    this.validateForm.controls.note.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      note: [null, [Validators.required]],
-      gender: [null, [Validators.required]]
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 }

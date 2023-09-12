@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-label-align',
@@ -20,20 +20,20 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     </form>
   `
 })
-export class NzDemoFormLabelAlignComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormLabelAlignComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }
