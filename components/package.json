@@ -38,5 +38,320 @@
     "@angular/core": "^16.0.0",
     "@angular/platform-browser": "^16.0.0",
     "@angular/router": "^16.0.0"
+  },
+  "exports": {
+    "./ng-zorro-antd.aliyun.min.css": {
+      "style": "./ng-zorro-antd.aliyun.min.css"
+    },
+    "./ng-zorro-antd.compact.min.css": {
+      "style": "./ng-zorro-antd.compact.min.css"
+    },
+    "./ng-zorro-antd.dark.min.css": {
+      "style": "./ng-zorro-antd.dark.min.css"
+    },
+    "./ng-zorro-antd.min.css": {
+      "style": "./ng-zorro-antd.min.css"
+    },
+    "./ng-zorro-antd.variable.min.css": {
+      "style": "./ng-zorro-antd.variable.min.css"
+    },
+    "./ng-zorro-antd.aliyun.css": {
+      "style": "./ng-zorro-antd.aliyun.css"
+    },
+    "./ng-zorro-antd.compact.css": {
+      "style": "./ng-zorro-antd.compact.css"
+    },
+    "./ng-zorro-antd.dark.css": {
+      "style": "./ng-zorro-antd.dark.css"
+    },
+    "./ng-zorro-antd.css": {
+      "style": "./ng-zorro-antd.min.css"
+    },
+    "./ng-zorro-antd.variable.css": {
+      "style": "./ng-zorro-antd.variable.css"
+    },
+    "./*.less": {
+      "less": "./*.less"
+    },
+    "./affix/style/*": {
+      "less":  "./affix/style/*.less",
+      "style":  "./affix/style/index.min.css"
+    },
+    "./alert/style/*":  {
+      "less":  "./alert/style/*.less",
+      "style":  "./alert/style/index.min.css"
+    },
+    "./anchor/style/*": {
+      "less":  "./anchor/style/*.less",
+      "style":  "./anchor/style/index.min.css"
+    },
+    "./auto-complete/style/*": {
+      "less":  "./auto-complete/style/*.less",
+      "style":  "./auto-complete/style/index.min.css"
+    },
+    "./avatar/style/*":  {
+      "less":  "./avatar/style/*.less",
+      "style":  "./avatar/style/index.min.css"
+    },
+    "./back-top/style/*": {
+      "less":  "./back-top/style/*.less",
+      "style":  "./back-top/style/index.min.css"
+    },
+    "./badge/style/*":  {
+      "less":  "./badge/style/*.less",
+      "style":  "./badge/style/index.min.css"
+    },
+    "./breadcrumb/style/*": {
+      "less":  "./breadcrumb/style/*.less",
+      "style":  "./breadcrumb/style/index.min.css"
+    },
+    "./button/style/*":  {
+      "less":  "./button/style/*.less",
+      "style":  "./button/style/index.min.css"
+    },
+    "./calendar/style/*":  {
+      "less":  "./calendar/style/*.less",
+      "style":  "./calendar/style/index.min.css"
+    },
+    "./card/style/*": {
+      "less":  "./card/style/*.less",
+      "style":  "./card/style/index.min.css"
+    },
+    "./carousel/style/*":  {
+      "less":  "./carousel/style/*.less",
+      "style":  "./carousel/style/index.min.css"
+    },
+    "./cascader/style/*":  {
+      "less":  "./cascader/style/*.less",
+      "style":  "./cascader/style/index.min.css"
+    },
+    "./code-editor/style/*": {
+      "less":  "./code-editor/style/*.less",
+      "style":  "./code-editor/style/index.min.css"
+    },
+    "./checkbox/style/*": {
+      "less":  "./checkbox/style/*.less",
+      "style":  "./checkbox/style/index.min.css"
+    },
+    "./collapse/style/*":  {
+      "less":  "./collapse/style/*.less",
+      "style":  "./collapse/style/index.min.css"
+    },
+    "./comment/style/*": {
+      "less":  "./comment/style/*.less",
+      "style":  "./comment/style/index.min.css"
+    },
+    "./cron-expression/style/*":  {
+      "less":  "./cron-expression/style/*.less",
+      "style":  "./cron-expression/style/index.min.css"
+    },
+    "./date-picker/style/*":  {
+      "less":  "./date-picker/style/*.less",
+      "style":  "./date-picker/style/index.min.css"
+    },
+    "./descriptions/style/*": {
+      "less":  "./descriptions/style/*.less",
+      "style":  "./descriptions/style/index.min.css"
+    },
+    "./divider/style/*":  {
+      "less":  "./divider/style/*.less",
+      "style":  "./divider/style/index.min.css"
+    },
+    "./drawer/style/*": {
+      "less":  "./drawer/style/*.less",
+      "style":  "./drawer/style/index.min.css"
+    },
+    "./dropdown/style/*":  {
+      "less":  "./dropdown/style/*.less",
+      "style":  "./dropdown/style/index.min.css"
+    },
+    "./empty/style/*": {
+      "less":  "./empty/style/*.less",
+      "style":  "./empty/style/index.min.css"
+    },
+    "./form/style/*": {
+      "less":  "./form/style/*.less",
+      "style":  "./form/style/index.min.css"
+    },
+    "./graph/style/*":  {
+      "less":  "./graph/style/*.less",
+      "style":  "./graph/style/index.min.css"
+    },
+    "./grid/style/*":  {
+      "less":  "./grid/style/*.less",
+      "style":  "./grid/style/index.min.css"
+    },
+    "./icon/style/*": {
+      "less": "./icon/style/*.less",
+      "style": "./icon/style/index.min.css"
+    },
+    "./image/style/*": {
+      "less":  "./image/style/*.less",
+      "style":  "./image/style/index.min.css"
+    },
+    "./input/style/*": {
+      "less":  "./input/style/*.less",
+      "style":  "./input/style/index.min.css"
+    },
+    "./input-number/style/*":  {
+      "less":  "./input-number/style/*.less",
+      "style":  "./input-number/style/index.min.css"
+    },
+    "./layout/style/*": {
+      "less":  "./layout/style/*.less",
+      "style":  "./layout/style/index.min.css"
+    },
+    "./list/style/*": {
+      "less":  "./list/style/*.less",
+      "style":  "./list/style/index.min.css"
+    },
+    "./mention/style/*": {
+      "less":  "./mention/style/*.less",
+      "style":  "./mention/style/index.min.css"
+    },
+    "./menu/style/*":  {
+      "less":  "./menu/style/*.less",
+      "style":  "./menu/style/index.min.css"
+    },
+    "./message/style/*":  {
+      "less":  "./message/style/*.less",
+      "style":  "./message/style/index.min.css"
+    },
+    "./modal/style/*": {
+      "less":  "./modal/style/*.less",
+      "style":  "./modal/style/index.min.css"
+    },
+    "./notification/style/*":  {
+      "less":  "./notification/style/*.less",
+      "style":  "./notification/style/index.min.css"
+    },
+    "./page-header/style/*": {
+      "less":  "./page-header/style/*.less",
+      "style":  "./page-header/style/index.min.css"
+    },
+    "./pagination/style/*":  {
+      "less":  "./pagination/style/*.less",
+      "style":  "./pagination/style/index.min.css"
+    },
+    "./popconfirm/style/*": {
+      "less":  "./popconfirm/style/*.less",
+      "style":  "./popconfirm/style/index.min.css"
+    },
+    "./popover/style/*":  {
+      "less":  "./popover/style/*.less",
+      "style":  "./popover/style/index.min.css"
+    },
+    "./progress/style/*": {
+      "less":  "./progress/style/*.less",
+      "style":  "./progress/style/index.min.css"
+    },
+    "./qr-code/style/*": {
+      "less":  "./qr-code/style/*.less",
+      "style":  "./qr-code/style/index.min.css"
+    },
+    "./radio/style/*":  {
+      "less":  "./radio/style/*.less",
+      "style":  "./radio/style/index.min.css"
+    },
+    "./rate/style/*": {
+      "less":  "./rate/style/*.less",
+      "style":  "./rate/style/index.min.css"
+    },
+    "./resizable/style/*": {
+      "less":  "./resizable/style/*.less",
+      "style":  "./resizable/style/index.min.css"
+    },
+    "./result/style/*": {
+      "less":  "./result/style/*.less",
+      "style":  "./result/style/index.min.css"
+    },
+    "./skeleton/style/*":  {
+      "less":  "./skeleton/style/*.less",
+      "style":  "./skeleton/style/index.min.css"
+    },
+    "./slider/style/*":  {
+      "less":  "./slider/style/*.less",
+      "style":  "./slider/style/index.min.css"
+    },
+    "./segmented/style/*": {
+      "less":  "./segmented/style/*.less",
+      "style":  "./segmented/style/index.min.css"
+    },
+    "./select/style/*":  {
+      "less":  "./select/style/*.less",
+      "style":  "./select/style/index.min.css"
+    },
+    "./space/style/*":  {
+      "less":  "./space/style/*.less",
+      "style":  "./space/style/index.min.css"
+    },
+    "./spin/style/*":  {
+      "less":  "./spin/style/*.less",
+      "style":  "./spin/style/index.min.css"
+    },
+    "./statistic/style/*": {
+      "less":  "./statistic/style/*.less",
+      "style":  "./statistic/style/index.min.css"
+    },
+    "./steps/style/*":  {
+      "less":  "./steps/style/*.less",
+      "style":  "./steps/style/index.min.css"
+    },
+    "./switch/style/*": {
+      "less":  "./switch/style/*.less",
+      "style":  "./switch/style/index.min.css"
+    },
+    "./table/style/*":  {
+      "less":  "./table/style/*.less",
+      "style":  "./table/style/index.min.css"
+    },
+    "./tabs/style/*": {
+      "less":  "./tabs/style/*.less",
+      "style":  "./tabs/style/index.min.css"
+    },
+    "./tag/style/*":  {
+      "less":  "./tag/style/*.less",
+      "style":  "./tag/style/index.min.css"
+    },
+    "./time-picker/style/*": {
+      "less":  "./time-picker/style/*.less",
+      "style":  "./time-picker/style/index.min.css"
+    },
+    "./timeline/style/*":  {
+      "less":  "./timeline/style/*.less",
+      "style":  "./timeline/style/index.min.css"
+    },
+    "./tooltip/style/*": {
+      "less":  "./tooltip/style/*.less",
+      "style":  "./tooltip/style/index.min.css"
+    },
+    "./transfer/style/*":  {
+      "less":  "./transfer/style/*.less",
+      "style":  "./transfer/style/index.min.css"
+    },
+    "./tree/style/*":  {
+      "less":  "./tree/style/*.less",
+      "style":  "./tree/style/index.min.css"
+    },
+    "./tree-select/style/*": {
+      "less":  "./tree-select/style/*.less",
+      "style":  "./tree-select/style/index.min.css"
+    },
+    "./tree-view/style/*": {
+      "less":  "./tree-view/style/*.less",
+      "style":  "./tree-view/style/index.min.css"
+    },
+    "./typography/style/*": {
+      "less":  "./typography/style/*.less",
+      "style":  "./typography/style/index.min.css"
+    },
+    "./upload/style/*":  {
+      "less":  "./upload/style/*.less",
+      "style":  "./upload/style/index.min.css"
+    },
+    "./water-mark/style/*":  {
+      "less":  "./water-mark/style/*.less",
+      "style":  "./water-mark/style/index.min.css"
+    }
   }
 }
