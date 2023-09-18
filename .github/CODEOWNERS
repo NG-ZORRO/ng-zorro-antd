@@ -70,6 +70,7 @@ components/image/**                       @stygian-desolator
 components/qr-code/**                     @OriginRing
 components/cron-expression/**             @OriginRing
 components/water-mark/**                  @OriginRing
+components/color-picker/**                @OriginRing
 
 # The `components/core/*` owners
 components/core/config/**                 @hullis
