@@ -275,7 +275,7 @@ export class NzCascaderComponent
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
+  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
