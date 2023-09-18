@@ -10,6 +10,8 @@ import {
   Inject,
   InjectionToken,
   Input,
+  makeEnvironmentProviders,
+  EnvironmentProviders,
   NgZone,
   OnDestroy,
   OnInit,
@@ -30,13 +32,10 @@ export const NZ_WAVE_GLOBAL_DEFAULT_CONFIG: NzWaveConfig = {
   disabled: false
 };
 
-export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options', {
-  providedIn: 'root',
-  factory: NZ_WAVE_GLOBAL_CONFIG_FACTORY
-});
+export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options');
 
-export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
-  return NZ_WAVE_GLOBAL_DEFAULT_CONFIG;
+export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: NZ_WAVE_GLOBAL_CONFIG, useValue: config }]);
 }
 
 @Directive({
