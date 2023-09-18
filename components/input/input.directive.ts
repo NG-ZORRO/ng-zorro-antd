@@ -24,7 +24,7 @@ import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
@@ -36,7 +36,8 @@ import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-input-lg]': `nzSize === 'large'`,
     '[class.ant-input-sm]': `nzSize === 'small'`,
     '[attr.disabled]': 'disabled || null',
-    '[class.ant-input-rtl]': `dir=== 'rtl'`
+    '[class.ant-input-rtl]': `dir=== 'rtl'`,
+    '[class.ant-input-stepperless]': `nzStepperless`
   }
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
@@ -44,6 +45,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzBorderless: BooleanInput;
   @Input() @InputBoolean() nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() @InputBoolean() nzStepperless: boolean = true;
   @Input() nzStatus: NzStatus = '';
   @Input()
   get disabled(): boolean {

@@ -1,7 +1,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -61,6 +61,13 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
+      });
+      it('should nzStepperLess work', () => {
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
+        testComponent.stepperless = false;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
     });
 
@@ -204,11 +211,12 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" /> `
+  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" /> `
 })
 export class NzTestInputWithInputComponent {
   size = 'default';
   disabled = false;
+  stepperless = true;
 }
 
 @Component({
