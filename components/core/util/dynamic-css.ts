@@ -21,7 +21,7 @@ function getMark({ mark }: Options = {}): string {
 
 interface Options {
   attachTo?: Element;
-  csp?: { nonce?: string };
+  cspNonce?: string | null;
   prepend?: boolean;
   mark?: string;
 }
@@ -35,24 +35,24 @@ function getContainer(option: Options): HTMLElement | Element {
   return head || document.body;
 }
 
-export function injectCSS(css: string, option: Options = {}): HTMLStyleElement | null {
+export function injectCSS(css: string, options: Options = {}): HTMLStyleElement | null {
   if (!canUseDom()) {
     return null;
   }
 
   const styleNode = document.createElement('style');
-  if (option.csp?.nonce) {
-    styleNode.nonce = option.csp?.nonce;
+  if (options.cspNonce) {
+    styleNode.nonce = options.cspNonce;
   }
   styleNode.innerHTML = css;
 
-  const container = getContainer(option);
+  const container = getContainer(options);
   const { firstChild } = container;
 
-  if (option.prepend && container.prepend) {
+  if (options.prepend && container.prepend) {
     // Use `prepend` first
     container.prepend(styleNode);
-  } else if (option.prepend && firstChild) {
+  } else if (options.prepend && firstChild) {
     // Fallback to `insertBefore` like IE not support `prepend`
     container.insertBefore(styleNode, firstChild);
   } else {
@@ -78,23 +78,23 @@ export function removeCSS(key: string, option: Options = {}): void {
   existNode?.parentNode?.removeChild(existNode);
 }
 
-export function updateCSS(css: string, key: string, option: Options = {}): HTMLStyleElement | null {
-  const container = getContainer(option);
+export function updateCSS(css: string, key: string, options: Options = {}): HTMLStyleElement | null {
+  const container = getContainer(options);
 
   // Get real parent
   if (!containerCache.has(container)) {
-    const placeholderStyle = injectCSS('', option);
+    const placeholderStyle = injectCSS('', options);
     // @ts-ignore
     const { parentNode } = placeholderStyle;
     containerCache.set(container, parentNode);
     parentNode.removeChild(placeholderStyle);
   }
 
-  const existNode = findExistNode(key, option);
+  const existNode = findExistNode(key, options);
 
   if (existNode) {
-    if (option.csp?.nonce && existNode.nonce !== option.csp?.nonce) {
-      existNode.nonce = option.csp?.nonce;
+    if (options.cspNonce && existNode.nonce !== options.cspNonce) {
+      existNode.nonce = options.cspNonce;
     }
 
     if (existNode.innerHTML !== css) {
@@ -104,7 +104,7 @@ export function updateCSS(css: string, key: string, option: Options = {}): HTMLS
     return existNode;
   }
 
-  const newNode = injectCSS(css, option);
-  newNode?.setAttribute(getMark(option), key);
+  const newNode = injectCSS(css, options);
+  newNode?.setAttribute(getMark(options), key);
   return newNode;
 }
