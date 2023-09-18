@@ -42,7 +42,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzSize]` | 在设置了 `nzCount` 的前提下有效，设置小圆点的大小 | `default \| small` | `default`
 | `[nzStatus]` | 设置 `nz-badge` 为状态点 | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
 | `[nzText]` | 在设置了 `nzStatus` 的前提下有效，设置状态点的文本 | `string \| TemplateRef<void>` | - |
-| `[nzTitle]` | 设置鼠标放在状态点上时显示的文字（非独立使用时), 为 `null` 时隐藏 | `string \| null` | `nzCount` |
+| `[nzTitle]` | 设置鼠标放在状态点上时显示的文字 (非独立使用时), 为 `null` 时隐藏 | `string \| null` | `nzCount` |
 | `[nzOffset]` | 设置状态点的位置偏移，格式为 [x, y] (非独立使用时) | `[number, number]` | - |
 
 
