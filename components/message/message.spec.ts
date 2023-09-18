@@ -3,7 +3,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
@@ -57,7 +57,9 @@ describe('message', () => {
     fixture.detectChanges();
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
+    expect((overlayContainerElement.querySelector('.cdk-global-overlay-wrapper') as HTMLElement).style.zIndex).toBe(
+      '1010'
+    );
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.anticon-check-circle')).not.toBeNull();
   });
