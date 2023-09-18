@@ -13,10 +13,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageComponent } from './message.component';
-import { NzMessageServiceModule } from './message.service.module';
 
 @NgModule({
-  imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzMessageServiceModule],
+  imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule],
   declarations: [NzMessageContainerComponent, NzMessageComponent]
 })
 export class NzMessageModule {}

@@ -14,7 +14,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
-import { NzDrawerServiceModule } from './drawer.service.module';
 
 export class DrawerBuilderForService<T extends {}, R> {
   private drawerRef: NzDrawerComponent<T, R> | null;
@@ -61,7 +60,7 @@ export class DrawerBuilderForService<T extends {}, R> {
   }
 }
 
-@Injectable({ providedIn: NzDrawerServiceModule })
+@Injectable({ providedIn: 'root' })
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 
