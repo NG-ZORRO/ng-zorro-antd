@@ -27,8 +27,24 @@ const defaultCustomThemeFilename = 'theme.less';
 
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
-  build: '@angular-devkit/build-angular:browser',
-  test : '@angular-devkit/build-angular:karma'
+  build: [
+    '@angular-devkit/build-angular:browser',
+    // The `@angular-builders/custom-webpack:browser` builder uses the `@angular-devkit/build-angular:browser`
+    // schema, but adds additional property so we're safe bypassing this builder.
+    // https://github.com/just-jeb/angular-builders/blob/master/packages/custom-webpack/src/browser/index.ts#L7
+    '@angular-builders/custom-webpack:browser',
+    // The `@nrwl/angular:webpack-browser` builder uses the `@angular-devkit/build-angular:browser`
+    // schema, but adds additional property so we're safe bypassing this builder.
+    // https://github.com/nrwl/nx/blob/master/packages/angular/src/builders/webpack-browser/webpack-browser.impl.ts#L23
+    '@nrwl/angular:webpack-browser'
+  ],
+  test : [
+    '@angular-devkit/build-angular:karma',
+    // The `@angular-builders/custom-webpack:karma` builder uses the `@angular-devkit/build-angular:karma`
+    // schema, but adds additional property so we're safe bypassing this builder.
+    // https://github.com/just-jeb/angular-builders/blob/master/packages/custom-webpack/src/karma/index.ts#L11
+    '@angular-builders/custom-webpack:karma'
+  ]
 };
 
 /** Add pre-built styles to the main project style file. */
@@ -139,9 +155,9 @@ function addThemeStyleToTarget(projectName: string, targetName: 'test' | 'build'
  * this function can either throw or just show a warning.
  */
 function validateDefaultTargetBuilder(project: ProjectDefinition, targetName: 'build' | 'test', logger: logging.LoggerApi): boolean {
-  const defaultBuilder = defaultTargetBuilders[ targetName ];
+  const defaultBuilders = defaultTargetBuilders[targetName];
   const targetConfig = project.targets && project.targets.get(targetName);
-  const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
+  const isDefaultBuilder = targetConfig && defaultBuilders.includes(targetConfig.builder);
 
   if (!isDefaultBuilder && targetName === 'build') {
     throw new SchematicsException(`Your project is not using the default builders for ` +
