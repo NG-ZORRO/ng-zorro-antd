@@ -580,6 +580,20 @@ describe('resizable', () => {
       fixture.detectChanges();
       expect(testComponent.col).toBe(20);
     }));
+
+    it('should cursor type work', () => {
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeFalsy();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeTruthy();
+      testComponent.directions = [
+        {
+          direction: 'right',
+          cursorType: 'window'
+        }
+      ];
+      fixture.detectChanges();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeTruthy();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeFalsy();
+    });
   });
 
   describe('bounds', () => {

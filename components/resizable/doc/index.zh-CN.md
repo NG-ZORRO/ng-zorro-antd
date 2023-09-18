@@ -73,23 +73,28 @@ interface NzResizeEvent {
 
 ```ts
 type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
+type NzCursorType = 'window' | 'grid';
 ```
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | [nzDirection] | 调整方向 | `NzResizeDirection` | `'bottomRight'` |
+| [nzCursorType] | 手柄的光标类型 | `NzCursorType` | `'window'` |
 
 ### nz-resize-handles
 
 定义调整手柄的快捷组件。
 
 ```ts
-const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = ['bottomRight', 'topRight', 'bottomLeft', 'topLeft', 'bottom', 'right', 'top', 'left'];
+interface NzResizeHandleOption {
+  direction: NzResizeDirection;
+  cursorType: NzCursorType;
+}
 ```
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| [nzDirections] | 需要添加那些调整手柄的方向 | `NzResizeDirection[]` | `DEFAULT_RESIZE_DIRECTION` |
+| [nzDirections] | 需要的手柄方向或手柄选项 | `(NzResizeDirection \| NzResizeHandleOption)[]` | 所有方向 |
 
 ### 样式
 
@@ -108,3 +113,6 @@ const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = ['bottomRight', 'topRight'
     * `.nz-resizable-handle-topLeft`
     * `.nz-resizable-handle-bottomRight`
     * `.nz-resizable-handle-bottomLeft`
+- `.nz-resizable-handle-cursor-type` 手柄的光标类型命名空间
+    * `.nz-resizable-handle-cursor-type-window`
+    * `.nz-resizable-handle-cursor-type-grid`
