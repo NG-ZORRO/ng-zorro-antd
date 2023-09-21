@@ -7,7 +7,14 @@ import { Component } from '@angular/core';
     <ng-template #flipFlop>
       <button nz-button nzType="primary" [style.background-color]="color">Color</button>
     </ng-template>
-  `
+  `,
+  styles: [
+    `
+      button {
+        border: none;
+      }
+    `
+  ]
 })
 export class NzDemoColorPickerFlipFlopComponent {
   color = '#1677ff';

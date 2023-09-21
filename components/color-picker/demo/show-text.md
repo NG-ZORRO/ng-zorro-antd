@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-最简单的用法。
+渲染触发器的默认文本, `nzShowText` 为 `true` 时生效。
 
 ## en-US
 
-Show color text.
+The default text of the rendering trigger, effective when `nzShowText` is `true`.
