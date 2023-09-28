@@ -11,53 +11,81 @@ import {
   getProjectMainFile,
   insertAfterLastOccurrence,
   insertImport,
+  isStandaloneApp,
   parseSourceFile
 } from '@angular/cdk/schematics';
 
 import { Rule, Tree } from '@angular-devkit/schematics';
+import { addFunctionalProvidersToStandaloneBootstrap, callsProvidersFunction, findBootstrapApplicationCall } from '@schematics/angular/private/components';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
+import { findAppConfig } from '../../utils/standalone/app-config';
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
-    const appModulePath = getAppModulePath(host, getProjectMainFile(project));
-    const moduleSource = parseSourceFile(host, appModulePath);
-
-    const locale = options.locale || 'en_US';
-    const localePrefix = locale.split('_')[0];
-
-    const recorder = host.beginUpdate(appModulePath);
-
-    const changes = [
-      insertImport(moduleSource, appModulePath, 'NZ_I18N',
-        'ng-zorro-antd/i18n'),
-      insertImport(moduleSource, appModulePath, locale,
-        'ng-zorro-antd/i18n'),
-      insertImport(moduleSource, appModulePath, 'registerLocaleData',
-        '@angular/common'),
-      insertImport(moduleSource, appModulePath, localePrefix,
-        `@angular/common/locales/${localePrefix}`, true),
-      registerLocaleData(moduleSource, appModulePath, localePrefix),
-      ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
-    ];
-
-    changes.forEach((change) => {
-      if (change instanceof InsertChange) {
-        recorder.insertLeft(change.pos, change.toAdd);
-      }
-    });
-
-    host.commitUpdate(recorder);
-
-    return;
+    const mainFile = getProjectMainFile(project);
+    if (isStandaloneApp(host, mainFile)) {
+      registerLocaleInStandaloneApp(host, mainFile, options);
+    } else {
+      registerLocaleInAppModule(host, mainFile, options);
+    }
   };
+}
+
+function registerLocaleInAppModule(host: Tree, mainFile: string, options: Schema): void {
+  const appModulePath = getAppModulePath(host, mainFile);
+  const moduleSource = parseSourceFile(host, appModulePath);
+
+  const locale = options.locale || 'en_US';
+  const localePrefix = locale.split('_')[0];
+
+  const changes = [
+    insertImport(moduleSource, appModulePath, 'NZ_I18N',
+      'ng-zorro-antd/i18n'),
+    insertImport(moduleSource, appModulePath, locale,
+      'ng-zorro-antd/i18n'),
+    insertImport(moduleSource, appModulePath, 'registerLocaleData',
+      '@angular/common'),
+    insertImport(moduleSource, appModulePath, localePrefix,
+      `@angular/common/locales/${localePrefix}`, true),
+    registerLocaleData(moduleSource, appModulePath, localePrefix),
+    ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
+  ];
+
+  updateSourceFile(host, appModulePath, changes);
+}
+
+function registerLocaleInStandaloneApp(host: Tree, mainFile: string, options: Schema): void {
+  const moduleSource = parseSourceFile(host, mainFile);
+  const bootstrapCall = findBootstrapApplicationCall(moduleSource);
+  const appConfig = findAppConfig(bootstrapCall, host, mainFile);
+  const appConfigFile = appConfig.filePath;
+  const appConfigSource = parseSourceFile(host, appConfig.filePath);
+
+  const locale = options.locale || 'en_US';
+  const localePrefix = locale.split('_')[0];
+
+  updateSourceFile(host, appConfigFile, [
+    insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
+    insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
+    insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+    registerLocaleData(appConfigSource, appConfigFile, localePrefix)
+  ]);
+
+  const providerFn = 'provideNzI18n';
+  if (callsProvidersFunction(host, mainFile, providerFn)) {
+    return;
+  }
+
+  const providerOptions: ts.Expression[] = [ts.factory.createIdentifier(locale)];
+  addFunctionalProvidersToStandaloneBootstrap(host, mainFile, providerFn, 'ng-zorro-antd/i18n', providerOptions);
 }
 
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
@@ -74,9 +102,9 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
       modulePath, 0) as InsertChange;
   } else {
     console.log();
-    console.log(yellow(`Could not add the registerLocaleData to your app.module file (${blue(modulePath)}).` +
+    console.log(yellow(`Could not add the registerLocaleData to file (${blue(modulePath)}).` +
       `because there is already a registerLocaleData function.`));
-    console.log(yellow(`Please manually add the following code to your app.module:`));
+    console.log(yellow(`Please manually add the following code:`));
     console.log(cyan(`registerLocaleData(${locale});`));
     return new NoopChange();
   }
@@ -127,7 +155,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
         return addProvide;
       } else {
         console.log();
-        console.log(yellow(`Could not provide the locale token to your app.module file (${blue(modulePath)}).` +
+        console.log(yellow(`Could not provide the locale token to file (${blue(modulePath)}).` +
           `because there is already a locale token in provides.`));
         console.log(yellow(`Please manually add the following code to your provides:`));
         console.log(cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
@@ -138,4 +166,16 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     return addProvide;
   }
 
+}
+
+function updateSourceFile(host: Tree, filePath: string, changes: Change[]): void {
+  const recorder = host.beginUpdate(filePath);
+
+  changes.forEach((change) => {
+    if (change instanceof InsertChange) {
+      recorder.insertLeft(change.pos, change.toAdd);
+    }
+  });
+
+  host.commitUpdate(recorder);
 }
