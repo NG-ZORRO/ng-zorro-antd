@@ -275,6 +275,21 @@ describe('select', () => {
       expect(selectElement.classList).toContain('ant-select-disabled');
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
+    it('should nzTitle works', fakeAsync(() => {
+      component.listOfOption = [
+        { nzValue: '1', nzLabel: '1' },
+        { nzValue: '2', nzLabel: '2', nzTitle: '-' },
+        { nzValue: '3', nzLabel: '3', nzTitle: null }
+      ];
+      component.nzOpen = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      console.log(document.querySelectorAll('nz-option-item'));
+      expect((document.querySelectorAll('nz-option-item')[0] as HTMLElement)?.title).toBe('1');
+      expect((document.querySelectorAll('nz-option-item')[1] as HTMLElement)?.title).toBe('-');
+      expect((document.querySelectorAll('nz-option-item')[2] as HTMLElement)?.title).toBeFalsy();
+    }));
 
     it('should select option by enter', fakeAsync(() => {
       const flushChanges = (): void => {
@@ -1554,6 +1569,7 @@ describe('select', () => {
         *ngFor="let o of listOfOption"
         [nzValue]="o.nzValue"
         [nzLabel]="o.nzLabel"
+        [nzTitle]="o.nzTitle"
         [nzDisabled]="o.nzDisabled"
         [nzHide]="o.nzHide"
       ></nz-option>
@@ -1562,6 +1578,7 @@ describe('select', () => {
           *ngFor="let o of group.children"
           [nzValue]="o.nzValue"
           [nzLabel]="o.nzLabel"
+          [nzTitle]="o.nzTitle"
           [nzDisabled]="o.nzDisabled"
           [nzHide]="o.nzHide"
         ></nz-option>

@@ -59,6 +59,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               [grouped]="!!item.groupLabel"
               [disabled]="item.nzDisabled"
               [showState]="mode === 'tags' || mode === 'multiple'"
+              [title]="item.nzTitle"
               [label]="item.nzLabel"
               [compareWith]="compareWith"
               [activatedValue]="activatedValue"

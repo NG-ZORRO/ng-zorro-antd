@@ -76,6 +76,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDisabled]` | Disable this option | `boolean` | `false` |
+| `[nzTitle]` | Native title hint on this option | `string  \| number` | - |
 | `[nzLabel]` | The text show in nz-select and dropdown menu | `string  \| number` | - |
 | `[nzValue]` | The value passed to ngModel of nz-select | `any ` | - |
 | `[nzKey]` | Should be passed when typeof nzValue - Object. Key will be used for performance optimizations | `string \| number ` | - |
