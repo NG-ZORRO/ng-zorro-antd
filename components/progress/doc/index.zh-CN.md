@@ -25,7 +25,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 各类型通用的属性。
 
-| 属性 | 说明 | 类型 | 默认值 |
+| 属性 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- |
 | `[nzType]` | 类型 | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
 | `[nzFormat]` | 内容的模板函数 | `(percent: number) => string \| TemplateRef<{ $implicit: number }>` | `percent => percent + '%'` |
@@ -35,25 +35,27 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | `[nzStrokeLinecap]` | 进度条端点形状 | `'round' \| 'square'` | `'round'` | ✅ |
 | `[nzStrokeColor]` | 进度条颜色，传入对象时为渐变 | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | - | ✅ |
 | `[nzSuccessPercent]` | 已完成的分段百分比 | `number` | 0 |
+| `[nzSuccessStrokeColor]` | 已完成的分段的颜色 | `string` | - |
+
 
 ### `nzType="line"`
 
-| 属性 | 说明 | 类型 | 默认值 |
+| 属性 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- |
 | `[nzStrokeWidth]` | 进度条线的宽度，单位 px | `number` | `8` |
 | `[nzSteps]` | 进度条总共步数 | `number` | - |
 
 ### `nzType="circle"`
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 属性 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzWidth]` | 圆形进度条画布宽度，单位 px | `number` | `132` |
 | `[nzStrokeWidth]` | 圆形进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` | ✅ |
 
 ### `nzType="dashboard"`
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 属性 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzWidth]` | 仪表盘进度条画布宽度，单位 px | `number` | `132` |
 | `[nzStrokeWidth]` | 仪表盘进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` | ✅ |
 | `[nzGapDegree]` | 仪表盘进度条缺口角度，可取值 0 ~ 360 | `number` | `0` | ✅ |

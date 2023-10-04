@@ -3,9 +3,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzProgressComponent } from './progress.component';
-import { NzProgressModule } from './progress.module';
-import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './typings';
+import { NzProgressComponent } from '../progress.component';
+import { NzProgressModule } from '../progress.module';
+import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from '../typings';
 
 describe('progress', () => {
   beforeEach(fakeAsync(() => {
@@ -389,7 +389,7 @@ describe('progress', () => {
     });
   });
 
-  describe('progress circle with successPercent', () => {
+  describe('progress circle with success', () => {
     let fixture: ComponentFixture<NzTestProgressCircleSuccessComponent>;
     let progress: DebugElement;
 
@@ -399,10 +399,10 @@ describe('progress', () => {
       progress = fixture.debugElement.query(By.directive(NzProgressComponent));
     });
 
-    it('should success percent work', () => {
+    it('should success percent and stroke color work', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe(
-        'rgb(135, 208, 104)'
+        'rgb(255, 77, 244)'
       );
     });
   });
@@ -504,9 +504,18 @@ export class NzTestProgressCircleComponent {
 }
 
 @Component({
-  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress> `
+  template: `
+    <nz-progress
+      nzType="circle"
+      [nzPercent]="75"
+      [nzSuccessPercent]="60"
+      [nzSuccessStrokeColor]="successPercentStroke"
+    ></nz-progress>
+  `
 })
-export class NzTestProgressCircleSuccessComponent {}
+export class NzTestProgressCircleSuccessComponent {
+  successPercentStroke: string = '#ff4df4';
+}
 
 @Component({
   template: `

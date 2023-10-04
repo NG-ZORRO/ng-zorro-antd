@@ -22,6 +22,7 @@ import { Component } from '@angular/core';
       nzType="dashboard"
       [nzPercent]="60"
       [nzSuccessPercent]="30"
+      [nzSuccessStrokeColor]="'#ff4df4'"
     ></nz-progress>
   `
 })
