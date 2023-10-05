@@ -51,7 +51,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | ----- | ----------- | ---- | ------------- |
 | `[nzDisabled]` | whether menu item is disabled or not | `boolean` | `false` |
 | `[nzSelected]` | whether menu item is selected or not | `boolean` | `false` |
-| `[nzMatchRouter]` | whether auto set `nzSelected` according to [routerLink](https://www.angular.cn/api/router/RouterLink) | `boolean` | `false` |
+| `[nzMatchRouter]` | whether auto set `nzSelected` according to [routerLink](https://www.angular.io/api/router/RouterLink) | `boolean` | `false` |
 | `[nzMatchRouterExact]` | only match when the url matches the link exactly, same as [routerLinkActiveOptions](https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
 | `[nzDanger]` | display the danger style | `boolean` | `false` |
 
