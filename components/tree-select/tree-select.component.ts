@@ -545,7 +545,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       e.preventDefault();
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
-        this.removeSelected(removeNode);
+        if (!removeNode.isDisabled) {
+          this.removeSelected(removeNode);
+        }
       }
     }
   }
