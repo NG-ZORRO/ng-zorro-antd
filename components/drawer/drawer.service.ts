@@ -60,7 +60,7 @@ export class DrawerBuilderForService<T extends {}, R> {
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 
