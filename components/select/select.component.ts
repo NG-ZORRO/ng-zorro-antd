@@ -808,8 +808,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       rawTitle = title.toString();
     }
 
-    console.log(title, label, rawTitle);
-
     return rawTitle;
   }
 }
