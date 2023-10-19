@@ -4,6 +4,7 @@ type: 其他
 subtitle: 水印
 title: WaterMark
 cols: 1
+tag: New
 cover: https://img.alicdn.com/imgextra/i3/O1CN0194FGAd1FlrwQShfR8_!!6000000000528-0-tps-952-502.jpg
 ---
 

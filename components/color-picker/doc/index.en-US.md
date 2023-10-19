@@ -2,6 +2,7 @@
 category: Components
 type: Data Entry
 title: ColorPicker
+tag: New
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PpY4RYNM8UcAAAAAAAAAAAAADrJ8AQ/original
 ---
 
