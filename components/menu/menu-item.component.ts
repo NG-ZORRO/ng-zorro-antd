@@ -6,9 +6,10 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   ContentChildren,
-  Directive,
   Inject,
   Input,
   OnChanges,
@@ -16,7 +17,8 @@ import {
   OnInit,
   Optional,
   QueryList,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
@@ -29,9 +31,17 @@ import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzSubmenuService } from './submenu.service';
 
-@Directive({
+@Component({
   selector: '[nz-menu-item]',
   exportAs: 'nzMenuItem',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
+  template: `
+    <span class="ant-menu-title-content">
+      <ng-content></ng-content>
+    </span>
+  `,
   host: {
     '[class.ant-dropdown-menu-item]': `isMenuInsideDropDown`,
     '[class.ant-dropdown-menu-item-selected]': `isMenuInsideDropDown && nzSelected`,
@@ -46,7 +56,7 @@ import { NzSubmenuService } from './submenu.service';
     '(click)': 'clickMenuItem($event)'
   }
 })
-export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzSelected: BooleanInput;
   static ngAcceptInputType_nzDanger: BooleanInput;

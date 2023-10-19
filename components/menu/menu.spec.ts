@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
 import { NzMenuModule } from './menu.module';
 import { NzSubMenuComponent } from './submenu.component';
@@ -58,7 +58,7 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuHorizontalComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -94,7 +94,7 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuInlineComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
