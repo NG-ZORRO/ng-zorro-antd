@@ -77,6 +77,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
+| `[nzTitle]` | 选项上的原生 title 提示 | `string  \| number` | - |
 | `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string  \| number` | - |
 | `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
 | `[nzKey]` | nz-select 中 ngModel 的值 | `string \| number` | - |

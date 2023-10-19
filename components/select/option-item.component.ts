@@ -40,7 +40,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-select-item ant-select-item-option',
-    '[attr.title]': 'label',
+    '[attr.title]': 'title',
     '[class.ant-select-item-option-grouped]': 'grouped',
     '[class.ant-select-item-option-selected]': 'selected && !disabled',
     '[class.ant-select-item-option-disabled]': 'disabled',
@@ -56,6 +56,7 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   @Input() template: TemplateRef<NzSafeAny> | null = null;
   @Input() disabled = false;
   @Input() showState = false;
+  @Input() title?: string | number | null;
   @Input() label: string | number | null = null;
   @Input() value: NzSafeAny | null = null;
   @Input() activatedValue: NzSafeAny | null = null;
