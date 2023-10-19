@@ -15,7 +15,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMenuDividerDirective } from './menu-divider.directive';
 import { NzMenuGroupComponent } from './menu-group.component';
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
 import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
 import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
@@ -26,7 +26,7 @@ import { NzSubMenuComponent } from './submenu.component';
   imports: [BidiModule, CommonModule, PlatformModule, OverlayModule, NzIconModule, NzNoAnimationModule, NzOutletModule],
   declarations: [
     NzMenuDirective,
-    NzMenuItemDirective,
+    NzMenuItemComponent,
     NzSubMenuComponent,
     NzMenuDividerDirective,
     NzMenuGroupComponent,
@@ -34,6 +34,6 @@ import { NzSubMenuComponent } from './submenu.component';
     NzSubmenuInlineChildComponent,
     NzSubmenuNoneInlineChildComponent
   ],
-  exports: [NzMenuDirective, NzMenuItemDirective, NzSubMenuComponent, NzMenuDividerDirective, NzMenuGroupComponent]
+  exports: [NzMenuDirective, NzMenuItemComponent, NzSubMenuComponent, NzMenuDividerDirective, NzMenuGroupComponent]
 })
 export class NzMenuModule {}
