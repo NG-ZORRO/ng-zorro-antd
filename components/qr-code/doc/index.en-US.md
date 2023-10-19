@@ -2,6 +2,7 @@
 category: Components
 type: Data Display
 title: QRCode
+tag: New
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
 ---
 
