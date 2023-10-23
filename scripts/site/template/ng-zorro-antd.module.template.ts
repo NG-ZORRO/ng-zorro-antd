@@ -67,6 +67,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 @NgModule({
   exports: [
@@ -136,7 +137,8 @@ import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
     NzUploadModule,
     NzWaveModule,
     NzQRCodeModule,
-    NzWaterMarkModule
+    NzWaterMarkModule,
+    NzFlexModule
   ]
 })
 export class SiteNgZorroAntdModule {}
