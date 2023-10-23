@@ -1,3 +1,14 @@
+## [16.2.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.2.1...16.2.2) (2023-10-23)
+
+
+### Bug Fixes
+
+* inline cdk-overlay style ([#8132](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8132)) ([3209d74](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3209d744187133e518f564bfe5a2f56ac371fc22))
+* **cascader:** compatible with rxjs v6 ([#8133](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8133)) ([54a5c76](https://github.com/NG-ZORRO/ng-zorro-antd/commit/54a5c769a061bc07e342c1f462bf27c422df44a3))
+* **drawer:** drawer not open ([#8120](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8120)) ([24d0664](https://github.com/NG-ZORRO/ng-zorro-antd/commit/24d06640a623f3ea2fd9fa459c729a103938d7fc))
+
+
+
 ## [16.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.2.0...16.2.1) (2023-10-19)
 
 
