@@ -4,7 +4,8 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, finalize, from, Subject } from 'rxjs';
+import { BehaviorSubject, from, Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
