@@ -1,36 +1,67 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
+@import './mixin';
 
 @flex-prefix-cls: ~'@{ant-prefix}-flex';
 
-div {
-  background-color: red;
-  height: 50px;
-}
-
 .@{flex-prefix-cls} {
-  &-basic-wrapper {
-    display: flex;
+  display: flex;
 
-    &-horizontal {
+  &-direction {
+    &-row {
+      flex-direction: row;
+    }
+
+    &-column {
       flex-direction: column;
     }
 
-    &-vertical {
-      flex-direction: column;
+    &-row-reverse {
+      flex-direction: row-reverse;
     }
 
-    > div {
-      flex: 1;
-      block-size: 54px;
+    &-column-reverse {
+      flex-direction: column-reverse;
+    }
+  }
 
-      &:nth-child(2n) {
-        background-color: var(--ant-primary-5);
-      }
+  &-justify {
+    &-flex-start {
+      justify-content: flex-start;
+    }
 
-      &:nth-child(2n + 1) {
-        background-color: var(--ant-primary-6);
-      }
+    &-center {
+      justify-content: center;
+    }
+
+    &-flex-end {
+      justify-content: flex-end;
+    }
+
+    &-space-between {
+      justify-content: space-between;
+    }
+
+    &-space-around {
+      justify-content: space-around;
+    }
+
+    &-space-evenly {
+      justify-content: space-evenly;
+    }
+  }
+
+  &-align {
+    &-flex-start {
+      align-items: flex-start;
+    }
+
+    &-center {
+      align-items: center;
+    }
+
+    &-flex-end {
+      align-items: flex-end;
     }
   }
 }
