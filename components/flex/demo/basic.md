@@ -1,7 +1,7 @@
 ---
 order: 0
 title:
-  zh-CN:
+  zh-CN: 基本布局
   en-US: Basic
 ---
 
