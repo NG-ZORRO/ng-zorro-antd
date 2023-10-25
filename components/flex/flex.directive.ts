@@ -5,7 +5,7 @@
 
 import { Directive, Input } from '@angular/core';
 
-import { nzAlign, nzDirection, nzJustify } from 'ng-zorro-antd/flex/typings';
+import { nzAlign, nzDirection, nzGap, nzJustify } from 'ng-zorro-antd/flex/typings';
 
 @Directive({
   selector: '[nz-flex],nz-flex',
@@ -24,11 +24,13 @@ import { nzAlign, nzDirection, nzJustify } from 'ng-zorro-antd/flex/typings';
     '[class.ant-flex-justify-space-evenly]': `nzJustify === 'space-evenly'`,
     '[class.ant-flex-align-flex-start]': `nzAlign === 'flex-start'`,
     '[class.ant-flex-align-center]': `nzAlign === 'center'`,
-    '[class.ant-flex-align-flex-end]': `nzAlign === 'flex-end'`
+    '[class.ant-flex-align-flex-end]': `nzAlign === 'flex-end'`,
+    '[style.--flex-gap]': `gap === 'small' ? '8px' : gap === 'middle'? '16px': gap === 'large' ? '24px' : gap + 'px'`
   }
 })
 export class FlexDirective {
   @Input() nzDirection: nzDirection = 'row';
   @Input() nzJustify: nzJustify = 'flex-start';
   @Input() nzAlign: nzAlign = 'flex-start';
+  @Input() gap: nzGap = 0;
 }
