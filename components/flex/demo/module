@@ -1,9 +1,11 @@
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 export const moduleList = [
   NzFlexModule,
   NzSegmentedModule,
-  NzButtonModule
+  NzButtonModule,
+  NzSliderModule
 ];
