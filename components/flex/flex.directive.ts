@@ -5,7 +5,7 @@
 
 import { Directive, Input } from '@angular/core';
 
-import { nzAlign, nzDirection, nzGap, nzJustify } from 'ng-zorro-antd/flex/typings';
+import { nzAlign, nzDirection, nzGap, nzJustify, nzWrap } from 'ng-zorro-antd/flex/typings';
 
 @Directive({
   selector: '[nz-flex],nz-flex',
@@ -25,12 +25,16 @@ import { nzAlign, nzDirection, nzGap, nzJustify } from 'ng-zorro-antd/flex/typin
     '[class.ant-flex-align-flex-start]': `nzAlign === 'flex-start'`,
     '[class.ant-flex-align-center]': `nzAlign === 'center'`,
     '[class.ant-flex-align-flex-end]': `nzAlign === 'flex-end'`,
-    '[style.--flex-gap]': `gap === 'small' ? '8px' : gap === 'middle'? '16px': gap === 'large' ? '24px' : gap + 'px'`
+    '[class.ant-flex-wrap-wrap]': `nzWrap === 'wrap'`,
+    '[class.ant-flex-wrap-wrap-reverse]': `nzWrap === 'wrap-reverse'`,
+    '[class.ant-flex-wrap-nowrap]': `nzWrap === 'nowrap'`,
+    '[style.--flex-gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle'? '16px': nzGap === 'large' ? '24px' : nzGap + 'px'`
   }
 })
 export class FlexDirective {
   @Input() nzDirection: nzDirection = 'row';
   @Input() nzJustify: nzJustify = 'flex-start';
   @Input() nzAlign: nzAlign = 'flex-start';
-  @Input() gap: nzGap = 0;
+  @Input() nzGap: nzGap = 0;
+  @Input() nzWrap: nzWrap = 'nowrap';
 }

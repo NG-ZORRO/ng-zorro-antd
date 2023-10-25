@@ -11,3 +11,5 @@ export type nzAlign = 'flex-start' | 'center' | 'flex-end';
 
 export type nzGap = 'small' | 'middle' | 'large' | nzCustomGap;
 export type nzCustomGap = number;
+
+export type nzWrap = 'wrap' | 'nowrap' | 'wrap-reverse';

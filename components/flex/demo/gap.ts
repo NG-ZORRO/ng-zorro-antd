@@ -12,7 +12,9 @@ import { Component } from '@angular/core';
     </ng-container>
     <div
       nz-flex
-      [gap]="selectedGap === 0 ? 'small' : selectedGap === 1 ? 'middle' : selectedGap === 2 ? 'large' : customGapValue"
+      [nzGap]="
+        selectedGap === 0 ? 'small' : selectedGap === 1 ? 'middle' : selectedGap === 2 ? 'large' : customGapValue
+      "
     >
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="dashed">Dashed</button>
