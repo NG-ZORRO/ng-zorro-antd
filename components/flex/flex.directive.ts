@@ -12,23 +12,11 @@ import { nzAlign, nzDirection, nzGap, nzJustify, nzWrap } from 'ng-zorro-antd/fl
   exportAs: 'nzFlex',
   host: {
     class: 'ant-flex',
-    '[class.ant-flex-direction-row]': `nzDirection === 'row'`,
-    '[class.ant-flex-direction-row-reverse]': `nzDirection === 'row-reverse'`,
-    '[class.ant-flex-direction-column]': `nzDirection === 'column'`,
-    '[class.ant-flex-direction-column-reverse]': `nzDirection === 'column-reverse'`,
-    '[class.ant-flex-justify-flex-start]': `nzJustify === 'flex-start'`,
-    '[class.ant-flex-justify-center]': `nzJustify === 'center'`,
-    '[class.ant-flex-justify-flex-end]': `nzJustify === 'flex-end'`,
-    '[class.ant-flex-justify-space-between]': `nzJustify === 'space-between'`,
-    '[class.ant-flex-justify-space-around]': `nzJustify === 'space-around'`,
-    '[class.ant-flex-justify-space-evenly]': `nzJustify === 'space-evenly'`,
-    '[class.ant-flex-align-flex-start]': `nzAlign === 'flex-start'`,
-    '[class.ant-flex-align-center]': `nzAlign === 'center'`,
-    '[class.ant-flex-align-flex-end]': `nzAlign === 'flex-end'`,
-    '[class.ant-flex-wrap-wrap]': `nzWrap === 'wrap'`,
-    '[class.ant-flex-wrap-wrap-reverse]': `nzWrap === 'wrap-reverse'`,
-    '[class.ant-flex-wrap-nowrap]': `nzWrap === 'nowrap'`,
-    '[style.--flex-gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle'? '16px': nzGap === 'large' ? '24px' : nzGap + 'px'`
+    '[style.--flex-gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle'? '16px': nzGap === 'large' ? '24px' : nzGap + 'px'`,
+    '[style.--flex-direction]': `nzDirection`,
+    '[style.--flex-justify]': `nzJustify`,
+    '[style.--flex-align]': `nzAlign`,
+    '[style.--flex-wrap]': `nzWrap`
   }
 })
 export class FlexDirective {

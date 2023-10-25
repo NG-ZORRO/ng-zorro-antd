@@ -6,77 +6,9 @@
 
 .@{flex-prefix-cls} {
   display: flex;
+  flex-direction: var(--flex-direction, row);
   gap: var(--flex-gap, 0);
-
-  &-direction {
-    &-row {
-      flex-direction: row;
-    }
-
-    &-column {
-      flex-direction: column;
-    }
-
-    &-row-reverse {
-      flex-direction: row-reverse;
-    }
-
-    &-column-reverse {
-      flex-direction: column-reverse;
-    }
-  }
-
-  &-justify {
-    &-flex-start {
-      justify-content: flex-start;
-    }
-
-    &-center {
-      justify-content: center;
-    }
-
-    &-flex-end {
-      justify-content: flex-end;
-    }
-
-    &-space-between {
-      justify-content: space-between;
-    }
-
-    &-space-around {
-      justify-content: space-around;
-    }
-
-    &-space-evenly {
-      justify-content: space-evenly;
-    }
-  }
-
-  &-align {
-    &-flex-start {
-      align-items: flex-start;
-    }
-
-    &-center {
-      align-items: center;
-    }
-
-    &-flex-end {
-      align-items: flex-end;
-    }
-  }
-
-  &-wrap {
-    &-wrap {
-      flex-wrap: wrap;
-    }
-
-    &-nowrap {
-      flex-wrap: nowrap;
-    }
-
-    &-wrap-reverse {
-      flex-wrap: wrap-reverse;
-    }
-  }
+  justify-content: var(--flex-justify, flex-start);
+  align-items: var(--flex-align, flex-start);
+  flex-wrap: var(--flex-wrap, nowrap);
 }
