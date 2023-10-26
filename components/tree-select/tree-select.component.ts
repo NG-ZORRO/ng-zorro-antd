@@ -558,10 +558,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   setInputValue(value: string): void {
-    if (!this.isComposing) {
-      this.inputValue = value;
-      this.updatePosition();
-    }
+    // setInputValue method executed earlier than isComposingChange
+    setTimeout(() => {
+      if (!this.isComposing) {
+        this.inputValue = value;
+        this.updatePosition();
+      }
+    }, 0);
   }
 
   removeSelected(node: NzTreeNode, emit: boolean = true): void {
