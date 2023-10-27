@@ -13,6 +13,16 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 15.1.1
+
+`2023-10-27`
+
+### Bug Fixes
+
+* **date-picker:** ng-untouched when loose focus ([#7922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7922)) ([5a9598a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5a9598a2774b28a55098b17b33329bba8ce00362))
+* **datepicker:** ngModel not update ([#7948](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7948)) ([6f07435](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6f0743563a755becffa453b269a1de9d88b8b44e))
+
+
 ## 15.1.0
 
 `2023-04-02`

@@ -13,6 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 15.1.1
+
+`2023-10-27`
+
+### Bug Fixes
+
+* **date-picker:** 修复 `ng-untouched` 问题 ([#7922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7922)) ([5a9598a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5a9598a2774b28a55098b17b33329bba8ce00362))
+* **datepicker:** 修复 `ngModel` 未更新问题 ([#7948](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7948)) ([6f07435](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6f0743563a755becffa453b269a1de9d88b8b44e))
+
+
 ## 15.1.0
 
 `2023-04-02`
