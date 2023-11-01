@@ -22,6 +22,7 @@ export default {
     lang: {
       placeholder: 'انتخاب تاریخ',
       yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
       monthPlaceholder: 'انتخاب ماه',
       weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
@@ -38,6 +39,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'یک هفته رو انتخاب کنید',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -53,8 +55,7 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد',
-      quarterPlaceholder: 'انتخاب فصل'
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان',
@@ -68,7 +69,14 @@ export default {
   Calendar: {
     lang: {
       placeholder: 'انتخاب تاریخ',
+      yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
@@ -79,6 +87,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'انتخاب هفته',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -94,24 +103,22 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد',
-      yearPlaceholder: 'انتخاب سال',
-      quarterPlaceholder: 'انتخاب فصل',
-      monthPlaceholder: 'انتخاب ماه',
-      weekPlaceholder: 'انتخاب هفته',
-      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
-      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
-      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان']
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان',
       rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
   },
+  global: {
+    placeholder: 'لطفا انتخاب کنید'
+  },
   Table: {
     filterTitle: 'منوی فیلتر',
     filterConfirm: 'تایید',
     filterReset: 'پاک کردن',
+    filterEmptyText: 'بدون فیلتر',
+    emptyText: 'بدون داده',
     selectAll: 'انتخاب صفحه‌ی کنونی',
     selectInvert: 'معکوس کردن انتخاب‌ها در صفحه ی کنونی',
     selectionAll: 'انتخاب همه داده‌ها',
@@ -121,8 +128,8 @@ export default {
     triggerDesc: 'ترتیب نزولی',
     triggerAsc: 'ترتیب صعودی',
     cancelSort: 'لغوِ ترتیبِ داده شده',
-    filterEmptyText: 'بدون فیلتر',
-    emptyText: 'بدون داده',
+    filterCheckall: 'انتخاب همه موارد',
+    filterSearchPlaceholder: 'جست‌و‌جو در فیلتر‌ها',
     selectNone: 'انتخاب هیچکدام'
   },
   Modal: {
@@ -168,10 +175,32 @@ export default {
   PageHeader: {
     back: 'برگشت'
   },
-  global: {
-    placeholder: 'لطفاً انتخاب کنید'
-  },
   Image: {
     preview: 'نمایش'
+  },
+  CronExpression: {
+    cronError: 'Invalid cron expression',
+    second: 'ثانیه',
+    minute: 'دقیقه',
+    hour: 'ساعت',
+    day: 'روز',
+    month: 'ماه',
+    week: 'هفته',
+    secondError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><p><span>0-59</span>بازه مجاز</p>',
+    minuteError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><p><span>0-59</span>بازه مجاز</p>',
+    hourError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><p><span>0-23</span>بازه مجاز</p>',
+    dayError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><p><span>1-31</span>بازه مجاز</p>',
+    monthError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><p><span>1-12</span>بازه مجاز</p>',
+    weekError:
+      '<p><span>*</span>هر مقداری</p><p><span>,</span>جداکندده بین مقادیر متفاوت</p><p><span>-</span>وصل کننده مقادیر داخلی</p><p><span>/</span>به طور مساوی توزیع شده است</p><span>?</span>مشخص نیست</p><p><p><span>0-7</span>بازه مجاز (0 برای یک شنبه، از 1 تا 7 برای دوشنبه تا شنبه)</p>'
+  },
+  QRCode: {
+    expired: 'کد QR منقضی شده است',
+    refresh: 'تازه کردن'
   }
 };
