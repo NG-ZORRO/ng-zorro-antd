@@ -20,3 +20,16 @@ cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*SMzgSJZE_AwAAAAAAA
 - Flex 为块级元素提供间距，其本身不会添加包裹元素。适用于垂直或水平方向上的子元素布局，并提供了更多的灵活性和控制能力。
 
 ## 代码演示
+
+## API
+
+### [nz-flex]
+
+| Property        | Description                                                                | Type                                                                                          | Default    |
+| --------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
+| `[nzDirection]` | The direction of flex box                                                  | `'row'\|'row-reverse'\|'column'\|'column-reverse'`                                            | `'row'`    |
+| `[nzJustify]`   | Sets the alignment of elements in the direction of the main axis           | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
+| `[nzAlign]`     | Sets the alignment of elements in the direction of the cross axis          | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |
+| `[nzGap]`       | Sets the gap between items                                                 | `'small'\|'middle'\|'large'\|'number'`                                                        | `0`        |
+| `[nzWrap]`      | Set whether the element is displayed in a single line or in multiple lines | reference [flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap)             | `'nowrap'` |
+| `[nzFlex]`      | Flex CSS shorthand properties                                              | reference [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex)                       | `'unset'`  |
