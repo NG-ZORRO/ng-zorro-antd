@@ -20,3 +20,16 @@ Wrapper for `Display: flex`.
 - Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of child elements in vertical or horizontal direction, and provides more flexibility and control.
 
 ## Examples
+
+## API
+
+### [nz-flex]
+
+| Property        | Description                                                                | Type                                                                                          | Default    |
+| --------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
+| `[nzDirection]` | The direction of flex box                                                  | `'row'\|'row-reverse'\|'column'\|'column-reverse'`                                            | `'row'`    |
+| `[nzJustify]`   | Sets the alignment of elements in the direction of the main axis           | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
+| `[nzAlign]`     | Sets the alignment of elements in the direction of the cross axis          | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |
+| `[nzGap]`       | Sets the gap between items                                                 | `'small'\|'middle'\|'large'\|'number'`                                                        | `0`        |
+| `[nzWrap]`      | Set whether the element is displayed in a single line or in multiple lines | reference [flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap)             | `'nowrap'` |
+| `[nzFlex]`      | Flex CSS shorthand properties                                              | reference [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex)                       | `'unset'`  |
