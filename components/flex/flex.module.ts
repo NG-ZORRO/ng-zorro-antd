@@ -9,11 +9,11 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { FlexDirective } from './flex.directive';
+import { NzFlexDirective } from './nz-flex.directive';
 
 @NgModule({
-  declarations: [FlexDirective],
-  exports: [FlexDirective],
+  declarations: [NzFlexDirective],
+  exports: [NzFlexDirective],
   imports: [BidiModule, CommonModule, LayoutModule, PlatformModule]
 })
 export class NzFlexModule {}
