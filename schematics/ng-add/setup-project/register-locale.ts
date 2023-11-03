@@ -16,14 +16,15 @@ import {
 } from '@angular/cdk/schematics';
 
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { addFunctionalProvidersToStandaloneBootstrap, callsProvidersFunction, findBootstrapApplicationCall } from '@schematics/angular/private/components';
+import { addFunctionalProvidersToStandaloneBootstrap, callsProvidersFunction } from '@schematics/angular/private/components';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
+import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
-import { findAppConfig } from '../../utils/standalone/app-config';
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
@@ -46,7 +47,7 @@ function registerLocaleInAppModule(host: Tree, mainFile: string, options: Schema
   const locale = options.locale || 'en_US';
   const localePrefix = locale.split('_')[0];
 
-  const changes = [
+  applyChangesToFile(host, appModulePath, [
     insertImport(moduleSource, appModulePath, 'NZ_I18N',
       'ng-zorro-antd/i18n'),
     insertImport(moduleSource, appModulePath, locale,
@@ -57,14 +58,11 @@ function registerLocaleInAppModule(host: Tree, mainFile: string, options: Schema
       `@angular/common/locales/${localePrefix}`, true),
     registerLocaleData(moduleSource, appModulePath, localePrefix),
     ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
-  ];
-
-  updateSourceFile(host, appModulePath, changes);
+  ]);
 }
 
 function registerLocaleInStandaloneApp(host: Tree, mainFile: string, options: Schema): void {
-  const moduleSource = parseSourceFile(host, mainFile);
-  const bootstrapCall = findBootstrapApplicationCall(moduleSource);
+  const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
   const appConfig = findAppConfig(bootstrapCall, host, mainFile);
   const appConfigFile = appConfig.filePath;
   const appConfigSource = parseSourceFile(host, appConfig.filePath);
@@ -72,7 +70,7 @@ function registerLocaleInStandaloneApp(host: Tree, mainFile: string, options: Sc
   const locale = options.locale || 'en_US';
   const localePrefix = locale.split('_')[0];
 
-  updateSourceFile(host, appConfigFile, [
+  applyChangesToFile(host, appConfigFile, [
     insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
     insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
     insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
@@ -168,7 +166,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
 
 }
 
-function updateSourceFile(host: Tree, filePath: string, changes: Change[]): void {
+function applyChangesToFile(host: Tree, filePath: string, changes: Change[]): void {
   const recorder = host.beginUpdate(filePath);
 
   changes.forEach((change) => {
