@@ -157,6 +157,10 @@ Then use the component inside the template:
 <button nz-button nzType="primary">Primary</button>
 ```
 
+# Precautions
+
+- `ng-zorro-antd` already contains `@angular/cdk/overlay-prebuilt.css` overlay style, no additional import is required.
+
 ## Other
 
 - [I18n](/docs/i18n/en)

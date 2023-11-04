@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgModule } from '@angular/core';
-
-@NgModule()
-export class NzDrawerServiceModule {}
+export * from './typings';
+export * from './color-picker.component';
+export * from './color-block.component';
+export * from './color-picker.module';

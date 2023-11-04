@@ -4,7 +4,8 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, from, Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
@@ -401,27 +402,26 @@ export class NzCascaderService implements OnDestroy {
         option.loading = true;
       }
 
-      loadFn(option, columnIndex).then(
-        () => {
-          option.loading = false;
-          if (option.children) {
-            this.setColumnData(option.children, columnIndex + 1, option);
+      from(loadFn(option, columnIndex))
+        .pipe(
+          finalize(() => {
+            option.loading = false;
+            this.$loading.next(false);
+            this.$redraw.next();
+          })
+        )
+        .subscribe({
+          next: () => {
+            if (option.children) {
+              this.setColumnData(option.children, columnIndex + 1, option);
+            }
+            success?.();
+          },
+          error: () => {
+            option.isLeaf = true;
+            failure?.();
           }
-          if (success) {
-            success();
-          }
-          this.$loading.next(false);
-          this.$redraw.next();
-        },
-        () => {
-          option.loading = false;
-          option.isLeaf = true;
-          if (failure) {
-            failure();
-          }
-          this.$redraw.next();
-        }
-      );
+        });
     }
   }
 

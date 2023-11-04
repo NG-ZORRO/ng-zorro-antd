@@ -74,23 +74,28 @@ Define handles and directions.
 
 ```ts
 type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
+type NzCursorType = 'window' | 'grid';
 ```
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | [nzDirection] | Set the direction of resizable | `NzResizeDirection` | `'bottomRight'` |
+| [nzCursorType] | Cursor type for handle | `NzCursorType` | `'window'` |
 
 ### nz-resize-handles
 
 Simpler way to define handles.
 
 ```ts
-const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = ['bottomRight', 'topRight', 'bottomLeft', 'topLeft', 'bottom', 'right', 'top', 'left'];
+interface NzResizeHandleOption {
+  direction: NzResizeDirection;
+  cursorType: NzCursorType;
+}
 ```
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| [nzDirections] | Allow directions of resizable | `NzResizeDirection[]` | `DEFAULT_RESIZE_DIRECTION` |
+| [nzDirections] | Allow handle directions or handle options | `(NzResizeDirection \| NzResizeHandleOption)[]` | ALL DIRECTIONS |
 
 ### Styling
 
@@ -109,3 +114,6 @@ The Component styles only contain the necessary positional properties and simple
     * `.nz-resizable-handle-topLeft`
     * `.nz-resizable-handle-bottomRight`
     * `.nz-resizable-handle-bottomLeft`
+- `.nz-resizable-handle-cursor-type` Cursor type namespace for handle
+    * `.nz-resizable-handle-cursor-type-window`
+    * `.nz-resizable-handle-cursor-type-grid`

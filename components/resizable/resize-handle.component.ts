@@ -9,6 +9,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   NgZone,
   OnInit,
@@ -21,6 +22,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzResizableService } from './resizable.service';
+
+export type NzCursorType = 'window' | 'grid';
 
 export type NzResizeDirection =
   | 'top'
@@ -52,12 +55,15 @@ const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveLis
     '[class.nz-resizable-handle-topRight]': `nzDirection === 'topRight'`,
     '[class.nz-resizable-handle-bottomRight]': `nzDirection === 'bottomRight'`,
     '[class.nz-resizable-handle-bottomLeft]': `nzDirection === 'bottomLeft'`,
-    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`
+    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`,
+    '[class.nz-resizable-handle-cursor-type-grid]': `nzCursorType === 'grid'`,
+    '[class.nz-resizable-handle-cursor-type-window]': `nzCursorType === 'window'`
   },
   providers: [NzDestroyService]
 })
 export class NzResizeHandleComponent implements OnInit {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
+  @Input() nzCursorType: NzCursorType = 'window';
   @Output() readonly nzMouseDown = new EventEmitter<NzResizeHandleMouseDownEvent>();
 
   constructor(
@@ -92,5 +98,15 @@ export class NzResizeHandleComponent implements OnInit {
           );
         });
     });
+  }
+
+  @HostListener('pointerdown', ['$event'])
+  onPointerDown(event: PointerEvent): void {
+    this.host.nativeElement.setPointerCapture(event.pointerId);
+  }
+
+  @HostListener('pointerup', ['$event'])
+  onPointerUp(event: PointerEvent): void {
+    this.host.nativeElement.releasePointerCapture(event.pointerId);
   }
 }

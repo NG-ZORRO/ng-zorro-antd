@@ -62,6 +62,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
     '[class.ant-btn-rtl]': `dir === 'rtl'`,
+    '[class.ant-btn-icon-only]': `iconOnly`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   }
@@ -101,28 +102,17 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     });
   }
 
-  assertIconOnly(element: HTMLButtonElement, renderer: Renderer2): void {
-    const listOfNode = Array.from(element.childNodes);
-    const iconCount = listOfNode.filter(node => {
-      const iconChildNodes = Array.from(node.childNodes || []);
-      return node.nodeName === 'SPAN' && iconChildNodes.length > 0 && iconChildNodes.every(ic => ic.nodeName === 'svg');
-    }).length;
+  public get iconOnly(): boolean {
+    const listOfNode = Array.from((this.elementRef?.nativeElement as HTMLButtonElement)?.childNodes || []);
     const noText = listOfNode.every(node => node.nodeName !== '#text');
-    // ignore icon
-    const noSpan = listOfNode
-      .filter(node => {
-        const iconChildNodes = Array.from(node.childNodes || []);
-        return !(
-          node.nodeName === 'SPAN' &&
-          iconChildNodes.length > 0 &&
-          iconChildNodes.every(ic => ic.nodeName === 'svg')
-        );
-      })
-      .every(node => node.nodeName !== 'SPAN');
-    const isIconOnly = noSpan && noText && iconCount >= 1;
-    if (isIconOnly) {
-      renderer.addClass(element, 'ant-btn-icon-only');
-    }
+    // ignore icon and comment
+    const noSpan =
+      listOfNode.filter(node => {
+        return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.attributes?.getNamedItem('nz-icon'));
+      }).length == 0;
+    const isIconOnly = !!this.nzIconDirectiveElement && noSpan && noText;
+
+    return isIconOnly;
   }
 
   constructor(
@@ -173,7 +163,6 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngAfterViewInit(): void {
-    this.assertIconOnly(this.elementRef.nativeElement, this.renderer);
     this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
   }
 

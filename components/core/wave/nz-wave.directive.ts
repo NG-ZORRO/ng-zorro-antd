@@ -4,11 +4,14 @@
  */
 
 import {
+  CSP_NONCE,
   Directive,
   ElementRef,
   Inject,
   InjectionToken,
   Input,
+  makeEnvironmentProviders,
+  EnvironmentProviders,
   NgZone,
   OnDestroy,
   OnInit,
@@ -29,13 +32,10 @@ export const NZ_WAVE_GLOBAL_DEFAULT_CONFIG: NzWaveConfig = {
   disabled: false
 };
 
-export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options', {
-  providedIn: 'root',
-  factory: NZ_WAVE_GLOBAL_CONFIG_FACTORY
-});
+export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options');
 
-export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
-  return NZ_WAVE_GLOBAL_DEFAULT_CONFIG;
+export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: NZ_WAVE_GLOBAL_CONFIG, useValue: config }]);
 }
 
 @Directive({
@@ -61,7 +61,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     private elementRef: ElementRef,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
-    @Inject(PLATFORM_ID) private platformId: NzSafeAny
+    @Inject(PLATFORM_ID) private platformId: NzSafeAny,
+    @Optional() @Inject(CSP_NONCE) private cspNonce?: string | null
   ) {
     this.waveDisabled = this.isConfigDisabled();
   }
@@ -93,7 +94,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
         this.elementRef.nativeElement,
         this.ngZone,
         this.nzWaveExtraNode,
-        this.platformId
+        this.platformId,
+        this.cspNonce
       );
     }
   }

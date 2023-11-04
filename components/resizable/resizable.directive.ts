@@ -86,7 +86,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.resizing = true;
       this.nzResizableService.startResizing(event.mouseEvent);
       this.currentHandleEvent = event;
-      this.setCursor();
       if (this.nzResizeStart.observers.length) {
         this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent, direction: event.direction }));
       }
@@ -185,28 +184,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     };
   }
 
-  setCursor(): void {
-    switch (this.currentHandleEvent!.direction) {
-      case 'left':
-      case 'right':
-        this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
-        break;
-      case 'top':
-      case 'bottom':
-        this.renderer.setStyle(document.body, 'cursor', 'ns-resize');
-        break;
-      case 'topLeft':
-      case 'bottomRight':
-        this.renderer.setStyle(document.body, 'cursor', 'nwse-resize');
-        break;
-      case 'topRight':
-      case 'bottomLeft':
-        this.renderer.setStyle(document.body, 'cursor', 'nesw-resize');
-        break;
-    }
-    this.renderer.setStyle(document.body, 'user-select', 'none');
-  }
-
   resize(event: MouseEvent | TouchEvent): void {
     const elRect = this.elRect;
     const resizeEvent = getEventWithPoint(event);
@@ -262,8 +239,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   endResize(event: MouseEvent | TouchEvent): void {
-    this.renderer.setStyle(document.body, 'cursor', '');
-    this.renderer.setStyle(document.body, 'user-select', '');
     this.removeGhostElement();
     const size = this.sizeCache
       ? { ...this.sizeCache }

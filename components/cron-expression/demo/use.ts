@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-cron-expression-use',
@@ -31,18 +31,18 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     </form>
   `
 })
-export class NzDemoCronExpressionUseComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoCronExpressionUseComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string | null>;
+    cronLinux: FormControl<string | null>;
+    cronSpring: FormControl<string | null>;
+  }> = this.fb.group({
+    userName: ['cron-expression', [Validators.required]],
+    cronLinux: ['* 1 * * *', [Validators.required]],
+    cronSpring: ['0 * 1 * * *', [Validators.required]]
+  });
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: ['cron-expression', [Validators.required]],
-      cronLinux: ['* 1 * * *', [Validators.required]],
-      cronSpring: ['0 * 1 * * *', [Validators.required]]
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
   submitForm(): void {
     console.log(this.validateForm.value);

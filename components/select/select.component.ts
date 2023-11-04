@@ -623,6 +623,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       const listOfTransformedItem = listOfOptions.map(item => {
         return {
           template: item.label instanceof TemplateRef ? item.label : null,
+          nzTitle: this.getTitle(item.title, item.label),
           nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
           nzValue: item.value,
           nzDisabled: item.disabled || false,
@@ -630,7 +631,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           nzCustomContent: item.label instanceof TemplateRef,
           groupLabel: item.groupLabel || null,
           type: 'item',
-          key: item.value
+          key: item.key === undefined ? item.value : item.key
         };
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
@@ -757,7 +758,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         )
         .subscribe(() => {
           const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
-            const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
+            const { template, nzLabel, nzValue, nzKey, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
             return {
               template,
               nzLabel,
@@ -766,8 +767,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
               nzHide,
               nzCustomContent,
               groupLabel,
+              nzTitle: this.getTitle(item.nzTitle, item.nzLabel),
               type: 'item',
-              key: nzValue
+              key: nzKey === undefined ? nzValue : nzKey
             };
           });
           this.listOfTemplateItem$.next(listOfOptionInterface);
@@ -794,5 +796,18 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         this.renderer.removeClass(this.host.nativeElement, status);
       }
     });
+  }
+
+  private getTitle(title: NzSelectOptionInterface['title'], label: NzSelectOptionInterface['label']): string {
+    let rawTitle: string = undefined!;
+    if (title === undefined) {
+      if (typeof label === 'string' || typeof label === 'number') {
+        rawTitle = label.toString();
+      }
+    } else if (typeof title === 'string' || typeof title === 'number') {
+      rawTitle = title.toString();
+    }
+
+    return rawTitle;
   }
 }

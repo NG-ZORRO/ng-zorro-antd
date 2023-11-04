@@ -3,6 +3,7 @@ category: Components
 subtitle: 二维码
 type: 数据展示
 title: QRCode
+tag: New
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
 ---
 

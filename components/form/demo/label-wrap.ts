@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-label-wrap',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="validateForm" nzNoColon nzLabelAlign="left" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label nzRequired nzFor="user" nzSpan="3"> Normal text label </nz-form-label>
         <nz-form-control nzErrorTip="Please input your username!" nzSpan="8">
@@ -12,11 +12,11 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzRequired nzFor="password" nzSpan="3" nzLabelWrap>
+        <nz-form-label nzRequired nzFor="label-wrap-password" nzSpan="3" nzLabelWrap>
           Long text label Long text label
         </nz-form-label>
         <nz-form-control nzErrorTip="Please input your Password!" nzSpan="8">
-          <input formControlName="password" nz-input type="password" id="password" />
+          <input formControlName="password" nz-input type="password" id="label-wrap-password" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -27,20 +27,20 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     </form>
   `
 })
-export class NzDemoFormLabelWrapComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormLabelWrapComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }

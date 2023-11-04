@@ -8,6 +8,7 @@ function generateLanguageData(itemData, language, reverseMap, key) {
   const subtitle = itemData[language].subtitle || '';
   const title = itemData[language].title;
   const type = itemData[language].type;
+  const tag = itemData[language].tag || '';
   const cover = itemData[language].cover;
   const experimental = itemData[language].experimental;
   const description = itemData[language].description;
@@ -19,6 +20,7 @@ function generateLanguageData(itemData, language, reverseMap, key) {
     experimental: !!experimental,
     hidden: !!hidden,
     cover,
+    tag,
     description
   };
   if (!reverseMap[type]) {

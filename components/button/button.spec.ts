@@ -132,6 +132,42 @@ describe('button', () => {
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
+    it('should icon only works correctly with any tag', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithAnyTagComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly with any Comment', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithCommentComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly with any text', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithTextComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly without nz-icon', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithoutIconComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+    }));
     it('should icon only loading works correctly', () => {
       const testBed = createComponentBed(TestButtonIconOnlyLoadingComponent, {
         imports: [NzIconTestModule],
@@ -282,6 +318,44 @@ export class TestButtonWithIconComponent implements OnInit {
   `
 })
 export class TestButtonIconOnlyComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <u nz-icon nzType="up"></u>
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithAnyTagComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="down"></i>
+      <!-- Comment -->
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithCommentComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="down"></i>
+      text
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithTextComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <span>text</span>
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithoutIconComponent {}
 
 @Component({
   template: `

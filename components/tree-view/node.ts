@@ -131,6 +131,7 @@ export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
   @Input() data!: NzTreeVirtualNodeData<T>;
+  @Input() compareBy?: ((value: T) => T | string | number) | null;
 
   constructor(private _viewContainerRef: ViewContainerRef) {}
 
@@ -170,9 +171,20 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
           return true;
         }
       }
-      return ctxChange.previousValue?.data !== ctxChange.currentValue?.data;
+      return (
+        this.innerCompareBy(ctxChange.previousValue?.data ?? null) !==
+        this.innerCompareBy(ctxChange.currentValue?.data ?? null)
+      );
     }
     return true;
+  }
+
+  get innerCompareBy(): (value: T | null) => T | string | number | null {
+    return value => {
+      if (value === null) return value;
+      if (this.compareBy) return this.compareBy(value as T);
+      return value;
+    };
   }
 
   private updateExistingContext(ctx: NzSafeAny): void {

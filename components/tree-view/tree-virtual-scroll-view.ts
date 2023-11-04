@@ -4,7 +4,7 @@
  */
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
+import { CdkTree, CdkTreeNodeOutletContext, BaseTreeControl } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +15,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeVirtualNodeData } from './node';
 import { NzTreeNodeOutletDirective } from './outlet';
@@ -34,7 +36,7 @@ const DEFAULT_SIZE = 28;
         [maxBufferPx]="nzMaxBufferPx"
       >
         <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: innerTrackBy">
-          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item"></ng-template>
+          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy"></ng-template>
         </ng-container>
       </cdk-virtual-scroll-viewport>
     </div>
@@ -72,6 +74,15 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
         this.innerTrackBy = i => i;
       }
     }
+  }
+
+  get compareBy(): ((value: T) => NzSafeAny) | null {
+    const baseTreeControl = this.treeControl as BaseTreeControl<T, NzSafeAny>;
+    if (baseTreeControl.trackBy) {
+      return baseTreeControl.trackBy;
+    }
+
+    return null;
   }
 
   override renderNodeChanges(data: T[] | readonly T[]): void {
