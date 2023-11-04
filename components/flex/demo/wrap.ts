@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzWrap } from 'ng-zorro-antd/flex/typings';
+import { nzWrap } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-wrap',
