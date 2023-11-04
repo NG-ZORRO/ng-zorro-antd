@@ -43,7 +43,7 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
   ]
 })
 export class NzDemoMentionFormComponent {
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
   validateForm: FormGroup<{ mention: FormControl<string | null> }>;
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
