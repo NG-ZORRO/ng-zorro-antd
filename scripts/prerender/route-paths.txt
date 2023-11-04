@@ -47,6 +47,8 @@
 /components/empty/zh
 /components/form/en
 /components/form/zh
+/components/flex/en
+/components/flex/zh
 /components/grid/en
 /components/grid/zh
 /components/icon/en
