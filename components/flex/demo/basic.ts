@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzDirection } from 'ng-zorro-antd/flex/typings';
+import { nzDirection } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-basic',

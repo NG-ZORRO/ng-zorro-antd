@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
-import { NzFlexModule } from 'ng-zorro-antd/flex/flex.module';
-import { NzFlexDirective } from 'ng-zorro-antd/flex/nz-flex.directive';
 import {
   nzAlign,
   nzCustomGap,
@@ -15,7 +13,9 @@ import {
   nzGap,
   nzJustify,
   nzWrap
-} from 'ng-zorro-antd/flex/typings';
+} from 'ng-zorro-antd/flex';
+import { NzFlexModule } from 'ng-zorro-antd/flex/flex.module';
+import { NzFlexDirective } from 'ng-zorro-antd/flex/nz-flex.directive';
 
 describe('flex', () => {
   let element: HTMLElement;

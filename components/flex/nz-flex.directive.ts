@@ -5,7 +5,7 @@
 
 import { Directive, Input } from '@angular/core';
 
-import { nzAlign, nzDirection, nzFlex, nzGap, nzJustify, nzWrap } from 'ng-zorro-antd/flex/typings';
+import { nzAlign, nzDirection, nzFlex, nzGap, nzJustify, nzWrap } from './typings';
 
 @Directive({
   selector: '[nz-flex],nz-flex',

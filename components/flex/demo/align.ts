@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzAlign, nzJustify } from 'ng-zorro-antd/flex/typings';
+import { nzAlign, nzJustify } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-align',
