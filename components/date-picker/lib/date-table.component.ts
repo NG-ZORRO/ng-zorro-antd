@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncap
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
-import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
@@ -22,10 +22,6 @@ import { transCompatFormat } from './util';
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() override locale!: NzCalendarI18nInterface;
-
-  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
-    super();
-  }
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date not change time

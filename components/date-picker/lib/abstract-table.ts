@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
-import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface, DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 import { DateBodyRow, DateCell } from './interface';
 
 @Directive()
@@ -78,8 +78,19 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   abstract makeHeadRow(): DateCell[];
   abstract makeBodyRows(): DateBodyRow[];
 
+  constructor(
+    public i18n: NzI18nService,
+    public dateHelper: DateHelperService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
   ngOnInit(): void {
     this.render();
+    this.i18n.localeChange.subscribe(() => {
+      // 不添加changeDetectorRef会悬浮才改变
+      this.render();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

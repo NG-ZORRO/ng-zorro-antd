@@ -101,6 +101,9 @@ export class NzCalendarHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.setUpYears();
     this.setUpMonths();
+    this.i18n.localeChange.subscribe(() => {
+      this.setUpMonths();
+    });
   }
 
   updateYear(year: number): void {
