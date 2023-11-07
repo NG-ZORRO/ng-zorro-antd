@@ -20,7 +20,7 @@ import {
   Tree,
   url
 } from '@angular-devkit/schematics';
-import { addRootProvider } from '@schematics/angular/utility/standalone/rules';
+import { addRootProvider } from '@schematics/angular/utility';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { addModule } from '../../utils/root-module';

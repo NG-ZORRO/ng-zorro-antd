@@ -1,12 +1,12 @@
-import { getProjectFromWorkspace, getProjectTargetOptions, getProjectMainFile } from '@angular/cdk/schematics';
-
+import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
+import { firstValueFrom } from 'rxjs';
 
 import { normalize } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
 import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
-import { addModuleImportToStandaloneBootstrap } from '@schematics/angular/private/components';
+import { addRootImport } from '@schematics/angular/utility';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { join } from "path";
@@ -157,12 +157,10 @@ describe('[standalone] ng-add schematic', () => {
   it('should not add BrowserAnimationsModule if NoopAnimationsModule is set up', async () => {
     const options = {...defaultOptions, animations: true};
 
-    const workspace = await getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
-    const mainFile = getProjectMainFile(project);
-
-    addModuleImportToStandaloneBootstrap(
-      appTree, mainFile, 'NoopAnimationsModule', '@angular/platform-browser/animations');
+    // Add NoopAnimationsModule
+    await firstValueFrom(runner.callRule(addRootImport(options.project, ({code, external}) => {
+      return code`${external('NoopAnimationsModule', '@angular/platform-browser/animations')}`;
+    }), appTree));
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
@@ -174,12 +172,10 @@ describe('[standalone] ng-add schematic', () => {
   it('should not add NoopAnimationsModule if BrowserAnimationsModule is set up', async () => {
     const options = {...defaultOptions, animations: false};
 
-    const workspace = await getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
-    const mainFile = getProjectMainFile(project);
-
-    addModuleImportToStandaloneBootstrap(
-      appTree, mainFile, 'BrowserAnimationsModule', '@angular/platform-browser/animations');
+    // import BrowserAnimationsModule
+    await firstValueFrom(runner.callRule(addRootImport(options.project, ({code, external}) => {
+      return code`${external('BrowserAnimationsModule', '@angular/platform-browser/animations')}`;
+    }), appTree));
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');

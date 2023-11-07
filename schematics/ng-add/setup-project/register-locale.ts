@@ -9,16 +9,16 @@ import {
   getDecoratorMetadata,
   getProjectFromWorkspace,
   getProjectMainFile,
+  getAppModulePath,
   insertAfterLastOccurrence,
   insertImport,
   isStandaloneApp,
   parseSourceFile
 } from '@angular/cdk/schematics';
 
-import { Rule, Tree } from '@angular-devkit/schematics';
-import { addFunctionalProvidersToStandaloneBootstrap, callsProvidersFunction } from '@schematics/angular/private/components';
+import { Rule, Tree, chain } from '@angular-devkit/schematics';
+import { addRootProvider } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
-import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
@@ -33,57 +33,58 @@ export function registerLocale(options: Schema): Rule {
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     if (isStandaloneApp(host, mainFile)) {
-      registerLocaleInStandaloneApp(host, mainFile, options);
+      return registerLocaleInStandaloneApp(mainFile, options);
     } else {
-      registerLocaleInAppModule(host, mainFile, options);
+      return registerLocaleInAppModule(mainFile, options);
     }
   };
 }
 
-function registerLocaleInAppModule(host: Tree, mainFile: string, options: Schema): void {
-  const appModulePath = getAppModulePath(host, mainFile);
-  const moduleSource = parseSourceFile(host, appModulePath);
+function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
+  return async (host: Tree) => {
+    const appModulePath = getAppModulePath(host, mainFile);
+    const moduleSource = parseSourceFile(host, appModulePath);
 
-  const locale = options.locale || 'en_US';
-  const localePrefix = locale.split('_')[0];
+    const locale = options.locale || 'en_US';
+    const localePrefix = locale.split('_')[0];
 
-  applyChangesToFile(host, appModulePath, [
-    insertImport(moduleSource, appModulePath, 'NZ_I18N',
-      'ng-zorro-antd/i18n'),
-    insertImport(moduleSource, appModulePath, locale,
-      'ng-zorro-antd/i18n'),
-    insertImport(moduleSource, appModulePath, 'registerLocaleData',
-      '@angular/common'),
-    insertImport(moduleSource, appModulePath, localePrefix,
-      `@angular/common/locales/${localePrefix}`, true),
-    registerLocaleData(moduleSource, appModulePath, localePrefix),
-    ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
-  ]);
+    applyChangesToFile(host, appModulePath, [
+      insertImport(moduleSource, appModulePath, 'NZ_I18N',
+        'ng-zorro-antd/i18n'),
+      insertImport(moduleSource, appModulePath, locale,
+        'ng-zorro-antd/i18n'),
+      insertImport(moduleSource, appModulePath, 'registerLocaleData',
+        '@angular/common'),
+      insertImport(moduleSource, appModulePath, localePrefix,
+        `@angular/common/locales/${localePrefix}`, true),
+      registerLocaleData(moduleSource, appModulePath, localePrefix),
+      ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
+    ]);
+  }
 }
 
-function registerLocaleInStandaloneApp(host: Tree, mainFile: string, options: Schema): void {
-  const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
-  const appConfig = findAppConfig(bootstrapCall, host, mainFile);
-  const appConfigFile = appConfig.filePath;
-  const appConfigSource = parseSourceFile(host, appConfig.filePath);
-
+function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule {
   const locale = options.locale || 'en_US';
-  const localePrefix = locale.split('_')[0];
 
-  applyChangesToFile(host, appConfigFile, [
-    insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
-    insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
-    insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
-    registerLocaleData(appConfigSource, appConfigFile, localePrefix)
+  return chain([
+    async (host: Tree) => {
+      const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
+      const appConfig = findAppConfig(bootstrapCall, host, mainFile);
+      const appConfigFile = appConfig.filePath;
+      const appConfigSource = parseSourceFile(host, appConfig.filePath);
+      const localePrefix = locale.split('_')[0];
+
+      applyChangesToFile(host, appConfigFile, [
+        insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
+        insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
+        insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+        registerLocaleData(appConfigSource, appConfigFile, localePrefix)
+      ]);
+    }, 
+    addRootProvider(options.project, ({code, external}) => {
+      return code`${external('provideNzI18n', 'ng-zorro-antd/i18n')}(${locale})`;
+    })
   ]);
-
-  const providerFn = 'provideNzI18n';
-  if (callsProvidersFunction(host, mainFile, providerFn)) {
-    return;
-  }
-
-  const providerOptions: ts.Expression[] = [ts.factory.createIdentifier(locale)];
-  addFunctionalProvidersToStandaloneBootstrap(host, mainFile, providerFn, 'ng-zorro-antd/i18n', providerOptions);
 }
 
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
