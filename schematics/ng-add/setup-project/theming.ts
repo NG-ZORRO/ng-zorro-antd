@@ -27,7 +27,7 @@ const defaultCustomThemeFilename = 'theme.less';
 
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
-  build: '@angular-devkit/build-angular:browser',
+  build: '@angular-devkit/build-angular:application',
   test : '@angular-devkit/build-angular:karma'
 };
 

@@ -1,4 +1,4 @@
-import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions, getProjectMainFile } from '@angular/cdk/schematics';
+import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions, addImportToModule } from '@angular/cdk/schematics';
 
 
 import { normalize } from '@angular-devkit/core';
@@ -131,7 +131,7 @@ describe('ng-add schematic', () => {
   it('should required modules', async () => {
     const options = {...defaultOptions};
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('FormsModule');
     expect(fileContent).toContain('HttpClientModule');
@@ -140,7 +140,7 @@ describe('ng-add schematic', () => {
   it('should add browserAnimationsModuleName if animations is enable', async () => {
     const options = {...defaultOptions, animations: true};
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('BrowserAnimationsModule');
   });
@@ -148,7 +148,7 @@ describe('ng-add schematic', () => {
   it('should add noopAnimationsModuleName if animations is disable', async () => {
     const options = {...defaultOptions, animations: false};
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('NoopAnimationsModule');
   });
@@ -157,13 +157,13 @@ describe('ng-add schematic', () => {
     const options = {...defaultOptions, animations: true};
 
     const workspace = await getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
 
     addModuleImportToRootModule(
       appTree, 'NoopAnimationsModule', '@angular/platform-browser/animations', project);
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('NoopAnimationsModule');
     expect(fileContent).not.toContain('BrowserAnimationsModule');
@@ -179,7 +179,7 @@ describe('ng-add schematic', () => {
       appTree, 'BrowserAnimationsModule', '@angular/platform-browser/animations', project);
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).not.toContain('NoopAnimationsModule');
     expect(fileContent).toContain('BrowserAnimationsModule');
@@ -188,18 +188,18 @@ describe('ng-add schematic', () => {
   it('should register default locale id', async () => {
     const options = {...defaultOptions};
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: en_US }');
+    expect(fileContent).toContain('provideNzI18n(en_US)');
     expect(fileContent).toContain('registerLocaleData(en)');
   });
 
   it('should register specified locale id', async () => {
     const options = {...defaultOptions, locale: 'zh_CN'};
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: zh_CN }');
+    expect(fileContent).toContain('provideNzI18n(zh_CN)');
     expect(fileContent).toContain('registerLocaleData(zh)');
   });
 
@@ -214,7 +214,7 @@ describe('ng-add schematic', () => {
     spyOn(console, 'log');
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('{ provide: NZ_I18N, useValue: en_US }');
     expect(fileContent).toContain('registerLocaleData(en)');

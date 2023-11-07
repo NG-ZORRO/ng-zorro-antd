@@ -23,6 +23,7 @@ const defaultOptions = {
   skipTests: false,
   module: undefined,
   export: false,
+  standalone: true,
   project: 'ng-zorro'
 };
 
@@ -112,8 +113,8 @@ describe('ng-component schematic', () => {
     const options = { ...defaultOptions, classnameWithModule: true, module: 'app.module.ts' };
     const tree = await runner.runSchematic('component', options, appTree);
 
-    const appModuleContent = tree.readContent('/projects/ng-zorro/src/app/app.module.ts');
+    const appComponentContent = tree.readContent('/projects/ng-zorro/src/app/app.component.ts');
 
-    expect(appModuleContent).toMatch(/import { AppTestComponent } from '.\/test\/test.component'/);
+    expect(appComponentContent).toMatch(/import { AppTestComponent } from '.\/test\/test.component'/);
   });
 });

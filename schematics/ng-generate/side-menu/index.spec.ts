@@ -29,10 +29,8 @@ describe('side-menu schematic', () => {
         '/projects/ng-zorro/src/app/app.component.html',
         '/projects/ng-zorro/src/app/app.component.css',
         '/projects/ng-zorro/src/app/app.component.ts',
-        '/projects/ng-zorro/src/app/app-routing.module.ts',
-        '/projects/ng-zorro/src/app/icons-provider.module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome-routing.module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.module.ts',
+        '/projects/ng-zorro/src/app/app.routes.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.routes.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html'
