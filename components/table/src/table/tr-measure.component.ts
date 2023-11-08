@@ -76,9 +76,15 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
         // The `ResizeObserver` might be also patched through `zone.js/dist/zone-patch-resize-observer`,
         // thus calling `ngZone.run` again will cause another change detection.
         if (this.ngZone instanceof NgZone && NgZone.isInAngularZone()) {
-          this.listOfAutoWidth.next(data);
+          if(!data.every(item => !item))
+          {
+            this.listOfAutoWidth.next(data);
+          }
         } else {
+          if(!data.every(item => !item))
+          {
           this.ngZone.run(() => this.listOfAutoWidth.next(data));
+          }
         }
       });
   }
