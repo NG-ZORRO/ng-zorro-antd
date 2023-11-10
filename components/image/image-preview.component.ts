@@ -223,17 +223,23 @@ export class NzImagePreviewComponent implements OnInit {
         .subscribe(() => {
           this.isDragging = true;
         });
+
+      fromEvent<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => this.onWheelZoom(event));
+        });
     });
   }
 
   setImages(images: NzImage[]): void {
     this.images = images;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   switchTo(index: number): void {
     this.index = index;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   next(): void {
@@ -243,7 +249,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -254,7 +260,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -270,7 +276,7 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom += 1;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
-    this.position = { ...initialPosition };
+    // this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
@@ -278,7 +284,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.zoom -= 1;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
-      this.position = { ...initialPosition };
+      // this.position = { ...initialPosition };
     }
   }
 
@@ -304,6 +310,26 @@ export class NzImagePreviewComponent implements OnInit {
     this.next();
   }
 
+  onWheelZoom(event: WheelEvent): void {
+    const deltaY = event.deltaY;
+    const x = (event.clientX - this.imageRef.nativeElement.getBoundingClientRect().x) / this.zoom;
+    const y = (event.clientY - this.imageRef.nativeElement.getBoundingClientRect().y) / this.zoom;
+
+    const m = deltaY < 0 ? 0.5 : -0.5;
+
+    this.position.x += -x * m * 2 + this.imageRef.nativeElement.offsetWidth * m;
+    this.position.y += -y * m * 2 + this.imageRef.nativeElement.offsetHeight * m;
+
+    if (this.isZoomedInWithMouseWheel(deltaY)) {
+      this.onZoomIn();
+    } else {
+      this.onZoomOut();
+    }
+    this.updatePreviewImageWrapperTransform();
+
+    this.markForCheck();
+  }
+
   onAnimationStart(event: AnimationEvent): void {
     if (event.toState === 'enter') {
       this.setEnterAnimationClass();
@@ -325,7 +351,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   startLeaveAnimation(): void {
     this.animationState = 'leave';
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   onDragReleased(): void {
@@ -351,6 +377,10 @@ export class NzImagePreviewComponent implements OnInit {
 
   sanitizerResourceUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  private isZoomedInWithMouseWheel(delta: number): boolean {
+    return delta < 0;
   }
 
   private updatePreviewImageTransform(): void {
