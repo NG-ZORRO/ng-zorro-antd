@@ -30,6 +30,7 @@ import { NzImageService } from './image.service';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
+export type nzLoading = 'eager' | 'lazy';
 
 @Directive({
   selector: 'img[nz-image]',
@@ -45,6 +46,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
+  @Input() nzLoading: nzLoading = 'lazy';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
@@ -114,8 +116,8 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSrc } = changes;
     if (nzSrc) {
-      this.getElement().nativeElement.src = nzSrc.currentValue;
-      this.backLoad();
+      // this.getElement().nativeElement.src = nzSrc.currentValue;
+      // this.backLoad();
     }
   }
 
@@ -126,8 +128,11 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
    */
   private backLoad(): void {
     this.backLoadImage = this.document.createElement('img');
+    this.backLoadImage.loading = this.nzLoading;
+    this.backLoadImage.setAttribute('loading', 'lazy');
     this.backLoadImage.src = this.nzSrc;
     this.backLoadImage.srcset = this.nzSrcset;
+    this.backLoadImage.className = 'test';
     this.status = 'loading';
 
     // unsubscribe last backLoad
@@ -136,13 +141,20 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     this.backLoadDestroy$ = new Subject();
     if (this.backLoadImage.complete) {
       this.status = 'normal';
+      this.getElement().nativeElement.loading = this.nzLoading;
+      this.backLoadImage.setAttribute('loading', 'lazy');
       this.getElement().nativeElement.src = this.nzSrc;
       this.getElement().nativeElement.srcset = this.nzSrcset;
+      this.getElement().nativeElement.className = 'test';
     } else {
       if (this.nzPlaceholder) {
+        this.getElement().nativeElement.loading = this.nzLoading;
+        this.backLoadImage.setAttribute('loading', 'lazy');
         this.getElement().nativeElement.src = this.nzPlaceholder;
         this.getElement().nativeElement.srcset = '';
       } else {
+        this.getElement().nativeElement.loading = this.nzLoading;
+        this.backLoadImage.setAttribute('loading', 'lazy');
         this.getElement().nativeElement.src = this.nzSrc;
         this.getElement().nativeElement.srcset = this.nzSrcset;
       }
@@ -153,6 +165,8 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
         .subscribe(() => {
           this.status = 'normal';
+          this.getElement().nativeElement.loading = this.nzLoading;
+          this.backLoadImage.setAttribute('loading', 'lazy');
           this.getElement().nativeElement.src = this.nzSrc;
           this.getElement().nativeElement.srcset = this.nzSrcset;
         });
@@ -162,6 +176,8 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         .subscribe(() => {
           this.status = 'error';
           if (this.nzFallback) {
+            this.getElement().nativeElement.loading = this.nzLoading;
+            this.backLoadImage.setAttribute('loading', 'lazy');
             this.getElement().nativeElement.src = this.nzFallback;
             this.getElement().nativeElement.srcset = '';
           }
