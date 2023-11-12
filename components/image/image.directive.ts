@@ -28,6 +28,7 @@ import { NzImageGroupComponent } from './image-group.component';
 import { NzImageService } from './image.service';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
+const INTERSECTION_THRESHOLD = 0.1;
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
 export type nzLoading = 'eager' | 'lazy';
@@ -46,7 +47,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
-  @Input() nzLoading: nzLoading = 'lazy';
+  @Input() nzLoading: nzLoading = 'eager';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
@@ -116,8 +117,8 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSrc } = changes;
     if (nzSrc) {
-      // this.getElement().nativeElement.src = nzSrc.currentValue;
-      // this.backLoad();
+      this.getElement().nativeElement.src = nzSrc.currentValue;
+      this.backLoad();
     }
   }
 
@@ -129,32 +130,40 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   private backLoad(): void {
     this.backLoadImage = this.document.createElement('img');
     this.backLoadImage.loading = this.nzLoading;
-    this.backLoadImage.setAttribute('loading', 'lazy');
-    this.backLoadImage.src = this.nzSrc;
-    this.backLoadImage.srcset = this.nzSrcset;
-    this.backLoadImage.className = 'test';
+
+    if (this.nzLoading === 'eager') {
+      this.backLoadImage.src = this.nzSrc;
+      this.backLoadImage.srcset = this.nzSrcset;
+    }
     this.status = 'loading';
 
     // unsubscribe last backLoad
     this.backLoadDestroy$.next();
     this.backLoadDestroy$.complete();
     this.backLoadDestroy$ = new Subject();
+
     if (this.backLoadImage.complete) {
-      this.status = 'normal';
-      this.getElement().nativeElement.loading = this.nzLoading;
-      this.backLoadImage.setAttribute('loading', 'lazy');
-      this.getElement().nativeElement.src = this.nzSrc;
-      this.getElement().nativeElement.srcset = this.nzSrcset;
-      this.getElement().nativeElement.className = 'test';
+      if (this.nzLoading === 'lazy') {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                this.backLoadCompleteStateHandler();
+                observer.disconnect();
+              }
+            });
+          },
+          { threshold: INTERSECTION_THRESHOLD }
+        );
+        observer.observe(this.getElement().nativeElement);
+      } else {
+        this.backLoadCompleteStateHandler();
+      }
     } else {
       if (this.nzPlaceholder) {
-        this.getElement().nativeElement.loading = this.nzLoading;
-        this.backLoadImage.setAttribute('loading', 'lazy');
         this.getElement().nativeElement.src = this.nzPlaceholder;
         this.getElement().nativeElement.srcset = '';
       } else {
-        this.getElement().nativeElement.loading = this.nzLoading;
-        this.backLoadImage.setAttribute('loading', 'lazy');
         this.getElement().nativeElement.src = this.nzSrc;
         this.getElement().nativeElement.srcset = this.nzSrcset;
       }
@@ -165,8 +174,6 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
         .subscribe(() => {
           this.status = 'normal';
-          this.getElement().nativeElement.loading = this.nzLoading;
-          this.backLoadImage.setAttribute('loading', 'lazy');
           this.getElement().nativeElement.src = this.nzSrc;
           this.getElement().nativeElement.srcset = this.nzSrcset;
         });
@@ -176,12 +183,17 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         .subscribe(() => {
           this.status = 'error';
           if (this.nzFallback) {
-            this.getElement().nativeElement.loading = this.nzLoading;
-            this.backLoadImage.setAttribute('loading', 'lazy');
             this.getElement().nativeElement.src = this.nzFallback;
             this.getElement().nativeElement.srcset = '';
           }
         });
     }
+  }
+
+  private backLoadCompleteStateHandler(): void {
+    this.status = 'normal';
+    this.getElement().nativeElement.loading = this.nzLoading;
+    this.getElement().nativeElement.src = this.nzSrc;
+    this.getElement().nativeElement.srcset = this.nzSrcset;
   }
 }
