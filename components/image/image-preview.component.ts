@@ -273,16 +273,16 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onZoomIn(): void {
-    this.zoom += 1;
-    this.updatePreviewImageTransform();
+    this.zoom += 0.2;
+    // this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
     // this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
     if (this.zoom > 1) {
-      this.zoom -= 1;
-      this.updatePreviewImageTransform();
+      this.zoom -= 0.2;
+      // this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
       // this.position = { ...initialPosition };
     }
@@ -311,23 +311,37 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onWheelZoom(event: WheelEvent): void {
+    // setTimeout(() => {
     const deltaY = event.deltaY;
-    const x = (event.clientX - this.imageRef.nativeElement.getBoundingClientRect().x) / this.zoom;
-    const y = (event.clientY - this.imageRef.nativeElement.getBoundingClientRect().y) / this.zoom;
+    const imageRect = this.imageRef.nativeElement.getBoundingClientRect();
+    // @ts-ignore
+    const imageWrapperRect = this.imagePreviewWrapper.nativeElement.getBoundingClientRect();
 
-    const m = deltaY < 0 ? 0.5 : -0.5;
+    const x = (event.clientX - imageRect.x) / this.zoom;
+    const y = (event.clientY - imageRect.y) / this.zoom;
+
+    const m = deltaY < 0 ? 0.1 : -0.1;
 
     this.position.x += -x * m * 2 + this.imageRef.nativeElement.offsetWidth * m;
     this.position.y += -y * m * 2 + this.imageRef.nativeElement.offsetHeight * m;
+
+    if (imageRect.width < imageWrapperRect.width && imageRect.height < imageWrapperRect.height) {
+      this.position = {
+        x: 0,
+        y: 0
+      };
+    }
 
     if (this.isZoomedInWithMouseWheel(deltaY)) {
       this.onZoomIn();
     } else {
       this.onZoomOut();
     }
+
     this.updatePreviewImageWrapperTransform();
 
     this.markForCheck();
+    // }, 300);
   }
 
   onAnimationStart(event: AnimationEvent): void {
@@ -373,6 +387,7 @@ export class NzImagePreviewComponent implements OnInit {
     if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
       this.position = { ...this.position, ...fitContentPos };
     }
+    this.markForCheck();
   }
 
   sanitizerResourceUrl(url: string): SafeResourceUrl {
@@ -388,7 +403,8 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageWrapperTransform(): void {
-    this.previewImageWrapperTransform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+    // this.previewImageWrapperTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
+    this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
   }
 
   private updateZoomOutDisabled(): void {
