@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { getProjectFromWorkspace } from '@angular/cdk/schematics';
+import { getProjectFromWorkspace, getProjectMainFile, isStandaloneApp } from '@angular/cdk/schematics';
 
 import { strings } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
@@ -20,6 +20,7 @@ import {
   Tree,
   url
 } from '@angular-devkit/schematics';
+import { addRootProvider } from '@schematics/angular/utility';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { addModule } from '../../utils/root-module';
@@ -29,7 +30,36 @@ export default function(options: Schema): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, options.project);
+    const mainFile = getProjectMainFile(project);
     const prefix = options.prefix || project.prefix;
+
+    if (isStandaloneApp(host, mainFile)) {
+      return chain([
+        mergeWith(
+          apply(
+            url('./standalone/src'), [
+              applyTemplates({
+                ...strings,
+                ...options,
+                prefix
+              }),
+              move(project.sourceRoot as string),
+              forEach((fileEntry: FileEntry) => {
+                if (host.exists(fileEntry.path)) {
+                  host.overwrite(fileEntry.path, fileEntry.content);
+                }
+                return fileEntry;
+              })
+            ]
+          ),
+          MergeStrategy.Overwrite
+        ),
+        addRootProvider(options.project, ({code, external}) => {
+          return code`${external('provideNzIcons', './icons-provider')}()`;
+        })
+      ]);
+    }
+
     return chain([
       mergeWith(
         apply(

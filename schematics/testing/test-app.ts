@@ -10,12 +10,12 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createTestApp(runner: SchematicTestRunner, appOptions: any = {}, tree?: Tree):
   Promise<UnitTestTree> {
-  const workspaceTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', {
+  const workspaceTree = await runner.runExternalSchematic('@schematics/angular', 'workspace', {
     name: 'workspace',
     version: '6.0.0',
     newProjectRoot: 'projects'
-  }, tree).toPromise();
+  }, tree);
 
-  return runner.runExternalSchematicAsync('@schematics/angular', 'application',
-    {name: 'ng-zorro', ...appOptions}, workspaceTree).toPromise();
+  return runner.runExternalSchematic('@schematics/angular', 'application',
+    {name: 'ng-zorro', ...appOptions}, workspaceTree);
 }
