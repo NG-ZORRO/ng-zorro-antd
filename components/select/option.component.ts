@@ -40,11 +40,13 @@ export class NzOptionComponent implements OnChanges, OnInit {
   static ngAcceptInputType_nzHide: BooleanInput;
   static ngAcceptInputType_nzCustomContent: BooleanInput;
 
-  changes = new Subject();
+  changes = new Subject<void>();
   groupLabel: string | number | TemplateRef<NzSafeAny> | null = null;
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
+  @Input() nzTitle?: string | number | null;
   @Input() nzLabel: string | number | null = null;
   @Input() nzValue: NzSafeAny | null = null;
+  @Input() nzKey?: string | number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzHide = false;
   @Input() @InputBoolean() nzCustomContent = false;

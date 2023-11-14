@@ -1,7 +1,7 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -58,7 +58,7 @@ interface Name {
 export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   ds = new MyDataSource(this.http);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
 
   ngOnInit(): void {
@@ -71,7 +71,7 @@ export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

@@ -12,7 +12,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   HostListener,
   Input,
@@ -28,10 +27,11 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -49,7 +49,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -260,7 +260,7 @@ export class NzCascaderComponent
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
-  @Input() nzLabelRender: TemplateRef<void> | null = null;
+  @Input() nzLabelRender: TemplateRef<typeof this.labelRenderContext> | null = null;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
@@ -275,7 +275,7 @@ export class NzCascaderComponent
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
+  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
@@ -788,9 +788,8 @@ export class NzCascaderComponent
 
     if (this.isLabelRenderTemplate) {
       this.labelRenderContext = { labels, selectedOptions };
-    } else {
-      this.labelRenderText = defaultDisplayRender.call(this, labels);
     }
+    this.labelRenderText = defaultDisplayRender.call(this, labels);
   }
 
   private setDropdownStyles(): void {

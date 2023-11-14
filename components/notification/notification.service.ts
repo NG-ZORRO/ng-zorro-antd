@@ -10,13 +10,12 @@ import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { NzMNService } from 'ng-zorro-antd/message';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
-import { NzNotificationServiceModule } from './notification.service.module';
 import { NzNotificationData, NzNotificationDataOptions, NzNotificationRef } from './typings';
 
 let notificationId = 0;
 
 @Injectable({
-  providedIn: NzNotificationServiceModule
+  providedIn: 'root'
 })
 export class NzNotificationService extends NzMNService {
   protected override container!: NzNotificationContainerComponent;
@@ -70,7 +69,7 @@ export class NzNotificationService extends NzMNService {
       ...message,
       ...{
         createdAt: new Date(),
-        messageId: this.generateMessageId(),
+        messageId: options?.nzKey || this.generateMessageId(),
         options
       }
     });

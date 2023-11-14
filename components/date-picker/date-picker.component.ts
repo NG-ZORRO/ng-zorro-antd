@@ -22,7 +22,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Inject,
   Input,
@@ -37,7 +36,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -50,7 +50,7 @@ import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/f
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -61,7 +61,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -435,6 +435,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   // blur event has not the relatedTarget in IE11, use focusout instead.
   onFocusout(event: FocusEvent): void {
     event.preventDefault();
+    this.onTouchedFn();
     if (!this.elementRef.nativeElement.contains(<Node>event.relatedTarget)) {
       this.checkAndClose();
     }
@@ -640,22 +641,26 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      const granularityComparaison = this.showTime ? 'second' : 'day';
       const value = this.datePickerService.value;
       const datePickerPreviousValue = this.datePickerService.initialValue;
 
       // Check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
-      if (!this.isRange && (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate)) {
+      if (
+        !this.isRange &&
+        (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate, granularityComparaison)
+      ) {
         this.onTouchedFn();
         return this.close();
       }
 
-      // check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      // check if the value has change for a range picker, let us to avoid notify the control for nothing
       if (this.isRange) {
         const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
         const [currentStartDate, currentEndDate] = value as CandyDate[];
         if (
-          previousStartDate?.isSame(currentStartDate?.nativeDate) &&
-          previousEndDate?.isSame(currentEndDate?.nativeDate)
+          previousStartDate?.isSame(currentStartDate?.nativeDate, granularityComparaison) &&
+          previousEndDate?.isSame(currentEndDate?.nativeDate, granularityComparaison)
         ) {
           this.onTouchedFn();
           return this.close();
@@ -738,7 +743,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     const inputFormats: { [key in NzDateMode]?: string } = {
       year: 'yyyy',
       month: 'yyyy-MM',
-      week: this.i18n.getDateLocale() ? 'RRRR-II' : 'yyyy-ww', // Format for week
+      week: 'YYYY-ww',
       date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
     };
 
@@ -834,9 +839,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
-    const newValue: CompatibleValue = this.datePickerService.makeValue(value);
+    const newValue = this.datePickerService.makeValue(value);
     this.datePickerService.setValue(newValue);
-    this.datePickerService.initialValue = newValue;
+    this.datePickerService.initialValue = cloneDate(newValue);
     this.cdr.detectChanges();
   }
 

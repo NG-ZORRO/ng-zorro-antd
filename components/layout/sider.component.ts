@@ -25,7 +25,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { inNextTick, InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { InputBoolean, inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 
 @Component({
@@ -70,7 +70,7 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   static ngAcceptInputType_nzCollapsible: BooleanInput;
   static ngAcceptInputType_nzCollapsed: BooleanInput;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
   @Input() nzWidth: string | number = 200;
@@ -149,7 +149,7 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

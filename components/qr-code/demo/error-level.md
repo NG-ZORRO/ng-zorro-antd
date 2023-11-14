@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 6
 title:
   zh-CN: 容错等级
   en-US: Error Level
@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-通过设置 `nzErrorCorrectionLevel` 调整二维码容错。
+通过设置 `nzLevel` 调整二维码容错。
 
 ## en-US
 

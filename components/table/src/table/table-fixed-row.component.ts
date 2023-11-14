@@ -41,7 +41,7 @@ export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('tdElement', { static: true }) tdElement!: ElementRef;
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   constructor(private nzTableStyleService: NzTableStyleService, private renderer: Renderer2) {}
   ngOnInit(): void {
     if (this.nzTableStyleService) {
@@ -56,7 +56,7 @@ export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

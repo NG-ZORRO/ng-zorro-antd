@@ -5,6 +5,9 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * @deprecated v17.0.0 - Use angular's built-in syntax instead
+ */
 @Pipe({
   name: 'nzToCssUnit'
 })

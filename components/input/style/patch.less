@@ -62,3 +62,14 @@ nz-form-item-feedback-icon.@{ant-prefix}-input {
   position: relative;
 }
 
+.input() {
+  &-stepperless[type='number'] {
+    -moz-appearance: textfield;
+    &::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+

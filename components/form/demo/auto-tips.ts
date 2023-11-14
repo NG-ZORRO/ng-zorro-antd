@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
   ValidatorFn,
   Validators
 } from '@angular/forms';
@@ -65,7 +66,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   ]
 })
 export class NzDemoFormAutoTipsComponent {
-  validateForm: UntypedFormGroup;
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    mobile: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    confirm: FormControl<string>;
+  }>;
 
   // current locale is key of the nzAutoTips
   // if it is not found, it will be searched again with `default`
@@ -98,8 +105,7 @@ export class NzDemoFormAutoTipsComponent {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  userNameAsyncValidator = (control: UntypedFormControl) =>
+  userNameAsyncValidator: AsyncValidatorFn = (control: AbstractControl) =>
     new Observable((observer: Observer<MyValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
@@ -113,7 +119,7 @@ export class NzDemoFormAutoTipsComponent {
       }, 1000);
     });
 
-  confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+  confirmValidator: ValidatorFn = (control: AbstractControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { error: true, required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
@@ -122,7 +128,7 @@ export class NzDemoFormAutoTipsComponent {
     return {};
   };
 
-  constructor(private fb: UntypedFormBuilder) {
+  constructor(private fb: NonNullableFormBuilder) {
     // use `MyValidators`
     const { required, maxLength, minLength, email, mobile } = MyValidators;
     this.validateForm = this.fb.group({

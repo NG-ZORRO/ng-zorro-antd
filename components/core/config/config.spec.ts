@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 
-import { NZ_CONFIG } from './config';
+import { provideNzConfig } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
@@ -56,14 +56,11 @@ describe('nz global config', () => {
           imports: [NzButtonModule],
           declarations: [NzGlobalConfigTestBasicComponent],
           providers: [
-            {
-              provide: NZ_CONFIG,
-              useValue: {
-                button: {
-                  nzSize: 'large'
-                }
+            provideNzConfig({
+              button: {
+                nzSize: 'large'
               }
-            }
+            })
           ]
         }).compileComponents();
       })

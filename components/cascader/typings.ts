@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Observable } from 'rxjs';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
@@ -51,5 +53,5 @@ export interface NzCascaderComponentAsSource {
 
   nzChangeOn?(option: NzCascaderOption, level: number): boolean;
 
-  nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny>;
+  nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
 }

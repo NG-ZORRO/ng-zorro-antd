@@ -1,10 +1,11 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { Style } from '@schematics/angular/ng-new/schema';
-import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
+
 
 import { Schema as NzOptions } from '../../ng-add/schema';
 import { createTestApp } from '../../testing/test-app';
+import { getFileContent } from '../../utils/get-file-content';
 
 describe('side-menu schematic', () => {
   const defaultOptions: NzOptions = {
@@ -21,7 +22,7 @@ describe('side-menu schematic', () => {
 
   it('should create side-menu files', async () => {
     const options = {...defaultOptions};
-    const tree = await runner.runSchematicAsync('sidemenu', options, appTree).toPromise();
+    const tree = await runner.runSchematic('sidemenu', options, appTree);
     const files = tree.files;
     expect(files).toEqual(
       jasmine.arrayContaining([
@@ -41,7 +42,7 @@ describe('side-menu schematic', () => {
 
   it('should set the style preprocessor correctly', async () => {
     const options = {...defaultOptions, style: Style.Less};
-    const tree = await runner.runSchematicAsync('sidemenu', options, appTree).toPromise();
+    const tree = await runner.runSchematic('sidemenu', options, appTree);
     const files = tree.files;
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
@@ -60,10 +61,10 @@ describe('side-menu schematic', () => {
   it('should fall back to the @schematics/angular:component option value', async () => {
     const options = {...defaultOptions, template: 'sidemenu'};
     appTree = await createTestApp(runner, {style: Style.Less});
-    const tree = await runner.runSchematicAsync(
+    const tree = await runner.runSchematic(
       'ng-add',
       options,
-      appTree).toPromise();
+      appTree);
 
     expect(tree.files).toEqual(
       jasmine.arrayContaining([
@@ -76,10 +77,10 @@ describe('side-menu schematic', () => {
   it('should fall back to the @schematics/angular:component option value', async () => {
     const options = {...defaultOptions, template: 'sidemenu'};
     appTree = await createTestApp(runner, {inlineStyle: true});
-    const tree = await runner.runSchematicAsync(
+    const tree = await runner.runSchematic(
       'ng-add',
       options,
-      appTree).toPromise();
+      appTree);
 
     expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.css');
   });
@@ -87,17 +88,17 @@ describe('side-menu schematic', () => {
   it('should fall back to the @schematics/angular:component option value', async () => {
     const options = {...defaultOptions, template: 'sidemenu'};
     appTree = await createTestApp(runner, {inlineTemplate: true});
-    const tree = await runner.runSchematicAsync(
+    const tree = await runner.runSchematic(
       'ng-add',
       options,
-      appTree).toPromise();
+      appTree);
 
     expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.html');
   });
 
   it('should set the prefix correctly', async () => {
     const options = {...defaultOptions, prefix: 'nz'};
-    const tree = await runner.runSchematicAsync('sidemenu', options, appTree).toPromise();
+    const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
 

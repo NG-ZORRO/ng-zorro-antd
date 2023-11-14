@@ -40,6 +40,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
+  static ngAcceptInputType_nzLabelWrap: BooleanInput;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
   @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
@@ -47,9 +48,10 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @InputBoolean() nzDisableAutoTips = false;
   @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
   @Input() nzLabelAlign: NzLabelAlignType = 'right';
+  @Input() @WithConfig() @InputBoolean() nzLabelWrap: boolean = false;
 
   dir: Direction = 'ltr';
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   private inputChanges$ = new Subject<SimpleChanges>();
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
@@ -72,7 +74,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
 
   ngOnDestroy(): void {
     this.inputChanges$.complete();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

@@ -48,4 +48,4 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 | `[nzColor]` | 指定圆圈颜色 `'blue' \| 'red' \| 'green' \| 'gray'` | `string` | blue |
 | `[nzDot]` | 自定义时间轴点 | `string \| TemplateRef<void>` | - |
 | `[nzPosition]` | 自定义节点位置，仅当 `nzMode` 为 `custom` 时有效 | `'left' \| 'right'` | - |
-| `[NzLabel]` | 设置标签 |  `string \| TemplateRef<void>` | - |
+| `[nzLabel]` | 设置标签 |  `string \| TemplateRef<void>` | - |

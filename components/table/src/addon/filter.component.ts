@@ -83,7 +83,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() filterMultiple = true;
   @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   locale!: NzTableI18nInterface;
   isChecked = false;
   isVisible = false;
@@ -170,7 +170,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

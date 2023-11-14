@@ -6,24 +6,24 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
+  NgZone,
   OnChanges,
-  AfterViewInit,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   TemplateRef,
   ViewChild,
-  NgZone,
-  Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject, Subscription, fromEvent } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -117,7 +117,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
-  @Input() nzFileListRender: TemplateRef<void> | null = null;
+  @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();

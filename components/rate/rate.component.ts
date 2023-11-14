@@ -11,7 +11,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   NgZone,
   OnChanges,
@@ -22,7 +21,8 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
@@ -94,7 +94,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() nzCharacter!: TemplateRef<void>;
+  @Input() nzCharacter!: TemplateRef<{ $implicit: number }>;
   @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();

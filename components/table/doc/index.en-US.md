@@ -67,6 +67,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzData]` | Data record array to be rendered | `T[]` | - |
 | `[nzFrontPagination]` | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean` | `true` |
 | `[nzTotal]` | Total data count. Should set when `nzFrontPagination` is `false` | `number` | - |
+| `[nzCustomColumn]` | Control the display and sorting of table columns, (after enabling `nzWidthConfig` and `[nzWidth]` of `th` will not take effect) | `NzCustomColumn[]` | - |
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether to show pagination component at bottom of the table | `boolean` | `true` |
@@ -98,6 +99,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `(nzPageIndexChange)` | Callback when `pageIndex` changes | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | Callback when `pageSize` changes | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | Callback when current pageData changes | `EventEmitter<T[]>` | - |
+| `(nzCustomColumnChange)` | Callback when the table is reordered | `EventEmitter<NzCustomColumn[]>` | - |
 | `(nzQueryParams)` | Callback with params when working with server side pagination, sorting and filtering | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
@@ -150,6 +152,7 @@ Style property
 | `[nzLeft]` | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
+| `[nzCellControl]` | Set the position of the column, which is the value of the `value` field in the `NzCustomColumn` type | `string`  | - |
 | `[nzBreakWord]` | Whether insert line breaks within words | `boolean` | `false` |
 | `[nzEllipsis]` | ellipsis cell content, not working with sorter and filters for now. Only work when nzTableLayout was `fixed` | `boolean` | `false` |
 
@@ -190,6 +193,7 @@ Style property
 | `[nzLeft]` | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false` | `string \| boolean` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
+| `[nzCellControl]` | Set the position of the column, which is the value of the `value` field in the `NzCustomColumn` type | `string`  | - |
 | `[nzBreakWord]` | Whether insert line breaks within words | `boolean` | `false` |
 | `[nzEllipsis]` | ellipsis cell content, not working with sorter and filters for now. Only work when nzTableLayout was `fixed` | `boolean` | `false` |
 

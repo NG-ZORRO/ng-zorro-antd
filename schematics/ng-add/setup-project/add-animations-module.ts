@@ -4,15 +4,16 @@
  */
 
 import {
-  addModuleImportToRootModule,
   getProjectFromWorkspace,
   getProjectMainFile,
-  hasNgModuleImport
+  getAppModulePath,
+  hasNgModuleImport,
+  isStandaloneApp
 } from '@angular/cdk/schematics';
 
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
-import { Rule, Tree } from '@angular-devkit/schematics';
-import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { Rule, Tree, noop } from '@angular-devkit/schematics';
+import { importsProvidersFrom } from '@schematics/angular/private/components';
+import { addRootImport } from '@schematics/angular/utility/standalone/rules';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, yellow } from 'chalk';
 
@@ -25,23 +26,38 @@ const animationsModulePath = '@angular/platform-browser/animations';
 export function addAnimationsModule(options: Schema): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, options.project);
-    const appModulePath = getAppModulePath(host, getProjectMainFile(project));
+    const project = getProjectFromWorkspace(workspace, options.project);
+    const mainFile = getProjectMainFile(project);
 
-    if (options.animations) {
-      if (hasNgModuleImport(host, appModulePath, noopAnimationsModuleName)) {
-        console.log();
-        return console.log(yellow(`Could not set up "${blue(browserAnimationsModuleName)}" ` +
-          `because "${blue(noopAnimationsModuleName)}" is already imported. Please manually ` +
-          `set up browser animations.`));
-      }
-      addModuleImportToRootModule(host, browserAnimationsModuleName,
-        animationsModulePath, project);
-    } else if (!hasNgModuleImport(host, appModulePath, browserAnimationsModuleName)) {
-      addModuleImportToRootModule(host, noopAnimationsModuleName,
-        animationsModulePath, project);
+    let hasImportBrowserAnimationsModule: boolean;
+    let hasImportNoopAnimationsModule: boolean;
+    
+    if (isStandaloneApp(host, mainFile)) {
+      hasImportBrowserAnimationsModule = importsProvidersFrom(host, mainFile, browserAnimationsModuleName);
+      hasImportNoopAnimationsModule = importsProvidersFrom(host, mainFile, noopAnimationsModuleName);
+    } else {
+      const appModulePath = getAppModulePath(host, mainFile);
+      hasImportBrowserAnimationsModule = hasNgModuleImport(host, appModulePath, browserAnimationsModuleName);
+      hasImportNoopAnimationsModule = hasNgModuleImport(host, appModulePath, noopAnimationsModuleName);
     }
 
-    return;
+    if (options.animations) {
+      if (hasImportNoopAnimationsModule) {
+        console.log();
+        console.log(yellow(`Could not set up "${blue(browserAnimationsModuleName)}" ` +
+          `because "${blue(noopAnimationsModuleName)}" is already imported. Please manually ` +
+          `set up browser animations.`));
+        return noop();
+      }
+      return addRootImport(options.project, ({code, external}) => {
+        return code`${external(browserAnimationsModuleName, animationsModulePath)}`;
+      });
+    } else if (!hasImportBrowserAnimationsModule) {
+      return addRootImport(options.project, ({code, external}) => {
+        return code`${external(noopAnimationsModuleName, animationsModulePath)}`;
+      });
+    }
+
+    return noop();
   };
 }

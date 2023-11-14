@@ -115,7 +115,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
               (ngModelChange)="onPanelValueChange($event)"
-              (closePanel)="setCurrentValueAndClose()"
+              (closePanel)="closePanel()"
             ></nz-time-picker-panel>
           </div>
         </div>
@@ -330,6 +330,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   onPanelValueChange(value: Date): void {
     this.setValue(value);
     this.focus();
+  }
+
+  closePanel(): void {
+    this.inputRef.nativeElement.blur();
   }
 
   setCurrentValueAndClose(): void {

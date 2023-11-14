@@ -101,7 +101,7 @@ export class NzCardComponent implements OnDestroy, OnInit {
   @ContentChildren(NzCardGridDirective) listOfNzCardGridDirective!: QueryList<NzCardGridDirective>;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     public nzConfigService: NzConfigService,
@@ -125,7 +125,7 @@ export class NzCardComponent implements OnDestroy, OnInit {
     this.dir = this.directionality.value;
   }
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

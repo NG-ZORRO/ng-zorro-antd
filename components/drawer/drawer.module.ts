@@ -15,19 +15,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
 import { NzDrawerComponent } from './drawer.component';
-import { NzDrawerServiceModule } from './drawer.service.module';
+import { NzDrawerService } from './drawer.service';
 
 @NgModule({
-  imports: [
-    BidiModule,
-    CommonModule,
-    OverlayModule,
-    PortalModule,
-    NzIconModule,
-    NzOutletModule,
-    NzNoAnimationModule,
-    NzDrawerServiceModule
-  ],
+  imports: [BidiModule, CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule],
+  providers: [NzDrawerService],
   exports: [NzDrawerComponent, NzDrawerContentDirective],
   declarations: [NzDrawerComponent, NzDrawerContentDirective]
 })

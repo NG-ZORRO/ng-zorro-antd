@@ -18,7 +18,6 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Injector,
   Input,
@@ -31,10 +30,11 @@ import {
   Self,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { merge, of as observableOf, Subject } from 'rxjs';
+import { Subject, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -61,7 +61,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -545,7 +545,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       e.preventDefault();
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
-        this.removeSelected(removeNode);
+        if (removeNode && !removeNode.isDisabled) {
+          this.removeSelected(removeNode);
+        }
       }
     }
   }
@@ -556,8 +558,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   setInputValue(value: string): void {
-    this.inputValue = value;
-    this.updatePosition();
+    if (!this.isComposing) {
+      this.inputValue = value;
+      this.updatePosition();
+    }
   }
 
   removeSelected(node: NzTreeNode, emit: boolean = true): void {
@@ -601,7 +605,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled && node.isSelectable;
         })
       ),
-      this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
+      this.nzCheckable ? this.nzTreeCheckBoxChange.asObservable() : observableOf(),
       this.nzCleared,
       this.nzRemoved
     )

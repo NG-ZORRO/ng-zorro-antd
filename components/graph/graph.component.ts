@@ -24,7 +24,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
 
 import { buildGraph } from 'dagre-compound';
@@ -43,6 +43,7 @@ import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
 import { NzGraphZoomDirective } from './graph-zoom.directive';
 import {
+  NZ_GRAPH_LAYOUT_SETTING,
   NzGraphDataDef,
   NzGraphEdge,
   NzGraphEdgeDef,
@@ -53,8 +54,7 @@ import {
   NzGraphOption,
   NzLayoutSetting,
   NzRankDirection,
-  nzTypeDefinition,
-  NZ_GRAPH_LAYOUT_SETTING
+  nzTypeDefinition
 } from './interface';
 
 /** Checks whether an object is a data source. */
@@ -441,8 +441,8 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    *
    * @private
    */
-  private makeNodesAnimation(): Observable<void> {
-    return forkJoin(...this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
+  private makeNodesAnimation(): Observable<void[]> {
+    return forkJoin(this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
       finalize(() => {
         this.cdr.detectChanges();
       })

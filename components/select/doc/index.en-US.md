@@ -59,7 +59,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
 | `[nzLoading]` | indicate loading state | `boolean` | false |
 | `[nzMaxTagCount]` | Max tag count to show| `number` | - |
-| `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
+| `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; key?: string \| number; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | `TemplateRef<{ $implicit: any[] }>` | - |
 | `[nzOptionHeightPx]` | Each option height inside the dropdown | `number` | `32` |
 | `[nzOptionOverflowSize]` | Max option size inside the dropdown, overflow when exceed the size | `number` | `8` |
@@ -76,8 +76,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDisabled]` | Disable this option | `boolean` | `false` |
+| `[nzTitle]` | Native title hint on this option | `string  \| number` | - |
 | `[nzLabel]` | The text show in nz-select and dropdown menu | `string  \| number` | - |
 | `[nzValue]` | The value passed to ngModel of nz-select | `any ` | - |
+| `[nzKey]` | Should be passed when typeof nzValue - Object. Key will be used for performance optimizations | `string \| number ` | - |
 | `[nzHide]` | Whether hide the option in the option list | `boolean` | `false` |
 | `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will replace nzLabel when it was set to true | `boolean` | `false` |
 

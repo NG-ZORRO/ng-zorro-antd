@@ -1,7 +1,9 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Observable, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -163,6 +165,11 @@ describe('list', () => {
       expect(dl.query(By.css('.ant-list-item-main')) != null).toBe(true);
       expect(dl.query(By.css('.ant-list-item-extra')) != null).toBe(true);
     });
+    it('should display the asynchronous action', fakeAsync(() => {
+      tick(2000);
+      fixture.detectChanges();
+      expect(dl.query(By.css('.ant-list-item-action')) != null).toBe(true);
+    }));
   });
 
   describe('item', () => {
@@ -259,6 +266,9 @@ describe('list RTL', () => {
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
           ></nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action *ngFor="let action of actions$ | async">{{ action }}</nz-list-item-action>
+          </ul>
         </nz-list-item>
       </ng-template>
       <ng-template #loadMore>
@@ -290,6 +300,7 @@ class TestListComponent {
   ];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nzGrid: any = { gutter: 16, span: 12 };
+  actions$: Observable<string[]> = timer(500).pipe(map(() => ['Edit', 'Delete']));
 }
 
 @Component({

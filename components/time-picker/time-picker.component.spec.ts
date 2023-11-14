@@ -319,6 +319,22 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
+    it('should not trigger blur after close panel', fakeAsync(() => {
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+    }));
     describe('setup I18n service', () => {
       let srv: NzI18nService;
 

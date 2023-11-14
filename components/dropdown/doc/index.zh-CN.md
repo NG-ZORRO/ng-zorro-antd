@@ -61,5 +61,5 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 | 方法/属性 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
-| create | 创建右键菜单 | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
+| create | 创建右键菜单 | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
 | close | 关闭右键菜单 | - | - |

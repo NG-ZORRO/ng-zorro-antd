@@ -12,7 +12,6 @@ import {
   Component,
   ContentChild,
   EventEmitter,
-  forwardRef,
   Host,
   Input,
   OnChanges,
@@ -23,7 +22,8 @@ import {
   SimpleChange,
   SkipSelf,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -33,7 +33,6 @@ import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
-  flattenTreeData,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzTreeBase,
@@ -41,7 +40,8 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeKey,
-  NzTreeNodeOptions
+  NzTreeNodeOptions,
+  flattenTreeData
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -259,7 +259,7 @@ export class NzTreeComponent
     overflow: 'hidden'
   };
 
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
@@ -508,7 +508,7 @@ export class NzTreeComponent
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

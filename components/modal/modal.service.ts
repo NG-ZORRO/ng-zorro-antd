@@ -21,7 +21,7 @@ import { NzModalContainerComponent } from './modal-container.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig } from './utils';
 
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
@@ -179,7 +179,7 @@ export class NzModalService implements OnDestroy {
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
         new TemplatePortal<T>(componentOrTemplateRef, null!, {
-          $implicit: config.nzData || config.nzComponentParams,
+          $implicit: config.nzData,
           modalRef
         } as NzSafeAny)
       );
@@ -188,10 +188,6 @@ export class NzModalService implements OnDestroy {
       const contentRef = modalContainer.attachComponentPortal<T>(
         new ComponentPortal(componentOrTemplateRef, config.nzViewContainerRef, injector)
       );
-      /**@deprecated
-       * remove this method in the next major version now modal data are passed through injection
-       */
-      setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
     } else {
       modalContainer.attachStringContent();

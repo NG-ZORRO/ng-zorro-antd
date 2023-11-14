@@ -61,7 +61,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
-| `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
+| `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string  \| number \| TemplateRef<any>; value: any; key?: string \| number; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzOptionHeightPx]` | 下拉菜单中每个 Option 的高度 | `number` | `32` |
 | `[nzOptionOverflowSize]` | 下拉菜单中最多展示的 Option 个数，超出部分滚动 | `number` | `8` |
 | `[nzSelectOnTab]` | 允许使用 TAB 键选择项目 | `boolean` | `false` |
@@ -77,8 +77,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
+| `[nzTitle]` | 选项上的原生 title 提示 | `string  \| number` | - |
 | `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string  \| number` | - |
 | `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
+| `[nzKey]` | nz-select 中 ngModel 的值 | `string \| number` | - |
 | `[nzHide]` | 是否在选项列表中隐藏该选项 | `boolean` | `false` |
 | `[nzCustomContent]` | 是否自定义在下拉菜单中的 Template 内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
 

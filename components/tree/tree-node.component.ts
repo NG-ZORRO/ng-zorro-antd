@@ -21,7 +21,7 @@ import {
   SimpleChange,
   TemplateRef
 } from '@angular/core';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { Observable, Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -169,7 +169,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   /**
    * drag var
    */
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   dragPos = 2;
   dragPosClass: { [key: string]: string } = {
     0: 'drag-over',
@@ -357,6 +357,10 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
         this.draggingKey = null;
         const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
         this.nzOnDragEnd.emit(eventNext);
+      } else {
+        // clear dragging state
+        this.draggingKey = null;
+        this.markForCheck();
       }
     });
   }
@@ -388,7 +392,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
           .pipe(takeUntil(this.destroy$))
           .subscribe((e: DragEvent) => this.handleDragEnd(e));
       } else {
-        this.destroy$.next();
+        this.destroy$.next(true);
         this.destroy$.complete();
       }
     });
@@ -429,7 +433,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

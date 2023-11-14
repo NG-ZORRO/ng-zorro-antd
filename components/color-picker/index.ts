@@ -3,7 +3,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgModule } from '@angular/core';
-
-@NgModule()
-export class NzMessageServiceModule {}
+export * from './public-api';

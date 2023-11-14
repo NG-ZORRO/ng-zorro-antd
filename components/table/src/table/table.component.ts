@@ -37,6 +37,7 @@ import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
+  NzCustomColumn,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
@@ -130,7 +131,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   `,
   host: {
     class: 'ant-table-wrapper',
-    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
+    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
+    '[class.ant-table-custom-column]': `nzCustomColumn.length`
   }
 })
 export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
@@ -164,6 +166,8 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
   @Input() nzData: readonly T[] = [];
+  @Input() nzCustomColumn: NzCustomColumn[] = [];
+
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() nzPaginationType: NzTablePaginationType = 'default';
@@ -183,6 +187,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
   @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
+  @Output() readonly nzCustomColumnChange = new EventEmitter<readonly NzCustomColumn[]>();
 
   /** public data for ngFor tr */
   public data: readonly T[] = [];
@@ -228,7 +233,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } =
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$, listOfCustomColumn$ } =
       this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
@@ -268,6 +273,12 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       this.cdr.markForCheck();
     });
 
+    listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.nzCustomColumn = data;
+      this.nzCustomColumnChange.next(data);
+      this.cdr.markForCheck();
+    });
+
     theadTemplate$.pipe(takeUntil(this.destroy$)).subscribe(theadTemplate => {
       this.theadTemplate = theadTemplate;
       this.cdr.markForCheck();
@@ -304,8 +315,17 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzTemplateMode } =
-      changes;
+    const {
+      nzScroll,
+      nzPageIndex,
+      nzPageSize,
+      nzFrontPagination,
+      nzData,
+      nzCustomColumn,
+      nzWidthConfig,
+      nzNoResult,
+      nzTemplateMode
+    } = changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }
@@ -315,6 +335,10 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     if (nzData) {
       this.nzData = this.nzData || [];
       this.nzTableDataService.updateListOfData(this.nzData);
+    }
+    if (nzCustomColumn) {
+      this.nzCustomColumn = this.nzCustomColumn || [];
+      this.nzTableDataService.updateListOfCustomColumn(this.nzCustomColumn);
     }
     if (nzFrontPagination) {
       this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);

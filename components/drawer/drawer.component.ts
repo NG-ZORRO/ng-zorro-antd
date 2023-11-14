@@ -259,13 +259,13 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   }
 
   nzAfterOpen = new Subject<void>();
-  nzAfterClose = new Subject<R>();
+  nzAfterClose = new Subject<R | undefined>();
 
   get afterOpen(): Observable<void> {
     return this.nzAfterOpen.asObservable();
   }
 
-  get afterClose(): Observable<R> {
+  get afterClose(): Observable<R | undefined> {
     return this.nzAfterClose.asObservable();
   }
 

@@ -1,6 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
+
+import { NZ_I18N, provideNzI18n } from 'ng-zorro-antd/i18n/nz-i18n.token';
 
 import cs_CZ from './languages/cs_CZ';
 import de_DE from './languages/de_DE';
@@ -20,7 +22,8 @@ describe('i18n service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [NzI18nTestComponent],
-      imports: [NzI18nModule]
+      imports: [NzI18nModule],
+      providers: [provideNzI18n(DEFAULT_LAN)]
     }).compileComponents();
   });
 
@@ -40,6 +43,11 @@ describe('i18n service', () => {
       const i18nCS: NzI18nInterface = cs_CZ;
       const i18nKA: NzI18nInterface = ka_GE;
       console.log(i18nEN, i18nDE, i18nCS, i18nKA);
+    });
+
+    it('should be provide interface be right', () => {
+      fixture = TestBed.createComponent(NzI18nTestComponent);
+      expect(fixture.componentInstance.locale === DEFAULT_LAN).toBe(true);
     });
 
     it('should be auto default zh_CN', () => {
@@ -79,11 +87,9 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
   template: ''
 })
 export class NzI18nTestComponent implements OnDestroy {
-  locale!: NzI18nInterface;
-
   private localeSubscription: Subscription;
 
-  constructor(private nzI18nService: NzI18nService) {
+  constructor(private nzI18nService: NzI18nService, @Inject(NZ_I18N) public locale: NzI18nInterface) {
     this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
       this.updateLocale(locale);
     });

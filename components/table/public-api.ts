@@ -22,6 +22,7 @@ export * from './src/table/title-footer.component';
 export * from './src/table/tr-measure.component';
 export * from './src/cell/cell-fixed.directive';
 export * from './src/cell/cell.directive';
+export * from './src/cell/custom-column.directive';
 export * from './src/cell/th-measure.directive';
 export * from './src/cell/td-addon.component';
 export * from './src/cell/th-selection.component';

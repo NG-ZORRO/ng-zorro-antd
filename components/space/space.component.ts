@@ -84,7 +84,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
 
   mergedAlign?: NzSpaceAlign;
   spaceSize: number = SPACE_SIZE.small;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
@@ -100,7 +100,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

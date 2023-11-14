@@ -124,9 +124,7 @@ describe('NzModal', () => {
   it('should open modal with component', () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent,
-      nzComponentParams: {
-        value: 'Modal'
-      }
+      nzData: 'Modal'
     });
 
     fixture.detectChanges();
@@ -142,9 +140,6 @@ describe('NzModal', () => {
   it('should open a modal with data', () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent,
-      nzComponentParams: {
-        value: 'Modal'
-      },
       nzData: 'NG-ZORRO'
     });
     fixture.detectChanges();
@@ -184,42 +179,10 @@ describe('NzModal', () => {
     expect(fixture.componentInstance.modalRef).toBe(modalRef);
     modalRef.close();
   });
-  it('should open modal with template and pass value of Nz data even if nzComponentParams is set', () => {
-    fixture.componentInstance.value = 'Modal';
-    fixture.detectChanges();
-    const modalRef = modalService.create({
-      nzContent: fixture.componentInstance.templateRef,
-      nzData: 'NG-ZORRO',
-      nzComponentParams: 'Angular Material'
-    });
-    fixture.detectChanges();
-    const modalContentElement = overlayContainerElement.querySelector('.modal-template-data');
-    expect(modalContentElement).toBeTruthy();
-    expect(modalContentElement!.textContent?.includes('NG-ZORRO')).toBeTruthy();
-    expect(fixture.componentInstance.modalRef).toBe(modalRef);
-    modalRef.close();
-  });
-  it('should open modal with template and pass value of nzComponentParams if nzData is not defined', () => {
-    fixture.componentInstance.value = 'Modal';
-    fixture.detectChanges();
-    const modalRef = modalService.create({
-      nzContent: fixture.componentInstance.templateRef,
-      nzComponentParams: 'NG-ZORRO'
-    });
-    fixture.detectChanges();
-    const modalContentElement = overlayContainerElement.querySelector('.modal-template-data');
-    expect(modalContentElement).toBeTruthy();
-    expect(modalContentElement!.textContent?.includes('NG-ZORRO')).toBeTruthy();
-    expect(fixture.componentInstance.modalRef).toBe(modalRef);
-    modalRef.close();
-  });
 
   it('should be thrown when attaching repeatedly', () => {
     const modalRefComponent = modalService.create({
-      nzContent: TestWithModalContentComponent,
-      nzComponentParams: {
-        value: 'Modal'
-      }
+      nzContent: TestWithModalContentComponent
     });
 
     expect(() => {
@@ -1483,9 +1446,7 @@ describe('NzModal', () => {
     it('should open confirm with component', () => {
       const modalRef = modalService.confirm({
         nzContent: TestWithModalContentComponent,
-        nzComponentParams: {
-          value: 'Confirm'
-        }
+        nzData: 'Confirm'
       });
 
       fixture.detectChanges();
@@ -1778,6 +1739,7 @@ class TestWithModalContentComponent {
   nzModalData: string;
 
   constructor(public modalRef: NzModalRef, public modalInjector: Injector, @Inject(NZ_MODAL_DATA) nzData: string) {
+    this.value = nzData;
     this.nzModalData = nzData;
   }
 

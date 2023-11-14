@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-normal-login',
@@ -54,8 +54,16 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
     `
   ]
 })
-export class NzDemoFormNormalLoginComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormNormalLoginComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -70,13 +78,5 @@ export class NzDemoFormNormalLoginComponent implements OnInit {
     }
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }

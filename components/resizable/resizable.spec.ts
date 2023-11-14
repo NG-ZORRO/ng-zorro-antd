@@ -159,6 +159,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         expect(testComponent.height).toBeLessThanOrEqual(200);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('top');
       }));
 
       /**
@@ -184,6 +185,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         expect(testComponent.height).toBeLessThanOrEqual(200);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('top');
       }));
 
       /**
@@ -209,6 +211,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         expect(testComponent.height).toBeLessThanOrEqual(200);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('bottom');
       }));
 
       /**
@@ -234,6 +237,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         expect(testComponent.width).toBeLessThanOrEqual(400);
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
+        expect(testComponent.resizeDirection).toEqual('left');
       }));
 
       /**
@@ -259,6 +263,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         expect(testComponent.width).toBeLessThanOrEqual(400);
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
+        expect(testComponent.resizeDirection).toEqual('right');
       }));
 
       /**
@@ -286,6 +291,7 @@ describe('resizable', () => {
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
         expect(testComponent.height).toBeLessThanOrEqual(210);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('topRight');
       }));
 
       /**
@@ -313,6 +319,7 @@ describe('resizable', () => {
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
         expect(testComponent.height).toBeLessThanOrEqual(200);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('topLeft');
       }));
 
       /**
@@ -340,6 +347,7 @@ describe('resizable', () => {
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
         expect(testComponent.height).toBeLessThanOrEqual(190);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('bottomRight');
       }));
 
       /**
@@ -367,6 +375,7 @@ describe('resizable', () => {
         expect(testComponent.width).toBeGreaterThanOrEqual(300);
         expect(testComponent.height).toBeLessThanOrEqual(200);
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
+        expect(testComponent.resizeDirection).toEqual('bottomLeft');
       }));
     });
 
@@ -571,6 +580,20 @@ describe('resizable', () => {
       fixture.detectChanges();
       expect(testComponent.col).toBe(20);
     }));
+
+    it('should cursor type work', () => {
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeFalsy();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeTruthy();
+      testComponent.directions = [
+        {
+          direction: 'right',
+          cursorType: 'window'
+        }
+      ];
+      fixture.detectChanges();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeTruthy();
+      expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeFalsy();
+    });
   });
 
   describe('bounds', () => {

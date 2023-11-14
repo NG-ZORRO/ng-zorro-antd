@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 7
 title:
   zh-CN: 下载二维码
   en-US: Download QRCode

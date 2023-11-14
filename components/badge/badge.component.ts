@@ -122,7 +122,10 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
       this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
     if (nzShowDot || nzDot || nzCount || nzShowZero) {
-      this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount! > 0 || (this.nzCount! <= 0 && this.nzShowZero);
+      this.showSup =
+        (this.nzShowDot && this.nzDot) ||
+        (typeof this.nzCount === 'number' && this.nzCount! > 0) ||
+        (typeof this.nzCount === 'number' && this.nzCount! <= 0 && this.nzShowZero);
     }
   }
 
