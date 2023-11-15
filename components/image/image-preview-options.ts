@@ -13,6 +13,7 @@ export class NzImagePreviewOptions {
   nzZIndex?: number;
   nzZoom?: number;
   nzRotate?: number;
+  nzZoomStep?: number;
   nzDirection?: Direction;
 }
 

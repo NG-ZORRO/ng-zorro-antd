@@ -25,11 +25,15 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzImageGroupComponent } from './image-group.component';
+// @ts-ignore
+import { DEFAULT_NZ_ZOOM_STEP } from './image-preview.component';
 import { NzImageService } from './image.service';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
+type TImageUrl = string;
+type TImageZoomStep = number;
 
 @Directive({
   selector: 'img[nz-image]',
@@ -48,6 +52,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
+  @Input() @WithConfig() nzZoomStep: number | null = null;
 
   dir?: Direction;
   backLoadImage!: HTMLImageElement;
@@ -98,12 +103,29 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
       const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc, srcset: e.nzSrcset }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
-      const previewRef = this.nzImageService.preview(previewImages, { nzDirection: this.dir });
+      const zoomStepMap = new Map<TImageUrl, TImageZoomStep>();
+      previewAbleImages.forEach(imageDirective => {
+        zoomStepMap.set(
+          imageDirective.nzSrc ?? imageDirective.nzSrcset,
+          imageDirective.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
+        );
+      });
+      const previewRef = this.nzImageService.preview(
+        previewImages,
+        {
+          nzDirection: this.dir,
+          nzZoomStep: this.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
+        },
+        zoomStepMap
+      );
       previewRef.switchTo(previewIndex);
     } else {
       // preview not inside image group
       const previewImages = [{ src: this.nzSrc, srcset: this.nzSrcset }];
-      this.nzImageService.preview(previewImages, { nzDirection: this.dir });
+      this.nzImageService.preview(previewImages, {
+        nzDirection: this.dir,
+        nzZoomStep: this.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
+      });
     }
   }
 

@@ -28,15 +28,15 @@ export class NzImageService {
     @Optional() private directionality: Directionality
   ) {}
 
-  preview(images: NzImage[], options?: NzImagePreviewOptions): NzImagePreviewRef {
-    return this.display(images, options);
+  preview(images: NzImage[], options?: NzImagePreviewOptions, zoomMap?: Map<string, number>): NzImagePreviewRef {
+    return this.display(images, options, zoomMap);
   }
 
-  private display(images: NzImage[], config?: NzImagePreviewOptions): NzImagePreviewRef {
+  private display(images: NzImage[], config?: NzImagePreviewOptions, zoomMap?: Map<string, number>): NzImagePreviewRef {
     const configMerged = { ...new NzImagePreviewOptions(), ...(config ?? {}) };
     const overlayRef = this.createOverlay(configMerged);
     const previewComponent = this.attachPreviewComponent(overlayRef, configMerged);
-    previewComponent.setImages(images);
+    previewComponent.setImages(images, zoomMap);
     const previewRef = new NzImagePreviewRef(previewComponent, configMerged, overlayRef);
 
     previewComponent.previewRef = previewRef;
