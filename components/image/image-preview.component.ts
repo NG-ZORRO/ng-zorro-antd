@@ -284,7 +284,10 @@ export class NzImagePreviewComponent implements OnInit {
       this.zoom -= 0.2;
       // this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
-      // this.position = { ...initialPosition };
+
+      if (this.zoom === 1) {
+        this.position = { ...initialPosition };
+      }
     }
   }
 
@@ -325,17 +328,17 @@ export class NzImagePreviewComponent implements OnInit {
     this.position.x += -x * m * 2 + this.imageRef.nativeElement.offsetWidth * m;
     this.position.y += -y * m * 2 + this.imageRef.nativeElement.offsetHeight * m;
 
-    if (imageRect.width < imageWrapperRect.width && imageRect.height < imageWrapperRect.height) {
-      this.position = {
-        x: 0,
-        y: 0
-      };
-    }
-
     if (this.isZoomedInWithMouseWheel(deltaY)) {
       this.onZoomIn();
     } else {
       this.onZoomOut();
+    }
+
+    if (this.zoom === 1) {
+      this.position = {
+        x: 0,
+        y: 0
+      };
     }
 
     this.updatePreviewImageWrapperTransform();
