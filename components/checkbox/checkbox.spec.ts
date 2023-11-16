@@ -1,10 +1,10 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzCheckboxGroupComponent } from './checkbox-group.component';
+import { NzCheckBoxOptionInterface, NzCheckboxGroupComponent } from './checkbox-group.component';
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
@@ -233,9 +233,9 @@ describe('checkbox', () => {
       const inputElement = checkbox.nativeElement.querySelector('input') as HTMLInputElement;
       expect(checkbox.nativeElement.firstElementChild!.classList).not.toContain('ant-checkbox-disabled');
       expect(inputElement.disabled).toBeFalsy();
-      expect(testComponent.formGroup.valid).toBe(true);
-      expect(testComponent.formGroup.pristine).toBe(true);
-      expect(testComponent.formGroup.touched).toBe(false);
+      expect(testComponent.formControl.valid).toBe(true);
+      expect(testComponent.formControl.pristine).toBe(true);
+      expect(testComponent.formControl.touched).toBe(false);
     }));
     it('should be disable if form is disable and nzDisable set to false', fakeAsync(() => {
       testComponent.disable();
@@ -258,7 +258,7 @@ describe('checkbox', () => {
       inputElement.click();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('checkbox')!.value).toBe(false);
+      expect(testComponent.formControl.value).toBe(false);
 
       testComponent.enable();
       fixture.detectChanges();
@@ -268,7 +268,7 @@ describe('checkbox', () => {
       inputElement.click();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('checkbox')!.value).toBe(true);
+      expect(testComponent.formControl.value).toBe(true);
 
       testComponent.disable();
       fixture.detectChanges();
@@ -278,7 +278,7 @@ describe('checkbox', () => {
       inputElement.click();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('checkbox')!.value).toBe(true);
+      expect(testComponent.formControl.value).toBe(true);
     }));
   });
   describe('checkbox group form', () => {
@@ -294,13 +294,13 @@ describe('checkbox', () => {
       const checkboxGroupComponent: NzCheckboxGroupComponent = fixture.debugElement.query(
         By.directive(NzCheckboxGroupComponent)
       ).componentInstance;
-      expect(testComponent.formGroup.get('checkboxGroup')!.valid).toBe(true);
-      expect(testComponent.formGroup.get('checkboxGroup')!.pristine).toBe(true);
-      expect(testComponent.formGroup.get('checkboxGroup')!.touched).toBe(false);
+      expect(testComponent.formControl.valid).toBe(true);
+      expect(testComponent.formControl.pristine).toBe(true);
+      expect(testComponent.formControl.touched).toBe(false);
       expect(checkboxGroupComponent.nzDisabled).toBeFalsy();
     }));
     it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
-      testComponent.formGroup.disable();
+      testComponent.formControl.disable();
       fixture.detectChanges();
       flush();
       const checkboxGroup = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
@@ -316,7 +316,7 @@ describe('checkbox', () => {
 
       inputElement.click();
       fixture.detectChanges();
-      expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
+      expect(JSON.stringify(testComponent.formControl.value)).toBe(
         JSON.stringify([
           { label: 'Apple', value: 'Apple', checked: true },
           { label: 'Pear', value: 'Pear', disabled: true },
@@ -331,7 +331,7 @@ describe('checkbox', () => {
 
       inputElement.click();
       fixture.detectChanges();
-      expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
+      expect(JSON.stringify(testComponent.formControl.value)).toBe(
         JSON.stringify([
           { label: 'Apple', value: 'Apple', checked: false },
           { label: 'Pear', value: 'Pear', disabled: true },
@@ -346,7 +346,7 @@ describe('checkbox', () => {
 
       inputElement.click();
       fixture.detectChanges();
-      expect(JSON.stringify(testComponent.formGroup.get('checkboxGroup')!.value)).toBe(
+      expect(JSON.stringify(testComponent.formControl.value)).toBe(
         JSON.stringify([
           { label: 'Apple', value: 'Apple', checked: false },
           { label: 'Pear', value: 'Pear', disabled: true },
@@ -469,59 +469,45 @@ export class NzTestCheckboxWrapperComponent {
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <label nz-checkbox formControlName="checkbox" [nzDisabled]="disabled"></label>
+    <form>
+      <label nz-checkbox [formControl]="formControl" [nzDisabled]="disabled"></label>
     </form>
   `
 })
 export class NzTestCheckboxFormComponent {
-  formGroup: UntypedFormGroup;
+  formControl = new FormControl(false);
   disabled = false;
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      checkbox: [false]
-    });
-  }
-
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 
   enable(): void {
-    this.formGroup.enable();
+    this.formControl.enable();
   }
 }
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <nz-checkbox-group formControlName="checkboxGroup" [nzDisabled]="nzDisabled"></nz-checkbox-group>
+    <form>
+      <nz-checkbox-group [formControl]="formControl" [nzDisabled]="nzDisabled"></nz-checkbox-group>
     </form>
   `
 })
 export class NzTestCheckboxGroupFormComponent {
-  formGroup: UntypedFormGroup;
+  formControl = new FormControl<NzCheckBoxOptionInterface[] | null>([
+    { label: 'Apple', value: 'Apple', checked: true },
+    { label: 'Pear', value: 'Pear', disabled: true },
+    { label: 'Orange', value: 'Orange' }
+  ]);
   nzDisabled = false;
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      checkboxGroup: [
-        [
-          { label: 'Apple', value: 'Apple', checked: true },
-          { label: 'Pear', value: 'Pear', disabled: true },
-          { label: 'Orange', value: 'Orange' }
-        ]
-      ]
-    });
-  }
-
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 
   enable(): void {
-    this.formGroup.enable();
+    this.formControl.enable();
   }
 }
 
