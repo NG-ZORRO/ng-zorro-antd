@@ -27,14 +27,21 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: 'nz-option-item',
   template: `
     <div class="ant-select-item-option-content">
-      <ng-template [ngIf]="customContent" [ngIfElse]="noCustomContent">
+      @if (customContent) {
         <ng-template [ngTemplateOutlet]="template"></ng-template>
-      </ng-template>
-      <ng-template #noCustomContent>{{ label }}</ng-template>
+      } @else {
+        {{ label }}
+      }
     </div>
-    <div *ngIf="showState && selected" class="ant-select-item-option-state" style="user-select: none" unselectable="on">
-      <span nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></span>
-    </div>
+    @if (showState && selected) {
+      <div class="ant-select-item-option-state" style="user-select: none" unselectable="on">
+        @if (!icon) {
+          <span nz-icon nzType="check" class="ant-select-selected-icon"></span>
+        } @else {
+          #icon|
+        }
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

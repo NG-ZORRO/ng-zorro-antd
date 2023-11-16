@@ -32,23 +32,30 @@ function mockAsyncStep(): Observable<number> {
   selector: 'nz-demo-steps-progress',
   template: `
     <nz-steps [nzCurrent]="current">
-      <nz-step
-        *ngFor="let step of this.steps; trackBy: trackById"
-        [nzTitle]="step.title"
-        [nzDescription]="step.description"
-        [nzPercentage]="step.async ? step.percentage : null"
-      ></nz-step>
+      @for (step of this.steps; track trackById($index, step)) {
+        <nz-step
+          [nzTitle]="step.title"
+          [nzDescription]="step.description"
+          [nzPercentage]="step.async ? step.percentage : null"
+        ></nz-step>
+      }
     </nz-steps>
     <div class="steps-action">
-      <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
-        <span>Previous</span>
-      </button>
-      <button nz-button nzType="default" (click)="next()" [nzLoading]="processing" *ngIf="current < 2">
-        <span>Next</span>
-      </button>
-      <button nz-button nzType="primary" (click)="done()" [nzLoading]="processing" *ngIf="current === 2">
-        <span>Done</span>
-      </button>
+      @if (current > 0) {
+        <button nz-button nzType="default" (click)="pre()">
+          <span>Previous</span>
+        </button>
+      }
+      @if (current < 2) {
+        <button nz-button nzType="default" (click)="next()" [nzLoading]="processing">
+          <span>Next</span>
+        </button>
+      }
+      @if (current === 2) {
+        <button nz-button nzType="primary" (click)="done()" [nzLoading]="processing">
+          <span>Done</span>
+        </button>
+      }
     </div>
   `,
   styles: [

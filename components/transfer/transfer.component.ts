@@ -76,54 +76,66 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
-    <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        type="button"
-        (click)="moveToLeft()"
-        [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="left"></span>
-        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-      <button
-        nz-button
-        type="button"
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="right"></span>
-        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-    </div>
-    <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        type="button"
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="left"></span>
-        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-      <button
-        nz-button
-        type="button"
-        (click)="moveToLeft()"
-        [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="right"></span>
-        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-    </div>
+    @if (dir !== 'rtl') {
+      <div class="ant-transfer-operation">
+        <button
+          nz-button
+          type="button"
+          (click)="moveToLeft()"
+          [disabled]="nzDisabled || !leftActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="left"></span>
+          @if (nzOperations[1]) {
+            <span>{{ nzOperations[1] }}</span>
+          }
+        </button>
+        <button
+          nz-button
+          type="button"
+          (click)="moveToRight()"
+          [disabled]="nzDisabled || !rightActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="right"></span>
+          @if (nzOperations[0]) {
+            <span>{{ nzOperations[0] }}</span>
+          }
+        </button>
+      </div>
+    }
+    @if (dir === 'rtl') {
+      <div class="ant-transfer-operation">
+        <button
+          nz-button
+          type="button"
+          (click)="moveToRight()"
+          [disabled]="nzDisabled || !rightActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="left"></span>
+          @if (nzOperations[0]) {
+            <span>{{ nzOperations[0] }}</span>
+          }
+        </button>
+        <button
+          nz-button
+          type="button"
+          (click)="moveToLeft()"
+          [disabled]="nzDisabled || !leftActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="right"></span>
+          @if (nzOperations[1]) {
+            <span>{{ nzOperations[1] }}</span>
+          }
+        </button>
+      </div>
+    }
     <nz-transfer-list
       class="ant-transfer-list"
       [ngStyle]="nzListStyle"

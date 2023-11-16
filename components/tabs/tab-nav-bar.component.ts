@@ -68,7 +68,9 @@ const CSS_TRANSFORM_TIME = 150;
         (tabScroll)="tabScroll.emit($event)"
       >
         <ng-content></ng-content>
-        <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+        @if (showAddButton) {
+          <button nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+        }
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
       </div>
     </div>
@@ -79,9 +81,11 @@ const CSS_TRANSFORM_TIME = 150;
       [addable]="addable"
       [items]="hiddenItems"
     ></nz-tab-nav-operation>
-    <div class="ant-tabs-extra-content" *ngIf="extraTemplate">
-      <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
-    </div>
+    @if (extraTemplate) {
+      <div class="ant-tabs-extra-content">
+        <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
+      </div>
+    }
   `,
   host: {
     role: 'tablist',

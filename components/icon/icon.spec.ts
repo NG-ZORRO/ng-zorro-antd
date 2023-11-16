@@ -167,20 +167,17 @@ describe('nz-icon', () => {
       fixture = testBed.fixture;
     });
 
-    it(
-      'should support iconfont',
-      waitForAsync(() => {
+    it('should support iconfont', waitForAsync(() => {
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-          expect(icons[0].nativeElement.className).toContain('anticon');
-          expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
-          expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
-          expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
-        });
-      })
-    );
+        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+        expect(icons[0].nativeElement.className).toContain('anticon');
+        expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
+        expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
+        expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
+      });
+    }));
   });
 
   describe('config service', () => {

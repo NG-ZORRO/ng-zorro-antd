@@ -54,7 +54,10 @@ class DynamicDatasource implements DataSource<FlatNode> {
   private flattenedData: BehaviorSubject<FlatNode[]>;
   private childrenLoadedSet = new Set<FlatNode>();
 
-  constructor(private treeControl: TreeControl<FlatNode>, initData: FlatNode[]) {
+  constructor(
+    private treeControl: TreeControl<FlatNode>,
+    initData: FlatNode[]
+  ) {
     this.flattenedData = new BehaviorSubject<FlatNode[]>(initData);
     treeControl.dataNodes = initData;
   }
@@ -126,12 +129,16 @@ class DynamicDatasource implements DataSource<FlatNode> {
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
-        <nz-tree-node-toggle *ngIf="!node.loading">
-          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
-        </nz-tree-node-toggle>
-        <nz-tree-node-toggle *ngIf="node.loading" nzTreeNodeNoopToggle>
-          <span nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></span>
-        </nz-tree-node-toggle>
+        @if (!node.loading) {
+          <nz-tree-node-toggle>
+            <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
+          </nz-tree-node-toggle>
+        }
+        @if (node.loading) {
+          <nz-tree-node-toggle nzTreeNodeNoopToggle>
+            <span nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></span>
+          </nz-tree-node-toggle>
+        }
         {{ node.label }}
       </nz-tree-node>
     </nz-tree-view>

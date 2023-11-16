@@ -39,11 +39,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="showPagination">
-      <ng-container *ngIf="nzSimple; else defaultPagination.template">
+    @if (showPagination) {
+      @if (nzSimple) {
         <ng-template [ngTemplateOutlet]="simplePagination.template"></ng-template>
-      </ng-container>
-    </ng-container>
+      } @else {
+        #defaultPagination.template|
+      }
+    }
     <nz-pagination-simple
       #simplePagination
       [disabled]="nzDisabled"

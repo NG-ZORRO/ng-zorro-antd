@@ -6,10 +6,10 @@
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
 
+import { Schema } from './schema';
 import { addPackageToPackageJson } from '../utils/package-config';
 // @ts-ignore
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
-import { Schema } from './schema';
 
 export default function (options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {

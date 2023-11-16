@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -19,7 +18,7 @@ describe('nz time range pipeline', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzPipesModule],
+      imports: [NzPipesModule],
       declarations: [NzTestTimeRangeComponent]
     }).compileComponents();
   });

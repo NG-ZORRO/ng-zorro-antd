@@ -25,25 +25,25 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
   template: `
-    <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
-      <span
-        [nzNoAnimation]="noAnimation"
-        *ngFor="let n of maxNumberArray; let i = index"
-        class="ant-scroll-number-only"
-        [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
-      >
-        <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-          <p
-            *ngFor="let p of countSingleArray"
-            class="ant-scroll-number-only-unit"
-            [class.current]="p === countArray[i]"
-          >
-            {{ p }}
-          </p>
-        </ng-container>
-      </span>
-    </ng-container>
-    <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
+    @if (count <= nzOverflowCount) {
+      @for (n of maxNumberArray; track n; let i = $index) {
+        <span
+          [nzNoAnimation]="noAnimation"
+          class="ant-scroll-number-only"
+          [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
+        >
+          @if (!nzDot && countArray[i] !== undefined) {
+            @for (p of countSingleArray; track p) {
+              <p class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+                {{ p }}
+              </p>
+            }
+          }
+        </span>
+      }
+    } @else {
+      {{ nzOverflowCount }}+
+    }
   `,
   host: {
     class: 'ant-scroll-number',

@@ -52,22 +52,18 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 1"
     >
-      <li
-        *ngFor="let star of starArray; let i = index"
-        class="ant-rate-star"
-        [ngClass]="starStyleArray[i] || ''"
-        nz-tooltip
-        [nzTooltipTitle]="nzTooltips[i]"
-      >
-        <div
-          nz-rate-item
-          [allowHalf]="nzAllowHalf"
-          [character]="nzCharacter"
-          [index]="i"
-          (itemHover)="onItemHover(i, $event)"
-          (itemClick)="onItemClick(i, $event)"
-        ></div>
-      </li>
+      @for (star of starArray; track star; let i = $index) {
+        <li class="ant-rate-star" [ngClass]="starStyleArray[i] || ''" nz-tooltip [nzTooltipTitle]="nzTooltips[i]">
+          <div
+            nz-rate-item
+            [allowHalf]="nzAllowHalf"
+            [character]="nzCharacter"
+            [index]="i"
+            (itemHover)="onItemHover(i, $event)"
+            (itemClick)="onItemClick(i, $event)"
+          ></div>
+        </li>
+      }
     </ul>
   `,
   providers: [

@@ -40,12 +40,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.top]="top"
       [style.left]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of topLeftInstances"
-        [instance]="instance"
-        [placement]="'topLeft'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topLeftInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'topLeft'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
     <div
       class="ant-notification ant-notification-topRight"
@@ -53,12 +54,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.top]="top"
       [style.right]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of topRightInstances"
-        [instance]="instance"
-        [placement]="'topRight'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topRightInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'topRight'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottomLeft"
@@ -66,12 +68,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.bottom]="bottom"
       [style.left]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomLeftInstances"
-        [instance]="instance"
-        [placement]="'bottomLeft'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomLeftInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottomLeft'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottomRight"
@@ -79,12 +82,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.bottom]="bottom"
       [style.right]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomRightInstances"
-        [instance]="instance"
-        [placement]="'bottomRight'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomRightInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottomRight'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
     <div
       class="ant-notification ant-notification-top"
@@ -93,12 +97,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.left]="'50%'"
       [style.transform]="'translateX(-50%)'"
     >
-      <nz-notification
-        *ngFor="let instance of topInstances"
-        [instance]="instance"
-        [placement]="'top'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'top'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottom"
@@ -107,12 +112,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.left]="'50%'"
       [style.transform]="'translateX(-50%)'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomInstances"
-        [instance]="instance"
-        [placement]="'bottom'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottom'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        ></nz-notification>
+      }
     </div>
   `
 })

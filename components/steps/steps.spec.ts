@@ -21,24 +21,22 @@ import { NzStepsComponent } from './steps.component';
 import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
-        declarations: [
-          NzTestOuterStepsComponent,
-          NzDemoStepsClickableComponent,
-          NzTestInnerStepStringComponent,
-          NzTestInnerStepTemplateComponent,
-          NzTestStepForComponent,
-          NzTestStepAsyncComponent,
-          NzDemoStepsNavComponent,
-          NzTestOuterStepsRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
+      declarations: [
+        NzTestOuterStepsComponent,
+        NzDemoStepsClickableComponent,
+        NzTestInnerStepStringComponent,
+        NzTestInnerStepTemplateComponent,
+        NzTestStepForComponent,
+        NzTestStepAsyncComponent,
+        NzDemoStepsNavComponent,
+        NzTestOuterStepsRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('outer steps', () => {
     let fixture: ComponentFixture<NzTestOuterStepsComponent>;
     let testComponent: NzTestOuterStepsComponent;
@@ -595,7 +593,9 @@ export class NzTestInnerStepTemplateComponent {}
 @Component({
   template: `
     <nz-steps>
-      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
+      @for (step of steps; track trackById($index, step)) {
+        <nz-step></nz-step>
+      }
     </nz-steps>
   `
 })
@@ -614,7 +614,9 @@ export class NzTestStepForComponent {
 @Component({
   template: `
     <nz-steps [nzCurrent]="1">
-      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
+      @for (step of steps; track trackById($index, step)) {
+        <nz-step></nz-step>
+      }
     </nz-steps>
   `
 })

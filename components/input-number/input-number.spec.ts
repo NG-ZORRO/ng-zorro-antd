@@ -8,9 +8,9 @@ import { take } from 'rxjs/operators';
 import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
 
-import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
+import { NzFormControlStatusType, NzFormModule } from '../form';
 
 describe('input number', () => {
   beforeEach(fakeAsync(() => {

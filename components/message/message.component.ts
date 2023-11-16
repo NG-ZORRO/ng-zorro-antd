@@ -37,13 +37,24 @@ import { NzMessageData } from './typings';
     >
       <div class="ant-message-notice-content">
         <div class="ant-message-custom-content" [ngClass]="'ant-message-' + instance.type">
-          <ng-container [ngSwitch]="instance.type">
-            <span *ngSwitchCase="'success'" nz-icon nzType="check-circle"></span>
-            <span *ngSwitchCase="'info'" nz-icon nzType="info-circle"></span>
-            <span *ngSwitchCase="'warning'" nz-icon nzType="exclamation-circle"></span>
-            <span *ngSwitchCase="'error'" nz-icon nzType="close-circle"></span>
-            <span *ngSwitchCase="'loading'" nz-icon nzType="loading"></span>
-          </ng-container>
+          @switch (instance.type) {
+            @case ('success') {
+              <span nz-icon nzType="check-circle"></span>
+            }
+            @case ('info') {
+              <span nz-icon nzType="info-circle"></span>
+            }
+            @case ('warning') {
+              <span nz-icon nzType="exclamation-circle"></span>
+            }
+            @case ('error') {
+              <span nz-icon nzType="close-circle"></span>
+            }
+            @case ('loading') {
+              <span nz-icon nzType="loading"></span>
+            }
+          }
+
           <ng-container *nzStringTemplateOutlet="instance.content">
             <span [innerHTML]="instance.content"></span>
           </ng-container>

@@ -79,19 +79,21 @@ const listOfHorizontalPositions = [
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]"></ng-content>
+      }
     </div>
-    <div
-      *ngIf="mode === 'inline'; else nonInlineTemplate"
-      nz-submenu-inline-child
-      [mode]="mode"
-      [nzOpen]="nzOpen"
-      [@.disabled]="!!noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      [menuClass]="nzMenuClassName"
-      [templateOutlet]="subMenuTemplate"
-    ></div>
-    <ng-template #nonInlineTemplate>
+    @if (mode === 'inline') {
+      <div
+        nz-submenu-inline-child
+        [mode]="mode"
+        [nzOpen]="nzOpen"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [menuClass]="nzMenuClassName"
+        [templateOutlet]="subMenuTemplate"
+      ></div>
+    } @else {
       <ng-template
         cdkConnectedOverlay
         (positionChange)="onPositionChange($event)"
@@ -116,7 +118,7 @@ const listOfHorizontalPositions = [
           (subMenuMouseState)="setMouseEnterState($event)"
         ></div>
       </ng-template>
-    </ng-template>
+    }
 
     <ng-template #subMenuTemplate>
       <ng-content></ng-content>

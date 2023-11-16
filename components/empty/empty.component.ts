@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
-type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
+type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | string | TemplateRef<void>;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,24 +30,32 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
   exportAs: 'nzEmpty',
   template: `
     <div class="ant-empty-image">
-      <ng-container *ngIf="!isImageBuildIn">
+      @if (!isImageBuildIn) {
         <ng-container *nzStringTemplateOutlet="nzNotFoundImage">
           <img [src]="nzNotFoundImage" [alt]="isContentString ? nzNotFoundContent : 'empty'" />
         </ng-container>
-      </ng-container>
-      <nz-empty-default *ngIf="isImageBuildIn && nzNotFoundImage !== 'simple'"></nz-empty-default>
-      <nz-empty-simple *ngIf="isImageBuildIn && nzNotFoundImage === 'simple'"></nz-empty-simple>
+      }
+      @if (isImageBuildIn && nzNotFoundImage !== 'simple') {
+        <nz-empty-default></nz-empty-default>
+      }
+      @if (isImageBuildIn && nzNotFoundImage === 'simple') {
+        <nz-empty-simple></nz-empty-simple>
+      }
     </div>
-    <p class="ant-empty-description" *ngIf="nzNotFoundContent !== null">
-      <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
-        {{ isContentString ? nzNotFoundContent : locale['description'] }}
-      </ng-container>
-    </p>
-    <div class="ant-empty-footer" *ngIf="nzNotFoundFooter">
-      <ng-container *nzStringTemplateOutlet="nzNotFoundFooter">
-        {{ nzNotFoundFooter }}
-      </ng-container>
-    </div>
+    @if (nzNotFoundContent !== null) {
+      <p class="ant-empty-description">
+        <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
+          {{ isContentString ? nzNotFoundContent : locale['description'] }}
+        </ng-container>
+      </p>
+    }
+    @if (nzNotFoundFooter) {
+      <div class="ant-empty-footer">
+        <ng-container *nzStringTemplateOutlet="nzNotFoundFooter">
+          {{ nzNotFoundFooter }}
+        </ng-container>
+      </div>
+    }
   `,
   host: {
     class: 'ant-empty'
@@ -64,7 +72,10 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzNotFoundContent, nzNotFoundImage } = changes;

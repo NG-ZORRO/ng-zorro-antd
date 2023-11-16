@@ -23,25 +23,26 @@ import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-select
-      class="ant-pagination-options-size-changer"
-      *ngIf="showSizeChanger"
-      [nzDisabled]="disabled"
-      [nzSize]="nzSize"
-      [ngModel]="pageSize"
-      (ngModelChange)="onPageSizeChange($event)"
-    >
-      <nz-option
-        *ngFor="let option of listOfPageSizeOption; trackBy: trackByOption"
-        [nzLabel]="option.label"
-        [nzValue]="option.value"
-      ></nz-option>
-    </nz-select>
-    <div class="ant-pagination-options-quick-jumper" *ngIf="showQuickJumper">
-      {{ locale.jump_to }}
-      <input [disabled]="disabled" (keydown.enter)="jumpToPageViaInput($event)" />
-      {{ locale.page }}
-    </div>
+    @if (showSizeChanger) {
+      <nz-select
+        class="ant-pagination-options-size-changer"
+        [nzDisabled]="disabled"
+        [nzSize]="nzSize"
+        [ngModel]="pageSize"
+        (ngModelChange)="onPageSizeChange($event)"
+      >
+        @for (option of listOfPageSizeOption; track trackByOption($index, option)) {
+          <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        }
+      </nz-select>
+    }
+    @if (showQuickJumper) {
+      <div class="ant-pagination-options-quick-jumper">
+        {{ locale.jump_to }}
+        <input [disabled]="disabled" (keydown.enter)="jumpToPageViaInput($event)" />
+        {{ locale.page }}
+      </div>
+    }
   `,
   host: { class: 'ant-pagination-options' }
 })

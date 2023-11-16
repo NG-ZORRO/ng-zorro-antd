@@ -41,15 +41,18 @@ import {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-table-filter
-      *ngIf="nzShowFilter || nzCustomFilter; else notFilterTemplate"
-      [contentTemplate]="notFilterTemplate"
-      [extraTemplate]="extraTemplate"
-      [customFilter]="nzCustomFilter"
-      [filterMultiple]="nzFilterMultiple"
-      [listOfFilter]="nzFilters"
-      (filterChange)="onFilterValueChange($event)"
-    ></nz-table-filter>
+    @if (nzShowFilter || nzCustomFilter) {
+      <nz-table-filter
+        [contentTemplate]="notFilterTemplate"
+        [extraTemplate]="extraTemplate"
+        [customFilter]="nzCustomFilter"
+        [filterMultiple]="nzFilterMultiple"
+        [listOfFilter]="nzFilters"
+        (filterChange)="onFilterValueChange($event)"
+      ></nz-table-filter>
+    } @else {
+      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
+    }
     <ng-template #notFilterTemplate>
       <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
     </ng-template>

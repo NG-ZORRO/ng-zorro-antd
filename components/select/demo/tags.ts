@@ -4,7 +4,9 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-select-tags',
   template: `
     <nz-select nzMode="tags" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions">
-      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      @for (option of listOfOption; track option) {
+        <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      }
     </nz-select>
   `,
   styles: [

@@ -14,10 +14,10 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { join } from 'path';
 
+import { Schema as NzOptions } from './schema';
 import { createTestApp } from '../testing/test-app';
 import { createCustomTheme } from '../utils/create-custom-theme';
 import { getFileContent } from '../utils/get-file-content';
-import { Schema as NzOptions } from './schema';
 
 describe('ng-add schematic', () => {
   const defaultOptions: NzOptions = {

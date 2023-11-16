@@ -452,11 +452,13 @@ export class NzTestReactiveFormControlInitStatusComponent {
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item *ngIf="showConfirmPassword">
-        <nz-form-control>
-          <input nz-input type="password" formControlName="confirmPassword" />
-        </nz-form-control>
-      </nz-form-item>
+      @if (showConfirmPassword) {
+        <nz-form-item>
+          <nz-form-control>
+            <input nz-input type="password" formControlName="confirmPassword" />
+          </nz-form-control>
+        </nz-form-item>
+      }
     </form>
   `
 })
@@ -497,7 +499,10 @@ export class NzTestReactiveFormAutoTipsComponent {
     }
   };
 
-  constructor(private formBuilder: FormBuilder, public i18n: NzI18nService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public i18n: NzI18nService
+  ) {
     const { required, minLength, email, mobile } = MyValidators;
     this.formGroup = this.formBuilder.group({
       userName: ['', [required, minLength(6)]],

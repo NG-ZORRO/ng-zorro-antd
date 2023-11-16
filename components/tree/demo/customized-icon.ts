@@ -6,13 +6,16 @@ import { Component } from '@angular/core';
     <nz-tree [nzData]="nodes" nzShowIcon></nz-tree>
     <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="multiExpandedIconTpl">
       <ng-template #multiExpandedIconTpl let-node let-origin="origin">
-        <span
-          *ngIf="!origin.isLeaf"
-          nz-icon
-          [nzType]="node.isExpanded ? 'folder-open' : 'folder'"
-          class="ant-tree-switcher-line-icon"
-        ></span>
-        <span *ngIf="origin.isLeaf" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+        @if (!origin.isLeaf) {
+          <span
+            nz-icon
+            [nzType]="node.isExpanded ? 'folder-open' : 'folder'"
+            class="ant-tree-switcher-line-icon"
+          ></span>
+        }
+        @if (origin.isLeaf) {
+          <span nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+        }
       </ng-template>
     </nz-tree>
   `

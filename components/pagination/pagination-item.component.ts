@@ -25,44 +25,66 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-template #renderItemTemplate let-type let-page="page">
-      <ng-container [ngSwitch]="type">
-        <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
-          <ng-container [ngSwitch]="direction">
-            <span *ngSwitchCase="'rtl'" nz-icon nzType="right"></span>
-            <span *ngSwitchDefault nz-icon nzType="left"></span>
-          </ng-container>
-        </button>
-        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
-          <ng-container [ngSwitch]="direction">
-            <span *ngSwitchCase="'rtl'" nz-icon nzType="left"></span>
-            <span *ngSwitchDefault nz-icon nzType="right"></span>
-          </ng-container>
-        </button>
-        <ng-container *ngSwitchDefault>
-          <a class="ant-pagination-item-link" [ngSwitch]="type">
-            <div class="ant-pagination-item-container" *ngSwitchDefault>
-              <ng-container [ngSwitch]="type">
-                <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
-                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
-                  <span *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
-                </ng-container>
-                <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
-                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
-                  <span *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
-                </ng-container>
-              </ng-container>
-              <span class="ant-pagination-item-ellipsis">•••</span>
-            </div>
-          </a>
-        </ng-container>
-      </ng-container>
-    </ng-template>
-    <ng-template
-      [ngTemplateOutlet]="itemRender || renderItemTemplate"
-      [ngTemplateOutletContext]="{ $implicit: type, page: index }"
-    ></ng-template>
+      <ng-template #renderItemTemplate let-type let-page="page">
+          @switch (type) {
+              @case ("page") {
+                  <a>{{ page }}</a>
+              }
+              @case ("prev") {
+                  <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+                      <ng-container [ngSwitch]="direction">
+                          <span *ngSwitchCase="'rtl'" nz-icon nzType="right"></span>
+                          <span *ngSwitchDefault nz-icon nzType="left"></span>
+                      </ng-container>
+                  </button>
+              }
+              @case ("next") {
+                  <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+                      <ng-container [ngSwitch]="direction">
+                          <span *ngSwitchCase="'rtl'" nz-icon nzType="left"></span>
+                          <span *ngSwitchDefault nz-icon nzType="right"></span>
+                      </ng-container>
+                  </button>
+              }
+              @default {
+                  @switch (type) {
+                      @default {
+                          <a class="ant-pagination-item-link">
+                              <div class="ant-pagination-item-container">
+                                  @switch (type) {
+                                      @case ("prev_5") {
+                                          @switch (direction) {
+                                              @case ("rtl") {
+                                                  <span nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                                              }
+                                              @default {
+                                                  <span nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
+                                              }
+                                          }
+                                      }
+                                      @case ("next_5") {
+                                          @switch (direction) {
+                                              @case ("rtl") {
+                                                  <span nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
+                                              }
+                                              @default {
+                                                  <span nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                                              }
+                                          }
+                                      }
+                                  }
+                                  <span class="ant-pagination-item-ellipsis">•••</span>
+                              </div>
+                          </a>
+                      }
+                  }
+              }
+          }
+      </ng-template>
+      <ng-template
+              [ngTemplateOutlet]="itemRender || renderItemTemplate"
+              [ngTemplateOutletContext]="{ $implicit: type, page: index }"
+      ></ng-template>
   `,
   host: {
     '[class.ant-pagination-prev]': `type === 'prev'`,

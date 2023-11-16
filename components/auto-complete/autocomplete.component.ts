@@ -88,9 +88,11 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of normalizedDataSource" [nzValue]="option.value" [nzLabel]="option.label">
-          {{ option.label }}
-        </nz-auto-option>
+        @for (option of normalizedDataSource; track $index) {
+          <nz-auto-option [nzValue]="option.value" [nzLabel]="option.label">
+            {{ option.label }}
+          </nz-auto-option>
+        }
       </ng-template>
     </ng-template>
   `,
@@ -108,7 +110,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
-  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> =
+    new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;

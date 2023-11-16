@@ -42,42 +42,43 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   template: `
     <!-- thumb motion div -->
     <div class="ant-segmented-group">
-      <div
-        *ngIf="animationState"
-        [ngClass]="{ 'ant-segmented-thumb': true, 'ant-segmented-thumb-motion': true }"
-        [@thumbMotion]="animationState"
-        (@thumbMotion.done)="handleThumbAnimationDone($event)"
-      ></div>
-      <label
-        #itemLabels
-        *ngFor="let item of normalizedOptions; let i = index"
-        [ngClass]="{
-          'ant-segmented-item': true,
-          'ant-segmented-item-selected': i === selectedIndex,
-          'ant-segmented-item-disabled': !!nzDisabled || item.disabled
-        }"
-      >
-        <input class="ant-segmented-item-input" type="radio" [checked]="i === selectedIndex" />
-        <div class="ant-segmented-item-label" (click)="!item.disabled && handleOptionClick(i)">
-          <ng-container *ngIf="item.icon; else else_template">
-            <span class="ant-segmented-item-icon"><span nz-icon [nzType]="item.icon"></span></span>
-            <span>
+      @if (animationState) {
+        <div
+          [ngClass]="{ 'ant-segmented-thumb': true, 'ant-segmented-thumb-motion': true }"
+          [@thumbMotion]="animationState"
+          (@thumbMotion.done)="handleThumbAnimationDone($event)"
+        ></div>
+      }
+      @for (item of normalizedOptions; track item; let i = $index) {
+        <label
+          #itemLabels
+          [ngClass]="{
+            'ant-segmented-item': true,
+            'ant-segmented-item-selected': i === selectedIndex,
+            'ant-segmented-item-disabled': !!nzDisabled || item.disabled
+          }"
+        >
+          <input class="ant-segmented-item-input" type="radio" [checked]="i === selectedIndex" />
+          <div class="ant-segmented-item-label" (click)="!item.disabled && handleOptionClick(i)">
+            @if (item.icon) {
+              <span class="ant-segmented-item-icon"><span nz-icon [nzType]="item.icon"></span></span>
+              <span>
+                <ng-container
+                  *nzStringTemplateOutlet="item.useTemplate && nzLabelTemplate; context: { $implicit: item, index: i }"
+                >
+                  {{ item.label }}
+                </ng-container>
+              </span>
+            } @else {
               <ng-container
                 *nzStringTemplateOutlet="item.useTemplate && nzLabelTemplate; context: { $implicit: item, index: i }"
               >
                 {{ item.label }}
               </ng-container>
-            </span>
-          </ng-container>
-          <ng-template #else_template>
-            <ng-container
-              *nzStringTemplateOutlet="item.useTemplate && nzLabelTemplate; context: { $implicit: item, index: i }"
-            >
-              {{ item.label }}
-            </ng-container>
-          </ng-template>
-        </div>
-      </label>
+            }
+          </div>
+        </label>
+      }
     </div>
   `,
   host: {

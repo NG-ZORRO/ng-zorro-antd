@@ -48,62 +48,66 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzFormNoStatusService],
   template: `
-    <span class="ant-input-wrapper ant-input-group" *ngIf="isAddOn; else noAddOnTemplate">
-      <span
-        *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
-        nz-input-group-slot
-        type="addon"
-        [icon]="nzAddOnBeforeIcon"
-        [template]="nzAddOnBefore"
-      ></span>
-      <span
-        *ngIf="isAffix || hasFeedback; else contentTemplate"
-        class="ant-input-affix-wrapper"
-        [class.ant-input-affix-wrapper-disabled]="disabled"
-        [class.ant-input-affix-wrapper-sm]="isSmall"
-        [class.ant-input-affix-wrapper-lg]="isLarge"
-        [class.ant-input-affix-wrapper-focused]="focused"
-        [ngClass]="affixInGroupStatusCls"
-      >
-        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+    @if (isAddOn) {
+      <span class="ant-input-wrapper ant-input-group">
+        @if (nzAddOnBefore || nzAddOnBeforeIcon) {
+          <span nz-input-group-slot type="addon" [icon]="nzAddOnBeforeIcon" [template]="nzAddOnBefore"></span>
+        }
+        @if (isAffix || hasFeedback) {
+          <span
+            class="ant-input-affix-wrapper"
+            [class.ant-input-affix-wrapper-disabled]="disabled"
+            [class.ant-input-affix-wrapper-sm]="isSmall"
+            [class.ant-input-affix-wrapper-lg]="isLarge"
+            [class.ant-input-affix-wrapper-focused]="focused"
+            [ngClass]="affixInGroupStatusCls"
+          >
+            <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+          </span>
+        } @else {
+          <ng-content></ng-content>
+          @if (!isAddOn && !isAffix && isFeedback) {
+            <span nz-input-group-slot type="suffix">
+              <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            </span>
+          }
+        }
+        @if (nzAddOnAfter || nzAddOnAfterIcon) {
+          <span nz-input-group-slot type="addon" [icon]="nzAddOnAfterIcon" [template]="nzAddOnAfter"></span>
+        }
       </span>
-      <span
-        *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
-        nz-input-group-slot
-        type="addon"
-        [icon]="nzAddOnAfterIcon"
-        [template]="nzAddOnAfter"
-      ></span>
-    </span>
-    <ng-template #noAddOnTemplate>
-      <ng-template [ngIf]="isAffix" [ngIfElse]="contentTemplate">
+    } @else {
+      @if (isAffix) {
         <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
-      </ng-template>
-    </ng-template>
+      } @else {
+        <ng-content></ng-content>
+        @if (!isAddOn && !isAffix && isFeedback) {
+          <span nz-input-group-slot type="suffix">
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          </span>
+        }
+      }
+    }
     <ng-template #affixTemplate>
-      <span
-        *ngIf="nzPrefix || nzPrefixIcon"
-        nz-input-group-slot
-        type="prefix"
-        [icon]="nzPrefixIcon"
-        [template]="nzPrefix"
-      ></span>
+      @if (nzPrefix || nzPrefixIcon) {
+        <span nz-input-group-slot type="prefix" [icon]="nzPrefixIcon" [template]="nzPrefix"></span>
+      }
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-      <span
-        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
-        nz-input-group-slot
-        type="suffix"
-        [icon]="nzSuffixIcon"
-        [template]="nzSuffix"
-      >
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
-      </span>
+      @if (nzSuffix || nzSuffixIcon || isFeedback) {
+        <span nz-input-group-slot type="suffix" [icon]="nzSuffixIcon" [template]="nzSuffix">
+          @if (isFeedback) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </span>
+      }
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
-      <span *ngIf="!isAddOn && !isAffix && isFeedback" nz-input-group-slot type="suffix">
-        <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
-      </span>
+      @if (!isAddOn && !isAffix && isFeedback) {
+        <span nz-input-group-slot type="suffix">
+          <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+        </span>
+      }
     </ng-template>
   `,
   host: {

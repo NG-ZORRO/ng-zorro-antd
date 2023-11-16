@@ -28,9 +28,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
   template: `
-    <span nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></span>
-    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    <span class="ant-avatar-string" #textEl *ngIf="nzText && hasText">{{ nzText }}</span>
+    @if (nzIcon && hasIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
+    @if (nzSrc && hasSrc) {
+      <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    }
+    @if (nzText && hasText) {
+      <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
+    }
   `,
   host: {
     class: 'ant-avatar',

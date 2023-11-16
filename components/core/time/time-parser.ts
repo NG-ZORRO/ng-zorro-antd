@@ -26,7 +26,10 @@ export class NgTimeParser {
     periodAbbreviated: null
   };
 
-  constructor(private format: string, private localeId: string) {
+  constructor(
+    private format: string,
+    private localeId: string
+  ) {
     this.genRegexp();
   }
 

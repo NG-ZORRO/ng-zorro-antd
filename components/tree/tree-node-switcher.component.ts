@@ -10,8 +10,8 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 @Component({
   selector: 'nz-tree-node-switcher',
   template: `
-    <ng-container *ngIf="isShowSwitchIcon">
-      <ng-container *ngIf="!isLoading; else loadingTemplate">
+    @if (isShowSwitchIcon) {
+      @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
           <span
             nz-icon
@@ -20,24 +20,28 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
             [class.ant-tree-switcher-icon]="!nzSelectMode"
           ></span>
         </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="nzShowLine">
-      <ng-container *ngIf="!isLoading; else loadingTemplate">
+      } @else {
+        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+      }
+    }
+    @if (nzShowLine) {
+      @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
-          <span
-            *ngIf="isShowLineIcon"
-            nz-icon
-            [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
-            class="ant-tree-switcher-line-icon"
-          ></span>
-          <span *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+          @if (isShowLineIcon) {
+            <span
+              nz-icon
+              [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
+              class="ant-tree-switcher-line-icon"
+            ></span>
+          }
+          @if (!isShowLineIcon) {
+            <span nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+          }
         </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-template #loadingTemplate>
-      <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
-    </ng-template>
+      } @else {
+        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+      }
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,

@@ -4,9 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tabs-disabled',
   template: `
     <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" [nzDisabled]="tab.disabled">
-        {{ tab.name }}
-      </nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="tab.name" [nzDisabled]="tab.disabled">
+          {{ tab.name }}
+        </nz-tab>
+      }
     </nz-tabset>
   `
 })

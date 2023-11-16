@@ -5,26 +5,24 @@ import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
-import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
+import { NzI18nModule } from '../i18n/nz-i18n.module';
 
 describe('time-picker-panel', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzI18nModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzTimePickerPanelComponent,
-          NzTestTimePanelComponent,
-          NzTestTimePanelDisabledComponent,
-          NzTest12HourTimePanelComponent,
-          NzTest12HourTimePanelDisabledComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, NzI18nModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzTimePickerPanelComponent,
+        NzTestTimePanelComponent,
+        NzTestTimePanelDisabledComponent,
+        NzTest12HourTimePanelComponent,
+        NzTest12HourTimePanelDisabledComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelComponent>;

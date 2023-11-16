@@ -43,16 +43,18 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   template: `
-    <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
-      <ng-template #defaultContent>
-        <div class="ant-back-top-content">
-          <div class="ant-back-top-icon">
-            <span nz-icon nzType="vertical-align-top"></span>
+    @if (visible) {
+      <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
+        <ng-template #defaultContent>
+          <div class="ant-back-top-content">
+            <div class="ant-back-top-icon">
+              <span nz-icon nzType="vertical-align-top"></span>
+            </div>
           </div>
-        </div>
-      </ng-template>
-      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
-    </div>
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

@@ -32,7 +32,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="scrollY">
+    @if (scrollY) {
       <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
@@ -42,45 +42,50 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
           [theadTemplate]="theadTemplate"
         ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
+      @if (!virtualTemplate) {
+        <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+          <table
+            nz-table-content
+            tableLayout="fixed"
+            [scrollX]="scrollX"
+            [listOfColWidth]="listOfColWidth"
+            [contentTemplate]="contentTemplate"
+          ></table>
+        </div>
+      }
+      @if (virtualTemplate) {
+        <cdk-virtual-scroll-viewport
+          #tableBodyElement
+          [itemSize]="virtualItemSize"
+          [maxBufferPx]="virtualMaxBufferPx"
+          [minBufferPx]="virtualMinBufferPx"
+          [style.height]="data.length ? scrollY : noDateVirtualHeight"
+        >
+          <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
+            <tbody>
+              <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
+                <ng-template
+                  [ngTemplateOutlet]="virtualTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+                ></ng-template>
+              </ng-container>
+            </tbody>
+          </table>
+        </cdk-virtual-scroll-viewport>
+      }
+    }
+    @if (!scrollY) {
+      <div class="ant-table-content" #tableBodyElement [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
           tableLayout="fixed"
           [scrollX]="scrollX"
           [listOfColWidth]="listOfColWidth"
+          [theadTemplate]="theadTemplate"
           [contentTemplate]="contentTemplate"
         ></table>
       </div>
-      <cdk-virtual-scroll-viewport
-        #tableBodyElement
-        *ngIf="virtualTemplate"
-        [itemSize]="virtualItemSize"
-        [maxBufferPx]="virtualMaxBufferPx"
-        [minBufferPx]="virtualMinBufferPx"
-        [style.height]="data.length ? scrollY : noDateVirtualHeight"
-      >
-        <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
-          <tbody>
-            <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
-              <ng-template
-                [ngTemplateOutlet]="virtualTemplate"
-                [ngTemplateOutletContext]="{ $implicit: item, index: i }"
-              ></ng-template>
-            </ng-container>
-          </tbody>
-        </table>
-      </cdk-virtual-scroll-viewport>
-    </ng-container>
-    <div class="ant-table-content" #tableBodyElement *ngIf="!scrollY" [ngStyle]="bodyStyleMap">
-      <table
-        nz-table-content
-        tableLayout="fixed"
-        [scrollX]="scrollX"
-        [listOfColWidth]="listOfColWidth"
-        [theadTemplate]="theadTemplate"
-        [contentTemplate]="contentTemplate"
-      ></table>
-    </div>
+    }
   `,
   host: { class: 'ant-table-container' }
 })

@@ -36,32 +36,42 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
     >
-      <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
+      @if (last !== true) {
+        <div class="ant-steps-item-tail"></div>
+      }
       <div class="ant-steps-item-icon">
-        <ng-template [ngIf]="!showProcessDot">
-          <div *ngIf="showProgress" class="ant-steps-progress-icon">
-            <nz-progress
-              [nzPercent]="nzPercentage"
-              nzType="circle"
-              [nzWidth]="nzSize === 'small' ? 32 : 40"
-              [nzFormat]="nullProcessFormat"
-              [nzStrokeWidth]="4"
-            ></nz-progress>
-          </div>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"
-            ><span nz-icon nzType="check"></span
-          ></span>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><span nz-icon nzType="close"></span></span>
-          <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
-            {{ index + 1 }}
-          </span>
-          <span class="ant-steps-icon" *ngIf="nzIcon">
-            <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-              <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
-            </ng-container>
-          </span>
-        </ng-template>
-        <ng-template [ngIf]="showProcessDot">
+        @if (!showProcessDot) {
+          @if (showProgress) {
+            <div class="ant-steps-progress-icon">
+              <nz-progress
+                [nzPercent]="nzPercentage"
+                nzType="circle"
+                [nzWidth]="nzSize === 'small' ? 32 : 40"
+                [nzFormat]="nullProcessFormat"
+                [nzStrokeWidth]="4"
+              ></nz-progress>
+            </div>
+          }
+          @if (nzStatus === 'finish' && !nzIcon) {
+            <span class="ant-steps-icon"><span nz-icon nzType="check"></span></span>
+          }
+          @if (nzStatus === 'error') {
+            <span class="ant-steps-icon"><span nz-icon nzType="close"></span></span>
+          }
+          @if ((nzStatus === 'process' || nzStatus === 'wait') && !nzIcon) {
+            <span class="ant-steps-icon">
+              {{ index + 1 }}
+            </span>
+          }
+          @if (nzIcon) {
+            <span class="ant-steps-icon">
+              <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
+                <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
+              </ng-container>
+            </span>
+          }
+        }
+        @if (showProcessDot) {
           <span class="ant-steps-icon">
             <ng-template #processDotTemplate>
               <span class="ant-steps-icon-dot"></span>
@@ -75,14 +85,16 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
               }"
             ></ng-template>
           </span>
-        </ng-template>
+        }
       </div>
       <div class="ant-steps-item-content">
         <div class="ant-steps-item-title">
           <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-          <div *ngIf="nzSubtitle" class="ant-steps-item-subtitle">
-            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-          </div>
+          @if (nzSubtitle) {
+            <div class="ant-steps-item-subtitle">
+              <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+            </div>
+          }
         </div>
         <div class="ant-steps-item-description">
           <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
@@ -180,7 +192,11 @@ export class NzStepComponent implements OnInit {
 
   private _currentIndex = 0;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private destroy$: NzDestroyService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
     this.ngZone.runOutsideAngular(() =>

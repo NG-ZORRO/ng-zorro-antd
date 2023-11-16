@@ -121,24 +121,25 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    <nz-select-arrow
-      *ngIf="nzShowArrow || (hasFeedback && !!status)"
-      [showArrow]="nzShowArrow"
-      [loading]="nzLoading"
-      [search]="nzOpen && nzShowSearch"
-      [suffixIcon]="nzSuffixIcon"
-      [feedbackIcon]="feedbackIconTpl"
-    >
-      <ng-template #feedbackIconTpl>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-      </ng-template>
-    </nz-select-arrow>
+    @if (nzShowArrow || (hasFeedback && !!status)) {
+      <nz-select-arrow
+        [showArrow]="nzShowArrow"
+        [loading]="nzLoading"
+        [search]="nzOpen && nzShowSearch"
+        [suffixIcon]="nzSuffixIcon"
+        [feedbackIcon]="feedbackIconTpl"
+      >
+        <ng-template #feedbackIconTpl>
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </ng-template>
+      </nz-select-arrow>
+    }
 
-    <nz-select-clear
-      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
-      [clearIcon]="nzClearIcon"
-      (clear)="onClearSelection()"
-    ></nz-select-clear>
+    @if (nzAllowClear && !nzDisabled && listOfValue.length) {
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+    }
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay

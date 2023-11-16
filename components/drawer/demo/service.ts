@@ -92,7 +92,10 @@ export class NzDemoDrawerServiceComponent {
 export class NzDrawerCustomComponent {
   // @Input() value = '';
 
-  constructor(private drawerRef: NzDrawerRef<string>, @Inject(NZ_DRAWER_DATA) public nzData: { value: string }) {}
+  constructor(
+    private drawerRef: NzDrawerRef<string>,
+    @Inject(NZ_DRAWER_DATA) public nzData: { value: string }
+  ) {}
 
   close(): void {
     this.drawerRef.close(this.nzData);

@@ -27,10 +27,10 @@ import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/oper
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTrDirective } from './tr.directive';
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTrDirective } from './tr.directive';
 
 @Component({
   selector: 'thead:not(.ant-table-thead)',
@@ -40,9 +40,9 @@ import { NzTrDirective } from './tr.directive';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-    <ng-container *ngIf="!isInsideTable">
+    @if (!isInsideTable) {
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
+    }
   `
 })
 export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {

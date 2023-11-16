@@ -19,18 +19,21 @@ import { NzTableStyleService } from '../table-style.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="listOfMeasureColumn$ | async as listOfMeasureColumn">
-      <tr
-        nz-table-measure-row
-        *ngIf="isInsideTable && listOfMeasureColumn.length"
-        [listOfMeasureColumn]="listOfMeasureColumn"
-        (listOfAutoWidth)="onListOfAutoWidthChange($event)"
-      ></tr>
-    </ng-container>
+    @if (listOfMeasureColumn$ | async; as listOfMeasureColumn) {
+      @if (isInsideTable && listOfMeasureColumn.length) {
+        <tr
+          nz-table-measure-row
+          [listOfMeasureColumn]="listOfMeasureColumn"
+          (listOfAutoWidth)="onListOfAutoWidthChange($event)"
+        ></tr>
+      }
+    }
     <ng-content></ng-content>
-    <tr class="ant-table-placeholder" nz-table-fixed-row *ngIf="showEmpty$ | async">
-      <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
-    </tr>
+    @if (showEmpty$ | async) {
+      <tr class="ant-table-placeholder" nz-table-fixed-row>
+        <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
+      </tr>
+    }
   `,
   host: {
     '[class.ant-table-tbody]': 'isInsideTable'

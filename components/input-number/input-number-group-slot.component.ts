@@ -11,7 +11,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon [nzType]="icon" *ngIf="icon"></span>
+    @if (icon) {
+      <span nz-icon [nzType]="icon"></span>
+    }
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
     <ng-content></ng-content>
   `,

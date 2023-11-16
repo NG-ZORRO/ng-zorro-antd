@@ -51,7 +51,10 @@ export class NzCellFixedDirective implements OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnChanges(): void {
     this.setIsFirstRight(false);

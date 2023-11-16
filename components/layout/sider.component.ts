@@ -38,19 +38,20 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     <div class="ant-layout-sider-children">
       <ng-content></ng-content>
     </div>
-    <div
-      *ngIf="nzCollapsible && nzTrigger !== null"
-      nz-sider-trigger
-      [matchBreakPoint]="matchBreakPoint"
-      [nzCollapsedWidth]="nzCollapsedWidth"
-      [nzCollapsed]="nzCollapsed"
-      [nzBreakpoint]="nzBreakpoint"
-      [nzReverseArrow]="nzReverseArrow"
-      [nzTrigger]="nzTrigger"
-      [nzZeroTrigger]="nzZeroTrigger"
-      [siderWidth]="widthSetting"
-      (click)="setCollapsed(!nzCollapsed)"
-    ></div>
+    @if (nzCollapsible && nzTrigger !== null) {
+      <div
+        nz-sider-trigger
+        [matchBreakPoint]="matchBreakPoint"
+        [nzCollapsedWidth]="nzCollapsedWidth"
+        [nzCollapsed]="nzCollapsed"
+        [nzBreakpoint]="nzBreakpoint"
+        [nzReverseArrow]="nzReverseArrow"
+        [nzTrigger]="nzTrigger"
+        [nzZeroTrigger]="nzZeroTrigger"
+        [siderWidth]="widthSetting"
+        (click)="setCollapsed(!nzCollapsed)"
+      ></div>
+    }
   `,
   host: {
     class: 'ant-layout-sider',

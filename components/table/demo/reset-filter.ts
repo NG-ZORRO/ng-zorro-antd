@@ -27,23 +27,26 @@ interface ColumnItem {
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th
-            *ngFor="let column of listOfColumns; trackBy: trackByName"
-            [(nzSortOrder)]="column.sortOrder"
-            [nzSortFn]="column.sortFn"
-            [nzFilters]="column.listOfFilter"
-            [nzFilterFn]="column.filterFn"
-          >
-            {{ column.name }}
-          </th>
+          @for (column of listOfColumns; track trackByName($index, column)) {
+            <th
+              [(nzSortOrder)]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of filterTable.data; track $index) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,

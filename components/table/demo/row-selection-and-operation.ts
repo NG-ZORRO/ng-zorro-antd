@@ -39,16 +39,18 @@ export interface Data {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data">
-          <td
-            [nzChecked]="setOfCheckedId.has(data.id)"
-            [nzDisabled]="data.disabled"
-            (nzCheckedChange)="onItemChecked(data.id, $event)"
-          ></td>
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of rowSelectionTable.data; track $index) {
+          <tr>
+            <td
+              [nzChecked]="setOfCheckedId.has(data.id)"
+              [nzDisabled]="data.disabled"
+              (nzCheckedChange)="onItemChecked(data.id, $event)"
+            ></td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,

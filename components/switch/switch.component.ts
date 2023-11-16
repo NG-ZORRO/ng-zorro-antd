@@ -61,15 +61,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [nzWaveExtraNode]="true"
     >
       <span class="ant-switch-handle">
-        <span *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></span>
+        @if (nzLoading) {
+          <span nz-icon nzType="loading" class="ant-switch-loading-icon"></span>
+        }
       </span>
       <span class="ant-switch-inner">
-        <ng-container *ngIf="isChecked; else uncheckTemplate">
+        @if (isChecked) {
           <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
-        </ng-container>
-        <ng-template #uncheckTemplate>
+        } @else {
           <ng-container *nzStringTemplateOutlet="nzUnCheckedChildren">{{ nzUnCheckedChildren }}</ng-container>
-        </ng-template>
+        }
       </span>
       <div class="ant-click-animating-node"></div>
     </button>

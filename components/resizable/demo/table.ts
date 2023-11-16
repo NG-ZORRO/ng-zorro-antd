@@ -8,35 +8,40 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
     <nz-table #basicTable [nzData]="listOfData">
       <thead>
         <tr>
-          <ng-container *ngFor="let col of cols">
-            <th
-              *ngIf="col.width"
-              nz-resizable
-              nzBounds="window"
-              nzPreview
-              [nzWidth]="col.width"
-              [nzMaxWidth]="256"
-              [nzMinWidth]="60"
-              (nzResizeEnd)="onResize($event, col.title)"
-            >
-              {{ col.title }}
-              <nz-resize-handle nzDirection="right">
-                <div class="resize-trigger"></div>
-              </nz-resize-handle>
-            </th>
-            <th *ngIf="!col.width">
-              {{ col.title }}
-            </th>
-          </ng-container>
+          @for (col of cols; track col) {
+            @if (col.width) {
+              <th
+                nz-resizable
+                nzBounds="window"
+                nzPreview
+                [nzWidth]="col.width"
+                [nzMaxWidth]="256"
+                [nzMinWidth]="60"
+                (nzResizeEnd)="onResize($event, col.title)"
+              >
+                {{ col.title }}
+                <nz-resize-handle nzDirection="right">
+                  <div class="resize-trigger"></div>
+                </nz-resize-handle>
+              </th>
+            }
+            @if (!col.width) {
+              <th>
+                {{ col.title }}
+              </th>
+            }
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-          <td>-</td>
-        </tr>
+        @for (data of basicTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>-</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,

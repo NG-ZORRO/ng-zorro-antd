@@ -9,9 +9,9 @@ import * as fs from 'fs-extra';
 import { execSync, spawnSync } from 'child_process';
 import * as path from 'path';
 
-import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
 import { releaseSite } from './release-site';
+import { buildConfig } from '../build-config';
 
 const read = require('readline-sync');
 

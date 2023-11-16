@@ -15,9 +15,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span *ngIf="nzText" class="ant-divider-inner-text">
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
-    </span>
+    @if (nzText) {
+      <span class="ant-divider-inner-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
+    }
   `,
   host: {
     class: 'ant-divider',

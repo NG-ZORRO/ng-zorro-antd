@@ -28,7 +28,11 @@ const iconTypeMap = {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <span *ngIf="iconType" nz-icon [nzType]="iconType"></span> `,
+  template: `
+    @if (iconType) {
+      <span nz-icon [nzType]="iconType"></span>
+    }
+  `,
   host: {
     class: 'ant-form-item-feedback-icon',
     '[class.ant-form-item-feedback-icon-error]': 'status==="error"',
@@ -41,7 +45,7 @@ export class NzFormItemFeedbackIconComponent implements OnChanges {
   @Input() status: NzValidateStatus = '';
   constructor(public cdr: ChangeDetectorRef) {}
 
-  iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
+  iconType: (typeof iconTypeMap)[keyof typeof iconTypeMap] | null = null;
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.updateIcon();

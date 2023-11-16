@@ -30,9 +30,11 @@ import {
       class="ant-input"
       [ngClass]="{ 'ant-input-disabled': disabled }"
     />
-    <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
-    </span>
+    @if (value && value.length > 0) {
+      <span class="ant-input-suffix" (click)="_clear()">
+        <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
+      </span>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush

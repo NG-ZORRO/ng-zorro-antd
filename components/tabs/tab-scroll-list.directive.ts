@@ -37,7 +37,10 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
   @Output() readonly offsetChange = new EventEmitter<NzTabScrollListOffsetEvent>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
 
-  constructor(private ngZone: NgZone, private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private ngZone: NgZone,
+    private elementRef: ElementRef<HTMLElement>
+  ) {}
 
   ngOnInit(): void {
     this.unsubscribe = this.ngZone.runOutsideAngular(() => {

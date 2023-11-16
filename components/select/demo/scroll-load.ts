@@ -13,10 +13,14 @@ import { catchError, map } from 'rxjs/operators';
       nzAllowClear
       [nzDropdownRender]="renderTemplate"
     >
-      <nz-option *ngFor="let o of optionList" [nzValue]="o" [nzLabel]="o"></nz-option>
+      @for (o of optionList; track o) {
+        <nz-option [nzValue]="o" [nzLabel]="o"></nz-option>
+      }
     </nz-select>
     <ng-template #renderTemplate>
-      <nz-spin *ngIf="isLoading"></nz-spin>
+      @if (isLoading) {
+        <nz-spin></nz-spin>
+      }
     </ng-template>
   `,
   styles: [

@@ -27,7 +27,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
+    @if (nzShowExpand || nzIndentSize > 0) {
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
       <button
         nz-row-expand-button
@@ -35,15 +35,16 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
         (expandChange)="onExpandChange($event)"
         [spaceMode]="!nzShowExpand"
       ></button>
-    </ng-container>
-    <label
-      nz-checkbox
-      *ngIf="nzShowCheckbox"
-      [nzDisabled]="nzDisabled"
-      [ngModel]="nzChecked"
-      [nzIndeterminate]="nzIndeterminate"
-      (ngModelChange)="onCheckedChange($event)"
-    ></label>
+    }
+    @if (nzShowCheckbox) {
+      <label
+        nz-checkbox
+        [nzDisabled]="nzDisabled"
+        [ngModel]="nzChecked"
+        [nzIndeterminate]="nzIndeterminate"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
+    }
     <ng-content></ng-content>
   `,
   host: {

@@ -18,8 +18,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({
@@ -35,7 +33,13 @@ import { NzAnchorComponent } from './anchor.component';
       [target]="nzTarget"
       (click)="goToClick($event)"
     >
-      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+      @if (titleStr) {
+        <span>{{ titleStr }}</span>
+      } @else if (titleTpl) {
+        <ng-template [ngTemplateOutlet]="titleTpl" />
+      } @else if (nzTemplate) {
+        <ng-template [ngTemplateOutlet]="nzTemplate" />
+      }
     </a>
     <ng-content></ng-content>
   `,
@@ -50,7 +54,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzTarget?: string;
 
   titleStr: string | null = '';
-  titleTpl?: TemplateRef<NzSafeAny>;
+  titleTpl?: TemplateRef<void>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {

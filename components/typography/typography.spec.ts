@@ -1,6 +1,5 @@
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -31,7 +30,7 @@ describe('typography', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      imports: [NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
       providers: [{ provide: NgZone, useFactory: () => new MockNgZone() }],
       declarations: [
         NzTestTypographyComponent,
@@ -492,7 +491,7 @@ describe('change detection behavior', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      imports: [NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
       declarations: [NzTestTypographyEditComponent]
     }).compileComponents();
   });

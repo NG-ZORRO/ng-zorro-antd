@@ -45,28 +45,30 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [nzIsStart]="isStart"
       [nzIsEnd]="isEnd"
     ></nz-tree-indent>
-    <nz-tree-node-switcher
-      *ngIf="nzShowExpand"
-      [nzShowExpand]="nzShowExpand"
-      [nzShowLine]="nzShowLine"
-      [nzExpandedIcon]="nzExpandedIcon"
-      [nzSelectMode]="nzSelectMode"
-      [context]="nzTreeNode"
-      [isLeaf]="isLeaf"
-      [isExpanded]="isExpanded"
-      [isLoading]="isLoading"
-      (click)="clickExpand($event)"
-    ></nz-tree-node-switcher>
-    <nz-tree-node-checkbox
-      builtin
-      *ngIf="nzCheckable"
-      (click)="clickCheckBox($event)"
-      [nzSelectMode]="nzSelectMode"
-      [isChecked]="isChecked"
-      [isHalfChecked]="isHalfChecked"
-      [isDisabled]="isDisabled"
-      [isDisableCheckbox]="isDisableCheckbox"
-    ></nz-tree-node-checkbox>
+    @if (nzShowExpand) {
+      <nz-tree-node-switcher
+        [nzShowExpand]="nzShowExpand"
+        [nzShowLine]="nzShowLine"
+        [nzExpandedIcon]="nzExpandedIcon"
+        [nzSelectMode]="nzSelectMode"
+        [context]="nzTreeNode"
+        [isLeaf]="isLeaf"
+        [isExpanded]="isExpanded"
+        [isLoading]="isLoading"
+        (click)="clickExpand($event)"
+      ></nz-tree-node-switcher>
+    }
+    @if (nzCheckable) {
+      <nz-tree-node-checkbox
+        builtin
+        (click)="clickCheckBox($event)"
+        [nzSelectMode]="nzSelectMode"
+        [isChecked]="isChecked"
+        [isHalfChecked]="isHalfChecked"
+        [isDisabled]="isDisabled"
+        [isDisableCheckbox]="isDisableCheckbox"
+      ></nz-tree-node-checkbox>
+    }
     <nz-tree-node-title
       [icon]="icon"
       [title]="title"

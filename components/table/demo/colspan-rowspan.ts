@@ -13,31 +13,34 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of colSpanTable.data; index as i">
-          <td>{{ data.name }}</td>
-          <ng-container [ngSwitch]="i">
-            <ng-container *ngSwitchCase="2">
-              <td>{{ data.age }}</td>
-              <td rowspan="2">{{ data.tel }}</td>
-              <td>{{ data.phone }}</td>
-              <td>{{ data.address }}</td>
-            </ng-container>
-            <ng-container *ngSwitchCase="3">
-              <td>{{ data.age }}</td>
-              <td>{{ data.phone }}</td>
-              <td>{{ data.address }}</td>
-            </ng-container>
-            <ng-container *ngSwitchCase="4">
-              <td colspan="5">{{ data.age }}</td>
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              <td>{{ data.age }}</td>
-              <td>{{ data.tel }}</td>
-              <td>{{ data.phone }}</td>
-              <td>{{ data.address }}</td>
-            </ng-container>
-          </ng-container>
-        </tr>
+        @for (data of colSpanTable.data; track data; let i = $index) {
+          <tr>
+            <td>{{ data.name }}</td>
+
+            @switch (i) {
+              @case (2) {
+                <td>{{ data.age }}</td>
+                <td rowspan="2">{{ data.tel }}</td>
+                <td>{{ data.phone }}</td>
+                <td>{{ data.address }}</td>
+              }
+              @case (3) {
+                <td>{{ data.age }}</td>
+                <td>{{ data.phone }}</td>
+                <td>{{ data.address }}</td>
+              }
+              @case (4) {
+                <td colspan="5">{{ data.age }}</td>
+              }
+              @default {
+                <td>{{ data.age }}</td>
+                <td>{{ data.tel }}</td>
+                <td>{{ data.phone }}</td>
+                <td>{{ data.address }}</td>
+              }
+            }
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

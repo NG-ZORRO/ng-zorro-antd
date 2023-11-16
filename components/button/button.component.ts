@@ -43,7 +43,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span nz-icon nzType="loading" *ngIf="nzLoading"></span>
+    @if (nzLoading) {
+      <span nz-icon nzType="loading"></span>
+    }
     <ng-content></ng-content>
   `,
   host: {

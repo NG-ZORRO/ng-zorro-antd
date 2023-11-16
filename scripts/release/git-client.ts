@@ -6,7 +6,10 @@
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 
 export class GitClient {
-  constructor(public projectDir: string, public remoteGitUrl: string) {}
+  constructor(
+    public projectDir: string,
+    public remoteGitUrl: string
+  ) {}
 
   spawnGitProcess(args: string[], printStderr: boolean = true): SpawnSyncReturns<string> {
     return spawnSync('git', args, {

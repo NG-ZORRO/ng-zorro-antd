@@ -85,11 +85,9 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
         (ngModelChange)="onModelChange($event)"
       />
     </div>
-    <nz-form-item-feedback-icon
-      class="ant-input-number-suffix"
-      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status && !nzFormNoStatusService) {
+      <nz-form-item-feedback-icon class="ant-input-number-suffix" [status]="status"></nz-form-item-feedback-icon>
+    }
   `,
   providers: [
     {

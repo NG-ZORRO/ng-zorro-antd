@@ -4,8 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTableModule } from '../table.module';
 import { NzTableComponent } from '../table/table.component';
+import { NzTableModule } from '../table.module';
 
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {
@@ -68,7 +68,9 @@ describe('nz-thead', () => {
       <thead (nzSortOrderChange)="sortChange($event)">
         <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
         <th nzColumnKey="second" [nzSortFn]="filterFn">></th>
-        <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
+        @for (col of columns; track col) {
+          <th [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
+        }
       </thead>
     </nz-table>
   `

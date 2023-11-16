@@ -22,31 +22,32 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
       [ngTemplateOutlet]="treeTemplate"
       [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"
     ></ng-template>
-    <ng-container *ngIf="!treeTemplate">
-      <span
-        *ngIf="icon && showIcon"
-        [class.ant-tree-icon__open]="isSwitcherOpen"
-        [class.ant-tree-icon__close]="isSwitcherClose"
-        [class.ant-tree-icon_loading]="isLoading"
-        [class.ant-select-tree-iconEle]="selectMode"
-        [class.ant-tree-iconEle]="!selectMode"
-      >
+    @if (!treeTemplate) {
+      @if (icon && showIcon) {
         <span
+          [class.ant-tree-icon__open]="isSwitcherOpen"
+          [class.ant-tree-icon__close]="isSwitcherClose"
+          [class.ant-tree-icon_loading]="isLoading"
           [class.ant-select-tree-iconEle]="selectMode"
-          [class.ant-select-tree-icon__customize]="selectMode"
           [class.ant-tree-iconEle]="!selectMode"
-          [class.ant-tree-icon__customize]="!selectMode"
         >
-          <span nz-icon *ngIf="icon" [nzType]="icon"></span>
+          <span
+            [class.ant-select-tree-iconEle]="selectMode"
+            [class.ant-select-tree-icon__customize]="selectMode"
+            [class.ant-tree-iconEle]="!selectMode"
+            [class.ant-tree-icon__customize]="!selectMode"
+          >
+            @if (icon) {
+              <span nz-icon [nzType]="icon"></span>
+            }
+          </span>
         </span>
-      </span>
-      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue:'i':'font-highlight'"></span>
-    </ng-container>
-    <nz-tree-drop-indicator
-      *ngIf="showIndicator"
-      [dropPosition]="dragPosition"
-      [level]="context.level"
-    ></nz-tree-drop-indicator>
+      }
+      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue : 'i' : 'font-highlight'"></span>
+    }
+    @if (showIndicator) {
+      <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,

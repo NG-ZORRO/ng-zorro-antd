@@ -12,20 +12,18 @@ import { NzTableModule } from '../table.module';
 describe('nz-table', () => {
   let injector: Injector;
 
-  beforeEach(
-    waitForAsync(() => {
-      injector = TestBed.configureTestingModule({
-        imports: [BidiModule, NzTableModule],
-        declarations: [
-          NzTestTableBasicComponent,
-          NzTestTableScrollComponent,
-          NzTableSpecCrashComponent,
-          NzTestTableRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    injector = TestBed.configureTestingModule({
+      imports: [BidiModule, NzTableModule],
+      declarations: [
+        NzTestTableBasicComponent,
+        NzTestTableScrollComponent,
+        NzTableSpecCrashComponent,
+        NzTestTableRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;
@@ -326,16 +324,18 @@ interface BasicTestDataItem {
       [nzTitle]="title ? 'Here is Title' : null"
       [nzSize]="size"
     >
-      <thead *ngIf="header">
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+      @if (header) {
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      }
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+        @for (data of dynamicTable.data; track $index) {
           <tr>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>
@@ -345,7 +345,7 @@ interface BasicTestDataItem {
               <a href="#">Delete</a>
             </td>
           </tr>
-        </ng-template>
+        }
       </tbody>
     </nz-table>
   `
@@ -413,21 +413,23 @@ interface ScrollTestDataItem {
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{ data.name }}</td>
-            <td>{{ data.age }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>
-              <a>action</a>
-            </td>
-          </tr>
+          @for (data of nzTable.data; track data) {
+            <tr>
+              <td>{{ data.name }}</td>
+              <td>{{ data.age }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>
+                <a>action</a>
+              </td>
+            </tr>
+          }
         </tbody>
       </nz-table>
     </div>
@@ -468,12 +470,12 @@ export class NzTestTableScrollComponent implements OnInit {
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let item of nzTable.data">
+        @for (item of nzTable.data; track item) {
           <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
           </tr>
-        </ng-container>
+        }
       </tbody>
     </nz-table>
   `
@@ -507,16 +509,18 @@ interface RtlTestDataItem {
   template: `
     <div [dir]="direction">
       <nz-table #dynamicTable [nzData]="dataSet" [nzSimple]="simple">
-        <thead *ngIf="header">
-          <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Address</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+        @if (header) {
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Address</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+        }
         <tbody>
-          <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+          @for (data of dynamicTable.data; track $index) {
             <tr>
               <td>{{ data.name }}</td>
               <td>{{ data.age }}</td>
@@ -526,7 +530,7 @@ interface RtlTestDataItem {
                 <a href="#">Delete</a>
               </td>
             </tr>
-          </ng-template>
+          }
         </tbody>
       </nz-table>
     </div>

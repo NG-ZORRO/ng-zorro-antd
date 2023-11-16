@@ -28,36 +28,39 @@ import { NzListComponent } from './list.component';
   exportAs: 'nzListItem',
   template: `
     <ng-template #actionsTpl>
-      <ul nz-list-item-actions *ngIf="nzActions && nzActions.length > 0" [nzActions]="nzActions"></ul>
+      @if (nzActions && nzActions.length > 0) {
+        <ul nz-list-item-actions [nzActions]="nzActions"></ul>
+      }
       <ng-content select="nz-list-item-actions, [nz-list-item-actions]"></ng-content>
     </ng-template>
     <ng-template #contentTpl>
       <ng-content select="nz-list-item-meta, [nz-list-item-meta]"></ng-content>
       <ng-content></ng-content>
-      <ng-container *ngIf="nzContent">
+      @if (nzContent) {
         <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
-      </ng-container>
+      }
     </ng-template>
     <ng-template #extraTpl>
       <ng-content select="nz-list-item-extra, [nz-list-item-extra]"></ng-content>
     </ng-template>
-    <ng-template #simpleTpl>
-      <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
-      <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      <ng-template [ngTemplateOutlet]="extraTpl"></ng-template>
-      <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
-    </ng-template>
 
-    <ng-container *ngIf="isVerticalAndExtra; else simpleTpl">
+    @if (isVerticalAndExtra) {
       <div class="ant-list-item-main">
         <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
         <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
       </div>
-      <nz-list-item-extra *ngIf="nzExtra">
-        <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      </nz-list-item-extra>
+      @if (nzExtra) {
+        <nz-list-item-extra>
+          <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
+        </nz-list-item-extra>
+      }
       <ng-template [ngTemplateOutlet]="extraTpl"></ng-template>
-    </ng-container>
+    } @else {
+      <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
+      <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
+      <ng-template [ngTemplateOutlet]="extraTpl"></ng-template>
+      <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
+    }
   `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
@@ -83,7 +86,10 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
-  constructor(private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private parentComp: NzListComponent,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {

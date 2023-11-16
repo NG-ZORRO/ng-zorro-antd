@@ -55,51 +55,59 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   exportAs: 'nzTypography',
   template: `
     <ng-template #contentTemplate let-content="content">
-      <ng-content *ngIf="!content"></ng-content>
+      @if (!content) {
+        <ng-content></ng-content>
+      }
       {{ content }}
     </ng-template>
-    <ng-container *ngIf="!editing">
-      <ng-container
-        *ngIf="
-          expanded ||
-            (!hasOperationsWithEllipsis && nzEllipsisRows === 1 && !hasEllipsisObservers) ||
-            canCssEllipsis ||
-            (nzSuffix && expanded);
-          else jsEllipsis
-        "
-      >
+    @if (!editing) {
+      @if (
+        expanded ||
+        (!hasOperationsWithEllipsis && nzEllipsisRows === 1 && !hasEllipsisObservers) ||
+        canCssEllipsis ||
+        (nzSuffix && expanded)
+      ) {
         <ng-template
           [ngTemplateOutlet]="contentTemplate"
           [ngTemplateOutletContext]="{ content: nzContent }"
         ></ng-template>
-        <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
-      </ng-container>
-      <ng-template #jsEllipsis>
+        @if (nzSuffix) {
+          {{ nzSuffix }}
+        }
+      } @else {
         <span #ellipsisContainer></span>
-        <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
-        <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
-        <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">
-          {{ locale?.expand }}
-        </a>
-      </ng-template>
-    </ng-container>
+        @if (isEllipsis) {
+          {{ ellipsisStr }}
+        }
+        @if (nzSuffix) {
+          {{ nzSuffix }}
+        }
+        @if (nzExpandable && isEllipsis) {
+          <a #expandable class="ant-typography-expand" (click)="onExpand()">
+            {{ locale?.expand }}
+          </a>
+        }
+      }
+    }
 
-    <nz-text-edit
-      *ngIf="nzEditable"
-      [text]="nzContent"
-      [icon]="nzEditIcon"
-      [tooltip]="nzEditTooltip"
-      (endEditing)="onEndEditing($event)"
-      (startEditing)="onStartEditing()"
-    ></nz-text-edit>
+    @if (nzEditable) {
+      <nz-text-edit
+        [text]="nzContent"
+        [icon]="nzEditIcon"
+        [tooltip]="nzEditTooltip"
+        (endEditing)="onEndEditing($event)"
+        (startEditing)="onStartEditing()"
+      ></nz-text-edit>
+    }
 
-    <nz-text-copy
-      *ngIf="nzCopyable && !editing"
-      [text]="copyText"
-      [tooltips]="nzCopyTooltips"
-      [icons]="nzCopyIcons"
-      (textCopy)="onTextCopy($event)"
-    ></nz-text-copy>
+    @if (nzCopyable && !editing) {
+      <nz-text-copy
+        [text]="copyText"
+        [tooltips]="nzCopyTooltips"
+        [icons]="nzCopyIcons"
+        (textCopy)="onTextCopy($event)"
+      ></nz-text-copy>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

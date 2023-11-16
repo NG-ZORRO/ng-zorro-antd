@@ -47,10 +47,14 @@ export class NzListItemActionComponent {
   exportAs: 'nzListItemActions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li *ngFor="let i of actions; let last = last">
-      <ng-template [ngTemplateOutlet]="i"></ng-template>
-      <em *ngIf="!last" class="ant-list-item-action-split"></em>
-    </li>
+    @for (i of actions; track i; let last = $last) {
+      <li>
+        <ng-template [ngTemplateOutlet]="i"></ng-template>
+        @if (!last) {
+          <em class="ant-list-item-action-split"></em>
+        }
+      </li>
+    }
   `,
   host: {
     class: 'ant-list-item-action'
@@ -74,7 +78,11 @@ export class NzListItemActionsComponent implements OnChanges {
     );
   });
 
-  constructor(private ngZone: NgZone, cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
+  constructor(
+    private ngZone: NgZone,
+    cdr: ChangeDetectorRef,
+    destroy$: NzDestroyService
+  ) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {

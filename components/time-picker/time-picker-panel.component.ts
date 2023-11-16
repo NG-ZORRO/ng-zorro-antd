@@ -44,78 +44,95 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   selector: 'nz-time-picker-panel',
   exportAs: 'nzTimePickerPanel',
   template: `
-    <div *ngIf="nzInDatePicker" class="ant-picker-header">
-      <div class="ant-picker-header-view">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>
-    </div>
-    <div class="ant-picker-content">
-      <ul *ngIf="hourEnabled" #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let hour of hourRange; trackBy: trackByFn">
-          <li
-            *ngIf="!(nzHideDisabledOptions && hour.disabled)"
-            class="ant-picker-time-panel-cell"
-            (click)="selectHour(hour)"
-            [class.ant-picker-time-panel-cell-selected]="isSelectedHour(hour)"
-            [class.ant-picker-time-panel-cell-disabled]="hour.disabled"
-          >
-            <div class="ant-picker-time-panel-cell-inner">{{ hour.index | number: '2.0-0' }}</div>
-          </li>
-        </ng-container>
-      </ul>
-      <ul *ngIf="minuteEnabled" #minuteListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let minute of minuteRange; trackBy: trackByFn">
-          <li
-            *ngIf="!(nzHideDisabledOptions && minute.disabled)"
-            class="ant-picker-time-panel-cell"
-            (click)="selectMinute(minute)"
-            [class.ant-picker-time-panel-cell-selected]="isSelectedMinute(minute)"
-            [class.ant-picker-time-panel-cell-disabled]="minute.disabled"
-          >
-            <div class="ant-picker-time-panel-cell-inner">{{ minute.index | number: '2.0-0' }}</div>
-          </li>
-        </ng-container>
-      </ul>
-      <ul *ngIf="secondEnabled" #secondListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let second of secondRange; trackBy: trackByFn">
-          <li
-            *ngIf="!(nzHideDisabledOptions && second.disabled)"
-            class="ant-picker-time-panel-cell"
-            (click)="selectSecond(second)"
-            [class.ant-picker-time-panel-cell-selected]="isSelectedSecond(second)"
-            [class.ant-picker-time-panel-cell-disabled]="second.disabled"
-          >
-            <div class="ant-picker-time-panel-cell-inner">{{ second.index | number: '2.0-0' }}</div>
-          </li>
-        </ng-container>
-      </ul>
-      <ul *ngIf="nzUse12Hours" #use12HoursListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let range of use12HoursRange">
-          <li
-            (click)="select12Hours(range)"
-            class="ant-picker-time-panel-cell"
-            [class.ant-picker-time-panel-cell-selected]="isSelected12Hours(range)"
-          >
-            <div class="ant-picker-time-panel-cell-inner">{{ range.value }}</div>
-          </li>
-        </ng-container>
-      </ul>
-    </div>
-    <div *ngIf="!nzInDatePicker" class="ant-picker-footer">
-      <div *ngIf="nzAddOn" class="ant-picker-footer-extra">
-        <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+    @if (nzInDatePicker) {
+      <div class="ant-picker-header">
+        <div class="ant-picker-header-view">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>
       </div>
-      <ul class="ant-picker-ranges">
-        <li class="ant-picker-now">
-          <a (click)="onClickNow()">
-            {{ nzNowText || ('Calendar.lang.now' | nzI18n) }}
-          </a>
-        </li>
-        <li class="ant-picker-ok">
-          <button nz-button type="button" nzSize="small" nzType="primary" (click)="onClickOk()">
-            {{ nzOkText || ('Calendar.lang.ok' | nzI18n) }}
-          </button>
-        </li>
-      </ul>
+    }
+    <div class="ant-picker-content">
+      @if (hourEnabled) {
+        <ul #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
+          @for (hour of hourRange; track $index) {
+            @if (!(nzHideDisabledOptions && hour.disabled)) {
+              <li
+                class="ant-picker-time-panel-cell"
+                (click)="selectHour(hour)"
+                [class.ant-picker-time-panel-cell-selected]="isSelectedHour(hour)"
+                [class.ant-picker-time-panel-cell-disabled]="hour.disabled"
+              >
+                <div class="ant-picker-time-panel-cell-inner">{{ hour.index | number: '2.0-0' }}</div>
+              </li>
+            }
+          }
+        </ul>
+      }
+      @if (minuteEnabled) {
+        <ul #minuteListElement class="ant-picker-time-panel-column" style="position: relative;">
+          @for (minute of minuteRange; track $index) {
+            @if (!(nzHideDisabledOptions && minute.disabled)) {
+              <li
+                class="ant-picker-time-panel-cell"
+                (click)="selectMinute(minute)"
+                [class.ant-picker-time-panel-cell-selected]="isSelectedMinute(minute)"
+                [class.ant-picker-time-panel-cell-disabled]="minute.disabled"
+              >
+                <div class="ant-picker-time-panel-cell-inner">{{ minute.index | number: '2.0-0' }}</div>
+              </li>
+            }
+          }
+        </ul>
+      }
+      @if (secondEnabled) {
+        <ul #secondListElement class="ant-picker-time-panel-column" style="position: relative;">
+          @for (second of secondRange; track $index) {
+            @if (!(nzHideDisabledOptions && second.disabled)) {
+              <li
+                class="ant-picker-time-panel-cell"
+                (click)="selectSecond(second)"
+                [class.ant-picker-time-panel-cell-selected]="isSelectedSecond(second)"
+                [class.ant-picker-time-panel-cell-disabled]="second.disabled"
+              >
+                <div class="ant-picker-time-panel-cell-inner">{{ second.index | number: '2.0-0' }}</div>
+              </li>
+            }
+          }
+        </ul>
+      }
+      @if (nzUse12Hours) {
+        <ul #use12HoursListElement class="ant-picker-time-panel-column" style="position: relative;">
+          @for (range of use12HoursRange; track range) {
+            <li
+              (click)="select12Hours(range)"
+              class="ant-picker-time-panel-cell"
+              [class.ant-picker-time-panel-cell-selected]="isSelected12Hours(range)"
+            >
+              <div class="ant-picker-time-panel-cell-inner">{{ range.value }}</div>
+            </li>
+          }
+        </ul>
+      }
     </div>
+    @if (!nzInDatePicker) {
+      <div class="ant-picker-footer">
+        @if (nzAddOn) {
+          <div class="ant-picker-footer-extra">
+            <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+          </div>
+        }
+        <ul class="ant-picker-ranges">
+          <li class="ant-picker-now">
+            <a (click)="onClickNow()">
+              {{ nzNowText || ('Calendar.lang.now' | nzI18n) }}
+            </a>
+          </li>
+          <li class="ant-picker-ok">
+            <button nz-button type="button" nzSize="small" nzType="primary" (click)="onClickOk()">
+              {{ nzOkText || ('Calendar.lang.ok' | nzI18n) }}
+            </button>
+          </li>
+        </ul>
+      </div>
+    }
   `,
   host: {
     class: 'ant-picker-time-panel',
@@ -280,10 +297,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzSecondStep(): number {
     return this._nzSecondStep;
-  }
-
-  trackByFn(index: number): number {
-    return index;
   }
 
   buildHours(): void {

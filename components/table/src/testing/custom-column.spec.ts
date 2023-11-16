@@ -4,9 +4,9 @@ import { By } from '@angular/platform-browser';
 
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
+import { NzTableComponent } from '../table/table.component';
 import { NzTableModule } from '../table.module';
 import { NzCustomColumn } from '../table.types';
-import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table-custom-column', () => {
   describe('basic', () => {
@@ -91,17 +91,19 @@ interface Person {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td nzCellControl="name">{{ data.name }}</td>
-          <td nzCellControl="gender">{{ data.gender }}</td>
-          <td nzCellControl="age">{{ data.age }}</td>
-          <td nzCellControl="address">{{ data.address }}</td>
-          <td nzCellControl="action">
-            <a>Action</a>
-            <nz-divider nzType="vertical"></nz-divider>
-            <a>Delete</a>
-          </td>
-        </tr>
+        @for (data of basicTable.data; track data) {
+          <tr>
+            <td nzCellControl="name">{{ data.name }}</td>
+            <td nzCellControl="gender">{{ data.gender }}</td>
+            <td nzCellControl="age">{{ data.age }}</td>
+            <td nzCellControl="address">{{ data.address }}</td>
+            <td nzCellControl="action">
+              <a>Action</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a>Delete</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

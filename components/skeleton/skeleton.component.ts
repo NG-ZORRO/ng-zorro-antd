@@ -36,24 +36,32 @@ import {
     '[class.ant-skeleton-round]': '!!nzRound'
   },
   template: `
-    <ng-container *ngIf="nzLoading">
-      <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element
-          nzType="avatar"
-          [nzSize]="avatar.size || 'default'"
-          [nzShape]="avatar.shape || 'circle'"
-        ></nz-skeleton-element>
-      </div>
+    @if (nzLoading) {
+      @if (!!nzAvatar) {
+        <div class="ant-skeleton-header">
+          <nz-skeleton-element
+            nzType="avatar"
+            [nzSize]="avatar.size || 'default'"
+            [nzShape]="avatar.shape || 'circle'"
+          ></nz-skeleton-element>
+        </div>
+      }
       <div class="ant-skeleton-content">
-        <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
-        <ul *ngIf="!!nzParagraph" class="ant-skeleton-paragraph">
-          <li *ngFor="let row of rowsList; let i = index" [style.width]="toCSSUnit(widthList[i])"></li>
-        </ul>
+        @if (!!nzTitle) {
+          <h3 class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
+        }
+        @if (!!nzParagraph) {
+          <ul class="ant-skeleton-paragraph">
+            @for (row of rowsList; track row; let i = $index) {
+              <li [style.width]="toCSSUnit(widthList[i])"></li>
+            }
+          </ul>
+        }
       </div>
-    </ng-container>
-    <ng-container *ngIf="!nzLoading">
+    }
+    @if (!nzLoading) {
       <ng-content></ng-content>
-    </ng-container>
+    }
   `
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {

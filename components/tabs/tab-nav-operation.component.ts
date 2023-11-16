@@ -44,24 +44,29 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       <span nz-icon nzType="ellipsis"></span>
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu *ngIf="menuOpened">
-        <li
-          nz-menu-item
-          *ngFor="let item of items"
-          class="ant-tabs-dropdown-menu-item"
-          [class.ant-tabs-dropdown-menu-item-disabled]="item.disabled"
-          [nzSelected]="item.active"
-          [nzDisabled]="item.disabled"
-          (click)="onSelect(item)"
-          (contextmenu)="onContextmenu(item, $event)"
-        >
-          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">
-            {{ item.tab.label }}
-          </ng-container>
-        </li>
-      </ul>
+      @if (menuOpened) {
+        <ul nz-menu>
+          @for (item of items; track item) {
+            <li
+              nz-menu-item
+              class="ant-tabs-dropdown-menu-item"
+              [class.ant-tabs-dropdown-menu-item-disabled]="item.disabled"
+              [nzSelected]="item.active"
+              [nzDisabled]="item.disabled"
+              (click)="onSelect(item)"
+              (contextmenu)="onContextmenu(item, $event)"
+            >
+              <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">
+                {{ item.tab.label }}
+              </ng-container>
+            </li>
+          }
+        </ul>
+      }
     </nz-dropdown-menu>
-    <button *ngIf="addable" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+    @if (addable) {
+      <button nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+    }
   `,
   host: {
     class: 'ant-tabs-nav-operations',
@@ -79,7 +84,10 @@ export class NzTabNavOperationComponent implements OnDestroy {
   menuOpened = false;
 
   private readonly element: HTMLElement;
-  constructor(public cdr: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {
+  constructor(
+    public cdr: ChangeDetectorRef,
+    private elementRef: ElementRef<HTMLElement>
+  ) {
     this.element = this.elementRef.nativeElement;
   }
 

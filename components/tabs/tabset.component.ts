@@ -64,53 +64,54 @@ let nextId = 0;
     }
   ],
   template: `
-    <nz-tabs-nav
-      *ngIf="tabs.length || addable"
-      [ngStyle]="nzTabBarStyle"
-      [selectedIndex]="nzSelectedIndex || 0"
-      [inkBarAnimated]="inkBarAnimated"
-      [addable]="addable"
-      [addIcon]="nzAddIcon"
-      [hideBar]="nzHideAll"
-      [position]="position"
-      [extraTemplate]="nzTabBarExtraContent"
-      (tabScroll)="nzTabListScroll.emit($event)"
-      (selectFocusedIndex)="setSelectedIndex($event)"
-      (addClicked)="onAdd()"
-    >
-      <div
-        class="ant-tabs-tab"
-        [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
-        [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
-        [class.ant-tabs-tab-active]="nzSelectedIndex === i"
-        [class.ant-tabs-tab-disabled]="tab.nzDisabled"
-        (click)="clickNavItem(tab, i, $event)"
-        (contextmenu)="contextmenuNavItem(tab, $event)"
-        *ngFor="let tab of tabs; let i = index"
+    @if (tabs.length || addable) {
+      <nz-tabs-nav
+        [ngStyle]="nzTabBarStyle"
+        [selectedIndex]="nzSelectedIndex || 0"
+        [inkBarAnimated]="inkBarAnimated"
+        [addable]="addable"
+        [addIcon]="nzAddIcon"
+        [hideBar]="nzHideAll"
+        [position]="position"
+        [extraTemplate]="nzTabBarExtraContent"
+        (tabScroll)="nzTabListScroll.emit($event)"
+        (selectFocusedIndex)="setSelectedIndex($event)"
+        (addClicked)="onAdd()"
       >
-        <div
-          role="tab"
-          [attr.tabIndex]="getTabIndex(tab, i)"
-          [attr.aria-disabled]="tab.nzDisabled"
-          [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
-          [attr.aria-controls]="getTabContentId(i)"
-          [disabled]="tab.nzDisabled"
-          [tab]="tab"
-          [active]="nzSelectedIndex === i"
-          class="ant-tabs-tab-btn"
-          nzTabNavItem
-          cdkMonitorElementFocus
-        >
-          <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{ tab.label }}</ng-container>
-          <button
-            nz-tab-close-button
-            *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
-            [closeIcon]="tab.nzCloseIcon"
-            (click)="onClose(i, $event)"
-          ></button>
-        </div>
-      </div>
-    </nz-tabs-nav>
+        @for (tab of tabs; track tab; let i = $index) {
+          <div
+            class="ant-tabs-tab"
+            [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
+            [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
+            [class.ant-tabs-tab-active]="nzSelectedIndex === i"
+            [class.ant-tabs-tab-disabled]="tab.nzDisabled"
+            (click)="clickNavItem(tab, i, $event)"
+            (contextmenu)="contextmenuNavItem(tab, $event)"
+          >
+            <div
+              role="tab"
+              [attr.tabIndex]="getTabIndex(tab, i)"
+              [attr.aria-disabled]="tab.nzDisabled"
+              [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
+              [attr.aria-controls]="getTabContentId(i)"
+              [disabled]="tab.nzDisabled"
+              [tab]="tab"
+              [active]="nzSelectedIndex === i"
+              class="ant-tabs-tab-btn"
+              nzTabNavItem
+              cdkMonitorElementFocus
+            >
+              <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{
+                tab.label
+              }}</ng-container>
+              @if (tab.nzClosable && closable && !tab.nzDisabled) {
+                <button nz-tab-close-button [closeIcon]="tab.nzCloseIcon" (click)="onClose(i, $event)"></button>
+              }
+            </div>
+          </div>
+        }
+      </nz-tabs-nav>
+    }
     <div class="ant-tabs-content-holder">
       <div
         class="ant-tabs-content"
@@ -122,14 +123,15 @@ let nextId = 0;
         [style.margin-left]="getTabContentMarginLeft()"
         [style.margin-right]="getTabContentMarginRight()"
       >
-        <div
-          nz-tab-body
-          *ngFor="let tab of tabs; let i = index"
-          [active]="nzSelectedIndex === i && !nzHideAll"
-          [content]="tab.content"
-          [forceRender]="tab.nzForceRender"
-          [tabPaneAnimated]="tabPaneAnimated"
-        ></div>
+        @for (tab of tabs; track tab; let i = $index) {
+          <div
+            nz-tab-body
+            [active]="nzSelectedIndex === i && !nzHideAll"
+            [content]="tab.content"
+            [forceRender]="tab.nzForceRender"
+            [tabPaneAnimated]="tabPaneAnimated"
+          ></div>
+        }
       </div>
     </div>
   `,

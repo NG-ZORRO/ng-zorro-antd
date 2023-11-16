@@ -5,13 +5,23 @@ import { Component } from '@angular/core';
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <ng-container [ngSwitch]="type">
-        <a *ngSwitchCase="'page'">{{ page }}</a>
-        <a *ngSwitchCase="'prev'">Previous</a>
-        <a *ngSwitchCase="'next'">Next</a>
-        <a *ngSwitchCase="'prev_5'"><<</a>
-        <a *ngSwitchCase="'next_5'">>></a>
-      </ng-container>
+      @switch (type) {
+        @case ('page') {
+          <a>{{ page }}</a>
+        }
+        @case ('prev') {
+          <a>Previous</a>
+        }
+        @case ('next') {
+          <a>Next</a>
+        }
+        @case ('prev_5') {
+          <a><<</a>
+        }
+        @case ('next_5') {
+          <a>>></a>
+        }
+      }
     </ng-template>
   `
 })

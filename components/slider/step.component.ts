@@ -18,12 +18,9 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   preserveWhitespaces: false,
   template: `
     <div class="ant-slider-step">
-      <span
-        class="ant-slider-dot"
-        *ngFor="let mark of steps; trackBy: trackById"
-        [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style!"
-      ></span>
+      @for (mark of steps; track trackById($index, mark)) {
+        <span class="ant-slider-dot" [class.ant-slider-dot-active]="mark.active" [ngStyle]="mark.style!"></span>
+      }
     </div>
   `
 })

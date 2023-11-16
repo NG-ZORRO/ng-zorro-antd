@@ -31,69 +31,46 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
   exportAs: 'nzTransferList',
   preserveWhitespaces: false,
   template: `
-    <ng-template #defaultRenderList>
-      <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
-        <li
-          *ngFor="let item of validData; trackBy: trackByHide"
-          (click)="onItemSelect(item)"
-          class="ant-transfer-list-content-item"
-          [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
-        >
-          <label
-            #checkboxes
-            nz-checkbox
-            [nzChecked]="item.checked"
-            (nzCheckedChange)="onItemSelect(item)"
-            [nzDisabled]="disabled || item.disabled"
-          >
-            <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template
-              #renderContainer
-              [ngTemplateOutlet]="render"
-              [ngTemplateOutletContext]="{ $implicit: item }"
-            ></ng-template>
-          </label>
-        </li>
-      </ul>
-      <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
-        <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
-      </div>
-    </ng-template>
     <div class="ant-transfer-list-header">
-      <label
-        *ngIf="showSelectAll"
-        class="ant-transfer-list-checkbox"
-        nz-checkbox
-        #headerCheckbox
-        [nzChecked]="stat.checkAll"
-        (nzCheckedChange)="onItemSelectAll($event)"
-        [nzIndeterminate]="stat.checkHalf"
-        [nzDisabled]="stat.shownCount === 0 || disabled"
-      ></label>
+      @if (showSelectAll) {
+        <label
+          class="ant-transfer-list-checkbox"
+          nz-checkbox
+          #headerCheckbox
+          [nzChecked]="stat.checkAll"
+          (nzCheckedChange)="onItemSelectAll($event)"
+          [nzIndeterminate]="stat.checkHalf"
+          [nzDisabled]="stat.shownCount === 0 || disabled"
+        ></label>
+      }
       <span class="ant-transfer-list-header-selected">
         <span>
           {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
           {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
       </span>
-      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
+      @if (titleText) {
+        <span class="ant-transfer-list-header-title">{{ titleText }}</span>
+      }
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
       [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
     >
-      <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
-        <span
-          nz-transfer-search
-          class="ant-input-affix-wrapper ant-transfer-list-search"
-          (valueChanged)="handleFilter($event)"
-          (valueClear)="handleClear()"
-          [placeholder]="searchPlaceholder"
-          [disabled]="disabled"
-          [value]="filter"
-        ></span>
-      </div>
-      <ng-container *ngIf="renderList; else defaultRenderList">
+      @if (showSearch) {
+        <div class="ant-transfer-list-body-search-wrapper">
+          <span
+            nz-transfer-search
+            class="ant-input-affix-wrapper ant-transfer-list-search"
+            (valueChanged)="handleFilter($event)"
+            (valueClear)="handleClear()"
+            [placeholder]="searchPlaceholder"
+            [disabled]="disabled"
+            [value]="filter"
+          ></span>
+        </div>
+      }
+      @if (renderList) {
         <div class="ant-transfer-list-body-customize-wrapper">
           <ng-container
             *ngTemplateOutlet="
@@ -109,11 +86,42 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
             "
           ></ng-container>
         </div>
-      </ng-container>
+      } @else {
+        @if (stat.shownCount > 0) {
+          <ul class="ant-transfer-list-content">
+            @for (item of validData; track trackByHide($index, item)) {
+              <li
+                (click)="onItemSelect(item)"
+                class="ant-transfer-list-content-item"
+                [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+              >
+                <label
+                  #checkboxes
+                  nz-checkbox
+                  [nzChecked]="item.checked"
+                  (nzCheckedChange)="onItemSelect(item)"
+                  [nzDisabled]="disabled || item.disabled"
+                >
+                  @if (!render) {
+                    {{ item.title }}
+                  } @else {}
+                </label>
+              </li>
+            }
+          </ul>
+        }
+        @if (stat.shownCount === 0) {
+          <div class="ant-transfer-list-body-not-found">
+            <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
+          </div>
+        }
+      }
     </div>
-    <div *ngIf="footer" class="ant-transfer-list-footer">
-      <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
-    </div>
+    @if (footer) {
+      <div class="ant-transfer-list-footer">
+        <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
+      </div>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -237,7 +245,10 @@ export class NzTransferListComponent implements AfterViewInit {
 
   // #endregion
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

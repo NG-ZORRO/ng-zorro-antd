@@ -18,13 +18,14 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   exportAs: 'nzSliderMarks',
   template: `
     <div class="ant-slider-mark">
-      <span
-        class="ant-slider-mark-text"
-        *ngFor="let attr of marks; trackBy: trackById"
-        [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style!"
-        [innerHTML]="attr.label"
-      ></span>
+      @for (attr of marks; track trackById($index, attr)) {
+        <span
+          class="ant-slider-mark-text"
+          [class.ant-slider-mark-active]="attr.active"
+          [ngStyle]="attr.style!"
+          [innerHTML]="attr.label"
+        ></span>
+      }
     </div>
   `
 })

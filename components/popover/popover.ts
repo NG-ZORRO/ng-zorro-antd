@@ -125,9 +125,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
           </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
-              <div class="ant-popover-title" *ngIf="nzTitle">
-                <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-              </div>
+              @if (nzTitle) {
+                <div class="ant-popover-title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                </div>
+              }
               <div class="ant-popover-inner-content">
                 <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
               </div>

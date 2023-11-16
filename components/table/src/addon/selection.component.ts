@@ -13,27 +13,32 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label
-      *ngIf="showCheckbox"
-      nz-checkbox
-      [class.ant-table-selection-select-all-custom]="showRowSelection"
-      [ngModel]="checked"
-      [nzDisabled]="disabled"
-      [nzIndeterminate]="indeterminate"
-      (ngModelChange)="onCheckedChange($event)"
-    ></label>
-    <div class="ant-table-selection-extra" *ngIf="showRowSelection">
-      <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
-        <span nz-icon nzType="down"></span>
-      </span>
-      <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
-        <ul nz-menu class="ant-table-selection-menu">
-          <li nz-menu-item *ngFor="let selection of listOfSelections" (click)="selection.onSelect()">
-            {{ selection.text }}
-          </li>
-        </ul>
-      </nz-dropdown-menu>
-    </div>
+    @if (showCheckbox) {
+      <label
+        nz-checkbox
+        [class.ant-table-selection-select-all-custom]="showRowSelection"
+        [ngModel]="checked"
+        [nzDisabled]="disabled"
+        [nzIndeterminate]="indeterminate"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
+    }
+    @if (showRowSelection) {
+      <div class="ant-table-selection-extra">
+        <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
+          <span nz-icon nzType="down"></span>
+        </span>
+        <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
+          <ul nz-menu class="ant-table-selection-menu">
+            @for (selection of listOfSelections; track selection) {
+              <li nz-menu-item (click)="selection.onSelect()">
+                {{ selection.text }}
+              </li>
+            }
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    }
   `,
   host: { class: 'ant-table-selection' }
 })

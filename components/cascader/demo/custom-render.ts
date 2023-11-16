@@ -59,16 +59,20 @@ const options = [
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">
-        <span *ngIf="!isLast">{{ label }} /</span>
-        <span *ngIf="isLast">
-          {{ label }} (
-          <a href="javascript:;" (click)="handleAreaClick($event, label, selectedOptions[i])">
-            {{ selectedOptions[i].code }}
-          </a>
-          )
-        </span>
-      </ng-container>
+      @for (label of labels; track label; let i = $index; let isLast = $last) {
+        @if (!isLast) {
+          <span>{{ label }} /</span>
+        }
+        @if (isLast) {
+          <span>
+            {{ label }} (
+            <a href="javascript:;" (click)="handleAreaClick($event, label, selectedOptions[i])">
+              {{ selectedOptions[i].code }}
+            </a>
+            )
+          </span>
+        }
+      }
     </ng-template>
   `
 })

@@ -22,19 +22,22 @@ interface Name {
   selector: 'nz-demo-list-infinite-load',
   template: `
     <div>
-      <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+      <cdk-virtual-scroll-viewport [itemSize]="73" class="demo-infinite-container">
         <nz-list>
           <nz-list-item *cdkVirtualFor="let item of ds">
-            <nz-skeleton *ngIf="!item" [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
-            <nz-list-item-meta
-              *ngIf="item"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              [nzDescription]="item.email"
-            >
-              <nz-list-item-meta-title>
-                <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </nz-list-item-meta-title>
-            </nz-list-item-meta>
+            @if (!item) {
+              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+            }
+            @if (item) {
+              <nz-list-item-meta
+                nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                [nzDescription]="item.email"
+              >
+                <nz-list-item-meta-title>
+                  <a href="https://ng.ant.design">{{ item.name.last }}</a>
+                </nz-list-item-meta-title>
+              </nz-list-item-meta>
+            }
           </nz-list-item>
         </nz-list>
       </cdk-virtual-scroll-viewport>
@@ -59,7 +62,10 @@ export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   ds = new MyDataSource(this.http);
 
   private destroy$ = new Subject<boolean>();
-  constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private nzMessage: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.ds

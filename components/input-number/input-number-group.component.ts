@@ -48,62 +48,72 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzFormNoStatusService],
   template: `
-    <span class="ant-input-number-wrapper ant-input-number-group" *ngIf="isAddOn; else noAddOnTemplate">
-      <div
-        *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
-        nz-input-number-group-slot
-        type="addon"
-        [icon]="nzAddOnBeforeIcon"
-        [template]="nzAddOnBefore"
-      ></div>
-      <div
-        *ngIf="isAffix || hasFeedback; else contentTemplate"
-        class="ant-input-number-affix-wrapper"
-        [class.ant-input-number-affix-wrapper-disabled]="disabled"
-        [class.ant-input-number-affix-wrapper-sm]="isSmall"
-        [class.ant-input-number-affix-wrapper-lg]="isLarge"
-        [class.ant-input-number-affix-wrapper-focused]="focused"
-        [ngClass]="affixInGroupStatusCls"
-      >
-        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
-      </div>
-      <span
-        *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
-        nz-input-number-group-slot
-        type="addon"
-        [icon]="nzAddOnAfterIcon"
-        [template]="nzAddOnAfter"
-      ></span>
-    </span>
-    <ng-template #noAddOnTemplate>
-      <ng-template [ngIf]="isAffix" [ngIfElse]="contentTemplate">
-        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
-      </ng-template>
-    </ng-template>
-    <ng-template #affixTemplate>
-      <span
-        *ngIf="nzPrefix || nzPrefixIcon"
-        nz-input-number-group-slot
-        type="prefix"
-        [icon]="nzPrefixIcon"
-        [template]="nzPrefix"
-      ></span>
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-      <span
-        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
-        nz-input-number-group-slot
-        type="suffix"
-        [icon]="nzSuffixIcon"
-        [template]="nzSuffix"
-      >
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
+    @if (isAddOn) {
+      <span class="ant-input-number-wrapper ant-input-number-group">
+        @if (nzAddOnBefore || nzAddOnBeforeIcon) {
+          <div nz-input-number-group-slot type="addon" [icon]="nzAddOnBeforeIcon" [template]="nzAddOnBefore"></div>
+        }
+        @if (isAffix || hasFeedback) {
+          <div
+            class="ant-input-number-affix-wrapper"
+            [class.ant-input-number-affix-wrapper-disabled]="disabled"
+            [class.ant-input-number-affix-wrapper-sm]="isSmall"
+            [class.ant-input-number-affix-wrapper-lg]="isLarge"
+            [class.ant-input-number-affix-wrapper-focused]="focused"
+            [ngClass]="affixInGroupStatusCls"
+          >
+            <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+          </div>
+        } @else {
+          <ng-content></ng-content>
+          @if (!isAddOn && !isAffix && isFeedback) {
+            <span nz-input-number-group-slot type="suffix">
+              @if (isFeedback) {
+                <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+              }
+            </span>
+          }
+        }
+        @if (nzAddOnAfter || nzAddOnAfterIcon) {
+          <span nz-input-number-group-slot type="addon" [icon]="nzAddOnAfterIcon" [template]="nzAddOnAfter"></span>
+        }
       </span>
+    } @else {
+      @if (isAffix) {
+        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+      } @else {
+        <ng-content></ng-content>
+        @if (!isAddOn && !isAffix && isFeedback) {
+          <span nz-input-number-group-slot type="suffix">
+            @if (isFeedback) {
+              <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            }
+          </span>
+        }
+      }
+    }
+    <ng-template #affixTemplate>
+      @if (nzPrefix || nzPrefixIcon) {
+        <span nz-input-number-group-slot type="prefix" [icon]="nzPrefixIcon" [template]="nzPrefix"></span>
+      }
+      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+      @if (nzSuffix || nzSuffixIcon || isFeedback) {
+        <span nz-input-number-group-slot type="suffix" [icon]="nzSuffixIcon" [template]="nzSuffix">
+          @if (isFeedback) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </span>
+      }
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
-      <span *ngIf="!isAddOn && !isAffix && isFeedback" nz-input-number-group-slot type="suffix">
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
-      </span>
+      @if (!isAddOn && !isAffix && isFeedback) {
+        <span nz-input-number-group-slot type="suffix">
+          @if (isFeedback) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </span>
+      }
     </ng-template>
   `,
   host: {

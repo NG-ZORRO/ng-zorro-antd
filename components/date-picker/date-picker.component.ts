@@ -96,39 +96,42 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
-    <ng-container *ngIf="!nzInline; else inlineMode">
+    @if (!nzInline) {
       <!-- Content of single picker -->
-      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-        <input
-          #pickerInput
-          [attr.id]="nzId"
-          [class.ant-input-disabled]="nzDisabled"
-          [disabled]="nzDisabled"
-          [readOnly]="nzInputReadOnly"
-          [(ngModel)]="inputValue"
-          placeholder="{{ getPlaceholder() }}"
-          [size]="inputSize"
-          autocomplete="off"
-          (focus)="onFocus($event)"
-          (focusout)="onFocusout($event)"
-          (ngModelChange)="onInputChange($event)"
-          (keyup.enter)="onKeyupEnter($event)"
-        />
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </div>
+      @if (!isRange) {
+        <div class="{{ prefixCls }}-input">
+          <input
+            #pickerInput
+            [attr.id]="nzId"
+            [class.ant-input-disabled]="nzDisabled"
+            [disabled]="nzDisabled"
+            [readOnly]="nzInputReadOnly"
+            [(ngModel)]="inputValue"
+            placeholder="{{ getPlaceholder() }}"
+            [size]="inputSize"
+            autocomplete="off"
+            (focus)="onFocus($event)"
+            (focusout)="onFocusout($event)"
+            (ngModelChange)="onInputChange($event)"
+            (keyup.enter)="onKeyupEnter($event)"
+          />
+          <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+        </div>
+      }
 
       <!-- Content of range picker -->
-      <ng-container *ngIf="isRange">
+      @if (isRange) {
         <div class="{{ prefixCls }}-input">
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
         </div>
         <div #separatorElement class="{{ prefixCls }}-range-separator">
           <span class="{{ prefixCls }}-separator">
             <ng-container *nzStringTemplateOutlet="nzSeparator; let separator">
-              <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
-              <ng-template #defaultSeparator>
+              @if (nzSeparator) {
+                {{ nzSeparator }}
+              } @else {
                 <span nz-icon nzType="swap-right" nzTheme="outline"></span>
-              </ng-template>
+              }
             </ng-container>
           </span>
         </div>
@@ -136,8 +139,42 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
         </div>
         <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </ng-container>
-    </ng-container>
+      }
+    } @else {
+      <div
+        class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
+        [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+        [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
+        [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+        [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
+        [class.ant-picker-dropdown-range]="isRange"
+        [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
+        [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
+        [ngStyle]="nzPopupStyle"
+      >
+        <date-range-popup
+          [isRange]="isRange"
+          [inline]="nzInline"
+          [defaultPickerValue]="nzDefaultPickerValue"
+          [showWeek]="nzShowWeekNumber || nzMode === 'week'"
+          [panelMode]="panelMode"
+          (panelModeChange)="onPanelModeChange($event)"
+          (calendarChange)="onCalendarChange($event)"
+          [locale]="nzLocale?.lang!"
+          [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
+          [showNow]="nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime"
+          [showTime]="nzShowTime"
+          [dateRender]="nzDateRender"
+          [disabledDate]="nzDisabledDate"
+          [disabledTime]="nzDisabledTime"
+          [extraFooter]="extraFooter"
+          [ranges]="nzRanges"
+          [dir]="dir"
+          (resultOk)="onResultOk()"
+        ></date-range-popup>
+      </div>
+    }
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
       <input
@@ -160,14 +197,18 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
       <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
-      <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-        <span nz-icon nzType="close-circle" nzTheme="fill"></span>
-      </span>
+      @if (showClear()) {
+        <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
+          <span nz-icon nzType="close-circle" nzTheme="fill"></span>
+        </span>
+      }
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
           <span nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+        @if (hasFeedback && !!status) {
+          <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+        }
       </span>
     </ng-template>
 

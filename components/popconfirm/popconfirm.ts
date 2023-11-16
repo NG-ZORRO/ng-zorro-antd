@@ -162,9 +162,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow">
-            <span class="ant-popover-arrow-content"></span>
-          </div>
+          @if (nzPopconfirmShowArrow) {
+            <div class="ant-popover-arrow">
+              <span class="ant-popover-arrow-content"></span>
+            </div>
+          }
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
@@ -184,8 +186,12 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     (click)="onCancel()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'cancel' || null"
                   >
-                    <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
-                    <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+                    @if (nzCancelText) {
+                      {{ nzCancelText }}
+                    }
+                    @if (!nzCancelText) {
+                      {{ 'Modal.cancelText' | nzI18n }}
+                    }
                   </button>
                   <button
                     nz-button
@@ -197,8 +203,12 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
-                    <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
-                    <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+                    @if (nzOkText) {
+                      {{ nzOkText }}
+                    }
+                    @if (!nzOkText) {
+                      {{ 'Modal.okText' | nzI18n }}
+                    }
                   </button>
                 </div>
               </div>

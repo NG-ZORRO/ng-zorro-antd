@@ -34,8 +34,12 @@ export class NzListItemMetaDescriptionComponent {}
   exportAs: 'nzListItemMetaAvatar',
   template: `
     <div class="ant-list-item-meta-avatar">
-      <nz-avatar *ngIf="nzSrc" [nzSrc]="nzSrc"></nz-avatar>
-      <ng-content *ngIf="!nzSrc"></ng-content>
+      @if (nzSrc) {
+        <nz-avatar [nzSrc]="nzSrc"></nz-avatar>
+      }
+      @if (!nzSrc) {
+        <ng-content></ng-content>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

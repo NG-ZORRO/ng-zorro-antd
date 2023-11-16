@@ -12,17 +12,25 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ant-card-meta-avatar" *ngIf="nzAvatar">
-      <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
-    </div>
-    <div class="ant-card-meta-detail" *ngIf="nzTitle || nzDescription">
-      <div class="ant-card-meta-title" *ngIf="nzTitle">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    @if (nzAvatar) {
+      <div class="ant-card-meta-avatar">
+        <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
       </div>
-      <div class="ant-card-meta-description" *ngIf="nzDescription">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+    }
+    @if (nzTitle || nzDescription) {
+      <div class="ant-card-meta-detail">
+        @if (nzTitle) {
+          <div class="ant-card-meta-title">
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </div>
+        }
+        @if (nzDescription) {
+          <div class="ant-card-meta-description">
+            <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+          </div>
+        }
       </div>
-    </div>
+    }
   `,
   host: { class: 'ant-card-meta' }
 })

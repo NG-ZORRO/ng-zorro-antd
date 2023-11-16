@@ -36,16 +36,17 @@ export interface NzCheckBoxOptionInterface {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label
-      nz-checkbox
-      class="ant-checkbox-group-item"
-      *ngFor="let o of options; trackBy: trackByOption"
-      [nzDisabled]="o.disabled || nzDisabled"
-      [nzChecked]="o.checked!"
-      (nzCheckedChange)="onCheckedChange(o, $event)"
-    >
-      <span>{{ o.label }}</span>
-    </label>
+    @for (o of options; track trackByOption($index, o)) {
+      <label
+        nz-checkbox
+        class="ant-checkbox-group-item"
+        [nzDisabled]="o.disabled || nzDisabled"
+        [nzChecked]="o.checked!"
+        (nzCheckedChange)="onCheckedChange(o, $event)"
+      >
+        <span>{{ o.label }}</span>
+      </label>
+    }
   `,
   providers: [
     {

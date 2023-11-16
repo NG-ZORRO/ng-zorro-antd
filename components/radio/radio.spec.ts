@@ -11,27 +11,25 @@ import { NzRadioComponent } from './radio.component';
 import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
-        declarations: [
-          NzTestRadioSingleComponent,
-          NzTestRadioButtonComponent,
-          NzTestRadioGroupComponent,
-          NzTestRadioFormComponent,
-          NzTestRadioGroupFormComponent,
-          NzTestRadioGroupDisabledComponent,
-          NzTestRadioGroupDisabledFormComponent,
-          NzTestRadioGroupLabelNgModelComponent,
-          NzTestRadioSingleRtlComponent,
-          NzTestRadioGroupRtlComponent,
-          NzTestRadioButtonRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
+      declarations: [
+        NzTestRadioSingleComponent,
+        NzTestRadioButtonComponent,
+        NzTestRadioGroupComponent,
+        NzTestRadioFormComponent,
+        NzTestRadioGroupFormComponent,
+        NzTestRadioGroupDisabledComponent,
+        NzTestRadioGroupDisabledFormComponent,
+        NzTestRadioGroupLabelNgModelComponent,
+        NzTestRadioSingleRtlComponent,
+        NzTestRadioGroupRtlComponent,
+        NzTestRadioButtonRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('single radio basic', () => {
     let fixture: ComponentFixture<NzTestRadioSingleComponent>;
     let testComponent: NzTestRadioSingleComponent;
@@ -557,7 +555,9 @@ export class NzTestRadioGroupDisabledComponent {
   template: `
     <form nz-form>
       <nz-radio-group [formControl]="formControl">
-        <label nz-radio *ngFor="let val of radioValues" [nzValue]="val">{{ val }}</label>
+        @for (val of radioValues; track val) {
+          <label nz-radio [nzValue]="val">{{ val }}</label>
+        }
       </nz-radio-group>
     </form>
   `
@@ -586,9 +586,11 @@ export class NzTestRadioGroupSolidComponent {
 @Component({
   template: `
     <nz-radio-group>
-      <label nz-radio *ngFor="let item of items" [nzValue]="item.label" [(ngModel)]="item.checked">
-        {{ item.label }}
-      </label>
+      @for (item of items; track item) {
+        <label nz-radio [nzValue]="item.label" [(ngModel)]="item.checked">
+          {{ item.label }}
+        </label>
+      }
     </nz-radio-group>
   `
 })

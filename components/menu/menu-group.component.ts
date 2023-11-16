@@ -43,7 +43,9 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]"></ng-content>
+      }
     </div>
     <ng-content></ng-content>
   `,

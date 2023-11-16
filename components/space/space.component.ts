@@ -40,7 +40,7 @@ const SPACE_SIZE: {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content></ng-content>
-    <ng-template ngFor let-item let-last="last" let-index="index" [ngForOf]="items">
+    @for (item of items; track item; let last = $last; let index = $index) {
       <div
         class="ant-space-item"
         [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
@@ -48,15 +48,16 @@ const SPACE_SIZE: {
       >
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
-      <span
-        *ngIf="nzSplit && !last"
-        class="ant-space-split"
-        [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
-      >
-        <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
-      </span>
-    </ng-template>
+      @if (nzSplit && !last) {
+        <span
+          class="ant-space-split"
+          [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+          [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        >
+          <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
+        </span>
+      }
+    }
   `,
   host: {
     class: 'ant-space',
@@ -86,7 +87,10 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   spaceSize: number = SPACE_SIZE.small;
   private destroy$ = new Subject<boolean>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;

@@ -21,12 +21,21 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: { $implicit: contentTemplateOutletContext }">
-      <div class="ant-select-selection-item-content" *ngIf="deletable; else labelTemplate">{{ label }}</div>
-      <ng-template #labelTemplate>{{ label }}</ng-template>
+      @if (deletable) {
+        <div class="ant-select-selection-item-content">{{ label }}</div>
+      } @else {
+        {{ label }}
+      }
     </ng-container>
-    <span *ngIf="deletable && !disabled" class="ant-select-selection-item-remove" (click)="onDelete($event)">
-      <span nz-icon nzType="close" *ngIf="!removeIcon; else removeIcon"></span>
-    </span>
+    @if (deletable && !disabled) {
+      <span class="ant-select-selection-item-remove" (click)="onDelete($event)">
+        @if (!removeIcon) {
+          <span nz-icon nzType="close"></span>
+        } @else {
+          #removeIcon|
+        }
+      </span>
+    }
   `,
   host: {
     class: 'ant-select-selection-item',

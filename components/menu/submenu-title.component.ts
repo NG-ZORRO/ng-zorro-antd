@@ -28,22 +28,27 @@ import { NzMenuModeType } from './menu.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></span>
+    @if (nzIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
     <ng-container *nzStringTemplateOutlet="nzTitle">
       <span class="ant-menu-title-content">{{ nzTitle }}</span>
     </ng-container>
     <ng-content></ng-content>
-    <span
-      [ngSwitch]="dir"
-      *ngIf="isMenuInsideDropDown; else notDropdownTpl"
-      class="ant-dropdown-menu-submenu-expand-icon"
-    >
-      <span *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
-      <span *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
-    </span>
-    <ng-template #notDropdownTpl>
+    @if (isMenuInsideDropDown) {
+      <span class="ant-dropdown-menu-submenu-expand-icon">
+        @switch (dir) {
+          @case ('rtl') {
+            <span nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+          }
+          @default {
+            <span nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+          }
+        }
+      </span>
+    } @else {
       <span class="ant-menu-submenu-arrow"></span>
-    </ng-template>
+    }
   `,
   host: {
     '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
@@ -68,7 +73,10 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

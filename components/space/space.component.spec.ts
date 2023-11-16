@@ -11,14 +11,12 @@ describe('Space', () => {
   let component: SpaceTestComponent;
   let fixture: ComponentFixture<SpaceTestComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzSpaceModule],
-        declarations: [SpaceTestComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzSpaceModule],
+      declarations: [SpaceTestComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpaceTestComponent);
@@ -225,9 +223,9 @@ describe('Space', () => {
     <nz-space [nzSplit]="showSplit ? spaceSplit : null" [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">
       <div *nzSpaceItem>item</div>
       <div *nzSpaceItem>item</div>
-      <ng-container *ngIf="show">
+      @if (show) {
         <div *nzSpaceItem>item</div>
-      </ng-container>
+      }
     </nz-space>
 
     <ng-template #spaceSplit>|</ng-template>

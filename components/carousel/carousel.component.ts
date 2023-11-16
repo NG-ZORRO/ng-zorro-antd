@@ -77,25 +77,24 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         </div>
       </div>
       <!-- Render dots. -->
-      <ul
-        class="slick-dots"
-        *ngIf="nzDots"
-        [class.slick-dots-top]="nzDotPosition === 'top'"
-        [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
-        [class.slick-dots-left]="nzDotPosition === 'left'"
-        [class.slick-dots-right]="nzDotPosition === 'right'"
-      >
-        <li
-          *ngFor="let content of carouselContents; let i = index"
-          [class.slick-active]="i === activeIndex"
-          (click)="onLiClick(i)"
+      @if (nzDots) {
+        <ul
+          class="slick-dots"
+          [class.slick-dots-top]="nzDotPosition === 'top'"
+          [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
+          [class.slick-dots-left]="nzDotPosition === 'left'"
+          [class.slick-dots-right]="nzDotPosition === 'right'"
         >
-          <ng-template
-            [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
-            [ngTemplateOutletContext]="{ $implicit: i }"
-          ></ng-template>
-        </li>
-      </ul>
+          @for (content of carouselContents; track content; let i = $index) {
+            <li [class.slick-active]="i === activeIndex" (click)="onLiClick(i)">
+              <ng-template
+                [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
+                [ngTemplateOutletContext]="{ $implicit: i }"
+              ></ng-template>
+            </li>
+          }
+        </ul>
+      }
     </div>
 
     <ng-template #renderDotTemplate let-index>

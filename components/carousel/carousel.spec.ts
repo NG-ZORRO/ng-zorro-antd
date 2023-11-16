@@ -425,7 +425,6 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 }
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-carousel',
   template: `
     <nz-carousel
@@ -439,9 +438,11 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)"
     >
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
       <ng-template #dotRender let-index>
         <a>{{ index + 1 }}</a>
       </ng-template>
@@ -476,9 +477,11 @@ export class NzTestCarouselRtlComponent {
 @Component({
   template: `
     <nz-carousel (nzAfterChange)="afterChange($event)">
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
     </nz-carousel>
   `
 })

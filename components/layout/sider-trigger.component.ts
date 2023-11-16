@@ -22,15 +22,19 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="isZeroTrigger">
+    @if (isZeroTrigger) {
       <ng-template [ngTemplateOutlet]="nzZeroTrigger || defaultZeroTrigger"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isNormalTrigger">
+    }
+    @if (isNormalTrigger) {
       <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger"></ng-template>
-    </ng-container>
+    }
     <ng-template #defaultTrigger>
-      <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></span>
-      <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></span>
+      @if (!nzReverseArrow) {
+        <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'"></span>
+      }
+      @if (nzReverseArrow) {
+        <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'"></span>
+      }
     </ng-template>
     <ng-template #defaultZeroTrigger>
       <span nz-icon nzType="bars"></span>

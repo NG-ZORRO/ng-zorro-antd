@@ -14,10 +14,14 @@ import { NzTableLayout } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth" />
-    <thead class="ant-table-thead" *ngIf="theadTemplate">
-      <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
-    </thead>
+    @for (width of listOfColWidth; track width) {
+      <col [style.width]="width" [style.minWidth]="width" />
+    }
+    @if (theadTemplate) {
+      <thead class="ant-table-thead">
+        <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
+      </thead>
+    }
     <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     <ng-content></ng-content>
   `,

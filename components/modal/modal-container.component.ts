@@ -41,19 +41,26 @@ import { ModalOptions } from './modal-types';
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
-        <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
-        <div *ngIf="config.nzTitle" nz-modal-title></div>
+        @if (config.nzClosable) {
+          <button nz-modal-close (click)="onCloseClick()"></button>
+        }
+        @if (config.nzTitle) {
+          <div nz-modal-title></div>
+        }
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet></ng-template>
-          <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
+          @if (isStringContent) {
+            <div [innerHTML]="config.nzContent"></div>
+          }
         </div>
-        <div
-          *ngIf="config.nzFooter !== null"
-          nz-modal-footer
-          [modalRef]="modalRef"
-          (cancelTriggered)="onCloseClick()"
-          (okTriggered)="onOkClick()"
-        ></div>
+        @if (config.nzFooter !== null) {
+          <div
+            nz-modal-footer
+            [modalRef]="modalRef"
+            (cancelTriggered)="onCloseClick()"
+            (okTriggered)="onOkClick()"
+          ></div>
+        }
       </div>
     </div>
   `,

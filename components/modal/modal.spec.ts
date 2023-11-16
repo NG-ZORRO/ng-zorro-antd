@@ -1717,7 +1717,10 @@ class TestWithServiceComponent {
   modalRef?: NzModalRef;
   @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
 
-  constructor(public nzModalService: NzModalService, public viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public nzModalService: NzModalService,
+    public viewContainerRef: ViewContainerRef
+  ) {}
 
   setModalRef(modalRef: NzModalRef): string {
     this.modalRef = modalRef;
@@ -1738,7 +1741,11 @@ class TestWithModalContentComponent {
 
   nzModalData: string;
 
-  constructor(public modalRef: NzModalRef, public modalInjector: Injector, @Inject(NZ_MODAL_DATA) nzData: string) {
+  constructor(
+    public modalRef: NzModalRef,
+    public modalInjector: Injector,
+    @Inject(NZ_MODAL_DATA) nzData: string
+  ) {
     this.value = nzData;
     this.nzModalData = nzData;
   }

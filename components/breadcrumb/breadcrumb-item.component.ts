@@ -16,12 +16,16 @@ import { NzBreadcrumb } from './breadcrumb';
   exportAs: 'nzBreadcrumbItem',
   preserveWhitespaces: false,
   template: `
-    <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
+    @if (!!nzOverlay) {
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
         <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
         <span nz-icon nzType="down"></span>
       </span>
-    </ng-container>
+    } @else {
+      <span class="ant-breadcrumb-link">
+        <ng-content></ng-content>
+      </span>
+    }
 
     <ng-template #noMenuTpl>
       <span class="ant-breadcrumb-link">
@@ -29,11 +33,13 @@ import { NzBreadcrumb } from './breadcrumb';
       </span>
     </ng-template>
 
-    <nz-breadcrumb-separator *ngIf="nzBreadCrumbComponent.nzSeparator">
-      <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
-        {{ nzBreadCrumbComponent.nzSeparator }}
-      </ng-container>
-    </nz-breadcrumb-separator>
+    @if (nzBreadCrumbComponent.nzSeparator) {
+      <nz-breadcrumb-separator>
+        <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
+          {{ nzBreadCrumbComponent.nzSeparator }}
+        </ng-container>
+      </nz-breadcrumb-separator>
+    }
   `
 })
 export class NzBreadCrumbItemComponent {

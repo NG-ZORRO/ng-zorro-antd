@@ -40,11 +40,9 @@ function normalizeResizeHandleOptions(value: Array<NzResizeDirection | NzResizeH
   selector: 'nz-resize-handles',
   exportAs: 'nzResizeHandles',
   template: `
-    <nz-resize-handle
-      *ngFor="let option of resizeHandleOptions"
-      [nzDirection]="option.direction"
-      [nzCursorType]="option.cursorType"
-    ></nz-resize-handle>
+    @for (option of resizeHandleOptions; track option) {
+      <nz-resize-handle [nzDirection]="option.direction" [nzCursorType]="option.cursorType"></nz-resize-handle>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

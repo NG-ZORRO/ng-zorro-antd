@@ -204,7 +204,9 @@ describe('badge', () => {
       [nzStandalone]="!inner"
       [nzSize]="size"
     >
-      <a *ngIf="inner"></a>
+      @if (inner) {
+        <a></a>
+      }
     </nz-badge>
   `
 })

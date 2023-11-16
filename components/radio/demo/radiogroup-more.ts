@@ -9,7 +9,9 @@ import { Component } from '@angular/core';
       <label nz-radio nzValue="C">Option C</label>
       <label nz-radio nzValue="M">
         More...
-        <input type="text" nz-input *ngIf="radioValue === 'M'" />
+        @if (radioValue === 'M') {
+          <input type="text" nz-input />
+        }
       </label>
     </nz-radio-group>
   `,

@@ -50,17 +50,27 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   selector: 'nz-embed-empty',
   exportAs: 'nzEmbedEmpty',
   template: `
-    <ng-container *ngIf="!content && specificContent !== null" [ngSwitch]="size">
-      <nz-empty *ngSwitchCase="'normal'" class="ant-empty-normal" [nzNotFoundImage]="'simple'"></nz-empty>
-      <nz-empty *ngSwitchCase="'small'" class="ant-empty-small" [nzNotFoundImage]="'simple'"></nz-empty>
-      <nz-empty *ngSwitchDefault></nz-empty>
-    </ng-container>
-    <ng-container *ngIf="content">
-      <ng-template *ngIf="contentType !== 'string'" [cdkPortalOutlet]="contentPortal"></ng-template>
-      <ng-container *ngIf="contentType === 'string'">
+    @if (!content && specificContent !== null) {
+      @switch (size) {
+        @case ('normal') {
+          <nz-empty class="ant-empty-normal" [nzNotFoundImage]="'simple'"></nz-empty>
+        }
+        @case ('small') {
+          <nz-empty class="ant-empty-small" [nzNotFoundImage]="'simple'"></nz-empty>
+        }
+        @default {
+          <nz-empty></nz-empty>
+        }
+      }
+    }
+    @if (content) {
+      @if (contentType !== 'string') {
+        <ng-template [cdkPortalOutlet]="contentPortal"></ng-template>
+      }
+      @if (contentType === 'string') {
         {{ content }}
-      </ng-container>
-    </ng-container>
+      }
+    }
   `
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {

@@ -46,9 +46,15 @@ import { Component } from '@angular/core';
             required
           />
           <ng-template #combineTpl let-control>
-            <ng-container *ngIf="control.hasError('maxlength')">MaxLength is 12</ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">MinLength is 6</ng-container>
-            <ng-container *ngIf="control.hasError('required')">Input is required</ng-container>
+            @if (control.hasError('maxlength')) {
+              MaxLength is 12
+            }
+            @if (control.hasError('minlength')) {
+              MinLength is 6
+            }
+            @if (control.hasError('required')) {
+              Input is required
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>

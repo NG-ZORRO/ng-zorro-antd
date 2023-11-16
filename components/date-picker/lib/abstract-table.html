@@ -1,38 +1,56 @@
 <table class="ant-picker-content" cellspacing="0" role="grid">
-  <thead *ngIf="headRow && headRow.length > 0">
+  @if (headRow && headRow.length > 0) {
+<thead>
     <tr role="row">
-      <th *ngIf="showWeek" role="columnheader"></th>
-      <th *ngFor="let cell of headRow" role="columnheader" title="{{ cell.title }}">
+      @if (showWeek) {
+<th role="columnheader"></th>
+}
+      @for (cell of headRow; track cell) {
+  <th role="columnheader" title="{{ cell.title }}">
         {{ cell.content }}
       </th>
+}
     </tr>
   </thead>
+}
   <tbody>
-    <tr *ngFor="let row of bodyRows; trackBy: trackByBodyRow" [ngClass]="row.classMap!" role="row">
-      <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-cell-week">
+    @for (row of bodyRows; track trackByBodyRow($index, row)) {
+  <tr [ngClass]="row.classMap!" role="row">
+      @if (row.weekNum) {
+<td role="gridcell" class="{{ prefixCls }}-cell-week">
         {{ row.weekNum }}
       </td>
-      <td
-        *ngFor="let cell of row.dateCells; trackBy: trackByBodyColumn"
+}
+      @for (cell of row.dateCells; track trackByBodyColumn($index, cell)) {
+  <td
+       
         title="{{ cell.title }}"
         role="gridcell"
         [ngClass]="cell.classMap!"
         (click)="cell.isDisabled ? null : cell.onClick()"
         (mouseenter)="cell.onMouseEnter()"
       >
-        <ng-container [ngSwitch]="prefixCls">
-          <ng-container *ngSwitchCase="'ant-picker'">
-            <ng-container [ngSwitch]="true">
-              <ng-container *ngSwitchCase="isTemplateRef(cell.cellRender)">
+        
+@switch (prefixCls) {
+          @case ('ant-picker') {
+  
+            
+@switch (true) {
+              @case (isTemplateRef(cell.cellRender)) {
+  
                 <!--           *ngSwitchCase not has type assertion support, the cellRender type here is TemplateRef -->
                 <ng-container
                   *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }"
                 ></ng-container>
-              </ng-container>
-              <ng-container *ngSwitchCase="isNonEmptyString(cell.cellRender)">
+              
+}
+              @case (isNonEmptyString(cell.cellRender)) {
+  
                 <span [innerHTML]="cell.cellRender"></span>
-              </ng-container>
-              <ng-container *ngSwitchDefault>
+              
+}
+              @default {
+  
                 <div
                   class="{{ prefixCls }}-cell-inner"
                   [attr.aria-selected]="cell.isSelected"
@@ -40,21 +58,27 @@
                 >
                   {{ cell.content }}
                 </div>
-              </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="'ant-picker-calendar'">
+              
+}
+            }
+
+          
+}
+          @case ('ant-picker-calendar') {
+  
             <div
               class="{{ prefixCls }}-date ant-picker-cell-inner"
               [class.ant-picker-calendar-date-today]="cell.isToday"
             >
-              <ng-container *ngIf="cell.fullCellRender; else defaultCell">
+              @if (cell.fullCellRender) {
+
                 <ng-container
                   *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }"
                 >
                 </ng-container>
-              </ng-container>
-              <ng-template #defaultCell>
+              
+} @else {
+
                 <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
                 <div class="{{ prefixCls }}-date-content">
                   <ng-container
@@ -62,11 +86,16 @@
                   >
                   </ng-container>
                 </div>
-              </ng-template>
-            </div>
-          </ng-container>
-        </ng-container>
+              
+}
+                          </div>
+          
+}
+        }
+
       </td>
+}
     </tr>
+}
   </tbody>
 </table>

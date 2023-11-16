@@ -29,14 +29,12 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
   template: `
-    <ng-template [ngIf]="editing" [ngIfElse]="notEditing">
+    @if (editing) {
       <textarea #textarea nz-input nzAutosize (blur)="confirm()"></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
         <span nz-icon nzType="enter"></span>
       </button>
-    </ng-template>
-
-    <ng-template #notEditing>
+    } @else {
       <button
         nz-tooltip
         nz-trans-button
@@ -48,7 +46,7 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
           <span nz-icon [nzType]="icon"></span>
         </ng-container>
       </button>
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

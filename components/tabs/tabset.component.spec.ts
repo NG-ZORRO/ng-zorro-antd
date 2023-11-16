@@ -1,6 +1,5 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -22,7 +21,7 @@ import { NzTabSetComponent } from './tabset.component';
 describe('NzTabSet', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NzTabsModule, NzIconTestModule, CommonModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzTabsModule, NzIconTestModule, NoopAnimationsModule],
       declarations: [
         SimpleTabsTestComponent,
         TemplateTabsTestComponent,
@@ -812,7 +811,7 @@ xdescribe('NzTabSet router', () => {
   describe('basic', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        imports: [NzTabsModule, RouterTestingModule.withRoutes(routes)],
         declarations: [RouterTabsTestComponent]
       }).compileComponents();
 
@@ -865,7 +864,7 @@ describe('NzTabSet router', () => {
   describe('basic', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        imports: [NzTabsModule, RouterTestingModule.withRoutes(routes)],
         declarations: [RouterTabsTestComponent]
       }).compileComponents();
 
@@ -1003,9 +1002,11 @@ class DisableTabsTestComponent {
       [nzType]="'editable-card'"
       (nzSelectedIndexChange)="handleSelection($event)"
     >
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.title">
-        {{ tab.content }}
-      </nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="tab.title">
+          {{ tab.content }}
+        </nz-tab>
+      }
     </nz-tabset>
   `
 })
@@ -1031,10 +1032,12 @@ class DynamicTabsTestComponent {
         (nzSelectedIndexChange)="handleSelection($event)"
         [nzTabPosition]="position"
       >
-        <nz-tab *ngFor="let _tab of tabs; let i = index" [nzTitle]="titleTemplate">
-          <ng-template #titleTemplate let-visible="visible">Title in {{ visible ? 'tabs' : 'menu' }}</ng-template>
-          Content of Tab Pane {{ i }}
-        </nz-tab>
+        @for (_tab of tabs; track _tab; let i = $index) {
+          <nz-tab [nzTitle]="titleTemplate">
+            <ng-template #titleTemplate let-visible="visible">Title in {{ visible ? 'tabs' : 'menu' }}</ng-template>
+            Content of Tab Pane {{ i }}
+          </nz-tab>
+        }
       </nz-tabset>
     </div>
   `,
@@ -1055,9 +1058,11 @@ class ScrollableTabsTestComponent {
 @Component({
   template: `
     <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs | async" [nzTitle]="tab.title">
-        {{ tab.content }}
-      </nz-tab>
+      @for (tab of tabs | async; track tab) {
+        <nz-tab [nzTitle]="tab.title">
+          {{ tab.content }}
+        </nz-tab>
+      }
     </nz-tabset>
   `
 })
@@ -1098,12 +1103,12 @@ class NestedTabsTestComponent {
 @Component({
   template: `
     <nz-tabset>
-      <ng-container [ngSwitch]="true">
+      @switch (true) {
         <nz-tab nzTitle="Tab 0">Tab one content</nz-tab>
-        <ng-container *ngIf="true">
+        @if (true) {
           <nz-tab nzTitle="Tab 1">Tab two content</nz-tab>
-        </ng-container>
-      </ng-container>
+        }
+      }
     </nz-tabset>
   `
 })

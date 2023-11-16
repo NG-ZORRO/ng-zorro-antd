@@ -16,11 +16,13 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
       [nzBeforeUpload]="beforeUpload"
       (nzChange)="handleChange($event)"
     >
-      <ng-container *ngIf="!avatarUrl">
+      @if (!avatarUrl) {
         <span class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
         <div class="ant-upload-text">Upload</div>
-      </ng-container>
-      <img *ngIf="avatarUrl" [src]="avatarUrl" style="width: 100%" />
+      }
+      @if (avatarUrl) {
+        <img [src]="avatarUrl" style="width: 100%" />
+      }
     </nz-upload>
   `,
   styles: [

@@ -32,7 +32,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### 数据处理
 
-将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
+将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，使用 `@for` 依据需求将数据渲染。
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -45,16 +45,18 @@ Table 组件同时具备了易用性和高度可定制性
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.name}}</td>
-      <td>{{data.age}}</td>
-      <td>{{data.address}}</td>
-      <td>
-        <a>Action 一 {{data.name}}</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a>Delete</a>
-      </td>
-    </tr>
+    @for (data of basicTable.data; track $index) {
+      <tr>
+        <td>{{data.name}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.address}}</td>
+        <td>
+          <a>Action 一 {{data.name}}</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a>Delete</a>
+        </td>
+      </tr>
+    }
   </tbody>
 </nz-table>
 ```

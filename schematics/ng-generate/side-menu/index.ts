@@ -23,8 +23,8 @@ import {
 import { addRootProvider } from '@schematics/angular/utility';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
-import { addModule } from '../../utils/root-module';
 import { Schema } from './schema';
+import { addModule } from '../../utils/root-module';
 
 export default function (options: Schema): Rule {
   return async (host: Tree) => {

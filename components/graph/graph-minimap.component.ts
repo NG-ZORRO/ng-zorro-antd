@@ -42,7 +42,10 @@ import { NzZoomTransform } from './interface';
 })
 export class NzGraphMinimapComponent implements OnDestroy {
   minimap?: Minimap;
-  constructor(private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private ngZone: NgZone
+  ) {}
 
   ngOnDestroy(): void {
     this.minimap?.destroy();

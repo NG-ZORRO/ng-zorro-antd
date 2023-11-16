@@ -41,18 +41,24 @@ interface Setting {
   template: `
     <div class="components-table-demo-control-bar">
       <form nz-form nzLayout="inline" [formGroup]="settingForm">
-        <nz-form-item *ngFor="let switch of listOfSwitch">
-          <nz-form-label>{{ switch.name }}</nz-form-label>
-          <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>
-        </nz-form-item>
-        <nz-form-item *ngFor="let radio of listOfRadio">
-          <nz-form-label>{{ radio.name }}</nz-form-label>
-          <nz-form-control>
-            <nz-radio-group [formControlName]="radio.formControlName">
-              <label *ngFor="let o of radio.listOfOption" nz-radio-button [nzValue]="o.value">{{ o.label }}</label>
-            </nz-radio-group>
-          </nz-form-control>
-        </nz-form-item>
+        @for (item of listOfSwitch; track item) {
+          <nz-form-item>
+            <nz-form-label>{{ item.name }}</nz-form-label>
+            <nz-form-control><nz-switch [formControlName]="item.formControlName"></nz-switch></nz-form-control>
+          </nz-form-item>
+        }
+        @for (item of listOfRadio; track item) {
+          <nz-form-item>
+            <nz-form-label>{{ item.name }}</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [formControlName]="item.formControlName">
+                @for (o of item.listOfOption; track o) {
+                  <label nz-radio-button [nzValue]="o.value">{{ o.label }}</label>
+                }
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        }
       </form>
     </div>
     <nz-table
@@ -74,32 +80,36 @@ interface Setting {
       (nzCurrentPageDataChange)="currentPageDataChange($event)"
     >
       <thead>
-        <tr *ngIf="settingValue.header">
-          <th nzWidth="40px" *ngIf="settingValue.expandable" [nzLeft]="fixedColumn"></th>
-          <th
-            *ngIf="settingValue.checkbox"
-            nzWidth="60px"
-            [(nzChecked)]="allChecked"
-            [nzLeft]="fixedColumn"
-            [nzIndeterminate]="indeterminate"
-            (nzCheckedChange)="checkAll($event)"
-          ></th>
-          <th [nzLeft]="fixedColumn">Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th [nzRight]="fixedColumn">Action</th>
-        </tr>
+        @if (settingValue.header) {
+          <tr>
+            @if (settingValue.expandable) {
+              <th nzWidth="40px" [nzLeft]="fixedColumn"></th>
+            }
+            @if (settingValue.checkbox) {
+              <th
+                nzWidth="60px"
+                [(nzChecked)]="allChecked"
+                [nzLeft]="fixedColumn"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="checkAll($event)"
+              ></th>
+            }
+            <th [nzLeft]="fixedColumn">Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th [nzRight]="fixedColumn">Action</th>
+          </tr>
+        }
       </thead>
       <tbody>
-        <ng-container *ngFor="let data of dynamicTable.data">
+        @for (data of dynamicTable.data; track data) {
           <tr>
-            <td [nzLeft]="fixedColumn" *ngIf="settingValue.expandable" [(nzExpand)]="data.expand"></td>
-            <td
-              [nzLeft]="fixedColumn"
-              *ngIf="settingValue.checkbox"
-              [(nzChecked)]="data.checked"
-              (nzCheckedChange)="refreshStatus()"
-            ></td>
+            @if (settingValue.expandable) {
+              <td [nzLeft]="fixedColumn" [(nzExpand)]="data.expand"></td>
+            }
+            @if (settingValue.checkbox) {
+              <td [nzLeft]="fixedColumn" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            }
             <td [nzLeft]="fixedColumn">{{ data.name }}</td>
             <td>{{ data.age }}</td>
             <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td>
@@ -109,10 +119,12 @@ interface Setting {
               <a href="#">More action</a>
             </td>
           </tr>
-          <tr *ngIf="settingValue.expandable" [nzExpand]="data.expand">
-            <span>{{ data.description }}</span>
-          </tr>
-        </ng-container>
+          @if (settingValue.expandable) {
+            <tr [nzExpand]="data.expand">
+              <span>{{ data.description }}</span>
+            </tr>
+          }
+        }
       </tbody>
     </nz-table>
   `,

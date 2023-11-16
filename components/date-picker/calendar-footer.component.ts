@@ -31,45 +31,54 @@ import { PREFIX_CLASS } from './util';
   exportAs: 'calendarFooter',
   template: `
     <div class="{{ prefixCls }}-footer">
-      <div *ngIf="extraFooter" class="{{ prefixCls }}-footer-extra">
-        <ng-container [ngSwitch]="true">
-          <ng-container *ngSwitchCase="isTemplateRef(extraFooter)">
-            <ng-container *ngTemplateOutlet="$any(extraFooter)"></ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="isNonEmptyString(extraFooter)">
-            <span [innerHTML]="extraFooter"></span>
-          </ng-container>
-        </ng-container>
-      </div>
-      <a
-        *ngIf="showToday"
-        class="{{ prefixCls }}-today-btn {{ isTodayDisabled ? prefixCls + '-today-btn-disabled' : '' }}"
-        role="button"
-        (click)="isTodayDisabled ? null : onClickToday()"
-        title="{{ todayTitle }}"
-      >
-        {{ locale.today }}
-      </a>
-      <ul *ngIf="hasTimePicker || rangeQuickSelector" class="{{ prefixCls }}-ranges">
-        <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
-        <li *ngIf="showNow" class="{{ prefixCls }}-now">
-          <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
-            {{ locale.now }}
-          </a>
-        </li>
-        <li *ngIf="hasTimePicker" class="{{ prefixCls }}-ok">
-          <button
-            nz-button
-            type="button"
-            nzType="primary"
-            nzSize="small"
-            [disabled]="okDisabled"
-            (click)="okDisabled ? null : clickOk.emit()"
-          >
-            {{ locale.ok }}
-          </button>
-        </li>
-      </ul>
+      @if (extraFooter) {
+        <div class="{{ prefixCls }}-footer-extra">
+          @switch (true) {
+            @case (isTemplateRef(extraFooter)) {
+              <ng-container *ngTemplateOutlet="$any(extraFooter)"></ng-container>
+            }
+            @case (isNonEmptyString(extraFooter)) {
+              <span [innerHTML]="extraFooter"></span>
+            }
+          }
+        </div>
+      }
+      @if (showToday) {
+        <a
+          class="{{ prefixCls }}-today-btn {{ isTodayDisabled ? prefixCls + '-today-btn-disabled' : '' }}"
+          role="button"
+          (click)="isTodayDisabled ? null : onClickToday()"
+          title="{{ todayTitle }}"
+        >
+          {{ locale.today }}
+        </a>
+      }
+      @if (hasTimePicker || rangeQuickSelector) {
+        <ul class="{{ prefixCls }}-ranges">
+          <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
+          @if (showNow) {
+            <li class="{{ prefixCls }}-now">
+              <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
+                {{ locale.now }}
+              </a>
+            </li>
+          }
+          @if (hasTimePicker) {
+            <li class="{{ prefixCls }}-ok">
+              <button
+                nz-button
+                type="button"
+                nzType="primary"
+                nzSize="small"
+                [disabled]="okDisabled"
+                (click)="okDisabled ? null : clickOk.emit()"
+              >
+                {{ locale.ok }}
+              </button>
+            </li>
+          }
+        </ul>
+      }
     </div>
   `
 })

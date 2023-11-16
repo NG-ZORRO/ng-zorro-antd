@@ -32,13 +32,17 @@ import { NzStatisticValueType } from './typings';
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
     </div>
     <div class="ant-statistic-content" [ngStyle]="nzValueStyle">
-      <span *ngIf="nzPrefix" class="ant-statistic-content-prefix">
-        <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
-      </span>
+      @if (nzPrefix) {
+        <span class="ant-statistic-content-prefix">
+          <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+        </span>
+      }
       <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"></nz-statistic-number>
-      <span *ngIf="nzSuffix" class="ant-statistic-content-suffix">
-        <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
-      </span>
+      @if (nzSuffix) {
+        <span class="ant-statistic-content-suffix">
+          <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
+        </span>
+      }
     </div>
   `,
   host: {
@@ -57,7 +61,10 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

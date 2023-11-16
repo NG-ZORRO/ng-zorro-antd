@@ -66,7 +66,7 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
           [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus && !nzBorderless"
           [class.ant-input-disabled]="nzDisabled"
         >
-          <ng-container *ngFor="let label of labels">
+          @for (label of labels; track label) {
             <nz-cron-expression-input
               [value]="this.validateForm.controls[label].value"
               [label]="label"
@@ -75,7 +75,7 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
               (blurEffect)="blurEffect()"
               (getValue)="getValue($event)"
             ></nz-cron-expression-input>
-          </ng-container>
+          }
         </div>
         <div
           class="ant-cron-expression-label-group"
@@ -83,27 +83,30 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
           [class.ant-cron-expression-label-group-default]="nzSize === 'default'"
           [class.ant-input-sm]="nzSize === 'small'"
         >
-          <ng-container *ngFor="let label of labels">
+          @for (label of labels; track label) {
             <nz-cron-expression-label
               [type]="label"
               [valid]="this.validateForm.controls[label].valid"
               [labelFocus]="labelFocus"
               [locale]="locale"
             ></nz-cron-expression-label>
-          </ng-container>
+          }
         </div>
-        <nz-cron-expression-preview
-          *ngIf="!nzCollapseDisable"
-          [TimeList]="nextTimeList"
-          [visible]="validateForm.valid"
-          [locale]="locale"
-          [nzSemantic]="nzSemantic"
-          (loadMorePreview)="loadMorePreview()"
-        ></nz-cron-expression-preview>
+        @if (!nzCollapseDisable) {
+          <nz-cron-expression-preview
+            [TimeList]="nextTimeList"
+            [visible]="validateForm.valid"
+            [locale]="locale"
+            [nzSemantic]="nzSemantic"
+            (loadMorePreview)="loadMorePreview()"
+          ></nz-cron-expression-preview>
+        }
       </div>
-      <div class="ant-cron-expression-map" *ngIf="nzExtra">
-        <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      </div>
+      @if (nzExtra) {
+        <div class="ant-cron-expression-map">
+          <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
+        </div>
+      }
     </div>
   `,
   providers: [
@@ -184,7 +187,11 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     this.cdr.markForCheck();
   }
 
-  constructor(private formBuilder: FormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService
+  ) {
     this.validateForm = this.formBuilder.nonNullable.group({
       second: ['0', Validators.required, this.checkValid],
       minute: ['*', Validators.required, this.checkValid],

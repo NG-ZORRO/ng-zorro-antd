@@ -53,14 +53,15 @@ const initialPosition = {
       <div class="ant-image-preview-content">
         <div class="ant-image-preview-body">
           <ul class="ant-image-preview-operations">
-            <li
-              class="ant-image-preview-operations-operation"
-              [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
-              (click)="option.onClick()"
-              *ngFor="let option of operations"
-            >
-              <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
-            </li>
+            @for (option of operations; track option) {
+              <li
+                class="ant-image-preview-operations-operation"
+                [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
+                (click)="option.onClick()"
+              >
+                <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
+              </li>
+            }
           </ul>
           <div
             class="ant-image-preview-img-wrapper"
@@ -70,22 +71,23 @@ const initialPosition = {
             [cdkDragFreeDragPosition]="position"
             (cdkDragReleased)="onDragReleased()"
           >
-            <ng-container *ngFor="let image of images; index as imageIndex">
-              <img
-                cdkDragHandle
-                class="ant-image-preview-img"
-                #imgRef
-                *ngIf="index === imageIndex"
-                [attr.src]="sanitizerResourceUrl(image.src)"
-                [attr.srcset]="image.srcset"
-                [attr.alt]="image.alt"
-                [style.width]="image.width"
-                [style.height]="image.height"
-                [style.transform]="previewImageTransform"
-              />
-            </ng-container>
+            @for (image of images; track image; let imageIndex = $index) {
+              @if (index === imageIndex) {
+                <img
+                  cdkDragHandle
+                  class="ant-image-preview-img"
+                  #imgRef
+                  [attr.src]="sanitizerResourceUrl(image.src)"
+                  [attr.srcset]="image.srcset"
+                  [attr.alt]="image.alt"
+                  [style.width]="image.width"
+                  [style.height]="image.height"
+                  [style.transform]="previewImageTransform"
+                />
+              }
+            }
           </div>
-          <ng-container *ngIf="images.length > 1">
+          @if (images.length > 1) {
             <div
               class="ant-image-preview-switch-left"
               [class.ant-image-preview-switch-left-disabled]="index <= 0"
@@ -100,7 +102,7 @@ const initialPosition = {
             >
               <span nz-icon nzType="right" nzTheme="outline"></span>
             </div>
-          </ng-container>
+          }
         </div>
       </div>
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>

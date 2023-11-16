@@ -46,29 +46,37 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
       [class.ant-timeline-rtl]="dir === 'rtl'"
     >
       <!-- pending dot (reversed) -->
-      <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      @if (nzReverse) {
+        <ng-container [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      }
       <!-- timeline items -->
-      <ng-container *ngFor="let item of timelineItems">
+      @for (item of timelineItems; track item) {
         <ng-template [ngTemplateOutlet]="item.template"></ng-template>
-      </ng-container>
-      <ng-container *ngIf="!nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      }
+      @if (!nzReverse) {
+        <ng-container [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      }
       <!-- pending dot -->
     </ul>
     <ng-template #pendingTemplate>
-      <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
-        <div class="ant-timeline-item-tail"></div>
-        <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
-          <ng-container *nzStringTemplateOutlet="nzPendingDot">
-            {{ nzPendingDot }}
-            <span *ngIf="!nzPendingDot" nz-icon nzType="loading"></span>
-          </ng-container>
-        </div>
-        <div class="ant-timeline-item-content">
-          <ng-container *nzStringTemplateOutlet="nzPending">
-            {{ isPendingBoolean ? '' : nzPending }}
-          </ng-container>
-        </div>
-      </li>
+      @if (nzPending) {
+        <li class="ant-timeline-item ant-timeline-item-pending">
+          <div class="ant-timeline-item-tail"></div>
+          <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
+            <ng-container *nzStringTemplateOutlet="nzPendingDot">
+              {{ nzPendingDot }}
+              @if (!nzPendingDot) {
+                <span nz-icon nzType="loading"></span>
+              }
+            </ng-container>
+          </div>
+          <div class="ant-timeline-item-content">
+            <ng-container *nzStringTemplateOutlet="nzPending">
+              {{ isPendingBoolean ? '' : nzPending }}
+            </ng-container>
+          </div>
+        </li>
+      }
     </ng-template>
     <!-- Grasp items -->
     <ng-content></ng-content>
@@ -168,10 +176,10 @@ function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): N
   return mode === 'custom'
     ? undefined
     : mode === 'left'
-    ? 'left'
-    : mode === 'right'
-    ? 'right'
-    : mode === 'alternate' && index % 2 === 0
-    ? 'left'
-    : 'right';
+      ? 'left'
+      : mode === 'right'
+        ? 'right'
+        : mode === 'alternate' && index % 2 === 0
+          ? 'left'
+          : 'right';
 }

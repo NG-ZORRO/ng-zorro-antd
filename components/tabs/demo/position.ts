@@ -8,11 +8,15 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
     <div style="margin-bottom: 16px;">
       Tab position：
       <nz-select [(ngModel)]="position" style="width: 80px;">
-        <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        @for (option of options; track $index) {
+          <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        }
       </nz-select>
     </div>
     <nz-tabset [nzTabPosition]="position">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `
 })

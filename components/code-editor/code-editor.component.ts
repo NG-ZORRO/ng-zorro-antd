@@ -44,13 +44,17 @@ declare const monaco: NzSafeAny;
   selector: 'nz-code-editor',
   exportAs: 'nzCodeEditor',
   template: `
-    <div class="ant-code-editor-loading" *ngIf="nzLoading">
-      <nz-spin></nz-spin>
-    </div>
+    @if (nzLoading) {
+      <div class="ant-code-editor-loading">
+        <nz-spin></nz-spin>
+      </div>
+    }
 
-    <div class="ant-code-editor-toolkit" *ngIf="nzToolkit">
-      <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
-    </div>
+    @if (nzToolkit) {
+      <div class="ant-code-editor-toolkit">
+        <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
+      </div>
+    }
   `,
   providers: [
     {

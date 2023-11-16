@@ -39,40 +39,44 @@ import { PaginationItemRenderContext } from './pagination.types';
   template: `
     <ng-template #containerTemplate>
       <ul>
-        <li class="ant-pagination-total-text" *ngIf="showTotal">
-          <ng-template
-            [ngTemplateOutlet]="showTotal"
-            [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
-          ></ng-template>
-        </li>
-        <li
-          *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
-          nz-pagination-item
-          [locale]="locale"
-          [type]="page.type"
-          [index]="page.index"
-          [disabled]="!!page.disabled"
-          [itemRender]="itemRender"
-          [active]="pageIndex === page.index"
-          (gotoIndex)="jumpPage($event)"
-          (diffIndex)="jumpDiff($event)"
-          [direction]="dir"
-        ></li>
-        <li
-          nz-pagination-options
-          *ngIf="showQuickJumper || showSizeChanger"
-          [total]="total"
-          [locale]="locale"
-          [disabled]="disabled"
-          [nzSize]="nzSize"
-          [showSizeChanger]="showSizeChanger"
-          [showQuickJumper]="showQuickJumper"
-          [pageIndex]="pageIndex"
-          [pageSize]="pageSize"
-          [pageSizeOptions]="pageSizeOptions"
-          (pageIndexChange)="onPageIndexChange($event)"
-          (pageSizeChange)="onPageSizeChange($event)"
-        ></li>
+        @if (showTotal) {
+          <li class="ant-pagination-total-text">
+            <ng-template
+              [ngTemplateOutlet]="showTotal"
+              [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"
+            ></ng-template>
+          </li>
+        }
+        @for (page of listOfPageItem; track trackByPageItem($index, page)) {
+          <li
+            nz-pagination-item
+            [locale]="locale"
+            [type]="page.type"
+            [index]="page.index"
+            [disabled]="!!page.disabled"
+            [itemRender]="itemRender"
+            [active]="pageIndex === page.index"
+            (gotoIndex)="jumpPage($event)"
+            (diffIndex)="jumpDiff($event)"
+            [direction]="dir"
+          ></li>
+        }
+        @if (showQuickJumper || showSizeChanger) {
+          <li
+            nz-pagination-options
+            [total]="total"
+            [locale]="locale"
+            [disabled]="disabled"
+            [nzSize]="nzSize"
+            [showSizeChanger]="showSizeChanger"
+            [showQuickJumper]="showQuickJumper"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (pageIndexChange)="onPageIndexChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)"
+          ></li>
+        }
       </ul>
     </ng-template>
   `

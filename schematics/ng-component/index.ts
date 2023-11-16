@@ -8,8 +8,8 @@ import {
   Rule
 } from '@angular-devkit/schematics';
 
-import { buildComponent } from '../utils/build-component';
 import { Schema } from './schema';
+import { buildComponent } from '../utils/build-component';
 
 export default function(options: Schema): Rule {
   return chain([

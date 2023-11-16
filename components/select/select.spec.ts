@@ -1565,24 +1565,28 @@ describe('select', () => {
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzTitle]="o.nzTitle"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
-      <nz-option-group *ngFor="let group of listOfGroup" [nzLabel]="group.nzLabel">
+      @for (o of listOfOption; track o) {
         <nz-option
-          *ngFor="let o of group.children"
           [nzValue]="o.nzValue"
           [nzLabel]="o.nzLabel"
           [nzTitle]="o.nzTitle"
           [nzDisabled]="o.nzDisabled"
           [nzHide]="o.nzHide"
         ></nz-option>
-      </nz-option-group>
+      }
+      @for (group of listOfGroup; track group) {
+        <nz-option-group [nzLabel]="group.nzLabel">
+          @for (o of group.children; track o) {
+            <nz-option
+              [nzValue]="o.nzValue"
+              [nzLabel]="o.nzLabel"
+              [nzTitle]="o.nzTitle"
+              [nzDisabled]="o.nzDisabled"
+              [nzHide]="o.nzHide"
+            ></nz-option>
+          }
+        </nz-option-group>
+      }
     </nz-select>
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
@@ -1643,13 +1647,14 @@ export class TestSelectTemplateDefaultComponent {
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
+      @for (o of listOfOption; track o) {
+        <nz-option
+          [nzValue]="o.nzValue"
+          [nzLabel]="o.nzLabel"
+          [nzDisabled]="o.nzDisabled"
+          [nzHide]="o.nzHide"
+        ></nz-option>
+      }
     </nz-select>
     <ng-template #iconTemplate>icon</ng-template>
   `
@@ -1680,13 +1685,14 @@ export class TestSelectTemplateMultipleComponent {
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
+      @for (o of listOfOption; track o) {
+        <nz-option
+          [nzValue]="o.nzValue"
+          [nzLabel]="o.nzLabel"
+          [nzDisabled]="o.nzDisabled"
+          [nzHide]="o.nzHide"
+        ></nz-option>
+      }
     </nz-select>
     <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `

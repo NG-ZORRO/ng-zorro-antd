@@ -12,9 +12,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="active || forceRender">
+    @if (active || forceRender) {
       <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </ng-container>
+    }
   `,
   host: {
     class: 'ant-tabs-tabpane',

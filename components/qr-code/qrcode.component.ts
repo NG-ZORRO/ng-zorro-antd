@@ -33,19 +33,25 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
   selector: 'nz-qrcode',
   exportAs: 'nzQRCode',
   template: `
-    <div class="ant-qrcode-mask" *ngIf="nzStatus !== 'active'">
-      <nz-spin *ngIf="nzStatus === 'loading'"></nz-spin>
-      <div *ngIf="nzStatus === 'expired'">
-        <p class="ant-qrcode-expired">{{ locale.expired }}</p>
-        <button nz-button nzType="link" (click)="reloadQRCode()">
-          <span nz-icon nzType="reload" nzTheme="outline"></span>
-          <span>{{ locale.refresh }}</span>
-        </button>
+    @if (nzStatus !== 'active') {
+      <div class="ant-qrcode-mask">
+        @if (nzStatus === 'loading') {
+          <nz-spin></nz-spin>
+        }
+        @if (nzStatus === 'expired') {
+          <div>
+            <p class="ant-qrcode-expired">{{ locale.expired }}</p>
+            <button nz-button nzType="link" (click)="reloadQRCode()">
+              <span nz-icon nzType="reload" nzTheme="outline"></span>
+              <span>{{ locale.refresh }}</span>
+            </button>
+          </div>
+        }
       </div>
-    </div>
-    <ng-container *ngIf="isBrowser">
+    }
+    @if (isBrowser) {
       <canvas #canvas></canvas>
-    </ng-container>
+    }
   `,
   host: {
     class: 'ant-qrcode',
