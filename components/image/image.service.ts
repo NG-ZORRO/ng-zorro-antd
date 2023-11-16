@@ -9,12 +9,12 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector, Optional } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { TImageScaleStep, TImageUrl } from 'ng-zorro-antd/image/image.directive';
 
 import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
+import { TImageScaleStep, TImageUrl } from './image.directive';
 
 export interface NzImageService {
   preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
