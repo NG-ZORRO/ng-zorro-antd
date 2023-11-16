@@ -8,27 +8,25 @@ import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
-import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
+import { NzFormControlStatusType, NzFormModule } from '../form';
 
 describe('input', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputWithInputComponent,
-          NzTestInputWithTextAreaComponent,
-          NzTestInputFormComponent,
-          NzTestInputWithStatusComponent,
-          NzTestInputWithDirComponent,
-          NzTestInputInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputWithInputComponent,
+        NzTestInputWithTextAreaComponent,
+        NzTestInputFormComponent,
+        NzTestInputWithStatusComponent,
+        NzTestInputWithDirComponent,
+        NzTestInputInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;

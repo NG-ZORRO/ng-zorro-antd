@@ -8,8 +8,8 @@ import * as minimatch from 'minimatch';
 
 import { join } from 'path';
 
-import { buildConfig } from '../build-config';
 import { GitClient } from './git-client';
+import { buildConfig } from '../build-config';
 
 const docDir = join(buildConfig.projectDir, 'ng-zorro.github.io');
 

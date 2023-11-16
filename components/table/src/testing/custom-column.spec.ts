@@ -4,9 +4,9 @@ import { By } from '@angular/platform-browser';
 
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
+import { NzTableComponent } from '../table/table.component';
 import { NzTableModule } from '../table.module';
 import { NzCustomColumn } from '../table.types';
-import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table-custom-column', () => {
   describe('basic', () => {

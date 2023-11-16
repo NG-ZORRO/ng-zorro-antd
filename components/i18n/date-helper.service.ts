@@ -28,7 +28,10 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
   deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
 })
 export abstract class DateHelperService {
-  constructor(protected i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig) {
+  constructor(
+    protected i18n: NzI18nService,
+    @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig
+  ) {
     this.config = mergeDateConfig(this.config);
   }
 

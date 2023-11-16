@@ -6,8 +6,8 @@
 import { QueryList } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { NzCarouselBaseStrategy } from './base-strategy';
+import { NzCarouselContentDirective } from '../carousel-content.directive';
 
 export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
   override withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {

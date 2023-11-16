@@ -14,9 +14,9 @@ import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
-import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
+import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
 
 registerLocaleData(zh);
 
@@ -24,33 +24,31 @@ describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NzI18nModule,
-          NzTimePickerModule,
-          NzFormModule
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzTestTimePickerComponent,
-          NzTestTimePickerStatusComponent,
-          NzTestTimePickerDirComponent,
-          NzTestTimePickerInFormComponent
-        ]
-      });
-      TestBed.compileComponents();
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzI18nModule,
+        NzTimePickerModule,
+        NzFormModule
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzTestTimePickerComponent,
+        NzTestTimePickerStatusComponent,
+        NzTestTimePickerDirComponent,
+        NzTestTimePickerInFormComponent
+      ]
+    });
+    TestBed.compileComponents();
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

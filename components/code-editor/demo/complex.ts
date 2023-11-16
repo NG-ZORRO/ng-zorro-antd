@@ -78,7 +78,10 @@ console.log(flatten(['1', 2, [[3]]]))`;
   private document: Document;
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
+  constructor(
+    @Inject(DOCUMENT) document: Document,
+    private renderer: Renderer2
+  ) {
     this.document = document;
   }
 

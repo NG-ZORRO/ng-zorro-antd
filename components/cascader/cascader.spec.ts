@@ -34,10 +34,10 @@ import {
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzFormModule } from '../form';
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
 import { NzCascaderOption, NzShowSearchOptions } from './typings';
+import { NzFormModule } from '../form';
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
@@ -59,33 +59,31 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          NzCascaderModule,
-          NzIconTestModule,
-          NzFormModule
-        ],
-        declarations: [
-          NzDemoCascaderDefaultComponent,
-          NzDemoCascaderLoadDataComponent,
-          NzDemoCascaderRtlComponent,
-          NzDemoCascaderStatusComponent,
-          NzDemoCascaderInFormComponent
-        ]
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        NzCascaderModule,
+        NzIconTestModule,
+        NzFormModule
+      ],
+      declarations: [
+        NzDemoCascaderDefaultComponent,
+        NzDemoCascaderLoadDataComponent,
+        NzDemoCascaderRtlComponent,
+        NzDemoCascaderStatusComponent,
+        NzDemoCascaderInFormComponent
+      ]
+    }).compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

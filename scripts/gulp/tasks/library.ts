@@ -7,10 +7,10 @@ import { dest, parallel, series, src, task } from 'gulp';
 
 import { join } from 'path';
 
-import { buildConfig } from '../../build-config';
 import { compile as compileLess } from '../../build/compile-styles';
 import { generateLessVars } from '../../build/generate-less-vars';
 import { copyStylesToSrc } from '../../build/migration-styles';
+import { buildConfig } from '../../build-config';
 import { execNodeTask } from '../util/task-helpers';
 
 /** Run `ng build ng-zorro-antd-lib` */

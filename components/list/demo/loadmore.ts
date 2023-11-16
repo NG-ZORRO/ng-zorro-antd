@@ -62,7 +62,10 @@ export class NzDemoListLoadmoreComponent implements OnInit {
   data: any[] = [];
   list: Array<{ loading: boolean; name: any }> = [];
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private msg: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.getData((res: any) => {

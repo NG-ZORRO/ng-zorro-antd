@@ -5,14 +5,14 @@ import { By } from '@angular/platform-browser';
 
 import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 
-import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
-import { NzI18nService } from '../i18n';
-import en_US from '../i18n/languages/en_US';
-import { NzListModule } from '../list';
 import { NZ_EMPTY_COMPONENT_NAME } from './config';
 import { NzEmbedEmptyComponent } from './embed-empty.component';
 import { NzEmptyComponent } from './empty.component';
 import { NzEmptyModule } from './empty.module';
+import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
+import { NzI18nService } from '../i18n';
+import en_US from '../i18n/languages/en_US';
+import { NzListModule } from '../list';
 
 describe('nz-empty', () => {
   describe('basic', () => {

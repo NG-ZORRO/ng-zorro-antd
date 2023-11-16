@@ -32,12 +32,12 @@ import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
 import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzFormModule } from '../form';
-import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
+import { NzFormModule } from '../form';
+import en_US from '../i18n/languages/en_US';
 
 registerLocaleData(zh);
 

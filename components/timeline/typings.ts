@@ -4,10 +4,10 @@
  */
 
 const TimelineModes = ['left', 'alternate', 'right', 'custom'] as const;
-export type NzTimelineMode = typeof TimelineModes[number];
+export type NzTimelineMode = (typeof TimelineModes)[number];
 
 const TimelinePositions = ['left', 'right'] as const;
-export type NzTimelinePosition = typeof TimelinePositions[number];
+export type NzTimelinePosition = (typeof TimelinePositions)[number];
 
 export const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
-export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
+export type NzTimelineItemColor = (typeof TimelineTimeDefaultColors)[number];

@@ -7,9 +7,9 @@ import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
+import { NzCarouselBaseStrategy } from './base-strategy';
 import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { NzCarouselComponentAsSource, PointerVector } from '../typings';
-import { NzCarouselBaseStrategy } from './base-strategy';
 
 interface NzCarouselTransformStrategyOptions {
   direction: 'left' | 'right';

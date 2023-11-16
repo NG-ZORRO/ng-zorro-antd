@@ -79,7 +79,10 @@ export class NzTabNavOperationComponent implements OnDestroy {
   menuOpened = false;
 
   private readonly element: HTMLElement;
-  constructor(public cdr: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {
+  constructor(
+    public cdr: ChangeDetectorRef,
+    private elementRef: ElementRef<HTMLElement>
+  ) {
     this.element = this.elementRef.nativeElement;
   }
 

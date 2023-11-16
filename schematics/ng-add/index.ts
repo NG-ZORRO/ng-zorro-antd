@@ -9,10 +9,10 @@ import { chain, Rule, schematic, SchematicContext, Tree } from '@angular-devkit/
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
+import { Schema } from './schema';
 import { addPackageToPackageJson } from '../utils/package-config';
 import { getProjectStyle } from '../utils/project-style';
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
-import { Schema } from './schema';
 
 export default function (options: Schema): Rule {
   return chain([

@@ -21,10 +21,10 @@ import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzTransferComponent, NzTransferModule } from './index';
 import { TransferCanMove, TransferDirection, TransferItem } from './interface';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
 
 const COUNT = 21;
 const LEFTCOUNT = 2;

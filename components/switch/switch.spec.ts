@@ -12,20 +12,18 @@ import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
 describe('switch', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [
-          NzTestSwitchBasicComponent,
-          NzTestSwitchFormComponent,
-          NzTestSwitchTemplateComponent,
-          NzTestSwitchRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+      declarations: [
+        NzTestSwitchBasicComponent,
+        NzTestSwitchFormComponent,
+        NzTestSwitchTemplateComponent,
+        NzTestSwitchRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic switch', () => {
     let fixture: ComponentFixture<NzTestSwitchBasicComponent>;

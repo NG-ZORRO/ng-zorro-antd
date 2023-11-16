@@ -168,10 +168,10 @@ function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): N
   return mode === 'custom'
     ? undefined
     : mode === 'left'
-    ? 'left'
-    : mode === 'right'
-    ? 'right'
-    : mode === 'alternate' && index % 2 === 0
-    ? 'left'
-    : 'right';
+      ? 'left'
+      : mode === 'right'
+        ? 'right'
+        : mode === 'alternate' && index % 2 === 0
+          ? 'left'
+          : 'right';
 }

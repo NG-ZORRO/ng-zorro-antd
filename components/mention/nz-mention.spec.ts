@@ -19,11 +19,11 @@ import {
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzFormControlStatusType, NzFormModule } from '../form';
-import { NzInputModule } from '../input';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionComponent } from './mention.component';
 import { NzMentionModule } from './mention.module';
+import { NzFormControlStatusType, NzFormModule } from '../form';
+import { NzInputModule } from '../input';
 
 describe('mention', () => {
   let overlayContainer: OverlayContainer;
@@ -31,48 +31,46 @@ describe('mention', () => {
   const scrolledSubject = new Subject();
   let zone: MockNgZone;
 
-  beforeEach(
-    waitForAsync(() => {
-      const dir = 'ltr';
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          NzMentionModule,
-          NzInputModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NzIconTestModule,
-          NzFormModule
-        ],
-        declarations: [
-          NzTestSimpleMentionComponent,
-          NzTestPropertyMentionComponent,
-          NzTestDirMentionComponent,
-          NzTestStatusMentionComponent,
-          NzTestMentionInFormComponent
-        ],
-        providers: [
-          { provide: Directionality, useFactory: () => ({ value: dir }) },
-          { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-          {
-            provide: NgZone,
-            useFactory: () => {
-              zone = new MockNgZone();
-              return zone;
-            }
+  beforeEach(waitForAsync(() => {
+    const dir = 'ltr';
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        NzMentionModule,
+        NzInputModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzIconTestModule,
+        NzFormModule
+      ],
+      declarations: [
+        NzTestSimpleMentionComponent,
+        NzTestPropertyMentionComponent,
+        NzTestDirMentionComponent,
+        NzTestStatusMentionComponent,
+        NzTestMentionInFormComponent
+      ],
+      providers: [
+        { provide: Directionality, useFactory: () => ({ value: dir }) },
+        { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
           }
-        ]
-      });
+        }
+      ]
+    });
 
-      TestBed.compileComponents();
+    TestBed.compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();

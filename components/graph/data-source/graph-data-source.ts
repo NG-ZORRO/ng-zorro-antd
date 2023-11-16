@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzGraphDataDef } from '../interface';
 import { NzGraphBaseSource } from './base-graph-source';
+import { NzGraphDataDef } from '../interface';
 
 export class NzGraphData implements NzGraphBaseSource<NzGraphDataDef, string> {
   private _data = new BehaviorSubject<NzGraphDataDef>({} as NzGraphDataDef);

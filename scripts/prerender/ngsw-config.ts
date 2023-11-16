@@ -9,8 +9,8 @@ import { sync as glob } from 'glob';
 import * as child_process from 'child_process';
 import { resolve } from 'path';
 
-import { buildConfig } from '../build-config';
 import { minifyFile } from './minify';
+import { buildConfig } from '../build-config';
 
 type Local = 'en' | 'zh';
 

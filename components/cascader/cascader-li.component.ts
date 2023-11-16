@@ -32,7 +32,7 @@ import { NzCascaderOption } from './typings';
     <ng-template #defaultOptionTemplate>
       <div
         class="ant-cascader-menu-item-content"
-        [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"
+        [innerHTML]="optionLabel | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
       ></div>
     </ng-template>
     <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
@@ -64,7 +64,10 @@ export class NzCascaderOptionComponent implements OnInit {
 
   readonly nativeElement: HTMLElement;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    elementRef: ElementRef
+  ) {
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

@@ -7,9 +7,9 @@ import * as fs from 'fs-extra';
 
 import * as path from 'path';
 
-import { buildConfig } from '../build-config';
 import { compactPaletteLess } from './compact-vars';
 import { darkPaletteLess } from './dark-vars';
+import { buildConfig } from '../build-config';
 
 export function generateLessVars(): void {
   const dist = buildConfig.publishDir;

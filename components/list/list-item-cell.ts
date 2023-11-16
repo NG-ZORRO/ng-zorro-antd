@@ -74,7 +74,11 @@ export class NzListItemActionsComponent implements OnChanges {
     );
   });
 
-  constructor(private ngZone: NgZone, cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
+  constructor(
+    private ngZone: NgZone,
+    cdr: ChangeDetectorRef,
+    destroy$: NzDestroyService
+  ) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {

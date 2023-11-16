@@ -23,7 +23,10 @@ export class ImagePreloadService {
   private counter = new Map<string, number>();
   private linkRefs = new Map<string, HTMLLinkElement>();
 
-  constructor(@Inject(DOCUMENT) private document: NzSafeAny, private platform: Platform) {}
+  constructor(
+    @Inject(DOCUMENT) private document: NzSafeAny,
+    private platform: Platform
+  ) {}
 
   addPreload(option: PreloadOption): PreloadDisposeHandle {
     if (this.platform.isBrowser) {

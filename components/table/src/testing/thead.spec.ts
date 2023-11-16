@@ -4,8 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTableModule } from '../table.module';
 import { NzTableComponent } from '../table/table.component';
+import { NzTableModule } from '../table.module';
 
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {

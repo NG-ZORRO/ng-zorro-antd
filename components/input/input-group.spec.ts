@@ -7,28 +7,26 @@ import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
+import { NzFormControlStatusType, NzFormModule } from '../form';
 
 describe('input-group', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputGroupAddonComponent,
-          NzTestInputGroupAffixComponent,
-          NzTestInputGroupMultipleComponent,
-          NzTestInputGroupColComponent,
-          NzTestInputGroupMixComponent,
-          NzTestInputGroupWithStatusComponent,
-          NzTestInputGroupInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputGroupAddonComponent,
+        NzTestInputGroupAffixComponent,
+        NzTestInputGroupMultipleComponent,
+        NzTestInputGroupColComponent,
+        NzTestInputGroupMixComponent,
+        NzTestInputGroupWithStatusComponent,
+        NzTestInputGroupInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;

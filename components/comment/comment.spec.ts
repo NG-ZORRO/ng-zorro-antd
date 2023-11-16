@@ -3,30 +3,28 @@ import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzListModule } from '../list';
 import { NzCommentComponent } from './comment.component';
 import { NzCommentModule } from './comment.module';
 import { NzDemoCommentBasicComponent } from './demo/basic';
 import { NzDemoCommentEditorComponent } from './demo/editor';
 import { NzDemoCommentListComponent } from './demo/list';
 import { NzDemoCommentNestedComponent } from './demo/nested';
+import { NzListModule } from '../list';
 
 describe('NzCommentComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCommentModule, NzListModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzDemoCommentBasicComponent,
-          NzDemoCommentEditorComponent,
-          NzDemoCommentListComponent,
-          NzDemoCommentNestedComponent,
-          NzTestCommentRtlComponent
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCommentModule, NzListModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzDemoCommentBasicComponent,
+        NzDemoCommentEditorComponent,
+        NzDemoCommentListComponent,
+        NzDemoCommentNestedComponent,
+        NzTestCommentRtlComponent
+      ]
+    }).compileComponents();
+  }));
 
   describe('default', () => {
     it('should basic work', () => {

@@ -34,6 +34,8 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 
+import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
+import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
@@ -44,8 +46,6 @@ import {
   NzTableQueryParams,
   NzTableSize
 } from '../table.types';
-import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
-import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 

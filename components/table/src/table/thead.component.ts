@@ -27,10 +27,10 @@ import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/oper
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTrDirective } from './tr.directive';
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTrDirective } from './tr.directive';
 
 @Component({
   selector: 'thead:not(.ant-table-thead)',

@@ -24,7 +24,6 @@ import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import en_US from '../i18n/languages/en_US';
 import {
   NzShowUploadList,
   NzUploadChangeParam,
@@ -38,6 +37,7 @@ import {
 import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 import { NzUploadComponent } from './upload.component';
+import en_US from '../i18n/languages/en_US';
 
 const FILECONTENT = [
   `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`

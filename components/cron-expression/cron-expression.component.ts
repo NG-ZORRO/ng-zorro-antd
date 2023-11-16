@@ -171,7 +171,11 @@ export class NzCronExpressionComponent implements OnInit, ControlValueAccessor, 
     this.cdr.markForCheck();
   }
 
-  constructor(private formBuilder: UntypedFormBuilder, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(
+    private formBuilder: UntypedFormBuilder,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     if (this.nzType === 'spring') {
