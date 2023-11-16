@@ -671,8 +671,8 @@ export class TestImageFallbackComponent {
 @Component({
   template: `
     <nz-image-group [nzScaleStep]="groupZoomStep">
-      <img nz-image id="1" [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img nz-image id="2" [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+      <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
+      <img nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     </nz-image-group>
     <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
