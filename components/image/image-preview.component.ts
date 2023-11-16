@@ -43,7 +43,7 @@ const initialPosition = {
   y: 0
 };
 
-export const DEFAULT_NZ_ZOOM_STEP = 0.5;
+export const DEFAULT_NZ_SCALE_STEP = 0.5;
 const DEFAULT_NZ_ZOOM = 1;
 const DEFAULT_NZ_ROTATE = 0;
 
@@ -128,7 +128,7 @@ const DEFAULT_NZ_ROTATE = 0;
 })
 export class NzImagePreviewComponent implements OnInit {
   readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
-  readonly _defaultNzZoomStep = DEFAULT_NZ_ZOOM_STEP;
+  readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
   readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
 
   images: NzImage[] = [];
@@ -190,7 +190,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   private zoom: number;
   private rotate: number;
-  private zoomStep: number;
+  private scaleStep: number;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -212,7 +212,7 @@ export class NzImagePreviewComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
-    this.zoomStep = this.config.nzZoomStep ?? this._defaultNzZoomStep;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
@@ -279,7 +279,7 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onZoomIn(): void {
-    const zoomStep = this.zoomMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.zoomStep;
+    const zoomStep = this.zoomMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
@@ -288,7 +288,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomOut(): void {
     if (this.zoom > 1) {
-      this.zoom -= this.zoomStep;
+      this.zoom -= this.scaleStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
       this.position = { ...initialPosition };
@@ -401,8 +401,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private reset(): void {
-    this.zoom = 1;
-    this.rotate = 0;
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.position = { ...initialPosition };
   }
 }

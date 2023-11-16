@@ -16,7 +16,7 @@ import { NzImageDirective } from './image.directive';
   encapsulation: ViewEncapsulation.None
 })
 export class NzImageGroupComponent {
-  @Input() nzZoomStep: number | null = null;
+  @Input() nzScaleStep: number | null = null;
 
   images: NzImageDirective[] = [];
 

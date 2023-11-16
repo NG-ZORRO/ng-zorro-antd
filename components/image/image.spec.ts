@@ -401,7 +401,7 @@ describe('Preview', () => {
     }));
 
     it('should global config work', fakeAsync(() => {
-      configService.set('image', { nzZoomStep: 10 });
+      configService.set('image', { nzScaleStep: 10 });
       context.firstSrc = QUICK_SRC;
       fixture.detectChanges();
       tickChanges();
@@ -670,11 +670,11 @@ export class TestImageFallbackComponent {
 
 @Component({
   template: `
-    <nz-image-group [nzZoomStep]="groupZoomStep">
+    <nz-image-group [nzScaleStep]="groupZoomStep">
       <img nz-image id="1" [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img nz-image id="2" [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzZoomStep]="zoomStep" />
+      <img nz-image id="2" [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     </nz-image-group>
-    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzZoomStep]="zoomStep" />
+    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
   `
 })

@@ -8,7 +8,7 @@ import { NzImageService } from 'ng-zorro-antd/image';
     <div>
       <label>
         <span>scale step:</span>
-        <nz-input-number [(ngModel)]="zoomStep" [nzMin]="0.1" [nzStep]="1"></nz-input-number>
+        <nz-input-number [(ngModel)]="scaleStep" [nzMin]="0.1" [nzStep]="1"></nz-input-number>
       </label>
 
       <button nz-button nzType="primary" (click)="onClick()">Preview</button>
@@ -32,7 +32,7 @@ import { NzImageService } from 'ng-zorro-antd/image';
   ]
 })
 export class NzDemoImageControlledPreviewComponent {
-  zoomStep: number = 0.5;
+  scaleStep: number = 0.5;
 
   constructor(private nzImageService: NzImageService) {}
 
@@ -43,6 +43,6 @@ export class NzDemoImageControlledPreviewComponent {
         alt: ''
       }
     ];
-    this.nzImageService.preview(images, { nzZoom: 1, nzRotate: 0, nzZoomStep: this.zoomStep });
+    this.nzImageService.preview(images, { nzZoom: 1, nzRotate: 0, nzScaleStep: this.scaleStep });
   }
 }
