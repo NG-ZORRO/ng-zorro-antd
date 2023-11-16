@@ -25,15 +25,14 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzImageGroupComponent } from './image-group.component';
-// @ts-ignore
 import { DEFAULT_NZ_SCALE_STEP } from './image-preview.component';
 import { NzImageService } from './image.service';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
-type TImageUrl = string;
-type TImageZoomStep = number;
+export type TImageUrl = string;
+export type TImageScaleStep = number;
 
 @Directive({
   selector: 'img[nz-image]',
@@ -103,9 +102,9 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
       const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc, srcset: e.nzSrcset }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
-      const zoomStepMap = new Map<TImageUrl, TImageZoomStep>();
+      const scaleStepMap = new Map<TImageUrl, TImageScaleStep>();
       previewAbleImages.forEach(imageDirective => {
-        zoomStepMap.set(
+        scaleStepMap.set(
           imageDirective.nzSrc ?? imageDirective.nzSrcset,
           imageDirective.nzScaleStep ?? this.parentGroup.nzScaleStep ?? this.nzScaleStep ?? DEFAULT_NZ_SCALE_STEP
         );
@@ -115,7 +114,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         {
           nzDirection: this.dir
         },
-        zoomStepMap
+        scaleStepMap
       );
       previewRef.switchTo(previewIndex);
     } else {

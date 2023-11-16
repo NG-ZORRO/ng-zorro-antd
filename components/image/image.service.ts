@@ -9,6 +9,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector, Optional } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { TImageScaleStep, TImageUrl } from 'ng-zorro-antd/image/image.directive';
 
 import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
@@ -28,15 +29,23 @@ export class NzImageService {
     @Optional() private directionality: Directionality
   ) {}
 
-  preview(images: NzImage[], options?: NzImagePreviewOptions, zoomMap?: Map<string, number>): NzImagePreviewRef {
+  preview(
+    images: NzImage[],
+    options?: NzImagePreviewOptions,
+    zoomMap?: Map<TImageUrl, TImageScaleStep>
+  ): NzImagePreviewRef {
     return this.display(images, options, zoomMap);
   }
 
-  private display(images: NzImage[], config?: NzImagePreviewOptions, zoomMap?: Map<string, number>): NzImagePreviewRef {
+  private display(
+    images: NzImage[],
+    config?: NzImagePreviewOptions,
+    scaleStepMap?: Map<TImageUrl, TImageScaleStep>
+  ): NzImagePreviewRef {
     const configMerged = { ...new NzImagePreviewOptions(), ...(config ?? {}) };
     const overlayRef = this.createOverlay(configMerged);
     const previewComponent = this.attachPreviewComponent(overlayRef, configMerged);
-    previewComponent.setImages(images, zoomMap);
+    previewComponent.setImages(images, scaleStepMap);
     const previewRef = new NzImagePreviewRef(previewComponent, configMerged, overlayRef);
 
     previewComponent.previewRef = previewRef;

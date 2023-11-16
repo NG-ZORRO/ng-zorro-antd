@@ -70,3 +70,9 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | prev(): void                  | Previous image      |
 | next(): void                  | Next image          |
 | close(): void                 | Close image preview |
+
+### NzImageGroupComponent
+
+| Property    | Description                                                                                                                     | Type     | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. | `number` | -       |

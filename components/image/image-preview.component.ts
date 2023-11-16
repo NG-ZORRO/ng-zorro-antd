@@ -29,6 +29,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
+import { TImageUrl, TImageScaleStep } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -137,7 +138,7 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
-  zoomMap: Map<string, number> = new Map<string, number>();
+  scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -237,8 +238,8 @@ export class NzImagePreviewComponent implements OnInit {
     });
   }
 
-  setImages(images: NzImage[], zoomMap?: Map<string, number>): void {
-    if (zoomMap) this.zoomMap = zoomMap;
+  setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
+    if (scaleStepMap) this.scaleStepMap = scaleStepMap;
     this.images = images;
     this.cdr.markForCheck();
   }
@@ -279,7 +280,8 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onZoomIn(): void {
-    const zoomStep = this.zoomMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+    const zoomStep =
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
