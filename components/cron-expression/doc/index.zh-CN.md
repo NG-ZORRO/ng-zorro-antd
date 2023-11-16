@@ -41,3 +41,19 @@ npm install cron-parser
 | `[nzCollapseDisable]`  | 隐藏折叠面板         | `boolean`                   | `false`  |
 | `[nzExtra]`     | 自定义渲染右侧的内容 | `TemplateRef<void>`         | -        |
 | `[nzSemantic]`     | 自定义渲染下次执行时间 | `TemplateRef<void>`         | -        |
+
+## 注意
+
+### 支持格式
+
+```text
+*    *    *    *    *    *
+┬    ┬    ┬    ┬    ┬    ┬
+│    │    │    │    │    |
+│    │    │    │    │    └ day of week (0 - 7, 1L - 7L) (0 or 7 is Sun)
+│    │    │    │    └───── month (1 - 12)
+│    │    │    └────────── day of month (1 - 31, L)
+│    │    └─────────────── hour (0 - 23)
+│    └──────────────────── minute (0 - 59)
+└───────────────────────── second (0 - 59, optional)
+```

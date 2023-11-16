@@ -5,8 +5,6 @@
 
 export type TimeType = keyof Cron;
 
-export type TimeTypeError = 'secondError' | 'minuteError' | 'hourError' | 'dayError' | 'monthError' | 'weekError';
-
 export interface Cron {
   second?: CronValue;
   minute?: CronValue;
