@@ -107,14 +107,13 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       previewAbleImages.forEach(imageDirective => {
         zoomStepMap.set(
           imageDirective.nzSrc ?? imageDirective.nzSrcset,
-          imageDirective.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
+          imageDirective.nzZoomStep ?? this.parentGroup.nzZoomStep ?? this.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
         );
       });
       const previewRef = this.nzImageService.preview(
         previewImages,
         {
-          nzDirection: this.dir,
-          nzZoomStep: this.nzZoomStep ?? DEFAULT_NZ_ZOOM_STEP
+          nzDirection: this.dir
         },
         zoomStepMap
       );

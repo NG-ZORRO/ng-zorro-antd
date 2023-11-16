@@ -43,9 +43,9 @@ const initialPosition = {
   y: 0
 };
 
-const DEFAULT_NZ_ZOOM = 1;
 export const DEFAULT_NZ_ZOOM_STEP = 0.5;
-const DEFAULT_NZ_ROTATE = 1;
+const DEFAULT_NZ_ZOOM = 1;
+const DEFAULT_NZ_ROTATE = 0;
 
 @Component({
   selector: 'nz-image-preview',
@@ -238,8 +238,8 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   setImages(images: NzImage[], zoomMap?: Map<string, number>): void {
-    this.images = images;
     if (zoomMap) this.zoomMap = zoomMap;
+    this.images = images;
     this.cdr.markForCheck();
   }
 
