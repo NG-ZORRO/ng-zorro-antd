@@ -32,7 +32,12 @@ export interface Data {
     >
       <thead>
         <tr>
-          <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+          <th
+            [nzChecked]="checked"
+            [nzIndeterminate]="indeterminate"
+            nzLabel="Select all"
+            (nzCheckedChange)="onAllChecked($event)"
+          ></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -43,6 +48,7 @@ export interface Data {
           <td
             [nzChecked]="setOfCheckedId.has(data.id)"
             [nzDisabled]="data.disabled"
+            [nzLabel]="data.name"
             (nzCheckedChange)="onItemChecked(data.id, $event)"
           ></td>
           <td>{{ data.name }}</td>

@@ -111,6 +111,7 @@ Checkbox property
 | `[nzShowCheckbox]` | Whether `nz-checkbox` should be shown in the header | `boolean` | - |
 | `[nzDisabled]` | Whether the `nz-checkbox` is disabled | `boolean` | - |
 | `[nzIndeterminate]` | `nz-checkbox` indeterminate status | `boolean` | - |
+| `[nzLabel]` | ARIA label for the `nz-checkbox` | `string` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
 | `(nzCheckedChange)` | Callback when checked status changes | `EventEmitter<boolean>` | - |
 
@@ -173,6 +174,7 @@ Checkbox property
 | `[nzShowCheckbox]` | Whether add nz-checkbox | `boolean` | - |
 | `[nzDisabled]` | Whether disable checkbox | `boolean` | - |
 | `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
+| `[nzLabel]` | ARIA label for the `nz-checkbox` | `string` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
 | `(nzCheckedChange)` | Checked status change callback | `EventEmitter<boolean>` | - |
 | `[colSpan]` | how many columns the cell extends | `number` | `null` |
