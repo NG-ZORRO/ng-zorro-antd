@@ -58,6 +58,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipOverlayClassName') override overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input('nzTooltipArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
+  @Input() @InputBoolean() override cdkConnectedOverlayPush?: boolean = true;
   @Input() nzTooltipColor?: string;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename
@@ -98,7 +99,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPositions]="_positions"
-      [cdkConnectedOverlayPush]="true"
+      [cdkConnectedOverlayPush]="cdkConnectedOverlayPush"
       [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
