@@ -4,6 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
@@ -68,7 +69,7 @@ const initialPosition = {
             cdkDrag
             [style.transform]="previewImageWrapperTransform"
             [cdkDragFreeDragPosition]="position"
-            (cdkDragReleased)="onDragReleased()"
+            (cdkDragEnded)="onDragEnd($event)"
           >
             <ng-container *ngFor="let image of images; index as imageIndex">
               <img
@@ -274,7 +275,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomIn(): void {
     this.zoom += 0.2;
-    // this.updatePreviewImageTransform();
+    this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
     // this.position = { ...initialPosition };
   }
@@ -282,10 +283,10 @@ export class NzImagePreviewComponent implements OnInit {
   onZoomOut(): void {
     if (this.zoom > 1) {
       this.zoom -= 0.2;
-      // this.updatePreviewImageTransform();
+      this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
 
-      if (this.zoom === 1) {
+      if (this.zoom <= 1) {
         this.position = { ...initialPosition };
       }
     }
@@ -316,17 +317,17 @@ export class NzImagePreviewComponent implements OnInit {
   onWheelZoom(event: WheelEvent): void {
     // setTimeout(() => {
     const deltaY = event.deltaY;
-    const imageRect = this.imageRef.nativeElement.getBoundingClientRect();
-    // @ts-ignore
-    const imageWrapperRect = this.imagePreviewWrapper.nativeElement.getBoundingClientRect();
+    const imageElement = this.imageRef.nativeElement;
 
-    const x = (event.clientX - imageRect.x) / this.zoom;
-    const y = (event.clientY - imageRect.y) / this.zoom;
+    const x = (event.clientX - imageElement.getBoundingClientRect().x) / this.zoom;
+    const y = (event.clientY - imageElement.getBoundingClientRect().y) / this.zoom;
 
-    const m = deltaY < 0 ? 0.1 : -0.1;
+    const halfOfScaleStepValue = deltaY < 0 ? 0.1 : -0.1;
 
-    this.position.x += -x * m * 2 + this.imageRef.nativeElement.offsetWidth * m;
-    this.position.y += -y * m * 2 + this.imageRef.nativeElement.offsetHeight * m;
+    this.position = {
+      x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
+      y: this.position.y + (-y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue)
+    };
 
     if (this.isZoomedInWithMouseWheel(deltaY)) {
       this.onZoomIn();
@@ -334,13 +335,14 @@ export class NzImagePreviewComponent implements OnInit {
       this.onZoomOut();
     }
 
-    if (this.zoom === 1) {
+    if (this.zoom <= 1) {
       this.position = {
         x: 0,
         y: 0
       };
     }
 
+    this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
 
     this.markForCheck();
@@ -371,7 +373,7 @@ export class NzImagePreviewComponent implements OnInit {
     this.markForCheck();
   }
 
-  onDragReleased(): void {
+  onDragEnd(event: CdkDragEnd): void {
     this.isDragging = false;
     const width = this.imageRef.nativeElement.offsetWidth * this.zoom;
     const height = this.imageRef.nativeElement.offsetHeight * this.zoom;
@@ -389,7 +391,14 @@ export class NzImagePreviewComponent implements OnInit {
     const fitContentPos = getFitContentPosition(fitContentParams);
     if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
       this.position = { ...this.position, ...fitContentPos };
+    } else if (!isNotNil(fitContentPos.x) && !isNotNil(fitContentPos.y)) {
+      this.position = {
+        x: event.source.getFreeDragPosition().x,
+        y: event.source.getFreeDragPosition().y
+      };
+      console.log(event);
     }
+    console.log(event);
     this.markForCheck();
   }
 
@@ -402,12 +411,14 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
+    // this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
     this.previewImageTransform = `scale3d(${this.zoom}, ${this.zoom}, 1) rotate(${this.rotate}deg)`;
   }
 
   private updatePreviewImageWrapperTransform(): void {
     // this.previewImageWrapperTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
-    this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
+    // this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
+    this.previewImageWrapperTransform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
   }
 
   private updateZoomOutDisabled(): void {
