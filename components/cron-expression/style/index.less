@@ -83,10 +83,6 @@
       display: flex;
       align-items: center;
       padding-left: @padding-md;
-
-      &-date {
-        flex: 1 1 auto;
-      }
     }
 
     &-list, &-icon {
@@ -106,21 +102,13 @@
     }
 
     &-icon {
-      height: 100%;
+      flex: 0 0 16px;
+      display: flex;
+      justify-content: center;
     }
   }
 
   &-error {
     color: @error-color;
-  }
-
-  &-hint {
-    p {
-      display: flex;
-    }
-    span {
-      display: inline-block;
-      min-width: 40px;
-    }
   }
 }

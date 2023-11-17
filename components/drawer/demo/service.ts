@@ -1,8 +1,8 @@
 /* declarations: NzDrawerCustomComponent */
 
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
 
-import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NZ_DRAWER_DATA, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 
 @Component({
   selector: 'nz-demo-drawer-service',
@@ -60,6 +60,9 @@ export class NzDemoDrawerServiceComponent {
       nzContent: NzDrawerCustomComponent,
       nzContentParams: {
         value: this.value
+      },
+      nzData: {
+        value: 'Ng Zorro'
       }
     });
 
@@ -80,18 +83,18 @@ export class NzDemoDrawerServiceComponent {
   selector: 'nz-drawer-custom-component',
   template: `
     <div>
-      <input nz-input [(ngModel)]="value" />
+      <input nz-input [(ngModel)]="nzData.value" />
       <nz-divider></nz-divider>
       <button nzType="primary" (click)="close()" nz-button>Confirm</button>
     </div>
   `
 })
 export class NzDrawerCustomComponent {
-  @Input() value = '';
+  // @Input() value = '';
 
-  constructor(private drawerRef: NzDrawerRef<string>) {}
+  constructor(private drawerRef: NzDrawerRef<string>, @Inject(NZ_DRAWER_DATA) public nzData: { value: string }) {}
 
   close(): void {
-    this.drawerRef.close(this.value);
+    this.drawerRef.close(this.nzData);
   }
 }

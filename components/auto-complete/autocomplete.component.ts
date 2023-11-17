@@ -17,11 +17,13 @@ import {
   Host,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -43,6 +45,18 @@ export interface AutocompleteDataSourceItem {
 }
 
 export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string | number>;
+
+function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSourceItem[] {
+  return value?.map(item => {
+    if (typeof item === 'number' || typeof item === 'string') {
+      return {
+        label: item.toString(),
+        value: item.toString()
+      };
+    }
+    return item;
+  });
+}
 
 @Component({
   selector: 'nz-autocomplete',
@@ -74,19 +88,15 @@ export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string |
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option
-          *ngFor="let option of nzDataSource!"
-          [nzValue]="option"
-          [nzLabel]="option && $any(option).label ? $any(option).label : $any(option)"
-        >
-          {{ option && $any(option).label ? $any(option).label : $any(option) }}
+        <nz-auto-option *ngFor="let option of normalizedDataSource" [nzValue]="option.value" [nzLabel]="option.label">
+          {{ option.label }}
         </nz-auto-option>
       </ng-template>
     </ng-template>
   `,
   animations: [slideMotion]
 })
-export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit, OnChanges {
   static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
   static ngAcceptInputType_nzBackfill: BooleanInput;
 
@@ -104,6 +114,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent | null = null;
   dir: Direction = 'ltr';
+  normalizedDataSource: AutocompleteDataSourceItem[] = [];
   private destroy$ = new Subject<void>();
   animationStateChange = new EventEmitter<AnimationEvent>();
 
@@ -160,6 +171,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
+
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -167,6 +179,13 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     });
 
     this.dir = this.directionality.value;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzDataSource } = changes;
+    if (nzDataSource) {
+      this.normalizedDataSource = normalizeDataSource(nzDataSource.currentValue);
+    }
   }
 
   onAnimationEvent(event: AnimationEvent): void {

@@ -112,6 +112,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzShowCheckbox]` | 是否添加checkbox | `boolean` | - |
 | `[nzDisabled]` | checkbox 是否禁用 | `boolean` | - |
 | `[nzIndeterminate]` | checkbox indeterminate 状态 | `boolean` | - |
+| `[nzLabel]` | checkbox 的可访问性标签 | `string` | - |
 | `[nzChecked]` | checkbox 是否被选中，可双向绑定 | `boolean` | - |
 | `(nzCheckedChange)` | 选中的回调 | `EventEmitter<boolean>` | - |
 
@@ -173,6 +174,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzShowCheckbox]` | 是否添加checkbox | `boolean` | - |
 | `[nzDisabled]` | checkbox 是否禁用 | `boolean` | - |
 | `[nzIndeterminate]` | checkbox indeterminate 状态 | `boolean` | - |
+| `[nzLabel]` | checkbox 的可访问性标签 | `string` | - |
 | `[nzChecked]` | checkbox 是否被选中，可双向绑定 | `boolean` | - |
 | `(nzCheckedChange)` | 选中的回调 | `EventEmitter<boolean>` | - |
 | `[colSpan]` | 单元格可横跨的列数 | `number` | `null` |
@@ -184,6 +186,7 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | `[nzShowExpand]` | 是否显示展开按钮 | `boolean` | - |
 | `[nzExpand]` | 当前展开按钮状态，可双向绑定 | `boolean` | - |
+| `[nzExpandIcon]` | 自定义展开图标 | `TemplateRef<void>` | - |
 | `(nzExpandChange)` | 当前展开按钮状态改变回调函数 | `EventEmitter<boolean>` | - |
 
 样式属性

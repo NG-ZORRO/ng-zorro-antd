@@ -185,19 +185,7 @@ export default {
     hour: 'hour',
     day: 'day',
     month: 'month',
-    week: 'week',
-    secondError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
-    minuteError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-59</span>Allowable range</p>',
-    hourError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>0-23</span>Allowable range</p>',
-    dayError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-31</span>Allowable range</p>',
-    monthError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><p><span>1-12</span>Allowable range</p>',
-    weekError:
-      '<p><span>*</span>Any value</p><p><span>,</span>Separator between multiple values</p><p><span>-</span>Connector for interval values</p><p><span>/</span>Equally distributed</p><span>?</span> Not specify</p><p><p><span>0-7</span>Allowable range (0 represents Sunday, 1-7 are Monday to Sunday)</p>'
+    week: 'week'
   },
   QRCode: {
     expired: 'QR code expired',

@@ -74,12 +74,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -96,8 +93,7 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
@@ -137,8 +133,9 @@ export class AppModule {}
     NzConfigService,
     {
       provide: NZ_CONFIG,
-      useFactory: (nzConfigService: NzConfigService) => {
-        const globalConfig = nzConfigService.getConfig();
+      useFactory: () => {
+        // 获取全局 NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
             nzBorderless: true
@@ -151,8 +148,6 @@ export class AppModule {}
         };
         return mergedConfig;
       },
-      // 获取全局 NzConfigService
-      deps: [[new SkipSelf(), NzConfigService]]
     }
   ]
 })

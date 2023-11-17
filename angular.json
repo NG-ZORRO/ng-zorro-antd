@@ -107,16 +107,16 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng-zorro-antd-doc:build"
+            "buildTarget": "ng-zorro-antd-doc:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng-zorro-antd-doc:build:production"
+              "buildTarget": "ng-zorro-antd-doc:build:production"
             }
           }
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "ng-zorro-antd-doc:build",
             "serverTarget": "ng-zorro-antd-doc:server"
@@ -129,7 +129,7 @@
           }
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "builder": "@angular-devkit/build-angular:prerender",
           "options": {
             "browserTarget": "ng-zorro-antd-doc:build:production",
             "serverTarget": "ng-zorro-antd-doc:server:production",
@@ -194,11 +194,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng-zorro-antd-iframe:build"
+            "buildTarget": "ng-zorro-antd-iframe:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng-zorro-antd-iframe:build:production"
+              "buildTarget": "ng-zorro-antd-iframe:build:production"
             }
           }
         }
