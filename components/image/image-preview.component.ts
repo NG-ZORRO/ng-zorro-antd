@@ -114,6 +114,8 @@ const initialPosition = {
     class: 'ant-image-preview-wrap',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
+    '[style.--image-transition-duration]': 'IMAGE_TRANSITION_DURATION + "ms"',
+    '[style.--image-transition-timing-function]': 'imageTransitionTimingFunction',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@fadeMotion]': 'animationState',
     '(@fadeMotion.start)': 'onAnimationStart($event)',
@@ -124,6 +126,9 @@ const initialPosition = {
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
+  readonly IMAGE_TRANSITION_DURATION = 300;
+  imageTransitionTimingFunction: 'linear' | 'ease-out' = 'linear';
+
   images: NzImage[] = [];
   index = 0;
   isDragging = false;
@@ -182,6 +187,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   private zoom: number;
   private rotate: number;
+  private wheelEventStack: WheelEvent[] = [];
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -277,7 +283,6 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom += 0.2;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
-    // this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
@@ -287,7 +292,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updateZoomOutDisabled();
 
       if (this.zoom <= 1) {
-        this.position = { ...initialPosition };
+        this.reCenterImage();
       }
     }
   }
@@ -315,7 +320,17 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onWheelZoom(event: WheelEvent): void {
-    // setTimeout(() => {
+    this.wheelEventStack.push(event);
+
+    if (this.wheelEventStack.length === 1) {
+      this.imageTransitionTimingFunction = 'ease-out';
+      this.wheelZoomEventHandler(this.wheelEventStack[0]);
+    } else if (this.wheelEventStack.length > 1) {
+      this.imageTransitionTimingFunction = 'linear';
+    }
+  }
+
+  wheelZoomEventHandler(event: WheelEvent): void {
     const deltaY = event.deltaY;
     const imageElement = this.imageRef.nativeElement;
 
@@ -336,17 +351,24 @@ export class NzImagePreviewComponent implements OnInit {
     }
 
     if (this.zoom <= 1) {
-      this.position = {
-        x: 0,
-        y: 0
-      };
+      this.reCenterImage();
     }
 
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
-
     this.markForCheck();
-    // }, 300);
+
+    setTimeout(() => {
+      this.wheelEventStack.shift();
+
+      if (this.wheelEventStack.length === 1) {
+        this.imageTransitionTimingFunction = 'ease-out';
+      }
+
+      if (this.wheelEventStack.length !== 0) {
+        this.wheelZoomEventHandler(this.wheelEventStack[0]);
+      }
+    }, this.IMAGE_TRANSITION_DURATION);
   }
 
   onAnimationStart(event: AnimationEvent): void {
@@ -396,9 +418,7 @@ export class NzImagePreviewComponent implements OnInit {
         x: event.source.getFreeDragPosition().x,
         y: event.source.getFreeDragPosition().y
       };
-      console.log(event);
     }
-    console.log(event);
     this.markForCheck();
   }
 
@@ -411,13 +431,10 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    // this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
     this.previewImageTransform = `scale3d(${this.zoom}, ${this.zoom}, 1) rotate(${this.rotate}deg)`;
   }
 
   private updatePreviewImageWrapperTransform(): void {
-    // this.previewImageWrapperTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
-    // this.previewImageTransform = `translate(${this.position.x}px, ${this.position.y}px) scale(${this.zoom}) rotate(${this.rotate}deg)`;
     this.previewImageWrapperTransform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
   }
 
@@ -450,6 +467,10 @@ export class NzImagePreviewComponent implements OnInit {
   private reset(): void {
     this.zoom = 1;
     this.rotate = 0;
+    this.reCenterImage();
+  }
+
+  private reCenterImage(): void {
     this.position = { ...initialPosition };
   }
 }
