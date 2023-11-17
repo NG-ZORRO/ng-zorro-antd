@@ -224,7 +224,7 @@ export class NzTreeComponent
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzCheckedKeysChange: EventEmitter<NzTreeNodeKey[]> = new EventEmitter<NzTreeNodeKey[]>();
   @Output() readonly nzSearchValueChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
@@ -426,6 +426,8 @@ export class NzTreeComponent
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
         this.nzCheckBoxChange.emit(eventNext);
+        const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
+        this.nzCheckedKeysChange.emit(checkedKeys);
         break;
       case 'dragstart':
         // if node is expanded
