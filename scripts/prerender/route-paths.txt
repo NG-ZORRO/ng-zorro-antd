@@ -31,6 +31,8 @@
 /components/checkbox/zh
 /components/collapse/en
 /components/collapse/zh
+/components/color-picker/en
+/components/color-picker/zh
 /components/comment/en
 /components/comment/zh
 /components/date-picker/en
@@ -45,6 +47,8 @@
 /components/dropdown/zh
 /components/empty/en
 /components/empty/zh
+/components/float-button/en
+/components/float-button/zh
 /components/form/en
 /components/form/zh
 /components/flex/en
@@ -61,6 +65,8 @@
 /components/input-number/zh
 /components/layout/en
 /components/layout/zh
+/components/list/en
+/components/list/zh
 /components/mention/en
 /components/mention/zh
 /components/menu/en
@@ -81,6 +87,8 @@
 /components/popover/zh
 /components/progress/en
 /components/progress/zh
+/components/qr-code/en
+/components/qr-code/zh
 /components/radio/en
 /components/radio/zh
 /components/rate/en
@@ -89,6 +97,8 @@
 /components/result/zh
 /components/segmented/en
 /components/segmented/zh
+/components/select/en
+/components/select/zh
 /components/skeleton/en
 /components/skeleton/zh
 /components/slider/en
@@ -125,8 +135,6 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
-/components/qr-code/en
-/components/qr-code/zh
 /components/water-mark/en
 /components/water-mark/zh
 /components/color-picker/en

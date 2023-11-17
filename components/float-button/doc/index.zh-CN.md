@@ -1,9 +1,10 @@
 ---
 category: Components
 subtitle: 悬浮按钮
-type: 其他
+type: 通用
 title: FloatButton
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
+tag: New
 ---
 
 ## 何时使用

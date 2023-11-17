@@ -66,7 +66,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzVisibilityHeight: NumberInput;
   static ngAcceptInputType_nzDuration: NumberInput;
 
-  private scrollListenerDestroy$ = new Subject();
+  private scrollListenerDestroy$ = new Subject<void>();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
