@@ -186,6 +186,10 @@ export class NzImagePreviewComponent implements OnInit {
     return this.config.nzNoAnimation ?? false;
   }
 
+  get resetDisabled(): boolean {
+    return this.config.nzNoReset ?? false;
+  }
+
   get maskClosable(): boolean {
     const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
     return this.config.nzMaskClosable ?? defaultConfig.nzMaskClosable ?? true;
@@ -238,7 +242,9 @@ export class NzImagePreviewComponent implements OnInit {
 
   next(): void {
     if (this.index < this.images.length - 1) {
-      this.reset();
+      if (!this.resetDisabled) {
+        this.reset();
+      }
       this.index++;
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
@@ -249,7 +255,9 @@ export class NzImagePreviewComponent implements OnInit {
 
   prev(): void {
     if (this.index > 0) {
-      this.reset();
+      if (!this.resetDisabled) {
+        this.reset();
+      }
       this.index--;
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
