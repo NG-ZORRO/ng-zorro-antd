@@ -500,7 +500,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onOpenChange(): void {
     this.updateCdkConnectedOverlayStatus();
-    this.clearInput();
+    if (this.nzAutoClearSearchValue) {
+      this.clearInput();
+    }
   }
 
   onInputValueChange(value: string): void {
