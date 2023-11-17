@@ -1,8 +1,9 @@
 ---
 category: Components
-type: Other
+type: General
 title: FloatButton
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
+tag: New
 ---
 
 ## When To Use
