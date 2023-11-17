@@ -14,6 +14,7 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -29,12 +30,17 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   template: `
     <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
-      <button
-        nz-row-expand-button
-        [expand]="nzExpand"
-        (expandChange)="onExpandChange($event)"
-        [spaceMode]="!nzShowExpand"
-      ></button>
+      <ng-template #rowExpand>
+        <button
+          nz-row-expand-button
+          [expand]="nzExpand"
+          (expandChange)="onExpandChange($event)"
+          [spaceMode]="!nzShowExpand"
+        ></button>
+      </ng-template>
+      <ng-container *ngIf="nzExpandIcon; else rowExpand">
+        <ng-template [ngTemplateOutlet]="nzExpandIcon"></ng-template>
+      </ng-container>
     </ng-container>
     <label
       nz-checkbox
@@ -63,6 +69,7 @@ export class NzTdAddOnComponent implements OnChanges {
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzExpand = false;
+  @Input() nzExpandIcon: TemplateRef<void> | null = null;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
   private isNzShowExpandChanged = false;

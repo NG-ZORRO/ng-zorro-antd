@@ -184,6 +184,7 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | `[nzShowExpand]` | 是否显示展开按钮 | `boolean` | - |
 | `[nzExpand]` | 当前展开按钮状态，可双向绑定 | `boolean` | - |
+| `[nzExpandIcon]` | 自定义展开图标 | `TemplateRef<void>` | - |
 | `(nzExpandChange)` | 当前展开按钮状态改变回调函数 | `EventEmitter<boolean>` | - |
 
 样式属性

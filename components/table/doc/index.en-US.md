@@ -184,6 +184,7 @@ Expand property
 | -------- | ----------- | ---- | ------- |
 | `[nzShowExpand]` | Whether show expand icon | `boolean` | - |
 | `[nzExpand]` | Current expand status, double binding | `boolean` | - |
+| `[nzExpandIcon]` | Custom expand icon | `TemplateRef<void>` | - |
 | `(nzExpandChange)` | Expand status change callback | `EventEmitter<boolean>` | - |
 
 Style property
