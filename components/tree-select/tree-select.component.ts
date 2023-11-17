@@ -634,7 +634,22 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       }
     }
 
-    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
+    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
+      (a, b) => {
+        const indexA = this.value.indexOf(a.key);
+        const indexB = this.value.indexOf(b.key);
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
+        }
+        if (indexA !== -1) {
+          return -1;
+        }
+        if (indexB !== -1) {
+          return 1;
+        }
+        return 0;
+      }
+    );
   }
 
   updatePosition(): void {
