@@ -30,6 +30,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
+import { TImageUrl, TImageScaleStep } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -43,6 +44,10 @@ const initialPosition = {
   x: 0,
   y: 0
 };
+
+export const DEFAULT_NZ_SCALE_STEP = 0.5;
+const DEFAULT_NZ_ZOOM = 1;
+const DEFAULT_NZ_ROTATE = 0;
 
 @Component({
   selector: 'nz-image-preview',
@@ -126,6 +131,10 @@ const initialPosition = {
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
+  readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
+  readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
+  readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
+
   readonly IMAGE_TRANSITION_DURATION = 300;
   imageTransitionTimingFunction: 'linear' | 'ease-out' = 'linear';
 
@@ -135,6 +144,7 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
+  scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -187,6 +197,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   private zoom: number;
   private rotate: number;
+  private scaleStep: number;
   private wheelEventStack: WheelEvent[] = [];
 
   get animationDisabled(): boolean {
@@ -208,8 +219,9 @@ export class NzImagePreviewComponent implements OnInit {
     private destroy$: NzDestroyService,
     private sanitizer: DomSanitizer
   ) {
-    this.zoom = this.config.nzZoom ?? 1;
-    this.rotate = this.config.nzRotate ?? 0;
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
@@ -239,7 +251,8 @@ export class NzImagePreviewComponent implements OnInit {
     });
   }
 
-  setImages(images: NzImage[]): void {
+  setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
+    if (scaleStepMap) this.scaleStepMap = scaleStepMap;
     this.images = images;
     this.markForCheck();
   }
@@ -280,14 +293,18 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onZoomIn(): void {
-    this.zoom += 0.2;
+    const zoomStep =
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+    this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
   }
 
   onZoomOut(): void {
     if (this.zoom > 1) {
-      this.zoom -= 0.2;
+      const zoomStep =
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+      this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
 
@@ -471,6 +488,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private reCenterImage(): void {
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.position = { ...initialPosition };
   }
 }

@@ -28,6 +28,7 @@ import {
   ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
 
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import {
@@ -189,6 +190,7 @@ describe('Preview', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let previewElement: HTMLElement | null;
+  let configService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -212,8 +214,9 @@ describe('Preview', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer, NzConfigService], (oc: OverlayContainer, cs: NzConfigService) => {
     overlayContainer = oc;
+    configService = cs;
     overlayContainerElement = oc.getContainerElement();
   }));
 
@@ -308,7 +311,7 @@ describe('Preview', () => {
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
       dispatchFakeEvent(zoomIn, 'click');
       tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(2, 2, 1) rotate(0deg)');
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
       dispatchFakeEvent(zoomOut, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
@@ -316,6 +319,102 @@ describe('Preview', () => {
       tickChanges();
       previewElement = getPreviewElement();
       expect(previewElement).not.toBeTruthy();
+      discardPeriodicTasks();
+      flush();
+    }));
+
+    it('should zoom in/out based on the zoom step value', fakeAsync(() => {
+      context.firstSrc = QUICK_SRC;
+      context.zoomStep = 2;
+      fixture.detectChanges();
+      let image = debugElement.nativeElement.querySelectorAll('img');
+      image[2].click();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const zoomIn = operations[1];
+      const zoomOut = operations[2];
+      dispatchFakeEvent(zoomIn, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(3, 3, 1) rotate(0deg)');
+      dispatchFakeEvent(zoomOut, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+      discardPeriodicTasks();
+      flush();
+    }));
+
+    it('should have a default value of 0.5 for zoomStep', fakeAsync(() => {
+      context.firstSrc = QUICK_SRC;
+      context.zoomStep = null;
+      fixture.detectChanges();
+      let image = debugElement.nativeElement.querySelector('img');
+      image.click();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const zoomIn = operations[1];
+      dispatchFakeEvent(zoomIn, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+      discardPeriodicTasks();
+      flush();
+    }));
+
+    it('should the groupZoomStep variable be set for each image"s zoomStep', fakeAsync(() => {
+      context.firstSrc = QUICK_SRC;
+      context.groupZoomStep = 5;
+      fixture.detectChanges();
+      let image = debugElement.nativeElement.querySelectorAll('img');
+      image[0].click();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const zoomIn = operations[1];
+      dispatchFakeEvent(zoomIn, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(6, 6, 1) rotate(0deg)');
+      discardPeriodicTasks();
+      flush();
+    }));
+
+    it('should the groupZoomStep variable be set for each image"s zoomStep Except those that already have a zoomStep value', fakeAsync(() => {
+      context.firstSrc = QUICK_SRC;
+      context.groupZoomStep = 5;
+      context.zoomStep = 3;
+      fixture.detectChanges();
+      let image = debugElement.nativeElement.querySelectorAll('img');
+      image[2].click();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      let zoomIn = operations[1];
+      dispatchFakeEvent(zoomIn, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(4, 4, 1) rotate(0deg)');
+      discardPeriodicTasks();
+      flush();
+    }));
+
+    it('should global config work', fakeAsync(() => {
+      configService.set('image', { nzScaleStep: 10 });
+      context.firstSrc = QUICK_SRC;
+      fixture.detectChanges();
+      tickChanges();
+      let image = debugElement.nativeElement.querySelectorAll('img');
+      image[3].click();
+      tickChanges();
+      previewElement = getPreviewElement();
+      let imageElement = getPreviewImageElement();
+      let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      let zoomIn = operations[1];
+      dispatchFakeEvent(zoomIn, 'click');
+      tickChanges();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
       discardPeriodicTasks();
       flush();
     }));
@@ -571,10 +670,11 @@ export class TestImageFallbackComponent {
 
 @Component({
   template: `
-    <nz-image-group>
+    <nz-image-group [nzScaleStep]="groupZoomStep">
       <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" />
+      <img nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     </nz-image-group>
+    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
   `
 })
@@ -584,6 +684,8 @@ export class TestImagePreviewGroupComponent {
   secondSrc = '';
   previewRef: NzImagePreviewRef | null = null;
   images: NzImage[] = [];
+  zoomStep: number | null = null;
+  groupZoomStep: number | null = null;
 
   @ViewChild(NzImageGroupComponent) nzImageGroup!: NzImageGroupComponent;
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;

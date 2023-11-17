@@ -1,4 +1,4 @@
-import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
+import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectTargetOptions, getProjectMainFile } from '@angular/cdk/schematics';
 
 
 import { normalize } from '@angular-devkit/core';
@@ -167,7 +167,6 @@ describe('ng-add schematic', () => {
 
     expect(fileContent).toContain('NoopAnimationsModule');
     expect(fileContent).not.toContain('BrowserAnimationsModule');
-
   });
 
   it('should not add NoopAnimationsModule if BrowserAnimationsModule is set up', async () => {
@@ -224,10 +223,7 @@ describe('ng-add schematic', () => {
 
     expect(console.log)
     .toHaveBeenCalledWith(
-      jasmine.stringMatching(
-        /Could not add the registerLocaleData to your app.module file/
-      )
+      jasmine.stringMatching(/Could not add the registerLocaleData to file/)
     );
   });
-
 });

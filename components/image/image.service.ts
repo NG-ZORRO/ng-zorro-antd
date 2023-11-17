@@ -14,6 +14,7 @@ import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-co
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
+import { TImageScaleStep, TImageUrl } from './image.directive';
 
 export interface NzImageService {
   preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
@@ -28,15 +29,23 @@ export class NzImageService {
     @Optional() private directionality: Directionality
   ) {}
 
-  preview(images: NzImage[], options?: NzImagePreviewOptions): NzImagePreviewRef {
-    return this.display(images, options);
+  preview(
+    images: NzImage[],
+    options?: NzImagePreviewOptions,
+    zoomMap?: Map<TImageUrl, TImageScaleStep>
+  ): NzImagePreviewRef {
+    return this.display(images, options, zoomMap);
   }
 
-  private display(images: NzImage[], config?: NzImagePreviewOptions): NzImagePreviewRef {
+  private display(
+    images: NzImage[],
+    config?: NzImagePreviewOptions,
+    scaleStepMap?: Map<TImageUrl, TImageScaleStep>
+  ): NzImagePreviewRef {
     const configMerged = { ...new NzImagePreviewOptions(), ...(config ?? {}) };
     const overlayRef = this.createOverlay(configMerged);
     const previewComponent = this.attachPreviewComponent(overlayRef, configMerged);
-    previewComponent.setImages(images);
+    previewComponent.setImages(images, scaleStepMap);
     const previewRef = new NzImagePreviewRef(previewComponent, configMerged, overlayRef);
 
     previewComponent.previewRef = previewRef;
