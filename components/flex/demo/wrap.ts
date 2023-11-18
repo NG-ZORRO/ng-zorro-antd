@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzWrap } from 'ng-zorro-antd/flex';
+import { NzWrap } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-wrap',
@@ -33,6 +33,6 @@ import { nzWrap } from 'ng-zorro-antd/flex';
   ]
 })
 export class NzDemoFlexWrapComponent {
-  public wrapSegment: nzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
+  public wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
   public selectedWrap = 0;
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzDirection } from 'ng-zorro-antd/flex';
+import { NzDirection } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-basic',
@@ -40,6 +40,6 @@ import { nzDirection } from 'ng-zorro-antd/flex';
   ]
 })
 export class NzDemoFlexBasicComponent {
-  public layoutSegment: nzDirection[] = ['row', 'row-reverse', 'column', 'column-reverse'];
+  public layoutSegment: NzDirection[] = ['row', 'row-reverse', 'column', 'column-reverse'];
   public selectedIndex = 0;
 }

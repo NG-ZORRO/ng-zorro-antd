@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { nzAlign, nzJustify } from 'ng-zorro-antd/flex';
+import { NzAlign, NzJustify } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-flex-align',
@@ -45,7 +45,7 @@ import { nzAlign, nzJustify } from 'ng-zorro-antd/flex';
   ]
 })
 export class NzDemoFlexAlignComponent {
-  public justifySegment: nzJustify[] = [
+  public justifySegment: NzJustify[] = [
     'flex-start',
     'center',
     'flex-end',
@@ -53,7 +53,7 @@ export class NzDemoFlexAlignComponent {
     'space-around',
     'space-evenly'
   ];
-  public alignSegment: nzAlign[] = ['flex-start', 'center', 'flex-end'];
+  public alignSegment: NzAlign[] = ['flex-start', 'center', 'flex-end'];
   public selectedJustification = 0;
   public selectedLAlignment = 0;
 }

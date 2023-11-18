@@ -5,6 +5,7 @@ type: 布局
 cols: 1
 title: Flex
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*SMzgSJZE_AwAAAAAAAAAAAAADrJ8AQ/original
+tag: New
 ---
 
 弹性布局
@@ -29,11 +30,12 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 ### [nz-flex]:standalone
 
-| Property        | Description                                                                | Type                                                                                          | Default    |
-| --------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
-| `[nzDirection]` | The direction of flex box                                                  | `'row'\|'row-reverse'\|'column'\|'column-reverse'`                                            | `'row'`    |
-| `[nzJustify]`   | Sets the alignment of elements in the direction of the main axis           | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
-| `[nzAlign]`     | Sets the alignment of elements in the direction of the cross axis          | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |
-| `[nzGap]`       | Sets the gap between items                                                 | `'small'\|'middle'\|'large'\|'number'`                                                        | `0`        |
-| `[nzWrap]`      | Set whether the element is displayed in a single line or in multiple lines | reference [flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap)             | `'nowrap'` |
-| `[nzFlex]`      | Flex CSS shorthand properties                                              | reference [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex)                       | `'unset'`  |
+| Property        | Description                                                                                                 | Type                                                                                          | Default    |
+| --------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
+| `[nzDirection]` | The direction of flex box                                                                                   | `'row'\|'row-reverse'\|'column'\|'column-reverse'`                                            | `'row'`    |
+| `[nzJustify]`   | Sets the alignment of elements in the direction of the main axis                                            | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
+| `[nzAlign]`     | Sets the alignment of elements in the direction of the cross axis                                           | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |
+| `[nzGap]`       | Sets the gap between items                                                                                  | `'small'\|'middle'\|'large'\|'number'`                                                        | `0`        |
+| `[nzWrap]`      | Set whether the element is displayed in a single line or in multiple lines                                  | reference [flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap)             | `'nowrap'` |
+| `[nzFlex]`      | Flex CSS shorthand properties                                                                               | reference [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex)                       | `'unset'`  |
+| `[nzCenter]`    | 此属性使弹性框垂直和水平对齐。相当于在 Flex 容器上设置 `align-items: center;` 和 `justify-content: center;` | `boolean`                                                                                     | `false`    |

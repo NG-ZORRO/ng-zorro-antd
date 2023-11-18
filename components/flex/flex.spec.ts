@@ -3,16 +3,16 @@ import { By } from '@angular/platform-browser';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import {
-  nzAlign,
-  nzCustomGap,
-  nzDirection,
-  nzFlex,
-  nzFlexBasis,
-  nzFlexGrow,
-  nzFlexShrink,
-  nzGap,
-  nzJustify,
-  nzWrap
+  NzAlign,
+  NzCustomGap,
+  NzDirection,
+  NzFlex,
+  NzFlexBasis,
+  NzFlexGrow,
+  NzFlexShrink,
+  NzGap,
+  NzJustify,
+  NzWrap
 } from 'ng-zorro-antd/flex';
 import { NzFlexModule } from 'ng-zorro-antd/flex/flex.module';
 import { NzFlexDirective } from 'ng-zorro-antd/flex/nz-flex.directive';
@@ -25,18 +25,18 @@ describe('flex', () => {
     element = testBed.debugElement.query(By.directive(NzFlexDirective)).nativeElement;
   });
   it('should apply className', () => {
-    expect(element.className).toBe('ant-flex');
+    expect(element.className).toContain('ant-flex');
   });
   it('should have correct direction', () => {
-    const listOfDirections: nzDirection[] = ['row', 'row-reverse', 'column', 'column-reverse'];
+    const listOfDirections: NzDirection[] = ['row', 'row-reverse', 'column', 'column-reverse'];
     listOfDirections.forEach(direction => {
       testBed.component.direction = direction;
       testBed.fixture.detectChanges();
-      expect(getComputedStyle(element).getPropertyValue('--flex-direction')).toEqual(direction);
+      expect(element.className).toContain(direction);
     });
   });
   it('should have correct justification value', () => {
-    const listOfJustifications: nzJustify[] = [
+    const listOfJustifications: NzJustify[] = [
       'flex-start',
       'center',
       'flex-end',
@@ -53,32 +53,19 @@ describe('flex', () => {
     listOfJustifications.forEach(justification => {
       testBed.component.justify = justification;
       testBed.fixture.detectChanges();
-      expect(getComputedStyle(element).getPropertyValue('--flex-justify')).toEqual(justification);
+      expect(element.className).toContain(justification);
     });
   });
   it('should have correct alignment value', () => {
-    const listOfAlignments: nzAlign[] = [
-      'flex-start',
-      'center',
-      'flex-end',
-      'space-between',
-      'space-around',
-      'space-evenly',
-      'start',
-      'end',
-      'right',
-      'left',
-      'stretch',
-      'normal'
-    ];
+    const listOfAlignments: NzAlign[] = ['flex-start', 'center', 'flex-end', 'start', 'end', 'stretch', 'normal'];
     listOfAlignments.forEach(alignment => {
       testBed.component.align = alignment;
       testBed.fixture.detectChanges();
-      expect(getComputedStyle(element).getPropertyValue('--flex-align')).toEqual(alignment);
+      expect(element.className).toContain(alignment);
     });
   });
   it('should have correct gap value', () => {
-    const listOfGaps: nzGap[] = ['small', 'middle', 'large', 10, 20, 30, 40];
+    const listOfGaps: NzGap[] = ['small', 'middle', 'large', 10, 20, 30, 40];
     listOfGaps.forEach(gap => {
       testBed.component.gap = gap;
       testBed.fixture.detectChanges();
@@ -101,15 +88,15 @@ describe('flex', () => {
     });
   });
   it('should have correct wrap value', () => {
-    const listOfWraps: nzWrap[] = ['wrap', 'nowrap', 'wrap-reverse'];
+    const listOfWraps: NzWrap[] = ['wrap', 'nowrap', 'wrap-reverse'];
     listOfWraps.forEach(wrap => {
       testBed.component.wrap = wrap;
       testBed.fixture.detectChanges();
-      expect(getComputedStyle(element).getPropertyValue('--flex-wrap')).toEqual(wrap);
+      expect(element.className).toContain(`flex-wrap-${wrap}`);
     });
   });
   it('should have correct flex value', () => {
-    const listOfFlexes: nzFlex[] = ['0 0 auto', '1 1 100%', '0 1 50px', '1 0 50rem', '1 1 100%'];
+    const listOfFlexes: NzFlex[] = ['0 0 auto', '1 1 100%', '0 1 50px', '1 0 50rem', '1 1 100%'];
     listOfFlexes.forEach(flex => {
       testBed.component.flex = flex;
       testBed.fixture.detectChanges();
@@ -117,22 +104,32 @@ describe('flex', () => {
     });
   });
   it('should have initial value for direction', () => {
-    expect(getComputedStyle(element).getPropertyValue('--flex-direction')).toEqual('row');
+    expect(element.className).toContain('row');
   });
   it('should have initial value for justification', () => {
-    expect(getComputedStyle(element).getPropertyValue('--flex-justify')).toEqual('normal');
+    expect(element.className).toContain('normal');
   });
   it('should have initial value for alignment', () => {
-    expect(getComputedStyle(element).getPropertyValue('--flex-align')).toEqual('normal');
+    expect(element.className).toContain('normal');
   });
   it('should have initial value for gap', () => {
     expect(getComputedStyle(element).getPropertyValue('--flex-gap')).toEqual('0px');
   });
   it('should have initial value for wrap', () => {
-    expect(getComputedStyle(element).getPropertyValue('--flex-wrap')).toEqual('nowrap');
+    expect(element.className).toContain('nowrap');
   });
   it('should have initial value for flex', () => {
     expect(getComputedStyle(element).getPropertyValue('--flex')).toEqual('');
+  });
+  it('should not have center class if not specified to be centered', () => {
+    testBed.component.center = false;
+    testBed.fixture.detectChanges();
+    expect(element.className).not.toContain('center');
+  });
+  it('should have center class if not specified to be centered', () => {
+    testBed.component.center = true;
+    testBed.fixture.detectChanges();
+    expect(element.className).toContain('center');
   });
 });
 
@@ -146,6 +143,7 @@ describe('flex', () => {
       [nzGap]="gap"
       [nzWrap]="wrap"
       [nzFlex]="flex"
+      [nzCenter]="center"
     >
       <div></div>
       <div></div>
@@ -168,20 +166,9 @@ export class TestFlexComponent {
     | 'left'
     | 'stretch'
     | 'normal' = 'normal';
-  align:
-    | 'flex-start'
-    | 'center'
-    | 'flex-end'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'start'
-    | 'end'
-    | 'right'
-    | 'left'
-    | 'stretch'
-    | 'normal' = 'normal';
-  gap: 'small' | 'middle' | 'large' | nzCustomGap = 0;
+  align: 'flex-start' | 'center' | 'flex-end' | 'start' | 'end' | 'stretch' | 'normal' = 'normal';
+  gap: 'small' | 'middle' | 'large' | NzCustomGap = 0;
   wrap: 'wrap' | 'nowrap' | 'wrap-reverse' = 'nowrap';
-  flex: `${nzFlexShrink} ${nzFlexGrow} ${nzFlexBasis}` | 'unset' = 'unset';
+  flex: `${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset' = 'unset';
+  center = false;
 }

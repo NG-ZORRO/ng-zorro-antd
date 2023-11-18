@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
     <div class="combination-wrapper" nz-flex nzDirection="row" [nzGap]="80">
       <img
         alt="Angular"
-        width="140"
+        width="150"
         height="150"
-        src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg"
+        src="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg"
       />
 
       <div nz-flex nzDirection="column" nzGap="large">
