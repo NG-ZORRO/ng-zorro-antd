@@ -41,17 +41,31 @@ import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
     '[class.ant-flex-wrap-wrap]': `nzWrap === 'wrap'`,
     '[class.ant-flex-wrap-wrap-reverse]': `nzWrap === 'wrap-reverse'`,
     '[class.ant-flex-wrap-nowrap]': `nzWrap === 'nowrap'`,
-    '[style.gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle' ? '16px' : nzGap === 'large' ? '24px' : (Number.isInteger(nzGap) ? nzGap + 'px' : nzGap)`,
+    '[style.gap]': `gap`,
     '[style.flex]': `nzFlex`
   }
 })
 export class NzFlexDirective {
-  protected readonly Number = Number;
-
   @Input() nzVertical: boolean = false;
   @Input() nzJustify: NzJustify = 'normal';
   @Input() nzAlign: NzAlign = 'normal';
   @Input() nzGap: NzGap = 0;
   @Input() nzWrap: NzWrap = 'nowrap';
   @Input() nzFlex: NzFlex = 'unset';
+
+  protected get gap(): string {
+    switch (this.nzGap) {
+      case 'small':
+        return '8px';
+      case 'middle':
+        return '16px';
+      case 'large':
+        return '24px';
+      default:
+        if (typeof this.nzGap === 'number') {
+          return `${this.nzGap}px`;
+        }
+        return this.nzGap;
+    }
+  }
 }
