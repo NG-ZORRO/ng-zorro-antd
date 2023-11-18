@@ -5,12 +5,14 @@
 
 import { Directive, Input } from '@angular/core';
 
+import { NzFlexGapPipe } from './nz-flex-gap.pipe';
 import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
 
 @Directive({
   selector: '[nz-flex],nz-flex',
   exportAs: 'nzFlex',
   standalone: true,
+  providers: [NzFlexGapPipe],
   host: {
     class: 'ant-flex',
     '[class.ant-flex-vertical]': `nzVertical`,
@@ -41,7 +43,7 @@ import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
     '[class.ant-flex-wrap-wrap]': `nzWrap === 'wrap'`,
     '[class.ant-flex-wrap-wrap-reverse]': `nzWrap === 'wrap-reverse'`,
     '[class.ant-flex-wrap-nowrap]': `nzWrap === 'nowrap'`,
-    '[style.gap]': `gap`,
+    '[style.gap]': `nzFlexGapPipe.transform(this.nzGap)`,
     '[style.flex]': `nzFlex`
   }
 })
@@ -53,19 +55,5 @@ export class NzFlexDirective {
   @Input() nzWrap: NzWrap = 'nowrap';
   @Input() nzFlex: NzFlex = 'unset';
 
-  protected get gap(): string {
-    switch (this.nzGap) {
-      case 'small':
-        return '8px';
-      case 'middle':
-        return '16px';
-      case 'large':
-        return '24px';
-      default:
-        if (typeof this.nzGap === 'number') {
-          return `${this.nzGap}px`;
-        }
-        return this.nzGap;
-    }
-  }
+  constructor(public nzFlexGapPipe: NzFlexGapPipe) {}
 }
