@@ -80,7 +80,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     return {
       ...super.getProxyPropertyMap(),
       nzTooltipColor: ['nzColor', () => this.nzTooltipColor],
-      nzTooltipTitleContext: ['nzTitleContext', () => this.titleContext]
+      titleContext: ['nzTitleContext', () => this.titleContext]
     };
   }
 }

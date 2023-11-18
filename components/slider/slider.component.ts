@@ -20,6 +20,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
@@ -147,7 +148,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputNumber() nzStep = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter?: null | ((value: number) => string);
+  @Input() nzTipFormatter?: null | ((value: number) => string) | TemplateRef<void>;
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 

@@ -221,6 +221,46 @@ describe('nz-slider', () => {
     }));
   });
 
+  describe('show template tooltip', () => {
+    let testBed: ComponentBed<SliderShowTemplateTooltipComponent>;
+    let fixture: ComponentFixture<SliderShowTemplateTooltipComponent>;
+    let testComponent: SliderShowTemplateTooltipComponent;
+
+    beforeEach(() => {
+      testBed = createComponentBed(SliderShowTemplateTooltipComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
+      sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
+      sliderNativeElement = sliderInstance.slider.nativeElement;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should preview template tooltip', fakeAsync(() => {
+      testComponent.show = 'always';
+      fixture.detectChanges();
+      tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 0');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      // Always show tooltip even when handle is not hovered.
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      tick(400);
+    }));
+  });
+
   describe('setting value', () => {
     let testBed: ComponentBed<SliderWithValueComponent>;
     let fixture: ComponentFixture<SliderWithValueComponent>;
@@ -1189,6 +1229,19 @@ class SliderShowTooltipComponent {
 class NzTestSliderKeyboardComponent {
   range = false;
   disabled = false;
+}
+
+@Component({
+  template: `
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value" [nzTipFormatter]="titleTemplate"></nz-slider>
+    <ng-template #titleTemplate let-value>
+      <span>Slider value: {{ value }}</span>
+    </ng-template>
+  `
+})
+class SliderShowTemplateTooltipComponent {
+  show: NzSliderShowTooltip = 'default';
+  value = 0;
 }
 
 /**
