@@ -281,7 +281,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomIn(): void {
     const zoomStep =
-      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
@@ -291,7 +291,7 @@ export class NzImagePreviewComponent implements OnInit {
   onZoomOut(): void {
     if (this.zoom > 1) {
       const zoomStep =
-        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
