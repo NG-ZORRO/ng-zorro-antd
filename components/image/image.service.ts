@@ -14,7 +14,7 @@ import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-co
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
-import { TImageScaleStep, TImageUrl } from './image.directive';
+import { NzImageScaleStep, NzImageUrl } from './image.directive';
 
 export interface NzImageService {
   preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
@@ -32,7 +32,7 @@ export class NzImageService {
   preview(
     images: NzImage[],
     options?: NzImagePreviewOptions,
-    zoomMap?: Map<TImageUrl, TImageScaleStep>
+    zoomMap?: Map<NzImageUrl, NzImageScaleStep>
   ): NzImagePreviewRef {
     return this.display(images, options, zoomMap);
   }
@@ -40,7 +40,7 @@ export class NzImageService {
   private display(
     images: NzImage[],
     config?: NzImagePreviewOptions,
-    scaleStepMap?: Map<TImageUrl, TImageScaleStep>
+    scaleStepMap?: Map<NzImageUrl, NzImageScaleStep>
   ): NzImagePreviewRef {
     const configMerged = { ...new NzImagePreviewOptions(), ...(config ?? {}) };
     const overlayRef = this.createOverlay(configMerged);
