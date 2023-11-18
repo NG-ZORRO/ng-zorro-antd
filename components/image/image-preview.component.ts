@@ -119,7 +119,7 @@ const DEFAULT_NZ_ROTATE = 0;
     class: 'ant-image-preview-wrap',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
-    '[style.--image-transition-duration]': 'IMAGE_TRANSITION_DURATION + "ms"',
+    '[style.--image-transition-duration]': '_imageTransitionDuration + "ms"',
     '[style.--image-transition-timing-function]': 'imageTransitionTimingFunction',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@fadeMotion]': 'animationState',
@@ -134,18 +134,16 @@ export class NzImagePreviewComponent implements OnInit {
   readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
   readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
   readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
-
-  readonly IMAGE_TRANSITION_DURATION = 300;
-  imageTransitionTimingFunction: 'linear' | 'ease-out' = 'linear';
+  readonly _imageTransitionDuration = 300;
 
   images: NzImage[] = [];
   index = 0;
   isDragging = false;
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
+  imageTransitionTimingFunction: 'linear' | 'ease-out' = 'linear';
   animationStateChanged = new EventEmitter<AnimationEvent>();
   scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
-
   previewImageTransform = '';
   previewImageWrapperTransform = '';
   operations: NzImageContainerOperation[] = [
@@ -354,7 +352,7 @@ export class NzImagePreviewComponent implements OnInit {
     const x = (event.clientX - imageElement.getBoundingClientRect().x) / this.zoom;
     const y = (event.clientY - imageElement.getBoundingClientRect().y) / this.zoom;
 
-    const halfOfScaleStepValue = deltaY < 0 ? 0.1 : -0.1;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
 
     this.position = {
       x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
@@ -385,7 +383,7 @@ export class NzImagePreviewComponent implements OnInit {
       if (this.wheelEventStack.length !== 0) {
         this.wheelZoomEventHandler(this.wheelEventStack[0]);
       }
-    }, this.IMAGE_TRANSITION_DURATION);
+    }, this._imageTransitionDuration);
   }
 
   onAnimationStart(event: AnimationEvent): void {
@@ -482,15 +480,13 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private reset(): void {
-    this.zoom = 1;
-    this.rotate = 0;
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.reCenterImage();
   }
 
   private reCenterImage(): void {
-    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
-    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
-    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.position = { ...initialPosition };
   }
 }
