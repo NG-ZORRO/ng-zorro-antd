@@ -54,8 +54,6 @@ export abstract class NzMNService {
     });
     const componentPortal = new ComponentPortal(ctor, null, this.injector);
     const componentRef = overlayRef.attach(componentPortal);
-    const overlayWrapper = overlayRef.hostElement;
-    overlayWrapper.style.zIndex = '1010';
 
     if (!containerInstance) {
       this.container = containerInstance = componentRef.instance;

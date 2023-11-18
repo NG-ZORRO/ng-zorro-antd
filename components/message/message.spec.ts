@@ -57,9 +57,6 @@ describe('message', () => {
     fixture.detectChanges();
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    expect((overlayContainerElement.querySelector('.cdk-global-overlay-wrapper') as HTMLElement).style.zIndex).toBe(
-      '1010'
-    );
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
     expect(overlayContainerElement.querySelector('.anticon-check-circle')).not.toBeNull();
   });
