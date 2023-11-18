@@ -29,6 +29,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDisablePreview    | 是否禁止预览                                                                                             | `boolean`   | `false` | ✅           |
 | nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean`   | `false` | ✅           |
 | nzDirection         | 文字方向                                                                                                 | `Direction` | `'ltr'` | ✅           |
+| nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`    | 0.5     | ✅           |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
@@ -52,14 +53,15 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ### NzImagePreviewOptions
 
-| 参数                | 说明                                                                                                     | 类型      | 默认值  |
-| ------------------- | -------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| nzKeyboard          | 是否支持键盘 esc 关闭、左右键切换图片                                                                    | `boolean` | `true`  |
-| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                     | `boolean` | `true`  |
-| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean` | `true`  |
-| nzZIndex            | 设置预览层的 z-index                                                                                     | `number`  | 1000    |
-| nzZoom              | 缩放比例                                                                                                 | `number`  | 1       |
-| nzRotate            | 旋转角度                                                                                                 | `number`  | 0       |
+| 参数                | 说明                                                                                                     | 类型      | 默认值 |
+| ------------------- | -------------------------------------------------------------------------------------------------------- | --------- | ------ |
+| nzKeyboard          | 是否支持键盘 esc 关闭、左右键切换图片                                                                    | `boolean` | `true` |
+| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                     | `boolean` | `true` |
+| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean` | `true` |
+| nzZIndex            | 设置预览层的 z-index                                                                                     | `number`  | 1000   |
+| nzZoom              | 缩放比例                                                                                                 | `number`  | 1      |
+| nzRotate            | 旋转角度                                                                                                 | `number`  | 0      |
+| nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`  | 0.5    |
 | nzFlipHorizontally  | 在水平向量上翻转图像                                                                                     | `boolean` | `false` |
 | nzFlipVertically    | 在垂直向量上翻转图像                                                                                     | `boolean` | `false` |
 
@@ -71,3 +73,9 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | prev(): void                  | 上一张       |
 | next(): void                  | 下一张       |
 | close(): void                 | 关闭预览     |
+
+### NzImageGroupComponent
+
+| Property    | Description                                                                                                                     | Type | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ---- | ------- |
+| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. |

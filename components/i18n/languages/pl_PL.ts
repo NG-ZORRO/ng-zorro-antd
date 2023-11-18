@@ -21,7 +21,13 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Wybierz datę',
+      yearPlaceholder: 'Wybierz rok',
+      monthPlaceholder: 'Wybierz miesiąc',
+      weekPlaceholder: 'Wybierz tydzień',
       rangePlaceholder: ['Data początkowa', 'Data końcowa'],
+      rangeYearPlaceholder: ['Początkowy rok', 'Końcowy rok'],
+      rangeMonthPlaceholder: ['Początkowy miesiąc', 'Końcowy miesiąc'],
+      rangeWeekPlaceholder: ['Początkowy tydzień', 'Końcowy tydzień'],
       locale: 'pl_PL',
       today: 'Dzisiaj',
       now: 'Teraz',

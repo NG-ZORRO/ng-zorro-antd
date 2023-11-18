@@ -31,7 +31,6 @@ module.exports = {
           ],
           2
         ],
-        'jsdoc/newline-after-description': 1,
         '@angular-eslint/component-selector': [
           'error',
           {

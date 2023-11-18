@@ -39,6 +39,7 @@ export default {
       year: 'Année',
       timeSelect: "Sélectionner l'heure",
       dateSelect: 'Sélectionner la date',
+      weekSelect: 'Choisissez une semaine',
       monthSelect: 'Choisissez un mois',
       yearSelect: 'Choisissez une année',
       decadeSelect: 'Choisissez une décennie',
@@ -173,5 +174,30 @@ export default {
   },
   Image: {
     preview: 'Aperçu'
+  },
+  CronExpression: {
+    cronError: 'Expression CRON invalide',
+    second: 'seconde',
+    minute: 'minute',
+    hour: 'heure',
+    day: 'jour',
+    month: 'mois',
+    week: 'semaine',
+    secondError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><p><span>0-59</span>Plage autorisée</p>",
+    minuteError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><p><span>0-59</span>Plage autorisée</p>",
+    hourError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><p><span>0-23</span>Plage autorisée</p>",
+    dayError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><p><span>1-31</span>Plage autorisée</p>",
+    monthError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><p><span>1-12</span>Plage autorisée</p>",
+    weekError:
+      "<p><span>*</span>N'importe quelle valeur</p><p><span>,</span>Séparateur entre plusieurs valeurs</p><p><span>-</span>Connecteur pour les intervals de valeurs</p><p><span>/</span>Également distribué</p><span>?</span> Non spécifique</p><p><p><span>0-7</span>Plage autorisée (0 représentse Dimanche, 1-7 sont Lundi à Dimanche)</p>"
+  },
+  QRCode: {
+    expired: 'QR code expiré',
+    refresh: 'Rafraîchir'
   }
 };

@@ -54,6 +54,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   mouseLeaveDelay?: number;
   overlayClassName?: string;
   overlayStyle?: NgStyleInterface;
+  cdkConnectedOverlayPush?: boolean;
   visibleChange = new EventEmitter<boolean>();
 
   /**
@@ -272,6 +273,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
       overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
       arrowPointAtCenter: ['nzArrowPointAtCenter', () => this.arrowPointAtCenter],
+      cdkConnectedOverlayPush: ['cdkConnectedOverlayPush', () => this.cdkConnectedOverlayPush],
       ...this.getProxyPropertyMap()
     };
 
@@ -342,6 +344,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
+  cdkConnectedOverlayPush?: boolean = true;
 
   nzVisibleChange = new Subject<boolean>();
 

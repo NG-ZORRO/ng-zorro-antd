@@ -28,6 +28,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzDisablePreview    | Whether to disable the preview                                                                                                                                                                     | `boolean`   | `false` | ✅            |
 | nzCloseOnNavigation | Whether to close the image preview when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean`   | `false` | ✅            |
 | nzDirection         | Text directionality                                                                                                                                                                                | `Direction` | `'ltr'` | ✅            |
+| nzScaleStep         | `1 + nzScaleStep` is the step to increase or decrease the scale                                                                                                                                    | `number`    | 0.5     | ✅            |
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
@@ -59,6 +60,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | nzZIndex            | The z-index of the image preview                                                                                                                                                                   | `number`  | 1000    |
 | nzZoom              | Zoom rate                                                                                                                                                                                          | `number`  | 1       |
 | nzRotate            | Rotate rate                                                                                                                                                                                        | `number`  | 0       |
+| nzScaleStep         | `1 + nzScaleStep` is the step to increase or decrease the scale                                                                                                                                    | `number`  | 0.5     |
 | nzFlipHorizontally  | Flip image on horizontal vector                                                                                                                                                                    | `boolean` | `false` |
 | nzFlipVertically    | Flip image on vertical vector                                                                                                                                                                      | `boolean` | `false` |
 
@@ -70,3 +72,9 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | prev(): void                  | Previous image      |
 | next(): void                  | Next image          |
 | close(): void                 | Close image preview |
+
+### NzImageGroupComponent
+
+| Property    | Description                                                                                                                     | Type     | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. | `number` | -       |
