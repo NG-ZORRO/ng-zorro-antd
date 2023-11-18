@@ -34,7 +34,6 @@ const INTERSECTION_THRESHOLD = 0.1;
 export type ImageStatusType = 'error' | 'loading' | 'normal';
 export type TImageUrl = string;
 export type TImageScaleStep = number;
-export type nzLoading = 'eager' | 'lazy';
 
 @Directive({
   selector: 'img[nz-image]',
@@ -50,7 +49,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
-  @Input() nzLoading: nzLoading = 'eager';
+  @Input() nzLoading: 'eager' | 'lazy' = 'eager';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
@@ -137,7 +136,9 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSrc } = changes;
     if (nzSrc) {
-      this.getElement().nativeElement.src = nzSrc.currentValue;
+      if (this.nzLoading === 'eager') {
+        this.getElement().nativeElement.src = nzSrc.currentValue;
+      }
       this.backLoad();
     }
   }
@@ -149,7 +150,6 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
    */
   private backLoad(): void {
     this.backLoadImage = this.document.createElement('img');
-    this.backLoadImage.loading = this.nzLoading;
 
     if (this.nzLoading === 'eager') {
       this.backLoadImage.src = this.nzSrc;
@@ -212,7 +212,6 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   private backLoadCompleteStateHandler(): void {
     this.status = 'normal';
-    this.getElement().nativeElement.loading = this.nzLoading;
     this.getElement().nativeElement.src = this.nzSrc;
     this.getElement().nativeElement.srcset = this.nzSrcset;
   }

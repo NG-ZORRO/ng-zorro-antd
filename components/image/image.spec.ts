@@ -108,11 +108,11 @@ describe('Basics', () => {
     expect(image.src).toBe(SECOND_SRC);
   }));
 
-  it('should the loading attribute be eager at default', fakeAsync(() => {
+  it('should the loading attribute be auto at default', fakeAsync(() => {
     const image = debugElement.nativeElement.querySelector('img');
     context.nzImage.backLoadImage.dispatchEvent(new Event('load'));
     fixture.detectChanges();
-    expect(image.loading).toBe('eager');
+    expect(image.loading).toBe('auto');
   }));
 });
 
