@@ -29,4 +29,4 @@ export type NzWrap = 'wrap' | 'nowrap' | 'wrap-reverse';
 export type NzFlex = `${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset';
 export type NzFlexShrink = number;
 export type NzFlexGrow = number;
-export type NzFlexBasis = number | `${number}${string}` | 'auto';
+export type NzFlexBasis = string;
