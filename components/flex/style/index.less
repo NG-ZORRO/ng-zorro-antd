@@ -5,25 +5,9 @@
 
 .@{flex-prefix-cls} {
   display: flex;
-  gap: var(--flex-gap, 0);
-  flex: var(--flex, unset);
 
-  &-direction {
-    &-row {
-      flex-direction: row;
-    }
-
-    &-column {
-      flex-direction: column;
-    }
-
-    &-row-reverse {
-      flex-direction: row-reverse;
-    }
-
-    &-column-reverse {
-      flex-direction: column-reverse;
-    }
+  &-vertical {
+    flex-direction: column;
   }
 
   &-justify {

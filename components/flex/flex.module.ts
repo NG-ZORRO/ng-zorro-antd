@@ -3,12 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzFlexDirective } from './nz-flex.directive';
 
 @NgModule({
-  imports: [NzFlexDirective],
+  imports: [CommonModule, NzFlexDirective],
   exports: [NzFlexDirective]
 })
 export class NzFlexModule {}

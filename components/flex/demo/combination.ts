@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-flex-combination',
   template: `
-    <div class="combination-wrapper" nz-flex nzDirection="row" [nzGap]="80">
+    <div class="combination-wrapper" nz-flex [nzGap]="80">
       <img
         alt="Angular"
         width="150"
@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
         src="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg"
       />
 
-      <div nz-flex nzDirection="column" nzGap="large">
+      <div nz-flex [nzVertical]="true" [nzGap]="'large'">
         <h2> Ant Design of Angular </h2>
 
         <h3>

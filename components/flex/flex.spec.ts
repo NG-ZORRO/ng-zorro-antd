@@ -5,7 +5,6 @@ import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponent
 import {
   NzAlign,
   NzCustomGap,
-  NzDirection,
   NzFlex,
   NzFlexBasis,
   NzFlexGrow,
@@ -28,12 +27,12 @@ describe('flex', () => {
     expect(element.className).toContain('ant-flex');
   });
   it('should have correct direction', () => {
-    const listOfDirections: NzDirection[] = ['row', 'row-reverse', 'column', 'column-reverse'];
-    listOfDirections.forEach(direction => {
-      testBed.component.direction = direction;
-      testBed.fixture.detectChanges();
-      expect(element.className).toContain(direction);
-    });
+    testBed.component.isVertical = false;
+    testBed.fixture.detectChanges();
+    expect(element.className).not.toContain('vertical');
+    testBed.component.isVertical = true;
+    testBed.fixture.detectChanges();
+    expect(element.className).toContain('vertical');
   });
   it('should have correct justification value', () => {
     const listOfJustifications: NzJustify[] = [
@@ -84,8 +83,12 @@ describe('flex', () => {
           gapValue = `${gap}px`;
       }
 
-      expect(getComputedStyle(element).getPropertyValue('--flex-gap')).toEqual(gapValue);
+      expect(getComputedStyle(element).getPropertyValue('gap')).toEqual(gapValue);
     });
+
+    testBed.component.gap = '10rem';
+    testBed.fixture.detectChanges();
+    expect(getComputedStyle(element).getPropertyValue('gap')).toEqual(`${10 * 16}px`);
   });
   it('should have correct wrap value', () => {
     const listOfWraps: NzWrap[] = ['wrap', 'nowrap', 'wrap-reverse'];
@@ -96,15 +99,19 @@ describe('flex', () => {
     });
   });
   it('should have correct flex value', () => {
-    const listOfFlexes: NzFlex[] = ['0 0 auto', '1 1 100%', '0 1 50px', '1 0 50rem', '1 1 100%'];
+    const listOfFlexes: NzFlex[] = ['0 0 auto', '1 1 100%', '0 1 50px'];
     listOfFlexes.forEach(flex => {
       testBed.component.flex = flex;
       testBed.fixture.detectChanges();
-      expect(getComputedStyle(element).getPropertyValue('--flex')).toEqual(flex);
+      expect(getComputedStyle(element).getPropertyValue('flex')).toEqual(flex);
     });
+
+    testBed.component.flex = '1 0 50rem';
+    testBed.fixture.detectChanges();
+    expect(getComputedStyle(element).getPropertyValue('flex')).toEqual('1 0 800px');
   });
-  it('should have initial value for direction', () => {
-    expect(element.className).toContain('row');
+  it('should have initial value for nzVertical', () => {
+    expect(element.className).not.toContain('vertical');
   });
   it('should have initial value for justification', () => {
     expect(element.className).toContain('normal');
@@ -113,7 +120,7 @@ describe('flex', () => {
     expect(element.className).toContain('normal');
   });
   it('should have initial value for gap', () => {
-    expect(getComputedStyle(element).getPropertyValue('--flex-gap')).toEqual('0px');
+    expect(getComputedStyle(element).getPropertyValue('gap')).toEqual('0px');
   });
   it('should have initial value for wrap', () => {
     expect(element.className).toContain('nowrap');
@@ -121,29 +128,18 @@ describe('flex', () => {
   it('should have initial value for flex', () => {
     expect(getComputedStyle(element).getPropertyValue('--flex')).toEqual('');
   });
-  it('should not have center class if not specified to be centered', () => {
-    testBed.component.center = false;
-    testBed.fixture.detectChanges();
-    expect(element.className).not.toContain('center');
-  });
-  it('should have center class if not specified to be centered', () => {
-    testBed.component.center = true;
-    testBed.fixture.detectChanges();
-    expect(element.className).toContain('center');
-  });
 });
 
 @Component({
   template: `
     <div
       nz-flex
-      [nzDirection]="direction"
+      [nzVertical]="isVertical"
       [nzJustify]="justify"
       [nzAlign]="align"
       [nzGap]="gap"
       [nzWrap]="wrap"
       [nzFlex]="flex"
-      [nzCenter]="center"
     >
       <div></div>
       <div></div>
@@ -152,7 +148,7 @@ describe('flex', () => {
   `
 })
 export class TestFlexComponent {
-  direction: 'row' | 'row-reverse' | 'column' | 'column-reverse' = 'row';
+  isVertical = false;
   justify:
     | 'flex-start'
     | 'center'
@@ -170,5 +166,4 @@ export class TestFlexComponent {
   gap: 'small' | 'middle' | 'large' | NzCustomGap = 0;
   wrap: 'wrap' | 'nowrap' | 'wrap-reverse' = 'nowrap';
   flex: `${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset' = 'unset';
-  center = false;
 }

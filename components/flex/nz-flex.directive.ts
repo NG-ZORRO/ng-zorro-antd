@@ -5,7 +5,7 @@
 
 import { Directive, Input } from '@angular/core';
 
-import { NzAlign, NzDirection, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
+import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
 
 @Directive({
   selector: '[nz-flex],nz-flex',
@@ -13,10 +13,7 @@ import { NzAlign, NzDirection, NzFlex, NzGap, NzJustify, NzWrap } from './typing
   standalone: true,
   host: {
     class: 'ant-flex',
-    '[class.ant-flex-direction-row]': `nzDirection === 'row'`,
-    '[class.ant-flex-direction-row-reverse]': `nzDirection === 'row-reverse'`,
-    '[class.ant-flex-direction-column]': `nzDirection === 'column'`,
-    '[class.ant-flex-direction-column-reverse]': `nzDirection === 'column-reverse'`,
+    '[class.ant-flex-vertical]': `nzVertical`,
     '[class.ant-flex-justify-flex-start]': `nzJustify === 'flex-start'`,
     '[class.ant-flex-justify-center]': `nzJustify === 'center'`,
     '[class.ant-flex-justify-flex-end]': `nzJustify === 'flex-end'`,
@@ -44,17 +41,17 @@ import { NzAlign, NzDirection, NzFlex, NzGap, NzJustify, NzWrap } from './typing
     '[class.ant-flex-wrap-wrap]': `nzWrap === 'wrap'`,
     '[class.ant-flex-wrap-wrap-reverse]': `nzWrap === 'wrap-reverse'`,
     '[class.ant-flex-wrap-nowrap]': `nzWrap === 'nowrap'`,
-    '[style.--flex-gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle'? '16px': nzGap === 'large' ? '24px' : nzGap + 'px'`,
-    '[style.--flex]': `nzFlex`,
-    '[class.ant-flex-center]': `nzCenter`
+    '[style.gap]': `nzGap === 'small' ? '8px' : nzGap === 'middle' ? '16px' : nzGap === 'large' ? '24px' : (Number.isInteger(nzGap) ? nzGap + 'px' : nzGap)`,
+    '[style.flex]': `nzFlex`
   }
 })
 export class NzFlexDirective {
-  @Input() nzDirection: NzDirection = 'row';
+  protected readonly Number = Number;
+
+  @Input() nzVertical: boolean = false;
   @Input() nzJustify: NzJustify = 'normal';
   @Input() nzAlign: NzAlign = 'normal';
   @Input() nzGap: NzGap = 0;
   @Input() nzWrap: NzWrap = 'nowrap';
   @Input() nzFlex: NzFlex = 'unset';
-  @Input() nzCenter: boolean = false;
 }

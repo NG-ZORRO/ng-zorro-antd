@@ -3,8 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export type NzDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
-
 export type NzJustify =
   | 'flex-start'
   | 'center'
@@ -22,7 +20,7 @@ export type NzJustify =
 export type NzAlign = 'flex-start' | 'center' | 'flex-end' | 'start' | 'end' | 'stretch' | 'normal';
 
 export type NzGap = 'small' | 'middle' | 'large' | NzCustomGap;
-export type NzCustomGap = number;
+export type NzCustomGap = number | string;
 
 export type NzWrap = 'wrap' | 'nowrap' | 'wrap-reverse';
 
