@@ -4,16 +4,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import {
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -1250,7 +1242,7 @@ describe('NzDatePickerComponent', () => {
     beforeEach(() => (fixtureInstance.useSuite = 4));
 
     it('should formControl init work', fakeAsync(() => {
-      fixtureInstance.control = new UntypedFormControl(new Date('2020-04-08'));
+      fixtureInstance.control = new FormControl(new Date('2020-04-08'));
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
@@ -1263,7 +1255,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should disabled work', fakeAsync(() => {
-      fixtureInstance.control = new UntypedFormControl({ value: new Date('2020-04-24'), disabled: true });
+      fixtureInstance.control = new FormControl({ value: new Date('2020-04-24'), disabled: true });
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -1377,7 +1369,9 @@ describe('in form', () => {
   let testBed: ComponentBed<NzTestDatePickerInFormComponent>;
   let fixture: ComponentFixture<NzTestDatePickerInFormComponent>;
   let datePickerElement!: HTMLElement;
-  let formGroup: UntypedFormGroup;
+  let formGroup: FormGroup<{
+    demo: FormControl<Date | null>;
+  }>;
   beforeEach(() => {
     testBed = createComponentBed(NzTestDatePickerInFormComponent, {
       imports: [NzDatePickerModule, NzIconTestModule, NzFormModule, ReactiveFormsModule, FormsModule]
@@ -1525,7 +1519,7 @@ class NzTestDatePickerComponent {
   modelValue!: Date;
 
   // --- Suite 4
-  control!: UntypedFormControl;
+  control!: FormControl<Date | null>;
 
   // --- Suite 5
   firstValue!: Date;
@@ -1551,8 +1545,8 @@ class NzTestDatePickerStatusComponent {
   `
 })
 class NzTestDatePickerInFormComponent {
-  validateForm: UntypedFormGroup = this.fb.group({
-    demo: [null, [Validators.required]]
+  validateForm = this.fb.group({
+    demo: this.fb.control<Date | null>(null, Validators.required)
   });
-  constructor(private fb: UntypedFormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 }

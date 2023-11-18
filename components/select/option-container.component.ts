@@ -4,18 +4,22 @@
  */
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -92,8 +96,8 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
-
-  constructor() {}
+  private ngZone = inject(NgZone);
+  private platformId = inject(PLATFORM_ID);
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);
@@ -128,7 +132,10 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
       this.scrollToActivatedValue();
     }
   }
+
   ngAfterViewInit(): void {
-    setTimeout(() => this.scrollToActivatedValue());
+    if (isPlatformBrowser(this.platformId)) {
+      this.ngZone.runOutsideAngular(() => setTimeout(() => this.scrollToActivatedValue()));
+    }
   }
 }

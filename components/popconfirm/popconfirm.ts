@@ -147,7 +147,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
-      [cdkConnectedOverlayPush]="true"
+      [cdkConnectedOverlayPush]="cdkConnectedOverlayPush"
       [nzArrowPointAtCenter]="nzArrowPointAtCenter"
     >
       <div

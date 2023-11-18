@@ -11,7 +11,8 @@ import { Component, OnInit<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }
   styles: []<% } else { %>
   styleUrls: ['./<%= dasherize(name) %>.component.<%= style %>']<% } %><% if(!!viewEncapsulation) { %>,
   encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
-  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>,
+  standalone: true
 })
 export class <%= classify(name) %>Component implements OnInit {
 

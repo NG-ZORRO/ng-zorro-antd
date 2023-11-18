@@ -28,10 +28,7 @@ import { NzNotificationData } from './typings';
       (mouseleave)="onLeave()"
     >
       <div *ngIf="!instance.template" class="ant-notification-notice-content">
-        <div
-          class="ant-notification-notice-content"
-          [ngClass]="{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }"
-        >
+        <div class="ant-notification-notice-content">
           <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
             <ng-container [ngSwitch]="instance.type">
               <span
@@ -59,8 +56,19 @@ import { NzNotificationData } from './typings';
                 class="ant-notification-notice-icon ant-notification-notice-icon-error"
               ></span>
             </ng-container>
-            <div class="ant-notification-notice-message" [innerHTML]="instance.title"></div>
-            <div class="ant-notification-notice-description" [innerHTML]="instance.content"></div>
+            <div class="ant-notification-notice-message">
+              <ng-container *nzStringTemplateOutlet="instance.title">
+                <div [innerHTML]="instance.title"></div>
+              </ng-container>
+            </div>
+            <div class="ant-notification-notice-description">
+              <ng-container *nzStringTemplateOutlet="instance.content">
+                <div [innerHTML]="instance.content"></div>
+              </ng-container>
+            </div>
+            <span *ngIf="instance.options?.nzButton as btn" class="ant-notification-notice-btn">
+              <ng-template [ngTemplateOutlet]="btn" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
+            </span>
           </div>
         </div>
       </div>

@@ -36,8 +36,8 @@ The component provides a number of service methods using the following methods a
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |
-| title | Title | `string` | - |
-| content | Notification content | `string` | - |
+| title | Title | `string \| TemplateRef<void>` | - |
+| content | Notification content | `string \| TemplateRef<void>` | - |
 | options | Support setting the parameters for the current notification box, see the table below | `object` | - |
 
 The parameters that are set by the `options` support are as follows:
@@ -52,6 +52,7 @@ The parameters that are set by the `options` support are as follows:
 | nzClass | Custom CSS class | `object` |
 | nzData | Anything that would be used as template context | `any` |
 | nzCloseIcon | Custom close icon | `TemplateRef<void> \| string` |
+| nzButton | Custom button | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
 
 Methods for destruction are also provided:
 

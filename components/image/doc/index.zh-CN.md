@@ -21,14 +21,15 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ### [nz-image]
 
-| 参数                | 说明                                                                                                                         | 类型            | 默认值  | 支持全局配置 |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------- | ------- | ------------ |
-| nzSrc               | 图片地址                                                                                                                     | `string`        | -       | -            |
-| nzFallback          | 加载失败容错地址                                                                                                             | `string`        | -       | ✅           |
-| nzPlaceholder       | 加载占位地址                                                                                                                 | `string`        | -       | ✅           |
-| nzDisablePreview    | 是否禁止预览                                                                                                                 | `boolean`       | `false` | ✅           |
-| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。                     | `boolean`       | `false` | ✅           |
-| nzDirection         | 文字方向                                                                                                                     | `Direction`     | `'ltr'` | ✅           |
+| 参数                | 说明                                                                                                     | 类型        | 默认值  | 支持全局配置 |
+| ------------------- | -------------------------------------------------------------------------------------------------------- | ----------- | ------- | ------------ |
+| nzSrc               | 图片地址                                                                                                 | `string`    | -       | -            |
+| nzFallback          | 加载失败容错地址                                                                                         | `string`    | -       | ✅           |
+| nzPlaceholder       | 加载占位地址                                                                                             | `string`    | -       | ✅           |
+| nzDisablePreview    | 是否禁止预览                                                                                             | `boolean`   | `false` | ✅           |
+| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean`   | `false` | ✅           |
+| nzDirection         | 文字方向                                                                                                 | `Direction` | `'ltr'` | ✅           |
+| nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`    | 0.5     | ✅           |
 | nzLoading           | 圖像元素的載入屬性。 reference [loading property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/loading) | `eager \| lazy` | `eager` | -            |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
@@ -61,6 +62,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzZIndex            | 设置预览层的 z-index                                                                                     | `number`  | 1000   |
 | nzZoom              | 缩放比例                                                                                                 | `number`  | 1      |
 | nzRotate            | 旋转角度                                                                                                 | `number`  | 0      |
+| nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`  | 0.5    |
 
 ### NzImagePreviewRef
 
@@ -70,3 +72,9 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | prev(): void                  | 上一张       |
 | next(): void                  | 下一张       |
 | close(): void                 | 关闭预览     |
+
+### NzImageGroupComponent
+
+| Property    | Description                                                                                                                     | Type | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ---- | ------- |
+| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. |
