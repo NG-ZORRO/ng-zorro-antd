@@ -354,6 +354,7 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+  nzScaleStep?: number;
 }
 
 export interface ImageExperimentalConfig {
