@@ -1,20 +1,20 @@
 ---
 order: 15
-title: v16 Migration Guide
+title: v17 Migration Guide
 toc: false
 ---
 
-This document will help you upgrade from `ng-zorro-antd` 15.x version to 16.x version.
+This document will help you upgrade from `ng-zorro-antd` 16.x version to 17.x version.
 
 ## Before upgrade
 
-1. Make sure `Node.js` >= `16.13.0` or >= `18.10.0`.
+1. Make sure `Node.js` >= `18.13.0` or >= `20.9.0`.
 2. Create a new branch, or use other methods to back up the current project.
 3. Delete the package-lock.json file.
 
 ### 1.Upgrade dependencies
 
-- Upgrade Angular to 16.x version, ref [https://update.angular.io/](https://update.angular.io/).
+- Upgrade Angular to 17.x version, ref [https://update.angular.io/](https://update.angular.io/).
 - Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
 
 ### 2.Upgrade NG-ZORRO
