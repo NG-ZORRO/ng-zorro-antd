@@ -6,9 +6,9 @@ title: Ant Design of Angular
 `ng-zorro-antd` 是遵循 Ant Design 设计规范的 Angular UI 组件库，主要用于研发企业级中后台产品。全部代码开源并遵循 MIT 协议，任何企业、组织及个人均可免费使用。
 
 <div class="pic-plus">
-  <img alt="Ant Design" width="150" height="150" src="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg">
+  <img alt="Ant Design" style="margin-right: 24px" width="150" height="150" src="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg">
   <span>+</span>
-  <img alt="Angular" width="140" height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
+  <img alt="Angular" width="180" height="180" src="https://img.alicdn.com/imgextra/i1/O1CN01RSfkps1J0vtVaKr0U_!!6000000000967-49-tps-1920-1920.webp">
 </div>
 
 ## 特性
@@ -35,7 +35,7 @@ title: Ant Design of Angular
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 ## 支持 Angular 版本
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^16.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^17.0.0` 版本。
 
 ## 设计规范
 
@@ -102,4 +102,4 @@ $ ng add ng-zorro-antd
 3. [Discussions · NG-ZORRO/ng-zorro-antd](https://github.com/NG-ZORRO/ng-zorro-antd/discussions)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/imgextra/i1/O1CN01RQgJNr1x3ks00qFwB_!!6000000006388-0-tps-1290-1650.jpg" width="300" height="396" loading="lazy" alt="ding talk qr-code">
+<img src="https://img.alicdn.com/imgextra/i1/O1CN018ivxGp1iDAsAqD2JA_!!6000000004378-0-tps-1170-1477.jpg" width="300" height="396" loading="lazy" alt="ding talk qr-code">
