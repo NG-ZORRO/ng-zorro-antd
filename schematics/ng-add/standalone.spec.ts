@@ -31,7 +31,7 @@ describe('[standalone] ng-add schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../collection.json'));
-    appTree = await createTestApp(runner, { standalone: true });
+    appTree = await createTestApp(runner);
   });
 
   it('should update package.json', async () => {

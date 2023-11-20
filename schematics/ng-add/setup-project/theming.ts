@@ -22,8 +22,11 @@ const defaultCustomThemeFilename = 'theme.less';
 
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
-  build: '@angular-devkit/build-angular:application',
-  test: '@angular-devkit/build-angular:karma'
+  build: [
+    '@angular-devkit/build-angular:application', // for esbuild
+    '@angular-devkit/build-angular:browser' // for webpack
+  ],
+  test: ['@angular-devkit/build-angular:karma']
 };
 
 /** Add pre-built styles to the main project style file. */
@@ -144,7 +147,7 @@ function validateDefaultTargetBuilder(
 ): boolean {
   const defaultBuilder = defaultTargetBuilders[targetName];
   const targetConfig = project.targets && project.targets.get(targetName);
-  const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
+  const isDefaultBuilder = targetConfig && defaultBuilder.includes(targetConfig.builder);
 
   if (!isDefaultBuilder && targetName === 'build') {
     throw new SchematicsException(
