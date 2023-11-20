@@ -340,7 +340,7 @@ export class NzImagePreviewComponent implements OnInit {
     const x = (event.clientX - imageElement.getBoundingClientRect().x) / this.zoom;
     const y = (event.clientY - imageElement.getBoundingClientRect().y) / this.zoom;
 
-    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : this.scaleStep / 2;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
 
     this.position = {
       x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
@@ -354,10 +354,7 @@ export class NzImagePreviewComponent implements OnInit {
     }
 
     if (this.zoom <= 1) {
-      this.position = {
-        x: 0,
-        y: 0
-      };
+      this.reCenterImage();
     }
 
     this.updatePreviewImageTransform();
