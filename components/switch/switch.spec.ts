@@ -1,8 +1,8 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
@@ -253,9 +253,9 @@ describe('switch', () => {
       flush();
       const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
       const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(testComponent.formGroup.valid).toBe(true);
-      expect(testComponent.formGroup.pristine).toBe(true);
-      expect(testComponent.formGroup.touched).toBe(false);
+      expect(testComponent.formControl.valid).toBe(true);
+      expect(testComponent.formControl.pristine).toBe(true);
+      expect(testComponent.formControl.touched).toBe(false);
       expect(buttonElement.disabled).toBeFalsy();
       expect(buttonElement.classList).not.toContain('ant-switch-disabled');
     }));
@@ -277,11 +277,11 @@ describe('switch', () => {
 
       expect(buttonElement.disabled).toBeTruthy();
       expect(buttonElement.classList).toContain('ant-switch-disabled');
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
+      expect(testComponent.formControl.value).toBe(true);
 
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
+      expect(testComponent.formControl.value).toBe(true);
 
       testComponent.enable();
       fixture.detectChanges();
@@ -290,7 +290,7 @@ describe('switch', () => {
       expect(buttonElement.classList).not.toContain('ant-switch-disabled');
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
+      expect(testComponent.formControl.value).toBe(false);
 
       testComponent.disable();
       fixture.detectChanges();
@@ -299,7 +299,7 @@ describe('switch', () => {
       expect(buttonElement.classList).toContain('ant-switch-disabled');
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
+      expect(testComponent.formControl.value).toBe(false);
     }));
   });
   describe('RTL', () => {
@@ -359,28 +359,22 @@ export class NzTestSwitchTemplateComponent {}
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <nz-switch formControlName="switchValue" [nzDisabled]="disabled"></nz-switch>
+    <form>
+      <nz-switch [formControl]="formControl" [nzDisabled]="disabled"></nz-switch>
     </form>
   `
 })
 export class NzTestSwitchFormComponent {
-  formGroup: UntypedFormGroup;
+  formControl = new FormControl(true);
 
   disabled = false;
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      switchValue: [true]
-    });
-  }
-
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 
   enable(): void {
-    this.formGroup.enable();
+    this.formControl.enable();
   }
 }
 
