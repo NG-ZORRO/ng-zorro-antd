@@ -29,7 +29,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
-import { TImageUrl, TImageScaleStep } from './image.directive';
+import { NzImageUrl, NzImageScaleStep } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -44,9 +44,9 @@ const initialPosition = {
   y: 0
 };
 
-export const DEFAULT_NZ_SCALE_STEP = 0.5;
-const DEFAULT_NZ_ZOOM = 1;
-const DEFAULT_NZ_ROTATE = 0;
+export const NZ_DEFAULT_SCALE_STEP = 0.5;
+const NZ_DEFAULT_ZOOM = 1;
+const NZ_DEFAULT_ROTATE = 0;
 
 @Component({
   selector: 'nz-image-preview',
@@ -128,9 +128,9 @@ const DEFAULT_NZ_ROTATE = 0;
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
-  readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
-  readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
-  readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
+  readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
+  readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
+  readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
 
   images: NzImage[] = [];
   index = 0;
@@ -138,7 +138,7 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
-  scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
+  scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -281,7 +281,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomIn(): void {
     const zoomStep =
-      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
@@ -291,7 +291,7 @@ export class NzImagePreviewComponent implements OnInit {
   onZoomOut(): void {
     if (this.zoom > 1) {
       const zoomStep =
-        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
