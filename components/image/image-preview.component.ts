@@ -196,7 +196,6 @@ export class NzImagePreviewComponent implements OnInit {
   private zoom: number;
   private rotate: number;
   private scaleStep: number;
-  private wheelEventStack: WheelEvent[] = [];
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -244,7 +243,7 @@ export class NzImagePreviewComponent implements OnInit {
       fromEvent<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
-          this.ngZone.run(() => this.onWheelZoom(event));
+          this.ngZone.run(() => this.wheelZoomEventHandler(event));
         });
     });
   }
@@ -334,17 +333,6 @@ export class NzImagePreviewComponent implements OnInit {
     this.next();
   }
 
-  onWheelZoom(event: WheelEvent): void {
-    this.wheelEventStack.push(event);
-
-    if (this.wheelEventStack.length === 1) {
-      this.imageTransitionTimingFunction = 'ease-out';
-      this.wheelZoomEventHandler(this.wheelEventStack[0]);
-    } else if (this.wheelEventStack.length > 1) {
-      this.imageTransitionTimingFunction = 'linear';
-    }
-  }
-
   wheelZoomEventHandler(event: WheelEvent): void {
     const deltaY = event.deltaY;
     const imageElement = this.imageRef.nativeElement;
@@ -352,7 +340,7 @@ export class NzImagePreviewComponent implements OnInit {
     const x = (event.clientX - imageElement.getBoundingClientRect().x) / this.zoom;
     const y = (event.clientY - imageElement.getBoundingClientRect().y) / this.zoom;
 
-    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : this.scaleStep / 2;
 
     this.position = {
       x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
@@ -366,24 +354,16 @@ export class NzImagePreviewComponent implements OnInit {
     }
 
     if (this.zoom <= 1) {
-      this.reCenterImage();
+      this.position = {
+        x: 0,
+        y: 0
+      };
     }
 
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
+
     this.markForCheck();
-
-    setTimeout(() => {
-      this.wheelEventStack.shift();
-
-      if (this.wheelEventStack.length === 1) {
-        this.imageTransitionTimingFunction = 'ease-out';
-      }
-
-      if (this.wheelEventStack.length !== 0) {
-        this.wheelZoomEventHandler(this.wheelEventStack[0]);
-      }
-    }, this._imageTransitionDuration);
   }
 
   onAnimationStart(event: AnimationEvent): void {
