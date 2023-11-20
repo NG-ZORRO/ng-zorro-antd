@@ -1,3 +1,12 @@
+## [17.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.0.0...17.0.1) (2023-11-20)
+
+
+### Bug Fixes
+
+* **schematics:** cannot generate files and add default builders ([#8176](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8176)) ([de8a6b7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/de8a6b782d16f906198d6d6ba512059b8dcb463c))
+
+
+
 # [17.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.2.2...17.0.0) (2023-11-18)
 
 

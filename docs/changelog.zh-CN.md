@@ -13,6 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 17.0.1
+
+`2023-11-20`
+
+### Bug Fixes
+
+* **schematics:** 修复 schematics 命令问题 ([#8176](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8176)) ([de8a6b7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/de8a6b782d16f906198d6d6ba512059b8dcb463c))
+
+
+
 ## 17.0.0
 
 `2023-11-19`
