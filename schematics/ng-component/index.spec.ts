@@ -3,7 +3,6 @@ import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { ChangeDetection, Style } from '@schematics/angular/component/schema';
 
 import { createTestApp } from '../testing/test-app';
-import {getFileContent} from "../utils/get-file-content";
 
 const appOptions = {
   name: 'ng-zorro',
@@ -34,7 +33,7 @@ describe('ng-component schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../collection.json'));
-    appTree = await createTestApp(runner, { ...appOptions, standalone: true });
+    appTree = await createTestApp(runner, { ...appOptions });
   });
 
   it('should create a component', async () => {
