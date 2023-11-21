@@ -331,6 +331,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   wheelZoomEventHandler(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.handlerImageTransformationWhileZoomingWithMouse(event, event.deltaY);
     this.handleImageScaleWhileZoomingWithMouse(event.deltaY);
 
@@ -388,15 +391,10 @@ export class NzImagePreviewComponent implements OnInit {
         y: event.source.getFreeDragPosition().y
       };
     }
-    this.markForCheck();
   }
 
   sanitizerResourceUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  private isZoomedInWithMouseWheel(delta: number): boolean {
-    return delta < 0;
   }
 
   private updatePreviewImageTransform(): void {
@@ -464,6 +462,10 @@ export class NzImagePreviewComponent implements OnInit {
     if (this.zoom <= 1) {
       this.reCenterImage();
     }
+  }
+
+  private isZoomedInWithMouseWheel(delta: number): boolean {
+    return delta < 0;
   }
 
   private reset(): void {
