@@ -450,11 +450,6 @@ export class NzImagePreviewComponent implements OnInit {
     const y = (event.clientY - imageElement.getBoundingClientRect().y) / scaleValue;
     const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
 
-    // this.position = {
-    //   x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
-    //   y: this.position.y + (-y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue)
-    // };
-
     this.position.x += -x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue;
     this.position.y += -y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue;
   }
