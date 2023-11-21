@@ -30,7 +30,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
-import { TImageUrl, TImageScaleStep } from './image.directive';
+import { NzImageUrl, NzImageScaleStep } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -45,9 +45,9 @@ const initialPosition = {
   y: 0
 };
 
-export const DEFAULT_NZ_SCALE_STEP = 0.5;
-const DEFAULT_NZ_ZOOM = 1;
-const DEFAULT_NZ_ROTATE = 0;
+export const NZ_DEFAULT_SCALE_STEP = 0.5;
+const NZ_DEFAULT_ZOOM = 1;
+const NZ_DEFAULT_ROTATE = 0;
 
 @Component({
   selector: 'nz-image-preview',
@@ -119,8 +119,6 @@ const DEFAULT_NZ_ROTATE = 0;
     class: 'ant-image-preview-wrap',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
-    '[style.--image-transition-duration]': '_imageTransitionDuration + "ms"',
-    '[style.--image-transition-timing-function]': 'imageTransitionTimingFunction',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@fadeMotion]': 'animationState',
     '(@fadeMotion.start)': 'onAnimationStart($event)',
@@ -131,19 +129,18 @@ const DEFAULT_NZ_ROTATE = 0;
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
-  readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
-  readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
-  readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
-  readonly _imageTransitionDuration = 300;
+  readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
+  readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
+  readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
 
   images: NzImage[] = [];
   index = 0;
   isDragging = false;
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
-  imageTransitionTimingFunction: 'linear' | 'ease-out' = 'linear';
   animationStateChanged = new EventEmitter<AnimationEvent>();
-  scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
+  scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
+
   previewImageTransform = '';
   previewImageWrapperTransform = '';
   operations: NzImageContainerOperation[] = [
@@ -291,7 +288,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomIn(): void {
     const zoomStep =
-      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
@@ -300,7 +297,7 @@ export class NzImagePreviewComponent implements OnInit {
   onZoomOut(): void {
     if (this.zoom > 1) {
       const zoomStep =
-        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
@@ -334,31 +331,11 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   wheelZoomEventHandler(event: WheelEvent): void {
-    const deltaY = event.deltaY;
-    const imageElement = this.imageRef.nativeElement;
+    this.handlerImageTransformationWhileZoomingWithMouse(event, event.deltaY);
+    this.handleImageScaleWhileZoomingWithMouse(event.deltaY);
 
-    const x = (event.clientX - imageElement.getBoundingClientRect().x) / this.zoom;
-    const y = (event.clientY - imageElement.getBoundingClientRect().y) / this.zoom;
-
-    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
-
-    this.position = {
-      x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
-      y: this.position.y + (-y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue)
-    };
-
-    if (this.isZoomedInWithMouseWheel(deltaY)) {
-      this.onZoomIn();
-    } else {
-      this.onZoomOut();
-    }
-
-    if (this.zoom <= 1) {
-      this.reCenterImage();
-    }
-
-    this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
+    this.updatePreviewImageTransform();
 
     this.markForCheck();
   }
@@ -453,6 +430,44 @@ export class NzImagePreviewComponent implements OnInit {
     if (backdropElement) {
       backdropElement.classList.add(FADE_CLASS_NAME_MAP.leave);
       backdropElement.classList.add(FADE_CLASS_NAME_MAP.leaveActive);
+    }
+  }
+
+  private handlerImageTransformationWhileZoomingWithMouse(event: WheelEvent, deltaY: number): void {
+    let scaleValue: number;
+    const imageElement = this.imageRef.nativeElement;
+
+    const elementTransform = getComputedStyle(imageElement).transform;
+    const matrixValue = elementTransform.match(/matrix.*\((.+)\)/);
+
+    if (matrixValue) {
+      scaleValue = +matrixValue[1].split(', ')[0];
+    } else {
+      scaleValue = this.zoom;
+    }
+
+    const x = (event.clientX - imageElement.getBoundingClientRect().x) / scaleValue;
+    const y = (event.clientY - imageElement.getBoundingClientRect().y) / scaleValue;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
+
+    // this.position = {
+    //   x: this.position.x + (-x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue),
+    //   y: this.position.y + (-y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue)
+    // };
+
+    this.position.x += -x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue;
+    this.position.y += -y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue;
+  }
+
+  private handleImageScaleWhileZoomingWithMouse(deltaY: number): void {
+    if (this.isZoomedInWithMouseWheel(deltaY)) {
+      this.onZoomIn();
+    } else {
+      this.onZoomOut();
+    }
+
+    if (this.zoom <= 1) {
+      this.reCenterImage();
     }
   }
 
