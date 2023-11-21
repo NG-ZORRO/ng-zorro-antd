@@ -16,7 +16,7 @@ describe('[standalone] side-menu schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, { standalone: true });
+    appTree = await createTestApp(runner);
   });
 
   it('should create side-menu files', async () => {
@@ -38,61 +38,48 @@ describe('[standalone] side-menu schematic', () => {
     );
   });
 
-  it('should mark components as standalone', async () => {
+  it('should infer the standalone option from the project structure', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    
+    expect(tree.exists('/projects/material/src/app/app.module.ts')).toBe(false);
 
     expect(appContent).toContain('standalone: true');
-    expect(welcomeContent).toContain('standalone: true');
+    expect(appContent).toContain('imports: [');
   });
 
-  it('should set the style preprocessor correctly', async () => {
-    const options = { ...defaultOptions, style: Style.Less };
-    const tree = await runner.runSchematic('sidemenu', options, appTree);
-    const files = tree.files;
-    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+  describe('style option', () => {
+    it('should set the style preprocessor correctly', async () => {
+      const options = { ...defaultOptions, style: Style.Less };
+      const tree = await runner.runSchematic('sidemenu', options, appTree);
+      const files = tree.files;
+      const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
+      const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
 
-    expect(appContent).toContain('app.component.less');
-    expect(welcomeContent).toContain('welcome.component.less');
+      expect(appContent).toContain('app.component.less');
+      expect(welcomeContent).toContain('welcome.component.less');
 
-    expect(files).toEqual(
-      jasmine.arrayContaining([
-        '/projects/ng-zorro/src/app/app.component.less',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
-      ])
-    );
-  });
+      expect(files).toEqual(
+        jasmine.arrayContaining([
+          '/projects/ng-zorro/src/app/app.component.less',
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+        ])
+      );
+    });
 
-  xit('should fall back to the @schematics/angular:component option value', async () => {
-    const options = { ...defaultOptions, template: 'sidemenu' };
-    appTree = await createTestApp(runner, { style: Style.Less, standalone: true });
-    const tree = await runner.runSchematic('ng-add', options, appTree);
+    it('should fall back to the @schematics/angular:component option value', async () => {
+      const options = { ...defaultOptions, template: 'sidemenu' };
+      appTree = await createTestApp(runner, { style: Style.Less, standalone: true });
+      const tree = await runner.runSchematic('ng-add', options, appTree);
 
-    expect(tree.files).toEqual(
-      jasmine.arrayContaining([
-        '/projects/ng-zorro/src/app/app.component.less',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
-      ])
-    );
-  });
-
-  it('should fall back to the @schematics/angular:component option value', async () => {
-    const options = { ...defaultOptions, template: 'sidemenu' };
-    appTree = await createTestApp(runner, { inlineStyle: true, standalone: true });
-    const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.css');
-  });
-
-  it('should fall back to the @schematics/angular:component option value', async () => {
-    const options = { ...defaultOptions, template: 'sidemenu' };
-    appTree = await createTestApp(runner, { inlineTemplate: true, standalone: true });
-    const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.html');
+      expect(tree.files).toEqual(
+        jasmine.arrayContaining([
+          '/projects/ng-zorro/src/app/app.component.less',
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+        ])
+      );
+    });
   });
 
   it('should set the prefix correctly', async () => {

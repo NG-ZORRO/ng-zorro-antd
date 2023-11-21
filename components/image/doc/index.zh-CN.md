@@ -74,6 +74,6 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ### NzImageGroupComponent
 
-| Property    | Description                                                                                                                     | Type | Default |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ---- | ------- |
-| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. |
+| 名称    | 描述                                                                                                                    | 类型       | 默认值 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------ |----------|---|
+| nzScaleStep | `1 + nzScaleStep` 为缩放放大的每步倍数 | `number` | - |

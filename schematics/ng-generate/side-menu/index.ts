@@ -32,35 +32,12 @@ export default function (options: Schema): Rule {
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     const prefix = options.prefix || project.prefix;
-
-    if (isStandaloneApp(host, mainFile)) {
-      return chain([
-        mergeWith(
-          apply(url('./standalone/src'), [
-            applyTemplates({
-              ...strings,
-              ...options,
-              prefix
-            }),
-            move(project.sourceRoot as string),
-            forEach((fileEntry: FileEntry) => {
-              if (host.exists(fileEntry.path)) {
-                host.overwrite(fileEntry.path, fileEntry.content);
-              }
-              return fileEntry;
-            })
-          ]),
-          MergeStrategy.Overwrite
-        ),
-        addRootProvider(options.project, ({ code, external }) => {
-          return code`${external('provideNzIcons', './icons-provider')}()`;
-        })
-      ]);
-    }
+    const isStandalone = isStandaloneApp(host, mainFile);
+    const templateSourcePath = isStandalone ? './standalone' : './files';
 
     return chain([
       mergeWith(
-        apply(url('./files/src'), [
+        apply(url(`${templateSourcePath}/src`), [
           applyTemplates({
             ...strings,
             ...options,
@@ -76,10 +53,17 @@ export default function (options: Schema): Rule {
         ]),
         MergeStrategy.Overwrite
       ),
-      addModule('AppRoutingModule', './app-routing.module', options.project),
-      addModule('IconsProviderModule', './icons-provider.module', options.project),
-      addModule('NzLayoutModule', 'ng-zorro-antd/layout', options.project),
-      addModule('NzMenuModule', 'ng-zorro-antd/menu', options.project)
+      isStandalone ?
+        addRootProvider(options.project, ({ code, external }) => {
+          return code`${external('provideNzIcons', './icons-provider')}()`;
+        }) 
+        :
+        chain([
+          addModule('AppRoutingModule', './app-routing.module', options.project),
+          addModule('IconsProviderModule', './icons-provider.module', options.project),
+          addModule('NzLayoutModule', 'ng-zorro-antd/layout', options.project),
+          addModule('NzMenuModule', 'ng-zorro-antd/menu', options.project)
+        ])
     ]);
   };
 }
