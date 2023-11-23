@@ -36,7 +36,7 @@ npm install ng-antd-color-picker
 | `[nzShowText]`       | 显示颜色文本         | `boolean`                                          | `false`   |
 | `[nzOpen]`           | 是否显示弹出窗口     | `boolean`                                          | `false`   |
 | `[nzDisabled]`       | 禁用颜色选择器       | `boolean`                                          | `false`   |
-| `[disabledAlpha]`    | 禁用透明度           | `boolean`                                          | `false`   |
+| `[nzDisabledAlpha]`  | 禁用透明度           | `boolean`                                          | `false`   |
 | `[nzTitle]`          | 设置颜色选择器的标题 | `TemplateRef<void>`｜`string`                      | -         |
 | `(nzOnChange)`       | 颜色变化的回调       | `EventEmitter<{ color: NzColor; format: string }>` | -         |
 | `(nzOnClear)`        | 清除的回调           | `EventEmitter<boolean>`                            | -         |

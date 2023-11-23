@@ -35,7 +35,7 @@ npm install ng-antd-color-picker
 | `[nzShowText]`       | Show color text                       | `boolean`                                          | `false`   |
 | `[nzOpen]`           | Whether to show popups                | `boolean`                                          | `false`   |
 | `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`   |
-| `[disabledAlpha]`    | Disable Alpha                         | `boolean`                                          | `false`   |
+| `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`   |
 | `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void>`｜`string`                      | -         |
 | `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -         |
 | `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -         |
