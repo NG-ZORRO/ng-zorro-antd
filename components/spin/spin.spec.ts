@@ -149,6 +149,31 @@ describe('spin', () => {
       expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-rtl');
     });
   });
+
+  describe('spin fullscreen', () => {
+    it('should div with classname ant-spin also have the correct class name', () => {
+      const fixture = TestBed.createComponent(NzTestSpinBasicComponent);
+      const spin = fixture.debugElement.query(By.directive(NzSpinComponent));
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-fullscreen');
+      fixture.componentInstance.isFullscreen = true;
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-fullscreen');
+    });
+
+    it('should spin component have the correct classname when nested and fullscreen is active', () => {
+      const fixture = TestBed.createComponent(NzTestSpinBasicComponent);
+      const spin = fixture.debugElement.query(By.directive(NzSpinComponent));
+      fixture.componentInstance.isFullscreen = false;
+      fixture.componentInstance.simple = true;
+      fixture.detectChanges();
+      expect(spin.nativeElement.classList).not.toContain('ant-spin-nested-loading-fullscreen');
+      fixture.componentInstance.isFullscreen = true;
+      fixture.componentInstance.simple = false;
+      fixture.detectChanges();
+      expect(spin.nativeElement.classList).toContain('ant-spin-nested-loading-fullscreen');
+    });
+  });
 });
 
 @Component({
@@ -163,6 +188,7 @@ describe('spin', () => {
       [nzSpinning]="spinning"
       [nzSimple]="simple"
       [nzIndicator]="indicator"
+      [nzFullscreen]="isFullscreen"
     >
       <div>test</div>
     </nz-spin>
@@ -177,6 +203,7 @@ export class NzTestSpinBasicComponent {
   indicator?: TemplateRef<void>;
   tip?: string;
   simple = false;
+  isFullscreen = false;
 
   constructor(public nzConfigService: NzConfigService) {}
 }

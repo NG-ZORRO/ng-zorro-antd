@@ -53,7 +53,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
         <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
       </div>
     </div>
-
     <div *ngIf="!nzSimple" class="ant-spin-container" [class.ant-spin-blur]="isLoading">
       <ng-content></ng-content>
     </div>
