@@ -5,7 +5,7 @@
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NgModule, NgZone, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgModule, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -31,7 +31,7 @@ import {
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {
   getFitContentPosition,
   NzImage,
@@ -58,7 +58,7 @@ describe('Basics', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
-      providers: [{ provide: Overlay, useClass: Overlay }, NgZone]
+      providers: [{ provide: Overlay, useClass: Overlay }]
     });
     TestBed.compileComponents();
   }));
@@ -553,6 +553,20 @@ describe('Preview', () => {
       expect(previewInstance.position).toEqual({ x: 0, y: 0 });
     }));
 
+    it('should onDragEnd be called after drag is ended', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+        return true;
+      });
+      const e: NzSafeAny = {};
+      previewInstance.onDragEnd(e);
+      expect(previewInstance['onDragEnd']).toHaveBeenCalled();
+    }));
+
     it('should zoom to center when zoom is <= 1', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
@@ -653,6 +667,29 @@ describe('Preview', () => {
       expect(pos.x).toBe(-40);
       expect(pos.y).toBe(-66);
     });
+  });
+
+  describe('Zoom with mouse', () => {
+    it('should call proper methods', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      const e = jasmine.createSpyObj('e', ['preventDefault', 'stopPropagation']);
+      spyOn<NzSafeAny>(previewInstance, 'handlerImageTransformationWhileZoomingWithMouse');
+      spyOn<NzSafeAny>(previewInstance, 'handleImageScaleWhileZoomingWithMouse');
+      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageWrapperTransform');
+      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageTransform');
+      spyOn<NzSafeAny>(previewInstance, 'markForCheck');
+      previewInstance.wheelZoomEventHandler(e);
+      expect(e.preventDefault).toHaveBeenCalled();
+      expect(e.stopPropagation).toHaveBeenCalled();
+      expect(previewInstance['handlerImageTransformationWhileZoomingWithMouse']).toHaveBeenCalled();
+      expect(previewInstance['handleImageScaleWhileZoomingWithMouse']).toHaveBeenCalled();
+      expect(previewInstance['updatePreviewImageWrapperTransform']).toHaveBeenCalled();
+      expect(previewInstance['updatePreviewImageTransform']).toHaveBeenCalled();
+      expect(previewInstance['markForCheck']).toHaveBeenCalled();
+    }));
   });
 });
 
