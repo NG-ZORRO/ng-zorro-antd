@@ -73,6 +73,34 @@
         margin-top: -(@spin-dot-size-lg / 2) - 10px;
       }
     }
+
+    &-fullscreen {
+      > div > .@{spin-prefix-cls} {
+        max-height: unset;
+
+        .@{spin-prefix-cls}-text {
+          color: @white;
+          text-shadow: unset;
+        }
+      }
+    }
+  }
+
+  &-fullscreen,
+  &-nested-loading-fullscreen > div > .@{spin-prefix-cls} {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    max-height: unset;
+
+    .ant-spin-dot-item {
+      background-color: @white;
+    }
   }
 
   &-container {

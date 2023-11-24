@@ -47,17 +47,20 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
         [class.ant-spin-lg]="nzSize === 'large'"
         [class.ant-spin-sm]="nzSize === 'small'"
         [class.ant-spin-show-text]="nzTip"
+        [class.ant-spin-fullscreen]="nzFullscreen"
       >
         <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate"></ng-template>
         <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
       </div>
     </div>
+
     <div *ngIf="!nzSimple" class="ant-spin-container" [class.ant-spin-blur]="isLoading">
       <ng-content></ng-content>
     </div>
   `,
   host: {
-    '[class.ant-spin-nested-loading]': '!nzSimple'
+    '[class.ant-spin-nested-loading]': '!nzSimple',
+    '[class.ant-spin-nested-loading-fullscreen]': '!nzSimple && nzFullscreen'
   }
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
@@ -73,6 +76,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @InputNumber() nzDelay = 0;
   @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzSpinning = true;
+  @Input() @InputBoolean() nzFullscreen = false;
   private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);

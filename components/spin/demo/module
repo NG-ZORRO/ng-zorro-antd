@@ -2,5 +2,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
-export const moduleList = [ NzSpinModule, NzAlertModule, NzIconModule, NzSwitchModule ];
+export const moduleList = [ NzSpinModule, NzAlertModule, NzIconModule, NzSwitchModule, NzButtonModule ];
