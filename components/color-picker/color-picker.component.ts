@@ -60,6 +60,7 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
         [disabled]="nzDisabled"
         [panelRenderHeader]="nzPanelRenderHeader"
         [panelRenderFooter]="nzPanelRenderFooter"
+        [disabledAlpha]="nzDisabledAlpha"
         (nzOnChange)="colorChange($event)"
       ></ng-antd-color-picker>
     </ng-template>
@@ -83,6 +84,7 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
         [colorValue]="blockColor"
         [clearColor]="clearColor"
         [format]="nzFormat"
+        [nzDisabledAlpha]="nzDisabledAlpha"
         (formatChange)="formatChange($event)"
         (nzOnFormatChange)="nzOnFormatChange.emit($event)"
       ></nz-color-format>
@@ -117,6 +119,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Input() @InputBoolean() nzOpen: boolean = false;
   @Input() @InputBoolean() nzAllowClear: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
   @Output() readonly nzOnChange = new EventEmitter<{ color: NzColor; format: string }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
