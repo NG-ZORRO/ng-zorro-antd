@@ -19,7 +19,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ## API
 
-### nz-anchor
+### nz-anchor:standalone
 
 | 成员 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
