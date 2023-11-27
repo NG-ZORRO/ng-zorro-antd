@@ -18,7 +18,7 @@ import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
 ## API
 
-### nz-back-top
+### nz-back-top:standalone
 
 > The distance to the bottom is set to `50px` by default, which is overridable.
 > If you decide to use custom styles, please note the size limit: no more than `40px * 40px`.
