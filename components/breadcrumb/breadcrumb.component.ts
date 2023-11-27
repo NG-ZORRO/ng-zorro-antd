@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,6 +28,7 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzBreadcrumb } from './breadcrumb';
+import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 
 export interface BreadcrumbOption {
   label: string;
@@ -41,6 +43,8 @@ export interface BreadcrumbOption {
   exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
   providers: [{ provide: NzBreadcrumb, useExisting: NzBreadCrumbComponent }],
+  standalone: true,
+  imports: [BidiModule, NgFor, NgIf, NzBreadCrumbItemComponent],
   template: `
     <ng-content></ng-content>
     <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
