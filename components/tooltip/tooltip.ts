@@ -157,7 +157,8 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     };
 
     this._contentStyleMap = {
-      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null
+      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null,
+      '--color': this.nzColor
     };
   }
 }
