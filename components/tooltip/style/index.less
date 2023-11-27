@@ -82,7 +82,8 @@
     &-content {
       // Use linear gradient to mix box shadow of tooltip inner
       --antd-arrow-background-color: var(
-        --color, // used when setting custom colors, fallback is provide line below in case no color is set
+        --color,
+        // used when setting custom color, fallback is provide line below in case no color is set
         linear-gradient(to right bottom, fadeout(@tooltip-bg, 10%), @tooltip-bg) // fallback
       );
 
