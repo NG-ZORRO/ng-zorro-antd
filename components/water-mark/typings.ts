@@ -21,6 +21,7 @@ export interface MarkStyleType {
   pointerEvents: string;
   backgroundRepeat: string;
   backgroundPosition?: string;
+  visibility: string;
 }
 
 export interface MarkStyleCanvasType extends MarkStyleType {
