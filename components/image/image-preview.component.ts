@@ -4,7 +4,9 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,11 +27,12 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
-import { NzImageUrl, NzImageScaleStep } from './image.directive';
+import { NzImageScaleStep, NzImageUrl } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -52,6 +55,7 @@ const NZ_DEFAULT_ROTATE = 0;
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
   animations: [fadeMotion],
+  standalone: true,
   template: `
     <div class="ant-image-preview">
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
@@ -125,6 +129,7 @@ const NZ_DEFAULT_ROTATE = 0;
     tabindex: '-1',
     role: 'document'
   },
+  imports: [NgForOf, NzIconModule, CdkDragHandle, CdkDrag, NgIf],
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
