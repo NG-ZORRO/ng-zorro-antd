@@ -107,6 +107,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzDisabledAlpha: BooleanInput;
 
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
