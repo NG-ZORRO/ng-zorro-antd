@@ -1,7 +1,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -226,22 +226,16 @@ export class NzTestInputWithTextAreaComponent {}
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <input nz-input formControlName="input" />
+    <form>
+      <input nz-input [formControl]="formControl" />
     </form>
   `
 })
 export class NzTestInputFormComponent {
-  formGroup: UntypedFormGroup;
-
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      input: ['abc']
-    });
-  }
+  formControl = new FormControl('abc');
 
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 }
 

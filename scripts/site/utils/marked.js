@@ -109,23 +109,62 @@ renderer.link = function (href, title, text) {
   return str;
 };
 
+/**
+ * @param {'component' | 'directive' | 'standalone' | 'service'} label
+ * @returns {string}
+ */
+function createLabel(label) {
+  return `<label class="api-type-label ${label}">${label}</label>`;
+}
+
+const STANDALONE_SUFFIX_REGEX = /:standalone$/;
+
+/**
+ * Clean up special tags such as suffixes.
+ *
+ * Currently we have the following tags:
+ *
+ * Suffix:
+ * - `:standalone`: Indicates that the target is a standalone component, directive or pipe.
+ *
+ * @param {string} text
+ */
+function normalizeHead(text) {
+  return text.replace(STANDALONE_SUFFIX_REGEX, '');
+}
+
+/**
+ * @param {string} text
+ * @param {number} level
+ * @returns {string}
+ */
 renderer.heading = function (text, level) {
   const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
   const isMarkedLabel = level === 3 && text.indexOf('nz-') === 0;
   const isDirective = text[0] === '[' && text[text.length - 1] === ']';
   const isComponent = isMarkedLabel && !isDirective;
+  const isStandalone = STANDALONE_SUFFIX_REGEX.test(text);
   const isService = text.indexOf('Nz') === 0 && text.indexOf('Service') > -1;
-  const head = `<h${level} id="${lowerText}"><span>${text}</span>`;
+  const head = `<h${level} id="${lowerText}"><span>${normalizeHead(text)}</span>`;
   const link = `<a onclick="window.location.hash = '${lowerText}'" class="anchor">#</a></h${level}>`;
+
+  let heading = head;
+
   if (isComponent) {
-    return head + `<label class="api-type-label component">component</label>` + link;
+    heading += createLabel('component');
   } else if (isDirective) {
-    return head + `<label class="api-type-label directive">directive</label>` + link;
+    heading += createLabel('directive');
   } else if (isService) {
-    return head + `<label class="api-type-label service">service</label>` + link;
-  } else {
-    return head + link;
+    heading += createLabel('service');
   }
+
+  if (isStandalone) {
+    heading += createLabel('standalone');
+  }
+
+  heading += link;
+
+  return heading;
 };
 
 renderer.code = function (code, infostring, escaped) {

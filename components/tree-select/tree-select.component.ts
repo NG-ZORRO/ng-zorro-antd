@@ -19,7 +19,6 @@ import {
   ElementRef,
   EventEmitter,
   Host,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -27,7 +26,6 @@ import {
   Optional,
   Output,
   Renderer2,
-  Self,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -46,7 +44,6 @@ import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
-  NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions
@@ -66,10 +63,6 @@ import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
 import { NzTreeSelectService } from './tree-select.service';
-
-export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
-  return injector.get(NzTreeSelectService);
-}
 
 export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
@@ -215,8 +208,7 @@ const listOfPositions = [
     NzTreeSelectService,
     {
       provide: NzTreeHigherOrderServiceToken,
-      useFactory: higherOrderServiceFactory,
-      deps: [[new Self(), Injector]]
+      useExisting: NzTreeSelectService
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -642,7 +634,22 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       }
     }
 
-    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
+    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
+      (a, b) => {
+        const indexA = this.value.indexOf(a.key);
+        const indexB = this.value.indexOf(b.key);
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
+        }
+        if (indexA !== -1) {
+          return -1;
+        }
+        if (indexB !== -1) {
+          return 1;
+        }
+        return 0;
+      }
+    );
   }
 
   updatePosition(): void {

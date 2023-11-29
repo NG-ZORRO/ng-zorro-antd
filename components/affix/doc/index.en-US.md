@@ -19,7 +19,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 ## API
 
-### nz-affix
+### nz-affix:standalone
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |

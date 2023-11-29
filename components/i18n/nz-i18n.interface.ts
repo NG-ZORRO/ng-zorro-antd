@@ -138,13 +138,6 @@ export interface NzCronExpressionLabelI18n {
   day?: string;
   month?: string;
   week?: string;
-  // innerHTML
-  secondError?: string;
-  minuteError?: string;
-  hourError?: string;
-  dayError?: string;
-  monthError?: string;
-  weekError?: string;
 }
 
 export interface NzCronExpressionCronErrorI18n {

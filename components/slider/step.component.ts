@@ -75,7 +75,8 @@ export class NzSliderStepComponent implements OnChanges {
         config,
         active: false,
         style: {
-          [orient]: `${offset}%`
+          [orient]: `${offset}%`,
+          transform: 'translateX(-50%)'
         }
       };
     });

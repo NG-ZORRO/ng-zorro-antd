@@ -1,12 +1,13 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, Input, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { NZ_DRAWER_DATA } from 'ng-zorro-antd/drawer/drawer-options';
 
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
@@ -734,6 +735,31 @@ describe('NzDrawerService', () => {
     expect(drawerRef.getContentComponent()).toBeNull();
   }));
 
+  it('should create a component drawer and use nzData instead of nzContentParams', fakeAsync(() => {
+    const openSpy = jasmine.createSpy('afterOpen spy');
+    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(2);
+    const drawerRef = drawerService.create({
+      nzTitle: 'Service',
+      nzFooter: 'Footer',
+      nzContent: NzDrawerCustomComponent,
+      nzContentParams: { value: 1 },
+      nzData: { value: 2 }
+    });
+    drawerRef.afterOpen.subscribe(openSpy);
+    drawerRef.afterClose.subscribe(closeSpy);
+    fixture.detectChanges();
+    expect(openSpy).not.toHaveBeenCalled();
+    expect(drawerRef.getContentComponent()).not.toBeNull();
+    tick(300);
+    expect(openSpy).toHaveBeenCalled();
+    (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).toHaveBeenCalled();
+    fixture.detectChanges();
+    expect(drawerRef.getContentComponent()).toBeNull();
+  }));
+
   it('should `nzOnCancel` work', fakeAsync(() => {
     let canClose = false;
     const openSpy = jasmine.createSpy('afterOpen spy');
@@ -878,7 +904,7 @@ class NzTestDrawerWithServiceComponent {
 export class NzDrawerCustomComponent {
   @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  constructor(private drawerRef: NzDrawerRef) {}
+  constructor(@Inject(NZ_DRAWER_DATA) public nzData: { value: string }, private drawerRef: NzDrawerRef) {}
 
   close(): void {
     this.drawerRef.close(this.value);

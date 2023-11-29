@@ -194,6 +194,36 @@ describe('nz-color-picker', () => {
       expect(testComponent.colorChange?.color.toHsbString()).toBe('hsb(215, 91%, 100%)');
       discardPeriodicTasks();
     }));
+
+    it('color-picker disableAlpha', fakeAsync(() => {
+      testComponent.nzAlphaDisabled = true;
+      fixture.detectChanges();
+      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+      dispatchMouseEvent(dom, 'click');
+      waitingForTooltipToggling();
+      const alphaSlider = overlayContainerElement.querySelector('.ant-color-picker-slider-alpha') as Element;
+      expect(alphaSlider).toBeFalsy();
+      discardPeriodicTasks();
+    }));
+
+    it('nz-color-format disableAlpha', fakeAsync(() => {
+      testComponent.nzAlphaDisabled = true;
+      fixture.detectChanges();
+      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+      dispatchMouseEvent(dom, 'click');
+      waitingForTooltipToggling();
+      const select = overlayContainerElement.querySelector('nz-select') as Element;
+      dispatchMouseEvent(select, 'click');
+      waitingForTooltipToggling();
+      const items = overlayContainerElement.querySelectorAll('nz-option-item');
+      items.forEach(item => {
+        dispatchMouseEvent(item, 'click');
+        waitingForTooltipToggling();
+        let alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
+        expect(alphaInputElement).toBeFalsy();
+      });
+      discardPeriodicTasks();
+    }));
   });
 });
 
@@ -209,6 +239,7 @@ describe('nz-color-picker', () => {
       [nzFormat]="nzFormat"
       [nzAllowClear]="nzAllowClear"
       [nzOpen]="nzOpen"
+      [nzDisabledAlpha]="nzAlphaDisabled"
       (nzOnChange)="nzOnChange($event)"
       (nzOnFormatChange)="nzOnFormatChange($event)"
       (nzOnClear)="nzOnClear($event)"
@@ -230,6 +261,7 @@ export class NzTestColorPickerComponent {
   nzShowText: boolean = false;
   nzAllowClear: boolean = false;
   nzDisabled: boolean = false;
+  nzAlphaDisabled: boolean = false;
   nzOpen: boolean = false;
 
   isFlipFlop = false;
