@@ -3,9 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-select-arrow',
@@ -29,7 +32,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   host: {
     class: 'ant-select-arrow',
     '[class.ant-select-arrow-loading]': 'loading'
-  }
+  },
+  imports: [NzIconModule, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzSelectArrowComponent {
   @Input() loading = false;

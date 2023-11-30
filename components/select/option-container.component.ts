@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { isPlatformBrowser } from '@angular/common';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { isPlatformBrowser, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -23,7 +23,10 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
+import { NzOptionItemGroupComponent } from './option-item-group.component';
+import { NzOptionItemComponent } from './option-item.component';
 import { NzSelectItemInterface, NzSelectModeType } from './select.types';
 
 @Component({
@@ -78,7 +81,20 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
   `,
-  host: { class: 'ant-select-dropdown' }
+  host: { class: 'ant-select-dropdown' },
+  imports: [
+    NzEmptyModule,
+    NgIf,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    NgSwitch,
+    NzOptionItemGroupComponent,
+    NgSwitchCase,
+    NzOptionItemComponent,
+    NgTemplateOutlet
+  ],
+  standalone: true
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;

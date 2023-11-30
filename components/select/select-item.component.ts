@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +14,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-select-item',
@@ -32,7 +35,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     class: 'ant-select-selection-item',
     '[attr.title]': 'label',
     '[class.ant-select-selection-item-disabled]': 'disabled'
-  }
+  },
+  imports: [NzOutletModule, NgIf, NzIconModule],
+  standalone: true
 })
 export class NzSelectItemComponent {
   @Input() disabled = false;

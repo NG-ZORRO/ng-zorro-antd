@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,6 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-option-item',
@@ -46,7 +48,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[class.ant-select-item-option-disabled]': 'disabled',
     '[class.ant-select-item-option-active]': 'activated && !disabled'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  standalone: true
 })
 export class NzOptionItemComponent implements OnChanges, OnInit {
   selected = false;
