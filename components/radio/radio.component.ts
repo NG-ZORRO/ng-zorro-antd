@@ -78,7 +78,8 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
     '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
     '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
