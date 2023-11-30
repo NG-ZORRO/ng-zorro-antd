@@ -897,6 +897,71 @@ describe('NzTabSet router', () => {
       });
     }));
   });
+
+  describe('dynamic router tabs', () => {
+    let fixture: ComponentFixture<DynamicRouterTabsTestComponent>;
+    let router: Router;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          NzTabsModule,
+          RouterTestingModule.withRoutes([
+            {
+              path: '',
+              pathMatch: 'full',
+              redirectTo: 'one'
+            },
+            {
+              path: 'one',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'two',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'three',
+              component: DynamicRouterTabsTestComponent
+            }
+          ])
+        ],
+        declarations: [DynamicRouterTabsTestComponent, DynamicRouterTabsTestComponent]
+      }).compileComponents();
+
+      router = TestBed.inject(Router);
+      fixture = TestBed.createComponent(DynamicRouterTabsTestComponent);
+    });
+
+    it('should update active tab when tabs changed', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      router.initialNavigation();
+      tick();
+      fixture.detectChanges();
+
+      tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
+      const comp = fixture.componentInstance;
+
+      router.navigate(['three']);
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      comp.tabs = comp.lazyTabs;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+
+      expect(comp.selectedIdx).toBe(2);
+
+      flush();
+    }));
+  });
 });
 
 @Component({
@@ -1130,6 +1195,36 @@ export class RouterTabsTestComponent {
   handleSelection(_event: number): void {
     // noop
   }
+}
+
+@Component({
+  template: ` <nz-tabset nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
+      <nz-tab *ngFor="let tab of tabs">
+        <a *nzTabLink nz-tab-link [routerLink]="tab.route">{{ tab.title }}</a>
+        {{ tab.title }}
+      </nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>`
+})
+export class DynamicRouterTabsTestComponent {
+  selectedIdx = 0;
+  tabs = [
+    {
+      title: 'one',
+      route: ['one']
+    },
+    {
+      title: 'two',
+      route: ['two']
+    }
+  ];
+  readonly lazyTabs = [
+    ...this.tabs,
+    {
+      title: 'three',
+      route: ['three']
+    }
+  ];
 }
 
 const routes: Routes = [

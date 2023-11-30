@@ -44,6 +44,7 @@ import {
   NzTabScrollEvent,
   NzTabType
 } from './interfaces';
+import { NzTabLinkDirective } from './tab-link.directive';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabComponent, NZ_TAB_SET } from './tab.component';
 
@@ -219,6 +220,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // We filter out only the tabs that belong to this tab set in `tabs`.
   @ContentChildren(NzTabComponent, { descendants: true })
   allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+  @ContentChildren(NzTabLinkDirective, { descendants: true })
+  tabLinks: QueryList<NzTabLinkDirective> = new QueryList<NzTabLinkDirective>();
   @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
@@ -443,13 +446,14 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       if (!this.router) {
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
-      this.router.events
-        .pipe(
-          takeUntil(this.destroy$),
+      merge(
+        this.router.events.pipe(
           filter(e => e instanceof NavigationEnd),
-          startWith(true),
           delay(0)
-        )
+        ),
+        this.tabLinks.changes
+      )
+        .pipe(takeUntil(this.destroy$), startWith(true))
         .subscribe(() => {
           this.updateRouterActive();
           this.cdr.markForCheck();
@@ -463,7 +467,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
       }
-      this.nzHideAll = index === -1;
+      Promise.resolve().then(() => (this.nzHideAll = index === -1));
     }
   }
 
