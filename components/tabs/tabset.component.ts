@@ -94,8 +94,9 @@ let nextId = 0;
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
-        <div
+        <button
           role="tab"
+          [id]="getTabContentId(i)"
           [attr.tabIndex]="getTabIndex(tab, i)"
           [attr.aria-disabled]="tab.nzDisabled"
           [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
@@ -114,7 +115,7 @@ let nextId = 0;
             [closeIcon]="tab.nzCloseIcon"
             (click)="onClose(i, $event)"
           ></button>
-        </div>
+        </button>
       </div>
     </nz-tabs-nav>
     <div class="ant-tabs-content-holder">
@@ -129,6 +130,9 @@ let nextId = 0;
         [style.margin-right]="getTabContentMarginRight()"
       >
         <div
+          role="tabpanel"
+          [id]="getTabContentId(i)"
+          [attr.aria-labelledby]="getTabContentId(i)"
           nz-tab-body
           *ngFor="let tab of tabs; let i = index"
           [active]="nzSelectedIndex === i && !nzHideAll"
@@ -495,8 +499,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink | RouterLink) => boolean {
-    return (link?: RouterLink | RouterLink) =>
+  private isLinkActive(router: Router): (link?: RouterLink) => boolean {
+    return (link?: RouterLink) =>
       link
         ? router.isActive(link.urlTree || '', {
             paths: this.nzLinkExact ? 'exact' : 'subset',

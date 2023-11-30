@@ -6,7 +6,7 @@
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW, hasModifierKey } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, hasModifierKey, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
@@ -30,7 +30,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
+import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -68,9 +68,17 @@ const CSS_TRANSFORM_TIME = 150;
         nzTabScrollList
         (offsetChange)="onOffsetChange($event)"
         (tabScroll)="tabScroll.emit($event)"
+        role="tablist"
       >
         <ng-content></ng-content>
-        <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+        <button
+          role="tab"
+          [attr.tabindex]="-1"
+          *ngIf="showAddButton"
+          nz-tab-add-button
+          [addIcon]="addIcon"
+          (click)="addClicked.emit()"
+        ></button>
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
       </div>
     </div>
@@ -86,7 +94,6 @@ const CSS_TRANSFORM_TIME = 150;
     </div>
   `,
   host: {
-    role: 'tablist',
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
   },
