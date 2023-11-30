@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,10 +19,12 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzProgressFormatter } from 'ng-zorro-antd/progress';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -101,7 +104,9 @@ import { NzProgressFormatter } from 'ng-zorro-antd/progress';
     '[class.ant-steps-item-custom]': '!!nzIcon',
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgIf, NzProgressModule, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet],
+  standalone: true
 })
 export class NzStepComponent implements OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
