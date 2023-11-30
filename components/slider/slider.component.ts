@@ -6,12 +6,14 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -23,29 +25,31 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import {
-  InputBoolean,
-  InputNumber,
-  MouseTouchObserverConfig,
   arraysEqual,
   ensureNumberInRange,
   getElementOffset,
   getPercent,
   getPrecision,
+  InputBoolean,
+  InputNumber,
   isNil,
+  MouseTouchObserverConfig,
   silentEvent
 } from 'ng-zorro-antd/core/util';
 
 import { NzSliderHandleComponent } from './handle.component';
+import { NzSliderMarksComponent } from './marks.component';
 import { NzSliderService } from './slider.service';
+import { NzSliderStepComponent } from './step.component';
+import { NzSliderTrackComponent } from './track.component';
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
 
 @Component({
@@ -119,7 +123,16 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [reverse]="nzReverse"
       ></nz-slider-marks>
     </div>
-  `
+  `,
+  imports: [
+    NzSliderTrackComponent,
+    NzSliderStepComponent,
+    NzSliderHandleComponent,
+    NgForOf,
+    NzSliderMarksComponent,
+    NgIf
+  ],
+  standalone: true
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
