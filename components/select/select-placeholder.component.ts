@@ -5,6 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -16,7 +17,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       {{ placeholder }}
     </ng-container>
   `,
-  host: { class: 'ant-select-selection-placeholder' }
+  host: { class: 'ant-select-selection-placeholder' },
+  imports: [NzOutletModule],
+  standalone: true
 })
 export class NzSelectPlaceholderComponent {
   @Input() placeholder: TemplateRef<NzSafeAny> | string | null = null;

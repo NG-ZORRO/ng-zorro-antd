@@ -13,6 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
+import { NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -43,9 +44,9 @@ import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestF
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { getPlacementName, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
@@ -59,8 +60,11 @@ import {
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
+import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
+import { NzSelectArrowComponent } from './select-arrow.component';
+import { NzSelectClearComponent } from './select-clear.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import {
   NzFilterOptionType,
@@ -195,7 +199,21 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
     '[class.ant-select-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzSelectTopControlComponent,
+    CdkOverlayOrigin,
+    NzNoAnimationModule,
+    NzSelectArrowComponent,
+    NgIf,
+    NzFormPatchModule,
+    NzSelectClearComponent,
+    CdkConnectedOverlay,
+    NzOverlayModule,
+    NzOptionContainerComponent,
+    NgStyle
+  ],
+  standalone: true
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
