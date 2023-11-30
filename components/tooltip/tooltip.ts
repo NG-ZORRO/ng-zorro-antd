@@ -4,6 +4,8 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,7 +26,9 @@ import {
 
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -41,7 +45,8 @@ import {
   exportAs: 'nzTooltip',
   host: {
     '[class.ant-tooltip-open]': 'visible'
-  }
+  },
+  standalone: true
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
@@ -125,7 +130,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [OverlayModule, NgClass, NgStyle, NzNoAnimationModule, NzOutletModule, NzOverlayModule],
+  standalone: true
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
