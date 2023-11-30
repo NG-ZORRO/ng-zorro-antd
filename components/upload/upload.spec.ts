@@ -78,7 +78,8 @@ describe('upload', () => {
   it('should be throw error when not import HttpClient module', () => {
     expect(() => {
       TestBed.configureTestingModule({
-        declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
+        declarations: [TestUploadBtnComponent],
+        imports: [NzUploadBtnComponent]
       }).createComponent(TestUploadBtnComponent);
     }).toThrow();
   });
@@ -100,9 +101,12 @@ describe('upload', () => {
           NzToolTipModule,
           NzProgressModule,
           NzI18nModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzUploadBtnComponent,
+          NzUploadComponent,
+          NzUploadListComponent
         ],
-        declarations: [NzUploadComponent, NzUploadListComponent, TestUploadComponent, NzUploadBtnComponent]
+        declarations: [TestUploadComponent]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
       dl = fixture.debugElement;
@@ -778,9 +782,10 @@ describe('upload', () => {
           NzProgressModule,
           NzI18nModule,
           NoopAnimationsModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzUploadListComponent
         ],
-        declarations: [NzUploadListComponent, TestUploadListComponent]
+        declarations: [TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
       dl = fixture.debugElement;
@@ -1000,8 +1005,8 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzIconTestModule],
-          declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
+          imports: [HttpClientTestingModule, NzIconTestModule, NzUploadBtnComponent],
+          declarations: [TestUploadBtnComponent]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);
         dl = fixture.debugElement;
@@ -1257,8 +1262,7 @@ describe('upload', () => {
       let http: HttpTestingController;
       beforeEach(() => {
         injector = TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule],
-          declarations: [NzUploadBtnComponent]
+          imports: [HttpClientTestingModule, NzUploadBtnComponent]
         });
         (injector as TestBed).compileComponents();
         fixture = TestBed.createComponent(NzUploadBtnComponent);
