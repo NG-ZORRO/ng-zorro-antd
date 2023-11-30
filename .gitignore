@@ -58,3 +58,5 @@ report.*.json
 Thumbs.db
 
 monospace.json
+
+.nx
