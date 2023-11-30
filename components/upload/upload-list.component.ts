@@ -6,7 +6,16 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import {
+  DOCUMENT,
+  NgForOf,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,7 +30,11 @@ import {
 import { fromEvent, Observable, of, Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
@@ -60,7 +73,21 @@ interface UploadListFile extends NzUploadFile {
   },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgForOf,
+    NzToolTipModule,
+    NgSwitch,
+    NgTemplateOutlet,
+    NgIf,
+    NgSwitchDefault,
+    NgSwitchCase,
+    NzIconModule,
+    NzButtonModule,
+    NgStyle,
+    NzProgressModule
+  ],
+  standalone: true
 })
 export class NzUploadListComponent implements OnChanges, OnDestroy {
   list: UploadListFile[] = [];
