@@ -5,7 +5,9 @@
 
 import { Component, ElementRef, Input, TemplateRef } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-tab-add-button, button[nz-tab-add-button]',
@@ -18,7 +20,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     class: 'ant-tabs-nav-add',
     'aria-label': 'Add tab',
     type: 'button'
-  }
+  },
+  imports: [NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzTabAddButtonComponent {
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';

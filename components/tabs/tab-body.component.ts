@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -25,7 +26,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
     '[style.height]': 'tabPaneAnimated ? active ? null : 0 : null',
     '[style.overflow-y]': 'tabPaneAnimated ? active ? null : "none" : null',
     '[style.display]': '!tabPaneAnimated ? active ? null : "none" : null'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzTabBodyComponent {
   @Input() content: TemplateRef<void> | null = null;
