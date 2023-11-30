@@ -23,10 +23,10 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzTreeNodeIndentsComponent } from 'ng-zorro-antd/tree-view/indent';
-import { NzTreeNodeNoopToggleDirective } from 'ng-zorro-antd/tree-view/toggle';
 
+import { NzTreeNodeIndentsComponent } from './indent';
 import { NzNodeBase } from './node-base';
+import { NzTreeNodeNoopToggleDirective } from './toggle';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
