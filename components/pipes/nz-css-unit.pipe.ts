@@ -9,7 +9,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @deprecated v17.0.0 - Use angular's built-in syntax instead
  */
 @Pipe({
-  name: 'nzToCssUnit'
+  name: 'nzToCssUnit',
+  standalone: true
 })
 export class NzToCssUnitPipe implements PipeTransform {
   transform(value: number | string, defaultUnit: string = 'px'): string {
