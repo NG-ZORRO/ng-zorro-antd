@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -33,6 +34,7 @@ import {
 } from 'ng-zorro-antd/core/color';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-tag',
@@ -59,7 +61,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tag-checkable-checked]': `nzChecked`,
     '[class.ant-tag-rtl]': `dir === 'rtl'`,
     '(click)': 'updateCheckedStatus()'
-  }
+  },
+  imports: [NzIconModule, NgIf],
+  standalone: true
 })
 export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzChecked: BooleanInput;
