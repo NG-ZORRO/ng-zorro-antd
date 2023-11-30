@@ -4,6 +4,7 @@
  */
 
 import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,10 +21,14 @@ import {
 import { BehaviorSubject, EMPTY, from, fromEvent, Observable } from 'rxjs';
 import { switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzAutosizeDirective } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzAutosizeDirective, NzInputModule } from 'ng-zorro-antd/input';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-edit',
@@ -53,7 +58,9 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgIf, NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule],
+  standalone: true
 })
 export class NzTextEditComponent implements OnInit {
   editing = false;
