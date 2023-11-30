@@ -16,16 +16,16 @@ import { NzSkeletonComponent } from './skeleton.component';
 
 @NgModule({
   imports: [
-    NzSkeletonComponent,
     NzSkeletonElementDirective,
+    NzSkeletonComponent,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementImageComponent,
     NzSkeletonElementInputComponent
   ],
   exports: [
-    NzSkeletonComponent,
     NzSkeletonElementDirective,
+    NzSkeletonComponent,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementImageComponent,
