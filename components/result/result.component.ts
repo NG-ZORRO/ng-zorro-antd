@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,6 +19,13 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzResultNotFoundComponent } from './partial/not-found';
+import { NzResultServerErrorComponent } from './partial/server-error.component';
+import { NzResultUnauthorizedComponent } from './partial/unauthorized';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -82,7 +90,18 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-info]': `nzStatus === 'info'`,
     '[class.ant-result-warning]': `nzStatus === 'warning'`,
     '[class.ant-result-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NgIf,
+    NzOutletModule,
+    NzIconModule,
+    NgSwitch,
+    NzResultNotFoundComponent,
+    NzResultServerErrorComponent,
+    NzResultUnauthorizedComponent,
+    NgSwitchCase
+  ],
+  standalone: true
 })
 export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;
