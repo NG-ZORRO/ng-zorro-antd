@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform, PlatformModule } from '@angular/cdk/platform';
+import { Platform } from '@angular/cdk/platform';
 import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -28,7 +28,7 @@ import { NzAnchorComponent } from './anchor.component';
   exportAs: 'nzLink',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NgIf, PlatformModule],
+  imports: [NgIf],
   template: `
     <a
       #linkTitle

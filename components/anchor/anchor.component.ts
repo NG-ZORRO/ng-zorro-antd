@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { normalizePassiveListenerOptions, Platform, PlatformModule } from '@angular/cdk/platform';
+import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -50,7 +50,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzAnchor',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule, PlatformModule],
+  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
   template: `
     <nz-affix *ngIf="nzAffix; else content" [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
       <ng-template [ngTemplateOutlet]="content"></ng-template>
