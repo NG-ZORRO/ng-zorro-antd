@@ -6,6 +6,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -27,8 +28,11 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 
@@ -73,7 +77,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       </span>
       <div class="ant-click-animating-node"></div>
     </button>
-  `
+  `,
+  imports: [NzWaveModule, NzIconModule, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
