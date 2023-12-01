@@ -6,6 +6,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nz-radio-button]'
+  selector: '[nz-radio-button]',
+  standalone: true
 })
 export class NzRadioButtonDirective {}
