@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -17,10 +18,11 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzListItemExtraComponent } from './list-item-cell';
+import { NzListItemActionsComponent, NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
 
 @Component({
@@ -64,7 +66,9 @@ import { NzListComponent } from './list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-list-item'
-  }
+  },
+  imports: [NzListItemActionsComponent, NgIf, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent],
+  standalone: true
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzNoFlex: BooleanInput;
