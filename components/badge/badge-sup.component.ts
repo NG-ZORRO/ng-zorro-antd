@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +16,7 @@ import {
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -24,6 +26,8 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
+  standalone: true,
+  imports: [NgFor, NgIf, NzNoAnimationModule],
   template: `
     <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
       <span
