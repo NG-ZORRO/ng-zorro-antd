@@ -3,19 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Inject,
+  inject,
   Input,
   Renderer2,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
@@ -46,7 +49,9 @@ export function MenuGroupFactory(): boolean {
     </div>
     <ng-content></ng-content>
   `,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [NzOutletModule, NgIf],
+  standalone: true
 })
 export class NzMenuGroupComponent implements AfterViewInit {
   @Input() nzTitle?: string | TemplateRef<void>;
