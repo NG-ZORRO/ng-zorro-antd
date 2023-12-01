@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -27,7 +27,7 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
   standalone: true,
-  imports: [NgFor, NgIf, NzNoAnimationModule],
+  imports: [NgFor, NgIf, NzNoAnimationDirective],
   template: `
     <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
       <span
