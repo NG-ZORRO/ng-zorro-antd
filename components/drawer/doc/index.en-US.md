@@ -12,27 +12,27 @@ achieved more efficient within the same context.
 
 ## When To Use
 
-* Use a Form to create or edit a set of information.
-* Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of
+- Use a Form to create or edit a set of information.
+- Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of
   the main task, Drawer comes very handy.
-* When a same Form is needed in multiple places.
+- When a same Form is needed in multiple places.
 
 ```ts
-import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ```
 
 ## API
 
-### nz-drawer
+### nz-drawer:standalone
 
 | Props                   | Description                                                                                                                                                                                 | Type                                     | Default     | Global Config |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|-------------|---------------|
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- | ------------- |
 | `[nzClosable]`          | Whether a close (x) button is visible on top left of the Drawer dialog or not.                                                                                                              | `boolean`                                | `true`      |
 | `[nzCloseIcon]`         | Custom close icon                                                                                                                                                                           | `string \| TemplateRef<void> \| null`    | `'close'`   |
 | `[nzExtra]`             | Extra actions area at corner.                                                                                                                                                               | `string \| TemplateRef<void> \| null`    | -           |
-| `[nzMask]`              | Whether to show mask or not.                                                                                                                                                                | `boolean`                                | `true`      | ✅             |
-| `[nzMaskClosable]`      | Clicking on the mask (area outside the Drawer) to close the Drawer or not.                                                                                                                  | `boolean`                                | `true`      | ✅             |
-| `[nzCloseOnNavigation]` | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean`                                | `true`      | ✅             |
+| `[nzMask]`              | Whether to show mask or not.                                                                                                                                                                | `boolean`                                | `true`      | ✅            |
+| `[nzMaskClosable]`      | Clicking on the mask (area outside the Drawer) to close the Drawer or not.                                                                                                                  | `boolean`                                | `true`      | ✅            |
+| `[nzCloseOnNavigation]` | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean`                                | `true`      | ✅            |
 | `[nzKeyboard]`          | Whether support press esc to close                                                                                                                                                          | `boolean`                                | `true`      |
 | `[nzMaskStyle]`         | Style for Drawer's mask element.                                                                                                                                                            | `object`                                 | `{}`        |
 | `[nzBodyStyle]`         | Body style for drawer body element. Such as height, padding etc.                                                                                                                            | `object`                                 | `{}`        |
@@ -52,13 +52,13 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 ### NzDrawerService
 
 | Method          | Description               | Params                  | Return              |
-|-----------------|---------------------------|-------------------------|---------------------|
+| --------------- | ------------------------- | ----------------------- | ------------------- |
 | create<T, D, R> | create and open an Drawer | `NzDrawerOptions<T, D>` | `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
 
 | Params              | Description                                                                                                                                                                                                    | Type                                                               | Default     | Global Config |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|-------------|---------------|
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------- | ------------- |
 | nzContent           | The drawer body content.                                                                                                                                                                                       | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | -           |
 | nzContentParams     | Deprecated: Use NzData instead. The component inputs the param / The Template context                                                                                                                          | `D`                                                                | -           |
 | nzData              | Will be a template variable when nzContent is TemplateRef. <br /> object, will be the value of the injection token NZ_MODAL_DATA when nzContent is a component                                                 | `D`                                                                | -           |
@@ -66,10 +66,10 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 | nzCloseIcon         | Custom close icon                                                                                                                                                                                              | `string \| TemplateRef<void> \| null`                              | `'close'`   |
 | nzExtra             | Extra actions area at corner.                                                                                                                                                                                  | `string \| TemplateRef<void> \| null`                              | -           |
 | nzOnCancel          | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>`                                               | -           |
-| nzMaskClosable      | Clicking on the mask (area outside the Drawer) to close the Drawer or not.                                                                                                                                     | `boolean`                                                          | `true`      | ✅             |
-| nzCloseOnNavigation | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy).                    | `boolean`                                                          | `true`      | ✅             |
-| nzMask              | Whether to show mask or not.                                                                                                                                                                                   | `boolean`                                                          | `true`      | ✅             |
-| nzDirection         | Direction of the text in the modal                                                                                                                                                                             | `'ltr' \| 'rtl'`                                                   | -           | ✅             |
+| nzMaskClosable      | Clicking on the mask (area outside the Drawer) to close the Drawer or not.                                                                                                                                     | `boolean`                                                          | `true`      | ✅            |
+| nzCloseOnNavigation | Whether to close the drawer when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy).                    | `boolean`                                                          | `true`      | ✅            |
+| nzMask              | Whether to show mask or not.                                                                                                                                                                                   | `boolean`                                                          | `true`      | ✅            |
+| nzDirection         | Direction of the text in the modal                                                                                                                                                                             | `'ltr' \| 'rtl'`                                                   | -           | ✅            |
 | nzKeyboard          | Whether support press esc to close                                                                                                                                                                             | `boolean`                                                          | `true`      |
 | nzMaskStyle         | Style for Drawer's mask element.                                                                                                                                                                               | `object`                                                           | `{}`        |
 | nzBodyStyle         | Body style for modal body element. Such as height, padding etc.                                                                                                                                                | `object`                                                           | `{}`        |
@@ -84,16 +84,16 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 | nzOffsetX           | The the X coordinate offset(px).                                                                                                                                                                               | `number`                                                           | `0`         |
 | nzOffsetY           | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                                 | `number`                                                           | `0`         |
 
-
 ### NZ_DRAWER_DATA
 
 NZ_DRAWER_DATA injection token is used to retrieve nzData in the custom component. The drawer created by the service method NzDrawerService.create() inject a NZ_DRAWER_DATA token (if nzContent is used as Component) to retrieve the parameters that have used to the 'nzContent component'
+
 ### NzDrawerRef
 
 #### Methods
 
 | Name                | Description                                             | Type                   |
-|---------------------|---------------------------------------------------------|------------------------|
+| ------------------- | ------------------------------------------------------- | ---------------------- |
 | close               | close the drawer.                                       | `(result?: R) => void` |
 | open                | open the drawer.                                        | `() => void`           |
 | getContentComponent | Returns the instance when `nzContent` is the component. | `() => T \| null`      |
@@ -101,7 +101,7 @@ NZ_DRAWER_DATA injection token is used to retrieve nzData in the custom componen
 #### Property
 
 | Name            | Description                                                                     | Type                                     |
-|-----------------|---------------------------------------------------------------------------------|------------------------------------------|
+| --------------- | ------------------------------------------------------------------------------- | ---------------------------------------- |
 | afterOpen       | Callback called after open.                                                     | `Observable<void>`                       |
 | afterClose      | Callback called after close.                                                    | `Observable<R>`                          |
 | nzCloseIcon     | Custom close icon                                                               | `string \| TemplateRef<void> \| null`    |
