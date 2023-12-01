@@ -7,6 +7,7 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[nzGraphGroupNode]',
-  exportAs: 'nzGraphGroupNode'
+  exportAs: 'nzGraphGroupNode',
+  standalone: true
 })
 export class NzGraphGroupNodeDirective {}

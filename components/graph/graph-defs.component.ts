@@ -20,7 +20,8 @@ import { Component } from '@angular/core';
     >
       <svg:polygon points="0 0, 10 3.5, 0 7"></svg:polygon>
     </svg:marker>
-  `
+  `,
+  standalone: true
 })
 export class NzGraphDefsComponent {
   constructor() {}
