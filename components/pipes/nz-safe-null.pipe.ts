@@ -11,7 +11,8 @@ import { isNil } from 'ng-zorro-antd/core/util';
  * @deprecated v17.0.0 - Use Nullish coalescing operator (??) instead of `NzSafeNullPipe`.
  */
 @Pipe({
-  name: 'nzSafeNull'
+  name: 'nzSafeNull',
+  standalone: true
 })
 export class NzSafeNullPipe implements PipeTransform {
   transform<T>(value: T, replace: string = ''): T | string {
