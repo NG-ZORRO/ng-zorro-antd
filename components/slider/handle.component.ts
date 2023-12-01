@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,7 +20,7 @@ import {
 
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+import { NzTooltipDirective, NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzSliderService } from './slider.service';
 import { NzSliderShowTooltip } from './typings';
@@ -46,7 +47,9 @@ import { NzSliderShowTooltip } from './typings';
   host: {
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
-  }
+  },
+  imports: [NzToolTipModule, NgStyle],
+  standalone: true
 })
 export class NzSliderHandleComponent implements OnChanges {
   static ngAcceptInputType_active: BooleanInput;
