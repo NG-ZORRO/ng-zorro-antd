@@ -37,7 +37,9 @@ import { NzTreeView } from './tree';
     '[class.ant-tree-directory]': 'nzDirectoryTree',
     '[class.ant-tree-rtl]': `dir === 'rtl'`
   },
-  animations: [treeCollapseMotion]
+  animations: [treeCollapseMotion],
+  imports: [NzTreeNodeOutletDirective],
+  standalone: true
 })
 export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;

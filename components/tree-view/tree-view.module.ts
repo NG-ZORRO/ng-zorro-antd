@@ -3,12 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 import { NzTreeNodeCheckboxComponent } from './checkbox';
 import { NzTreeNodeIndentLineDirective, NzTreeNodeIndentsComponent } from './indent';
@@ -46,8 +41,7 @@ const treeWithControlComponents = [
 ];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzNoAnimationModule, ScrollingModule],
-  declarations: [treeWithControlComponents],
+  imports: [treeWithControlComponents],
   exports: [treeWithControlComponents]
 })
 export class NzTreeViewModule {}

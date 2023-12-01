@@ -13,7 +13,8 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
   selector: 'nz-tree-node-toggle[nzTreeNodeNoopToggle], [nzTreeNodeNoopToggle]',
   host: {
     class: 'ant-tree-switcher ant-tree-switcher-noop'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeNoopToggleDirective {}
 
@@ -24,7 +25,8 @@ export class NzTreeNodeNoopToggleDirective {}
     class: 'ant-tree-switcher',
     '[class.ant-tree-switcher_open]': 'isExpanded',
     '[class.ant-tree-switcher_close]': '!isExpanded'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
   static ngAcceptInputType_recursive: BooleanInput;
@@ -46,7 +48,8 @@ export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
   selector: '[nz-icon][nzTreeNodeToggleRotateIcon]',
   host: {
     class: 'ant-tree-switcher-icon'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleRotateIconDirective {}
 
@@ -54,6 +57,7 @@ export class NzTreeNodeToggleRotateIconDirective {}
   selector: '[nz-icon][nzTreeNodeToggleActiveIcon]',
   host: {
     class: 'ant-tree-switcher-loading-icon'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleActiveIconDirective {}

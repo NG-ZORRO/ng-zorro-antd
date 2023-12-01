@@ -33,7 +33,8 @@ import { NzTreeNodeComponent } from './node';
     '[class.ant-tree-node-content-wrapper-open]': 'isExpanded',
     '[class.ant-tree-node-selected]': 'nzSelected'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  standalone: true
 })
 export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
   static ngAcceptInputType_nzSelected: BooleanInput;
