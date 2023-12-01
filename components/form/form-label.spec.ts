@@ -6,7 +6,7 @@ import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponent
 
 import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
 
-const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormLabelComponent] };
+const testBedOptions = { imports: [NoopAnimationsModule, NzFormLabelComponent] };
 
 describe('nz-form-label', () => {
   describe('default', () => {

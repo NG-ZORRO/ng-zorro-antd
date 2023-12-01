@@ -9,8 +9,7 @@ import { NzFormLabelComponent } from './form-label.component';
 import { NzFormDirective } from './form.directive';
 
 const testBedOptions = {
-  imports: [NoopAnimationsModule],
-  declarations: [NzFormDirective, NzFormLabelComponent, NzFormItemComponent]
+  imports: [NoopAnimationsModule, NzFormLabelComponent, NzFormDirective, NzFormItemComponent]
 };
 
 describe('nz-form', () => {
