@@ -17,7 +17,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ## API
 
-### nz-anchor
+### nz-anchor:standalone
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
@@ -32,7 +32,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `(nzChange)` | Listening for anchor link change | `EventEmitter<string>` | - |  |
 | `(nzScroll)` | The scroll function that is triggered when scrolling to an anchor. | `EventEmitter<NzAnchorLinkComponent>` | - |
 
-### nz-link
+### nz-link:standalone
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
