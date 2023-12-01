@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +15,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { TimelineService } from './timeline.service';
 import { NzTimelineItemColor, NzTimelinePosition, TimelineTimeDefaultColors } from './typings';
@@ -56,7 +59,9 @@ function isDefaultColor(color?: string): boolean {
         </div>
       </li>
     </ng-template>
-  `
+  `,
+  imports: [NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
