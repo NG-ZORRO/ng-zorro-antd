@@ -24,6 +24,7 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { ImagePreloadService, PreloadDisposeHandle } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzImageDirective } from 'ng-zorro-antd/image';
 
 import { defaultImageSrcLoader } from './image-loader';
 import { NzImageSrcLoader } from './typings';
@@ -52,7 +53,9 @@ const sizeBreakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080,
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  imports: [NzImageDirective],
+  standalone: true
 })
 export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
