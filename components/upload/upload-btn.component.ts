@@ -37,7 +37,8 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
     '(dragover)': 'onFileDrop($event)'
   },
   preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true
 })
 export class NzUploadBtnComponent implements OnInit, OnDestroy {
   reqs: { [key: string]: Subscription } = {};
