@@ -8,6 +8,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW, hasModifierKey } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -40,6 +41,7 @@ import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from 
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
+import { NzTabScrollListDirective } from './tab-scroll-list.directive';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
 
 const RESIZE_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? animationFrameScheduler : asapScheduler;
@@ -87,7 +89,16 @@ const CSS_TRANSFORM_TIME = 150;
     role: 'tablist',
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
-  }
+  },
+  imports: [
+    NzTabScrollListDirective,
+    NgIf,
+    NzTabAddButtonComponent,
+    NzTabsInkBarDirective,
+    NzTabNavOperationComponent,
+    NgTemplateOutlet
+  ],
+  standalone: true
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
   static ngAcceptInputType_selectedIndex: NumberInput;

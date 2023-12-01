@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,8 +17,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 
 @Component({
@@ -66,7 +71,9 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
   host: {
     class: 'ant-tabs-nav-operations',
     '[class.ant-tabs-nav-operations-hidden]': 'items.length === 0'
-  }
+  },
+  imports: [NzDropDownModule, NzIconModule, NgIf, NgForOf, NzOutletModule, NzTabAddButtonComponent],
+  standalone: true
 })
 export class NzTabNavOperationComponent implements OnDestroy {
   @Input() items: NzTabNavItemDirective[] = [];
