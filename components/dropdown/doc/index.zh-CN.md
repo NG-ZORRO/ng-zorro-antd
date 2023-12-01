@@ -38,7 +38,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 >
 > `nz-dropdown-menu` 内 `[nz-menu]` 的 `nzMode` 只可以是默认值 `vertical`。
 
-### nz-dropdown-menu
+### nz-dropdown-menu:standalone
 
 用于包裹菜单项，可以通过 `nzDropdownMenu` 模板变量导出后传入 `[nz-dropdown]` 和 `NzContextMenuService`。
 

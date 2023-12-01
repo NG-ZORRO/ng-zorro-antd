@@ -19,8 +19,9 @@ import {
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropDownDirective, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
@@ -72,7 +73,16 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
     class: 'ant-tabs-nav-operations',
     '[class.ant-tabs-nav-operations-hidden]': 'items.length === 0'
   },
-  imports: [NzDropDownModule, NzIconModule, NgIf, NgForOf, NzOutletModule, NzTabAddButtonComponent],
+  imports: [
+    NzIconModule,
+    NgIf,
+    NgForOf,
+    NzOutletModule,
+    NzTabAddButtonComponent,
+    NzDropdownMenuComponent,
+    NzMenuModule,
+    NzDropDownDirective
+  ],
   standalone: true
 })
 export class NzTabNavOperationComponent implements OnDestroy {
