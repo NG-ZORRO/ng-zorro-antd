@@ -8,7 +8,6 @@ import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPosition
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -120,7 +119,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   constructor(
     public elementRef: ElementRef,
     protected hostView: ViewContainerRef,
-    protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
     protected noAnimation?: NzNoAnimationDirective,
     protected nzConfigService?: NzConfigService
