@@ -10,7 +10,8 @@ import { Directive } from '@angular/core';
   exportAs: 'nzPageHeaderTitle',
   host: {
     class: 'ant-page-header-heading-title'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderTitleDirective {}
 
@@ -19,7 +20,8 @@ export class NzPageHeaderTitleDirective {}
   exportAs: 'nzPageHeaderSubtitle',
   host: {
     class: 'ant-page-header-heading-sub-title'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderSubtitleDirective {}
 
@@ -28,7 +30,8 @@ export class NzPageHeaderSubtitleDirective {}
   exportAs: 'nzPageHeaderContent',
   host: {
     class: 'ant-page-header-content'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderContentDirective {}
 
@@ -37,7 +40,8 @@ export class NzPageHeaderContentDirective {}
   exportAs: 'nzPageHeaderTags',
   host: {
     class: 'ant-page-header-heading-tags'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderTagDirective {}
 
@@ -46,7 +50,8 @@ export class NzPageHeaderTagDirective {}
   exportAs: 'nzPageHeaderExtra',
   host: {
     class: 'ant-page-header-heading-extra'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderExtraDirective {}
 
@@ -55,18 +60,21 @@ export class NzPageHeaderExtraDirective {}
   exportAs: 'nzPageHeaderFooter',
   host: {
     class: 'ant-page-header-footer'
-  }
+  },
+  standalone: true
 })
 export class NzPageHeaderFooterDirective {}
 
 @Directive({
   selector: 'nz-breadcrumb[nz-page-header-breadcrumb]',
-  exportAs: 'nzPageHeaderBreadcrumb'
+  exportAs: 'nzPageHeaderBreadcrumb',
+  standalone: true
 })
 export class NzPageHeaderBreadcrumbDirective {}
 
 @Directive({
   selector: 'nz-avatar[nz-page-header-avatar]',
-  exportAs: 'nzPageHeaderAvatar'
+  exportAs: 'nzPageHeaderAvatar',
+  standalone: true
 })
 export class NzPageHeaderAvatarDirective {}
