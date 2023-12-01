@@ -3,8 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
-import { DOCUMENT } from '@angular/common';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { DOCUMENT, NgClass, NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,12 +32,16 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { finalize, first, takeUntil } from 'rxjs/operators';
 
-import { NzButtonType } from 'ng-zorro-antd/button';
+import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
@@ -47,7 +53,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
   exportAs: 'nzPopconfirm',
   host: {
     '[class.ant-popover-open]': 'visible'
-  }
+  },
+  standalone: true
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -207,7 +214,21 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  imports: [
+    OverlayModule,
+    NzOverlayModule,
+    A11yModule,
+    NgClass,
+    NgStyle,
+    NzNoAnimationModule,
+    NgIf,
+    NzOutletModule,
+    NzIconModule,
+    NzButtonModule,
+    NzI18nModule
+  ],
+  standalone: true
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
