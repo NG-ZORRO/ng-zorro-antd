@@ -9,7 +9,8 @@ import { Directive } from '@angular/core';
   selector: 'a[nz-dropdown]',
   host: {
     class: 'ant-dropdown-link'
-  }
+  },
+  standalone: true
 })
 export class NzDropDownADirective {
   constructor() {}
