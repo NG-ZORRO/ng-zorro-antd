@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -45,7 +45,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
   standalone: true,
-  imports: [BidiModule, NgIf, NgStyle, NzBadgeSupComponent, NzOutletModule],
+  imports: [NgIf, NgStyle, NzBadgeSupComponent, NzOutletModule],
   template: `
     <ng-container *ngIf="nzStatus || nzColor">
       <span
