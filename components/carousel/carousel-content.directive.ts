@@ -10,7 +10,8 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
   exportAs: 'nzCarouselContent',
   host: {
     class: 'slick-slide'
-  }
+  },
+  standalone: true
 })
 export class NzCarouselContentDirective {
   readonly el: HTMLElement;
