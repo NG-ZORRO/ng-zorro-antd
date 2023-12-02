@@ -7,24 +7,28 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[nzDateCell]',
-  exportAs: 'nzDateCell'
+  exportAs: 'nzDateCell',
+  standalone: true
 })
 export class NzDateCellDirective {}
 
 @Directive({
   selector: '[nzMonthCell]',
-  exportAs: 'nzMonthCell'
+  exportAs: 'nzMonthCell',
+  standalone: true
 })
 export class NzMonthCellDirective {}
 
 @Directive({
   selector: '[nzDateFullCell]',
-  exportAs: 'nzDateFullCell'
+  exportAs: 'nzDateFullCell',
+  standalone: true
 })
 export class NzDateFullCellDirective {}
 
 @Directive({
   selector: '[nzMonthFullCell]',
-  exportAs: 'nzMonthFullCell'
+  exportAs: 'nzMonthFullCell',
+  standalone: true
 })
 export class NzMonthFullCellDirective {}
