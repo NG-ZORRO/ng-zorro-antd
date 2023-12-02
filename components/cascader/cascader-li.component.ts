@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +15,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOption } from './typings';
 
@@ -50,7 +55,9 @@ import { NzCascaderOption } from './typings';
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
