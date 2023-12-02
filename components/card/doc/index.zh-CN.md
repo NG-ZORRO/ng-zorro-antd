@@ -54,6 +54,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 分隔卡片内容区域
 
-### nz-card-tab
+### nz-card-tab:standalone
 
 分隔页签标题区域

@@ -53,6 +53,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 Area for grid style card
 
-### nz-card-tab
+### nz-card-tab:standalone
 
 Area for tab card
