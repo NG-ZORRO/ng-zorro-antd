@@ -5,6 +5,7 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 
+import { NgForOf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -37,7 +38,9 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
       *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
     ></td>
   `,
-  host: { class: 'ant-table-measure-now' }
+  host: { class: 'ant-table-measure-now' },
+  imports: [NgForOf],
+  standalone: true
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Input() listOfMeasureColumn: readonly string[] = [];

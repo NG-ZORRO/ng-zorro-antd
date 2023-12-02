@@ -9,7 +9,8 @@ import { Subject } from 'rxjs';
 import { isNil } from 'ng-zorro-antd/core/util';
 
 @Directive({
-  selector: 'th'
+  selector: 'th',
+  standalone: true
 })
 export class NzThMeasureDirective implements OnChanges {
   changes$ = new Subject<void>();

@@ -12,7 +12,8 @@ import { Subject } from 'rxjs';
     '[class.ant-table-cell-fix-right]': `isFixedRight`,
     '[class.ant-table-cell-fix-left]': `isFixedLeft`,
     '[style.position]': `isFixed? 'sticky' : null`
-  }
+  },
+  standalone: true
 })
 export class NzCellFixedDirective implements OnChanges {
   @Input() nzRight: string | boolean = false;
