@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
@@ -71,7 +73,9 @@ import { PREFIX_CLASS } from './util';
         </li>
       </ul>
     </div>
-  `
+  `,
+  imports: [NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet, NzButtonModule],
+  standalone: true
 })
 export class CalendarFooterComponent implements OnChanges {
   @Input() locale!: NzCalendarI18nInterface;

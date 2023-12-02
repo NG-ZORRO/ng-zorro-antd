@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,10 +15,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
+import { LibPackerModule } from 'ng-zorro-antd/date-picker/lib';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
@@ -153,7 +157,9 @@ import { PREFIX_CLASS } from './util';
         <!-- use [opened] to trigger time panel 'initPosition()' -->
       </ng-container>
     </div>
-  `
+  `,
+  imports: [NgSwitch, NgSwitchCase, LibPackerModule, NgSwitchDefault, NgIf, NzTimePickerModule, FormsModule],
+  standalone: true
 })
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
