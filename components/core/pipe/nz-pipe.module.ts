@@ -3,14 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzTimeRangePipe } from './time-range.pipe';
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [NzTimeRangePipe],
-  declarations: [NzTimeRangePipe]
+  imports: [NzTimeRangePipe],
+  exports: [NzTimeRangePipe]
 })
 export class NzPipesModule {}

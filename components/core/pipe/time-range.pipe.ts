@@ -10,7 +10,8 @@ import { padStart } from 'ng-zorro-antd/core/util';
 
 @Pipe({
   name: 'nzTimeRange',
-  pure: true
+  pure: true,
+  standalone: true
 })
 export class NzTimeRangePipe implements PipeTransform {
   transform(value: string | number, format: string = 'HH:mm:ss'): string {

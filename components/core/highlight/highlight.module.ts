@@ -3,14 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzHighlightPipe } from './highlight.pipe';
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [NzHighlightPipe],
-  declarations: [NzHighlightPipe]
+  imports: [NzHighlightPipe],
+  exports: [NzHighlightPipe]
 })
 export class NzHighlightModule {}
