@@ -26,8 +26,7 @@ import { NzModalService } from './modal.service';
     NzModalTitleComponent,
     NzModalTitleDirective,
     NzModalContainerComponent,
-    NzModalConfirmContainerComponent,
-    NzModalComponent
+    NzModalConfirmContainerComponent
   ],
   exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective, NzModalTitleDirective],
   providers: [NzModalService]
