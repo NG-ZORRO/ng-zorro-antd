@@ -14,7 +14,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   host: {
     class: 'ant-card-grid',
     '[class.ant-card-hoverable]': 'nzHoverable'
-  }
+  },
+  standalone: true
 })
 export class NzCardGridDirective {
   static ngAcceptInputType_nzHoverable: BooleanInput;
