@@ -21,20 +21,23 @@ import {
 
 @Directive({
   selector: 'nz-avatar[nz-comment-avatar]',
-  exportAs: 'nzCommentAvatar'
+  exportAs: 'nzCommentAvatar',
+  standalone: true
 })
 export class NzCommentAvatarDirective {}
 
 @Directive({
   selector: 'nz-comment-content, [nz-comment-content]',
   exportAs: 'nzCommentContent',
-  host: { class: 'ant-comment-content-detail' }
+  host: { class: 'ant-comment-content-detail' },
+  standalone: true
 })
 export class NzCommentContentDirective {}
 
 @Directive({
   selector: '[nzCommentActionHost]',
-  exportAs: 'nzCommentActionHost'
+  exportAs: 'nzCommentActionHost',
+  standalone: true
 })
 export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzCommentActionHost?: TemplatePortal | null;
@@ -61,7 +64,8 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
   exportAs: 'nzCommentAction',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-template><ng-content></ng-content></ng-template>'
+  template: '<ng-template><ng-content></ng-content></ng-template>',
+  standalone: true
 })
 export class NzCommentActionComponent implements OnInit {
   @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;
