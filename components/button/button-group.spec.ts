@@ -9,7 +9,7 @@ import { NzButtonGroupComponent, NzButtonGroupSize } from './button-group.compon
 
 describe('button-group', () => {
   it('should button group size work', () => {
-    const testBed = createComponentBed(TestButtonGroupComponent, { declarations: [NzButtonGroupComponent] });
+    const testBed = createComponentBed(TestButtonGroupComponent, { imports: [NzButtonGroupComponent] });
     const buttonGroupElement = testBed.debugElement.query(By.directive(NzButtonGroupComponent)).nativeElement;
     expect(buttonGroupElement.className).toBe('ant-btn-group');
     testBed.component.nzSize = 'large';
@@ -22,8 +22,7 @@ describe('button-group', () => {
 
   it('should RTL classname work', fakeAsync(() => {
     const testBed = createComponentBed(NzTestButtonGroupRtlComponent, {
-      declarations: [NzButtonGroupComponent],
-      imports: [BidiModule]
+      imports: [BidiModule, NzButtonGroupComponent]
     });
     const buttonGroupElement = testBed.debugElement.query(By.directive(NzButtonGroupComponent)).nativeElement;
     expect(buttonGroupElement.className).toBe('ant-btn-group ant-btn-group-rtl');
