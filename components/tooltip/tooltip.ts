@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -74,11 +73,11 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
-    resolver: ComponentFactoryResolver,
+
     renderer: Renderer2,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation);
+    super(elementRef, hostView, renderer, noAnimation);
   }
 
   protected override getProxyPropertyMap(): PropertyMapping {

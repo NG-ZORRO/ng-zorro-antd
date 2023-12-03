@@ -11,7 +11,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -112,12 +111,12 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
-    resolver: ComponentFactoryResolver,
+
     renderer: Renderer2,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective,
     nzConfigService?: NzConfigService
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
+    super(elementRef, hostView, renderer, noAnimation, nzConfigService);
   }
 
   /**
