@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,10 +13,12 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
-import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { NzRadioComponent, NzRadioGroupComponent } from 'ng-zorro-antd/radio';
+import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -59,7 +62,9 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
-  }
+  },
+  imports: [NzSelectModule, NgForOf, NgIf, FormsModule, NzRadioGroupComponent, NzRadioComponent],
+  standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';

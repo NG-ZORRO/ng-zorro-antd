@@ -7,11 +7,11 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/select.component';
-import { NzSelectModule } from '../select/select.module';
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
 
 registerLocaleData(zh);
@@ -20,9 +20,8 @@ describe('Calendar Header', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule],
+        imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule, CalendarHeader],
         declarations: [
-          CalendarHeader,
           NzTestCalendarHeaderModeComponent,
           NzTestCalendarHeaderFullscreenComponent,
           NzTestCalendarHeaderActiveDateComponent,
