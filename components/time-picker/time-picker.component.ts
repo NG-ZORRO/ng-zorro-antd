@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
+import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -279,7 +279,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.element.nativeElement.contains(event.target)) {
+    const target = _getEventTarget(event);
+    if (!this.element.nativeElement.contains(target)) {
       this.setCurrentValueAndClose();
     }
   }
