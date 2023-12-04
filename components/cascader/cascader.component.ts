@@ -3,16 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   HostListener,
   Input,
@@ -28,11 +29,10 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -50,7 +50,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -238,7 +238,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NgStyle,
     NzEmptyModule,
     NzCascaderOptionComponent,
-    NgForOf
+    NgFor,
+    BidiModule
   ],
   standalone: true
 })
