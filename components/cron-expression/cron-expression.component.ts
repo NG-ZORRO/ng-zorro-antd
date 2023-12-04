@@ -214,7 +214,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
       this.locale = this.i18n.getLocaleData('CronExpression');
       this.cdr.markForCheck();
     });
-
+    this.cronFormType();
     this.previewDate(this.validateForm.value);
 
     this.validateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
@@ -229,12 +229,15 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
 
     if (nzType) {
       this.labels = labelsOfType(this.nzType);
+      this.cronFormType();
+    }
+  }
 
-      if (this.nzType === 'spring') {
-        this.validateForm.controls.second.enable();
-      } else {
-        this.validateForm.controls.second.disable();
-      }
+  cronFormType(): void {
+    if (this.nzType === 'spring') {
+      this.validateForm.controls.second.enable();
+    } else {
+      this.validateForm.controls.second.disable();
     }
   }
 
