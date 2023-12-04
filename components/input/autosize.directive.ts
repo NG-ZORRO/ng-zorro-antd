@@ -23,7 +23,8 @@ export interface AutoSizeType {
     // Browsers normally show two rows by default and therefore this limits the minRows binding.
     rows: '1',
     '(input)': 'noopInputHandler()'
-  }
+  },
+  standalone: true
 })
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private autosize: boolean = false;
