@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,9 +14,11 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'li[nz-pagination-options]',
@@ -43,7 +46,9 @@ import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
       {{ locale.page }}
     </div>
   `,
-  host: { class: 'ant-pagination-options' }
+  host: { class: 'ant-pagination-options' },
+  imports: [NzSelectModule, NgIf, FormsModule, NgForOf],
+  standalone: true
 })
 export class NzPaginationOptionsComponent implements OnChanges {
   @Input() nzSize: 'default' | 'small' = 'default';
