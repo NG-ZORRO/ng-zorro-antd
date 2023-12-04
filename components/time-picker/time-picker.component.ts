@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import {
@@ -147,10 +147,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     NzIconModule,
     NzFormPatchModule,
     NgIf,
-    NzOverlayModule,
-    CdkConnectedOverlay,
     NzTimePickerPanelComponent,
-    NgClass
+    NgClass,
+    NzOverlayModule,
+    OverlayModule
   ],
   standalone: true
 })
