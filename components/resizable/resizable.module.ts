@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzResizableDirective } from './resizable.directive';
@@ -11,8 +10,7 @@ import { NzResizeHandleComponent } from './resize-handle.component';
 import { NzResizeHandlesComponent } from './resize-handles.component';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [NzResizableDirective, NzResizeHandleComponent, NzResizeHandlesComponent],
+  imports: [NzResizableDirective, NzResizeHandleComponent, NzResizeHandlesComponent],
   exports: [NzResizableDirective, NzResizeHandleComponent, NzResizeHandlesComponent]
 })
 export class NzResizableModule {}
