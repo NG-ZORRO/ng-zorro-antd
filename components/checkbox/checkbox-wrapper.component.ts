@@ -18,7 +18,8 @@ import { NzCheckboxComponent } from './checkbox.component';
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-checkbox-group'
-  }
+  },
+  standalone: true
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<NzSafeAny[]>();
