@@ -40,7 +40,8 @@ export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
 
 @Directive({
   selector: '[nz-wave],button[nz-button]:not([nzType="link"]):not([nzType="text"])',
-  exportAs: 'nzWave'
+  exportAs: 'nzWave',
+  standalone: true
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
   @Input() nzWaveExtraNode = false;
