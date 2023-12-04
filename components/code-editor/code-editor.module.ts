@@ -3,17 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { NzCodeEditorComponent } from './code-editor.component';
 
 @NgModule({
-  declarations: [NzCodeEditorComponent],
-  imports: [CommonModule, NzIconModule, NzSpinModule],
+  imports: [NzCodeEditorComponent],
   exports: [NzCodeEditorComponent]
 })
 export class NzCodeEditorModule {}
