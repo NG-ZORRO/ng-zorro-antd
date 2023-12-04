@@ -5,7 +5,8 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,15 +31,15 @@ import {
   ViewEncapsulation,
   forwardRef
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -50,7 +51,9 @@ import {
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
 import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
@@ -220,8 +223,24 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-open]': 'menuVisible',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-single]': 'true',
-    '[class.ant-select-rtl]': `dir ==='rtl'`
-  }
+    '[class.ant-select-rtl]': `dir === 'rtl'`
+  },
+  imports: [
+    OverlayModule,
+    NgIf,
+    FormsModule,
+    NgTemplateOutlet,
+    NzIconModule,
+    NzFormPatchModule,
+    NzOverlayModule,
+    NzNoAnimationModule,
+    NgClass,
+    NgStyle,
+    NzEmptyModule,
+    NzCascaderOptionComponent,
+    NgForOf
+  ],
+  standalone: true
 })
 export class NzCascaderComponent
   implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
