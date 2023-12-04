@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,10 +23,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzCardGridDirective } from './card-grid.directive';
+import { NzCardLoadingComponent } from './card-loading.component';
 import { NzCardTabComponent } from './card-tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
@@ -77,7 +80,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-type-inner]': 'nzType === "inner"',
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgIf, NzOutletModule, NgTemplateOutlet, NgStyle, NzCardLoadingComponent, NgForOf],
+  standalone: true
 })
 export class NzCardComponent implements OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
