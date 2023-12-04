@@ -4,7 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { NgClass, NgForOf, NgIf, NgStyle, SlicePipe } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -247,8 +247,9 @@ const listOfPositions = [
     CdkOverlayOrigin,
     SlicePipe,
     NzSelectModule,
-    NgForOf,
-    NzFormPatchModule
+    NgFor,
+    NzFormPatchModule,
+    BidiModule
   ],
   standalone: true
 })
