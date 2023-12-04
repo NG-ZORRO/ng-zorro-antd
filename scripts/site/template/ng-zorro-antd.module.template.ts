@@ -68,6 +68,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
 import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 @NgModule({
   exports: [
@@ -138,6 +139,7 @@ import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
     NzWaveModule,
     NzQRCodeModule,
     NzWaterMarkModule,
+    NzFlexModule,
     NzHashCodeModule
   ]
 })

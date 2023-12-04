@@ -1,0 +1,106 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@flex-prefix-cls: ~'@{ant-prefix}-flex';
+
+.@{flex-prefix-cls} {
+  display: flex;
+
+  &-vertical {
+    flex-direction: column;
+  }
+
+  &-justify {
+    &-flex-start {
+      justify-content: flex-start;
+    }
+
+    &-center {
+      justify-content: center;
+    }
+
+    &-flex-end {
+      justify-content: flex-end;
+    }
+
+    &-space-between {
+      justify-content: space-between;
+    }
+
+    &-space-around {
+      justify-content: space-around;
+    }
+
+    &-space-evenly {
+      justify-content: space-evenly;
+    }
+
+    &-start {
+      justify-content: start;
+    }
+
+    &-end {
+      justify-content: end;
+    }
+
+    &-right {
+      justify-content: right;
+    }
+
+    &-left {
+      justify-content: left;
+    }
+
+    &-stretch {
+      justify-content: stretch;
+    }
+
+    &-normal {
+      justify-content: normal;
+    }
+  }
+
+  &-align {
+    &-flex-start {
+      align-items: flex-start;
+    }
+
+    &-center {
+      align-items: center;
+    }
+
+    &-flex-end {
+      align-items: flex-end;
+    }
+
+    &-start {
+      align-items: start;
+    }
+
+    &-end {
+      align-items: end;
+    }
+
+    &-stretch {
+      align-items: stretch;
+    }
+
+    &-normal {
+      align-items: normal;
+    }
+  }
+
+  &-wrap {
+    &-wrap {
+      flex-wrap: wrap;
+    }
+
+    &-nowrap {
+      flex-wrap: nowrap;
+    }
+
+    &-wrap-reverse {
+      flex-wrap: wrap-reverse;
+    }
+  }
+}
