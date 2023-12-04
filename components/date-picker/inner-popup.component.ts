@@ -19,10 +19,10 @@ import { FormsModule } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
-import { LibPackerModule } from 'ng-zorro-antd/date-picker/lib';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
+import { LibPackerModule } from './lib';
 import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
