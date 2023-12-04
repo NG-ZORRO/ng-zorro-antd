@@ -4,7 +4,7 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
-import { NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -100,7 +100,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     NzSelectItemComponent,
     NgIf,
     NgSwitchDefault,
-    NgForOf,
+    NgFor,
     NzSelectPlaceholderComponent
   ],
   standalone: true
