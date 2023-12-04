@@ -3,13 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { isPlatformBrowser, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -18,10 +20,10 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
@@ -85,14 +87,13 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   imports: [
     NzEmptyModule,
     NgIf,
-    CdkVirtualScrollViewport,
-    CdkFixedSizeVirtualScroll,
-    CdkVirtualForOf,
     NgSwitch,
     NzOptionItemGroupComponent,
     NgSwitchCase,
     NzOptionItemComponent,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    OverlayModule,
+    NzOverlayModule
   ],
   standalone: true
 })
