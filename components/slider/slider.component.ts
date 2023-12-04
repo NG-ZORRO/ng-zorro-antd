@@ -3,10 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -128,9 +128,10 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     NzSliderTrackComponent,
     NzSliderStepComponent,
     NzSliderHandleComponent,
-    NgForOf,
+    NgFor,
     NzSliderMarksComponent,
-    NgIf
+    NgIf,
+    BidiModule
   ],
   standalone: true
 })
