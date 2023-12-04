@@ -38,7 +38,8 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   providers: [NzDestroyService, NZ_MENTION_TRIGGER_ACCESSOR],
   host: {
     autocomplete: 'off'
-  }
+  },
+  standalone: true
 })
 export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
   onChange: OnChangeType = () => {};
