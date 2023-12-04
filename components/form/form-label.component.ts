@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,8 +19,11 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { ThemeType } from '@ant-design/icons-angular';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 import { DefaultTooltipIcon, NzFormDirective, NzLabelAlignType } from './form.directive';
 
@@ -53,7 +57,9 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
     class: 'ant-form-item-label',
     '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`,
     '[class.ant-form-item-label-wrap]': `nzLabelWrap`
-  }
+  },
+  imports: [NgIf, NzOutletModule, NzTooltipDirective, NzIconModule],
+  standalone: true
 })
 export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
