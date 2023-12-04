@@ -245,7 +245,6 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      console.log('here => ', testComponent);
       const result = (onChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getHours()).toEqual(0);
       expect(result.getMinutes()).toEqual(0);
