@@ -3,11 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import {
   NzCommentActionComponent,
@@ -25,8 +21,7 @@ const NZ_COMMENT_CELLS = [
 ];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzOutletModule],
-  exports: [NzCommentComponent, ...NZ_COMMENT_CELLS],
-  declarations: [NzCommentComponent, ...NZ_COMMENT_CELLS]
+  imports: [NzCommentComponent, ...NZ_COMMENT_CELLS],
+  exports: [NzCommentComponent, ...NZ_COMMENT_CELLS]
 })
 export class NzCommentModule {}
