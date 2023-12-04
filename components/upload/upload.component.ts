@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -55,7 +55,7 @@ import { NzUploadListComponent } from './upload-list.component';
   host: {
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
   },
-  imports: [NzUploadListComponent, NgIf, NgTemplateOutlet, NgClass, NzUploadBtnComponent],
+  imports: [NzUploadListComponent, NgIf, NgTemplateOutlet, NgClass, NzUploadBtnComponent, BidiModule],
   standalone: true
 })
 export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
