@@ -28,7 +28,8 @@ import { InputNumber } from 'ng-zorro-antd/core/util';
     </ng-template>
   `,
   exportAs: 'nzDescriptionsItem',
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  standalone: true
 })
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzSpan: NumberInput;

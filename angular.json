@@ -40,7 +40,8 @@
             "allowedCommonJsDependencies": [
               "codesandbox",
               "codesandbox-import-utils",
-              "@ant-design/colors"
+              "@ant-design/colors",
+              "cron-parser"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

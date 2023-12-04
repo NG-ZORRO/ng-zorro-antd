@@ -18,21 +18,21 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 ## API
 
-### nz-comment
+### nz-comment:standalone
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| [nzAuthor] | The element to display as the comment author | `string \| TemplateRef<void>` | - |
-| [nzDatetime] | A datetime element containing the time to be displayed | `string \| TemplateRef<void>` | - |
+| Property     | Description                                            | Type                          | Default |
+| ------------ | ------------------------------------------------------ | ----------------------------- | ------- |
+| [nzAuthor]   | The element to display as the comment author           | `string \| TemplateRef<void>` | -       |
+| [nzDatetime] | A datetime element containing the time to be displayed | `string \| TemplateRef<void>` | -       |
 
-### [nz-comment-avatar]
+### [nz-comment-avatar]:standalone
 
 The element to display as the comment avatar.
 
-### nz-comment-content
+### nz-comment-content:standalone
 
 The main content of the comment.
 
-### nz-comment-action
+### nz-comment-action:standalone
 
 The element items rendered below the comment content.

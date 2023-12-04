@@ -17,19 +17,19 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 ## API
 
-### [nz-dropdown]
+### [nz-dropdown]:standalone
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzDropdownMenu]` | Dropdown menu | `NzDropdownMenuComponent` | - |
-| `[nzDisabled]` | whether the dropdown menu is disabled | `boolean` | - |
-| `[nzPlacement]` | placement of pop menu | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
-| `[nzTrigger]` | the trigger mode which executes the drop-down action | `'click' \| 'hover'` | `'hover'` |
-| `[nzClickHide]` | whether hide menu when click | `boolean` | `true` |
-| `[nzVisible]` | whether the dropdown menu is visible, double binding | `boolean` | - |
-| `[nzOverlayClassName]` | Class name of the dropdown root element | `string` | - |
-| `[nzOverlayStyle]` | Style of the dropdown root element | `object` | - |
-| `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>` | - |
+| Property               | Description                                                                                       | Type                                                                                        | Default        |
+| ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| `[nzDropdownMenu]`     | Dropdown menu                                                                                     | `NzDropdownMenuComponent`                                                                   | -              |
+| `[nzDisabled]`         | whether the dropdown menu is disabled                                                             | `boolean`                                                                                   | -              |
+| `[nzPlacement]`        | placement of pop menu                                                                             | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
+| `[nzTrigger]`          | the trigger mode which executes the drop-down action                                              | `'click' \| 'hover'`                                                                        | `'hover'`      |
+| `[nzClickHide]`        | whether hide menu when click                                                                      | `boolean`                                                                                   | `true`         |
+| `[nzVisible]`          | whether the dropdown menu is visible, double binding                                              | `boolean`                                                                                   | -              |
+| `[nzOverlayClassName]` | Class name of the dropdown root element                                                           | `string`                                                                                    | -              |
+| `[nzOverlayStyle]`     | Style of the dropdown root element                                                                | `object`                                                                                    | -              |
+| `(nzVisibleChange)`    | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>`                                                                     | -              |
 
 You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.
 
@@ -37,7 +37,7 @@ You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items a
 >
 > The `nzMode` of `[nz-menu]` inside `nz-dropdown-menu` can only be the default value `vertical`.
 
-### nz-dropdown-menu
+### nz-dropdown-menu:standalone
 
 Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
 
@@ -58,7 +58,7 @@ Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you c
 
 Create dropdown with contextmenu, the detail can be found in the example above
 
-| Property | Description | Arguments | Return Value |
-| --- | --- | --- | --- |
-| create | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
-| close | close dropdown | - | - |
+| Property | Description     | Arguments                                                                   | Return Value           |
+| -------- | --------------- | --------------------------------------------------------------------------- | ---------------------- |
+| create   | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
+| close    | close dropdown  | -                                                                           | -                      |

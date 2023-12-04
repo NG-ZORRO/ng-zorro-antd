@@ -5,6 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -27,14 +28,16 @@ import {
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import { NzInputNumberComponent } from './input-number.component';
 
 @Directive({
-  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`
+  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`,
+  standalone: true
 })
 export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   constructor(public elementRef: ElementRef) {}
@@ -119,7 +122,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-number-affix-wrapper-disabled]': `!isAddOn && isAffix && disabled`,
     '[class.ant-input-number-affix-wrapper-lg]': `!isAddOn && isAffix && isLarge`,
     '[class.ant-input-number-affix-wrapper-sm]': `!isAddOn && isAffix && isSmall`
-  }
+  },
+  imports: [NgIf, NzInputNumberGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
+  standalone: true
 })
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzCompact: BooleanInput;

@@ -22,7 +22,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -72,7 +72,9 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
     '[class.ant-checkbox-wrapper-in-form-item]': '!!nzFormStatusService',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [FormsModule],
+  standalone: true
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzAutoFocus: BooleanInput;

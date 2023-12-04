@@ -4,6 +4,11 @@
   position: relative;
 }
 
+.ant-tabs-tab-btn {
+  border: none;
+  background-color: unset;
+}
+
 .ant-tabs-tab a[nz-tab-link] {
   &::before {
     position: absolute;
@@ -88,10 +93,12 @@ nz-tabs-nav {
       }
     }
   }
+
   &-tab-disabled a {
     pointer-events: none;
     color: @disabled-color;
   }
+
   > .@{tab-prefix-cls}-nav,
   > div > .@{tab-prefix-cls}-nav {
     .@{tab-prefix-cls}-nav-add {

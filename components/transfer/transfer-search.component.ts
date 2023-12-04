@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,6 +14,9 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-transfer-search]',
@@ -35,7 +39,9 @@ import {
     </span>
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, NzIconModule, NgClass, NgIf],
+  standalone: true
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields

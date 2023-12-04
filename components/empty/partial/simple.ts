@@ -25,6 +25,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
         </g>
       </g>
     </svg>
-  `
+  `,
+  standalone: true
 })
 export class NzEmptySimpleComponent {}

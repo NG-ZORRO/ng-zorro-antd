@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { DatePipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   ViewEncapsulation,
@@ -16,13 +17,14 @@ import {
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzCronExpressionCronErrorI18n } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-preview',
   exportAs: 'nzCronExpressionPreview',
-  template: `<div class="ant-collapse ant-collapse-borderless ant-cron-expression-preview">
+  template: ` <div class="ant-collapse ant-collapse-borderless ant-cron-expression-preview">
     <div class="ant-cron-expression-preview-dateTime" [class.ant-cron-expression-preview-dateTime-center]="!isExpand">
       <ng-container *ngIf="visible; else cronError">
         <ng-container *ngIf="!nzSemantic; else semanticTemplate">
@@ -44,7 +46,9 @@ import { NzCronExpressionCronErrorI18n } from 'ng-zorro-antd/i18n';
       <li *ngIf="isExpand"><span nz-icon nzType="down" nzTheme="outline" (click)="setExpand()"></span></li>
       <li *ngIf="!isExpand"><span nz-icon nzType="up" nzTheme="outline" (click)="setExpand()"></span></li>
     </ul>
-  </div>`
+  </div>`,
+  imports: [NgIf, NgTemplateOutlet, NgForOf, DatePipe, NzIconModule],
+  standalone: true
 })
 export class NzCronExpressionPreviewComponent {
   @Input() TimeList: Date[] = [];

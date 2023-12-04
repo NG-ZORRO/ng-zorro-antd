@@ -13,7 +13,7 @@ describe('button', () => {
     let testBed: ComponentBed<TestButtonComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonComponent, { declarations: [NzButtonComponent] });
+      testBed = createComponentBed(TestButtonComponent, { imports: [NzButtonComponent] });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 
@@ -87,8 +87,7 @@ describe('button', () => {
   describe('loading icon', () => {
     it('should hide icon when loading correct', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonBindingComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
@@ -111,8 +110,7 @@ describe('button', () => {
   describe('insert span', () => {
     it('should insert span correctly', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonWithIconComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -125,8 +123,7 @@ describe('button', () => {
   describe('icon only', () => {
     it('should icon only works correctly', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonIconOnlyComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -134,8 +131,7 @@ describe('button', () => {
     }));
     it('should icon only works correctly with any tag', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonIconOnlyWithAnyTagComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -143,8 +139,7 @@ describe('button', () => {
     }));
     it('should icon only works correctly with any Comment', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonIconOnlyWithCommentComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -152,8 +147,7 @@ describe('button', () => {
     }));
     it('should icon only works correctly with any text', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonIconOnlyWithTextComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -161,8 +155,7 @@ describe('button', () => {
     }));
     it('should icon only works correctly without nz-icon', fakeAsync(() => {
       const testBed = createComponentBed(TestButtonIconOnlyWithoutIconComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
@@ -170,8 +163,7 @@ describe('button', () => {
     }));
     it('should icon only loading works correctly', () => {
       const testBed = createComponentBed(TestButtonIconOnlyLoadingComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       testBed.fixture.detectChanges();
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
@@ -184,8 +176,7 @@ describe('button', () => {
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
       testBed = createComponentBed(TestButtonRtlComponent, {
-        declarations: [NzButtonComponent],
-        imports: [BidiModule]
+        imports: [BidiModule, NzButtonComponent, NzButtonComponent]
       });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
@@ -204,7 +195,7 @@ describe('button', () => {
     let buttonElement: HTMLButtonElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonComponent, { declarations: [NzButtonComponent] });
+      testBed = createComponentBed(TestButtonComponent, { imports: [NzButtonComponent] });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 
@@ -235,7 +226,7 @@ describe('anchor', () => {
   let anchorElement: HTMLAnchorElement;
 
   beforeEach(() => {
-    testBed = createComponentBed(TestAnchorComponent, { declarations: [NzButtonComponent] });
+    testBed = createComponentBed(TestAnchorComponent, { imports: [NzButtonComponent] });
     anchorElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
   });
 

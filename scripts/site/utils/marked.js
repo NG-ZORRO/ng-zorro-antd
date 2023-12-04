@@ -117,6 +117,7 @@ function createLabel(label) {
   return `<label class="api-type-label ${label}">${label}</label>`;
 }
 
+const DIRECTIVE_REGEX = /^\[[a-zA-Z-]+\]/;
 const STANDALONE_SUFFIX_REGEX = /:standalone$/;
 
 /**
@@ -141,7 +142,7 @@ function normalizeHead(text) {
 renderer.heading = function (text, level) {
   const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
   const isMarkedLabel = level === 3 && text.indexOf('nz-') === 0;
-  const isDirective = text[0] === '[' && text[text.length - 1] === ']';
+  const isDirective = DIRECTIVE_REGEX.test(text);
   const isComponent = isMarkedLabel && !isDirective;
   const isStandalone = STANDALONE_SUFFIX_REGEX.test(text);
   const isService = text.indexOf('Nz') === 0 && text.indexOf('Service') > -1;

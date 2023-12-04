@@ -18,19 +18,19 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 ## API
 
-### [nz-dropdown]
+### [nz-dropdown]:standalone
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzDropdownMenu]` | Dropdown 下拉菜单组件 | `NzDropdownMenuComponent` | - |
-| `[nzDisabled]` | 菜单是否禁用 | `boolean` | - |
-| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
-| `[nzTrigger]` | 触发下拉的行为 | `'click' \| 'hover'` | `'hover'` |
-| `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
-| `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
-| `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |
-| `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
-| `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
+| 参数                   | 说明                                     | 类型                                                                                        | 默认值         |
+| ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| `[nzDropdownMenu]`     | Dropdown 下拉菜单组件                    | `NzDropdownMenuComponent`                                                                   | -              |
+| `[nzDisabled]`         | 菜单是否禁用                             | `boolean`                                                                                   | -              |
+| `[nzPlacement]`        | 菜单弹出位置                             | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
+| `[nzTrigger]`          | 触发下拉的行为                           | `'click' \| 'hover'`                                                                        | `'hover'`      |
+| `[nzClickHide]`        | 点击后是否隐藏菜单                       | `boolean`                                                                                   | `true`         |
+| `[nzVisible]`          | 菜单是否显示，可双向绑定                 | `boolean`                                                                                   | -              |
+| `[nzOverlayClassName]` | 下拉根元素的类名称                       | `string`                                                                                    | -              |
+| `[nzOverlayStyle]`     | 下拉根元素的样式                         | `object`                                                                                    | -              |
+| `(nzVisibleChange)`    | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>`                                                                     | -              |
 
 菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
 
@@ -38,7 +38,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 >
 > `nz-dropdown-menu` 内 `[nz-menu]` 的 `nzMode` 只可以是默认值 `vertical`。
 
-### nz-dropdown-menu
+### nz-dropdown-menu:standalone
 
 用于包裹菜单项，可以通过 `nzDropdownMenu` 模板变量导出后传入 `[nz-dropdown]` 和 `NzContextMenuService`。
 
@@ -59,7 +59,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 用于右键弹出下拉菜单，具体参见示例
 
-| 方法/属性 | 说明 | 参数 | 返回 |
-| --- | --- | --- | --- |
-| create | 创建右键菜单 | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
-| close | 关闭右键菜单 | - | - |
+| 方法/属性 | 说明         | 参数                                                                        | 返回                   |
+| --------- | ------------ | --------------------------------------------------------------------------- | ---------------------- |
+| create    | 创建右键菜单 | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
+| close     | 关闭右键菜单 | -                                                                           | -                      |

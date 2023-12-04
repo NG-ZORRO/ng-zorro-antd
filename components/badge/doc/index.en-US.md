@@ -27,7 +27,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 <nz-badge [nzCount]="5" nzStandalone></nz-badge>
 ```
 
-### nz-badge
+### nz-badge:standalone
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
@@ -45,7 +45,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzOffset]` | set offset of the badge dot, like[x, y] (Only Non-standalone) | `[number, number]` | - |
 
 
-### nz-ribbon
+### nz-ribbon:standalone
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |

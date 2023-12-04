@@ -14,7 +14,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 ## API
 
-### nz-avatar
+### nz-avatar:standalone
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
@@ -28,7 +28,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzText]` | 文本类头像 | `string` | - |
 | `(nzError)` | 图片加载失败的事件，调用 `preventDefault` 方法会阻止组件默认的 fallback 行为 | `EventEmitter<Event>` | - |
 
-### nz-avatar-group
+### nz-avatar-group:standalone
 
 ```html
  <nz-avatar-group>

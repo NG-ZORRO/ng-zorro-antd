@@ -30,7 +30,8 @@ import { NzSiderComponent } from './sider.component';
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
-  }
+  },
+  standalone: true
 })
 export class NzLayoutComponent implements OnDestroy, OnInit {
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;

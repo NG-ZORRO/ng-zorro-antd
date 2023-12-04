@@ -5,6 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -27,14 +28,16 @@ import {
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputDirective } from './input.directive';
 
 @Directive({
-  selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
+  selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`,
+  standalone: true
 })
 export class NzInputGroupWhitSuffixOrPrefixDirective {
   constructor(public elementRef: ElementRef) {}
@@ -127,7 +130,9 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-group-rtl]': `dir === 'rtl'`,
     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
-  }
+  },
+  imports: [NgIf, NzInputGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
+  standalone: true
 })
 export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzSearch: BooleanInput;

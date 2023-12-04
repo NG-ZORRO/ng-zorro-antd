@@ -18,21 +18,21 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 ## API
 
-### nz-qrcode
+### nz-qrcode:standalone
 
-| Property              | Description                         | Type                            | Default   |
-|-----------------------|-------------------------------------|---------------------------------|-----------|
-| `[nzValue]`           | scanned link                        | `string`                        | -         |
-| `[nzColor]`           | QR code Color                       | `string`                        | `#000`    |
-| `[nzBgColor]` | QR code background color            | `string`                        | `#FFFFFF` |
-| `[nzSize]`            | QR code Size                        | `number`                        | `160`     |
-| `[nzPadding]`         | QR code Padding                     | `number \| number[]`            | `0`       |
-| `[nzIcon]`            | Icon address in QR code             | `string`                        | -         |
-| `[nzIconSize]`        | The size of the icon in the QR code | `number`                        | `40`      |
-| `[nzBordered]`        | Whether has border style            | `boolean`                       | `true`    |
-| `[nzStatus]`          | QR code status                      | `'active'｜'expired' ｜'loading'` | `active`  |
-| `[nzLevel]`           | Error Code Level                    | `'L'｜'M'｜'Q'｜'H'`               | `M`       |
-| `(nzRefresh)`         | callback                            | `EventEmitter<string>`          | -         |
+| Property       | Description                         | Type                              | Default   |
+| -------------- | ----------------------------------- | --------------------------------- | --------- |
+| `[nzValue]`    | scanned link                        | `string`                          | -         |
+| `[nzColor]`    | QR code Color                       | `string`                          | `#000`    |
+| `[nzBgColor]`  | QR code background color            | `string`                          | `#FFFFFF` |
+| `[nzSize]`     | QR code Size                        | `number`                          | `160`     |
+| `[nzPadding]`  | QR code Padding                     | `number \| number[]`              | `0`       |
+| `[nzIcon]`     | Icon address in QR code             | `string`                          | -         |
+| `[nzIconSize]` | The size of the icon in the QR code | `number`                          | `40`      |
+| `[nzBordered]` | Whether has border style            | `boolean`                         | `true`    |
+| `[nzStatus]`   | QR code status                      | `'active'｜'expired' ｜'loading'` | `active`  |
+| `[nzLevel]`    | Error Code Level                    | `'L'｜'M'｜'Q'｜'H'`              | `M`       |
+| `(nzRefresh)`  | callback                            | `EventEmitter<string>`            | -         |
 
 ## Note
 

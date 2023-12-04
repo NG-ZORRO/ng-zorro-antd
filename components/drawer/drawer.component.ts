@@ -7,8 +7,8 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
+import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
+import { DOCUMENT, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -35,8 +35,11 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
 import {
@@ -136,7 +139,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
     </ng-template>
   `,
   preserveWhitespaces: false,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzNoAnimationModule, NgIf, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
+  standalone: true
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>

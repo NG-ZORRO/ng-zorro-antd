@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -22,9 +23,11 @@ import {
 import { Observable, fromEvent, merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
-import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
+import { NzTransferSearchComponent } from './transfer-search.component';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -120,7 +123,9 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
   host: {
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
-  }
+  },
+  imports: [NgIf, NgForOf, NgClass, NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent],
+  standalone: true
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields
