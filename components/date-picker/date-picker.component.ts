@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -264,7 +264,8 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     DateRangePopupComponent,
     CdkConnectedOverlay,
     NzOverlayModule,
-    NzNoAnimationModule
+    NzNoAnimationModule,
+    BidiModule
   ],
   standalone: true
 })
