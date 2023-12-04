@@ -31,7 +31,10 @@ export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
   }
 

@@ -497,7 +497,10 @@ export class NzTestReactiveFormAutoTipsComponent {
     }
   };
 
-  constructor(private formBuilder: FormBuilder, public i18n: NzI18nService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public i18n: NzI18nService
+  ) {
     const { required, minLength, email, mobile } = MyValidators;
     this.formGroup = this.formBuilder.group({
       userName: ['', [required, minLength(6)]],

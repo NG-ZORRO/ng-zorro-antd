@@ -220,21 +220,19 @@ describe('nz-timeline', () => {
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
-    beforeEach(
-      waitForAsync(() => {
-        testBed = createComponentBed(NzTestTimelineRtlComponent, {
-          imports: [BidiModule, NzTimelineModule],
-          declarations: [NzTestTimelineBasicComponent]
-        });
+    beforeEach(waitForAsync(() => {
+      testBed = createComponentBed(NzTestTimelineRtlComponent, {
+        imports: [BidiModule, NzTimelineModule],
+        declarations: [NzTestTimelineBasicComponent]
+      });
 
-        fixture = testBed.fixture;
+      fixture = testBed.fixture;
 
-        fixture.detectChanges();
+      fixture.detectChanges();
 
-        timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-        items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-      })
-    );
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    }));
 
     it('should init className correct', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');

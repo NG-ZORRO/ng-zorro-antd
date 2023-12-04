@@ -26,7 +26,7 @@ import { NzEmptyDefaultComponent } from './partial/default';
 import { NzEmptySimpleComponent } from './partial/simple';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
-type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
+type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | string | TemplateRef<void>;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,7 +71,10 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzNotFoundContent, nzNotFoundImage } = changes;

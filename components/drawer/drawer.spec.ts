@@ -15,14 +15,12 @@ import { NzDrawerModule } from './drawer.module';
 import { NzDrawerService } from './drawer.service';
 
 describe('NzDrawerComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationDirective],
-        declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationDirective],
+      declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
+    }).compileComponents();
+  }));
   describe('default', () => {
     let component: NzTestDrawerComponent;
     let fixture: ComponentFixture<NzTestDrawerComponent>;
@@ -670,23 +668,19 @@ describe('NzDrawerService', () => {
   let drawerService: NzDrawerService;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzDrawerModule, NoopAnimationsModule],
-        providers: [NzDrawerService],
-        declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzDrawerModule, NoopAnimationsModule],
+      providers: [NzDrawerService],
+      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
+    });
+  }));
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   beforeEach(inject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
     overlayContainer = oc;
@@ -904,7 +898,10 @@ class NzTestDrawerWithServiceComponent {
 export class NzDrawerCustomComponent {
   @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  constructor(@Inject(NZ_DRAWER_DATA) public nzData: { value: string }, private drawerRef: NzDrawerRef) {}
+  constructor(
+    @Inject(NZ_DRAWER_DATA) public nzData: { value: string },
+    private drawerRef: NzDrawerRef
+  ) {}
 
   close(): void {
     this.drawerRef.close(this.value);

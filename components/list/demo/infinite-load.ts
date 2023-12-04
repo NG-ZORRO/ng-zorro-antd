@@ -59,7 +59,10 @@ export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   ds = new MyDataSource(this.http);
 
   private destroy$ = new Subject<boolean>();
-  constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private nzMessage: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.ds

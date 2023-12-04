@@ -17,34 +17,32 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
-        declarations: [
-          NzTestBasicMenuHorizontalComponent,
-          NzTestBasicMenuInlineComponent,
-          NzTestMenuInlineCollapsedComponent,
-          NzTestMenuSiderCurrentComponent,
-          NzTestMenuThemeComponent,
-          NzTestMenuSwitchModeComponent,
-          NzTestMenuHorizontalComponent,
-          NzTestMenuInlineComponent,
-          NzDemoMenuNgForComponent,
-          NzTestNgIfMenuComponent,
-          NzTestSubMenuSelectedComponent,
-          NzTestMenuRtlComponent
-        ]
-      });
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzTestBasicMenuHorizontalComponent,
+        NzTestBasicMenuInlineComponent,
+        NzTestMenuInlineCollapsedComponent,
+        NzTestMenuSiderCurrentComponent,
+        NzTestMenuThemeComponent,
+        NzTestMenuSwitchModeComponent,
+        NzTestMenuHorizontalComponent,
+        NzTestMenuInlineComponent,
+        NzDemoMenuNgForComponent,
+        NzTestNgIfMenuComponent,
+        NzTestSubMenuSelectedComponent,
+        NzTestMenuRtlComponent
+      ]
+    });
 
-      TestBed.compileComponents();
+    TestBed.compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

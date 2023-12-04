@@ -101,7 +101,10 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(
+    private i18n: I18n,
+    private dateHelper: DateHelperService
+  ) {}
 
   ngOnInit(): void {
     this.setUpYears();

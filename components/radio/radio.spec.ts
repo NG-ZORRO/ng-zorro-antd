@@ -11,27 +11,25 @@ import { NzRadioComponent } from './radio.component';
 import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
-        declarations: [
-          NzTestRadioSingleComponent,
-          NzTestRadioButtonComponent,
-          NzTestRadioGroupComponent,
-          NzTestRadioFormComponent,
-          NzTestRadioGroupFormComponent,
-          NzTestRadioGroupDisabledComponent,
-          NzTestRadioGroupDisabledFormComponent,
-          NzTestRadioGroupLabelNgModelComponent,
-          NzTestRadioSingleRtlComponent,
-          NzTestRadioGroupRtlComponent,
-          NzTestRadioButtonRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
+      declarations: [
+        NzTestRadioSingleComponent,
+        NzTestRadioButtonComponent,
+        NzTestRadioGroupComponent,
+        NzTestRadioFormComponent,
+        NzTestRadioGroupFormComponent,
+        NzTestRadioGroupDisabledComponent,
+        NzTestRadioGroupDisabledFormComponent,
+        NzTestRadioGroupLabelNgModelComponent,
+        NzTestRadioSingleRtlComponent,
+        NzTestRadioGroupRtlComponent,
+        NzTestRadioButtonRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('single radio basic', () => {
     let fixture: ComponentFixture<NzTestRadioSingleComponent>;
     let testComponent: NzTestRadioSingleComponent;

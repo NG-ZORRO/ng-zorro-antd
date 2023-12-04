@@ -89,7 +89,10 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
 export class NzI18nTestComponent implements OnDestroy {
   private localeSubscription: Subscription;
 
-  constructor(private nzI18nService: NzI18nService, @Inject(NZ_I18N) public locale: NzI18nInterface) {
+  constructor(
+    private nzI18nService: NzI18nService,
+    @Inject(NZ_I18N) public locale: NzI18nInterface
+  ) {
     this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
       this.updateLocale(locale);
     });

@@ -10,15 +10,13 @@ import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
 
 describe('spin', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzSpinModule, NzIconTestModule],
-        declarations: [NzTestSpinBasicComponent, NzTestSpinRtlComponent]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzSpinModule, NzIconTestModule],
+      declarations: [NzTestSpinBasicComponent, NzTestSpinRtlComponent]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('spin basic', () => {
     let fixture: ComponentFixture<NzTestSpinBasicComponent>;

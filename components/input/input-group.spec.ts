@@ -12,23 +12,21 @@ import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 
 describe('input-group', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputGroupAddonComponent,
-          NzTestInputGroupAffixComponent,
-          NzTestInputGroupMultipleComponent,
-          NzTestInputGroupColComponent,
-          NzTestInputGroupMixComponent,
-          NzTestInputGroupWithStatusComponent,
-          NzTestInputGroupInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputGroupAddonComponent,
+        NzTestInputGroupAffixComponent,
+        NzTestInputGroupMultipleComponent,
+        NzTestInputGroupColComponent,
+        NzTestInputGroupMixComponent,
+        NzTestInputGroupWithStatusComponent,
+        NzTestInputGroupInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;

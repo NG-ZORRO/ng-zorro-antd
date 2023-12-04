@@ -149,7 +149,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;

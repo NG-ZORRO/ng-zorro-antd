@@ -89,7 +89,10 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   spaceSize: number = SPACE_SIZE.small;
   private destroy$ = new Subject<boolean>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;

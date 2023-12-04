@@ -19,24 +19,22 @@ import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzDemoPageHeaderBasicComponent,
-          NzDemoPageHeaderBreadcrumbComponent,
-          NzDemoPageHeaderContentComponent,
-          NzDemoPageHeaderActionsComponent,
-          NzDemoPageHeaderResponsiveComponent,
-          NzDemoPageHeaderGhostComponent,
-          NzDemoPageHeaderRtlComponent
-        ]
-      }).compileComponents();
-      location = TestBed.inject(Location);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzDemoPageHeaderBasicComponent,
+        NzDemoPageHeaderBreadcrumbComponent,
+        NzDemoPageHeaderContentComponent,
+        NzDemoPageHeaderActionsComponent,
+        NzDemoPageHeaderResponsiveComponent,
+        NzDemoPageHeaderGhostComponent,
+        NzDemoPageHeaderRtlComponent
+      ]
+    }).compileComponents();
+    location = TestBed.inject(Location);
+  }));
 
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);

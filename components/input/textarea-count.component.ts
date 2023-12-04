@@ -39,7 +39,10 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   private configChange$ = new Subject();
   private destroy$ = new Subject<boolean>();
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef<HTMLElement>
+  ) {}
 
   ngAfterContentInit(): void {
     if (!this.nzInputDirective && isDevMode()) {

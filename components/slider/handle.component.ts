@@ -70,7 +70,10 @@ export class NzSliderHandleComponent implements OnChanges {
   tooltipTitle?: NzTSType;
   style: NgStyleInterface = {};
 
-  constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private sliderService: NzSliderService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { offset, value, active, tooltipVisible, reverse, dir } = changes;

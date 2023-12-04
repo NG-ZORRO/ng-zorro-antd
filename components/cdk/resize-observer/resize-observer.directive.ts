@@ -41,7 +41,10 @@ export class NzResizeObserverDirective implements AfterContentInit, OnDestroy, O
     this.currentSubscription?.unsubscribe();
   }
 
-  constructor(private nzResizeObserver: NzResizeObserver, private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private nzResizeObserver: NzResizeObserver,
+    private elementRef: ElementRef<HTMLElement>
+  ) {}
 
   ngAfterContentInit(): void {
     if (!this.currentSubscription && !this.nzResizeObserverDisabled) {

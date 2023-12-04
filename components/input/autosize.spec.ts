@@ -11,27 +11,25 @@ import { NzInputModule } from './input.module';
 describe('autoresize', () => {
   let zone: MockNgZone;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule],
-        declarations: [
-          NzTestInputWithTextAreaAutoSizeStringComponent,
-          NzTestInputWithTextAreaAutoSizeObjectComponent,
-          NzTestInputWithTextAreaAutoSizeBooleanComponent
-        ],
-        providers: [
-          {
-            provide: NgZone,
-            useFactory: () => {
-              zone = new MockNgZone();
-              return zone;
-            }
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule],
+      declarations: [
+        NzTestInputWithTextAreaAutoSizeStringComponent,
+        NzTestInputWithTextAreaAutoSizeObjectComponent,
+        NzTestInputWithTextAreaAutoSizeBooleanComponent
+      ],
+      providers: [
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
           }
-        ]
-      }).compileComponents();
-    })
-  );
+        }
+      ]
+    }).compileComponents();
+  }));
 
   describe('single input', () => {
     describe('textarea autosize string', () => {

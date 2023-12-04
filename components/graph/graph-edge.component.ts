@@ -60,7 +60,11 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
     .y(d => d.y)
     .curve(curveLinear);
 
-  constructor(private elementRef: ElementRef<SVGGElement>, private ngZone: NgZone, private cdr: ChangeDetectorRef) {
+  constructor(
+    private elementRef: ElementRef<SVGGElement>,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {
     this.el = this.elementRef.nativeElement;
   }
 
