@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,7 +19,11 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+
+import { NzEmptyDefaultComponent } from './partial/default';
+import { NzEmptySimpleComponent } from './partial/simple';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
 type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
@@ -51,7 +56,9 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
   `,
   host: {
     class: 'ant-empty'
-  }
+  },
+  imports: [NgIf, NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent],
+  standalone: true
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';

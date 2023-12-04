@@ -30,17 +30,17 @@ Install `cron-parser` in your project first:
 npm install cron-parser
 ```
 
-### nz-cron-expression
+### nz-cron-expression:standalone
 
-| Parameter  | Description                                      | Type  | Default     |
-|-------------|--------------------------------------------------|-------------|---------|
-| `[nzType]` | Cron rule type                                   | `'linux'｜'spring'`          | `linux`  |
-| `[nzDisabled]`     | Disable | `boolean` | `false`   |
-| `[nzBorderless]`     | Whether to hide the border        | `boolean` | `false`   |
-| `[nzSize]`   | The size of the input box.                       | `'large'｜'small'｜'default'` | `default` |
-| `[nzCollapseDisable]`  | Hide collapse                                    | `boolean`                   | `false`  |
-| `[nzExtra]`     | Render the content on the right                  | `TemplateRef<void>`         | -        |
-| `[nzSemantic]`     | Custom rendering next execution time | `TemplateRef<void>`         | -        |
+| Parameter             | Description                          | Type                          | Default   |
+| --------------------- | ------------------------------------ | ----------------------------- | --------- |
+| `[nzType]`            | Cron rule type                       | `'linux'｜'spring'`           | `linux`   |
+| `[nzDisabled]`        | Disable                              | `boolean`                     | `false`   |
+| `[nzBorderless]`      | Whether to hide the border           | `boolean`                     | `false`   |
+| `[nzSize]`            | The size of the input box.           | `'large'｜'small'｜'default'` | `default` |
+| `[nzCollapseDisable]` | Hide collapse                        | `boolean`                     | `false`   |
+| `[nzExtra]`           | Render the content on the right      | `TemplateRef<void>`           | -         |
+| `[nzSemantic]`        | Custom rendering next execution time | `TemplateRef<void>`           | -         |
 
 ## Note
 

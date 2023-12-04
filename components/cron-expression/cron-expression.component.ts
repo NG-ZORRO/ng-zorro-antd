@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,6 +40,9 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
+import { NzCronExpressionInputComponent } from './cron-expression-input.component';
+import { NzCronExpressionLabelComponent } from './cron-expression-label.component';
+import { NzCronExpressionPreviewComponent } from './cron-expression-preview.component';
 import { Cron, CronChangeType, CronValue, NzCronExpressionSize, NzCronExpressionType, TimeType } from './typings';
 
 function labelsOfType(type: NzCronExpressionType): TimeType[] {
@@ -117,7 +121,16 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
       multi: true
     },
     NzDestroyService
-  ]
+  ],
+  imports: [
+    NgForOf,
+    NzCronExpressionInputComponent,
+    NzCronExpressionLabelComponent,
+    NzCronExpressionPreviewComponent,
+    NgIf,
+    NgTemplateOutlet
+  ],
+  standalone: true
 })
 export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValueAccessor, AsyncValidator {
   static ngAcceptInputType_nzBorderless: BooleanInput;
@@ -201,7 +214,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
       this.locale = this.i18n.getLocaleData('CronExpression');
       this.cdr.markForCheck();
     });
-
+    this.cronFormType();
     this.previewDate(this.validateForm.value);
 
     this.validateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
@@ -216,12 +229,15 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
 
     if (nzType) {
       this.labels = labelsOfType(this.nzType);
+      this.cronFormType();
+    }
+  }
 
-      if (this.nzType === 'spring') {
-        this.validateForm.controls.second.enable();
-      } else {
-        this.validateForm.controls.second.disable();
-      }
+  cronFormType(): void {
+    if (this.nzType === 'spring') {
+      this.validateForm.controls.second.enable();
+    } else {
+      this.validateForm.controls.second.disable();
     }
   }
 

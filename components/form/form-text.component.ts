@@ -14,6 +14,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-form-text'
-  }
+  },
+  standalone: true
 })
 export class NzFormTextComponent {}

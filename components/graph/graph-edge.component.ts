@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,7 +37,9 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
       </svg:text>
     </svg:g>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
   @Input() edge!: NzGraphEdge;

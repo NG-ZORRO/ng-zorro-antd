@@ -28,24 +28,24 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 </nz-timeline>
 ```
 
-### nz-timeline
+### nz-timeline:standalone
 
 时间轴。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | `string \| boolean \| TemplateRef<void>` | `false` |
-| `[nzPendingDot]` | 当最后一个幽灵节点存在時，指定其时间图点 | `string \| TemplateRef<void>` | `<span nz-icon nzType="loading"></span>` |
-| `[nzReverse]` | 节点排序 | `boolean` | `false` |
-| `[nzMode]` | 可以改变时间轴和内容的相对位置 | `'left' \| 'alternate' \| 'right' \| 'custom'` | - |
+| 参数             | 说明                                     | 类型                                           | 默认值                                   |
+| ---------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| `[nzPending]`    | 指定最后一个幽灵节点是否存在或内容       | `string \| boolean \| TemplateRef<void>`       | `false`                                  |
+| `[nzPendingDot]` | 当最后一个幽灵节点存在時，指定其时间图点 | `string \| TemplateRef<void>`                  | `<span nz-icon nzType="loading"></span>` |
+| `[nzReverse]`    | 节点排序                                 | `boolean`                                      | `false`                                  |
+| `[nzMode]`       | 可以改变时间轴和内容的相对位置           | `'left' \| 'alternate' \| 'right' \| 'custom'` | -                                        |
 
-### nz-timeline-item
+### nz-timeline-item:standalone
 
 时间轴的每一个节点。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzColor]` | 指定圆圈颜色 `'blue' \| 'red' \| 'green' \| 'gray'` | `string` | blue |
-| `[nzDot]` | 自定义时间轴点 | `string \| TemplateRef<void>` | - |
-| `[nzPosition]` | 自定义节点位置，仅当 `nzMode` 为 `custom` 时有效 | `'left' \| 'right'` | - |
-| `[nzLabel]` | 设置标签 |  `string \| TemplateRef<void>` | - |
+| 参数           | 说明                                                | 类型                          | 默认值 |
+| -------------- | --------------------------------------------------- | ----------------------------- | ------ |
+| `[nzColor]`    | 指定圆圈颜色 `'blue' \| 'red' \| 'green' \| 'gray'` | `string`                      | blue   |
+| `[nzDot]`      | 自定义时间轴点                                      | `string \| TemplateRef<void>` | -      |
+| `[nzPosition]` | 自定义节点位置，仅当 `nzMode` 为 `custom` 时有效    | `'left' \| 'right'`           | -      |
+| `[nzLabel]`    | 设置标签                                            | `string \| TemplateRef<void>` | -      |

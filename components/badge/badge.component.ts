@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -26,9 +27,11 @@ import { takeUntil } from 'rxjs/operators';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzBadgeSupComponent } from './badge-sup.component';
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
@@ -41,6 +44,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
+  standalone: true,
+  imports: [NgIf, NgStyle, NzBadgeSupComponent, NzOutletModule],
   template: `
     <ng-container *ngIf="nzStatus || nzColor">
       <span

@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,6 +29,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 
 import {
   NzDateCellDirective as DateCell,
@@ -35,6 +37,7 @@ import {
   NzMonthCellDirective as MonthCell,
   NzMonthFullCellDirective as MonthFullCell
 } from './calendar-cells';
+import { NzCalendarHeaderComponent } from './calendar-header.component';
 
 export type NzCalendarMode = 'month' | 'year';
 type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
@@ -92,7 +95,9 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     '[class.ant-picker-calendar-mini]': '!nzFullscreen',
     '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
+  imports: [NzCalendarHeaderComponent, NgIf, LibPackerModule],
+  standalone: true
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzFullscreen: BooleanInput;

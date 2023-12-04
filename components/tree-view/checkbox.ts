@@ -32,7 +32,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-checkbox-indeterminate]': `nzIndeterminate`,
     '[class.ant-tree-checkbox-disabled]': `nzDisabled`
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  standalone: true
 })
 export class NzTreeNodeCheckboxComponent implements OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;

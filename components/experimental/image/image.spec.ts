@@ -16,6 +16,7 @@ import {
   NzImageModule,
   NzImageSrcLoader
 } from 'ng-zorro-antd/experimental/image';
+import { NzImageService } from 'ng-zorro-antd/image';
 
 describe('Experimental', () => {
   let fixture: ComponentFixture<TestImageExperimentalBaseComponent>;
@@ -24,7 +25,8 @@ describe('Experimental', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [TestExperimentalImageModule]
+      imports: [TestExperimentalImageModule],
+      providers: [NzImageService]
     });
     TestBed.compileComponents();
   }));

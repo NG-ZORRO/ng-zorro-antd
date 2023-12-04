@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgIf } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -27,6 +28,8 @@ import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zor
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
+
+import { NzSiderTriggerComponent } from './sider-trigger.component';
 
 @Component({
   selector: 'nz-sider',
@@ -63,7 +66,9 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     '[style.maxWidth]': 'widthSetting',
     '[style.minWidth]': 'widthSetting',
     '[style.width]': 'widthSetting'
-  }
+  },
+  imports: [NgIf, NzSiderTriggerComponent],
+  standalone: true
 })
 export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   static ngAcceptInputType_nzReverseArrow: BooleanInput;

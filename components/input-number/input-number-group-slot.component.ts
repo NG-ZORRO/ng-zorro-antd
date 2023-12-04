@@ -3,7 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-input-number-group-slot]',
@@ -19,7 +23,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
     '[class.ant-input-number-group-addon]': `type === 'addon'`,
     '[class.ant-input-number-prefix]': `type === 'prefix'`,
     '[class.ant-input-number-suffix]': `type === 'suffix'`
-  }
+  },
+  imports: [NzIconModule, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzInputNumberGroupSlotComponent {
   @Input() icon?: string | null = null;

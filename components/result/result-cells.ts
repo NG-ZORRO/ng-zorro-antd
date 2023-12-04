@@ -10,7 +10,8 @@ import { Directive } from '@angular/core';
   exportAs: 'nzResultTitle',
   host: {
     class: 'ant-result-title'
-  }
+  },
+  standalone: true
 })
 export class NzResultTitleDirective {}
 
@@ -19,13 +20,15 @@ export class NzResultTitleDirective {}
   exportAs: 'nzResultSubtitle',
   host: {
     class: 'ant-result-subtitle'
-  }
+  },
+  standalone: true
 })
 export class NzResultSubtitleDirective {}
 
 @Directive({
   selector: 'i[nz-result-icon], div[nz-result-icon]',
-  exportAs: 'nzResultIcon'
+  exportAs: 'nzResultIcon',
+  standalone: true
 })
 export class NzResultIconDirective {}
 
@@ -34,7 +37,8 @@ export class NzResultIconDirective {}
   exportAs: 'nzResultContent',
   host: {
     class: 'ant-result-content'
-  }
+  },
+  standalone: true
 })
 export class NzResultContentDirective {}
 
@@ -43,6 +47,7 @@ export class NzResultContentDirective {}
   exportAs: 'nzResultExtra',
   host: {
     class: 'ant-result-extra'
-  }
+  },
+  standalone: true
 })
 export class NzResultExtraDirective {}

@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,8 +28,10 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { normalizeOptions, NzNormalizedOptions, NzSegmentedOption, NzSegmentedOptions } from './types';
 
@@ -89,7 +92,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     '[class.ant-segmented-block]': `!!nzBlock`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzSegmentedComponent), multi: true }],
-  animations: [thumbMotion]
+  animations: [thumbMotion],
+  imports: [NgIf, NgClass, NgForOf, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   static ngAcceptInputType_nzDisabled: BooleanInput;

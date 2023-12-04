@@ -19,10 +19,12 @@ import { Subscription } from 'rxjs';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzResizeObserver } from './resize-observer.service';
+import { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.service';
 
 @Directive({
-  selector: '[nzResizeObserver]'
+  selector: '[nzResizeObserver]',
+  standalone: true,
+  providers: [NzResizeObserverFactory]
 })
 export class NzResizeObserverDirective implements AfterContentInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzResizeObserverDisabled: BooleanInput;

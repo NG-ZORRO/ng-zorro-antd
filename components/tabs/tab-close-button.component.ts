@@ -5,7 +5,9 @@
 
 import { Component, Input, TemplateRef } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-tab-close-button, button[nz-tab-close-button]',
@@ -18,7 +20,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     class: 'ant-tabs-tab-remove',
     'aria-label': 'Close tab',
     type: 'button'
-  }
+  },
+  imports: [NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzTabCloseButtonComponent {
   @Input() closeIcon: string | TemplateRef<NzSafeAny> = 'close';

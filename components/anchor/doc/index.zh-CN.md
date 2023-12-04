@@ -19,7 +19,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ## API
 
-### nz-anchor
+### nz-anchor:standalone
 
 | 成员 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `(nzChange)` | 监听锚点链接改变 | `EventEmitter<string>` | - |  |
 | `(nzScroll)` | 滚动至某锚点时触发 | `EventEmitter<NzAnchorLinkComponent>` | - |
 
-### nz-link
+### nz-link:standalone
 
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { getLocaleNumberSymbol, NumberSymbol } from '@angular/common';
+import { getLocaleNumberSymbol, NgIf, NgTemplateOutlet, NumberSymbol } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -35,7 +35,9 @@ import { NzStatisticValueType } from './typings';
         <span *ngIf="displayDecimal" class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
       </ng-container>
     </span>
-  `
+  `,
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue?: NzStatisticValueType;

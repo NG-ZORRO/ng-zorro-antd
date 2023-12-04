@@ -27,7 +27,8 @@ import { NzInputDirective } from './input.directive';
   host: {
     class: 'ant-input-textarea-show-count'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   @ContentChild(NzInputDirective, { static: true }) nzInputDirective!: NzInputDirective;

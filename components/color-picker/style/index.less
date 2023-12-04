@@ -60,12 +60,15 @@
 
   &-slider {
     width: 100%;
-    margin-bottom: @margin-sm;
+    border-radius: @border-radius-base;
     .@{color-picker-prefix-cls}-palette {
       height: 8px;
     }
     .@{color-picker-prefix-cls}-gradient {
       border-radius: @border-radius-base;
+    }
+    &-hue {
+      margin-bottom: @margin-sm;
     }
     &-alpha {
       background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%, transparent 0 50%, rgba(0, 0, 0, 0.06) 0 75%, transparent 0);
@@ -113,7 +116,6 @@
     position: relative;
     width: 28px;
     height: 28px;
-    margin-left: @margin-xs;
     background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%, transparent 0 50%, rgba(0, 0, 0, 0.06) 0 75%, transparent 0);
     background-size: 50% 50%;
     overflow: hidden;
@@ -128,6 +130,8 @@
 
   &-slider-container {
     display: flex;
+    gap: @margin-sm;
+    margin-bottom: @margin-sm;
     .@{color-picker-prefix-cls}-slider-group {
       flex: 1;
       &-disabled-alpha {
@@ -228,11 +232,12 @@
     }
 
     .@{color-picker-prefix-cls}-steppers {
-      flex: 0 0 44px;
+      flex: 1;
     }
 
     .@{color-picker-prefix-cls}-alpha-input {
       flex: 0 0 44px;
+      margin-left: @margin-xss;
     }
   }
 

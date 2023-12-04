@@ -21,8 +21,12 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-copy',
@@ -44,7 +48,9 @@ import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copied = false;

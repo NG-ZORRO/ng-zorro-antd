@@ -49,7 +49,8 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
     '[class.ant-radio-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
   static ngAcceptInputType_nzDisabled: BooleanInput;

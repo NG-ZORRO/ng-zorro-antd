@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,6 +17,7 @@ import {
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
+import { NzSkeletonElementAvatarComponent, NzSkeletonElementDirective } from './skeleton-element.component';
 import {
   NzSkeletonAvatar,
   NzSkeletonAvatarShape,
@@ -54,7 +56,9 @@ import {
     <ng-container *ngIf="!nzLoading">
       <ng-content></ng-content>
     </ng-container>
-  `
+  `,
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent, NgIf, NgForOf],
+  standalone: true
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;

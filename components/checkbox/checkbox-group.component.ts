@@ -5,6 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -22,6 +23,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzCheckboxComponent } from './checkbox.component';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -57,7 +60,9 @@ export interface NzCheckBoxOptionInterface {
   host: {
     class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgForOf, NzCheckboxComponent],
+  standalone: true
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;

@@ -3,9 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
 
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMNComponent } from 'ng-zorro-antd/message';
 
 import { NzNotificationData } from './typings';
@@ -90,7 +93,9 @@ import { NzNotificationData } from './typings';
         </span>
       </a>
     </div>
-  `
+  `,
+  imports: [NgStyle, NgClass, NgIf, NgSwitch, NgSwitchCase, NzIconModule, NzOutletModule, NgTemplateOutlet],
+  standalone: true
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
   @Input() override instance!: Required<NzNotificationData>;

@@ -19,23 +19,23 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 ## API
 
-### nz-switch
+### nz-switch:standalone
 
-| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
-| --- | --- | --- | --- | --- |
-| `[nzId]` | 组件内部 button 的 id 值 | `string` | - |
-| `[ngModel]` | 指定当前是否选中，可双向绑定 | `boolean` | `false` |
-| `[nzCheckedChildren]` | 选中时的内容 | `string \| TemplateRef<void>` | - |
-| `[nzUnCheckedChildren]` | 非选中时的内容 | `string \| TemplateRef<void>` | - |
-| `[nzDisabled]` | disable 状态 | `boolean` | `false` |
-| `[nzSize]` | 开关大小，可选值：`default` `small` | `'small' \| 'default'` | `'default'` | ✅ |
-| `[nzLoading]` | 加载中的开关 | `boolean` | `false` |
-| `[nzControl]` | 是否完全由用户控制状态 | `boolean` | `false` |
-| `(ngModelChange)` | 当前是否选中的回调 | `EventEmitter<boolean>` | `false` |
+| 参数                    | 说明                                | 类型                          | 默认值      | 全局配置 |
+| ----------------------- | ----------------------------------- | ----------------------------- | ----------- | -------- |
+| `[nzId]`                | 组件内部 button 的 id 值            | `string`                      | -           |
+| `[ngModel]`             | 指定当前是否选中，可双向绑定        | `boolean`                     | `false`     |
+| `[nzCheckedChildren]`   | 选中时的内容                        | `string \| TemplateRef<void>` | -           |
+| `[nzUnCheckedChildren]` | 非选中时的内容                      | `string \| TemplateRef<void>` | -           |
+| `[nzDisabled]`          | disable 状态                        | `boolean`                     | `false`     |
+| `[nzSize]`              | 开关大小，可选值：`default` `small` | `'small' \| 'default'`        | `'default'` | ✅       |
+| `[nzLoading]`           | 加载中的开关                        | `boolean`                     | `false`     |
+| `[nzControl]`           | 是否完全由用户控制状态              | `boolean`                     | `false`     |
+| `(ngModelChange)`       | 当前是否选中的回调                  | `EventEmitter<boolean>`       | `false`     |
 
 #### 方法
 
-| 名称 | 描述 |
-| ---- | ----------- |
+| 名称    | 描述     |
+| ------- | -------- |
 | focus() | 获取焦点 |
-| blur() | 移除焦点 |
+| blur()  | 移除焦点 |

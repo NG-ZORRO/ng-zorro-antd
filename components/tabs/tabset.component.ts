@@ -5,8 +5,10 @@
 
 /** get some code from https://github.com/angular/material2 */
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -32,6 +34,7 @@ import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
@@ -44,7 +47,10 @@ import {
   NzTabScrollEvent,
   NzTabType
 } from './interfaces';
+import { NzTabBodyComponent } from './tab-body.component';
+import { NzTabCloseButtonComponent } from './tab-close-button.component';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
+import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabComponent, NZ_TAB_SET } from './tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
@@ -88,8 +94,9 @@ let nextId = 0;
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
-        <div
+        <button
           role="tab"
+          [id]="getTabContentId(i)"
           [attr.tabIndex]="getTabIndex(tab, i)"
           [attr.aria-disabled]="tab.nzDisabled"
           [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
@@ -108,7 +115,7 @@ let nextId = 0;
             [closeIcon]="tab.nzCloseIcon"
             (click)="onClose(i, $event)"
           ></button>
-        </div>
+        </button>
       </div>
     </nz-tabs-nav>
     <div class="ant-tabs-content-holder">
@@ -123,6 +130,9 @@ let nextId = 0;
         [style.margin-right]="getTabContentMarginRight()"
       >
         <div
+          role="tabpanel"
+          [id]="getTabContentId(i)"
+          [attr.aria-labelledby]="getTabContentId(i)"
           nz-tab-body
           *ngFor="let tab of tabs; let i = index"
           [active]="nzSelectedIndex === i && !nzHideAll"
@@ -147,7 +157,19 @@ let nextId = 0;
     '[class.ant-tabs-default]': `nzSize === 'default'`,
     '[class.ant-tabs-small]': `nzSize === 'small'`,
     '[class.ant-tabs-large]': `nzSize === 'large'`
-  }
+  },
+  imports: [
+    NzTabNavBarComponent,
+    NgIf,
+    NgStyle,
+    NgForOf,
+    NzTabNavItemDirective,
+    A11yModule,
+    NzOutletModule,
+    NzTabCloseButtonComponent,
+    NzTabBodyComponent
+  ],
+  standalone: true
 })
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -477,8 +499,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink | RouterLink) => boolean {
-    return (link?: RouterLink | RouterLink) =>
+  private isLinkActive(router: Router): (link?: RouterLink) => boolean {
+    return (link?: RouterLink) =>
       link
         ? router.isActive(link.urlTree || '', {
             paths: this.nzLinkExact ? 'exact' : 'subset',
