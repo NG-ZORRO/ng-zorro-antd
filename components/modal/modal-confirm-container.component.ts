@@ -5,8 +5,8 @@
 
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
+import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
+import { DOCUMENT, NgClass, NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,11 +24,16 @@ import {
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 import { nzModalAnimations } from './modal-animations';
+import { NzModalCloseComponent } from './modal-close.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 import { ModalOptions } from './modal-types';
 
@@ -104,7 +109,19 @@ import { ModalOptions } from './modal-types';
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
-  }
+  },
+  imports: [
+    NgClass,
+    NgStyle,
+    NzPipesModule,
+    NzIconModule,
+    NgIf,
+    NzModalCloseComponent,
+    NzOutletModule,
+    PortalModule,
+    NzButtonModule
+  ],
+  standalone: true
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
