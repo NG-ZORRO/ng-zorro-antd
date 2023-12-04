@@ -3,8 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -29,7 +31,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
     '[class.ant-divider-dashed]': `nzDashed`
-  }
+  },
+  imports: [NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzDividerComponent {
   static ngAcceptInputType_nzDashed: BooleanInput;

@@ -18,12 +18,12 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 ## API
 
-### nz-divider
+### nz-divider:standalone
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzDashed]` | whether line is dashed | `boolean` | `false` |
-| `[nzType]` | direction type of divider | `'horizontal' \| 'vertical'` | `'horizontal'` |
-| `[nzText]` | inner text of divider | `string \| TemplateRef<void>` | - |
-| `[nzPlain]` | Divider text show as plain style | `boolean` | `false` |
-| `[nzOrientation]` | inner text orientation | `'center' \| 'left' \| 'right'` | `'center'` |
+| Property          | Description                      | Type                            | Default        |
+| ----------------- | -------------------------------- | ------------------------------- | -------------- |
+| `[nzDashed]`      | whether line is dashed           | `boolean`                       | `false`        |
+| `[nzType]`        | direction type of divider        | `'horizontal' \| 'vertical'`    | `'horizontal'` |
+| `[nzText]`        | inner text of divider            | `string \| TemplateRef<void>`   | -              |
+| `[nzPlain]`       | Divider text show as plain style | `boolean`                       | `false`        |
+| `[nzOrientation]` | inner text orientation           | `'center' \| 'left' \| 'right'` | `'center'`     |
