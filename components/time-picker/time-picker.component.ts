@@ -42,7 +42,8 @@ import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus }
 import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTimePickerPanelComponent } from 'ng-zorro-antd/time-picker/time-picker-panel.component';
+
+import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
