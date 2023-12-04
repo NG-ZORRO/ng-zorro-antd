@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -73,7 +73,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
     class: 'ant-modal-footer'
   },
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [NgIf, NzOutletModule, NgForOf, NzButtonModule],
+  imports: [NgIf, NzOutletModule, NgFor, NzButtonModule],
   standalone: true
 })
 export class NzModalFooterComponent implements OnDestroy {
