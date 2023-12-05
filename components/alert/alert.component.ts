@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -37,7 +37,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   exportAs: 'nzAlert',
   animations: [slideAlertMotion],
   standalone: true,
-  imports: [BidiModule, NgIf, NzIconModule, NzOutletModule],
+  imports: [NgIf, NzIconModule, NzOutletModule],
   template: `
     <div
       *ngIf="!closed"
