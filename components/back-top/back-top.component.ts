@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform, PlatformModule, normalizePassiveListenerOptions } from '@angular/cdk/platform';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform, normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -44,7 +44,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   standalone: true,
-  imports: [BidiModule, NgIf, NgTemplateOutlet, NzIconModule, PlatformModule],
+  imports: [NgIf, NgTemplateOutlet, NzIconModule],
   template: `
     <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
