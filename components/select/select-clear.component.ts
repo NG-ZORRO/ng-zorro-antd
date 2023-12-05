@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-select-clear',
@@ -31,7 +33,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   host: {
     class: 'ant-select-clear',
     '(click)': 'onClick($event)'
-  }
+  },
+  imports: [NzIconModule, NgIf],
+  standalone: true
 })
 export class NzSelectClearComponent {
   @Input() clearIcon: TemplateRef<NzSafeAny> | null = null;
