@@ -35,6 +35,7 @@ export class NzOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
   template: `
     <div class="ant-select-item-option-content">
       <ng-content></ng-content>

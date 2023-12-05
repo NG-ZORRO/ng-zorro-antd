@@ -55,6 +55,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
   exportAs: 'nzAutocompleteTrigger',
   providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
+  standalone: true,
   host: {
     autocomplete: 'off',
     'aria-autocomplete': 'list',
