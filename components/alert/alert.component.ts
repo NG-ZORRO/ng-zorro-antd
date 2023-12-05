@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,8 +25,10 @@ import { takeUntil } from 'rxjs/operators';
 
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
 
@@ -33,6 +36,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   selector: 'nz-alert',
   exportAs: 'nzAlert',
   animations: [slideAlertMotion],
+  standalone: true,
+  imports: [NgIf, NzIconModule, NzOutletModule],
   template: `
     <div
       *ngIf="!closed"
