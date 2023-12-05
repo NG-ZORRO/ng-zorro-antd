@@ -4,7 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgClass, NgFor, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -66,7 +66,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [BidiModule, NgClass, NgFor, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationModule],
+  imports: [NgClass, NgFor, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationModule],
   template: `
     <ng-template>
       <div
