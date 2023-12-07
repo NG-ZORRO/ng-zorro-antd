@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,6 +12,7 @@ import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from './base';
+import { NzMessageComponent } from './message.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
 
@@ -37,7 +39,9 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
         (destroyed)="remove($event.id, $event.userAction)"
       ></nz-message>
     </div>
-  `
+  `,
+  imports: [NzMessageComponent, NgForOf],
+  standalone: true
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
   dir: Direction = 'ltr';
