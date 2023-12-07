@@ -6,7 +6,6 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
 
@@ -21,10 +20,6 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
 export class YearTableComponent extends AbstractTable {
   override MAX_ROW = 4;
   override MAX_COL = 3;
-
-  constructor(private dateHelper: DateHelperService) {
-    super();
-  }
 
   makeHeadRow(): DateCell[] {
     return [];
