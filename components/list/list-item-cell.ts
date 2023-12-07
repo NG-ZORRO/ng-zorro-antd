@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,7 +29,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-item-extra'
-  }
+  },
+  standalone: true
 })
 export class NzListItemExtraComponent {}
 
@@ -36,7 +38,8 @@ export class NzListItemExtraComponent {}
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template><ng-content></ng-content></ng-template> `
+  template: ` <ng-template><ng-content></ng-content></ng-template> `,
+  standalone: true
 })
 export class NzListItemActionComponent {
   @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
@@ -55,7 +58,9 @@ export class NzListItemActionComponent {
   host: {
     class: 'ant-list-item-action'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgForOf, NgTemplateOutlet, NgIf],
+  standalone: true
 })
 export class NzListItemActionsComponent implements OnChanges {
   @Input() nzActions: Array<TemplateRef<void>> = [];

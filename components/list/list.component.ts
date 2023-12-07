@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -21,11 +22,20 @@ import {
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { NzListGrid } from './interface';
-import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';
+import {
+  NzListEmptyComponent,
+  NzListFooterComponent,
+  NzListHeaderComponent,
+  NzListLoadMoreDirective,
+  NzListPaginationComponent
+} from './list-cell';
 
 @Component({
   selector: 'nz-list, [nz-list]',
@@ -102,7 +112,20 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     '[class.ant-list-bordered]': 'nzBordered',
     '[class.ant-list-loading]': 'nzLoading',
     '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem'
-  }
+  },
+  imports: [
+    NgTemplateOutlet,
+    NgForOf,
+    NzListHeaderComponent,
+    NgIf,
+    NzOutletModule,
+    NzSpinModule,
+    NzGridModule,
+    NzListEmptyComponent,
+    NzListFooterComponent,
+    NzListPaginationComponent
+  ],
+  standalone: true
 })
 export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzBordered: BooleanInput;
