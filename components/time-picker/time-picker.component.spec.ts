@@ -34,15 +34,13 @@ describe('time-picker', () => {
           ReactiveFormsModule,
           NzI18nModule,
           NzTimePickerModule,
-          NzFormModule
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
+          NzFormModule,
           NzTestTimePickerComponent,
           NzTestTimePickerStatusComponent,
           NzTestTimePickerDirComponent,
           NzTestTimePickerInFormComponent
-        ]
+        ],
+        schemas: [NO_ERRORS_SCHEMA]
       });
       TestBed.compileComponents();
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -467,7 +465,9 @@ describe('time-picker', () => {
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzBorderless]="nzBorderless"
     ></nz-time-picker>
-  `
+  `,
+  imports: [NzTimePickerComponent, FormsModule],
+  standalone: true
 })
 export class NzTestTimePickerComponent {
   open = false;
@@ -486,14 +486,22 @@ export class NzTestTimePickerComponent {
 }
 
 @Component({
-  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `
+  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `,
+  imports: [NzTimePickerComponent],
+  standalone: true
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
-  template: ` <div [dir]="dir"><nz-time-picker></nz-time-picker></div> `
+  template: `
+    <div [dir]="dir">
+      <nz-time-picker></nz-time-picker>
+    </div>
+  `,
+  imports: [NzTimePickerComponent, BidiModule],
+  standalone: true
 })
 export class NzTestTimePickerDirComponent {
   dir: Direction = 'ltr';
@@ -508,7 +516,9 @@ export class NzTestTimePickerDirComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
+  standalone: true
 })
 export class NzTestTimePickerInFormComponent {
   timePickerForm = new FormGroup({
