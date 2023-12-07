@@ -3,8 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import {
@@ -17,18 +15,17 @@ import {
 import { NzSkeletonComponent } from './skeleton.component';
 
 @NgModule({
-  declarations: [
-    NzSkeletonComponent,
+  imports: [
     NzSkeletonElementDirective,
+    NzSkeletonComponent,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementImageComponent,
     NzSkeletonElementInputComponent
   ],
-  imports: [BidiModule, CommonModule],
   exports: [
-    NzSkeletonComponent,
     NzSkeletonElementDirective,
+    NzSkeletonComponent,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementImageComponent,

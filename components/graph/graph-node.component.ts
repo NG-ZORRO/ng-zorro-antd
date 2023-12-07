@@ -4,6 +4,7 @@
  */
 
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -50,7 +51,9 @@ interface Info {
     '[class.nz-graph-node-expanded]': 'node.expanded',
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzGraphNodeComponent implements OnInit, OnDestroy {
   @Input() node!: NzGraphNode | NzGraphGroupNode;

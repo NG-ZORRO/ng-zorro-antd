@@ -11,7 +11,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `
+  template: ` <ng-content></ng-content> `,
+  standalone: true
 })
 export class NzFooterComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {

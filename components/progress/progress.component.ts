@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,8 +21,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
   NzProgressCirclePath,
@@ -57,6 +60,8 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   selector: 'nz-progress',
   exportAs: 'nzProgress',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgIf, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet, NgForOf, NgStyle],
   template: `
     <ng-template #progressInfoTemplate>
       <span class="ant-progress-text" *ngIf="nzShowInfo">

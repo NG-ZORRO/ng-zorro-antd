@@ -3,18 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAlertComponent } from './alert.component';
 
 @NgModule({
-  declarations: [NzAlertComponent],
   exports: [NzAlertComponent],
-  imports: [BidiModule, CommonModule, NzIconModule, NzOutletModule]
+  imports: [NzAlertComponent]
 })
 export class NzAlertModule {}

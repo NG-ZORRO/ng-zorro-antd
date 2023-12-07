@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,6 +20,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMenuModeType } from './menu.types';
 
@@ -53,7 +57,9 @@ import { NzMenuModeType } from './menu.types';
     '(click)': 'clickTitle()',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
-  }
+  },
+  imports: [NzIconModule, NgIf, NzOutletModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  standalone: true
 })
 export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   @Input() nzIcon: string | null = null;

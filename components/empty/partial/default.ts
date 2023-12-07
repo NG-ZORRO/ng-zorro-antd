@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-empty-default',
   exportAs: 'nzEmptyDefault',
+  standalone: true,
   template: `
     <svg
       class="ant-empty-img-default"

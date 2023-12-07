@@ -30,7 +30,8 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
     '[class.ant-btn-group-rtl]': `dir === 'rtl'`
   },
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `
+  template: ` <ng-content></ng-content> `,
+  standalone: true
 })
 export class NzButtonGroupComponent implements OnDestroy, OnInit {
   @Input() nzSize: NzButtonGroupSize = 'default';

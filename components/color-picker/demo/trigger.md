@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 7
 title:
   zh-CN: 自定义触发事件
   en-US: Custom Trigger Event

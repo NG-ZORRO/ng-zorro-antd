@@ -15,7 +15,8 @@ import { NzTabPositionMode } from './interfaces';
   host: {
     class: 'ant-tabs-ink-bar',
     '[class.ant-tabs-ink-bar-animated]': '_animated'
-  }
+  },
+  standalone: true
 })
 export class NzTabsInkBarDirective {
   @Input() position: NzTabPositionMode = 'horizontal';

@@ -3,36 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { ClipboardModule } from '@angular/cdk/clipboard';
-import { PlatformModule } from '@angular/cdk/platform';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
-import { NzI18nModule } from 'ng-zorro-antd/i18n';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
 import { NzTypographyComponent } from './typography.component';
 
 @NgModule({
-  imports: [
-    BidiModule,
-    CommonModule,
-    NzIconModule,
-    NzToolTipModule,
-    NzInputModule,
-    NzI18nModule,
-    NzTransButtonModule,
-    ClipboardModule,
-    NzOutletModule
-  ],
-  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
-  declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
+  imports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent],
+  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
 })
 export class NzTypographyModule {}

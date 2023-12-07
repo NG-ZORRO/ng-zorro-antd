@@ -25,7 +25,10 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-@Component({ template: '' })
+@Component({
+  template: '',
+  standalone: true
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   static ngAcceptInputType_nzDirectoryTree: BooleanInput;

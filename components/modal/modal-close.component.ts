@@ -5,6 +5,9 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -21,7 +24,9 @@ import { ModalOptions } from './modal-types';
     class: 'ant-modal-close',
     'aria-label': 'Close'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzModalCloseComponent {
   constructor(public config: ModalOptions) {}

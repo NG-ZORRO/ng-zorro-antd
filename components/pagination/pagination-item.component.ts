@@ -18,6 +18,8 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
+import { NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'li[nz-pagination-item]',
@@ -45,7 +47,12 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
                 <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
-                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                  <span
+                    *ngSwitchCase="'rtl'"
+                    nz-icon
+                    nzType="double-right"
+                    class="ant-pagination-item-link-icon"
+                  ></span>
                   <span *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
                 </ng-container>
                 <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
@@ -76,7 +83,9 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
     '[class.ant-pagination-item-active]': 'active',
     '[attr.title]': 'title',
     '(click)': 'clickItem()'
-  }
+  },
+  imports: [NgSwitch, NgSwitchCase, NzIconModule, NgSwitchDefault, NgTemplateOutlet],
+  standalone: true
 })
 export class NzPaginationItemComponent implements OnChanges {
   static ngAcceptInputType_type: PaginationItemType | string | null | undefined;

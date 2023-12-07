@@ -15,13 +15,18 @@ cover: https://img.alicdn.com/imgextra/i3/O1CN0194FGAd1FlrwQShfR8_!!600000000052
 - 页面需要添加水印标识版权时使用。
 - 适用于防止信息盗用。
 
+module:
 ```ts
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+```
+standalone:
+```ts
+import { NzWaterMarkComponent } from 'ng-zorro-antd/water-mark';
 ```
 
 ## API
 
-### nz-water-mark
+### nz-water-mark:standalone
 
 | 参数        | 说明                                                        | 类型                 | 默认值                   |
 | ----------- | ----------------------------------------------------------- | -------------------- | ------------------------ |

@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -23,6 +24,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
@@ -72,7 +76,9 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
     </ng-template>
     <!-- Grasp items -->
     <ng-content></ng-content>
-  `
+  `,
+  imports: [NgIf, NgTemplateOutlet, NgForOf, NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;

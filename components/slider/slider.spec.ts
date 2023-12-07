@@ -1220,6 +1220,7 @@ class SliderWithFormControlComponent {
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
+
   value = 0;
 }
 

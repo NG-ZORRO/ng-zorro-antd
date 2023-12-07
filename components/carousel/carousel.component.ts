@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -105,8 +106,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   host: {
     class: 'ant-carousel',
     '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir ==='rtl'`
-  }
+    '[class.ant-carousel-rtl]': `dir === 'rtl'`
+  },
+  imports: [NgIf, NgForOf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

@@ -30,17 +30,17 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 npm install cron-parser
 ```
 
-### nz-cron-expression
+### nz-cron-expression:standalone
 
-| 参数             | 说明             | 类型                          | 默认值      |
-|----------------|----------------|-----------------------------|----------|
-| `[nzType]` | cron 规则类型      | `'linux'｜'spring'`          | `linux`  |
-| `[nzSize]`     | 设置输入框大小        | `'large'｜'small'｜'default'` | `default` |
-| `[nzDisabled]`     | 禁用 | `boolean` | `false`   |
-| `[nzBorderless]`     | 是否隐藏边框        | `boolean` | `false`   |
-| `[nzCollapseDisable]`  | 隐藏折叠面板         | `boolean`                   | `false`  |
-| `[nzExtra]`     | 自定义渲染右侧的内容 | `TemplateRef<void>`         | -        |
-| `[nzSemantic]`     | 自定义渲染下次执行时间 | `TemplateRef<void>`         | -        |
+| 参数                  | 说明                   | 类型                          | 默认值    |
+| --------------------- | ---------------------- | ----------------------------- | --------- |
+| `[nzType]`            | cron 规则类型          | `'linux'｜'spring'`           | `linux`   |
+| `[nzSize]`            | 设置输入框大小         | `'large'｜'small'｜'default'` | `default` |
+| `[nzDisabled]`        | 禁用                   | `boolean`                     | `false`   |
+| `[nzBorderless]`      | 是否隐藏边框           | `boolean`                     | `false`   |
+| `[nzCollapseDisable]` | 隐藏折叠面板           | `boolean`                     | `false`   |
+| `[nzExtra]`           | 自定义渲染右侧的内容   | `TemplateRef<void>`           | -         |
+| `[nzSemantic]`        | 自定义渲染下次执行时间 | `TemplateRef<void>`           | -         |
 
 ## 注意
 

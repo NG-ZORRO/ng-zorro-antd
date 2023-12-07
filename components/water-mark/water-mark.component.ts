@@ -30,6 +30,7 @@ const FontGap = 3;
 
 @Component({
   selector: 'nz-water-mark',
+  standalone: true,
   exportAs: 'NzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: ` <ng-content></ng-content> `,
@@ -120,7 +121,8 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
       width: '100%',
       height: '100%',
       pointerEvents: 'none',
-      backgroundRepeat: 'repeat'
+      backgroundRepeat: 'repeat',
+      visibility: 'visible'
     };
 
     /** Calculate the style of the nzOffset */

@@ -13,7 +13,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   exportAs: 'nzOptionGroup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `
+  template: ` <ng-content></ng-content> `,
+  standalone: true
 })
 export class NzOptionGroupComponent implements OnChanges {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;

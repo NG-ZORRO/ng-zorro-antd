@@ -34,7 +34,8 @@ export const DefaultTooltipIcon = {
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
     '[class.ant-form-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

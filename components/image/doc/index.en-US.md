@@ -18,7 +18,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ## API
 
-### [nz-image]
+### [nz-image]:standalone
 
 | Property            | Description                                                                                                                                                                                        | Type        | Default | Global Config |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------- | ------------- |
@@ -71,7 +71,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | next(): void                  | Next image          |
 | close(): void                 | Close image preview |
 
-### NzImageGroupComponent
+### NzImageGroupComponent:standalone
 
 | Property    | Description                                                                                                                     | Type     | Default |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |

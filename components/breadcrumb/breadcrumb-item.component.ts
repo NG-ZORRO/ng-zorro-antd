@@ -3,11 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 
-import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzBreadcrumb } from './breadcrumb';
+import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +19,8 @@ import { NzBreadcrumb } from './breadcrumb';
   selector: 'nz-breadcrumb-item',
   exportAs: 'nzBreadcrumbItem',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgIf, NgTemplateOutlet, NzBreadCrumbSeparatorComponent, NzDropDownModule, NzIconModule, NzOutletModule],
   template: `
     <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">

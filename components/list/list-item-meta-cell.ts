@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 @Component({
   selector: 'nz-list-item-meta-title',
@@ -13,7 +16,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
       <ng-content></ng-content>
     </h4>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzListItemMetaTitleComponent {}
 
@@ -25,7 +29,8 @@ export class NzListItemMetaTitleComponent {}
       <ng-content></ng-content>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzListItemMetaDescriptionComponent {}
 
@@ -38,7 +43,9 @@ export class NzListItemMetaDescriptionComponent {}
       <ng-content *ngIf="!nzSrc"></ng-content>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzAvatarModule, NgIf],
+  standalone: true
 })
 export class NzListItemMetaAvatarComponent {
   @Input() nzSrc?: string;

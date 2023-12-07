@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-sider-trigger]',
@@ -42,7 +44,9 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
     '[class.ant-layout-sider-zero-width-trigger]': 'isZeroTrigger',
     '[class.ant-layout-sider-zero-width-trigger-right]': 'isZeroTrigger && nzReverseArrow',
     '[class.ant-layout-sider-zero-width-trigger-left]': 'isZeroTrigger && !nzReverseArrow'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  standalone: true
 })
 export class NzSiderTriggerComponent implements OnChanges, OnInit {
   @Input() nzCollapsed = false;

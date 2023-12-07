@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -27,6 +28,7 @@ import type { editor, IDisposable } from 'monaco-editor';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
@@ -58,7 +60,9 @@ declare const monaco: NzSafeAny;
       useExisting: forwardRef(() => NzCodeEditorComponent),
       multi: true
     }
-  ]
+  ],
+  imports: [NgIf, NzSpinComponent, NgTemplateOutlet],
+  standalone: true
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzLoading: BooleanInput;

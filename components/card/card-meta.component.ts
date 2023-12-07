@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 @Component({
   selector: 'nz-card-meta',
@@ -24,7 +27,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
       </div>
     </div>
   `,
-  host: { class: 'ant-card-meta' }
+  host: { class: 'ant-card-meta' },
+  imports: [NgIf, NgTemplateOutlet, NzOutletModule],
+  standalone: true
 })
 export class NzCardMetaComponent {
   @Input() nzTitle: string | TemplateRef<void> | null = null;

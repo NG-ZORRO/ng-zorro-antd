@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,6 +29,8 @@ import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
+import { NzPaginationDefaultComponent } from './pagination-default.component';
+import { NzPaginationSimpleComponent } from './pagination-simple.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
@@ -77,7 +80,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent],
+  standalone: true
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

@@ -6,7 +6,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nzSpaceItem]'
+  selector: '[nzSpaceItem]',
+  standalone: true
 })
 export class NzSpaceItemDirective {
   constructor() {}

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,7 +14,11 @@ import {
   TemplateRef
 } from '@angular/core';
 
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
 
 @Component({
   selector: 'nz-tree-node-title',
@@ -63,7 +68,9 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
     '[class.ant-tree-node-content-wrapper-open]': `!selectMode && isSwitcherOpen`,
     '[class.ant-tree-node-content-wrapper-close]': `!selectMode && isSwitcherClose`,
     '[class.ant-tree-node-selected]': `!selectMode && isSelected`
-  }
+  },
+  imports: [NgTemplateOutlet, NgIf, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent],
+  standalone: true
 })
 export class NzTreeNodeTitleComponent implements OnChanges {
   @Input() searchValue!: string;

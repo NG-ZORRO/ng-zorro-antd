@@ -4,6 +4,7 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,6 +29,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzSelectItemComponent } from './select-item.component';
+import { NzSelectPlaceholderComponent } from './select-placeholder.component';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
 
@@ -89,7 +92,18 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
-  host: { class: 'ant-select-selector' }
+  host: { class: 'ant-select-selector' },
+  imports: [
+    NgSwitch,
+    NzSelectSearchComponent,
+    NgSwitchCase,
+    NzSelectItemComponent,
+    NgIf,
+    NgSwitchDefault,
+    NgFor,
+    NzSelectPlaceholderComponent
+  ],
+  standalone: true
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;

@@ -4,6 +4,9 @@
  */
 
 import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { CronChangeType, TimeType } from './typings';
 
@@ -24,7 +27,9 @@ import { CronChangeType, TimeType } from './typings';
         (ngModelChange)="setValue()"
       />
     </div>
-  `
+  `,
+  imports: [NzInputModule, FormsModule],
+  standalone: true
 })
 export class NzCronExpressionInputComponent {
   @Input() value: string = '0';
