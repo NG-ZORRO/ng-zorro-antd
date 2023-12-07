@@ -420,6 +420,40 @@ describe('Preview', () => {
       flush();
     }));
 
+    it('should detect mouse zoom direction correctly', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      expect(previewInstance.isDragging).toEqual(true);
+      let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
+      expect(isZoomingInside).toBeFalsy();
+      isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
+      expect(isZoomingInside).toBeTruthy();
+    }));
+
+    it('should call correct methods when zooming in or out', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      previewInstance['zoom'] = 5;
+      spyOn(previewInstance, 'onZoomOut');
+      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      previewInstance['handleImageScaleWhileZoomingWithMouse'](10);
+      expect(previewInstance.onZoomOut).toHaveBeenCalled();
+      expect(previewInstance['reCenterImage']).not.toHaveBeenCalled();
+
+      previewInstance['zoom'] = 0.5;
+      spyOn(previewInstance, 'onZoomIn');
+      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      previewInstance['handleImageScaleWhileZoomingWithMouse'](-10);
+      expect(previewInstance.onZoomOut).toHaveBeenCalled();
+      expect(previewInstance['reCenterImage']).toHaveBeenCalled();
+    }));
+
     it('should container click work', fakeAsync(() => {
       context.firstSrc = QUICK_SRC;
       fixture.detectChanges();
