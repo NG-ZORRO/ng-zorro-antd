@@ -4,7 +4,8 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -31,7 +32,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
@@ -46,6 +47,7 @@ import {
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeService } from './tree.service';
 
 export function NzTreeServiceFactory(): NzTreeBaseService {
@@ -166,7 +168,19 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.ant-tree-icon-hide]': `!nzSelectMode && !nzShowIcon`,
     '[class.ant-tree-block-node]': `!nzSelectMode && nzBlockNode`,
     '[class.draggable-tree]': `nzDraggable`
-  }
+  },
+  imports: [
+    NgStyle,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    NgIf,
+    CdkVirtualForOf,
+    NgTemplateOutlet,
+    NzNoAnimationModule,
+    NgForOf,
+    NzTreeNodeBuiltinComponent
+  ],
+  standalone: true
 })
 export class NzTreeComponent
   extends NzTreeBase
