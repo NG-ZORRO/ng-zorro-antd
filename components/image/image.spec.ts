@@ -29,7 +29,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import {
@@ -54,11 +54,21 @@ describe('Basics', () => {
   let fixture: ComponentFixture<TestImageBasicsComponent>;
   let context: TestImageBasicsComponent;
   let debugElement: DebugElement;
+  let zone: MockNgZone;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
-      providers: [{ provide: Overlay, useClass: Overlay }, NgZone]
+      providers: [
+        { provide: Overlay, useClass: Overlay },
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
+          }
+        }
+      ]
     });
     TestBed.compileComponents();
   }));

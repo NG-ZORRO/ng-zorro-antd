@@ -129,7 +129,7 @@ const NZ_DEFAULT_ROTATE = 0;
     tabindex: '-1',
     role: 'document'
   },
-  imports: [NgForOf, NzIconModule, CdkDragHandle, CdkDrag, NgIf],
+  imports: [NgForOf, NzIconModule, NgIf, CdkDrag, CdkDragHandle],
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
