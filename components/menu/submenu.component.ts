@@ -33,7 +33,7 @@ import {
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -149,7 +149,7 @@ const listOfHorizontalPositions = [
     NzSubMenuTitleComponent,
     NzSubmenuInlineChildComponent,
     NgIf,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NzSubmenuNoneInlineChildComponent,
     OverlayModule
   ],

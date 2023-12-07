@@ -35,7 +35,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
@@ -140,7 +140,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzNoAnimationModule, NgIf, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
+  imports: [NzNoAnimationDirective, NgIf, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>

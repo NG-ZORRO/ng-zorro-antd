@@ -45,7 +45,7 @@ import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestF
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -203,7 +203,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   imports: [
     NzSelectTopControlComponent,
     CdkOverlayOrigin,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NzSelectArrowComponent,
     NgIf,
     NzFormPatchModule,
