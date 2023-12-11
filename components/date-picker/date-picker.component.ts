@@ -22,6 +22,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Inject,
   Input,
@@ -36,8 +37,7 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -47,11 +47,11 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -62,7 +62,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -264,7 +264,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     DateRangePopupComponent,
     CdkConnectedOverlay,
     NzOverlayModule,
-    NzNoAnimationModule
+    NzNoAnimationDirective
   ],
   standalone: true
 })
