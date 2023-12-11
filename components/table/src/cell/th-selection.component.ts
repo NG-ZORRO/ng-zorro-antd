@@ -19,6 +19,8 @@ import {
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzTableSelectionComponent } from '../addon/selection.component';
+
 @Component({
   selector: 'th[nzSelections],th[nzChecked],th[nzShowCheckbox],th[nzShowRowSelection]',
   preserveWhitespaces: false,
@@ -37,7 +39,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     ></nz-table-selection>
     <ng-content></ng-content>
   `,
-  host: { class: 'ant-table-selection-column' }
+  host: { class: 'ant-table-selection-column' },
+  imports: [NzTableSelectionComponent],
+  standalone: true
 })
 export class NzThSelectionComponent implements OnChanges {
   static ngAcceptInputType_nzShowCheckbox: BooleanInput;

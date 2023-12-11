@@ -10,7 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 
 @Directive({
-  selector: 'td[nzCellControl],th[nzCellControl]'
+  selector: 'td[nzCellControl],th[nzCellControl]',
+  standalone: true
 })
 export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
   @Input() nzCellControl: string | null = null;

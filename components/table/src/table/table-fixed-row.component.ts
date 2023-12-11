@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -34,8 +35,12 @@ import { NzTableStyleService } from '../table-style.service';
         <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       </div>
     </td>
-    <ng-template #contentTemplate><ng-content></ng-content></ng-template>
-  `
+    <ng-template #contentTemplate>
+      <ng-content></ng-content>
+    </ng-template>
+  `,
+  imports: [NgIf, AsyncPipe, NgTemplateOutlet],
+  standalone: true
 })
 export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('tdElement', { static: true }) tdElement!: ElementRef;

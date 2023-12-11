@@ -4,6 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -26,6 +27,8 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzTableFilterComponent } from '../addon/filter.component';
+import { NzTableSortersComponent } from '../addon/sorters.component';
 import {
   NzTableFilterFn,
   NzTableFilterList,
@@ -72,7 +75,9 @@ import {
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
     '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NzTableFilterComponent, NgIf, NgTemplateOutlet, NzTableSortersComponent],
+  standalone: true
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   static ngAcceptInputType_nzShowSort: BooleanInput;

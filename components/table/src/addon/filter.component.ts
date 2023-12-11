@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,14 +18,21 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual } from 'ng-zorro-antd/core/util';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzRadioComponent } from 'ng-zorro-antd/radio';
 
 import { NzTableFilterList } from '../table.types';
+import { NzFilterTriggerComponent } from './filter-trigger.component';
 
 interface NzThItemInterface {
   text: string;
@@ -74,7 +82,20 @@ interface NzThItemInterface {
       </nz-dropdown-menu>
     </ng-container>
   `,
-  host: { class: 'ant-table-filter-column' }
+  host: { class: 'ant-table-filter-column' },
+  imports: [
+    NgTemplateOutlet,
+    NgIf,
+    NzFilterTriggerComponent,
+    NzIconModule,
+    NzDropDownModule,
+    NgForOf,
+    NzRadioComponent,
+    NzCheckboxModule,
+    FormsModule,
+    NzButtonModule
+  ],
+  standalone: true
 })
 export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;

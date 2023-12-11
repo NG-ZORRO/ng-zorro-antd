@@ -4,6 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -43,7 +44,9 @@ import { NzTrDirective } from './tr.directive';
     <ng-container *ngIf="!isInsideTable">
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </ng-container>
-  `
+  `,
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
   private destroy$ = new Subject<void>();
