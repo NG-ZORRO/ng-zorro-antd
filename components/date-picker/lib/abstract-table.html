@@ -2,16 +2,12 @@
   <thead *ngIf="headRow && headRow.length > 0">
     <tr role="row">
       <th *ngIf="showWeek" role="columnheader"></th>
-      <th *ngFor="let cell of headRow" role="columnheader" title="{{ cell.title }}">
-        {{ cell.content }}
-      </th>
+      <th *ngFor="let cell of headRow" role="columnheader" title="{{ cell.title }}"> {{ cell.content }} </th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let row of bodyRows; trackBy: trackByBodyRow" [ngClass]="row.classMap!" role="row">
-      <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-cell-week">
-        {{ row.weekNum }}
-      </td>
+      <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-cell-week"> {{ row.weekNum }} </td>
       <td
         *ngFor="let cell of row.dateCells; trackBy: trackByBodyColumn"
         title="{{ cell.title }}"
@@ -49,17 +45,13 @@
               [class.ant-picker-calendar-date-today]="cell.isToday"
             >
               <ng-container *ngIf="cell.fullCellRender; else defaultCell">
-                <ng-container
-                  *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }"
-                >
+                <ng-container *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }">
                 </ng-container>
               </ng-container>
               <ng-template #defaultCell>
                 <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
                 <div class="{{ prefixCls }}-date-content">
-                  <ng-container
-                    *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }"
-                  >
+                  <ng-container *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }">
                   </ng-container>
                 </div>
               </ng-template>
