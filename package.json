@@ -19,9 +19,11 @@
     "stage-release": "ts-node --project scripts/release/tsconfig.json scripts/release/release.ts",
     "ng": "ng",
     "gulp": "gulp",
-    "lint": "eslint --cache . --ext .ts,.html && npm run lint:style",
-    "lint:fix": "eslint --fix --cache . --ext .ts,.html && npm run lint-fix:style",
+    "lint": "npm run lint:script && npm run lint:style",
+    "lint:script": "eslint --cache . --ext .ts,.html",
     "lint:style": "stylelint components/**/*.less",
+    "lint:fix": "npm run lint-fix:script && npm run lint-fix:style",
+    "lint-fix:script": "npm run lint:script -- --fix",
     "lint-fix:style": "npm run lint:style -- --fix",
     "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
     "prepare": "husky install"
