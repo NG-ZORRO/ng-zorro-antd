@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   HostListener,
   Input,
@@ -28,17 +29,16 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
@@ -50,7 +50,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -233,7 +233,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzIconModule,
     NzFormPatchModule,
     NzOverlayModule,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NgClass,
     NgStyle,
     NzEmptyModule,

@@ -5,7 +5,7 @@ import { Component, Inject, Input, TemplateRef, ViewChild } from '@angular/core'
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NZ_DRAWER_DATA } from 'ng-zorro-antd/drawer/drawer-options';
 
@@ -18,7 +18,7 @@ describe('NzDrawerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationModule],
+        imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationDirective],
         declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
       }).compileComponents();
     })

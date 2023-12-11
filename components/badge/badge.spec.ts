@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
@@ -13,7 +13,7 @@ import { NzBadgeModule } from './badge.module';
 describe('badge', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzBadgeModule, NzNoAnimationModule, BrowserAnimationsModule],
+      imports: [BidiModule, NzBadgeModule, NzNoAnimationDirective, BrowserAnimationsModule],
       declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
     });
     TestBed.compileComponents();

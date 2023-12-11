@@ -27,7 +27,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
 
@@ -66,7 +66,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgStyle, NzNoAnimationModule],
+  imports: [NgClass, NgStyle, NzNoAnimationDirective],
   standalone: true
 })
 export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {

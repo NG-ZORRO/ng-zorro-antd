@@ -39,7 +39,7 @@ import { distinctUntilChanged, filter, map, takeUntil, tap, withLatestFrom } fro
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
@@ -239,7 +239,7 @@ const listOfPositions = [
     NzOverlayModule,
     CdkConnectedOverlay,
     NgClass,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NgStyle,
     NzTreeModule,
     NgIf,
