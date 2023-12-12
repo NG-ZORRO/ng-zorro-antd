@@ -134,7 +134,10 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
 
-  constructor(private formBuilder: FormBuilder, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   formControl = this.formBuilder.control('');
 

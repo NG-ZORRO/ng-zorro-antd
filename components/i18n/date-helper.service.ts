@@ -30,7 +30,10 @@ export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
 export abstract class DateHelperService {
   protected config: NzDateConfig;
 
-  constructor(protected i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig | null) {
+  constructor(
+    protected i18n: NzI18nService,
+    @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig | null
+  ) {
     this.config = mergeDateConfig(config);
   }
 

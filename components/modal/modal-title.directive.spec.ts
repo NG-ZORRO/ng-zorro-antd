@@ -17,21 +17,19 @@ describe('modal title directive', () => {
   let testComponent: TestDirectiveTitleComponent;
   let modalService: NzModalService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzModalModule, NoopAnimationsModule],
-        declarations: [
-          TestDirectiveTitleComponent,
-          TestDirectiveTitleInServiceComponent,
-          TestDirectiveTitleWithInitOpenedComponent
-        ],
-        providers: [NzModalService]
-      });
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzModalModule, NoopAnimationsModule],
+      declarations: [
+        TestDirectiveTitleComponent,
+        TestDirectiveTitleInServiceComponent,
+        TestDirectiveTitleWithInitOpenedComponent
+      ],
+      providers: [NzModalService]
+    });
 
-      TestBed.compileComponents();
-    })
-  );
+    TestBed.compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestDirectiveTitleComponent);

@@ -53,7 +53,11 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   private currentIndents: string = '';
   private changeSubscription: Subscription;
 
-  constructor(private treeNode: NzNodeBase<T>, private tree: NzTreeView<T>, private cdr: ChangeDetectorRef) {
+  constructor(
+    private treeNode: NzNodeBase<T>,
+    private tree: NzTreeView<T>,
+    private cdr: ChangeDetectorRef
+  ) {
     this.buildIndents();
     this.checkLast();
 

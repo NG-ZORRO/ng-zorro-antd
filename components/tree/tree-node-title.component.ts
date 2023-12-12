@@ -45,7 +45,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
           <span nz-icon *ngIf="icon" [nzType]="icon"></span>
         </span>
       </span>
-      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue:'i':'font-highlight'"></span>
+      <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue : 'i' : 'font-highlight'"></span>
     </ng-container>
     <nz-tree-drop-indicator
       *ngIf="showIndicator"

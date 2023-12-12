@@ -47,7 +47,10 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
   private destroy$ = new Subject<boolean>();
-  constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone) {}
+  constructor(
+    private nzResizeObserver: NzResizeObserver,
+    private ngZone: NgZone
+  ) {}
   trackByFunc(_: number, key: string): string {
     return key;
   }

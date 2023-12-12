@@ -75,7 +75,10 @@ export class NzTimelineItemComponent implements OnChanges {
   borderColor: string | null = null;
   position?: NzTimelinePosition;
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private timelineService: TimelineService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.timelineService.markForCheck();

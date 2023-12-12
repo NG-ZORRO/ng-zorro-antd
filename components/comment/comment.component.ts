@@ -71,7 +71,10 @@ export class NzCommentComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

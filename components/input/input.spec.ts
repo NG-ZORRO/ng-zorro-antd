@@ -13,22 +13,20 @@ import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 
 describe('input', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputWithInputComponent,
-          NzTestInputWithTextAreaComponent,
-          NzTestInputFormComponent,
-          NzTestInputWithStatusComponent,
-          NzTestInputWithDirComponent,
-          NzTestInputInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputWithInputComponent,
+        NzTestInputWithTextAreaComponent,
+        NzTestInputFormComponent,
+        NzTestInputWithStatusComponent,
+        NzTestInputWithDirComponent,
+        NzTestInputInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;

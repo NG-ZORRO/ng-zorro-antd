@@ -32,7 +32,10 @@ export class NzResizableService implements OnDestroy {
   documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   mouseEnteredOutsideAngular$ = new Subject<boolean>();
 
-  constructor(private ngZone: NgZone, @Inject(DOCUMENT) document: NzSafeAny) {
+  constructor(
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) document: NzSafeAny
+  ) {
     this.document = document;
   }
 

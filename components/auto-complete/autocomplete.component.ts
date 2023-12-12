@@ -111,7 +111,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
-  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> =
+    new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;

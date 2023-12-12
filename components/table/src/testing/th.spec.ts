@@ -242,8 +242,8 @@ export class NzThTestTableDefaultFilterComponent {
             ? 1
             : -1
           : b[this.sortName!] > a[this.sortName!]
-          ? 1
-          : -1
+            ? 1
+            : -1
       );
     } else {
       this.displayData = data;

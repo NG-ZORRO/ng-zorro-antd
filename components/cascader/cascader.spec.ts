@@ -59,33 +59,31 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          NzCascaderModule,
-          NzIconTestModule,
-          NzFormModule
-        ],
-        declarations: [
-          NzDemoCascaderDefaultComponent,
-          NzDemoCascaderLoadDataComponent,
-          NzDemoCascaderRtlComponent,
-          NzDemoCascaderStatusComponent,
-          NzDemoCascaderInFormComponent
-        ]
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        NzCascaderModule,
+        NzIconTestModule,
+        NzFormModule
+      ],
+      declarations: [
+        NzDemoCascaderDefaultComponent,
+        NzDemoCascaderLoadDataComponent,
+        NzDemoCascaderRtlComponent,
+        NzDemoCascaderStatusComponent,
+        NzDemoCascaderInFormComponent
+      ]
+    }).compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

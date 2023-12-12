@@ -64,7 +64,11 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
     });
   });
 
-  constructor(private el: ElementRef, @Inject(DOCUMENT) private document: Document, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private el: ElementRef,
+    @Inject(DOCUMENT) private document: Document,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.observer.observe(this.el.nativeElement, {

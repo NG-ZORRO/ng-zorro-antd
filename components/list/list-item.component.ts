@@ -87,7 +87,10 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
-  constructor(private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private parentComp: NzListComponent,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {

@@ -148,7 +148,7 @@ const listOfPositions = [
     <div cdkOverlayOrigin class="ant-select-selector">
       <ng-container *ngIf="isMultiple">
         <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
+          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"

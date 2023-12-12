@@ -115,7 +115,10 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() @SkipSelf() private nzFormDirective: NzFormDirective) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() @SkipSelf() private nzFormDirective: NzFormDirective
+  ) {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')

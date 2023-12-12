@@ -9,23 +9,21 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
 describe('time-picker-panel', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          FormsModule,
-          NzI18nModule,
-          NzTimePickerPanelComponent,
-          NzTestTimePanelComponent,
-          NzTestTimePanelDisabledComponent,
-          NzTest12HourTimePanelComponent,
-          NzTest12HourTimePanelDisabledComponent
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        NzI18nModule,
+        NzTimePickerPanelComponent,
+        NzTestTimePanelComponent,
+        NzTestTimePanelDisabledComponent,
+        NzTest12HourTimePanelComponent,
+        NzTest12HourTimePanelDisabledComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelComponent>;

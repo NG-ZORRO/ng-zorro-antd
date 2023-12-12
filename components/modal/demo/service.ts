@@ -60,7 +60,10 @@ export class NzDemoModalServiceComponent {
   tplModalButtonLoading = false;
   disabled = false;
 
-  constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   createModal(): void {
     this.modal.create({
