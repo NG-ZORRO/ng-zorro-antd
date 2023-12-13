@@ -18,9 +18,14 @@ import Spy = jasmine.Spy;
 
 const prepareTest = (componentInstance?: NzSafeAny): ComponentBed<NzSafeAny> =>
   createComponentBed(componentInstance, {
-    declarations: [NzTreeNodeBuiltinComponent],
-    providers: [],
-    imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule]
+    imports: [
+      NzTreeModule,
+      NoopAnimationsModule,
+      FormsModule,
+      ReactiveFormsModule,
+      NzIconTestModule,
+      NzTreeNodeBuiltinComponent
+    ]
   });
 
 describe('tree', () => {

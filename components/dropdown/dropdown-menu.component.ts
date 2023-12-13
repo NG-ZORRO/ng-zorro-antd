@@ -5,6 +5,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -64,7 +65,9 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, NgStyle, NzNoAnimationDirective],
+  standalone: true
 })
 export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
   mouseState$ = new BehaviorSubject<boolean>(false);

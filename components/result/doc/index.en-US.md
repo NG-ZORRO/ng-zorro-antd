@@ -18,7 +18,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 ## API
 
-### nz-result
+### nz-result:standalone
 
 | Property     | Description                             | Type                                                                              | Default  |
 | ------------ | --------------------------------------- | --------------------------------------------------------------------------------- | -------- |

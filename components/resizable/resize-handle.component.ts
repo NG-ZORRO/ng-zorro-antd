@@ -36,7 +36,10 @@ export type NzResizeDirection =
   | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
-  constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
+  constructor(
+    public direction: NzResizeDirection,
+    public mouseEvent: MouseEvent | TouchEvent
+  ) {}
 }
 
 const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveListenerOptions({ passive: true });
@@ -59,7 +62,8 @@ const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveLis
     '[class.nz-resizable-handle-cursor-type-grid]': `nzCursorType === 'grid'`,
     '[class.nz-resizable-handle-cursor-type-window]': `nzCursorType === 'window'`
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  standalone: true
 })
 export class NzResizeHandleComponent implements OnInit {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
@@ -102,11 +106,11 @@ export class NzResizeHandleComponent implements OnInit {
 
   @HostListener('pointerdown', ['$event'])
   onPointerDown(event: PointerEvent): void {
-    this.host.nativeElement.setPointerCapture(event.pointerId);
+    (event.target as HTMLElement).setPointerCapture(event.pointerId);
   }
 
   @HostListener('pointerup', ['$event'])
   onPointerUp(event: PointerEvent): void {
-    this.host.nativeElement.releasePointerCapture(event.pointerId);
+    (event.target as HTMLElement).releasePointerCapture(event.pointerId);
   }
 }

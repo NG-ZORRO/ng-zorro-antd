@@ -12,21 +12,19 @@ import { NzDemoCommentListComponent } from './demo/list';
 import { NzDemoCommentNestedComponent } from './demo/nested';
 
 describe('NzCommentComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCommentModule, NzListModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzDemoCommentBasicComponent,
-          NzDemoCommentEditorComponent,
-          NzDemoCommentListComponent,
-          NzDemoCommentNestedComponent,
-          NzTestCommentRtlComponent
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCommentModule, NzListModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzDemoCommentBasicComponent,
+        NzDemoCommentEditorComponent,
+        NzDemoCommentListComponent,
+        NzDemoCommentNestedComponent,
+        NzTestCommentRtlComponent
+      ]
+    }).compileComponents();
+  }));
 
   describe('default', () => {
     it('should basic work', () => {

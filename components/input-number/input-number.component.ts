@@ -6,6 +6,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,11 +27,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -42,6 +43,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-input-number',
@@ -111,7 +113,9 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
     '[class.ant-input-number-readonly]': 'nzReadOnly',
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
-  }
+  },
+  imports: [NzIconModule, FormsModule, NzFormPatchModule, NgIf],
+  standalone: true
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;

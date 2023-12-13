@@ -12,11 +12,11 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzRequired nzFor="password" nzSpan="3" nzLabelWrap>
+        <nz-form-label nzRequired nzFor="label-wrap-password" nzSpan="3" nzLabelWrap>
           Long text label Long text label
         </nz-form-label>
         <nz-form-control nzErrorTip="Please input your Password!" nzSpan="8">
-          <input formControlName="password" nz-input type="password" id="password" />
+          <input formControlName="password" nz-input type="password" id="label-wrap-password" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

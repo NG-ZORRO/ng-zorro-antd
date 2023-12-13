@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,8 +14,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import {
+  NzListItemMetaAvatarComponent,
+  NzListItemMetaDescriptionComponent,
   NzListItemMetaDescriptionComponent as DescriptionComponent,
+  NzListItemMetaTitleComponent,
   NzListItemMetaTitleComponent as TitleComponent
 } from './list-item-meta-cell';
 
@@ -50,7 +56,16 @@ import {
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-list-item-meta'
-  }
+  },
+  imports: [
+    NzListItemMetaAvatarComponent,
+    NgIf,
+    NgTemplateOutlet,
+    NzListItemMetaTitleComponent,
+    NzOutletModule,
+    NzListItemMetaDescriptionComponent
+  ],
+  standalone: true
 })
 export class NzListItemMetaComponent {
   avatarStr = '';

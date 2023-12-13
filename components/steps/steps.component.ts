@@ -54,7 +54,8 @@ export type nzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
     '[class.ant-steps-rtl]': `dir === 'rtl'`,
     '[class.ant-steps-with-progress]': 'showProgress'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  standalone: true
 })
 export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   static ngAcceptInputType_nzProgressDot: BooleanInput | nzProgressDotTemplate | undefined | null;

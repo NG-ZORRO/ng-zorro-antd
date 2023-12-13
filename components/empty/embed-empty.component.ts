@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ComponentPortal, Portal, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, Portal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -26,6 +27,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './config';
+import { NzEmptyComponent } from './empty.component';
 
 function getEmptySize(componentName: string): NzEmptySize {
   switch (componentName) {
@@ -61,7 +63,9 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
         {{ content }}
       </ng-container>
     </ng-container>
-  `
+  `,
+  imports: [NzEmptyComponent, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, PortalModule],
+  standalone: true
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName?: string;

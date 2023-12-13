@@ -9,7 +9,7 @@ title:
 
 Css 单位
 
-警告：在 `v17.0.0` 中被弃用，请使用 Angular 内置语法替代，例如：
+提示：如果条件允许，我们更推荐使用 Angular 内置语法，例如：
 
 ```html
 <div [style.border-radius.px]="1">px</div>
@@ -21,7 +21,7 @@ Css 单位
 
 Css unit
 
-WARNING: Deprecated in `v17.0.0`, please use angular's built-in syntax instead, eg:
+Tip: If possible, we prefer to use Angular's built-in syntax, for example:
 
 ```html
 <div [style.border-radius.px]="1">px</div>

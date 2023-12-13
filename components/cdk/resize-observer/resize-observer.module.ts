@@ -6,11 +6,9 @@
 import { NgModule } from '@angular/core';
 
 import { NzResizeObserverDirective } from './resize-observer.directive';
-import { NzResizeObserverFactory } from './resize-observer.service';
 
 @NgModule({
-  providers: [NzResizeObserverFactory],
-  declarations: [NzResizeObserverDirective],
+  imports: [NzResizeObserverDirective],
   exports: [NzResizeObserverDirective]
 })
 export class NzResizeObserverModule {}

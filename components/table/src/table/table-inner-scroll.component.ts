@@ -4,7 +4,8 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,6 +27,8 @@ import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
+import { NzTableContentComponent } from './table-content.component';
 
 @Component({
   selector: 'nz-table-inner-scroll',
@@ -82,7 +85,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       ></table>
     </div>
   `,
-  host: { class: 'ant-table-container' }
+  host: { class: 'ant-table-container' },
+  imports: [NzTableContentComponent, NgIf, NgStyle, ScrollingModule, NgTemplateOutlet],
+  standalone: true
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
   @Input() data: readonly T[] = [];

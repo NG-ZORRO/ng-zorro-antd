@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -32,7 +33,8 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
-import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { NzPaginationModule, PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
@@ -44,8 +46,10 @@ import {
   NzTableQueryParams,
   NzTableSize
 } from '../table.types';
+import { NzTableInnerDefaultComponent } from './table-inner-default.component';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
+import { NzTableTitleFooterComponent } from './title-footer.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 
@@ -133,7 +137,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     class: 'ant-table-wrapper',
     '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
     '[class.ant-table-custom-column]': `nzCustomColumn.length`
-  }
+  },
+  imports: [
+    NzSpinComponent,
+    NgIf,
+    NgTemplateOutlet,
+    NzTableTitleFooterComponent,
+    NzTableInnerScrollComponent,
+    NzTableInnerDefaultComponent,
+    NzPaginationModule
+  ],
+  standalone: true
 })
 export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

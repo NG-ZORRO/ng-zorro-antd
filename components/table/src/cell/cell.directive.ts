@@ -11,7 +11,8 @@ import { NzTableStyleService } from '../table-style.service';
   selector: 'th:not(.nz-disable-th):not([mat-cell]), td:not(.nz-disable-td):not([mat-cell])',
   host: {
     '[class.ant-table-cell]': 'isInsideTable'
-  }
+  },
+  standalone: true
 })
 export class NzTableCellDirective {
   isInsideTable = false;

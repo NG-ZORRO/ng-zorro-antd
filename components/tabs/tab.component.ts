@@ -44,7 +44,8 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>('NZ_TAB_SET');
       <ng-content select="[nz-tab-link]"></ng-content>
     </ng-template>
     <ng-template #contentTemplate><ng-content></ng-content></ng-template>
-  `
+  `,
+  standalone: true
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;

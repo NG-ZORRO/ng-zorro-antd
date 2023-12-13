@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,7 +21,9 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzCommentActionComponent as CommentAction } from './comment-cells';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
+import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective } from './comment-cells';
 
 @Component({
   selector: 'nz-comment',
@@ -56,7 +59,9 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
   host: {
     '[class.ant-comment]': `true`,
     '[class.ant-comment-rtl]': `dir === "rtl"`
-  }
+  },
+  imports: [NgIf, NzOutletModule, NgForOf, NzCommentActionHostDirective],
+  standalone: true
 })
 export class NzCommentComponent implements OnDestroy, OnInit {
   @Input() nzAuthor?: string | TemplateRef<void>;
@@ -66,7 +71,10 @@ export class NzCommentComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

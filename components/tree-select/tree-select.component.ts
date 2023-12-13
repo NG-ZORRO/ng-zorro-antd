@@ -12,14 +12,15 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
+import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -27,11 +28,9 @@ import {
   Optional,
   Output,
   Renderer2,
-  Self,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
-  forwardRef
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
@@ -39,14 +38,13 @@ import { distinctUntilChanged, filter, map, startWith, takeUntil, tap, withLates
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
-  NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions
@@ -61,15 +59,12 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
-import { NzTreeComponent } from 'ng-zorro-antd/tree';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';
+import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 import { NzTreeSelectService } from './tree-select.service';
-
-export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
-  return injector.get(NzTreeSelectService);
-}
 
 export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
@@ -153,7 +148,7 @@ const listOfPositions = [
     <div cdkOverlayOrigin class="ant-select-selector">
       <ng-container *ngIf="isMultiple">
         <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
+          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
@@ -215,8 +210,7 @@ const listOfPositions = [
     NzTreeSelectService,
     {
       provide: NzTreeHigherOrderServiceToken,
-      useFactory: higherOrderServiceFactory,
-      deps: [[new Self(), Injector]]
+      useExisting: NzTreeSelectService
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -240,7 +234,23 @@ const listOfPositions = [
     '[class.ant-select-focused]': 'nzOpen || focused',
     '(click)': 'trigger()',
     '(keydown)': 'onKeydown($event)'
-  }
+  },
+  imports: [
+    NzOverlayModule,
+    CdkConnectedOverlay,
+    NgClass,
+    NzNoAnimationDirective,
+    NgStyle,
+    NzTreeModule,
+    NgIf,
+    NzEmptyModule,
+    CdkOverlayOrigin,
+    SlicePipe,
+    NzSelectModule,
+    NgFor,
+    NzFormPatchModule
+  ],
+  standalone: true
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -653,7 +663,22 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       }
     }
 
-    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
+    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
+      (a, b) => {
+        const indexA = this.value.indexOf(a.key);
+        const indexB = this.value.indexOf(b.key);
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
+        }
+        if (indexA !== -1) {
+          return -1;
+        }
+        if (indexB !== -1) {
+          return 1;
+        }
+        return 0;
+      }
+    );
   }
 
   updatePosition(): void {

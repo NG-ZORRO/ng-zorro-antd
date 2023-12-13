@@ -5,12 +5,14 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { NgClass, NgForOf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   NgZone,
   OnChanges,
@@ -21,8 +23,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
@@ -32,6 +33,9 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+import { NzRateItemComponent } from './rate-item.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 
@@ -77,7 +81,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       useExisting: forwardRef(() => NzRateComponent),
       multi: true
     }
-  ]
+  ],
+  imports: [NgClass, NgForOf, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
+  standalone: true
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

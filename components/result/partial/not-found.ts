@@ -272,6 +272,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
         />
       </g>
     </svg>
-  `
+  `,
+  standalone: true
 })
 export class NzResultNotFoundComponent {}

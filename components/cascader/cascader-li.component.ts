@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +15,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOption } from './typings';
 
@@ -32,7 +37,7 @@ import { NzCascaderOption } from './typings';
     <ng-template #defaultOptionTemplate>
       <div
         class="ant-cascader-menu-item-content"
-        [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"
+        [innerHTML]="optionLabel | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
       ></div>
     </ng-template>
     <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
@@ -50,7 +55,9 @@ import { NzCascaderOption } from './typings';
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
@@ -64,7 +71,10 @@ export class NzCascaderOptionComponent implements OnInit {
 
   readonly nativeElement: HTMLElement;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    elementRef: ElementRef
+  ) {
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

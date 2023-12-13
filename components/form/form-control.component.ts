@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgIf } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -25,6 +26,7 @@ import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 
 import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -59,7 +61,9 @@ import { NzFormDirective } from './form.directive';
   providers: [NzFormStatusService],
   host: {
     class: 'ant-form-item-control'
-  }
+  },
+  imports: [NgClass, NzOutletModule, NgIf],
+  standalone: true
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;

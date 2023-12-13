@@ -3,11 +3,23 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { DateBodyRow, DateCell } from './interface';
 
 @Directive()
@@ -111,7 +123,9 @@ export abstract class AbstractTable implements OnInit, OnChanges {
           currentValue.length !== previousValue.length ||
           currentValue.some((value, index) => {
             const previousCandyDate = previousValue[index];
-            return previousCandyDate instanceof CandyDate ? previousCandyDate.isSameDay(value) : previousCandyDate !== value;
+            return previousCandyDate instanceof CandyDate
+              ? previousCandyDate.isSameDay(value)
+              : previousCandyDate !== value;
           })
         );
       } else {

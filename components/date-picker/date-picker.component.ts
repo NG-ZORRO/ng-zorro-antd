@@ -14,7 +14,7 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -22,6 +22,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Inject,
   Input,
@@ -36,21 +37,21 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -61,13 +62,14 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
   NzDatePickerLangI18nInterface,
   NzI18nService
 } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -250,7 +252,21 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       useExisting: forwardRef(() => NzDatePickerComponent)
     }
   ],
-  animations: [slideMotion]
+  animations: [slideMotion],
+  imports: [
+    NgIf,
+    FormsModule,
+    NgTemplateOutlet,
+    NzOutletModule,
+    NzIconModule,
+    NgStyle,
+    NzFormPatchModule,
+    DateRangePopupComponent,
+    CdkConnectedOverlay,
+    NzOverlayModule,
+    NzNoAnimationDirective
+  ],
+  standalone: true
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

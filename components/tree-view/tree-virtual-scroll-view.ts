@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { CdkTree, CdkTreeNodeOutletContext, BaseTreeControl } from '@angular/cdk/tree';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { BaseTreeControl, CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,7 +18,7 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzTreeVirtualNodeData } from './node';
+import { NzTreeVirtualNodeData, NzTreeVirtualScrollNodeOutletDirective } from './node';
 import { NzTreeNodeOutletDirective } from './outlet';
 import { NzTreeView } from './tree';
 
@@ -53,7 +53,15 @@ const DEFAULT_SIZE = 28;
     '[class.ant-tree-block-node]': 'nzDirectoryTree || nzBlockNode',
     '[class.ant-tree-directory]': 'nzDirectoryTree',
     '[class.ant-tree-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzTreeVirtualScrollNodeOutletDirective,
+    CdkVirtualForOf,
+    NzTreeNodeOutletDirective,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll
+  ],
+  standalone: true
 })
 export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implements OnChanges {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) readonly nodeOutlet!: NzTreeNodeOutletDirective;

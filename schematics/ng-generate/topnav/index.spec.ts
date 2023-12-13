@@ -16,7 +16,7 @@ describe('top-nav schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav'});
+    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav', standalone: false});
   });
 
   it('should create top-nav files', async () => {
@@ -31,7 +31,6 @@ describe('top-nav schematic', () => {
         '/projects/ng-zorro-top-nav/src/app/app.component.ts',
         '/projects/ng-zorro-top-nav/src/app/app-routing.module.ts',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome-routing.module.ts',
-        '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.module.ts',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.css',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.html'
@@ -67,5 +66,4 @@ describe('top-nav schematic', () => {
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
   });
-
 });

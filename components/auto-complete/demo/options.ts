@@ -13,7 +13,9 @@ import { Component, ViewEncapsulation } from '@angular/core';
         [nzAutocomplete]="auto"
       />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{ option }}</nz-auto-option>
+        @for (option of options; track $index) {
+          <nz-auto-option [nzValue]="option">{{ option }}</nz-auto-option>
+        }
       </nz-autocomplete>
     </div>
   `

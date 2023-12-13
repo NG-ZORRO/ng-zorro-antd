@@ -4,7 +4,9 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,10 +27,12 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
+import { NzImageScaleStep, NzImageUrl } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -43,10 +47,15 @@ const initialPosition = {
   y: 0
 };
 
+export const NZ_DEFAULT_SCALE_STEP = 0.5;
+const NZ_DEFAULT_ZOOM = 1;
+const NZ_DEFAULT_ROTATE = 0;
+
 @Component({
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
   animations: [fadeMotion],
+  standalone: true,
   template: `
     <div class="ant-image-preview">
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
@@ -120,15 +129,21 @@ const initialPosition = {
     tabindex: '-1',
     role: 'document'
   },
+  imports: [NgForOf, NzIconModule, CdkDragHandle, CdkDrag, NgIf],
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
+  readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
+  readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
+  readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
+
   images: NzImage[] = [];
   index = 0;
   isDragging = false;
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
+  scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -181,6 +196,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   private zoom: number;
   private rotate: number;
+  private scaleStep: number;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -201,8 +217,9 @@ export class NzImagePreviewComponent implements OnInit {
     private destroy$: NzDestroyService,
     private sanitizer: DomSanitizer
   ) {
-    this.zoom = this.config.nzZoom ?? 1;
-    this.rotate = this.config.nzRotate ?? 0;
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
@@ -226,7 +243,8 @@ export class NzImagePreviewComponent implements OnInit {
     });
   }
 
-  setImages(images: NzImage[]): void {
+  setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
+    if (scaleStepMap) this.scaleStepMap = scaleStepMap;
     this.images = images;
     this.cdr.markForCheck();
   }
@@ -267,7 +285,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onZoomIn(): void {
-    this.zoom += 1;
+    const zoomStep =
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
+    this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
     this.position = { ...initialPosition };
@@ -275,7 +295,9 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomOut(): void {
     if (this.zoom > 1) {
-      this.zoom -= 1;
+      const zoomStep =
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
+      this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
       this.position = { ...initialPosition };
@@ -388,8 +410,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private reset(): void {
-    this.zoom = 1;
-    this.rotate = 0;
+    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
+    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
     this.position = { ...initialPosition };
   }
 }

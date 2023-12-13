@@ -28,7 +28,10 @@ export class NzContextMenuService {
   private overlayRef: OverlayRef | null = null;
   private closeSubscription = Subscription.EMPTY;
 
-  constructor(private ngZone: NgZone, private overlay: Overlay) {}
+  constructor(
+    private ngZone: NgZone,
+    private overlay: Overlay
+  ) {}
 
   create(
     $event: MouseEvent | { x: number; y: number },

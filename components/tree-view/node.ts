@@ -4,6 +4,7 @@
  */
 
 import { CdkTreeNode, CdkTreeNodeDef, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,7 +24,9 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTreeNodeIndentsComponent } from './indent';
 import { NzNodeBase } from './node-base';
+import { NzTreeNodeNoopToggleDirective } from './toggle';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
@@ -53,7 +56,9 @@ export interface NzTreeVirtualNodeData<T> {
   host: {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
-  }
+  },
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective, NgIf],
+  standalone: true
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
@@ -119,14 +124,16 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }]
+  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }],
+  standalone: true
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
   @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({
-  selector: '[nzTreeVirtualScrollNodeOutlet]'
+  selector: '[nzTreeVirtualScrollNodeOutlet]',
+  standalone: true
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;

@@ -3,14 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [NzStringTemplateOutletDirective],
-  declarations: [NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective],
+  exports: [NzStringTemplateOutletDirective]
 })
 export class NzOutletModule {}

@@ -16,12 +16,14 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 ## API
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzBlock]` | Option to fit width to its parent\'s width | `boolean` | false |  |
-| `[nzDisabled]` | Disable all segments | `boolean` | false |  |
-| `[nzOptions]` |  Set children optional | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean; useTemplate?: boolean }>` | - |  |
-| `[nzSize]` | The size of the Segmented | `large \| default \| small` | - | ✅ |
-| `[ngModel]` | Index of the currently selected option | `number` | - |  |
-| `(nzValueChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>` | - |  |
-| `(ngModelChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>` | - |  |
+### Segmented:standalone
+
+| Property          | Description                                               | Type                                                                                                                                 | Default | Global Config |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------- |
+| `[nzBlock]`       | Option to fit width to its parent\'s width                | `boolean`                                                                                                                            | false   |               |
+| `[nzDisabled]`    | Disable all segments                                      | `boolean`                                                                                                                            | false   |               |
+| `[nzOptions]`     | Set children optional                                     | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean; useTemplate?: boolean }>` | -       |               |
+| `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                                          | -       | ✅            |
+| `[ngModel]`       | Index of the currently selected option                    | `number`                                                                                                                             | -       |               |
+| `(nzValueChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>`                                                                                                               | -       |               |
+| `(ngModelChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>`                                                                                                               | -       |               |

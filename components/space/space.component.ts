@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -67,7 +68,9 @@ const SPACE_SIZE: {
     '[class.ant-space-align-center]': 'mergedAlign === "center"',
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
-  }
+  },
+  imports: [NgTemplateOutlet, NgIf, NgForOf],
+  standalone: true
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
   static ngAcceptInputType_nzWrap: BooleanInput;
@@ -86,7 +89,10 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   spaceSize: number = SPACE_SIZE.small;
   private destroy$ = new Subject<boolean>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;

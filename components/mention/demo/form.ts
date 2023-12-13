@@ -25,16 +25,25 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
       </nz-form-item>
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button type="button" nz-button nzType="primary" (click)="submitForm()">Submit</button>
-          &nbsp;&nbsp;&nbsp;
-          <button type="button" nz-button (click)="resetForm()">Reset</button>
+          <div class="cta-wrapper">
+            <button type="button" nz-button nzType="primary" (click)="submitForm()">Submit</button>
+            <button type="button" nz-button (click)="resetForm()">Reset</button>
+          </div>
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  styles: [
+    `
+      .cta-wrapper {
+        display: flex;
+        gap: 1rem;
+      }
+    `
+  ]
 })
 export class NzDemoMentionFormComponent {
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
   validateForm: FormGroup<{ mention: FormControl<string | null> }>;
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
@@ -51,7 +60,7 @@ export class NzDemoMentionFormComponent {
   mentionValidator: ValidatorFn = (control: AbstractControl) => {
     if (!control.value) {
       return { required: true };
-    } else if (this.mentionChild.getMentions().length < 2) {
+    } else if (this.mentionChild?.getMentions().length < 2) {
       return { confirm: true, error: true };
     }
     return {};

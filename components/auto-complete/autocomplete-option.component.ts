@@ -26,7 +26,10 @@ import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
 export class NzOptionSelectionChange {
-  constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
+  constructor(
+    public source: NzAutocompleteOptionComponent,
+    public isUserInput: boolean = false
+  ) {}
 }
 
 @Component({
@@ -35,6 +38,7 @@ export class NzOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
   template: `
     <div class="ant-select-item-option-content">
       <ng-content></ng-content>

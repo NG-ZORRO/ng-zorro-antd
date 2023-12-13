@@ -13,24 +13,22 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number/input-number.mod
 import { NzFormControlStatusType, NzFormModule } from '../form';
 
 describe('input-number-group', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputNumberGroupAddonComponent,
-          NzTestInputNumberGroupAffixComponent,
-          NzTestInputNumberGroupMultipleComponent,
-          NzTestInputNumberGroupColComponent,
-          NzTestInputNumberGroupMixComponent,
-          NzTestInputNumberGroupWithStatusComponent,
-          NzTestInputNumberGroupWithDirComponent,
-          NzTestInputNumberGroupInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputNumberGroupAddonComponent,
+        NzTestInputNumberGroupAffixComponent,
+        NzTestInputNumberGroupMultipleComponent,
+        NzTestInputNumberGroupColComponent,
+        NzTestInputNumberGroupMixComponent,
+        NzTestInputNumberGroupWithStatusComponent,
+        NzTestInputNumberGroupWithDirComponent,
+        NzTestInputNumberGroupInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('input number group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputNumberGroupAddonComponent;

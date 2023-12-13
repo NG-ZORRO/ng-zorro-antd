@@ -4,7 +4,7 @@
  */
 
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,6 +26,7 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -48,6 +49,8 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-anchor',
   exportAs: 'nzAnchor',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
   template: `
     <nz-affix *ngIf="nzAffix; else content" [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
       <ng-template [ngTemplateOutlet]="content"></ng-template>

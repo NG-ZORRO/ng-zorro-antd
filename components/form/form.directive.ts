@@ -34,7 +34,8 @@ export const DefaultTooltipIcon = {
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
     '[class.ant-form-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -61,7 +62,10 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(public nzConfigService: NzConfigService, @Optional() private directionality: Directionality) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    @Optional() private directionality: Directionality
+  ) {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;

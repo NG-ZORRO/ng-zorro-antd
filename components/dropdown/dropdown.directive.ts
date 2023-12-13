@@ -44,7 +44,8 @@ const listOfPositions = [
   exportAs: 'nzDropdown',
   host: {
     class: 'ant-dropdown-trigger'
-  }
+  },
+  standalone: true
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

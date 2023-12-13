@@ -14,7 +14,8 @@ const DISABLED_CLASSNAME = 'nz-animate-disabled';
 
 @Directive({
   selector: '[nzNoAnimation]',
-  exportAs: 'nzNoAnimation'
+  exportAs: 'nzNoAnimation',
+  standalone: true
 })
 export class NzNoAnimationDirective implements OnChanges, AfterViewInit {
   static ngAcceptInputType_nzNoAnimation: BooleanInput;

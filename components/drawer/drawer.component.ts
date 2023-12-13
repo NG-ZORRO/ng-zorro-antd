@@ -7,8 +7,8 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
+import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
+import { DOCUMENT, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -35,13 +35,17 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
 import {
   DRAWER_DEFAULT_SIZE,
   DRAWER_LARGE_SIZE,
+  NZ_DRAWER_DATA,
   NzDrawerOptionsOfComponent,
   NzDrawerPlacement,
   NzDrawerSize
@@ -135,7 +139,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
     </ng-template>
   `,
   preserveWhitespaces: false,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzNoAnimationDirective, NgIf, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
+  standalone: true
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
@@ -195,6 +201,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   placementChanging = false;
   placementChangeTimeoutId = -1;
   nzContentParams?: NzSafeAny; // only service
+  nzData?: D;
   overlayRef?: OverlayRef | null;
   portal?: TemplatePortal;
   focusTrap?: FocusTrap;
@@ -305,7 +312,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     this.attachOverlay();
     this.updateOverlayStyle();
     this.updateBodyOverflow();
-    this.templateContext = { $implicit: this.nzContentParams, drawerRef: this as NzDrawerRef<R> };
+    this.templateContext = { $implicit: this.nzData || this.nzContentParams, drawerRef: this as NzDrawerRef<R> };
     this.changeDetectorRef.detectChanges();
   }
 
@@ -414,12 +421,18 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (this.nzContent instanceof Type) {
       const childInjector = Injector.create({
         parent: this.injector,
-        providers: [{ provide: NzDrawerRef, useValue: this }]
+        providers: [
+          { provide: NzDrawerRef, useValue: this },
+          { provide: NZ_DRAWER_DATA, useValue: this.nzData }
+        ]
       });
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
       this.componentInstance = componentRef.instance;
-      Object.assign(componentRef.instance!, this.nzContentParams);
+      /**TODO
+       * When nzContentParam will be remove in the next major version, we have to remove the following line
+       * **/
+      Object.assign(componentRef.instance!, this.nzData || this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }
   }

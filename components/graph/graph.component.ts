@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectionStrategy,
@@ -37,6 +38,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraph } from './graph';
+import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
@@ -128,7 +130,9 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   host: {
     '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
-  }
+  },
+  imports: [NgTemplateOutlet, NgForOf, NzGraphEdgeComponent, NzGraphNodeComponent, NgIf],
+  standalone: true
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
   static ngAcceptInputType_nzAutoSize: BooleanInput;

@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,7 +35,9 @@ import {
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
+import { CalendarFooterComponent } from './calendar-footer.component';
 import { DatePickerService } from './date-picker.service';
+import { InnerPopupComponent } from './inner-popup.component';
 import {
   CompatibleDate,
   DisabledDateFn,
@@ -141,7 +144,9 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
       </li>
     </ng-template>
-  `
+  `,
+  imports: [InnerPopupComponent, NgTemplateOutlet, NgIf, CalendarFooterComponent, NgForOf],
+  standalone: true
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;

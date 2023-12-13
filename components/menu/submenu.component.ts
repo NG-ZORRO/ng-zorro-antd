@@ -4,8 +4,9 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
+import { NgIf } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -41,6 +42,9 @@ import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
+import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
+import { NzSubMenuTitleComponent } from './submenu-title.component';
 import { NzSubmenuService } from './submenu.service';
 
 const listOfVerticalPositions = [
@@ -140,7 +144,16 @@ const listOfHorizontalPositions = [
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
     '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
     '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzSubMenuTitleComponent,
+    NzSubmenuInlineChildComponent,
+    NgIf,
+    NzNoAnimationDirective,
+    NzSubmenuNoneInlineChildComponent,
+    OverlayModule
+  ],
+  standalone: true
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   static ngAcceptInputType_nzOpen: BooleanInput;

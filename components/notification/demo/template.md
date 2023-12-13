@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Use template to implement more complex interactions.
-
-
