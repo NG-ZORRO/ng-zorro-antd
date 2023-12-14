@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,19 +33,24 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
         [ngModel]="activeYear"
         (ngModelChange)="updateYear($event)"
       >
-        <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
+        @for (year of years; track year.value) {
+          <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
+        }
       </nz-select>
 
-      <nz-select
-        *ngIf="mode === 'month'"
-        class="ant-picker-calendar-month-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeMonth"
-        (ngModelChange)="monthChange.emit($event)"
-      >
-        <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
-      </nz-select>
+      @if (mode === 'month') {
+        <nz-select
+          class="ant-picker-calendar-month-select"
+          [nzSize]="size"
+          [nzDropdownMatchSelectWidth]="false"
+          [ngModel]="activeMonth"
+          (ngModelChange)="monthChange.emit($event)"
+        >
+          @for (month of months; track month.value) {
+            <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+          }
+        </nz-select>
+      }
 
       <nz-radio-group
         class="ant-picker-calendar-mode-switch"
@@ -63,7 +67,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  imports: [NzSelectModule, NgForOf, NgIf, FormsModule, NzRadioModule],
+  imports: [NzSelectModule, FormsModule, NzRadioModule],
   standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
