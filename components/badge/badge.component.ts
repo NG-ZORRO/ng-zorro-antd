@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -45,9 +45,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
   standalone: true,
-  imports: [NgIf, NgStyle, NzBadgeSupComponent, NzOutletModule],
+  imports: [NgStyle, NzBadgeSupComponent, NzOutletModule],
   template: `
-    <ng-container *ngIf="nzStatus || nzColor">
+    @if (nzStatus || nzColor) {
       <span
         class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
         [style.background]="!presetColor && nzColor"
@@ -56,21 +56,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
       <span class="ant-badge-status-text">
         <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       </span>
-    </ng-container>
-    <ng-content></ng-content>
+    }
+    <ng-content />
     <ng-container *nzStringTemplateOutlet="nzCount">
-      <nz-badge-sup
-        *ngIf="showSup"
-        [nzOffset]="nzOffset"
-        [nzSize]="nzSize"
-        [nzTitle]="nzTitle"
-        [nzStyle]="nzStyle"
-        [nzDot]="nzDot"
-        [nzOverflowCount]="nzOverflowCount"
-        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
-        [nzCount]="nzCount"
-        [noAnimation]="!!noAnimation?.nzNoAnimation"
-      ></nz-badge-sup>
+      @if (showSup) {
+        <nz-badge-sup
+          [nzOffset]="nzOffset"
+          [nzSize]="nzSize"
+          [nzTitle]="nzTitle"
+          [nzStyle]="nzStyle"
+          [nzDot]="nzDot"
+          [nzOverflowCount]="nzOverflowCount"
+          [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
+          [nzCount]="nzCount"
+          [noAnimation]="!!noAnimation?.nzNoAnimation"
+        />
+      }
     </ng-container>
   `,
   host: {
