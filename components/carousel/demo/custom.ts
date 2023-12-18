@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 import {
-  NzCarouselTransformNoLoopStrategy,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselFlipStrategy,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES
+  NzCarouselTransformNoLoopStrategy
 } from 'ng-zorro-antd/carousel';
 
 @Component({
@@ -14,9 +14,11 @@ import {
       <label nz-radio-button nzValue="fade">Fade (built-in)</label>
     </nz-radio-group>
     <nz-carousel [nzEffect]="strategy">
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
     </nz-carousel>`,
   styles: [
     `
