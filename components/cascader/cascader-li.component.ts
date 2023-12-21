@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,26 +28,29 @@ import { NzCascaderOption } from './typings';
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
   template: `
-    <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
+    @if (optionTemplate) {
       <ng-template
         [ngTemplateOutlet]="optionTemplate"
         [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"
-      ></ng-template>
-    </ng-container>
-    <ng-template #defaultOptionTemplate>
+      />
+    } @else {
       <div
         class="ant-cascader-menu-item-content"
         [innerHTML]="optionLabel | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
       ></div>
-    </ng-template>
-    <div *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <span *ngIf="option.loading; else icon" nz-icon nzType="loading"></span>
-      <ng-template #icon>
-        <ng-container *nzStringTemplateOutlet="expandIcon">
-          <span nz-icon [nzType]="$any(expandIcon)"></span>
-        </ng-container>
-      </ng-template>
-    </div>
+    }
+
+    @if (!option.isLeaf || option.children?.length || option.loading) {
+      <div class="ant-cascader-menu-item-expand-icon">
+        @if (option.loading) {
+          <span nz-icon nzType="loading"></span>
+        } @else {
+          <ng-container *nzStringTemplateOutlet="expandIcon">
+            <span nz-icon [nzType]="$any(expandIcon)"></span>
+          </ng-container>
+        }
+      </div>
+    }
   `,
   host: {
     class: 'ant-cascader-menu-item ant-cascader-menu-item-expanded',
@@ -56,7 +59,7 @@ import { NzCascaderOption } from './typings';
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
   },
-  imports: [NgIf, NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
+  imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzCascaderOptionComponent implements OnInit {
