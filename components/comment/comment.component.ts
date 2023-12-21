@@ -35,23 +35,31 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
       </div>
       <div class="ant-comment-content">
         <div class="ant-comment-content-author">
-          <span *ngIf="nzAuthor" class="ant-comment-content-author-name">
-            <ng-container *nzStringTemplateOutlet="nzAuthor">{{ nzAuthor }}</ng-container>
-          </span>
-          <span *ngIf="nzDatetime" class="ant-comment-content-author-time">
-            <ng-container *nzStringTemplateOutlet="nzDatetime">{{ nzDatetime }}</ng-container>
-          </span>
+          @if (nzAuthor) {
+            <span class="ant-comment-content-author-name">
+              <ng-container *nzStringTemplateOutlet="nzAuthor">{{ nzAuthor }}</ng-container>
+            </span>
+          }
+          @if (nzDatetime) {
+            <span class="ant-comment-content-author-time">
+              <ng-container *nzStringTemplateOutlet="nzDatetime">{{ nzDatetime }}</ng-container>
+            </span>
+          }
         </div>
-        <ng-content select="nz-comment-content"></ng-content>
-        <ul class="ant-comment-actions" *ngIf="actions?.length">
-          <li *ngFor="let action of actions">
-            <span><ng-template [nzCommentActionHost]="action.content"></ng-template></span>
-          </li>
-        </ul>
+        <ng-content select="nz-comment-content" />
+        @if (actions?.length) {
+          <ul class="ant-comment-actions">
+            @for (action of actions; track action) {
+              <li>
+                <span><ng-template [nzCommentActionHost]="action.content" /></span>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
     <div class="ant-comment-nested">
-      <ng-content></ng-content>
+      <ng-content />
     </div>
   `,
   encapsulation: ViewEncapsulation.None,

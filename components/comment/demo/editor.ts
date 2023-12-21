@@ -5,16 +5,19 @@ import { formatDistance } from 'date-fns';
 @Component({
   selector: 'nz-demo-comment-editor',
   template: `
-    <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-      <ng-template #item let-item>
-        <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
-          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
-          <nz-comment-content>
-            <p>{{ item.content }}</p>
-          </nz-comment-content>
-        </nz-comment>
-      </ng-template>
-    </nz-list>
+    @if (data.length) {
+      <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+        <ng-template #item let-item>
+          <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
+            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+            <nz-comment-content>
+              <p>{{ item.content }}</p>
+            </nz-comment-content>
+          </nz-comment>
+        </ng-template>
+      </nz-list>
+    }
+
     <nz-comment>
       <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
       <nz-comment-content>
