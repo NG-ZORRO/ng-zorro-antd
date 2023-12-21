@@ -26,7 +26,7 @@ import { defaultColor, generateColor } from 'ng-antd-color-picker';
 import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 
-import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './typings';
+import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './typings';
 
 @Component({
   selector: 'nz-color-picker',
@@ -43,15 +43,16 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
       [nzPopoverVisible]="nzOpen"
       (nzPopoverVisibleChange)="nzOnOpenChange.emit($event)"
     >
-      <ng-container *ngIf="!nzFlipFlop">
-        <nz-color-block [nzColor]="blockColor" [nzSize]="nzSize"></nz-color-block>
-      </ng-container>
-      <ng-container *ngIf="nzFlipFlop">
-        <ng-template [ngTemplateOutlet]="nzFlipFlop"></ng-template>
-      </ng-container>
-      <div class="ant-color-picker-trigger-text" *ngIf="nzShowText && !!showText && !nzFlipFlop">
-        {{ showText }}
-      </div>
+      @if (!nzFlipFlop) {
+        <nz-color-block [nzColor]="blockColor" [nzSize]="nzSize" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="nzFlipFlop" />
+      }
+      @if (nzShowText && !!showText && !nzFlipFlop) {
+        <div class="ant-color-picker-trigger-text">
+          {{ showText }}
+        </div>
+      }
     </div>
     <ng-template #colorPicker>
       <ng-antd-color-picker
@@ -65,19 +66,21 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
       ></ng-antd-color-picker>
     </ng-template>
     <ng-template #nzPanelRenderHeader>
-      <div class="ant-color-picker-title" *ngIf="nzAllowClear || nzTitle">
-        <div class="ant-color-picker-title-content">
-          <ng-container [ngSwitch]="true">
-            <ng-container *ngSwitchCase="isTemplateRef(nzTitle)">
-              <ng-container *ngTemplateOutlet="$any(nzTitle)"></ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)">
+      @if (nzTitle || nzAllowClear) {
+        <div class="ant-color-picker-title">
+          <div class="ant-color-picker-title-content">
+            @if (isNzTitleTemplateRef) {
+              <ng-container *ngTemplateOutlet="$any(nzTitle)" />
+            }
+            @if (isNzTitleNonEmptyString) {
               <span [innerHTML]="nzTitle"></span>
-            </ng-container>
-          </ng-container>
+            }
+          </div>
+          @if (nzAllowClear) {
+            <div class="ant-color-picker-clear" (click)="clearColorHandle()"></div>
+          }
         </div>
-        <div class="ant-color-picker-clear" *ngIf="nzAllowClear" (click)="clearColorHandle()"></div>
-      </div>
+      }
     </ng-template>
     <ng-template #nzPanelRenderFooter>
       <nz-color-format
@@ -224,5 +227,13 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get isNzTitleNonEmptyString(): boolean {
+    return isNonEmptyString(this.nzTitle);
+  }
+
+  get isNzTitleTemplateRef(): boolean {
+    return isTemplateRef(this.nzTitle);
   }
 }
