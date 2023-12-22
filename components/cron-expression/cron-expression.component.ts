@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -70,7 +70,7 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
           [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus && !nzBorderless"
           [class.ant-input-disabled]="nzDisabled"
         >
-          <ng-container *ngFor="let label of labels">
+          @for (label of labels; track label) {
             <nz-cron-expression-input
               [value]="this.validateForm.controls[label].value"
               [label]="label"
@@ -78,8 +78,8 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
               (focusEffect)="focusEffect($event)"
               (blurEffect)="blurEffect()"
               (getValue)="getValue($event)"
-            ></nz-cron-expression-input>
-          </ng-container>
+            />
+          }
         </div>
         <div
           class="ant-cron-expression-label-group"
@@ -87,26 +87,25 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
           [class.ant-cron-expression-label-group-default]="nzSize === 'default'"
           [class.ant-input-sm]="nzSize === 'small'"
         >
-          <ng-container *ngFor="let label of labels">
-            <nz-cron-expression-label
-              [type]="label"
-              [labelFocus]="labelFocus"
-              [locale]="locale"
-            ></nz-cron-expression-label>
-          </ng-container>
+          @for (label of labels; track label) {
+            <nz-cron-expression-label [type]="label" [labelFocus]="labelFocus" [locale]="locale" />
+          }
         </div>
-        <nz-cron-expression-preview
-          *ngIf="!nzCollapseDisable"
-          [TimeList]="nextTimeList"
-          [visible]="validateForm.valid"
-          [locale]="locale"
-          [nzSemantic]="nzSemantic"
-          (loadMorePreview)="loadMorePreview()"
-        ></nz-cron-expression-preview>
+        @if (!nzCollapseDisable) {
+          <nz-cron-expression-preview
+            [TimeList]="nextTimeList"
+            [visible]="validateForm.valid"
+            [locale]="locale"
+            [nzSemantic]="nzSemantic"
+            (loadMorePreview)="loadMorePreview()"
+          />
+        }
       </div>
-      <div class="ant-cron-expression-map" *ngIf="nzExtra">
-        <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      </div>
+      @if (nzExtra) {
+        <div class="ant-cron-expression-map">
+          <ng-template [ngTemplateOutlet]="nzExtra" />
+        </div>
+      }
     </div>
   `,
   providers: [
@@ -123,11 +122,9 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
     NzDestroyService
   ],
   imports: [
-    NgForOf,
     NzCronExpressionInputComponent,
     NzCronExpressionLabelComponent,
     NzCronExpressionPreviewComponent,
-    NgIf,
     NgTemplateOutlet
   ],
   standalone: true
