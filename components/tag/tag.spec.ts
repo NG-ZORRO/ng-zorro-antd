@@ -148,7 +148,7 @@ describe('tag', () => {
       [nzMode]="mode"
       [(nzChecked)]="checked"
       [nzColor]="color"
-      [bordered]="bordered"
+      [nzBordered]="bordered"
       (nzCheckedChange)="checkedChange($event)"
       (nzOnClose)="onClose()"
     >
