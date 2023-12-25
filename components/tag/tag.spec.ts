@@ -8,15 +8,13 @@ import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzTagModule, NoopAnimationsModule],
-        declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzTagModule, NoopAnimationsModule],
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
+    });
+    TestBed.compileComponents();
+  }));
   describe('basic tag', () => {
     let fixture: ComponentFixture<NzTestTagBasicComponent>;
     let testComponent: NzTestTagBasicComponent;
