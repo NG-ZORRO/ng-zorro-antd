@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -60,34 +59,30 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
         <div class="ant-picker-body">
-          <ng-container *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"></ng-container>
+          @if (nzMode === 'month') {
+            <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
+            <date-table
+              [prefixCls]="prefixCls"
+              [value]="activeDate"
+              [activeDate]="activeDate"
+              [cellRender]="$any(dateCell)"
+              [fullCellRender]="$any(dateFullCell)"
+              [disabledDate]="nzDisabledDate"
+              (valueChange)="onDateSelect($event)"
+            ></date-table>
+          } @else {
+            <month-table
+              [prefixCls]="prefixCls"
+              [value]="activeDate"
+              [activeDate]="activeDate"
+              [cellRender]="$any(monthCell)"
+              [fullCellRender]="$any(monthFullCell)"
+              (valueChange)="onDateSelect($event)"
+            ></month-table>
+          }
         </div>
       </div>
     </div>
-    <ng-template #monthModeTable>
-      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
-      <date-table
-        [prefixCls]="prefixCls"
-        [value]="activeDate"
-        [activeDate]="activeDate"
-        [cellRender]="$any(dateCell)"
-        [fullCellRender]="$any(dateFullCell)"
-        [disabledDate]="nzDisabledDate"
-        (valueChange)="onDateSelect($event)"
-      ></date-table>
-    </ng-template>
-
-    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
-    <ng-template #yearModeTable>
-      <month-table
-        [prefixCls]="prefixCls"
-        [value]="activeDate"
-        [activeDate]="activeDate"
-        [cellRender]="$any(monthCell)"
-        [fullCellRender]="$any(monthFullCell)"
-        (valueChange)="onDateSelect($event)"
-      ></month-table>
-    </ng-template>
   `,
   host: {
     class: 'ant-picker-calendar',
@@ -96,7 +91,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
-  imports: [NzCalendarHeaderComponent, NgIf, LibPackerModule],
+  imports: [NzCalendarHeaderComponent, LibPackerModule],
   standalone: true
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {

@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -40,35 +40,48 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ant-card-head" *ngIf="nzTitle || nzExtra || listOfNzCardTabComponent">
-      <div class="ant-card-head-wrapper">
-        <div class="ant-card-head-title" *ngIf="nzTitle">
-          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    @if (nzTitle || nzExtra || listOfNzCardTabComponent) {
+      <div class="ant-card-head">
+        <div class="ant-card-head-wrapper">
+          @if (nzTitle) {
+            <div class="ant-card-head-title">
+              <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+            </div>
+          }
+          @if (nzExtra) {
+            <div class="ant-card-extra">
+              <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+            </div>
+          }
         </div>
-        <div class="ant-card-extra" *ngIf="nzExtra">
-          <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-        </div>
+        @if (listOfNzCardTabComponent) {
+          <ng-template [ngTemplateOutlet]="listOfNzCardTabComponent.template" />
+        }
       </div>
-      <ng-container *ngIf="listOfNzCardTabComponent">
-        <ng-template [ngTemplateOutlet]="listOfNzCardTabComponent.template"></ng-template>
-      </ng-container>
-    </div>
-    <div class="ant-card-cover" *ngIf="nzCover">
-      <ng-template [ngTemplateOutlet]="nzCover"></ng-template>
-    </div>
+    }
+
+    @if (nzCover) {
+      <div class="ant-card-cover">
+        <ng-template [ngTemplateOutlet]="nzCover" />
+      </div>
+    }
+
     <div class="ant-card-body" [ngStyle]="nzBodyStyle">
-      <ng-container *ngIf="!nzLoading; else loadingTemplate">
-        <ng-content></ng-content>
-      </ng-container>
-      <ng-template #loadingTemplate>
-        <nz-card-loading></nz-card-loading>
-      </ng-template>
+      @if (!nzLoading) {
+        <ng-content />
+      } @else {
+        <nz-card-loading />
+      }
     </div>
-    <ul class="ant-card-actions" *ngIf="nzActions.length">
-      <li *ngFor="let action of nzActions" [style.width.%]="100 / nzActions.length">
-        <span><ng-template [ngTemplateOutlet]="action"></ng-template></span>
-      </li>
-    </ul>
+    @if (nzActions.length) {
+      <ul class="ant-card-actions">
+        @for (action of nzActions; track $index) {
+          <li [style.width.%]="100 / nzActions.length">
+            <span><ng-template [ngTemplateOutlet]="action" /></span>
+          </li>
+        }
+      </ul>
+    }
   `,
   host: {
     class: 'ant-card',
@@ -81,7 +94,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
   },
-  imports: [NgIf, NzOutletModule, NgTemplateOutlet, NgStyle, NzCardLoadingComponent, NgForOf],
+  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzCardLoadingComponent],
   standalone: true
 })
 export class NzCardComponent implements OnDestroy, OnInit {

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -45,20 +44,24 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   animations: [collapseMotion],
   template: `
     <div #collapseHeader role="button" [attr.aria-expanded]="nzActive" class="ant-collapse-header">
-      <div *ngIf="nzShowArrow">
-        <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
-          <span
-            nz-icon
-            [nzType]="expandedIcon || 'right'"
-            class="ant-collapse-arrow"
-            [nzRotate]="nzActive ? 90 : 0"
-          ></span>
-        </ng-container>
-      </div>
+      @if (nzShowArrow) {
+        <div>
+          <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
+            <span
+              nz-icon
+              [nzType]="expandedIcon || 'right'"
+              class="ant-collapse-arrow"
+              [nzRotate]="nzActive ? 90 : 0"
+            ></span>
+          </ng-container>
+        </div>
+      }
       <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
-      <div class="ant-collapse-extra" *ngIf="nzExtra">
-        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-      </div>
+      @if (nzExtra) {
+        <div class="ant-collapse-extra">
+          <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+        </div>
+      }
     </div>
     <div
       class="ant-collapse-content"
@@ -79,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
   },
   providers: [NzDestroyService],
-  imports: [NgIf, NzOutletModule, NzIconModule],
+  imports: [NzOutletModule, NzIconModule],
   standalone: true
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
