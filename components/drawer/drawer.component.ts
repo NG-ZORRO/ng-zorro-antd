@@ -8,7 +8,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -38,7 +38,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
@@ -75,7 +75,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [style.transition]="placementChanging ? 'none' : null"
         [style.zIndex]="nzZIndex"
       >
-        <div class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
+        @if (nzMask) {
+          <div class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
+        }
         <div
           class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
           [style.width]="width"
@@ -85,53 +87,58 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div
-                *ngIf="nzTitle || nzClosable"
-                class="ant-drawer-header"
-                [class.ant-drawer-header-close-only]="!nzTitle"
-              >
-                <div class="ant-drawer-header-title">
-                  <button
-                    *ngIf="nzClosable"
-                    (click)="closeClick()"
-                    aria-label="Close"
-                    class="ant-drawer-close"
-                    style="--scroll-bar: 0px;"
-                  >
-                    <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
-                      <span nz-icon [nzType]="closeIcon"></span>
-                    </ng-container>
-                  </button>
-                  <div *ngIf="nzTitle" class="ant-drawer-title">
-                    <ng-container *nzStringTemplateOutlet="nzTitle">
-                      <div [innerHTML]="nzTitle"></div>
-                    </ng-container>
+              @if (nzTitle || nzClosable) {
+                <div class="ant-drawer-header" [class.ant-drawer-header-close-only]="!nzTitle">
+                  <div class="ant-drawer-header-title">
+                    @if (nzClosable) {
+                      <button
+                        (click)="closeClick()"
+                        aria-label="Close"
+                        class="ant-drawer-close"
+                        style="--scroll-bar: 0px;"
+                      >
+                        <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
+                          <span nz-icon [nzType]="closeIcon"></span>
+                        </ng-container>
+                      </button>
+                    }
+
+                    @if (nzTitle) {
+                      <div class="ant-drawer-title">
+                        <ng-container *nzStringTemplateOutlet="nzTitle">
+                          <div [innerHTML]="nzTitle"></div>
+                        </ng-container>
+                      </div>
+                    }
                   </div>
+                  @if (nzExtra) {
+                    <div class="ant-drawer-extra">
+                      <ng-container *nzStringTemplateOutlet="nzExtra">
+                        <div [innerHTML]="nzExtra"></div>
+                      </ng-container>
+                    </div>
+                  }
                 </div>
-                <div *ngIf="nzExtra" class="ant-drawer-extra">
-                  <ng-container *nzStringTemplateOutlet="nzExtra">
-                    <div [innerHTML]="nzExtra"></div>
-                  </ng-container>
-                </div>
-              </div>
+              }
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
-                <ng-template cdkPortalOutlet></ng-template>
-                <ng-container *ngIf="nzContent; else contentElseTemp">
-                  <ng-container *ngIf="isTemplateRef(nzContent)">
-                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
-                  </ng-container>
-                </ng-container>
-                <ng-template #contentElseTemp>
-                  <ng-container *ngIf="contentFromContentChild && (isOpen || inAnimation)">
-                    <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
-                  </ng-container>
-                </ng-template>
+                <ng-template cdkPortalOutlet />
+                @if (nzContent) {
+                  @if (isNzContentTemplateRef) {
+                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext" />
+                  }
+                } @else {
+                  @if (contentFromContentChild && (isOpen || inAnimation)) {
+                    <ng-template [ngTemplateOutlet]="contentFromContentChild" />
+                  }
+                }
               </div>
-              <div *ngIf="nzFooter" class="ant-drawer-footer">
-                <ng-container *nzStringTemplateOutlet="nzFooter">
-                  <div [innerHTML]="nzFooter"></div>
-                </ng-container>
-              </div>
+              @if (nzFooter) {
+                <div class="ant-drawer-footer">
+                  <ng-container *nzStringTemplateOutlet="nzFooter">
+                    <div [innerHTML]="nzFooter"></div>
+                  </ng-container>
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -140,7 +147,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzNoAnimationDirective, NgIf, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
+  imports: [NzNoAnimationDirective, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
@@ -276,8 +283,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     return this.nzAfterClose.asObservable();
   }
 
-  isTemplateRef(value: {}): boolean {
-    return value instanceof TemplateRef;
+  get isNzContentTemplateRef(): boolean {
+    return isTemplateRef(this.nzContent);
   }
 
   // from service config
