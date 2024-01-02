@@ -3,16 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DatePipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
-  Component,
-  ViewEncapsulation,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -26,28 +26,38 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   exportAs: 'nzCronExpressionPreview',
   template: ` <div class="ant-collapse ant-collapse-borderless ant-cron-expression-preview">
     <div class="ant-cron-expression-preview-dateTime" [class.ant-cron-expression-preview-dateTime-center]="!isExpand">
-      <ng-container *ngIf="visible; else cronError">
-        <ng-container *ngIf="!nzSemantic; else semanticTemplate">
+      @if (visible) {
+        @if (!nzSemantic) {
           {{ TimeList[0] | date: 'YYYY-MM-dd HH:mm:ss' }}
-        </ng-container>
-        <ng-template #semanticTemplate [ngTemplateOutlet]="nzSemantic"></ng-template>
-      </ng-container>
-      <ng-template #cronError>{{ locale.cronError }}</ng-template>
+        } @else {
+          <ng-template [ngTemplateOutlet]="nzSemantic" />
+        }
+      } @else {
+        {{ locale.cronError }}
+      }
     </div>
-    <div *ngIf="visible && !isExpand" class="ant-cron-expression-preview-content">
-      <ul class="ant-cron-expression-preview-list">
-        <li *ngFor="let item of TimeList">
-          {{ item | date: 'YYYY-MM-dd HH:mm:ss' }}
-        </li>
-        <li><a (click)="loadMorePreview.emit()">···</a></li>
-      </ul>
-    </div>
+    @if (visible && !isExpand) {
+      <div class="ant-cron-expression-preview-content">
+        <ul class="ant-cron-expression-preview-list">
+          @for (item of TimeList; track item) {
+            <li>
+              {{ item | date: 'YYYY-MM-dd HH:mm:ss' }}
+            </li>
+          }
+          <li><a (click)="loadMorePreview.emit()">···</a></li>
+        </ul>
+      </div>
+    }
+
     <ul class="ant-cron-expression-preview-icon">
-      <li *ngIf="isExpand"><span nz-icon nzType="down" nzTheme="outline" (click)="setExpand()"></span></li>
-      <li *ngIf="!isExpand"><span nz-icon nzType="up" nzTheme="outline" (click)="setExpand()"></span></li>
+      @if (isExpand) {
+        <li><span nz-icon nzType="down" nzTheme="outline" (click)="setExpand()"></span></li>
+      } @else {
+        <li><span nz-icon nzType="up" nzTheme="outline" (click)="setExpand()"></span></li>
+      }
     </ul>
   </div>`,
-  imports: [NgIf, NgTemplateOutlet, NgForOf, DatePipe, NzIconModule],
+  imports: [NgTemplateOutlet, DatePipe, NzIconModule],
   standalone: true
 })
 export class NzCronExpressionPreviewComponent {
