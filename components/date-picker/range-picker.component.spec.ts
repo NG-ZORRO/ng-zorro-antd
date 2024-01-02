@@ -1197,60 +1197,60 @@ describe('NzRangePickerComponent', () => {
 
 @Component({
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <!-- Suite 1 -->
-      <nz-range-picker
-        *ngSwitchCase="1"
-        [nzAllowClear]="nzAllowClear"
-        [nzAutoFocus]="nzAutoFocus"
-        [nzDisabled]="nzDisabled"
-        [nzDisabledDate]="nzDisabledDate"
-        [nzLocale]="nzLocale"
-        [nzPlaceHolder]="nzPlaceHolder"
-        [nzPopupStyle]="nzPopupStyle"
-        [nzDropdownClassName]="nzDropdownClassName"
-        [nzSize]="nzSize"
-        [nzSeparator]="nzSeparator"
-        (nzOnOpenChange)="nzOnOpenChange($event)"
-        [(ngModel)]="modelValue"
-        (ngModelChange)="modelValueChange($event)"
-        [nzDateRender]="nzDateRender"
-        [nzDisabledTime]="nzDisabledTime"
-        [nzRenderExtraFooter]="nzRenderExtraFooter"
-        [nzShowToday]="nzShowToday"
-        [nzShowNow]="nzShowNow"
-        [nzMode]="nzMode"
-        [nzRanges]="nzRanges"
-        [nzDefaultPickerValue]="nzDefaultPickerValue"
-        [nzInline]="nzInline"
-        (nzOnPanelChange)="nzOnPanelChange($event)"
-        (nzOnCalendarChange)="nzOnCalendarChange($event)"
-        [nzShowTime]="nzShowTime"
-        (nzOnOk)="nzOnOk($event)"
-      ></nz-range-picker>
-      <ng-template #tplDateRender let-current>
-        <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
-      </ng-template>
-      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
+    <ng-template #tplDateRender let-current>
+      <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
+    </ng-template>
+    <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
+    <ng-template #separatorTemplate>TEST_SEPARATOR_REF</ng-template>
 
-      <!-- Suite 2 -->
-      <!-- use another picker to avoid nzOpen's side-effects because nzOpen act as "true" if used -->
-      <nz-range-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-range-picker>
-
-      <!-- Suite 3 -->
-      <nz-range-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-range-picker>
-
-      <!-- Suite 4 -->
-      <ng-container *ngSwitchCase="4">
-        <nz-range-picker [(ngModel)]="modelValue"></nz-range-picker>
-        <nz-date-picker [ngModel]="singleValue"></nz-date-picker>
-      </ng-container>
-
-      <nz-range-picker *ngSwitchCase="5" nzOpen></nz-range-picker>
-
-      <nz-range-picker *ngSwitchCase="6" [nzSeparator]="separatorTemplate"></nz-range-picker>
-      <ng-template #separatorTemplate>TEST_SEPARATOR_REF</ng-template>
-    </ng-container>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-range-picker
+          [nzAllowClear]="nzAllowClear"
+          [nzAutoFocus]="nzAutoFocus"
+          [nzDisabled]="nzDisabled"
+          [nzDisabledDate]="nzDisabledDate"
+          [nzLocale]="nzLocale"
+          [nzPlaceHolder]="nzPlaceHolder"
+          [nzPopupStyle]="nzPopupStyle"
+          [nzDropdownClassName]="nzDropdownClassName"
+          [nzSize]="nzSize"
+          [nzSeparator]="nzSeparator"
+          (nzOnOpenChange)="nzOnOpenChange($event)"
+          [(ngModel)]="modelValue"
+          (ngModelChange)="modelValueChange($event)"
+          [nzDateRender]="nzDateRender"
+          [nzDisabledTime]="nzDisabledTime"
+          [nzRenderExtraFooter]="nzRenderExtraFooter"
+          [nzShowToday]="nzShowToday"
+          [nzShowNow]="nzShowNow"
+          [nzMode]="nzMode"
+          [nzRanges]="nzRanges"
+          [nzDefaultPickerValue]="nzDefaultPickerValue"
+          [nzInline]="nzInline"
+          (nzOnPanelChange)="nzOnPanelChange($event)"
+          (nzOnCalendarChange)="nzOnCalendarChange($event)"
+          [nzShowTime]="nzShowTime"
+          (nzOnOk)="nzOnOk($event)"
+        />
+      }
+      @case (2) {
+        <nz-range-picker [nzOpen]="nzOpen" />
+      }
+      @case (3) {
+        <nz-range-picker nzOpen [(ngModel)]="modelValue" />
+      }
+      @case (4) {
+        <nz-range-picker [(ngModel)]="modelValue" />
+        <nz-date-picker [ngModel]="singleValue" />
+      }
+      @case (5) {
+        <nz-range-picker nzOpen></nz-range-picker>
+      }
+      @case (6) {
+        <nz-range-picker [nzSeparator]="separatorTemplate" />
+      }
+    }
   `
 })
 class NzTestRangePickerComponent {

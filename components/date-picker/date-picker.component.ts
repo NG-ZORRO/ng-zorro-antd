@@ -14,7 +14,7 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -98,48 +98,49 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
-    <ng-container *ngIf="!nzInline; else inlineMode">
-      <!-- Content of single picker -->
-      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-        <input
-          #pickerInput
-          [attr.id]="nzId"
-          [class.ant-input-disabled]="nzDisabled"
-          [disabled]="nzDisabled"
-          [readOnly]="nzInputReadOnly"
-          [(ngModel)]="inputValue"
-          placeholder="{{ getPlaceholder() }}"
-          [size]="inputSize"
-          autocomplete="off"
-          (focus)="onFocus($event)"
-          (focusout)="onFocusout($event)"
-          (ngModelChange)="onInputChange($event)"
-          (keyup.enter)="onKeyupEnter($event)"
-        />
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </div>
-
-      <!-- Content of range picker -->
-      <ng-container *ngIf="isRange">
+    @if (!nzInline) {
+      @if (!isRange) {
         <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+          <input
+            #pickerInput
+            [attr.id]="nzId"
+            [class.ant-input-disabled]="nzDisabled"
+            [disabled]="nzDisabled"
+            [readOnly]="nzInputReadOnly"
+            [(ngModel)]="inputValue"
+            placeholder="{{ getPlaceholder() }}"
+            [size]="inputSize"
+            autocomplete="off"
+            (focus)="onFocus($event)"
+            (focusout)="onFocusout($event)"
+            (ngModelChange)="onInputChange($event)"
+            (keyup.enter)="onKeyupEnter($event)"
+          />
+          <ng-container *ngTemplateOutlet="tplRightRest" />
+        </div>
+      } @else {
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }" />
         </div>
         <div #separatorElement class="{{ prefixCls }}-range-separator">
           <span class="{{ prefixCls }}-separator">
             <ng-container *nzStringTemplateOutlet="nzSeparator; let separator">
-              <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
-              <ng-template #defaultSeparator>
+              @if (nzSeparator) {
+                {{ nzSeparator }}
+              } @else {
                 <span nz-icon nzType="swap-right" nzTheme="outline"></span>
-              </ng-template>
+              }
             </ng-container>
           </span>
         </div>
         <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }" />
         </div>
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </ng-container>
-    </ng-container>
+        <ng-container *ngTemplateOutlet="tplRightRest" />
+      }
+    } @else {
+      <ng-template [ngTemplateOutlet]="inlineMode" />
+    }
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
       <input
@@ -162,14 +163,19 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
       <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
-      <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-        <span nz-icon nzType="close-circle" nzTheme="fill"></span>
-      </span>
+      @if (showClear) {
+        <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
+          <span nz-icon nzType="close-circle" nzTheme="fill"></span>
+        </span>
+      }
+
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
           <span nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+        @if (hasFeedback && !!status) {
+          <nz-form-item-feedback-icon [status]="status" />
+        }
       </span>
     </ng-template>
 
@@ -205,7 +211,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [ranges]="nzRanges"
           [dir]="dir"
           (resultOk)="onResultOk()"
-        ></date-range-popup>
+        />
       </div>
     </ng-template>
 
@@ -254,7 +260,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   ],
   animations: [slideMotion],
   imports: [
-    NgIf,
     FormsModule,
     NgTemplateOutlet,
     NzOutletModule,
@@ -482,7 +487,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     }
   }
 
-  showClear(): boolean {
+  get showClear(): boolean {
     return !this.nzDisabled && !this.isEmptyValue(this.datePickerService.value) && this.nzAllowClear;
   }
 
