@@ -48,7 +48,7 @@ import { NzMessageData } from './typings';
             <span *ngSwitchCase="'loading'" nz-icon nzType="loading"></span>
           </ng-container>
           <ng-container *nzStringTemplateOutlet="instance.content">
-            <span [innerHTML]="instance.content"></span>
+            <span class="ant-message-span-content" [innerHTML]="instance.content"></span>
           </ng-container>
         </div>
       </div>
