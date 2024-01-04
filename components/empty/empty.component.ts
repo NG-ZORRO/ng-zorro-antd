@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -35,29 +34,38 @@ type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | s
   exportAs: 'nzEmpty',
   template: `
     <div class="ant-empty-image">
-      <ng-container *ngIf="!isImageBuildIn">
+      @if (!isImageBuildIn) {
         <ng-container *nzStringTemplateOutlet="nzNotFoundImage">
           <img [src]="nzNotFoundImage" [alt]="isContentString ? nzNotFoundContent : 'empty'" />
         </ng-container>
-      </ng-container>
-      <nz-empty-default *ngIf="isImageBuildIn && nzNotFoundImage !== 'simple'"></nz-empty-default>
-      <nz-empty-simple *ngIf="isImageBuildIn && nzNotFoundImage === 'simple'"></nz-empty-simple>
+      } @else {
+        @if (nzNotFoundImage === 'simple') {
+          <nz-empty-simple />
+        } @else {
+          <nz-empty-default />
+        }
+      }
     </div>
-    <p class="ant-empty-description" *ngIf="nzNotFoundContent !== null">
-      <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
-        {{ isContentString ? nzNotFoundContent : locale['description'] }}
-      </ng-container>
-    </p>
-    <div class="ant-empty-footer" *ngIf="nzNotFoundFooter">
-      <ng-container *nzStringTemplateOutlet="nzNotFoundFooter">
-        {{ nzNotFoundFooter }}
-      </ng-container>
-    </div>
+    @if (nzNotFoundContent !== null) {
+      <p class="ant-empty-description">
+        <ng-container *nzStringTemplateOutlet="nzNotFoundContent">
+          {{ isContentString ? nzNotFoundContent : locale['description'] }}
+        </ng-container>
+      </p>
+    }
+
+    @if (nzNotFoundFooter) {
+      <div class="ant-empty-footer">
+        <ng-container *nzStringTemplateOutlet="nzNotFoundFooter">
+          {{ nzNotFoundFooter }}
+        </ng-container>
+      </div>
+    }
   `,
   host: {
     class: 'ant-empty'
   },
-  imports: [NgIf, NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent],
+  imports: [NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent],
   standalone: true
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
