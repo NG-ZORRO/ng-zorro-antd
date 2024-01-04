@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
       <span>Select gap:</span>
       <nz-segmented [nzOptions]="gapSegment" [(ngModel)]="selectedGap"></nz-segmented>
     </div>
-    <ng-container *ngIf="gapSegment[selectedGap] === 'custom'">
-      <nz-slider [nzMin]="0" [nzMax]="100" [(ngModel)]="customGapValue"></nz-slider>
-    </ng-container>
+    @if (gapSegment[selectedGap] === 'custom') {
+      <nz-slider [nzMin]="0" [nzMax]="100" [(ngModel)]="customGapValue" />
+    }
     <div
       nz-flex
       [nzGap]="
