@@ -14,6 +14,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ComponentRef,
   ContentChild,
   EventEmitter,
   Inject,
@@ -184,6 +185,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
+  private componentRef: ComponentRef<T> | null = null;
 
   @Input()
   set nzVisible(value: boolean) {
@@ -387,6 +389,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
       this.componentInstance = null;
+      this.componentRef = null;
     }, this.getAnimationDuration());
   }
 
@@ -412,6 +415,10 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     return this.componentInstance;
   }
 
+  override getContentComponentRef(): ComponentRef<T> | null {
+    return this.componentRef;
+  }
+
   closeClick(): void {
     this.nzOnClose.emit();
   }
@@ -434,13 +441,14 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
         ]
       });
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
-      const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
-      this.componentInstance = componentRef.instance;
+      this.componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
+
+      this.componentInstance = this.componentRef.instance;
       /**TODO
        * When nzContentParam will be remove in the next major version, we have to remove the following line
        * **/
-      Object.assign(componentRef.instance!, this.nzData || this.nzContentParams);
-      componentRef.changeDetectorRef.detectChanges();
+      Object.assign(this.componentRef.instance!, this.nzData || this.nzContentParams);
+      this.componentRef.changeDetectorRef.detectChanges();
     }
   }
 
