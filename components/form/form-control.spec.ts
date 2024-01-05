@@ -16,7 +16,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzI18nService, en_US } from 'ng-zorro-antd/i18n';
+import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzFormControlComponent } from './form-control.component';
 import { NzFormItemComponent } from './form-item.component';
@@ -452,11 +452,13 @@ export class NzTestReactiveFormControlInitStatusComponent {
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item *ngIf="showConfirmPassword">
-        <nz-form-control>
-          <input nz-input type="password" formControlName="confirmPassword" />
-        </nz-form-control>
-      </nz-form-item>
+      @if (showConfirmPassword) {
+        <nz-form-item>
+          <nz-form-control>
+            <input nz-input type="password" formControlName="confirmPassword" />
+          </nz-form-control>
+        </nz-form-item>
+      }
     </form>
   `
 })
