@@ -118,18 +118,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
 
   visible = false;
-  wrapperStyleInVerticalMode: NgStyleInterface = {
-    'max-height': '100vh',
-    'margin-left': '-4.5px',
-    'padding-left': '4px'
-  };
-  wrapperStyleInHorizontalMode: NgStyleInterface = {
-    'max-height': '100vh',
-    'margin-bottom': '-4.5px',
-    'padding-bottom': '4px'
-  };
-
-  wrapperStyle: NgStyleInterface = this.handleWrapperStyle();
+  wrapperStyle: NgStyleInterface = { 'max-height': '100vh' };
 
   container?: HTMLElement | Window;
   activeLink?: string;
@@ -287,10 +276,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOffsetTop, nzContainer, nzCurrentAnchor, nzDirection } = changes;
+    const { nzOffsetTop, nzContainer, nzCurrentAnchor } = changes;
     if (nzOffsetTop) {
       this.wrapperStyle = {
-        ...this.wrapperStyle,
         'max-height': `calc(100vh - ${this.nzOffsetTop}px)`
       };
     }
@@ -302,12 +290,5 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (nzCurrentAnchor) {
       this.setActive();
     }
-    if (nzDirection && nzDirection.currentValue !== nzDirection.previousValue) {
-      this.wrapperStyle = this.handleWrapperStyle();
-    }
-  }
-
-  private handleWrapperStyle(): NgStyleInterface {
-    return this.nzDirection === 'vertical' ? this.wrapperStyleInVerticalMode : this.wrapperStyleInHorizontalMode;
   }
 }
