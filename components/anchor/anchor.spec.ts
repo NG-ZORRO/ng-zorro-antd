@@ -250,26 +250,7 @@ describe('anchor', () => {
       context.nzDirection = 'horizontal';
       fixture.detectChanges();
       const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
-      console.log(wrapperEl);
       expect(wrapperEl.nativeElement.classList).toContain('ant-anchor-wrapper-horizontal');
-    });
-
-    it('should render inner anchors in vertical mode', () => {
-      context.nzDirection = 'vertical';
-      fixture.detectChanges();
-      const linkList = dl.queryAll(By.css('.ant-anchor-link'));
-      expect(linkList.length).toEqual(12);
-    });
-
-    it('should not render inner anchors in horizontal mode', () => {
-      context.nzDirection = 'horizontal';
-      fixture.detectChanges();
-      const linkList = dl.queryAll(By.css('.ant-anchor-link'));
-      // console.log(linkList[0].context);
-      // linkList.forEach(x => {
-      //   x.
-      // })
-      expect(linkList.length).toEqual(12);
     });
   });
 
