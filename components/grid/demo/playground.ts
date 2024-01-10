@@ -30,13 +30,13 @@ import { NzMarks } from 'ng-zorro-antd/slider';
     <div class="gutter-example">
       <div nz-row [nzGutter]="[hGutter, vGutter]">
         @for (i of array; track i) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
+          <div nz-col class="gutter-row" [nzSpan]="24 / count">
             <div class="grid-config">Column</div>
           </div>
         }
 
         @for (i of array; track i) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
+          <div nz-col class="gutter-row" [nzSpan]="24 / count">
             <div class="grid-config">Column</div>
           </div>
         }
