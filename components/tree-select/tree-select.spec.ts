@@ -79,6 +79,14 @@ describe('tree-select component', () => {
       fixture.detectChanges();
     }));
 
+    describe('isComposingChange', () => {
+      it('should update isComposing value correctly', () => {
+        const isComposing = true;
+        treeSelectComponent.isComposingChange(isComposing);
+        expect(treeSelectComponent.isComposing).toBe(isComposing);
+      });
+    });
+
     it('should size work', fakeAsync(() => {
       testComponent.size = 'small';
       fixture.detectChanges();
