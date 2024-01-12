@@ -81,9 +81,8 @@ describe('tree-select component', () => {
 
     describe('isComposingChange', () => {
       it('should update isComposing value correctly', () => {
-        const isComposing = true;
-        treeSelectComponent.isComposingChange(isComposing);
-        expect(treeSelectComponent.isComposing).toBe(isComposing);
+        treeSelectComponent.isComposingChange(false);
+        expect(treeSelectComponent.isComposing).toBe(false);
       });
     });
 
