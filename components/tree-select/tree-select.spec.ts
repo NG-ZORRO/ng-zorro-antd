@@ -3,7 +3,16 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  ComponentFixtureAutoDetect,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick,
+  waitForAsync
+} from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,6 +30,38 @@ import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
+
+describe('nz-tree-select component', () => {
+  let component: NzTreeSelectComponent;
+  let fixture: ComponentFixture<NzTreeSelectComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzTreeSelectComponent],
+      providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
+    });
+    fixture = TestBed.createComponent(NzTreeSelectComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
+
+  it('should isComposing value is false', fakeAsync(() => {
+    component.setInputValue('');
+    component.isComposingChange(false);
+    fixture.detectChanges();
+    expect(component.isComposing).toBe(false);
+  }));
+  it('should isComposing value is true', fakeAsync(() => {
+    component.setInputValue('');
+    component.isComposingChange(true);
+    tick(0);
+    fixture.detectChanges();
+    expect(component.isComposing).toBe(true);
+  }));
+});
 
 describe('tree-select component', () => {
   let overlayContainer: OverlayContainer;
@@ -78,13 +119,6 @@ describe('tree-select component', () => {
       tick(200);
       fixture.detectChanges();
     }));
-
-    describe('isComposingChange', () => {
-      it('should update isComposing value correctly', () => {
-        treeSelectComponent.isComposingChange(false);
-        expect(treeSelectComponent.isComposing).toBe(false);
-      });
-    });
 
     it('should size work', fakeAsync(() => {
       testComponent.size = 'small';
