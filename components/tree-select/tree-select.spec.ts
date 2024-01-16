@@ -350,15 +350,13 @@ describe('tree-select component', () => {
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
-    it('should isComposing value is correct', fakeAsync(() => {
-      testComponent.showSearch = true;
-      fixture.detectChanges();
-      treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      treeSelectComponent.inputValue = '1001';
-      fixture.detectChanges();
+    it('should isComposing/inputValue is correct', fakeAsync(() => {
+      treeSelectComponent.inputValue = '';
+      treeSelectComponent.isComposingChange(true);
+      treeSelectComponent.setInputValue('1011');
       flush();
-      expect(treeSelectComponent.isComposing).toBe(false);
+      expect(treeSelectComponent.isComposing).toBe(true);
+      expect(treeSelectComponent.inputValue).toBe('');
     }));
   });
 
