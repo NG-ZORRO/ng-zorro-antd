@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,17 +22,28 @@ import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { defaultColor, generateColor } from 'ng-antd-color-picker';
+import { defaultColor, generateColor, NgAntdColorPickerModule } from 'ng-antd-color-picker';
 
 import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 
+import { NzColorBlockComponent } from './color-block.component';
+import { NzColorFormatComponent } from './color-format.component';
 import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './typings';
 
 @Component({
   selector: 'nz-color-picker',
   exportAs: 'NzColorPicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgAntdColorPickerModule,
+    NzPopoverDirective,
+    NzColorBlockComponent,
+    NzColorFormatComponent,
+    NgTemplateOutlet
+  ],
   template: `
     <div
       [class.ant-color-picker-trigger]="!nzFlipFlop"
@@ -63,7 +75,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
         [panelRenderFooter]="nzPanelRenderFooter"
         [disabledAlpha]="nzDisabledAlpha"
         (nzOnChange)="colorChange($event)"
-      ></ng-antd-color-picker>
+      />
     </ng-template>
     <ng-template #nzPanelRenderHeader>
       @if (nzTitle || nzAllowClear) {
@@ -90,7 +102,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
         [nzDisabledAlpha]="nzDisabledAlpha"
         (formatChange)="formatChange($event)"
         (nzOnFormatChange)="nzOnFormatChange.emit($event)"
-      ></nz-color-format>
+      />
     </ng-template>
   `,
   host: {
