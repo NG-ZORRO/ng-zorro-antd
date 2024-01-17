@@ -6,7 +6,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -87,11 +86,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         (ngModelChange)="onModelChange($event)"
       />
     </div>
-    <nz-form-item-feedback-icon
-      class="ant-input-number-suffix"
-      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status && !nzFormNoStatusService) {
+      <nz-form-item-feedback-icon class="ant-input-number-suffix" [status]="status" />
+    }
   `,
   providers: [
     {
@@ -114,7 +111,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
-  imports: [NzIconModule, FormsModule, NzFormPatchModule, NgIf],
+  imports: [NzIconModule, FormsModule, NzFormPatchModule],
   standalone: true
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
