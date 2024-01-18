@@ -214,7 +214,7 @@ export class NzTreeComponent
   @Input() @InputBoolean() nzDraggable: boolean = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzVirtualItemSize = 28;
+  @Input() @WithConfig() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;

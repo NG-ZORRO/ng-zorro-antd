@@ -170,7 +170,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzFooter: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzNoResult: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
-  @Input() nzVirtualItemSize = 0;
+  @Input() @WithConfig() nzVirtualItemSize = 0;
   @Input() nzVirtualMaxBufferPx = 200;
   @Input() nzVirtualMinBufferPx = 100;
   @Input() nzVirtualForTrackBy: TrackByFunction<T> = index => index;
