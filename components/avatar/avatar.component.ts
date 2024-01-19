@@ -140,6 +140,7 @@ export class NzAvatarComponent implements OnChanges, AfterViewInit {
     } else {
       this.customSize = null;
     }
+
     this.cdr.markForCheck();
   }
 }
