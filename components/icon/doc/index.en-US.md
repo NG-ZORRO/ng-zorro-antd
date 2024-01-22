@@ -168,7 +168,7 @@ See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15
 
 ### Namespace
 
-We introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
+We introduced namespace so you could add your own icons in a convenient way. When you want to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
 
 Static importing. Invoke `addIconLiteral` of `NzIconService`.
 

@@ -42,9 +42,9 @@ Timeline
 
 Node of timeline
 
-| Property       | Description                                                      | Type                          | Default |
-| -------------- | ---------------------------------------------------------------- | ----------------------------- | ------- |
-| `[nzColor]`    | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'` | `string`                      | `blue`  |
-| `[nzDot]`      | Customize timeline dot                                           | `string \| TemplateRef<void>` | -       |
-| `[nzPosition]` | Customize position, only works when `nzMode` is `custom`         | `'left' \| 'right'`           | -       |
-| `[nzLabel]`    | Set the label                                                    | `string \| TemplateRef<void>` | -       |
+| Property       | Description                                                                             | Type                          | Default |
+| -------------- | --------------------------------------------------------------------------------------- | ----------------------------- | ------- |
+| `[nzColor]`    | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'` or other custom colors | `string`                      | `blue`  |
+| `[nzDot]`      | Customize timeline dot                                                                  | `string \| TemplateRef<void>` | -       |
+| `[nzPosition]` | Customize position, only works when `nzMode` is `custom`                                | `'left' \| 'right'`           | -       |
+| `[nzLabel]`    | Set the label                                                                           | `string \| TemplateRef<void>` | -       |

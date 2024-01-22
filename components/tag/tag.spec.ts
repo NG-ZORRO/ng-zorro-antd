@@ -98,6 +98,12 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
     });
+    it('should have bordered by default', () => {
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-borderless');
+      testComponent.bordered = false;
+      fixture.detectChanges();
+      expect(tag.nativeElement.classList).toContain('ant-tag-borderless');
+    });
   });
   describe('prevent tag', () => {
     let fixture: ComponentFixture<NzTestTagPreventComponent>;
@@ -140,6 +146,7 @@ describe('tag', () => {
       [nzMode]="mode"
       [(nzChecked)]="checked"
       [nzColor]="color"
+      [nzBordered]="bordered"
       (nzCheckedChange)="checkedChange($event)"
       (nzOnClose)="onClose()"
     >
@@ -151,6 +158,7 @@ export class NzTestTagBasicComponent {
   mode = 'default';
   color: string | undefined;
   checked = false;
+  bordered = true;
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');
