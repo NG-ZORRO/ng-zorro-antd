@@ -349,6 +349,15 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+
+    it('should isComposing/inputValue is correct', fakeAsync(() => {
+      treeSelectComponent.inputValue = '';
+      treeSelectComponent.isComposingChange(true);
+      treeSelectComponent.setInputValue('1011');
+      flush();
+      expect(treeSelectComponent.isComposing).toBe(true);
+      expect(treeSelectComponent.inputValue).toBe('');
+    }));
   });
 
   describe('checkable', () => {
