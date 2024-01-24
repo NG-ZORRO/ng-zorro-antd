@@ -14,13 +14,24 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import { generateColor } from 'ng-antd-color-picker';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
+import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { NzColorPickerFormatType } from './typings';
 
@@ -28,6 +39,8 @@ import { NzColorPickerFormatType } from './typings';
   selector: 'nz-color-format',
   exportAs: 'NzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputGroupComponent, NzInputNumberComponent],
   template: `
     <div [formGroup]="validateForm" class="ant-color-picker-input-container">
       <div class="ant-color-picker-format-select">

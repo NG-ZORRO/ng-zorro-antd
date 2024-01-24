@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -15,7 +14,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon [nzType]="icon" *ngIf="icon"></span>
+    @if (icon) {
+      <span nz-icon [nzType]="icon"></span>
+    }
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
     <ng-content></ng-content>
   `,
@@ -24,7 +25,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-input-prefix]': `type === 'prefix'`,
     '[class.ant-input-suffix]': `type === 'suffix'`
   },
-  imports: [NzIconModule, NgIf, NzOutletModule],
+  imports: [NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzInputGroupSlotComponent {
