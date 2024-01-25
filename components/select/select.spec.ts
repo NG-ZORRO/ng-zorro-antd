@@ -1270,7 +1270,15 @@ describe('select', () => {
       flushRefresh();
       expect(component.value.length).toBe(1);
       expect(component.value[0]).toBe('test_01');
+      expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
     }));
+    it('should show nzShowArrow component when having nzMaxMultipleCount', () => {
+      component.nzMaxMultipleCount = 0;
+      expect(selectElement.querySelector('nz-select-arrow')).toBeFalsy();
+      component.nzMaxMultipleCount = 1;
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-select-arrow')).toBeTruthy();
+    });
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
       const flushRefresh = (): void => {
         fixture.detectChanges();
@@ -1424,6 +1432,33 @@ describe('select', () => {
       expect(detectChangesSpy).toHaveBeenCalledTimes(1);
       // expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     }));
+
+    it('should isMaxTagCountSet work correct', () => {
+      component.nzMaxMultipleCount = Infinity;
+      fixture.detectChanges();
+      let isMaxTagCountSet;
+      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
+      expect(isMaxTagCountSet).toBeFalsy();
+
+      component.nzMaxMultipleCount = 1;
+      fixture.detectChanges();
+      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
+      expect(isMaxTagCountSet).toBeTruthy();
+    });
+
+    it('should isMaxLimitReached be set correctly', () => {
+      selectComponent.nzMaxMultipleCount = 2;
+      selectComponent.listOfValue = ['a', 'b'];
+      fixture.detectChanges();
+      selectComponent.updateListOfValue(['a', 'b']);
+      expect(selectComponent.isMaxLimitReached).toBeTruthy();
+
+      selectComponent.nzMaxMultipleCount = 20;
+      selectComponent.listOfValue = ['a', 'b'];
+      fixture.detectChanges();
+      selectComponent.updateListOfValue(['a', 'b']);
+      expect(selectComponent.isMaxLimitReached).toBeFalsy();
+    });
 
     it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
       const appRef = TestBed.inject(ApplicationRef);
@@ -1625,6 +1660,7 @@ describe('select', () => {
       [(nzOpen)]="nzOpen"
       [nzPlacement]="nzPlacement"
       [nzSelectOnTab]="nzSelectOnTab"
+      [nzMaxMultipleCount]="nzMaxMultipleCount"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1671,6 +1707,7 @@ export class TestSelectTemplateDefaultComponent {
   nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
   nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   nzShowArrow = true;
+  nzMaxMultipleCount: number = Infinity;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
       return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
