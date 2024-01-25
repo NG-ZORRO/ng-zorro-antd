@@ -66,7 +66,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               [customContent]="item.nzCustomContent"
               [template]="item.template"
               [grouped]="!!item.groupLabel"
-              [disabled]="item.nzDisabled"
+              [disabled]="item.nzDisabled || (isMaxLimitReached && !listOfSelectedValue.includes(item['nzValue']))"
               [showState]="mode === 'tags' || mode === 'multiple'"
               [title]="item.nzTitle"
               [label]="item.nzLabel"
@@ -108,6 +108,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() matchWidth = true;
   @Input() itemSize = 32;
   @Input() maxItemLength = 8;
+  @Input() isMaxLimitReached = false;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
