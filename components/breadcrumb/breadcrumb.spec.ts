@@ -17,14 +17,12 @@ import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
 describe('breadcrumb', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzBreadCrumbModule],
-        declarations: [NzDemoBreadcrumbBasicComponent, NzTestBreadcrumbRtlComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzBreadCrumbModule],
+      declarations: [NzDemoBreadcrumbBasicComponent, NzTestBreadcrumbRtlComponent]
+    }).compileComponents();
+  }));
 
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbBasicComponent>;
@@ -53,15 +51,13 @@ describe('breadcrumb', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbDropdownComponent>;
     let items: DebugElement[];
 
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [RouterTestingModule, NzBreadCrumbModule, NzDropDownModule],
-          declarations: [NzDemoBreadcrumbDropdownComponent],
-          providers: []
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule, NzBreadCrumbModule, NzDropDownModule],
+        declarations: [NzDemoBreadcrumbDropdownComponent],
+        providers: []
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbDropdownComponent);
@@ -81,14 +77,12 @@ describe('breadcrumb', () => {
     let items: DebugElement[];
     let breadcrumbs: DebugElement[];
 
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzBreadCrumbModule, NzIconTestModule],
-          declarations: [NzDemoBreadcrumbSeparatorComponent]
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzBreadCrumbModule, NzIconTestModule],
+        declarations: [NzDemoBreadcrumbSeparatorComponent]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbSeparatorComponent);

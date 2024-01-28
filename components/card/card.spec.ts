@@ -17,29 +17,27 @@ import { NzDemoCardSimpleComponent } from './demo/simple';
 import { NzDemoCardTabsComponent } from './demo/tabs';
 
 describe('card', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCardModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzDemoCardBasicComponent,
-          NzDemoCardBorderLessComponent,
-          NzDemoCardFlexibleContentComponent,
-          NzDemoCardGridCardComponent,
-          NzDemoCardInColumnComponent,
-          NzDemoCardInnerComponent,
-          NzDemoCardLoadingComponent,
-          NzDemoCardMetaComponent,
-          NzDemoCardSimpleComponent,
-          NzDemoCardTabsComponent,
-          TestCardSizeComponent,
-          NzTestCardRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCardModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzDemoCardBasicComponent,
+        NzDemoCardBorderLessComponent,
+        NzDemoCardFlexibleContentComponent,
+        NzDemoCardGridCardComponent,
+        NzDemoCardInColumnComponent,
+        NzDemoCardInnerComponent,
+        NzDemoCardLoadingComponent,
+        NzDemoCardMetaComponent,
+        NzDemoCardSimpleComponent,
+        NzDemoCardTabsComponent,
+        TestCardSizeComponent,
+        NzTestCardRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoCardBasicComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));

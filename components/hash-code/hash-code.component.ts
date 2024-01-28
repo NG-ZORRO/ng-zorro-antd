@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,29 +24,33 @@ import { NzModeType } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, NzIconModule],
+  imports: [NgTemplateOutlet, NgStyle, NzIconModule],
   selector: 'nz-hash-code',
   exportAs: 'nzHashCode',
   template: `
-    <div class="ant-hashCode-header" *ngIf="nzMode !== 'single' && nzMode !== 'rect'">
-      <div class="ant-hashCode-header-title">{{ nzTitle }}</div>
+    @if (nzMode !== 'single' && nzMode !== 'rect') {
+      <div class="ant-hashCode-header">
+        <div class="ant-hashCode-header-title">{{ nzTitle }}</div>
+        <div class="ant-hashCode-header-copy" (click)="copyHandle()">
+          <span nz-icon nzType="copy" nzTheme="outline"></span>
+        </div>
+        <div class="ant-hashCode-header-logo">
+          @if (isNzLogoTemplateRef) {
+            <ng-container *ngTemplateOutlet="$any(nzLogo)" />
+          }
+          @if (isNzLogoNonEmptyString) {
+            <span [innerHTML]="nzLogo"></span>
+          }
+        </div>
+      </div>
+    }
+
+    @if (nzMode === 'single' || nzMode === 'rect') {
       <div class="ant-hashCode-header-copy" (click)="copyHandle()">
         <span nz-icon nzType="copy" nzTheme="outline"></span>
       </div>
-      <div class="ant-hashCode-header-logo">
-        <ng-container [ngSwitch]="true">
-          <ng-container *ngSwitchCase="isTemplateRef(nzLogo)">
-            <ng-container *ngTemplateOutlet="$any(nzLogo)"></ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="isNonEmptyString(nzLogo)">
-            <span [innerHTML]="nzLogo"></span>
-          </ng-container>
-        </ng-container>
-      </div>
-    </div>
-    <div class="ant-hashCode-header-copy" *ngIf="nzMode === 'single' || nzMode === 'rect'" (click)="copyHandle()">
-      <span nz-icon nzType="copy" nzTheme="outline"></span>
-    </div>
+    }
+
     <div
       class="ant-hashCode-contant"
       [class.ant-hashCode-value-default]="nzType === 'default'"
@@ -56,31 +60,39 @@ import { NzModeType } from './typings';
         class="ant-hashCode-code-value"
         [ngStyle]="{ height: nzMode === 'rect' ? '70px' : nzMode === 'single' ? '18px' : '35px' }"
       >
-        <ng-container *ngIf="nzMode === 'double'">
-          <ng-container *ngIf="hashDataList.length > 8; else fullDoubleDisplay">
-            <div class="ant-hashCode-code-value-block" *ngFor="let v of hashDataList.slice(0, 6)">{{ v }}</div>
+        @if (nzMode === 'double') {
+          @if (hashDataList.length > 8) {
+            @for (v of hashDataList.slice(0, 6); track v) {
+              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+            }
             <div class="ant-hashCode-code-value-block">····</div>
             <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
-          </ng-container>
-          <ng-template #fullDoubleDisplay>
-            <div class="ant-hashCode-code-value-block" *ngFor="let v of hashDataList">{{ v }}</div>
-          </ng-template>
-        </ng-container>
-        <ng-container *ngIf="nzMode === 'single'">
+          } @else {
+            @for (v of hashDataList; track v) {
+              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+            }
+          }
+        }
+
+        @if (nzMode === 'single') {
           <div class="ant-hashCode-code-value-block">{{ hashDataList[0] }}</div>
           <div class="ant-hashCode-code-value-block">····</div>
           <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
-        </ng-container>
-        <ng-container *ngIf="nzMode === 'rect' || nzMode === 'strip'">
-          <ng-container *ngIf="hashDataList.length > 16; else fullDisplay">
-            <div class="ant-hashCode-code-value-block" *ngFor="let v of hashDataList.slice(0, 14)">{{ v }}</div>
+        }
+
+        @if (nzMode === 'rect' || nzMode === 'strip') {
+          @if (hashDataList.length > 16) {
+            @for (v of hashDataList.slice(0, 14); track v) {
+              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+            }
             <div class="ant-hashCode-code-value-block">····</div>
             <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
-          </ng-container>
-          <ng-template #fullDisplay>
-            <div class="ant-hashCode-code-value-block" *ngFor="let v of hashDataList">{{ v }}</div>
-          </ng-template>
-        </ng-container>
+          } @else {
+            @for (v of hashDataList; track v) {
+              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+            }
+          }
+        }
       </div>
       <div
         class="ant-hashCode-texaure"
@@ -263,6 +275,11 @@ export class NzHashCodeComponent implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  protected readonly isTemplateRef = isTemplateRef;
-  protected readonly isNonEmptyString = isNonEmptyString;
+  get isNzLogoTemplateRef(): boolean {
+    return isTemplateRef(this.nzLogo);
+  }
+
+  get isNzLogoNonEmptyString(): boolean {
+    return isNonEmptyString(this.nzLogo);
+  }
 }

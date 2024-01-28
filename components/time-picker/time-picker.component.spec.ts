@@ -24,31 +24,29 @@ describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NzI18nModule,
-          NzTimePickerModule,
-          NzFormModule,
-          NzTestTimePickerComponent,
-          NzTestTimePickerStatusComponent,
-          NzTestTimePickerDirComponent,
-          NzTestTimePickerInFormComponent
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      });
-      TestBed.compileComponents();
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzI18nModule,
+        NzTimePickerModule,
+        NzFormModule,
+        NzTestTimePickerComponent,
+        NzTestTimePickerStatusComponent,
+        NzTestTimePickerDirComponent,
+        NzTestTimePickerInFormComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    });
+    TestBed.compileComponents();
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

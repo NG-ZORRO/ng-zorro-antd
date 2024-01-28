@@ -16,8 +16,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { DateBodyRow, DateCell } from './interface';
@@ -25,8 +24,6 @@ import { DateBodyRow, DateCell } from './interface';
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractTable implements OnInit, OnChanges {
-  isTemplateRef = isTemplateRef;
-  isNonEmptyString = isNonEmptyString;
   headRow: DateCell[] = [];
   bodyRows: DateBodyRow[] = [];
   MAX_ROW = 6;
@@ -54,13 +51,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     }
   }
 
-  trackByBodyRow(_index: number, item: DateBodyRow): NzSafeAny {
-    return item.trackByIndex;
-  }
 
-  trackByBodyColumn(_index: number, item: DateCell): NzSafeAny {
-    return item.trackByIndex;
-  }
 
   hasRangeValue(): boolean {
     return this.selectedValue?.length > 0 || this.hoverValue?.length > 0;

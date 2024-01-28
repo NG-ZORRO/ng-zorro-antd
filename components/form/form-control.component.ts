@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -47,22 +47,27 @@ import { NzFormDirective } from './form.directive';
         <ng-content></ng-content>
       </div>
     </div>
-    <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected" *ngIf="innerTip">
-      <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
-        <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
-          innerTip
-        }}</ng-container>
+    @if (innerTip) {
+      <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
+        <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
+          <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
+            innerTip
+          }}</ng-container>
+        </div>
       </div>
-    </div>
-    <div class="ant-form-item-extra" *ngIf="nzExtra">
-      <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-    </div>
+    }
+
+    @if (nzExtra) {
+      <div class="ant-form-item-extra">
+        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+      </div>
+    }
   `,
   providers: [NzFormStatusService],
   host: {
     class: 'ant-form-item-control'
   },
-  imports: [NgClass, NzOutletModule, NgIf],
+  imports: [NgClass, NzOutletModule],
   standalone: true
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {

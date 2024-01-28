@@ -18,7 +18,11 @@ export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private nzTableDataService: NzTableDataService<T>) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private nzTableDataService: NzTableDataService<T>
+  ) {}
 
   ngOnInit(): void {
     this.nzTableDataService.listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(item => {

@@ -4,7 +4,7 @@
  */
 
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,15 +34,12 @@ interface Info {
   selector: '[nz-graph-node]',
   template: `
     <svg:g>
-      <ng-container
-        *ngIf="customTemplate"
-        [ngTemplateOutlet]="customTemplate"
-        [ngTemplateOutletContext]="{ $implicit: node }"
-      ></ng-container>
-      <ng-container *ngIf="!customTemplate">
+      @if (customTemplate) {
+        <ng-container [ngTemplateOutlet]="customTemplate" [ngTemplateOutletContext]="{ $implicit: node }" />
+      } @else {
         <svg:rect class="nz-graph-node-rect" [attr.width]="node.width" [attr.height]="node.height"></svg:rect>
         <svg:text x="10" y="20">{{ node.id || node.name }}</svg:text>
-      </ng-container>
+      }
     </svg:g>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,7 +49,7 @@ interface Info {
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1'
   },
-  imports: [NgIf, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   standalone: true
 })
 export class NzGraphNodeComponent implements OnInit, OnDestroy {

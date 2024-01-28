@@ -116,7 +116,10 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -145,7 +148,7 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-      ? undefined
-      : IconMap[this.nzStatus as NzResultIconType];
+        ? undefined
+        : IconMap[this.nzStatus as NzResultIconType];
   }
 }

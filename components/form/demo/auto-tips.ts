@@ -45,8 +45,12 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
+            @if (control.errors?.['required']) {
+              Please confirm your password!
+            }
+            @if (control.errors?.['confirm']) {
+              Password is inconsistent!
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>

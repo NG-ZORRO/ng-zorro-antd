@@ -8,15 +8,13 @@ import { NzWaterMarkComponent } from './water-mark.component';
 import { NzWaterMarkModule } from './water-mark.module';
 
 describe('water-mark', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzWaterMarkModule],
-        declarations: [NzTestWaterMarkBasicComponent]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzWaterMarkModule],
+      declarations: [NzTestWaterMarkBasicComponent]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('water-mark basic', () => {
     let fixture: ComponentFixture<NzTestWaterMarkBasicComponent>;

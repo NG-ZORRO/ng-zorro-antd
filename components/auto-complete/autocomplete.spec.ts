@@ -52,43 +52,41 @@ describe('auto-complete', () => {
   const scrolledSubject = new Subject();
   let zone: MockNgZone;
 
-  beforeEach(
-    waitForAsync(() => {
-      const dir = 'ltr';
-      TestBed.configureTestingModule({
-        imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
-        declarations: [
-          NzTestSimpleAutocompleteComponent,
-          NzTestAutocompletePropertyComponent,
-          NzTestAutocompleteWithoutPanelComponent,
-          NzTestAutocompleteGroupComponent,
-          NzTestAutocompleteWithOnPushDelayComponent,
-          NzTestAutocompleteWithFormComponent,
-          NzTestAutocompleteWithObjectOptionComponent,
-          NzTestAutocompleteDifferentValueWithFormComponent,
-          NzTestAutocompleteWithGroupInputComponent
-        ],
-        providers: [
-          { provide: Directionality, useFactory: () => ({ value: dir }) },
-          { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-          {
-            provide: NgZone,
-            useFactory: () => {
-              zone = new MockNgZone();
-              return zone;
-            }
+  beforeEach(waitForAsync(() => {
+    const dir = 'ltr';
+    TestBed.configureTestingModule({
+      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
+      declarations: [
+        NzTestSimpleAutocompleteComponent,
+        NzTestAutocompletePropertyComponent,
+        NzTestAutocompleteWithoutPanelComponent,
+        NzTestAutocompleteGroupComponent,
+        NzTestAutocompleteWithOnPushDelayComponent,
+        NzTestAutocompleteWithFormComponent,
+        NzTestAutocompleteWithObjectOptionComponent,
+        NzTestAutocompleteDifferentValueWithFormComponent,
+        NzTestAutocompleteWithGroupInputComponent
+      ],
+      providers: [
+        { provide: Directionality, useFactory: () => ({ value: dir }) },
+        { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
           }
-        ]
-      });
+        }
+      ]
+    });
 
-      TestBed.compileComponents();
+    TestBed.compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -963,7 +961,9 @@ describe('auto-complete', () => {
         (input)="onInput($event.target?.value)"
       />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of filteredOptions" [nzValue]="option">{{ option }}</nz-auto-option>
+        @for (option of filteredOptions; track option) {
+          <nz-auto-option [nzValue]="option">{{ option }}</nz-auto-option>
+        }
       </nz-autocomplete>
     </div>
   `
@@ -1049,18 +1049,22 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   template: `
     <input [nzAutocomplete]="auto" [(ngModel)]="inputValue" />
     <nz-autocomplete #auto>
-      <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
-        <ng-template #groupTitle>
-          <span>
-            {{ group.title }}
-            <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
-          </span>
-        </ng-template>
-        <nz-auto-option *ngFor="let option of group.children" [nzValue]="option.title" [nzDisabled]="option.disabled">
-          {{ option.title }}
-          <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
-        </nz-auto-option>
-      </nz-auto-optgroup>
+      @for (group of optionGroups; track group.title) {
+        <nz-auto-optgroup [nzLabel]="groupTitle">
+          <ng-template #groupTitle>
+            <span>
+              {{ group.title }}
+              <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
+            </span>
+          </ng-template>
+          @for (option of group.children; track option.title) {
+            <nz-auto-option [nzValue]="option.title" [nzDisabled]="option.disabled">
+              {{ option.title }}
+              <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
+            </nz-auto-option>
+          }
+        </nz-auto-optgroup>
+      }
     </nz-autocomplete>
   `
 })
@@ -1113,7 +1117,9 @@ class NzTestAutocompleteGroupComponent {
     <form>
       <input [formControl]="formControl" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{ option }}</nz-auto-option>
+        @for (option of options; track option) {
+          <nz-auto-option [nzValue]="option">{{ option }}</nz-auto-option>
+        }
       </nz-autocomplete>
     </form>
   `
@@ -1128,9 +1134,11 @@ class NzTestAutocompleteWithFormComponent {
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto>
-      <nz-auto-option *ngFor="let option of options" [nzValue]="option.value" [nzLabel]="option.label">
-        {{ option.label }}
-      </nz-auto-option>
+      @for (option of options; track option.value) {
+        <nz-auto-option [nzValue]="option.value" [nzLabel]="option.label">
+          {{ option.label }}
+        </nz-auto-option>
+      }
     </nz-autocomplete>
   `
 })
@@ -1147,9 +1155,11 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto [compareWith]="compareFun">
-      <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">
-        {{ option.label }}
-      </nz-auto-option>
+      @for (option of options; track option.value) {
+        <nz-auto-option [nzValue]="option" [nzLabel]="option.label">
+          {{ option.label }}
+        </nz-auto-option>
+      }
     </nz-autocomplete>
   `
 })

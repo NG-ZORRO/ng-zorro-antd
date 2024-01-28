@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -57,26 +57,22 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   selector: 'date-range-popup',
   exportAs: 'dateRangePopup',
   template: `
-    <ng-container *ngIf="isRange; else singlePanel">
+    @if (isRange) {
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
         <div class="{{ prefixCls }}-range-arrow" [style]="arrowPosition"></div>
         <div class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }}">
           <div class="{{ prefixCls }}-panels">
-            <ng-container *ngIf="hasTimePicker; else noTimePicker">
-              <ng-container
-                *ngTemplateOutlet="tplInnerPopup; context: { partType: datePickerService.activeInput }"
-              ></ng-container>
-            </ng-container>
-            <ng-template #noTimePicker>
-              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
-              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }"></ng-container>
-            </ng-template>
+            @if (hasTimePicker) {
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: datePickerService.activeInput }" />
+            } @else {
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }" />
+              <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }" />
+            }
           </div>
-          <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
+          <ng-container *ngTemplateOutlet="tplFooter" />
         </div>
       </div>
-    </ng-container>
-    <ng-template #singlePanel>
+    } @else {
       <div
         class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }} {{
           hasTimePicker ? prefixCls + '-time' : ''
@@ -84,11 +80,11 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       >
         <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'" tabindex="-1">
           <!-- Single ONLY -->
-          <ng-container *ngTemplateOutlet="tplInnerPopup"></ng-container>
-          <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
+          <ng-container *ngTemplateOutlet="tplInnerPopup" />
+          <ng-container *ngTemplateOutlet="tplFooter" />
         </div>
       </div>
-    </ng-template>
+    }
 
     <ng-template #tplInnerPopup let-partType="partType">
       <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
@@ -112,40 +108,42 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           (selectDate)="changeValueFromSelect($event, !showTime)"
           (selectTime)="onSelectTime($event, partType)"
           (headerChange)="onActiveDateChange($event, partType)"
-        ></inner-popup>
+        />
       </div>
     </ng-template>
 
     <ng-template #tplFooter>
-      <calendar-footer
-        *ngIf="hasFooter"
-        [locale]="locale!"
-        [isRange]="isRange"
-        [showToday]="showToday"
-        [showNow]="showNow"
-        [hasTimePicker]="hasTimePicker"
-        [okDisabled]="!isAllowed($any(datePickerService?.value))"
-        [extraFooter]="extraFooter"
-        [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
-        (clickOk)="onClickOk()"
-        (clickToday)="onClickToday($event)"
-      ></calendar-footer>
+      @if (hasFooter) {
+        <calendar-footer
+          [locale]="locale!"
+          [isRange]="isRange"
+          [showToday]="showToday"
+          [showNow]="showNow"
+          [hasTimePicker]="hasTimePicker"
+          [okDisabled]="!isAllowed($any(datePickerService?.value))"
+          [extraFooter]="extraFooter"
+          [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
+          (clickOk)="onClickOk()"
+          (clickToday)="onClickToday($event)"
+        />
+      }
     </ng-template>
 
     <!-- Range ONLY: Range Quick Selector -->
     <ng-template #tplRangeQuickSelector>
-      <li
-        *ngFor="let name of getObjectKeys(ranges)"
-        class="{{ prefixCls }}-preset"
-        (click)="onClickPresetRange(ranges![name])"
-        (mouseenter)="onHoverPresetRange(ranges![name])"
-        (mouseleave)="onPresetRangeMouseLeave()"
-      >
-        <span class="ant-tag ant-tag-blue">{{ name }}</span>
-      </li>
+      @for (name of getObjectKeys(ranges); track name) {
+        <li
+          class="{{ prefixCls }}-preset"
+          (click)="onClickPresetRange(ranges![name])"
+          (mouseenter)="onHoverPresetRange(ranges![name])"
+          (mouseleave)="onPresetRangeMouseLeave()"
+        >
+          <span class="ant-tag ant-tag-blue">{{ name }}</span>
+        </li>
+      }
     </ng-template>
   `,
-  imports: [InnerPopupComponent, NgTemplateOutlet, NgIf, CalendarFooterComponent, NgForOf],
+  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent],
   standalone: true
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {

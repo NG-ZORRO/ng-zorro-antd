@@ -47,7 +47,10 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private element: ElementRef, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private element: ElementRef,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     this.bind();

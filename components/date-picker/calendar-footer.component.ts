@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -33,48 +33,58 @@ import { PREFIX_CLASS } from './util';
   exportAs: 'calendarFooter',
   template: `
     <div class="{{ prefixCls }}-footer">
-      <div *ngIf="extraFooter" class="{{ prefixCls }}-footer-extra">
-        <ng-container [ngSwitch]="true">
-          <ng-container *ngSwitchCase="isTemplateRef(extraFooter)">
-            <ng-container *ngTemplateOutlet="$any(extraFooter)"></ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="isNonEmptyString(extraFooter)">
+      @if (extraFooter) {
+        <div class="{{ prefixCls }}-footer-extra">
+          @if (isExtraFooterTemplateRef) {
+            <ng-container *ngTemplateOutlet="$any(extraFooter)" />
+          }
+          @if (isExtraFooterNonEmptyString) {
             <span [innerHTML]="extraFooter"></span>
-          </ng-container>
-        </ng-container>
-      </div>
-      <a
-        *ngIf="showToday"
-        class="{{ prefixCls }}-today-btn {{ isTodayDisabled ? prefixCls + '-today-btn-disabled' : '' }}"
-        role="button"
-        (click)="isTodayDisabled ? null : onClickToday()"
-        title="{{ todayTitle }}"
-      >
-        {{ locale.today }}
-      </a>
-      <ul *ngIf="hasTimePicker || rangeQuickSelector" class="{{ prefixCls }}-ranges">
-        <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
-        <li *ngIf="showNow" class="{{ prefixCls }}-now">
-          <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
-            {{ locale.now }}
-          </a>
-        </li>
-        <li *ngIf="hasTimePicker" class="{{ prefixCls }}-ok">
-          <button
-            nz-button
-            type="button"
-            nzType="primary"
-            nzSize="small"
-            [disabled]="okDisabled"
-            (click)="okDisabled ? null : clickOk.emit()"
-          >
-            {{ locale.ok }}
-          </button>
-        </li>
-      </ul>
+          }
+        </div>
+      }
+
+      @if (showToday) {
+        <a
+          class="{{ prefixCls }}-today-btn {{ isTodayDisabled ? prefixCls + '-today-btn-disabled' : '' }}"
+          role="button"
+          (click)="isTodayDisabled ? null : onClickToday()"
+          title="{{ todayTitle }}"
+        >
+          {{ locale.today }}
+        </a>
+      }
+
+      @if (hasTimePicker || rangeQuickSelector) {
+        <ul class="{{ prefixCls }}-ranges">
+          <ng-container *ngTemplateOutlet="rangeQuickSelector" />
+          @if (showNow) {
+            <li class="{{ prefixCls }}-now">
+              <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
+                {{ locale.now }}
+              </a>
+            </li>
+          }
+
+          @if (hasTimePicker) {
+            <li class="{{ prefixCls }}-ok">
+              <button
+                nz-button
+                type="button"
+                nzType="primary"
+                nzSize="small"
+                [disabled]="okDisabled"
+                (click)="okDisabled ? null : clickOk.emit()"
+              >
+                {{ locale.ok }}
+              </button>
+            </li>
+          }
+        </ul>
+      }
     </div>
   `,
-  imports: [NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet, NzButtonModule],
+  imports: [NgTemplateOutlet, NzButtonModule],
   standalone: true
 })
 export class CalendarFooterComponent implements OnChanges {
@@ -115,5 +125,13 @@ export class CalendarFooterComponent implements OnChanges {
   onClickToday(): void {
     const now: CandyDate = new CandyDate();
     this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
+  }
+
+  get isExtraFooterTemplateRef(): boolean {
+    return isTemplateRef(this.extraFooter);
+  }
+
+  get isExtraFooterNonEmptyString(): boolean {
+    return isNonEmptyString(this.extraFooter);
   }
 }

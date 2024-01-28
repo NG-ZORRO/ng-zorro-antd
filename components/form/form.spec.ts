@@ -129,9 +129,11 @@ export class NzTestFormDirectiveComponent {
       <nz-form-item>
         <nz-form-label>Label</nz-form-label>
       </nz-form-item>
-      <nz-form-item *ngIf="testPriority">
-        <nz-form-label [nzNoColon]="noColon">TEST_PRIORITY</nz-form-label>
-      </nz-form-item>
+      @if (testPriority) {
+        <nz-form-item>
+          <nz-form-label [nzNoColon]="noColon">TEST_PRIORITY</nz-form-label>
+        </nz-form-item>
+      }
     </form>
   `
 })

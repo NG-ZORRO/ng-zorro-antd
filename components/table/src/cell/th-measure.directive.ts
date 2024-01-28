@@ -19,7 +19,10 @@ export class NzThMeasureDirective implements OnChanges {
   @Input() colSpan: string | number | null = null;
   @Input() rowspan: string | number | null = null;
   @Input() rowSpan: string | number | null = null;
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     const { nzWidth, colspan, rowspan, colSpan, rowSpan } = changes;
     if (colspan || colSpan) {

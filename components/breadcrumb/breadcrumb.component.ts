@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -44,14 +43,16 @@ export interface BreadcrumbOption {
   preserveWhitespaces: false,
   providers: [{ provide: NzBreadcrumb, useExisting: NzBreadCrumbComponent }],
   standalone: true,
-  imports: [NgFor, NgIf, NzBreadCrumbItemComponent],
+  imports: [NzBreadCrumbItemComponent],
   template: `
-    <ng-content></ng-content>
-    <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
-      <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
-        <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
-      </nz-breadcrumb-item>
-    </ng-container>
+    <ng-content />
+    @if (nzAutoGenerate && breadcrumbs.length) {
+      @for (breadcrumb of breadcrumbs; track breadcrumb.url) {
+        <nz-breadcrumb-item>
+          <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
+        </nz-breadcrumb-item>
+      }
+    }
   `,
   host: {
     class: 'ant-breadcrumb'

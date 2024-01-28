@@ -29,6 +29,7 @@ import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTableContentComponent } from './table-content.component';
+import { NzTbodyComponent } from './tbody.component';
 
 @Component({
   selector: 'nz-table-inner-scroll',
@@ -86,7 +87,7 @@ import { NzTableContentComponent } from './table-content.component';
     </div>
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent, NgIf, NgStyle, ScrollingModule, NgTemplateOutlet],
+  imports: [NzTableContentComponent, NgIf, NgStyle, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
   standalone: true
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {

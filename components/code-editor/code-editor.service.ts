@@ -48,7 +48,10 @@ export class NzCodeEditorService implements OnDestroy {
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(private readonly nzConfigService: NzConfigService, @Inject(DOCUMENT) _document: NzSafeAny) {
+  constructor(
+    private readonly nzConfigService: NzConfigService,
+    @Inject(DOCUMENT) _document: NzSafeAny
+  ) {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
 
     this.document = _document;

@@ -74,7 +74,10 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

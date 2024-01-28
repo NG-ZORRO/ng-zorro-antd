@@ -10,9 +10,11 @@ import { Component } from '@angular/core';
       <label nz-radio-button nzValue="right">Right</label>
     </nz-radio-group>
     <nz-carousel [nzDotPosition]="dotPosition">
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
     </nz-carousel>
   `,
   styles: [

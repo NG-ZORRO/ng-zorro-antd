@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -44,7 +43,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span nz-icon nzType="loading" *ngIf="nzLoading"></span>
+    @if (nzLoading) {
+      <span nz-icon nzType="loading"></span>
+    }
     <ng-content></ng-content>
   `,
   host: {
@@ -67,7 +68,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   },
-  imports: [NzIconModule, NgIf],
+  imports: [NzIconModule],
   standalone: true
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
@@ -113,9 +114,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       listOfNode.filter(node => {
         return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.attributes?.getNamedItem('nz-icon'));
       }).length == 0;
-    const isIconOnly = !!this.nzIconDirectiveElement && noSpan && noText;
-
-    return isIconOnly;
+    return !!this.nzIconDirectiveElement && noSpan && noText;
   }
 
   constructor(

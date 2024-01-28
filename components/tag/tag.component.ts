@@ -60,6 +60,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
     '[class.ant-tag-rtl]': `dir === 'rtl'`,
+    '[class.ant-tag-borderless]': `!nzBordered`,
     '(click)': 'updateCheckedStatus()'
   },
   imports: [NzIconModule, NgIf],
@@ -71,6 +72,7 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor?: string | NzStatusColor | NzPresetColor;
   @Input() @InputBoolean() nzChecked = false;
+  @Input() @InputBoolean() nzBordered = true;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   dir: Direction = 'ltr';

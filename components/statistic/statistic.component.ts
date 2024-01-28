@@ -62,7 +62,10 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

@@ -6,7 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -78,7 +78,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   preserveWhitespaces: false,
   template: `
     <div cdkOverlayOrigin #origin="cdkOverlayOrigin" #trigger>
-      <ng-container *ngIf="nzShowInput">
+      @if (nzShowInput) {
         <div #selectContainer class="ant-select-selector">
           <span class="ant-select-selection-search">
             <input
@@ -96,36 +96,42 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               (focus)="handleInputFocus()"
             />
           </span>
-          <span *ngIf="showLabelRender" class="ant-select-selection-item" [title]="labelRenderText">
-            <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
-            <ng-template #labelTemplate>
-              <ng-template
-                [ngTemplateOutlet]="nzLabelRender"
-                [ngTemplateOutletContext]="labelRenderContext"
-              ></ng-template>
-            </ng-template>
-          </span>
-          <span
-            *ngIf="!showLabelRender"
-            class="ant-select-selection-placeholder"
-            [style.visibility]="!inputValue ? 'visible' : 'hidden'"
-            >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
-          >
+          @if (showLabelRender) {
+            <span class="ant-select-selection-item" [title]="labelRenderText">
+              @if (!isLabelRenderTemplate) {
+                <ng-container>{{ labelRenderText }}</ng-container>
+              } @else {
+                <ng-template
+                  [ngTemplateOutlet]="nzLabelRender"
+                  [ngTemplateOutletContext]="labelRenderContext"
+                ></ng-template>
+              }
+            </span>
+          } @else {
+            <span class="ant-select-selection-placeholder" [style.visibility]="!inputValue ? 'visible' : 'hidden'">{{
+              showPlaceholder ? nzPlaceHolder || locale?.placeholder : null
+            }}</span>
+          }
         </div>
-        <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading" *ngIf="nzShowArrow">
-          <span
-            *ngIf="!isLoading"
-            nz-icon
-            [nzType]="$any(nzSuffixIcon)"
-            [class.ant-cascader-picker-arrow-expand]="menuVisible"
-          ></span>
-          <span *ngIf="isLoading" nz-icon nzType="loading"></span>
-          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-        </span>
-        <span class="ant-select-clear" *ngIf="clearIconVisible">
-          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
-        </span>
-      </ng-container>
+        @if (nzShowArrow) {
+          <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
+            @if (!isLoading) {
+              <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+            } @else {
+              <span nz-icon nzType="loading"></span>
+            }
+
+            @if (hasFeedback && !!status) {
+              <nz-form-item-feedback-icon [status]="status" />
+            }
+          </span>
+        }
+        @if (clearIconVisible) {
+          <span class="ant-select-clear">
+            <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
+          </span>
+        }
+      }
       <ng-content></ng-content>
     </div>
     <ng-template
@@ -157,46 +163,44 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           [ngClass]="menuCls"
           [ngStyle]="nzMenuStyle"
         >
-          <ul
-            *ngIf="shouldShowEmpty; else hasOptionsTemplate"
-            class="ant-cascader-menu"
-            [style.width]="dropdownWidthStyle"
-            [style.height]="dropdownHeightStyle"
-          >
-            <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
-              <nz-embed-empty
-                class="ant-cascader-menu-item-content"
-                [nzComponentName]="'cascader'"
-                [specificContent]="nzNotFoundContent"
-              ></nz-embed-empty>
-            </li>
-          </ul>
-          <ng-template #hasOptionsTemplate>
-            <ul
-              *ngFor="let options of cascaderService.columns; let i = index"
-              class="ant-cascader-menu"
-              role="menuitemcheckbox"
-              [ngClass]="menuColumnCls"
-              [style.height]="dropdownHeightStyle"
-              [style.width]="dropdownWidthStyle"
-            >
-              <li
-                nz-cascader-option
-                *ngFor="let option of options"
-                [expandIcon]="nzExpandIcon"
-                [columnIndex]="i"
-                [nzLabelProperty]="nzLabelProperty"
-                [optionTemplate]="nzOptionRender"
-                [activated]="isOptionActivated(option, i)"
-                [highlightText]="inSearchingMode ? inputValue : ''"
-                [option]="option"
-                [dir]="dir"
-                (mouseenter)="onOptionMouseEnter(option, i, $event)"
-                (mouseleave)="onOptionMouseLeave(option, i, $event)"
-                (click)="onOptionClick(option, i, $event)"
-              ></li>
+          @if (shouldShowEmpty) {
+            <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
+              <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
+                <nz-embed-empty
+                  class="ant-cascader-menu-item-content"
+                  [nzComponentName]="'cascader'"
+                  [specificContent]="nzNotFoundContent"
+                />
+              </li>
             </ul>
-          </ng-template>
+          } @else {
+            @for (options of cascaderService.columns; track options; let i = $index) {
+              <ul
+                class="ant-cascader-menu"
+                role="menuitemcheckbox"
+                [ngClass]="menuColumnCls"
+                [style.height]="dropdownHeightStyle"
+                [style.width]="dropdownWidthStyle"
+              >
+                @for (option of options; track option.value) {
+                  <li
+                    nz-cascader-option
+                    [expandIcon]="nzExpandIcon"
+                    [columnIndex]="i"
+                    [nzLabelProperty]="nzLabelProperty"
+                    [optionTemplate]="nzOptionRender"
+                    [activated]="isOptionActivated(option, i)"
+                    [highlightText]="inSearchingMode ? inputValue : ''"
+                    [option]="option"
+                    [dir]="dir"
+                    (mouseenter)="onOptionMouseEnter(option, i, $event)"
+                    (mouseleave)="onOptionMouseLeave(option, i, $event)"
+                    (click)="onOptionClick(option, i, $event)"
+                  ></li>
+                }
+              </ul>
+            }
+          }
         </div>
       </div>
     </ng-template>
@@ -227,7 +231,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   },
   imports: [
     OverlayModule,
-    NgIf,
     FormsModule,
     NgTemplateOutlet,
     NzIconModule,
@@ -237,8 +240,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NgClass,
     NgStyle,
     NzEmptyModule,
-    NzCascaderOptionComponent,
-    NgForOf
+    NzCascaderOptionComponent
   ],
   standalone: true
 })

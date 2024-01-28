@@ -174,7 +174,10 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     return listOfParsedFilter.some(item => item.checked);
   }
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

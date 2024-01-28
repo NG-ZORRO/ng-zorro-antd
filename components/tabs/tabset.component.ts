@@ -51,7 +51,7 @@ import { NzTabBodyComponent } from './tab-body.component';
 import { NzTabCloseButtonComponent } from './tab-close-button.component';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
-import { NzTabComponent, NZ_TAB_SET } from './tab.component';
+import { NZ_TAB_SET, NzTabComponent } from './tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
 
@@ -95,6 +95,7 @@ let nextId = 0;
         *ngFor="let tab of tabs; let i = index"
       >
         <button
+          type="button"
           role="tab"
           [id]="getTabContentId(i)"
           [attr.tabIndex]="getTabIndex(tab, i)"
@@ -110,6 +111,7 @@ let nextId = 0;
         >
           <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{ tab.label }}</ng-container>
           <button
+            type="button"
             nz-tab-close-button
             *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
             [closeIcon]="tab.nzCloseIcon"

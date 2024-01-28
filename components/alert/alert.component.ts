@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -37,60 +36,68 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   exportAs: 'nzAlert',
   animations: [slideAlertMotion],
   standalone: true,
-  imports: [NgIf, NzIconModule, NzOutletModule],
+  imports: [NzIconModule, NzOutletModule],
   template: `
-    <div
-      *ngIf="!closed"
-      class="ant-alert"
-      [class.ant-alert-rtl]="dir === 'rtl'"
-      [class.ant-alert-success]="nzType === 'success'"
-      [class.ant-alert-info]="nzType === 'info'"
-      [class.ant-alert-warning]="nzType === 'warning'"
-      [class.ant-alert-error]="nzType === 'error'"
-      [class.ant-alert-no-icon]="!nzShowIcon"
-      [class.ant-alert-banner]="nzBanner"
-      [class.ant-alert-closable]="nzCloseable"
-      [class.ant-alert-with-description]="!!nzDescription"
-      [@.disabled]="nzNoAnimation"
-      [@slideAlertMotion]
-      (@slideAlertMotion.done)="onFadeAnimationDone()"
-    >
-      <div *ngIf="nzShowIcon" class="ant-alert-icon">
-        <ng-container *ngIf="nzIcon; else iconDefaultTemplate">
-          <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
-        </ng-container>
-        <ng-template #iconDefaultTemplate>
-          <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
-        </ng-template>
-      </div>
-      <div class="ant-alert-content" *ngIf="nzMessage || nzDescription">
-        <span class="ant-alert-message" *ngIf="nzMessage">
-          <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
-        </span>
-        <span class="ant-alert-description" *ngIf="nzDescription">
-          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
-        </span>
-      </div>
-      <div class="ant-alert-action" *ngIf="nzAction">
-        <ng-container *nzStringTemplateOutlet="nzAction">{{ nzAction }}</ng-container>
-      </div>
-      <button
-        type="button"
-        tabindex="0"
-        *ngIf="nzCloseable || nzCloseText"
-        class="ant-alert-close-icon"
-        (click)="closeAlert()"
+    @if (!closed) {
+      <div
+        class="ant-alert"
+        [class.ant-alert-rtl]="dir === 'rtl'"
+        [class.ant-alert-success]="nzType === 'success'"
+        [class.ant-alert-info]="nzType === 'info'"
+        [class.ant-alert-warning]="nzType === 'warning'"
+        [class.ant-alert-error]="nzType === 'error'"
+        [class.ant-alert-no-icon]="!nzShowIcon"
+        [class.ant-alert-banner]="nzBanner"
+        [class.ant-alert-closable]="nzCloseable"
+        [class.ant-alert-with-description]="!!nzDescription"
+        [@.disabled]="nzNoAnimation"
+        [@slideAlertMotion]
+        (@slideAlertMotion.done)="onFadeAnimationDone()"
       >
-        <ng-template #closeDefaultTemplate>
-          <span nz-icon nzType="close"></span>
-        </ng-template>
-        <ng-container *ngIf="nzCloseText; else closeDefaultTemplate">
-          <ng-container *nzStringTemplateOutlet="nzCloseText">
-            <span class="ant-alert-close-text">{{ nzCloseText }}</span>
-          </ng-container>
-        </ng-container>
-      </button>
-    </div>
+        @if (nzShowIcon) {
+          <div class="ant-alert-icon">
+            @if (nzIcon) {
+              <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
+            } @else {
+              <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
+            }
+          </div>
+        }
+
+        @if (nzMessage || nzDescription) {
+          <div class="ant-alert-content">
+            @if (nzMessage) {
+              <span class="ant-alert-message">
+                <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>
+              </span>
+            }
+            @if (nzDescription) {
+              <span class="ant-alert-description">
+                <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+              </span>
+            }
+          </div>
+        }
+
+        @if (nzAction) {
+          <div class="ant-alert-action">
+            <ng-container *nzStringTemplateOutlet="nzAction">{{ nzAction }}</ng-container>
+          </div>
+        }
+
+        @if (nzCloseable || nzCloseText) {
+          <button type="button" tabindex="0" class="ant-alert-close-icon" (click)="closeAlert()">
+            @if (nzCloseText) {
+              <ng-container *nzStringTemplateOutlet="nzCloseText">
+                <span class="ant-alert-close-text">{{ nzCloseText }}</span>
+              </ng-container>
+            } @else {
+              <span nz-icon nzType="close"></span>
+            }
+          </button>
+        }
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
