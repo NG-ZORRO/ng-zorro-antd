@@ -119,9 +119,9 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['activeDate']) {
-      const previuosActiveDate = changes['activeDate'].previousValue as CandyDate;
+      const previousActiveDate = changes['activeDate'].previousValue as CandyDate;
       const currentActiveDate = changes['activeDate'].currentValue as CandyDate;
-      if (previuosActiveDate?.getYear() !== currentActiveDate?.getYear()) {
+      if (previousActiveDate?.getYear() !== currentActiveDate?.getYear()) {
         this.setUpYears();
       }
     }
