@@ -267,7 +267,9 @@ describe('list RTL', () => {
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
           ></nz-list-item-meta>
           <ul nz-list-item-actions>
-            <nz-list-item-action *ngFor="let action of actions$ | async">{{ action }}</nz-list-item-action>
+            @for (action of actions$ | async; track action) {
+              <nz-list-item-action>{{ action }}</nz-list-item-action>
+            }
           </ul>
         </nz-list-item>
       </ng-template>
