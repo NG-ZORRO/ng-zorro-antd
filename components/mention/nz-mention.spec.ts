@@ -584,14 +584,16 @@ describe('mention', () => {
 @Component({
   template: `
     <nz-mention [nzSuggestions]="suggestions">
-      <textarea
-        *ngIf="!inputTrigger"
-        nz-input
-        [nzAutosize]="{ minRows: 4, maxRows: 4 }"
-        [(ngModel)]="inputValue"
-        nzMentionTrigger
-      ></textarea>
-      <textarea rows="1" *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      @if (!inputTrigger) {
+        <textarea
+          nz-input
+          [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+          [(ngModel)]="inputValue"
+          nzMentionTrigger
+        ></textarea>
+      } @else {
+        <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      }
     </nz-mention>
   `
 })
