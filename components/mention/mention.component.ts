@@ -14,7 +14,7 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -76,38 +76,41 @@ export type MentionPlacement = 'top' | 'bottom';
     <ng-template #suggestions>
       <div class="ant-mentions-dropdown">
         <ul class="ant-mentions-dropdown-menu" role="menu" tabindex="0">
-          <li
-            #items
-            class="ant-mentions-dropdown-menu-item"
-            role="menuitem"
-            tabindex="-1"
-            *ngFor="let suggestion of filteredSuggestions; let i = index"
-            [class.ant-mentions-dropdown-menu-item-active]="i === activeIndex"
-            [class.ant-mentions-dropdown-menu-item-selected]="i === activeIndex"
-            (click)="selectSuggestion(suggestion)"
-          >
-            <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
-              <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
-            </ng-container>
-            <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
-          </li>
-          <li
-            class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled"
-            *ngIf="filteredSuggestions.length === 0"
-          >
-            <span *ngIf="nzLoading"><span nz-icon nzType="loading"></span></span>
-            <span *ngIf="!nzLoading">
-              <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!"></nz-embed-empty>
-            </span>
-          </li>
+          @for (suggestion of filteredSuggestions; track suggestion) {
+            <li
+              #items
+              class="ant-mentions-dropdown-menu-item"
+              role="menuitem"
+              tabindex="-1"
+              [class.ant-mentions-dropdown-menu-item-active]="$index === activeIndex"
+              [class.ant-mentions-dropdown-menu-item-selected]="$index === activeIndex"
+              (click)="selectSuggestion(suggestion)"
+            >
+              @if (suggestionTemplate) {
+                <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }" />
+              } @else {
+                {{ nzValueWith(suggestion) }}
+              }
+            </li>
+          }
+
+          @if (filteredSuggestions.length === 0) {
+            <li class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled">
+              @if (nzLoading) {
+                <span><span nz-icon nzType="loading"></span></span>
+              } @else {
+                <span>
+                  <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!" />
+                </span>
+              }
+            </li>
+          }
         </ul>
       </div>
     </ng-template>
-    <nz-form-item-feedback-icon
-      class="ant-mentions-suffix"
-      *ngIf="hasFeedback && !!status"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status) {
+      <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
+    }
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -116,7 +119,7 @@ export type MentionPlacement = 'top' | 'bottom';
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
-  imports: [NgForOf, NgIf, NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormPatchModule],
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormPatchModule],
   standalone: true
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
