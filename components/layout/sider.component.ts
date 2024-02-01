@@ -4,7 +4,6 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { NgIf } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -26,7 +25,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
+import { inNextTick, InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 
 import { NzSiderTriggerComponent } from './sider-trigger.component';
@@ -41,19 +40,20 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
     <div class="ant-layout-sider-children">
       <ng-content></ng-content>
     </div>
-    <div
-      *ngIf="nzCollapsible && nzTrigger !== null"
-      nz-sider-trigger
-      [matchBreakPoint]="matchBreakPoint"
-      [nzCollapsedWidth]="nzCollapsedWidth"
-      [nzCollapsed]="nzCollapsed"
-      [nzBreakpoint]="nzBreakpoint"
-      [nzReverseArrow]="nzReverseArrow"
-      [nzTrigger]="nzTrigger"
-      [nzZeroTrigger]="nzZeroTrigger"
-      [siderWidth]="widthSetting"
-      (click)="setCollapsed(!nzCollapsed)"
-    ></div>
+    @if (nzCollapsible && nzTrigger !== null) {
+      <div
+        nz-sider-trigger
+        [matchBreakPoint]="matchBreakPoint"
+        [nzCollapsedWidth]="nzCollapsedWidth"
+        [nzCollapsed]="nzCollapsed"
+        [nzBreakpoint]="nzBreakpoint"
+        [nzReverseArrow]="nzReverseArrow"
+        [nzTrigger]="nzTrigger"
+        [nzZeroTrigger]="nzZeroTrigger"
+        [siderWidth]="widthSetting"
+        (click)="setCollapsed(!nzCollapsed)"
+      ></div>
+    }
   `,
   host: {
     class: 'ant-layout-sider',
@@ -67,7 +67,7 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
     '[style.minWidth]': 'widthSetting',
     '[style.width]': 'widthSetting'
   },
-  imports: [NgIf, NzSiderTriggerComponent],
+  imports: [NzSiderTriggerComponent],
   standalone: true
 })
 export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
