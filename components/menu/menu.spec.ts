@@ -613,20 +613,26 @@ export class NzTestMenuInlineComponent {
 @Component({
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li *ngFor="let l1 of menus" nz-submenu>
-        <span title>
-          <span nz-icon nzType="appstore"></span>
-          {{ l1.text }}
-        </span>
-        <ul>
-          <li *ngFor="let l2 of l1.children" nz-submenu>
-            <span title>{{ l2.text }}</span>
-            <ul>
-              <li *ngFor="let l3 of l2.children" nz-menu-item>{{ l3.text }}</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
+      @for (l1 of menus; track l1) {
+        <li nz-submenu>
+          <span title>
+            <span nz-icon nzType="appstore"></span>
+            {{ l1.text }}
+          </span>
+          <ul>
+            @for (l2 of l1.children; track l2) {
+              <li nz-submenu>
+                <span title>{{ l2.text }}</span>
+                <ul>
+                  @for (l3 of l2.children; track l3) {
+                    <li nz-menu-item>{{ l3.text }}</li>
+                  }
+                </ul>
+              </li>
+            }
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
@@ -745,12 +751,14 @@ export class NzTestBasicMenuInlineComponent {}
 @Component({
   template: `
     <ul nz-menu nzMode="horizontal">
-      <li *ngIf="display" nz-submenu>
-        <span title>{{ text }}</span>
-        <ul>
-          <li nz-menu-item>item</li>
-        </ul>
-      </li>
+      @if (display) {
+        <li nz-submenu>
+          <span title>{{ text }}</span>
+          <ul>
+            <li nz-menu-item>item</li>
+          </ul>
+        </li>
+      }
     </ul>
   `
 })

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -45,12 +44,14 @@ export function MenuGroupFactory(): boolean {
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
     <ng-content></ng-content>
   `,
   preserveWhitespaces: false,
-  imports: [NzOutletModule, NgIf],
+  imports: [NzOutletModule],
   standalone: true
 })
 export class NzMenuGroupComponent implements AfterViewInit {
