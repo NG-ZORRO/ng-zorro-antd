@@ -3,11 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkTreeNodeToggle } from '@angular/cdk/tree';
-import { Directive, Input } from '@angular/core';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { booleanAttribute, Directive, Input } from '@angular/core';
 
 @Directive({
   selector: 'nz-tree-node-toggle[nzTreeNodeNoopToggle], [nzTreeNodeNoopToggle]',
@@ -29,15 +26,7 @@ export class NzTreeNodeNoopToggleDirective {}
   standalone: true
 })
 export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
-  static ngAcceptInputType_recursive: BooleanInput;
-
-  @Input('nzTreeNodeToggleRecursive')
-  override get recursive(): boolean {
-    return this._recursive;
-  }
-  override set recursive(value: boolean) {
-    this._recursive = coerceBooleanProperty(value);
-  }
+  @Input({ alias: 'nzTreeNodeToggleRecursive', transform: booleanAttribute }) override recursive = false;
 
   get isExpanded(): boolean {
     return this._treeNode.isExpanded;
