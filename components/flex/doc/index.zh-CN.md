@@ -30,11 +30,11 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 ### [nz-flex]:standalone
 
-| Property       | Description                                                                | Type                                                                                          | Default    |
-| -------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
-| `[nzVertical]` | Is direction of the flex vertical, use `flex-direction: column`            | `boolean`                                                                                     | `false`    |
-| `[nzJustify]`  | Sets the alignment of elements in the direction of the main axis           | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
-| `[nzAlign]`    | Sets the alignment of elements in the direction of the cross axis          | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |
-| `[nzGap]`      | Sets the gap between items                                                 | `'small' \| 'middle' \| 'large' \| number \| string`                                          | `0`        |
-| `[nzWrap]`     | Set whether the element is displayed in a single line or in multiple lines | reference [flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap)             | `'nowrap'` |
-| `[nzFlex]`     | Flex CSS shorthand properties                                              | reference [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex)                       | `'unset'`  |
+| 参数  | 说明   | 类型   | 默认值  |
+| -------- | ---------------- | --------------- | ---------- |
+| `[nzVertical]` | 使用 `flex-direction: column`描述flex的垂直方向  | `boolean`  | `false`  |
+| `[nzJustify]` | 设置元素在主轴方向上的对齐方式，参照 [justify-content](https://developer.mozilla.org/zh-CN/docs/Web/CSS/justify-content) | `NzJustify` | `'normal'` |
+| `[nzAlign]` | 设置元素在交叉轴方向上的对齐方式，参照 [align-items](https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-items) | `NzAlign` | `'normal'` |
+| `[nzGap]`  | 设置项目的间隙   | `'small' \| 'middle' \| 'large' \| number \| string`    | `0`    |
+| `[nzWrap]` | 指定 flex 元素单行显示还是多行显示，参照 [flex-wrap](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-wrap) | `NzWrap` | `'nowrap'` |
+| `[nzFlex]` | flex css简写属性，参照 [flex](https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex)   |   `NzFlex`   | `'unset'` |
