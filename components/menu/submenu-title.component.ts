@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,22 +31,27 @@ import { NzMenuModeType } from './menu.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></span>
+    @if (nzIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
     <ng-container *nzStringTemplateOutlet="nzTitle">
       <span class="ant-menu-title-content">{{ nzTitle }}</span>
     </ng-container>
-    <ng-content></ng-content>
-    <span
-      [ngSwitch]="dir"
-      *ngIf="isMenuInsideDropDown; else notDropdownTpl"
-      class="ant-dropdown-menu-submenu-expand-icon"
-    >
-      <span *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
-      <span *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
-    </span>
-    <ng-template #notDropdownTpl>
+    <ng-content />
+    @if (isMenuInsideDropDown) {
+      <span class="ant-dropdown-menu-submenu-expand-icon">
+        @switch (dir) {
+          @case ('rtl') {
+            <span nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+          }
+          @default {
+            <span nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+          }
+        }
+      </span>
+    } @else {
       <span class="ant-menu-submenu-arrow"></span>
-    </ng-template>
+    }
   `,
   host: {
     '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
@@ -58,7 +62,7 @@ import { NzMenuModeType } from './menu.types';
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
-  imports: [NzIconModule, NgIf, NzOutletModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  imports: [NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzSubMenuTitleComponent implements OnDestroy, OnInit {

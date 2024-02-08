@@ -6,7 +6,6 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { NgIf } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -83,19 +82,21 @@ const listOfHorizontalPositions = [
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
-    <div
-      *ngIf="mode === 'inline'; else nonInlineTemplate"
-      nz-submenu-inline-child
-      [mode]="mode"
-      [nzOpen]="nzOpen"
-      [@.disabled]="!!noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      [menuClass]="nzMenuClassName"
-      [templateOutlet]="subMenuTemplate"
-    ></div>
-    <ng-template #nonInlineTemplate>
+    @if (mode === 'inline') {
+      <div
+        nz-submenu-inline-child
+        [mode]="mode"
+        [nzOpen]="nzOpen"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [menuClass]="nzMenuClassName"
+        [templateOutlet]="subMenuTemplate"
+      ></div>
+    } @else {
       <ng-template
         cdkConnectedOverlay
         (positionChange)="onPositionChange($event)"
@@ -120,10 +121,10 @@ const listOfHorizontalPositions = [
           (subMenuMouseState)="setMouseEnterState($event)"
         ></div>
       </ng-template>
-    </ng-template>
+    }
 
     <ng-template #subMenuTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {
@@ -148,7 +149,6 @@ const listOfHorizontalPositions = [
   imports: [
     NzSubMenuTitleComponent,
     NzSubmenuInlineChildComponent,
-    NgIf,
     NzNoAnimationDirective,
     NzSubmenuNoneInlineChildComponent,
     OverlayModule
