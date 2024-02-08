@@ -5,12 +5,11 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioGroupComponent } from './radio-group.component';
 import { NzRadioComponent } from './radio.component';
 
 @NgModule({
-  imports: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent],
-  exports: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent]
+  imports: [NzRadioComponent, NzRadioGroupComponent],
+  exports: [NzRadioComponent, NzRadioGroupComponent]
 })
 export class NzRadioModule {}
