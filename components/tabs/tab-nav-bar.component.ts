@@ -6,7 +6,7 @@
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { DOWN_ARROW, ENTER, hasModifierKey, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW, hasModifierKey } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
@@ -30,7 +30,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
+import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -183,8 +183,8 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   private addButtonWidth = 0;
   private addButtonHeight = 0;
   private selectedIndexChanged = false;
-  private lockAnimationTimeoutId = -1;
-  private cssTransformTimeWaitingId = -1;
+  private lockAnimationTimeoutId?: ReturnType<typeof setTimeout>;
+  private cssTransformTimeWaitingId?: ReturnType<typeof setTimeout>;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -257,7 +257,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
 
   onOffsetChange(e: NzTabScrollListOffsetEvent): void {
     if (this.position === 'horizontal') {
-      if (this.lockAnimationTimeoutId === -1) {
+      if (!this.lockAnimationTimeoutId) {
         if (this.transformX >= 0 && e.x > 0) {
           return;
         }
@@ -269,7 +269,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       this.transformX = this.clampTransformX(this.transformX + e.x);
       this.setTransform(this.transformX, 0);
     } else {
-      if (this.lockAnimationTimeoutId === -1) {
+      if (!this.lockAnimationTimeoutId) {
         if (this.transformY >= 0 && e.y > 0) {
           return;
         }
@@ -365,12 +365,12 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   private lockAnimation(): void {
-    if (this.lockAnimationTimeoutId === -1) {
+    if (!this.lockAnimationTimeoutId) {
       this.ngZone.runOutsideAngular(() => {
         this.navListRef.nativeElement.style.transition = 'none';
         this.lockAnimationTimeoutId = setTimeout(() => {
           this.navListRef.nativeElement.style.transition = '';
-          this.lockAnimationTimeoutId = -1;
+          this.lockAnimationTimeoutId = undefined;
         }, CSS_TRANSFORM_TIME);
       });
     }

@@ -24,9 +24,9 @@ import {
   RightCircleOutline,
   RotateLeftOutline,
   RotateRightOutline,
+  SwapOutline,
   ZoomInOutline,
-  ZoomOutOutline,
-  SwapOutline
+  ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -141,13 +141,15 @@ describe('Placeholder', () => {
     debugElement = fixture.debugElement;
   });
 
-  it('should placeholder src work', () => {
+  it('should placeholder src work', fakeAsync(() => {
     context.src = SRC;
     context.placeholder = PLACEHOLDER;
     const image = debugElement.nativeElement.querySelector('img');
     fixture.detectChanges();
+    tick(300);
+    fixture.detectChanges();
     expect(image.src).toBe(PLACEHOLDER);
-  });
+  }));
 
   it('should hide placeholder when image loaded', fakeAsync(() => {
     context.src = QUICK_SRC;

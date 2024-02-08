@@ -31,7 +31,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -165,7 +165,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   slickTrackEl!: HTMLElement;
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
-  transitionInProgress: number | null = null;
+  transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
@@ -362,7 +362,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private clearScheduledTransition(): void {
     if (this.transitionInProgress) {
       clearTimeout(this.transitionInProgress);
-      this.transitionInProgress = null;
+      this.transitionInProgress = undefined;
     }
   }
 

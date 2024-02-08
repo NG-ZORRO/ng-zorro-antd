@@ -54,7 +54,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copied = false;
-  copyId: number = -1;
+  copyId?: ReturnType<typeof setTimeout>;
   locale!: NzTextI18nInterface;
   nativeElement = this.host.nativeElement;
   copyTooltip: NzTSType | null = null;
