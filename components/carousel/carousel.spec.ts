@@ -4,6 +4,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
@@ -75,6 +76,19 @@ describe('carousel', () => {
         carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName
       ).toBe('A');
     });
+
+    it('should call layout on component resize', fakeAsync(() => {
+      testComponent.nzCarouselComponent.ngOnInit();
+      const spy = spyOn(testComponent.nzCarouselComponent, 'layout');
+      window.dispatchEvent(new Event('resize'));
+      tick(500);
+
+      (testComponent.nzCarouselComponent['nzResizeObserver'] as NzResizeObserver)
+        .observe(testComponent.nzCarouselComponent.el)
+        .subscribe(() => {
+          expect(spy).toHaveBeenCalled();
+        });
+    }));
 
     it('should call layout on component resize', fakeAsync(() => {
       const spyOnResize = spyOn(testComponent.nzCarouselComponent, 'layout');
