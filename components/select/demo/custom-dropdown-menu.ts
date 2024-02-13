@@ -30,8 +30,6 @@ import { Component } from '@angular/core';
         flex-wrap: nowrap;
         padding: 8px;
       }
-      input {
-      }
       .add-item {
         flex: 0 0 auto;
         padding: 8px;
