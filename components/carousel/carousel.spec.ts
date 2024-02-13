@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -75,6 +75,15 @@ describe('carousel', () => {
         carouselWrapper.nativeElement.querySelector('.slick-dots').firstElementChild.firstElementChild.tagName
       ).toBe('A');
     });
+
+    it('should call layout on component resize', fakeAsync(() => {
+      const spyOnResize = spyOn(testComponent.nzCarouselComponent, 'layout');
+      window.dispatchEvent(new Event('resize'));
+      tick(500);
+
+      expect(spyOnResize).toHaveBeenCalled();
+      discardPeriodicTasks();
+    }));
 
     it('should click content change', () => {
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
