@@ -4,8 +4,9 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -25,7 +26,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -33,11 +34,16 @@ import { isValid } from 'date-fns';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
@@ -133,7 +139,20 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '(click)': 'open()'
   },
   animations: [slideMotion],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }],
+  imports: [
+    AsyncPipe,
+    FormsModule,
+    NzOutletModule,
+    NzIconModule,
+    NzFormPatchModule,
+    NgIf,
+    NzTimePickerPanelComponent,
+    NgClass,
+    NzOverlayModule,
+    OverlayModule
+  ],
+  standalone: true
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

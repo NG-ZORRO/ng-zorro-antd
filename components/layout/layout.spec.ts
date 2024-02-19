@@ -25,16 +25,14 @@ describe('layout', () => {
     let siders: DebugElement[];
     let layouts: DebugElement[];
 
-    beforeEach(
-      waitForAsync(() => {
-        testBed = createComponentBed(NzLayoutBasicComponent, { imports: [NzLayoutModule] });
-        headers = testBed.fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
-        contents = testBed.fixture.debugElement.queryAll(By.directive(NzContentComponent));
-        footers = testBed.fixture.debugElement.queryAll(By.directive(NzFooterComponent));
-        siders = testBed.fixture.debugElement.queryAll(By.directive(NzSiderComponent));
-        layouts = testBed.fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      testBed = createComponentBed(NzLayoutBasicComponent, { imports: [NzLayoutModule] });
+      headers = testBed.fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
+      contents = testBed.fixture.debugElement.queryAll(By.directive(NzContentComponent));
+      footers = testBed.fixture.debugElement.queryAll(By.directive(NzFooterComponent));
+      siders = testBed.fixture.debugElement.queryAll(By.directive(NzSiderComponent));
+      layouts = testBed.fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
+    }));
 
     it('should have correct class', () => {
       expect(headers.every(header => header.nativeElement.classList.contains('ant-layout-header'))).toBe(true);

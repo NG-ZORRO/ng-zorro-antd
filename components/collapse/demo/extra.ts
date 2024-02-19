@@ -4,18 +4,19 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-collapse-extra',
   template: `
     <nz-collapse [nzExpandIconPosition]="expandIconPosition">
-      <nz-collapse-panel
-        *ngFor="let panel of panels"
-        [nzHeader]="panel.name"
-        [nzActive]="panel.active"
-        [nzExtra]="extraTpl"
-        [nzDisabled]="panel.disabled"
-      >
-        <p style="margin:0;">
-          A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome
-          guest in many households across the world.
-        </p>
-      </nz-collapse-panel>
+      @for (panel of panels; track panel) {
+        <nz-collapse-panel
+          [nzHeader]="panel.name"
+          [nzActive]="panel.active"
+          [nzExtra]="extraTpl"
+          [nzDisabled]="panel.disabled"
+        >
+          <p style="margin:0;">
+            A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome
+            guest in many households across the world.
+          </p>
+        </nz-collapse-panel>
+      }
     </nz-collapse>
     <ng-template #extraTpl>
       <!-- You can use stopPropagation if you don't want the panel to toggle -->

@@ -10,23 +10,21 @@ import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
 
 describe('checkbox', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCheckboxModule, FormsModule, ReactiveFormsModule],
-        declarations: [
-          NzTestCheckboxSingleComponent,
-          NzTestCheckboxGroupComponent,
-          NzTestCheckboxFormComponent,
-          NzTestCheckboxGroupFormComponent,
-          NzTestCheckboxWrapperComponent,
-          NzTestCheckboxSingleRtlComponent,
-          NzTestCheckboxGroupRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCheckboxModule, FormsModule, ReactiveFormsModule],
+      declarations: [
+        NzTestCheckboxSingleComponent,
+        NzTestCheckboxGroupComponent,
+        NzTestCheckboxFormComponent,
+        NzTestCheckboxGroupFormComponent,
+        NzTestCheckboxWrapperComponent,
+        NzTestCheckboxSingleRtlComponent,
+        NzTestCheckboxGroupRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('checkbox basic', () => {
     let fixture: ComponentFixture<NzTestCheckboxSingleComponent>;
     let testComponent: NzTestCheckboxSingleComponent;

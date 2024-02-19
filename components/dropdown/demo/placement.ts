@@ -6,7 +6,7 @@ import { NzPlacementType } from 'ng-zorro-antd/dropdown';
   selector: 'nz-demo-dropdown-placement',
   template: `
     <div>
-      <ng-container *ngFor="let position of listOfPosition">
+      @for (position of listOfPosition; track position) {
         <button nz-button nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="position">{{ position }}</button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
@@ -15,7 +15,7 @@ import { NzPlacementType } from 'ng-zorro-antd/dropdown';
             <li nz-menu-item>3rd menu item length</li>
           </ul>
         </nz-dropdown-menu>
-      </ng-container>
+      }
     </div>
   `,
   styles: [

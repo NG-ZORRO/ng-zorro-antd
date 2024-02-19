@@ -340,22 +340,25 @@ declare const locale: NzSafeAny;
         </button>
       </ng-template>
     </div>
-    <ng-container *ngFor="let category of categoryNames; let i = index">
+    @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
-          <span class="anticon-class">
-            <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
-              {{ icon }}
-            </nz-badge>
-            <ng-template #notNewTpl>
-              {{ icon }}
-            </ng-template>
-          </span>
-        </li>
+        @for (icon of displayedNames[i].icons; track trackByFn) {
+          <li (click)="onIconClick($event, icon)">
+            <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
+            <span class="anticon-class">
+              @if (isNewIcon(icon)) {
+                <nz-badge nzDot>
+                  {{ icon }}
+                </nz-badge>
+              } @else {
+                {{ icon }}
+              }
+            </span>
+          </li>
+        }
       </ul>
-    </ng-container>
+    }
     <nz-modal
       [nzTitle]="localeObj.picSearcherTitle"
       [(nzVisible)]="modalVisible"
@@ -363,7 +366,7 @@ declare const locale: NzSafeAny;
       [nzFooter]="null"
     >
       <ng-container *nzModalContent>
-        <ng-container *ngIf="modelLoaded; else modelLoadingTpl">
+        @if (modelLoaded) {
           <nz-upload
             nzType="drag"
             nzAccept="image/jpeg, image/png"
@@ -380,7 +383,7 @@ declare const locale: NzSafeAny;
           </nz-upload>
           <nz-spin [nzSpinning]="loading" [nzTip]="localeObj.picSearcherMatching">
             <div class="icon-pic-search-result">
-              <ng-container *ngIf="icons.length">
+              @if (icons.length) {
                 <div class="result-tip">
                   {{ localeObj.picSearcherResultTip }}
                 </div>
@@ -394,36 +397,38 @@ declare const locale: NzSafeAny;
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let icon of icons">
-                      <td class="col-icon">
-                        <span
-                          nz-icon
-                          nz-tooltip
-                          [nzTooltipTitle]="icon.type"
-                          nzTooltipPlacement="right"
-                          [nzType]="icon.type"
-                          [nzTheme]="currentTheme"
-                          (click)="onIconClick($event, icon.type)"
-                        >
-                        </span>
-                      </td>
-                      <td>
-                        <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
-                      </td>
-                    </tr>
+                    @for (icon of icons; track icon) {
+                      <tr>
+                        <td class="col-icon">
+                          <span
+                            nz-icon
+                            nz-tooltip
+                            [nzTooltipTitle]="icon.type"
+                            nzTooltipPlacement="right"
+                            [nzType]="icon.type"
+                            [nzTheme]="currentTheme"
+                            (click)="onIconClick($event, icon.type)"
+                          >
+                          </span>
+                        </td>
+                        <td>
+                          <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
+                        </td>
+                      </tr>
+                    }
                   </tbody>
                 </table>
-              </ng-container>
-              <nz-result *ngIf="error" nzStatus="500" nzTitle="503" [nzSubTitle]="localeObj.picSearcherServerError">
-              </nz-result>
+              }
+              @if (error) {
+                <nz-result nzStatus="500" nzTitle="503" [nzSubTitle]="localeObj.picSearcherServerError" />
+              }
             </div>
           </nz-spin>
-        </ng-container>
-        <ng-template #modelLoadingTpl>
+        } @else {
           <nz-spin [nzTip]="localeObj.picSearcherModelLoading">
             <div style="height: 100px;"></div>
           </nz-spin>
-        </ng-template>
+        }
       </ng-container>
     </nz-modal>
   `,

@@ -36,7 +36,10 @@ export type NzResizeDirection =
   | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
-  constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
+  constructor(
+    public direction: NzResizeDirection,
+    public mouseEvent: MouseEvent | TouchEvent
+  ) {}
 }
 
 const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveListenerOptions({ passive: true });

@@ -12,20 +12,18 @@ import { NzTableModule } from '../table.module';
 describe('nz-table', () => {
   let injector: Injector;
 
-  beforeEach(
-    waitForAsync(() => {
-      injector = TestBed.configureTestingModule({
-        imports: [BidiModule, NzTableModule],
-        declarations: [
-          NzTestTableBasicComponent,
-          NzTestTableScrollComponent,
-          NzTableSpecCrashComponent,
-          NzTestTableRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    injector = TestBed.configureTestingModule({
+      imports: [BidiModule, NzTableModule],
+      declarations: [
+        NzTestTableBasicComponent,
+        NzTestTableScrollComponent,
+        NzTableSpecCrashComponent,
+        NzTestTableRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;

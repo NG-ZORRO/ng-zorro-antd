@@ -13,24 +13,22 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number/input-number.mod
 import { NzFormControlStatusType, NzFormModule } from '../form';
 
 describe('input-number-group', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputNumberGroupAddonComponent,
-          NzTestInputNumberGroupAffixComponent,
-          NzTestInputNumberGroupMultipleComponent,
-          NzTestInputNumberGroupColComponent,
-          NzTestInputNumberGroupMixComponent,
-          NzTestInputNumberGroupWithStatusComponent,
-          NzTestInputNumberGroupWithDirComponent,
-          NzTestInputNumberGroupInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputNumberGroupAddonComponent,
+        NzTestInputNumberGroupAffixComponent,
+        NzTestInputNumberGroupMultipleComponent,
+        NzTestInputNumberGroupColComponent,
+        NzTestInputNumberGroupMixComponent,
+        NzTestInputNumberGroupWithStatusComponent,
+        NzTestInputNumberGroupWithDirComponent,
+        NzTestInputNumberGroupInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('input number group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputNumberGroupAddonComponent;
@@ -419,17 +417,16 @@ export class NzTestInputNumberGroupMixComponent {}
 
 @Component({
   template: `
-    <ng-container *ngIf="!isAddon">
+    @if (!isAddon) {
       <nz-input-number-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
-        <nz-input-number></nz-input-number>
+        <nz-input-number />
       </nz-input-number-group>
       <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isAddon">
+    } @else {
       <nz-input-number-group nzAddOnAfterIcon="setting" [nzStatus]="status">
-        <nz-input-number></nz-input-number>
+        <nz-input-number />
       </nz-input-number-group>
-    </ng-container>
+    }
   `
 })
 export class NzTestInputNumberGroupWithStatusComponent {

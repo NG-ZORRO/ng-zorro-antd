@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { DecimalPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,10 +26,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { TimeHolder } from './time-holder';
 
@@ -126,7 +128,9 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }],
+  imports: [NgIf, NgForOf, DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule],
+  standalone: true
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzUse12Hours: BooleanInput;

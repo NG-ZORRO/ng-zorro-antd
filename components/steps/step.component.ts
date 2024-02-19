@@ -185,7 +185,11 @@ export class NzStepComponent implements OnInit {
 
   private _currentIndex = 0;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private destroy$: NzDestroyService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
     this.ngZone.runOutsideAngular(() =>

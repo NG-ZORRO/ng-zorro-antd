@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,15 +24,19 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="isZeroTrigger">
-      <ng-template [ngTemplateOutlet]="nzZeroTrigger || defaultZeroTrigger"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isNormalTrigger">
-      <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger"></ng-template>
-    </ng-container>
+    @if (isZeroTrigger) {
+      <ng-template [ngTemplateOutlet]="nzZeroTrigger || defaultZeroTrigger" />
+    }
+
+    @if (isNormalTrigger) {
+      <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger" />
+    }
     <ng-template #defaultTrigger>
-      <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></span>
-      <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></span>
+      @if (nzReverseArrow) {
+        <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'"></span>
+      } @else {
+        <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'"></span>
+      }
     </ng-template>
     <ng-template #defaultZeroTrigger>
       <span nz-icon nzType="bars"></span>
@@ -45,7 +49,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-layout-sider-zero-width-trigger-right]': 'isZeroTrigger && nzReverseArrow',
     '[class.ant-layout-sider-zero-width-trigger-left]': 'isZeroTrigger && !nzReverseArrow'
   },
-  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  imports: [NgTemplateOutlet, NzIconModule],
   standalone: true
 })
 export class NzSiderTriggerComponent implements OnChanges, OnInit {

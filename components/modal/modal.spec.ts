@@ -134,6 +134,7 @@ describe('NzModal', () => {
     expect(modalContentElement!.textContent).toBe('Hello Modal');
     expect(modalRef.getContentComponent() instanceof TestWithModalContentComponent).toBe(true);
     expect(modalRef.getContentComponent().modalRef).toBe(modalRef);
+    expect(modalRef.getContentComponentRef()).not.toBeNull();
     modalRef.close();
   });
 
@@ -148,6 +149,7 @@ describe('NzModal', () => {
     expect(modalContentElement!.textContent?.toString().includes('NG-ZORRO')).toBeTruthy();
     expect(modalRef.getContentComponent() instanceof TestWithModalContentComponent).toBe(true);
     expect(modalRef.getContentComponent().modalRef).toBe(modalRef);
+    expect(modalRef.getContentComponentRef()).not.toBeNull();
     modalRef.close();
   });
 
@@ -162,6 +164,8 @@ describe('NzModal', () => {
     expect(modalContentElement).toBeTruthy();
     expect(modalContentElement!.textContent).toBe('Hello Modal');
     expect(fixture.componentInstance.modalRef).toBe(modalRef);
+    expect(modalRef.getContentComponentRef()).toBeNull();
+    expect(modalRef.getContentComponent()).toBeNull();
     modalRef.close();
   });
 
@@ -1717,7 +1721,10 @@ class TestWithServiceComponent {
   modalRef?: NzModalRef;
   @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
 
-  constructor(public nzModalService: NzModalService, public viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public nzModalService: NzModalService,
+    public viewContainerRef: ViewContainerRef
+  ) {}
 
   setModalRef(modalRef: NzModalRef): string {
     this.modalRef = modalRef;
@@ -1738,7 +1745,11 @@ class TestWithModalContentComponent {
 
   nzModalData: string;
 
-  constructor(public modalRef: NzModalRef, public modalInjector: Injector, @Inject(NZ_MODAL_DATA) nzData: string) {
+  constructor(
+    public modalRef: NzModalRef,
+    public modalInjector: Injector,
+    @Inject(NZ_MODAL_DATA) nzData: string
+  ) {
     this.value = nzData;
     this.nzModalData = nzData;
   }

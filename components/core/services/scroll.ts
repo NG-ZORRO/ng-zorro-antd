@@ -36,7 +36,10 @@ export interface NzScrollToOptions {
 export class NzScrollService {
   private doc: Document;
 
-  constructor(private ngZone: NgZone, @Inject(DOCUMENT) doc: NzSafeAny) {
+  constructor(
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) doc: NzSafeAny
+  ) {
     this.doc = doc;
   }
 

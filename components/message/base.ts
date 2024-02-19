@@ -82,7 +82,10 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
 
   protected readonly destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    protected nzConfigService: NzConfigService
+  ) {
     this.updateConfig();
   }
 

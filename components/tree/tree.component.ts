@@ -13,7 +13,9 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  forwardRef,
   Host,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -22,9 +24,7 @@ import {
   Output,
   SimpleChange,
   TemplateRef,
-  ViewChild,
-  forwardRef,
-  inject
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -32,8 +32,9 @@ import { takeUntil } from 'rxjs/operators';
 
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
+  flattenTreeData,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzTreeBase,
@@ -41,8 +42,7 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeKey,
-  NzTreeNodeOptions,
-  flattenTreeData
+  NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -176,7 +176,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NgIf,
     CdkVirtualForOf,
     NgTemplateOutlet,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NgForOf,
     NzTreeNodeBuiltinComponent
   ],

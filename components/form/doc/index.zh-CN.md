@@ -92,17 +92,17 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 > 所有 [nz-col](/components/grid/zh) 的参数在 `nz-form-control` 上均可直接使用。
 
-| 参数                  | 说明                                                                                                                                                       | 类型                                                                          | 默认值                                                      |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- | --- |
+| 参数     | 说明     | 类型    | 默认值|
+| ------ | ---------- | -------- | ------- |
 | `[nzValidateStatus]`  | 会根据传入的 `FormControl` 或 `NgModel` 自动生成校验状态，也可以直接指定状态，不传入时默认值为 `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel` | `'success' \| 'warning' \| 'error' \| 'validating' \| FormControl \| NgModel` | `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel` |
-| `[nzHasFeedback]`     | 配合 `nzValidateStatus` 属性使用，展示校验状态图标                                                                                                         | `boolean`                                                                     | `false`                                                     |
+| `[nzHasFeedback]`     | 配合 `nzValidateStatus` 属性使用，展示校验状态图标  | `boolean`     | `false`                                                     |
 | `[nzExtra]`           | 用于显示表单额外提示信息                                                                                                                                   | `string \| TemplateRef<void>`                                                 | -                                                           |
 | `[nzSuccessTip]`      | 校验状态 success 时提示信息                                                                                                                                | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
 | `[nzWarningTip]`      | 校验状态 warning 时提示信息                                                                                                                                | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
 | `[nzErrorTip]`        | 校验状态 error 时提示信息                                                                                                                                  | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
 | `[nzValidatingTip]`   | 正在校验时提示信息                                                                                                                                         | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
-| `[nzAutoTips]`        | 配置提示的对象, 具体用法请参考示例：**自动提示**                                                                                                           | `Record<string, Record<string, string>>`                                      | -                                                           | -   |
-| `[nzDisableAutoTips]` | 禁用自动提示                                                                                                                                               | `boolean`                                                                     | -                                                           | -   |
+| `[nzAutoTips]`        | 配置提示的对象, 具体用法请参考示例：**自动提示**                                                                                                           | `Record<string, Record<string, string>>`                                      | -                                                           |
+| `[nzDisableAutoTips]` | 禁用自动提示                                                                                                                                               | `boolean`                                                                     | -                                                           |
 
 ### nz-form-split:standalone
 

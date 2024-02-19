@@ -52,7 +52,10 @@ export class NzOptionComponent implements OnChanges, OnInit {
   @Input() @InputBoolean() nzHide = false;
   @Input() @InputBoolean() nzCustomContent = false;
 
-  constructor(@Optional() private nzOptionGroupComponent: NzOptionGroupComponent, private destroy$: NzDestroyService) {}
+  constructor(
+    @Optional() private nzOptionGroupComponent: NzOptionGroupComponent,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
     if (this.nzOptionGroupComponent) {

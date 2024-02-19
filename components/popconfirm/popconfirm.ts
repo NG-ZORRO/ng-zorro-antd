@@ -34,7 +34,7 @@ import { finalize, first, takeUntil } from 'rxjs/operators';
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
@@ -220,7 +220,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     A11yModule,
     NgClass,
     NgStyle,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NgIf,
     NzOutletModule,
     NzIconModule,

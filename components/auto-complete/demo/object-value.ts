@@ -13,9 +13,11 @@ interface Option {
     <div class="example-input">
       <input placeholder="input here" nz-input [(ngModel)]="inputValue" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto [compareWith]="compareFun">
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">
-          {{ option.label }}
-        </nz-auto-option>
+        @for (option of options; track $index) {
+          <nz-auto-option [nzValue]="option" [nzLabel]="option.label">
+            {{ option.label }}
+          </nz-auto-option>
+        }
       </nz-autocomplete>
     </div>
   `

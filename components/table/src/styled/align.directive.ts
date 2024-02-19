@@ -9,7 +9,8 @@ import { Directive, Input } from '@angular/core';
   selector: 'th[nzAlign],td[nzAlign]',
   host: {
     '[style.text-align]': 'nzAlign'
-  }
+  },
+  standalone: true
 })
 export class NzCellAlignDirective {
   @Input() nzAlign: 'left' | 'right' | 'center' | null = null;

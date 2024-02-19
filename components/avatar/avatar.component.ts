@@ -4,7 +4,6 @@
  */
 
 import { Platform, PlatformModule } from '@angular/cdk/platform';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,11 +29,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
   standalone: true,
-  imports: [NgIf, NzIconModule, PlatformModule],
+  imports: [NzIconModule, PlatformModule],
   template: `
-    <span nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></span>
-    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    <span class="ant-avatar-string" #textEl *ngIf="nzText && hasText">{{ nzText }}</span>
+    @if (nzIcon && hasIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
+    @if (nzSrc && hasSrc) {
+      <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    }
+    @if (nzText && hasText) {
+      <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
+    }
   `,
   host: {
     class: 'ant-avatar',

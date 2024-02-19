@@ -94,7 +94,11 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private focusMonitor: FocusMonitor
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;

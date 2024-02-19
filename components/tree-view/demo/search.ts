@@ -37,7 +37,10 @@ interface FlatNode {
 }
 
 class FilteredTreeResult {
-  constructor(public treeData: TreeNode[], public needsToExpanded: TreeNode[] = []) {}
+  constructor(
+    public treeData: TreeNode[],
+    public needsToExpanded: TreeNode[] = []
+  ) {}
 }
 
 /**
@@ -77,14 +80,14 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
-        <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
+        <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
           <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
-        <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
+        <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
     </nz-tree-view>
   `,

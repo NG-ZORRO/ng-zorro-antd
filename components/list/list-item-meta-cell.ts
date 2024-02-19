@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -39,12 +38,15 @@ export class NzListItemMetaDescriptionComponent {}
   exportAs: 'nzListItemMetaAvatar',
   template: `
     <div class="ant-list-item-meta-avatar">
-      <nz-avatar *ngIf="nzSrc" [nzSrc]="nzSrc"></nz-avatar>
-      <ng-content *ngIf="!nzSrc"></ng-content>
+      @if (nzSrc) {
+        <nz-avatar [nzSrc]="nzSrc" />
+      } @else {
+        <ng-content />
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzAvatarModule, NgIf],
+  imports: [NzAvatarModule],
   standalone: true
 })
 export class NzListItemMetaAvatarComponent {
