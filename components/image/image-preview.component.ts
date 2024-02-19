@@ -37,7 +37,7 @@ import { getClientSize, getFitContentPosition, getOffset } from './utils';
 export interface NzImageContainerOperation {
   icon: string;
   type: string;
-
+  rotate?: number;
   onClick(): void;
 }
 
@@ -67,7 +67,13 @@ const NZ_DEFAULT_ROTATE = 0;
                 [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
                 (click)="option.onClick()"
               >
-                <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
+                <span
+                  class="ant-image-preview-operations-icon"
+                  nz-icon
+                  [nzType]="option.icon"
+                  [nzRotate]="option.rotate ?? 0"
+                  nzTheme="outline"
+                ></span>
               </li>
             }
           </ul>
@@ -185,6 +191,21 @@ export class NzImagePreviewComponent implements OnInit {
         this.onRotateLeft();
       },
       type: 'rotateLeft'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onHorizontalFlip();
+      },
+      type: 'flipHorizontally'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onVerticalFlip();
+      },
+      type: 'flipVertically',
+      rotate: 90
     }
   ];
 
@@ -200,6 +221,8 @@ export class NzImagePreviewComponent implements OnInit {
   private zoom: number;
   private rotate: number;
   private scaleStep: number;
+  private flipHorizontally: boolean;
+  private flipVertically: boolean;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -223,6 +246,8 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+    this.flipHorizontally = this.config.nzFlipHorizontally ?? false;
+    this.flipVertically = this.config.nzFlipVertically ?? false;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
@@ -329,6 +354,16 @@ export class NzImagePreviewComponent implements OnInit {
     this.next();
   }
 
+  onHorizontalFlip(): void {
+    this.flipHorizontally = !this.flipHorizontally;
+    this.updatePreviewImageTransform();
+  }
+
+  onVerticalFlip(): void {
+    this.flipVertically = !this.flipVertically;
+    this.updatePreviewImageTransform();
+  }
+
   onAnimationStart(event: AnimationEvent): void {
     if (event.toState === 'enter') {
       this.setEnterAnimationClass();
@@ -379,7 +414,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    this.previewImageTransform = `scale3d(${this.zoom}, ${this.zoom}, 1) rotate(${this.rotate}deg)`;
+    this.previewImageTransform = `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
+      this.zoom * (this.flipVertically ? -1 : 1)
+    }, 1) rotate(${this.rotate}deg)`;
   }
 
   private updatePreviewImageWrapperTransform(): void {
@@ -416,6 +453,8 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+    this.flipHorizontally = false;
+    this.flipVertically = false;
     this.position = { ...initialPosition };
   }
 }

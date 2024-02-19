@@ -25,7 +25,8 @@ import {
   RotateLeftOutline,
   RotateRightOutline,
   ZoomInOutline,
-  ZoomOutOutline
+  ZoomOutOutline,
+  SwapOutline
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -206,7 +207,8 @@ describe('Preview', () => {
             LeftCircleOutline,
             RotateLeftOutline,
             RotateRightOutline,
-            CloseCircleOutline
+            CloseCircleOutline,
+            SwapOutline
           ]
         }
       ]
@@ -289,7 +291,7 @@ describe('Preview', () => {
   });
 
   describe('ImagePreview', () => {
-    it('should rotate, zoom and close work', fakeAsync(() => {
+    it('should rotate, zoom and close and flip work', fakeAsync(() => {
       context.firstSrc = QUICK_SRC;
       fixture.detectChanges();
       const image = debugElement.nativeElement.querySelector('img');
@@ -303,6 +305,8 @@ describe('Preview', () => {
       const zoomOut = operations[2];
       const rotateRight = operations[3];
       const rotateLeft = operations[4];
+      const flipHorizontally = operations[5];
+      const flipVertically = operations[6];
       dispatchFakeEvent(rotateLeft, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(-90deg)');
@@ -315,6 +319,12 @@ describe('Preview', () => {
       dispatchFakeEvent(zoomOut, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+      dispatchFakeEvent(flipHorizontally, 'click');
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, 1, 1) rotate(0deg)');
+      tickChanges();
+      dispatchFakeEvent(flipVertically, 'click');
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, -1, 1) rotate(0deg)');
+      tickChanges();
       dispatchFakeEvent(close, 'click');
       tickChanges();
       previewElement = getPreviewElement();
