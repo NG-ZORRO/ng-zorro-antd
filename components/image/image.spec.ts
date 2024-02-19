@@ -5,7 +5,7 @@
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NgModule, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgModule, NgZone, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -30,8 +30,9 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {
   getFitContentPosition,
   NzImage,
@@ -54,11 +55,21 @@ describe('Basics', () => {
   let fixture: ComponentFixture<TestImageBasicsComponent>;
   let context: TestImageBasicsComponent;
   let debugElement: DebugElement;
+  let zone: MockNgZone;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
-      providers: [{ provide: Overlay, useClass: Overlay }]
+      providers: [
+        { provide: Overlay, useClass: Overlay },
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
+          }
+        }
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -429,6 +440,40 @@ describe('Preview', () => {
       flush();
     }));
 
+    it('should detect mouse zoom direction correctly', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      expect(previewInstance.isDragging).toEqual(true);
+      let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
+      expect(isZoomingInside).toBeFalsy();
+      isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
+      expect(isZoomingInside).toBeTruthy();
+    }));
+
+    it('should call correct methods when zooming in or out', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      previewInstance['zoom'] = 5;
+      spyOn(previewInstance, 'onZoomOut');
+      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      previewInstance['handleImageScaleWhileZoomingWithMouse'](10);
+      expect(previewInstance.onZoomOut).toHaveBeenCalled();
+      expect(previewInstance['reCenterImage']).not.toHaveBeenCalled();
+
+      previewInstance['zoom'] = 0.5;
+      spyOn(previewInstance, 'onZoomIn');
+      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      previewInstance['handleImageScaleWhileZoomingWithMouse'](-10);
+      expect(previewInstance.onZoomOut).toHaveBeenCalled();
+      expect(previewInstance['reCenterImage']).toHaveBeenCalled();
+    }));
+
     it('should container click work', fakeAsync(() => {
       context.firstSrc = QUICK_SRC;
       fixture.detectChanges();
@@ -556,8 +601,37 @@ describe('Preview', () => {
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       expect(previewInstance.isDragging).toEqual(true);
-      previewInstance.onDragReleased();
+      spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+        return true;
+      });
       expect(previewInstance.position).toEqual({ x: 0, y: 0 });
+    }));
+
+    it('should onDragEnd be called after drag is ended', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+        return true;
+      });
+      const e: NzSafeAny = {};
+      previewInstance.onDragEnd(e);
+      expect(previewInstance['onDragEnd']).toHaveBeenCalled();
+    }));
+
+    it('should zoom to center when zoom is <= 1', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      tickChanges();
+      context.zoomStep = 0.25;
+      (previewInstance as NzSafeAny).zoom = 1.1;
+      previewInstance.onZoomOut();
+      tickChanges();
+      expect(previewInstance['reCenterImage']).toHaveBeenCalled();
     }));
 
     it('should position calculate correct', () => {
@@ -647,6 +721,29 @@ describe('Preview', () => {
       expect(pos.x).toBe(-40);
       expect(pos.y).toBe(-66);
     });
+  });
+
+  describe('Zoom with mouse', () => {
+    it('should call proper methods', fakeAsync(() => {
+      context.images = [{ src: QUICK_SRC }];
+      context.createUsingService();
+      const previewInstance = context.previewRef?.previewInstance!;
+      tickChanges();
+      const e = jasmine.createSpyObj('e', ['preventDefault', 'stopPropagation']);
+      spyOn<NzSafeAny>(previewInstance, 'handlerImageTransformationWhileZoomingWithMouse');
+      spyOn<NzSafeAny>(previewInstance, 'handleImageScaleWhileZoomingWithMouse');
+      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageWrapperTransform');
+      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageTransform');
+      spyOn<NzSafeAny>(previewInstance, 'markForCheck');
+      previewInstance.wheelZoomEventHandler(e);
+      expect(e.preventDefault).toHaveBeenCalled();
+      expect(e.stopPropagation).toHaveBeenCalled();
+      expect(previewInstance['handlerImageTransformationWhileZoomingWithMouse']).toHaveBeenCalled();
+      expect(previewInstance['handleImageScaleWhileZoomingWithMouse']).toHaveBeenCalled();
+      expect(previewInstance['updatePreviewImageWrapperTransform']).toHaveBeenCalled();
+      expect(previewInstance['updatePreviewImageTransform']).toHaveBeenCalled();
+      expect(previewInstance['markForCheck']).toHaveBeenCalled();
+    }));
   });
 });
 
