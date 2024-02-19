@@ -119,6 +119,7 @@ constructor(modal: NzModalService) {
 | close(result: any)                       | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同 destroy 方法）</i>                                  |
 | destroy(result: any)                     | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i>                                       |
 | getContentComponent()                    | 获取对话框内容中`nzContent`的 Component 实例 instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
+| getContentComponentRef()                 | 获取对话框内容中`nzContent`的 Component 引用 ComponentRef。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`null`</i>         |
 | triggerOk()                              | 手动触发 nzOnOk                                                                                                                         |
 | triggerCancel()                          | 手动触发 nzOnCancel                                                                                                                     |
 | updateConfig(config: ModalOptions): void | 更新配置                                                                                                                                |
