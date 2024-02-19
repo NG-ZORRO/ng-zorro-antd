@@ -413,42 +413,42 @@ describe('NzMonthPickerComponent', () => {
 
 @Component({
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <!-- Suite 1 -->
-      <nz-date-picker
-        *ngSwitchCase="1"
-        nzMode="month"
-        [nzAllowClear]="nzAllowClear"
-        [nzAutoFocus]="nzAutoFocus"
-        [nzDisabled]="nzDisabled"
-        [nzDisabledDate]="nzDisabledDate"
-        [nzLocale]="nzLocale"
-        [nzPlaceHolder]="nzPlaceHolder"
-        [nzPopupStyle]="nzPopupStyle"
-        [nzDropdownClassName]="nzDropdownClassName"
-        [nzSize]="nzSize"
-        (nzOnOpenChange)="nzOnOpenChange($event)"
-        [ngModel]="nzValue"
-        (ngModelChange)="nzOnChange($event)"
-        [nzRenderExtraFooter]="nzRenderExtraFooter"
-      ></nz-date-picker>
-      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
-
-      <!-- Suite 2 -->
-      <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
-      <nz-date-picker nzMode="month" *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-date-picker>
-
-      <!-- Suite 3 -->
-      <nz-date-picker nzMode="month" *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
-
-      <!-- Suite 4 -->
-      <nz-input-group *ngSwitchCase="4" nzCompact>
-        <nz-date-picker nzMode="month" style="width: 200px;"></nz-date-picker>
-        <input nz-input type="text" style="width: 200px;" />
-      </nz-input-group>
-
-      <nz-month-picker *ngSwitchCase="5" nzOpen></nz-month-picker>
-    </ng-container>
+    <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-date-picker
+          nzMode="month"
+          [nzAllowClear]="nzAllowClear"
+          [nzAutoFocus]="nzAutoFocus"
+          [nzDisabled]="nzDisabled"
+          [nzDisabledDate]="nzDisabledDate"
+          [nzLocale]="nzLocale"
+          [nzPlaceHolder]="nzPlaceHolder"
+          [nzPopupStyle]="nzPopupStyle"
+          [nzDropdownClassName]="nzDropdownClassName"
+          [nzSize]="nzSize"
+          (nzOnOpenChange)="nzOnOpenChange($event)"
+          [ngModel]="nzValue"
+          (ngModelChange)="nzOnChange($event)"
+          [nzRenderExtraFooter]="nzRenderExtraFooter"
+        />
+      }
+      @case (2) {
+        <nz-date-picker nzMode="month" [nzOpen]="nzOpen" />
+      }
+      @case (3) {
+        <nz-date-picker nzMode="month" nzOpen [(ngModel)]="modelValue" />
+      }
+      @case (4) {
+        <nz-input-group nzCompact>
+          <nz-date-picker nzMode="month" style="width: 200px;" />
+          <input nz-input type="text" style="width: 200px;" />
+        </nz-input-group>
+      }
+      @case (5) {
+        <nz-month-picker nzOpen />
+      }
+    }
   `
 })
 class NzTestMonthPickerComponent {

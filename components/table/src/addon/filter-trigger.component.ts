@@ -23,7 +23,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzDropDownDirective, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzDropDownDirective, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
@@ -50,7 +50,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       <ng-content></ng-content>
     </span>
   `,
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NzDropDownModule],
+  standalone: true
 })
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

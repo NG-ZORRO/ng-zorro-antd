@@ -15,9 +15,9 @@ import { Component } from '@angular/core';
       </button>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-          <li nz-menu-item *ngFor="let item of options" [value]="item.value" (click)="setValue(item.value)">{{
-            item.label
-          }}</li>
+          @for (item of options; track item.value) {
+            <li nz-menu-item [value]="item.value" (click)="setValue(item.value)">{{ item.label }}</li>
+          }
         </ul>
       </nz-dropdown-menu>
     </ng-template>

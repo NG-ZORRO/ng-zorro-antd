@@ -85,7 +85,10 @@ export class NzModalFooterComponent implements OnDestroy {
   @Input() modalRef!: NzModalRef;
   private destroy$ = new Subject<void>();
 
-  constructor(private i18n: NzI18nService, public config: ModalOptions) {
+  constructor(
+    private i18n: NzI18nService,
+    public config: ModalOptions
+  ) {
     if (Array.isArray(config.nzFooter)) {
       this.buttonsFooter = true;
       this.buttons = (config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption);

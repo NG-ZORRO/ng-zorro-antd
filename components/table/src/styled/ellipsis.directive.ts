@@ -12,7 +12,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   selector: 'th[nzEllipsis],td[nzEllipsis]',
   host: {
     '[class.ant-table-cell-ellipsis]': 'nzEllipsis'
-  }
+  },
+  standalone: true
 })
 export class NzCellEllipsisDirective {
   static ngAcceptInputType_nzEllipsis: BooleanInput;

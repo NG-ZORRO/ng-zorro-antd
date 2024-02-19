@@ -158,7 +158,10 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
   gap: [number, number] = [100, 100];
   offset: [number, number] = [50, 50];
 
-  constructor(private fb: NonNullableFormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {
     this.validateForm = this.fb.group({
       content: ['NG Ant Design'],
       fontSize: [16],

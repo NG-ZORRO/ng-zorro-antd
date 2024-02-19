@@ -29,5 +29,8 @@ export class NzTabLinkTemplateDirective {
   standalone: true
 })
 export class NzTabLinkDirective {
-  constructor(public elementRef: ElementRef<HTMLAnchorElement>, @Optional() @Self() public routerLink?: RouterLink) {}
+  constructor(
+    public elementRef: ElementRef<HTMLAnchorElement>,
+    @Optional() @Self() public routerLink?: RouterLink
+  ) {}
 }

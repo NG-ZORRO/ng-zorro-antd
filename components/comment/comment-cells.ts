@@ -64,7 +64,7 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
   exportAs: 'nzCommentAction',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-template><ng-content></ng-content></ng-template>',
+  template: '<ng-template><ng-content /></ng-template>',
   standalone: true
 })
 export class NzCommentActionComponent implements OnInit {

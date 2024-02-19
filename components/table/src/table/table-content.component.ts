@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -25,8 +26,10 @@ import { NzTableLayout } from '../table.types';
     '[style.table-layout]': 'tableLayout',
     '[class.ant-table-fixed]': 'scrollX',
     '[style.width]': 'scrollX',
-    '[style.min-width]': `scrollX ? '100%': null`
-  }
+    '[style.min-width]': `scrollX ? '100%' : null`
+  },
+  imports: [NgTemplateOutlet, NgIf, NgForOf],
+  standalone: true
 })
 export class NzTableContentComponent {
   @Input() tableLayout: NzTableLayout = 'auto';

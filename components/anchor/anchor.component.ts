@@ -52,9 +52,14 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   standalone: true,
   imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
   template: `
-    <nz-affix *ngIf="nzAffix; else content" [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
+    @if (nzAffix) {
+      <nz-affix [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
+        <ng-template [ngTemplateOutlet]="content"></ng-template>
+      </nz-affix>
+    } @else {
       <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </nz-affix>
+    }
+
     <ng-template #content>
       <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
         <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">

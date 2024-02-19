@@ -23,14 +23,12 @@ describe('nz global config', () => {
   let buttonEl: HTMLButtonElement;
 
   describe('without config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent]
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
@@ -50,21 +48,19 @@ describe('nz global config', () => {
   });
 
   describe('with config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent],
-          providers: [
-            provideNzConfig({
-              button: {
-                nzSize: 'large'
-              }
-            })
-          ]
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent],
+        providers: [
+          provideNzConfig({
+            button: {
+              nzSize: 'large'
+            }
+          })
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);

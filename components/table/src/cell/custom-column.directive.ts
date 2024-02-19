@@ -10,14 +10,19 @@ import { takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 
 @Directive({
-  selector: 'td[nzCellControl],th[nzCellControl]'
+  selector: 'td[nzCellControl],th[nzCellControl]',
+  standalone: true
 })
 export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
   @Input() nzCellControl: string | null = null;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private nzTableDataService: NzTableDataService<T>) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private nzTableDataService: NzTableDataService<T>
+  ) {}
 
   ngOnInit(): void {
     this.nzTableDataService.listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(item => {

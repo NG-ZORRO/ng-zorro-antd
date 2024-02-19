@@ -14,6 +14,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzEmptySize = 'normal' | 'small' | '';
 
-export type NzEmptyCustomContent = Type<NzSafeAny> | TemplateRef<NzSafeAny> | string;
+export type NzEmptyCustomContent = Type<NzSafeAny> | TemplateRef<NzSafeAny> | string | null;
 
 export const NZ_EMPTY_COMPONENT_NAME = new InjectionToken<string>('nz-empty-component-name');

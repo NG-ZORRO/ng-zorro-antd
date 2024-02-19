@@ -33,13 +33,13 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { merge, of as observableOf, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, merge, of as observableOf, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
@@ -148,7 +148,7 @@ const listOfPositions = [
     <div cdkOverlayOrigin class="ant-select-selector">
       <ng-container *ngIf="isMultiple">
         <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
+          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
@@ -169,7 +169,7 @@ const listOfPositions = [
         [nzId]="nzId"
         [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
-        (isComposingChange)="isComposing = $event"
+        (isComposingChange)="isComposingChange($event)"
         (valueChange)="setInputValue($event)"
         [value]="inputValue"
         [mirrorSync]="isMultiple"
@@ -239,7 +239,7 @@ const listOfPositions = [
     NzOverlayModule,
     CdkConnectedOverlay,
     NgClass,
-    NzNoAnimationModule,
+    NzNoAnimationDirective,
     NgStyle,
     NzTreeModule,
     NgIf,
@@ -352,6 +352,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
 
+  private isComposingChange$ = new Subject<boolean>();
+  private searchValueChange$ = new Subject<string>();
+
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
 
@@ -419,6 +422,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           this.cdr.markForCheck();
         }
       });
+
+    // setInputValue method executed earlier than isComposingChange
+    combineLatest([this.searchValueChange$, this.isComposingChange$.pipe(startWith(false))])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([searchValue, isComposing]) => {
+        this.isComposing = isComposing;
+        if (!isComposing) {
+          this.inputValue = searchValue;
+          this.updatePosition();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -429,7 +443,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   isComposingChange(isComposing: boolean): void {
-    this.isComposing = isComposing;
+    this.isComposingChange$.next(isComposing);
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -568,10 +582,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   setInputValue(value: string): void {
-    if (!this.isComposing) {
-      this.inputValue = value;
-      this.updatePosition();
-    }
+    this.searchValueChange$.next(value);
   }
 
   removeSelected(node: NzTreeNode, emit: boolean = true): void {

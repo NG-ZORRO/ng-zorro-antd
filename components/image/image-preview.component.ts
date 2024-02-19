@@ -6,7 +6,6 @@
 import { AnimationEvent } from '@angular/animations';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -62,14 +61,15 @@ const NZ_DEFAULT_ROTATE = 0;
       <div class="ant-image-preview-content">
         <div class="ant-image-preview-body">
           <ul class="ant-image-preview-operations">
-            <li
-              class="ant-image-preview-operations-operation"
-              [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
-              (click)="option.onClick()"
-              *ngFor="let option of operations"
-            >
-              <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
-            </li>
+            @for (option of operations; track option) {
+              <li
+                class="ant-image-preview-operations-operation"
+                [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
+                (click)="option.onClick()"
+              >
+                <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
+              </li>
+            }
           </ul>
           <div
             class="ant-image-preview-img-wrapper"
@@ -79,37 +79,40 @@ const NZ_DEFAULT_ROTATE = 0;
             [cdkDragFreeDragPosition]="position"
             (cdkDragReleased)="onDragReleased()"
           >
-            <ng-container *ngFor="let image of images; index as imageIndex">
-              <img
-                cdkDragHandle
-                class="ant-image-preview-img"
-                #imgRef
-                *ngIf="index === imageIndex"
-                [attr.src]="sanitizerResourceUrl(image.src)"
-                [attr.srcset]="image.srcset"
-                [attr.alt]="image.alt"
-                [style.width]="image.width"
-                [style.height]="image.height"
-                [style.transform]="previewImageTransform"
-              />
-            </ng-container>
+            @for (image of images; track image; let imageIndex = $index) {
+              @if (imageIndex === index) {
+                <img
+                  cdkDragHandle
+                  class="ant-image-preview-img"
+                  #imgRef
+                  [attr.src]="sanitizerResourceUrl(image.src)"
+                  [attr.srcset]="image.srcset"
+                  [attr.alt]="image.alt"
+                  [style.width]="image.width"
+                  [style.height]="image.height"
+                  [style.transform]="previewImageTransform"
+                />
+              }
+            }
           </div>
-          <ng-container *ngIf="images.length > 1">
-            <div
-              class="ant-image-preview-switch-left"
-              [class.ant-image-preview-switch-left-disabled]="index <= 0"
-              (click)="onSwitchLeft($event)"
-            >
-              <span nz-icon nzType="left" nzTheme="outline"></span>
-            </div>
-            <div
-              class="ant-image-preview-switch-right"
-              [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
-              (click)="onSwitchRight($event)"
-            >
-              <span nz-icon nzType="right" nzTheme="outline"></span>
-            </div>
-          </ng-container>
+          @if (images.length > 1) {
+            <ng-container>
+              <div
+                class="ant-image-preview-switch-left"
+                [class.ant-image-preview-switch-left-disabled]="index <= 0"
+                (click)="onSwitchLeft($event)"
+              >
+                <span nz-icon nzType="left" nzTheme="outline"></span>
+              </div>
+              <div
+                class="ant-image-preview-switch-right"
+                [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
+                (click)="onSwitchRight($event)"
+              >
+                <span nz-icon nzType="right" nzTheme="outline"></span>
+              </div>
+            </ng-container>
+          }
         </div>
       </div>
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
@@ -129,7 +132,7 @@ const NZ_DEFAULT_ROTATE = 0;
     tabindex: '-1',
     role: 'document'
   },
-  imports: [NgForOf, NzIconModule, CdkDragHandle, CdkDrag, NgIf],
+  imports: [NzIconModule, CdkDragHandle, CdkDrag],
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {

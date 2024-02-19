@@ -10,9 +10,9 @@ import { NzWrap } from 'ng-zorro-antd/flex';
       <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap"></nz-segmented>
     </div>
     <div class="btn-wrapper" nz-flex [nzGap]="'middle'" [nzWrap]="wrapSegment[selectedWrap]">
-      <ng-container *ngFor="let _ of [].constructor(20); let index = index">
-        <button style="width: 100px" nz-button nzType="primary">Button {{ index + 1 }}</button>
-      </ng-container>
+      @for (_ of array; track _) {
+        <button style="width: 100px" nz-button nzType="primary">Button {{ _ }}</button>
+      }
     </div>
   `,
   styles: [
@@ -33,6 +33,7 @@ import { NzWrap } from 'ng-zorro-antd/flex';
   ]
 })
 export class NzDemoFlexWrapComponent {
-  public wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
-  public selectedWrap = 0;
+  wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
+  selectedWrap = 0;
+  array = Array.from({ length: 20 }, (_, index) => index + 1);
 }

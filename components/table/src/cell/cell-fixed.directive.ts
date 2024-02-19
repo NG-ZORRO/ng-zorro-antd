@@ -12,7 +12,8 @@ import { Subject } from 'rxjs';
     '[class.ant-table-cell-fix-right]': `isFixedRight`,
     '[class.ant-table-cell-fix-left]': `isFixedLeft`,
     '[style.position]': `isFixed? 'sticky' : null`
-  }
+  },
+  standalone: true
 })
 export class NzCellFixedDirective implements OnChanges {
   @Input() nzRight: string | boolean = false;
@@ -51,7 +52,10 @@ export class NzCellFixedDirective implements OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnChanges(): void {
     this.setIsFirstRight(false);

@@ -5,6 +5,7 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,9 +18,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzRowExpandButtonDirective } from '../addon/row-expand-button.directive';
+import { NzRowIndentDirective } from '../addon/row-indent.directive';
 
 @Component({
   selector:
@@ -56,7 +62,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`
-  }
+  },
+  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgIf, NgTemplateOutlet, NzCheckboxModule, FormsModule],
+  standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
   static ngAcceptInputType_nzShowExpand: BooleanInput;

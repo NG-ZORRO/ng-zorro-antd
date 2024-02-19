@@ -29,7 +29,7 @@ stages:
             versionSpec: '20.9.0' # The version we're installing
         - task: Npm@1
           inputs:
-            command: 'install'
+            command: 'ci'
         - script: |
             npm run build
             export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
@@ -56,7 +56,7 @@ stages:
       steps:
         - task: Npm@1
           inputs:
-            command: 'install'
+            command: 'ci'
         - script: |
             npm run test
             cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
@@ -84,7 +84,7 @@ stages:
       steps:
         - task: Npm@1
           inputs:
-            command: 'install'
+            command: 'ci'
         - script: npm run test:schematics
 
   dependsOn: env
@@ -95,6 +95,6 @@ stages:
       steps:
         - task: Npm@1
           inputs:
-            command: 'install'
+            command: 'ci'
         - script: npm run lint
   dependsOn: env

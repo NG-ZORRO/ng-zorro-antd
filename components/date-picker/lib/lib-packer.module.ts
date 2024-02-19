@@ -7,13 +7,8 @@
  * A collection module of standard output for all lib components
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
-import { NzI18nModule } from 'ng-zorro-antd/i18n';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { DateHeaderComponent } from './date-header.component';
 import { DateTableComponent } from './date-table.component';
 import { DecadeHeaderComponent } from './decade-header.component';
@@ -24,8 +19,7 @@ import { YearHeaderComponent } from './year-header.component';
 import { YearTableComponent } from './year-table.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule, NzOutletModule],
-  exports: [
+  imports: [
     DateHeaderComponent,
     DateTableComponent,
     DecadeHeaderComponent,
@@ -35,7 +29,7 @@ import { YearTableComponent } from './year-table.component';
     YearHeaderComponent,
     YearTableComponent
   ],
-  declarations: [
+  exports: [
     DateHeaderComponent,
     DateTableComponent,
     DecadeHeaderComponent,

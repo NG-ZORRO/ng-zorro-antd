@@ -17,7 +17,6 @@ ng-zorro.github.io/
 # dependencies
 node_modules
 node_modules.*/
-package-lock.json
 integration/**/package-lock.json
 yarn.lock
 

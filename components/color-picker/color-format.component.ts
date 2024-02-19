@@ -5,22 +5,33 @@
 
 import {
   ChangeDetectionStrategy,
-  SimpleChanges,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  EventEmitter
+  SimpleChanges
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import { generateColor } from 'ng-antd-color-picker';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
+import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { NzColorPickerFormatType } from './typings';
 
@@ -28,84 +39,80 @@ import { NzColorPickerFormatType } from './typings';
   selector: 'nz-color-format',
   exportAs: 'NzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputGroupComponent, NzInputNumberComponent],
   template: `
     <div [formGroup]="validateForm" class="ant-color-picker-input-container">
       <div class="ant-color-picker-format-select">
         <nz-select formControlName="isFormat" nzBorderless nzSize="small">
-          <nz-option nzValue="hex" nzLabel="HEX"></nz-option>
-          <nz-option nzValue="hsb" nzLabel="HSB"></nz-option>
-          <nz-option nzValue="rgb" nzLabel="RGB"></nz-option>
+          <nz-option nzValue="hex" nzLabel="HEX" />
+          <nz-option nzValue="hsb" nzLabel="HSB" />
+          <nz-option nzValue="rgb" nzLabel="RGB" />
         </nz-select>
       </div>
-      <div class="ant-color-picker-input" [ngSwitch]="validateForm.get('isFormat')?.value">
-        <div class="ant-color-picker-hex-input" *ngSwitchCase="'hex'">
-          <nz-input-group nzPrefix="#" nzSize="small">
-            <input nz-input nzSize="small" formControlName="hex" />
-          </nz-input-group>
-        </div>
 
-        <div class="ant-color-picker-hsb-input" *ngSwitchCase="'hsb'">
-          <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
-            <nz-input-number
-              formControlName="hsbH"
-              [nzMin]="0"
-              [nzMax]="360"
-              [nzStep]="1"
-              [nzPrecision]="0"
-              nzSize="small"
-            ></nz-input-number>
-          </div>
-          <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
-            <nz-input-number
-              formControlName="hsbS"
-              [nzMin]="0"
-              [nzMax]="100"
-              [nzStep]="1"
-              [nzFormatter]="formatterPercent"
-              [nzParser]="parserPercent"
-              nzSize="small"
-            ></nz-input-number>
-          </div>
-          <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
-            <nz-input-number
-              formControlName="hsbB"
-              [nzMin]="0"
-              [nzMax]="100"
-              [nzStep]="1"
-              [nzFormatter]="formatterPercent"
-              [nzParser]="parserPercent"
-              nzSize="small"
-            ></nz-input-number>
-          </div>
-        </div>
-
-        <div class="ant-color-picker-rgb-input" *ngSwitchDefault>
-          <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-            <nz-input-number formControlName="rgbR" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small">
-            </nz-input-number>
-          </div>
-          <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-            <nz-input-number
-              formControlName="rgbG"
-              [nzMin]="0"
-              [nzMax]="255"
-              [nzStep]="1"
-              nzSize="small"
-            ></nz-input-number>
-          </div>
-          <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-            <nz-input-number
-              formControlName="rgbB"
-              [nzMin]="0"
-              [nzMax]="255"
-              [nzStep]="1"
-              nzSize="small"
-            ></nz-input-number>
-          </div>
-        </div>
+      <div class="ant-color-picker-input">
+        @switch (validateForm.controls.isFormat.value) {
+          @case ('hex') {
+            <div class="ant-color-picker-hex-input">
+              <nz-input-group nzPrefix="#" nzSize="small">
+                <input nz-input nzSize="small" formControlName="hex" />
+              </nz-input-group>
+            </div>
+          }
+          @case ('hsb') {
+            <div class="ant-color-picker-hsb-input">
+              <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
+                <nz-input-number
+                  formControlName="hsbH"
+                  [nzMin]="0"
+                  [nzMax]="360"
+                  [nzStep]="1"
+                  [nzPrecision]="0"
+                  nzSize="small"
+                />
+              </div>
+              <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
+                <nz-input-number
+                  formControlName="hsbS"
+                  [nzMin]="0"
+                  [nzMax]="100"
+                  [nzStep]="1"
+                  [nzFormatter]="formatterPercent"
+                  [nzParser]="parserPercent"
+                  nzSize="small"
+                />
+              </div>
+              <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
+                <nz-input-number
+                  formControlName="hsbB"
+                  [nzMin]="0"
+                  [nzMax]="100"
+                  [nzStep]="1"
+                  [nzFormatter]="formatterPercent"
+                  [nzParser]="parserPercent"
+                  nzSize="small"
+                />
+              </div>
+            </div>
+          }
+          @default {
+            <div class="ant-color-picker-rgb-input">
+              <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
+                <nz-input-number formControlName="rgbR" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+              </div>
+              <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
+                <nz-input-number formControlName="rgbG" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+              </div>
+              <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
+                <nz-input-number formControlName="rgbB" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+              </div>
+            </div>
+          }
+        }
       </div>
 
-      <ng-container *ngIf="!nzDisabledAlpha">
+      @if (!nzDisabledAlpha) {
         <div class="ant-color-picker-steppers ant-color-picker-alpha-input">
           <nz-input-number
             formControlName="roundA"
@@ -115,9 +122,9 @@ import { NzColorPickerFormatType } from './typings';
             [nzFormatter]="formatterPercent"
             [nzParser]="parserPercent"
             nzSize="small"
-          ></nz-input-number>
+          />
         </div>
-      </ng-container>
+      }
     </div>
   `
 })

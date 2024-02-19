@@ -5,13 +5,17 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { NzTableStyleService } from '../table-style.service';
+import { NzTableFixedRowComponent } from './table-fixed-row.component';
+import { NzTrMeasureComponent } from './tr-measure.component';
 
 @Component({
   selector: 'tbody',
@@ -34,7 +38,9 @@ import { NzTableStyleService } from '../table-style.service';
   `,
   host: {
     '[class.ant-table-tbody]': 'isInsideTable'
-  }
+  },
+  imports: [NgIf, AsyncPipe, NzTrMeasureComponent, NzTableFixedRowComponent, NzEmptyModule],
+  standalone: true
 })
 export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;

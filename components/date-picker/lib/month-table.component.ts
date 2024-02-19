@@ -3,10 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
@@ -16,7 +19,9 @@ import { DateBodyRow, DateCell } from './interface';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'month-table',
   exportAs: 'monthTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  standalone: true,
+  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 4;

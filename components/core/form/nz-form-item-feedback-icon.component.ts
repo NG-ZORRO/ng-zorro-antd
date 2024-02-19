@@ -41,7 +41,7 @@ export class NzFormItemFeedbackIconComponent implements OnChanges {
   @Input() status: NzValidateStatus = '';
   constructor(public cdr: ChangeDetectorRef) {}
 
-  iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
+  iconType: (typeof iconTypeMap)[keyof typeof iconTypeMap] | null = null;
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.updateIcon();
