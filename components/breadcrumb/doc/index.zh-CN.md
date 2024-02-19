@@ -20,7 +20,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 ## API
 
-### nz-breadcrumb
+### nz-breadcrumb:standalone
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

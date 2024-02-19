@@ -38,7 +38,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-borderless]': '!nzBordered',
     '[class.ant-collapse-rtl]': "dir === 'rtl'"
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  standalone: true
 })
 export class NzCollapseComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

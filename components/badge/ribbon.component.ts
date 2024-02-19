@@ -13,6 +13,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { badgePresetColors } from './preset-colors';
 
 @Component({
@@ -21,6 +23,8 @@ import { badgePresetColors } from './preset-colors';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NzOutletModule],
   template: `
     <ng-content></ng-content>
     <div

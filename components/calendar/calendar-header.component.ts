@@ -12,10 +12,12 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
-import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -31,19 +33,24 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
         [ngModel]="activeYear"
         (ngModelChange)="updateYear($event)"
       >
-        <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
+        @for (year of years; track year.value) {
+          <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
+        }
       </nz-select>
 
-      <nz-select
-        *ngIf="mode === 'month'"
-        class="ant-picker-calendar-month-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeMonth"
-        (ngModelChange)="monthChange.emit($event)"
-      >
-        <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
-      </nz-select>
+      @if (mode === 'month') {
+        <nz-select
+          class="ant-picker-calendar-month-select"
+          [nzSize]="size"
+          [nzDropdownMatchSelectWidth]="false"
+          [ngModel]="activeMonth"
+          (ngModelChange)="monthChange.emit($event)"
+        >
+          @for (month of months; track month.value) {
+            <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+          }
+        </nz-select>
+      }
 
       <nz-radio-group
         class="ant-picker-calendar-mode-switch"
@@ -59,7 +66,9 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
-  }
+  },
+  imports: [NzSelectModule, FormsModule, NzRadioModule],
+  standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
@@ -96,7 +105,10 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(
+    private i18n: I18n,
+    private dateHelper: DateHelperService
+  ) {}
 
   ngOnInit(): void {
     this.setUpYears();

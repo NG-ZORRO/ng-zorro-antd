@@ -4,8 +4,8 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform, normalizePassiveListenerOptions } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
+import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,7 +25,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject, Subscription, fromEvent } from 'rxjs';
+import { fromEvent, Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
@@ -33,6 +33,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
@@ -42,17 +43,21 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
+  standalone: true,
+  imports: [NgIf, NgTemplateOutlet, NzIconModule],
   template: `
-    <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
-      <ng-template #defaultContent>
-        <div class="ant-back-top-content">
-          <div class="ant-back-top-icon">
-            <span nz-icon nzType="vertical-align-top"></span>
+    @if (visible) {
+      <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
+        <ng-template #defaultContent>
+          <div class="ant-back-top-content">
+            <div class="ant-back-top-icon">
+              <span nz-icon nzType="vertical-align-top"></span>
+            </div>
           </div>
-        </div>
-      </ng-template>
-      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
-    </div>
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

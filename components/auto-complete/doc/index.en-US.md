@@ -31,13 +31,13 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 </nz-autocomplete>
 ```
 
-### [nzAutocomplete]
+### [nzAutocomplete]:standalone
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | `[nzAutocomplete]` | used to bind `nzAutocomplete` components | `NzAutocompleteComponent` | - |
 
-### nz-autocomplete
+### nz-autocomplete:standalone
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -49,7 +49,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 | `[nzOverlayStyle]` | Style of the dropdown root element | `object` | - |
 | `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 
-### nz-auto-option
+### nz-auto-option:standalone
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |

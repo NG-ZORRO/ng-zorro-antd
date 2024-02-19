@@ -3,9 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive } from '@angular/core';
-
-@Directive({
-  selector: '[nz-radio-button]'
-})
-export class NzRadioButtonDirective {}
+export * from './nz-flex.directive';
+export * from './typings';
+export * from './flex.module';

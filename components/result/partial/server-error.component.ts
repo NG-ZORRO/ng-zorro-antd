@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result-server-error',
   exportAs: 'nzResultServerError',
+  standalone: true,
   template: `
     <svg width="254" height="294">
       <defs>

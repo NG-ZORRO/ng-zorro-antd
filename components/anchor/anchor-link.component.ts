@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,6 +27,8 @@ import { NzAnchorComponent } from './anchor.component';
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgTemplateOutlet],
   template: `
     <a
       #linkTitle
@@ -35,7 +38,11 @@ import { NzAnchorComponent } from './anchor.component';
       [target]="nzTarget"
       (click)="goToClick($event)"
     >
-      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+      @if (titleStr) {
+        <span>{{ titleStr }}</span>
+      } @else {
+        <ng-template [ngTemplateOutlet]="titleTpl || nzTemplate" />
+      }
     </a>
     <ng-content></ng-content>
   `,

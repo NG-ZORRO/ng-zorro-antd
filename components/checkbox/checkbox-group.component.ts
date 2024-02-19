@@ -23,6 +23,8 @@ import { takeUntil } from 'rxjs/operators';
 import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzCheckboxComponent } from './checkbox.component';
+
 export interface NzCheckBoxOptionInterface {
   label: string;
   value: string;
@@ -36,16 +38,17 @@ export interface NzCheckBoxOptionInterface {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label
-      nz-checkbox
-      class="ant-checkbox-group-item"
-      *ngFor="let o of options; trackBy: trackByOption"
-      [nzDisabled]="o.disabled || nzDisabled"
-      [nzChecked]="o.checked!"
-      (nzCheckedChange)="onCheckedChange(o, $event)"
-    >
-      <span>{{ o.label }}</span>
-    </label>
+    @for (option of options; track option.value) {
+      <label
+        nz-checkbox
+        class="ant-checkbox-group-item"
+        [nzDisabled]="option.disabled || nzDisabled"
+        [nzChecked]="option.checked!"
+        (nzCheckedChange)="onCheckedChange(option, $event)"
+      >
+        <span>{{ option.label }}</span>
+      </label>
+    }
   `,
   providers: [
     {
@@ -57,7 +60,9 @@ export interface NzCheckBoxOptionInterface {
   host: {
     class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NzCheckboxComponent],
+  standalone: true
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -71,10 +76,6 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
 
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
-
-  trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
-    return option.value;
-  }
 
   onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
     option.checked = checked;

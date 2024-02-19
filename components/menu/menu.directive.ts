@@ -81,7 +81,8 @@ export function MenuDropDownTokenFactory(): boolean {
     '[class.ant-menu-inline]': `!isMenuInsideDropDown && actualMode === 'inline'`,
     '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`,
     '[class.ant-menu-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;

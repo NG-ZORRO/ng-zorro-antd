@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -10,21 +11,23 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   exportAs: 'nzCardLoading',
   template: `
     <div class="ant-card-loading-content">
-      <div class="ant-row" style="margin-left: -4px; margin-right: -4px;" *ngFor="let listOfClassName of listOfLoading">
-        <div
-          *ngFor="let className of listOfClassName"
-          [ngClass]="className"
-          style="padding-left: 4px; padding-right: 4px;"
-        >
-          <div class="ant-card-loading-block"></div>
+      @for (listOfClassName of listOfLoading; track listOfClassName) {
+        <div class="ant-row" style="margin-left: -4px; margin-right: -4px;">
+          @for (className of listOfClassName; track className) {
+            <div [ngClass]="className" style="padding-left: 4px; padding-right: 4px;">
+              <div class="ant-card-loading-block"></div>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'ant-card-loading-content' }
+  host: { class: 'ant-card-loading-content' },
+  imports: [NgForOf, NgClass],
+  standalone: true
 })
 export class NzCardLoadingComponent {
   listOfLoading: string[][] = [

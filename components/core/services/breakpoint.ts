@@ -47,7 +47,10 @@ export const siderResponsiveMap: BreakpointMap = {
 export class NzBreakpointService implements OnDestroy {
   private destroy$ = new Subject<void>();
 
-  constructor(private resizeService: NzResizeService, private mediaMatcher: MediaMatcher) {
+  constructor(
+    private resizeService: NzResizeService,
+    private mediaMatcher: MediaMatcher
+  ) {
     this.resizeService
       .subscribe()
       .pipe(takeUntil(this.destroy$))

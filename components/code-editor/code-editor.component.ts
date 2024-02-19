@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -27,6 +28,7 @@ import type { editor, IDisposable } from 'monaco-editor';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
@@ -44,13 +46,16 @@ declare const monaco: NzSafeAny;
   selector: 'nz-code-editor',
   exportAs: 'nzCodeEditor',
   template: `
-    <div class="ant-code-editor-loading" *ngIf="nzLoading">
-      <nz-spin></nz-spin>
-    </div>
-
-    <div class="ant-code-editor-toolkit" *ngIf="nzToolkit">
-      <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
-    </div>
+    @if (nzLoading) {
+      <div class="ant-code-editor-loading">
+        <nz-spin />
+      </div>
+    }
+    @if (nzToolkit) {
+      <div class="ant-code-editor-toolkit">
+        <ng-template [ngTemplateOutlet]="nzToolkit" />
+      </div>
+    }
   `,
   providers: [
     {
@@ -58,7 +63,9 @@ declare const monaco: NzSafeAny;
       useExisting: forwardRef(() => NzCodeEditorComponent),
       multi: true
     }
-  ]
+  ],
+  imports: [NgIf, NzSpinComponent, NgTemplateOutlet],
+  standalone: true
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzLoading: BooleanInput;

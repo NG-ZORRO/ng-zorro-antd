@@ -24,33 +24,29 @@ describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BidiModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NzI18nModule,
-          NzTimePickerModule,
-          NzFormModule
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzTestTimePickerComponent,
-          NzTestTimePickerStatusComponent,
-          NzTestTimePickerDirComponent,
-          NzTestTimePickerInFormComponent
-        ]
-      });
-      TestBed.compileComponents();
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzI18nModule,
+        NzTimePickerModule,
+        NzFormModule,
+        NzTestTimePickerComponent,
+        NzTestTimePickerStatusComponent,
+        NzTestTimePickerDirComponent,
+        NzTestTimePickerInFormComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    });
+    TestBed.compileComponents();
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -467,7 +463,9 @@ describe('time-picker', () => {
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzBorderless]="nzBorderless"
     ></nz-time-picker>
-  `
+  `,
+  imports: [NzTimePickerComponent, FormsModule],
+  standalone: true
 })
 export class NzTestTimePickerComponent {
   open = false;
@@ -486,14 +484,22 @@ export class NzTestTimePickerComponent {
 }
 
 @Component({
-  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `
+  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `,
+  imports: [NzTimePickerComponent],
+  standalone: true
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
-  template: ` <div [dir]="dir"><nz-time-picker></nz-time-picker></div> `
+  template: `
+    <div [dir]="dir">
+      <nz-time-picker></nz-time-picker>
+    </div>
+  `,
+  imports: [NzTimePickerComponent, BidiModule],
+  standalone: true
 })
 export class NzTestTimePickerDirComponent {
   dir: Direction = 'ltr';
@@ -508,7 +514,9 @@ export class NzTestTimePickerDirComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
+  standalone: true
 })
 export class NzTestTimePickerInFormComponent {
   timePickerForm = new FormGroup({

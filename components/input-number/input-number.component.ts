@@ -26,11 +26,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   BooleanInput,
@@ -42,6 +42,7 @@ import {
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-input-number',
@@ -85,11 +86,9 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
         (ngModelChange)="onModelChange($event)"
       />
     </div>
-    <nz-form-item-feedback-icon
-      class="ant-input-number-suffix"
-      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status && !nzFormNoStatusService) {
+      <nz-form-item-feedback-icon class="ant-input-number-suffix" [status]="status" />
+    }
   `,
   providers: [
     {
@@ -111,7 +110,9 @@ import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/
     '[class.ant-input-number-readonly]': 'nzReadOnly',
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
-  }
+  },
+  imports: [NzIconModule, FormsModule, NzFormPatchModule],
+  standalone: true
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;

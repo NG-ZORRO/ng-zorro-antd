@@ -20,7 +20,10 @@ export class DrawerBuilderForService<T extends {}, R> {
   private overlayRef: OverlayRef;
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private overlay: Overlay, private options: NzDrawerOptions) {
+  constructor(
+    private overlay: Overlay,
+    private options: NzDrawerOptions
+  ) {
     /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
     const { nzOnCancel, ...componentOption } = this.options;
     this.overlayRef = this.overlay.create();

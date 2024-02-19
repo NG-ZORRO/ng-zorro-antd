@@ -4,11 +4,12 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -25,6 +26,8 @@ import {
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -41,7 +44,8 @@ import {
   exportAs: 'nzTooltip',
   host: {
     '[class.ant-tooltip-open]': 'visible'
-  }
+  },
+  standalone: true
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
@@ -69,11 +73,11 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
-    resolver: ComponentFactoryResolver,
+
     renderer: Renderer2,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation);
+    super(elementRef, hostView, renderer, noAnimation);
   }
 
   protected override getProxyPropertyMap(): PropertyMapping {
@@ -125,7 +129,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [OverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule, NzOverlayModule],
+  standalone: true
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
@@ -157,7 +163,8 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     };
 
     this._contentStyleMap = {
-      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null
+      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null,
+      '--color': this.nzColor
     };
   }
 }

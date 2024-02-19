@@ -7,6 +7,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -29,7 +30,6 @@ import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
 
 @Component({
@@ -78,7 +78,8 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
     '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
     '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -89,13 +90,13 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   private isNzDisableFirstChange: boolean = true;
   isChecked = false;
   name: string | null = null;
-  isRadioButton = !!this.nzRadioButtonDirective;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
+  @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
 
   dir: Direction = 'ltr';
 
@@ -114,7 +115,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
-    @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null,
     @Optional() public nzFormStatusService?: NzFormStatusService
   ) {}
 

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
@@ -26,7 +27,9 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
         [innerHTML]="attr.label"
       ></span>
     </div>
-  `
+  `,
+  imports: [NgStyle, NgForOf],
+  standalone: true
 })
 export class NzSliderMarksComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;

@@ -4,6 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
@@ -25,11 +26,12 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
-import { TImageUrl, TImageScaleStep } from './image.directive';
+import { NzImageScaleStep, NzImageUrl } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
 
 export interface NzImageContainerOperation {
@@ -44,34 +46,36 @@ const initialPosition = {
   y: 0
 };
 
-export const DEFAULT_NZ_SCALE_STEP = 0.5;
-const DEFAULT_NZ_ZOOM = 1;
-const DEFAULT_NZ_ROTATE = 0;
+export const NZ_DEFAULT_SCALE_STEP = 0.5;
+const NZ_DEFAULT_ZOOM = 1;
+const NZ_DEFAULT_ROTATE = 0;
 
 @Component({
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
   animations: [fadeMotion],
+  standalone: true,
   template: `
     <div class="ant-image-preview">
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
       <div class="ant-image-preview-content">
         <div class="ant-image-preview-body">
           <ul class="ant-image-preview-operations">
-            <li
-              class="ant-image-preview-operations-operation"
-              [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
-              (click)="option.onClick()"
-              *ngFor="let option of operations"
-            >
-              <span
-                class="ant-image-preview-operations-icon"
-                nz-icon
-                [nzType]="option.icon"
-                [nzRotate]="option.rotate ?? 0"
-                nzTheme="outline"
-              ></span>
-            </li>
+            @for (option of operations; track option) {
+              <li
+                class="ant-image-preview-operations-operation"
+                [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
+                (click)="option.onClick()"
+              >
+                <span
+                  class="ant-image-preview-operations-icon"
+                  nz-icon
+                  [nzType]="option.icon"
+                  [nzRotate]="option.rotate ?? 0"
+                  nzTheme="outline"
+                ></span>
+              </li>
+            }
           </ul>
           <div
             class="ant-image-preview-img-wrapper"
@@ -81,37 +85,40 @@ const DEFAULT_NZ_ROTATE = 0;
             [cdkDragFreeDragPosition]="position"
             (cdkDragReleased)="onDragReleased()"
           >
-            <ng-container *ngFor="let image of images; index as imageIndex">
-              <img
-                cdkDragHandle
-                class="ant-image-preview-img"
-                #imgRef
-                *ngIf="index === imageIndex"
-                [attr.src]="sanitizerResourceUrl(image.src)"
-                [attr.srcset]="image.srcset"
-                [attr.alt]="image.alt"
-                [style.width]="image.width"
-                [style.height]="image.height"
-                [style.transform]="previewImageTransform"
-              />
-            </ng-container>
+            @for (image of images; track image; let imageIndex = $index) {
+              @if (imageIndex === index) {
+                <img
+                  cdkDragHandle
+                  class="ant-image-preview-img"
+                  #imgRef
+                  [attr.src]="sanitizerResourceUrl(image.src)"
+                  [attr.srcset]="image.srcset"
+                  [attr.alt]="image.alt"
+                  [style.width]="image.width"
+                  [style.height]="image.height"
+                  [style.transform]="previewImageTransform"
+                />
+              }
+            }
           </div>
-          <ng-container *ngIf="images.length > 1">
-            <div
-              class="ant-image-preview-switch-left"
-              [class.ant-image-preview-switch-left-disabled]="index <= 0"
-              (click)="onSwitchLeft($event)"
-            >
-              <span nz-icon nzType="left" nzTheme="outline"></span>
-            </div>
-            <div
-              class="ant-image-preview-switch-right"
-              [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
-              (click)="onSwitchRight($event)"
-            >
-              <span nz-icon nzType="right" nzTheme="outline"></span>
-            </div>
-          </ng-container>
+          @if (images.length > 1) {
+            <ng-container>
+              <div
+                class="ant-image-preview-switch-left"
+                [class.ant-image-preview-switch-left-disabled]="index <= 0"
+                (click)="onSwitchLeft($event)"
+              >
+                <span nz-icon nzType="left" nzTheme="outline"></span>
+              </div>
+              <div
+                class="ant-image-preview-switch-right"
+                [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
+                (click)="onSwitchRight($event)"
+              >
+                <span nz-icon nzType="right" nzTheme="outline"></span>
+              </div>
+            </ng-container>
+          }
         </div>
       </div>
       <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
@@ -131,12 +138,13 @@ const DEFAULT_NZ_ROTATE = 0;
     tabindex: '-1',
     role: 'document'
   },
+  imports: [NzIconModule, CdkDragHandle, CdkDrag],
   providers: [NzDestroyService]
 })
 export class NzImagePreviewComponent implements OnInit {
-  readonly _defaultNzZoom = DEFAULT_NZ_ZOOM;
-  readonly _defaultNzScaleStep = DEFAULT_NZ_SCALE_STEP;
-  readonly _defaultNzRotate = DEFAULT_NZ_ROTATE;
+  readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
+  readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
+  readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
 
   images: NzImage[] = [];
   index = 0;
@@ -144,7 +152,7 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
-  scaleStepMap: Map<TImageUrl, TImageScaleStep> = new Map<TImageUrl, TImageScaleStep>();
+  scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -306,7 +314,7 @@ export class NzImagePreviewComponent implements OnInit {
 
   onZoomIn(): void {
     const zoomStep =
-      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+      this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
@@ -316,7 +324,7 @@ export class NzImagePreviewComponent implements OnInit {
   onZoomOut(): void {
     if (this.zoom > 1) {
       const zoomStep =
-        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].src) ?? this.scaleStep;
+        this.scaleStepMap.get(this.images[this.index].src ?? this.images[this.index].srcset) ?? this.scaleStep;
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();

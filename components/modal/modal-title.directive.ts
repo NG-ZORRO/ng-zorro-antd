@@ -9,10 +9,14 @@ import { NzModalRef } from './modal-ref';
 
 @Directive({
   selector: '[nzModalTitle]',
-  exportAs: 'nzModalTitle'
+  exportAs: 'nzModalTitle',
+  standalone: true
 })
 export class NzModalTitleDirective {
-  constructor(@Optional() private nzModalRef: NzModalRef, public templateRef: TemplateRef<{}>) {
+  constructor(
+    @Optional() private nzModalRef: NzModalRef,
+    public templateRef: TemplateRef<{}>
+  ) {
     if (this.nzModalRef) {
       this.nzModalRef.updateConfig({
         nzTitle: this.templateRef

@@ -5,6 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -15,9 +16,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span *ngIf="nzText" class="ant-divider-inner-text">
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
-    </span>
+    @if (nzText) {
+      <span class="ant-divider-inner-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
+    }
   `,
   host: {
     class: 'ant-divider',
@@ -29,7 +32,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
     '[class.ant-divider-dashed]': `nzDashed`
-  }
+  },
+  imports: [NzOutletModule],
+  standalone: true
 })
 export class NzDividerComponent {
   static ngAcceptInputType_nzDashed: BooleanInput;

@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTableLayout } from '../table.types';
+import { NzTableContentComponent } from './table-content.component';
 
 @Component({
   selector: 'nz-table-inner-default',
@@ -24,7 +25,9 @@ import { NzTableLayout } from '../table.types';
       ></table>
     </div>
   `,
-  host: { class: 'ant-table-container' }
+  host: { class: 'ant-table-container' },
+  imports: [NzTableContentComponent],
+  standalone: true
 })
 export class NzTableInnerDefaultComponent {
   @Input() tableLayout: NzTableLayout = 'auto';

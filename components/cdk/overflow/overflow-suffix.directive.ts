@@ -12,7 +12,8 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   selector: '[nzOverflowSuffix]',
   host: {
     '[style]': 'suffixStyle'
-  }
+  },
+  standalone: true
 })
 export class NzOverflowSuffixDirective {
   suffixStyle = {};

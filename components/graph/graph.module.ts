@@ -3,12 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { NzGraphDefsComponent } from './graph-defs.component';
 import { NzGraphEdgeComponent } from './graph-edge.component';
@@ -21,7 +16,7 @@ import { NzGraphZoomDirective } from './graph-zoom.directive';
 import { NzGraphComponent } from './graph.component';
 
 @NgModule({
-  declarations: [
+  imports: [
     NzGraphComponent,
     NzGraphMinimapComponent,
     NzGraphDefsComponent,
@@ -32,7 +27,6 @@ import { NzGraphComponent } from './graph.component';
     NzGraphEdgeComponent,
     NzGraphEdgeDirective
   ],
-  imports: [CommonModule, NzIconModule, NzSpinModule, NzNoAnimationModule],
   exports: [
     NzGraphComponent,
     NzGraphMinimapComponent,

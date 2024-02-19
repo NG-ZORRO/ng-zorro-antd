@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,17 +22,28 @@ import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { defaultColor, generateColor } from 'ng-antd-color-picker';
+import { defaultColor, generateColor, NgAntdColorPickerModule } from 'ng-antd-color-picker';
 
 import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 
-import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './typings';
+import { NzColorBlockComponent } from './color-block.component';
+import { NzColorFormatComponent } from './color-format.component';
+import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './typings';
 
 @Component({
   selector: 'nz-color-picker',
   exportAs: 'NzColorPicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgAntdColorPickerModule,
+    NzPopoverDirective,
+    NzColorBlockComponent,
+    NzColorFormatComponent,
+    NgTemplateOutlet
+  ],
   template: `
     <div
       [class.ant-color-picker-trigger]="!nzFlipFlop"
@@ -43,15 +55,16 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
       [nzPopoverVisible]="nzOpen"
       (nzPopoverVisibleChange)="nzOnOpenChange.emit($event)"
     >
-      <ng-container *ngIf="!nzFlipFlop">
-        <nz-color-block [nzColor]="blockColor" [nzSize]="nzSize"></nz-color-block>
-      </ng-container>
-      <ng-container *ngIf="nzFlipFlop">
-        <ng-template [ngTemplateOutlet]="nzFlipFlop"></ng-template>
-      </ng-container>
-      <div class="ant-color-picker-trigger-text" *ngIf="nzShowText && !!showText && !nzFlipFlop">
-        {{ showText }}
-      </div>
+      @if (!nzFlipFlop) {
+        <nz-color-block [nzColor]="blockColor" [nzSize]="nzSize" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="nzFlipFlop" />
+      }
+      @if (nzShowText && !!showText && !nzFlipFlop) {
+        <div class="ant-color-picker-trigger-text">
+          {{ showText }}
+        </div>
+      }
     </div>
     <ng-template #colorPicker>
       <ng-antd-color-picker
@@ -60,32 +73,36 @@ import { NzColor, NzColorPickerTriggerType, NzColorPickerFormatType } from './ty
         [disabled]="nzDisabled"
         [panelRenderHeader]="nzPanelRenderHeader"
         [panelRenderFooter]="nzPanelRenderFooter"
+        [disabledAlpha]="nzDisabledAlpha"
         (nzOnChange)="colorChange($event)"
-      ></ng-antd-color-picker>
+      />
     </ng-template>
     <ng-template #nzPanelRenderHeader>
-      <div class="ant-color-picker-title" *ngIf="nzAllowClear || nzTitle">
-        <div class="ant-color-picker-title-content">
-          <ng-container [ngSwitch]="true">
-            <ng-container *ngSwitchCase="isTemplateRef(nzTitle)">
-              <ng-container *ngTemplateOutlet="$any(nzTitle)"></ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)">
+      @if (nzTitle || nzAllowClear) {
+        <div class="ant-color-picker-title">
+          <div class="ant-color-picker-title-content">
+            @if (isNzTitleTemplateRef) {
+              <ng-container *ngTemplateOutlet="$any(nzTitle)" />
+            }
+            @if (isNzTitleNonEmptyString) {
               <span [innerHTML]="nzTitle"></span>
-            </ng-container>
-          </ng-container>
+            }
+          </div>
+          @if (nzAllowClear) {
+            <div class="ant-color-picker-clear" (click)="clearColorHandle()"></div>
+          }
         </div>
-        <div class="ant-color-picker-clear" *ngIf="nzAllowClear" (click)="clearColorHandle()"></div>
-      </div>
+      }
     </ng-template>
     <ng-template #nzPanelRenderFooter>
       <nz-color-format
         [colorValue]="blockColor"
         [clearColor]="clearColor"
         [format]="nzFormat"
+        [nzDisabledAlpha]="nzDisabledAlpha"
         (formatChange)="formatChange($event)"
         (nzOnFormatChange)="nzOnFormatChange.emit($event)"
-      ></nz-color-format>
+      />
     </ng-template>
   `,
   host: {
@@ -105,6 +122,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzDisabledAlpha: BooleanInput;
 
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
@@ -117,6 +135,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Input() @InputBoolean() nzOpen: boolean = false;
   @Input() @InputBoolean() nzAllowClear: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
   @Output() readonly nzOnChange = new EventEmitter<{ color: NzColor; format: string }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
@@ -130,7 +149,10 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
 
-  constructor(private formBuilder: FormBuilder, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   formControl = this.formBuilder.control('');
 
@@ -217,5 +239,13 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get isNzTitleNonEmptyString(): boolean {
+    return isNonEmptyString(this.nzTitle);
+  }
+
+  get isNzTitleTemplateRef(): boolean {
+    return isTemplateRef(this.nzTitle);
   }
 }

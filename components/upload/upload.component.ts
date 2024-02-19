@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -54,7 +54,9 @@ import { NzUploadListComponent } from './upload-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
-  }
+  },
+  imports: [NzUploadListComponent, NgIf, NgTemplateOutlet, NgClass, NzUploadBtnComponent],
+  standalone: true
 })
 export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzLimit: NumberInput;

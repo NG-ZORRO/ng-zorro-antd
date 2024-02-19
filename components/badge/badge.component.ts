@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -26,9 +27,11 @@ import { takeUntil } from 'rxjs/operators';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzBadgeSupComponent } from './badge-sup.component';
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
@@ -41,8 +44,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
+  standalone: true,
+  imports: [NgStyle, NzBadgeSupComponent, NzOutletModule],
   template: `
-    <ng-container *ngIf="nzStatus || nzColor">
+    @if (nzStatus || nzColor) {
       <span
         class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
         [style.background]="!presetColor && nzColor"
@@ -51,21 +56,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
       <span class="ant-badge-status-text">
         <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       </span>
-    </ng-container>
-    <ng-content></ng-content>
+    }
+    <ng-content />
     <ng-container *nzStringTemplateOutlet="nzCount">
-      <nz-badge-sup
-        *ngIf="showSup"
-        [nzOffset]="nzOffset"
-        [nzSize]="nzSize"
-        [nzTitle]="nzTitle"
-        [nzStyle]="nzStyle"
-        [nzDot]="nzDot"
-        [nzOverflowCount]="nzOverflowCount"
-        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
-        [nzCount]="nzCount"
-        [noAnimation]="!!noAnimation?.nzNoAnimation"
-      ></nz-badge-sup>
+      @if (showSup) {
+        <nz-badge-sup
+          [nzOffset]="nzOffset"
+          [nzSize]="nzSize"
+          [nzTitle]="nzTitle"
+          [nzStyle]="nzStyle"
+          [nzDot]="nzDot"
+          [nzOverflowCount]="nzOverflowCount"
+          [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
+          [nzCount]="nzCount"
+          [noAnimation]="!!noAnimation?.nzNoAnimation"
+        />
+      }
     </ng-container>
   `,
   host: {

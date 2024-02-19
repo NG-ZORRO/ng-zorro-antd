@@ -3,18 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { PlatformModule } from '@angular/cdk/platform';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 
 import { NzIconDirective } from './icon.directive';
-import { NzIconPatchService, NZ_ICONS, NZ_ICONS_PATCH } from './icon.service';
+import { NZ_ICONS, NZ_ICONS_PATCH, NzIconPatchService } from './icon.service';
 
 @NgModule({
-  exports: [NzIconDirective],
-  declarations: [NzIconDirective],
-  imports: [PlatformModule]
+  imports: [NzIconDirective],
+  exports: [NzIconDirective]
 })
 export class NzIconModule {
   static forRoot(icons: IconDefinition[]): ModuleWithProviders<NzIconModule> {

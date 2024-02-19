@@ -14,7 +14,7 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -22,6 +22,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Inject,
   Input,
@@ -36,21 +37,21 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  forwardRef
+  ViewEncapsulation
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -61,13 +62,14 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
   NzDatePickerLangI18nInterface,
   NzI18nService
 } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -96,48 +98,49 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
-    <ng-container *ngIf="!nzInline; else inlineMode">
-      <!-- Content of single picker -->
-      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-        <input
-          #pickerInput
-          [attr.id]="nzId"
-          [class.ant-input-disabled]="nzDisabled"
-          [disabled]="nzDisabled"
-          [readOnly]="nzInputReadOnly"
-          [(ngModel)]="inputValue"
-          placeholder="{{ getPlaceholder() }}"
-          [size]="inputSize"
-          autocomplete="off"
-          (focus)="onFocus($event)"
-          (focusout)="onFocusout($event)"
-          (ngModelChange)="onInputChange($event)"
-          (keyup.enter)="onKeyupEnter($event)"
-        />
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </div>
-
-      <!-- Content of range picker -->
-      <ng-container *ngIf="isRange">
+    @if (!nzInline) {
+      @if (!isRange) {
         <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+          <input
+            #pickerInput
+            [attr.id]="nzId"
+            [class.ant-input-disabled]="nzDisabled"
+            [disabled]="nzDisabled"
+            [readOnly]="nzInputReadOnly"
+            [(ngModel)]="inputValue"
+            placeholder="{{ getPlaceholder() }}"
+            [size]="inputSize"
+            autocomplete="off"
+            (focus)="onFocus($event)"
+            (focusout)="onFocusout($event)"
+            (ngModelChange)="onInputChange($event)"
+            (keyup.enter)="onKeyupEnter($event)"
+          />
+          <ng-container *ngTemplateOutlet="tplRightRest" />
+        </div>
+      } @else {
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }" />
         </div>
         <div #separatorElement class="{{ prefixCls }}-range-separator">
           <span class="{{ prefixCls }}-separator">
             <ng-container *nzStringTemplateOutlet="nzSeparator; let separator">
-              <ng-container *ngIf="nzSeparator; else defaultSeparator">{{ nzSeparator }}</ng-container>
-              <ng-template #defaultSeparator>
+              @if (nzSeparator) {
+                {{ nzSeparator }}
+              } @else {
                 <span nz-icon nzType="swap-right" nzTheme="outline"></span>
-              </ng-template>
+              }
             </ng-container>
           </span>
         </div>
         <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }" />
         </div>
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </ng-container>
-    </ng-container>
+        <ng-container *ngTemplateOutlet="tplRightRest" />
+      }
+    } @else {
+      <ng-template [ngTemplateOutlet]="inlineMode" />
+    }
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
       <input
@@ -160,14 +163,19 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
       <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
-      <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-        <span nz-icon nzType="close-circle" nzTheme="fill"></span>
-      </span>
+      @if (showClear) {
+        <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
+          <span nz-icon nzType="close-circle" nzTheme="fill"></span>
+        </span>
+      }
+
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
           <span nz-icon [nzType]="suffixIcon"></span>
         </ng-container>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
+        @if (hasFeedback && !!status) {
+          <nz-form-item-feedback-icon [status]="status" />
+        }
       </span>
     </ng-template>
 
@@ -203,7 +211,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [ranges]="nzRanges"
           [dir]="dir"
           (resultOk)="onResultOk()"
-        ></date-range-popup>
+        />
       </div>
     </ng-template>
 
@@ -250,7 +258,20 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       useExisting: forwardRef(() => NzDatePickerComponent)
     }
   ],
-  animations: [slideMotion]
+  animations: [slideMotion],
+  imports: [
+    FormsModule,
+    NgTemplateOutlet,
+    NzOutletModule,
+    NzIconModule,
+    NgStyle,
+    NzFormPatchModule,
+    DateRangePopupComponent,
+    CdkConnectedOverlay,
+    NzOverlayModule,
+    NzNoAnimationDirective
+  ],
+  standalone: true
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -466,7 +487,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     }
   }
 
-  showClear(): boolean {
+  get showClear(): boolean {
     return !this.nzDisabled && !this.isEmptyValue(this.datePickerService.value) && this.nzAllowClear;
   }
 

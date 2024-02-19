@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,6 +30,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzPaginationItemComponent } from './pagination-item.component';
+import { NzPaginationOptionsComponent } from './pagination-options.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
@@ -75,7 +77,9 @@ import { PaginationItemRenderContext } from './pagination.types';
         ></li>
       </ul>
     </ng-template>
-  `
+  `,
+  imports: [NgTemplateOutlet, NgForOf, NgIf, NzPaginationItemComponent, NzPaginationOptionsComponent],
+  standalone: true
 })
 export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;

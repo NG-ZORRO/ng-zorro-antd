@@ -188,6 +188,7 @@ export class NzModalService implements OnDestroy {
       const contentRef = modalContainer.attachComponentPortal<T>(
         new ComponentPortal(componentOrTemplateRef, config.nzViewContainerRef, injector)
       );
+      modalRef.componentRef = contentRef;
       modalRef.componentInstance = contentRef.instance;
     } else {
       modalContainer.attachStringContent();

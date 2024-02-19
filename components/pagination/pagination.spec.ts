@@ -18,21 +18,19 @@ declare const viewport: NzSafeAny;
 describe('pagination', () => {
   let injector: Injector;
 
-  beforeEach(
-    waitForAsync(() => {
-      injector = TestBed.configureTestingModule({
-        imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
-        declarations: [
-          NzTestPaginationComponent,
-          NzTestPaginationRenderComponent,
-          NzTestPaginationTotalComponent,
-          NzTestPaginationAutoResizeComponent,
-          NzTestPaginationRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    injector = TestBed.configureTestingModule({
+      imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
+      declarations: [
+        NzTestPaginationComponent,
+        NzTestPaginationRenderComponent,
+        NzTestPaginationTotalComponent,
+        NzTestPaginationAutoResizeComponent,
+        NzTestPaginationRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('pagination complex', () => {
     let fixture: ComponentFixture<NzTestPaginationComponent>;
@@ -177,19 +175,16 @@ describe('pagination', () => {
         expect(paginationElement.children.length).toBe(9);
       });
 
-      it(
-        'should showSizeChanger work',
-        waitForAsync(() => {
-          testComponent.total = 500;
-          testComponent.pageIndex = 50;
-          testComponent.showSizeChanger = true;
-          fixture.detectChanges();
-          fixture.whenStable().then(() => {
-            expect(paginationElement.children.length).toBe(10);
-            expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
-          });
-        })
-      );
+      it('should showSizeChanger work', waitForAsync(() => {
+        testComponent.total = 500;
+        testComponent.pageIndex = 50;
+        testComponent.showSizeChanger = true;
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          expect(paginationElement.children.length).toBe(10);
+          expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
+        });
+      }));
 
       it('should change pageSize correct', () => {
         testComponent.pageIndex = 5;

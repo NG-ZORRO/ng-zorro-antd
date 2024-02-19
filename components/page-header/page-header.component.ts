@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Location } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -27,6 +27,8 @@ import { map, takeUntil } from 'rxjs/operators';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
@@ -78,7 +80,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
     '[class.ant-page-header-compact]': 'compact',
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgIf, NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

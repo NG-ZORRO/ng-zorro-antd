@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTableSortOrder } from '../table.types';
 
@@ -43,7 +45,9 @@ import { NzTableSortOrder } from '../table.types';
       </span>
     </span>
   `,
-  host: { class: 'ant-table-column-sorters' }
+  host: { class: 'ant-table-column-sorters' },
+  imports: [NzIconModule, NgTemplateOutlet, NgIf],
+  standalone: true
 })
 export class NzTableSortersComponent implements OnChanges {
   @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];

@@ -14,13 +14,18 @@ Add specific text or patterns to the page.
 - Use when the page needs to be watermarked to identify the copyright.
 - Suitable for preventing information theft.
 
+module:
 ```ts
 import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+```
+standalone:
+```ts
+import { NzWaterMarkComponent } from 'ng-zorro-antd/water-mark';
 ```
 
 ## API
 
-### nz-water-mark
+### nz-water-mark:standalone
 
 | Property    | Description                                                                                       | Type                 | Default                  |
 | ----------- | ------------------------------------------------------------------------------------------------- | -------------------- | ------------------------ |

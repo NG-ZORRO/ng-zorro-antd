@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,6 +35,11 @@ import {
 } from 'ng-zorro-antd/core/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzTreeIndentComponent } from './tree-indent.component';
+import { NzTreeNodeBuiltinCheckboxComponent } from './tree-node-checkbox.component';
+import { NzTreeNodeSwitcherComponent } from './tree-node-switcher.component';
+import { NzTreeNodeTitleComponent } from './tree-node-title.component';
 
 @Component({
   selector: 'nz-tree-node[builtin]',
@@ -110,7 +116,15 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
     '[class.dragging]': `draggingKey === nzTreeNode.key`,
     '[style.display]': 'displayStyle'
-  }
+  },
+  imports: [
+    NzTreeIndentComponent,
+    NzTreeNodeSwitcherComponent,
+    NgIf,
+    NzTreeNodeBuiltinCheckboxComponent,
+    NzTreeNodeTitleComponent
+  ],
+  standalone: true
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowLine: BooleanInput;

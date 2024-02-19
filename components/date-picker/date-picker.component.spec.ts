@@ -4,7 +4,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -1410,63 +1410,62 @@ describe('in form', () => {
 
 @Component({
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <!-- Suite 1 -->
-      <nz-date-picker
-        *ngSwitchCase="1"
-        [nzAllowClear]="nzAllowClear"
-        [nzAutoFocus]="nzAutoFocus"
-        [nzDisabled]="nzDisabled"
-        [nzInputReadOnly]="nzInputReadOnly"
-        [nzDisabledDate]="nzDisabledDate"
-        [nzFormat]="nzFormat"
-        [nzLocale]="nzLocale"
-        [nzPlaceHolder]="nzPlaceHolder"
-        [nzPopupStyle]="nzPopupStyle"
-        [nzDropdownClassName]="nzDropdownClassName"
-        [nzSize]="nzSize"
-        (nzOnOpenChange)="nzOnOpenChange($event)"
-        [ngModel]="nzValue"
-        (ngModelChange)="nzOnChange($event)"
-        [nzDefaultPickerValue]="nzDefaultPickerValue"
-        [nzDateRender]="nzDateRender"
-        [nzDisabledTime]="nzDisabledTime"
-        [nzRenderExtraFooter]="nzRenderExtraFooter"
-        [nzShowToday]="nzShowToday"
-        [nzShowNow]="nzShowNow"
-        [nzMode]="nzMode"
-        (nzOnPanelChange)="nzOnPanelChange($event)"
-        (nzOnCalendarChange)="nzOnCalendarChange($event)"
-        [nzShowTime]="nzShowTime"
-        (nzOnOk)="nzOnOk($event)"
-        [nzSuffixIcon]="nzSuffixIcon"
-        [nzBorderless]="nzBorderless"
-        [nzInline]="nzInline"
-        [nzBackdrop]="nzBackdrop"
-        [nzPlacement]="nzPlacement"
-        [nzShowWeekNumber]="nzShowWeekNumber"
-      ></nz-date-picker>
-      <ng-template #tplDateRender let-current>
-        <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
-      </ng-template>
-      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
-
-      <!-- Suite 2 -->
-      <!-- use another picker to avoid nzOpen's side-effects because nzOpen acts as "true" if used -->
-      <nz-date-picker *ngSwitchCase="2" [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)"></nz-date-picker>
-
-      <!-- Suite 3 -->
-      <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
-
-      <!-- Suite 4 -->
-      <nz-date-picker *ngSwitchCase="4" [formControl]="control" [nzDisabled]="nzDisabled"></nz-date-picker>
-
-      <!-- Suite 5 -->
-      <ng-container *ngSwitchCase="5">
-        <nz-date-picker [ngModel]="firstValue" (ngModelChange)="nzOnChange($event)"></nz-date-picker>
-        <nz-date-picker [ngModel]="secondValue"></nz-date-picker>
-      </ng-container>
-    </ng-container>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-date-picker
+          [nzAllowClear]="nzAllowClear"
+          [nzAutoFocus]="nzAutoFocus"
+          [nzDisabled]="nzDisabled"
+          [nzInputReadOnly]="nzInputReadOnly"
+          [nzDisabledDate]="nzDisabledDate"
+          [nzFormat]="nzFormat"
+          [nzLocale]="nzLocale"
+          [nzPlaceHolder]="nzPlaceHolder"
+          [nzPopupStyle]="nzPopupStyle"
+          [nzDropdownClassName]="nzDropdownClassName"
+          [nzSize]="nzSize"
+          (nzOnOpenChange)="nzOnOpenChange($event)"
+          [ngModel]="nzValue"
+          (ngModelChange)="nzOnChange($event)"
+          [nzDefaultPickerValue]="nzDefaultPickerValue"
+          [nzDateRender]="nzDateRender"
+          [nzDisabledTime]="nzDisabledTime"
+          [nzRenderExtraFooter]="nzRenderExtraFooter"
+          [nzShowToday]="nzShowToday"
+          [nzShowNow]="nzShowNow"
+          [nzMode]="nzMode"
+          (nzOnPanelChange)="nzOnPanelChange($event)"
+          (nzOnCalendarChange)="nzOnCalendarChange($event)"
+          [nzShowTime]="nzShowTime"
+          (nzOnOk)="nzOnOk($event)"
+          [nzSuffixIcon]="nzSuffixIcon"
+          [nzBorderless]="nzBorderless"
+          [nzInline]="nzInline"
+          [nzBackdrop]="nzBackdrop"
+          [nzPlacement]="nzPlacement"
+          [nzShowWeekNumber]="nzShowWeekNumber"
+        />
+      }
+      @case (2) {
+        <nz-date-picker [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)"></nz-date-picker>
+      }
+      @case (3) {
+        <nz-date-picker nzOpen [(ngModel)]="modelValue"></nz-date-picker>
+      }
+      @case (4) {
+        <nz-date-picker [formControl]="control" [nzDisabled]="nzDisabled"></nz-date-picker>
+      }
+      @case (5) {
+        <ng-container>
+          <nz-date-picker [ngModel]="firstValue" (ngModelChange)="nzOnChange($event)"></nz-date-picker>
+          <nz-date-picker [ngModel]="secondValue"></nz-date-picker>
+        </ng-container>
+      }
+    }
+    <ng-template #tplDateRender let-current>
+      <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
+    </ng-template>
+    <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
   `
 })
 class NzTestDatePickerComponent {

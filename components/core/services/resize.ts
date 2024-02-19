@@ -27,7 +27,10 @@ export class NzResizeService implements OnDestroy {
     });
   };
 
-  constructor(private ngZone: NgZone, private rendererFactory2: RendererFactory2) {
+  constructor(
+    private ngZone: NgZone,
+    private rendererFactory2: RendererFactory2
+  ) {
     this.renderer = this.rendererFactory2.createRenderer(null, null);
   }
 

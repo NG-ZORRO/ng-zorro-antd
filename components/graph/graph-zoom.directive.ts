@@ -26,7 +26,8 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
 
 @Directive({
   selector: '[nz-graph-zoom]',
-  exportAs: 'nzGraphZoom'
+  exportAs: 'nzGraphZoom',
+  standalone: true
 })
 export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
   @Input() nzZoom?: number;
@@ -46,7 +47,10 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private element: ElementRef, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private element: ElementRef,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     this.bind();

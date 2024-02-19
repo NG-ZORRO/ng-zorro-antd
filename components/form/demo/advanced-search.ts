@@ -6,19 +6,21 @@ import { FormControl, FormRecord, NonNullableFormBuilder } from '@angular/forms'
   template: `
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
-          <nz-form-item>
-            <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
-            <nz-form-control>
-              <input
-                nz-input
-                placeholder="placeholder"
-                [formControlName]="'field' + control.index"
-                [attr.id]="'field' + control.index"
-              />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+        @for (control of controlArray; track control) {
+          <div nz-col [nzSpan]="8" [hidden]="!control.show">
+            <nz-form-item>
+              <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
+              <nz-form-control>
+                <input
+                  nz-input
+                  placeholder="placeholder"
+                  [formControlName]="'field' + control.index"
+                  [attr.id]="'field' + control.index"
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        }
       </div>
       <div nz-row>
         <div nz-col [nzSpan]="24" class="search-area">

@@ -5,6 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -27,14 +28,16 @@ import {
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import { NzInputNumberComponent } from './input-number.component';
 
 @Directive({
-  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`
+  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`,
+  standalone: true
 })
 export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   constructor(public elementRef: ElementRef) {}
@@ -48,62 +51,64 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzFormNoStatusService],
   template: `
-    <span class="ant-input-number-wrapper ant-input-number-group" *ngIf="isAddOn; else noAddOnTemplate">
-      <div
-        *ngIf="nzAddOnBefore || nzAddOnBeforeIcon"
-        nz-input-number-group-slot
-        type="addon"
-        [icon]="nzAddOnBeforeIcon"
-        [template]="nzAddOnBefore"
-      ></div>
-      <div
-        *ngIf="isAffix || hasFeedback; else contentTemplate"
-        class="ant-input-number-affix-wrapper"
-        [class.ant-input-number-affix-wrapper-disabled]="disabled"
-        [class.ant-input-number-affix-wrapper-sm]="isSmall"
-        [class.ant-input-number-affix-wrapper-lg]="isLarge"
-        [class.ant-input-number-affix-wrapper-focused]="focused"
-        [ngClass]="affixInGroupStatusCls"
-      >
-        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
-      </div>
-      <span
-        *ngIf="nzAddOnAfter || nzAddOnAfterIcon"
-        nz-input-number-group-slot
-        type="addon"
-        [icon]="nzAddOnAfterIcon"
-        [template]="nzAddOnAfter"
-      ></span>
-    </span>
-    <ng-template #noAddOnTemplate>
-      <ng-template [ngIf]="isAffix" [ngIfElse]="contentTemplate">
-        <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
-      </ng-template>
-    </ng-template>
+    @if (isAddOn) {
+      <span class="ant-input-number-wrapper ant-input-number-group">
+        @if (nzAddOnBefore || nzAddOnBeforeIcon) {
+          <div nz-input-number-group-slot type="addon" [icon]="nzAddOnBeforeIcon" [template]="nzAddOnBefore"></div>
+        }
+
+        @if (isAffix || hasFeedback) {
+          <div
+            class="ant-input-number-affix-wrapper"
+            [class.ant-input-number-affix-wrapper-disabled]="disabled"
+            [class.ant-input-number-affix-wrapper-sm]="isSmall"
+            [class.ant-input-number-affix-wrapper-lg]="isLarge"
+            [class.ant-input-number-affix-wrapper-focused]="focused"
+            [ngClass]="affixInGroupStatusCls"
+          >
+            <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+          </div>
+        } @else {
+          <ng-template [ngTemplateOutlet]="contentTemplate" />
+        }
+
+        @if (nzAddOnAfter || nzAddOnAfterIcon) {
+          <span nz-input-number-group-slot type="addon" [icon]="nzAddOnAfterIcon" [template]="nzAddOnAfter"></span>
+        }
+      </span>
+    } @else {
+      @if (isAffix) {
+        <ng-template [ngTemplateOutlet]="affixTemplate" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="contentTemplate" />
+      }
+    }
+
+    <!-- Affix Template -->
     <ng-template #affixTemplate>
-      <span
-        *ngIf="nzPrefix || nzPrefixIcon"
-        nz-input-number-group-slot
-        type="prefix"
-        [icon]="nzPrefixIcon"
-        [template]="nzPrefix"
-      ></span>
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-      <span
-        *ngIf="nzSuffix || nzSuffixIcon || isFeedback"
-        nz-input-number-group-slot
-        type="suffix"
-        [icon]="nzSuffixIcon"
-        [template]="nzSuffix"
-      >
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
-      </span>
+      @if (nzPrefix || nzPrefixIcon) {
+        <span nz-input-number-group-slot type="prefix" [icon]="nzPrefixIcon" [template]="nzPrefix"></span>
+      }
+      <ng-template [ngTemplateOutlet]="contentTemplate" />
+      @if (nzSuffix || nzSuffixIcon || isFeedback) {
+        <span nz-input-number-group-slot type="suffix" [icon]="nzSuffixIcon" [template]="nzSuffix">
+          @if (isFeedback) {
+            <nz-form-item-feedback-icon [status]="status" />
+          }
+        </span>
+      }
     </ng-template>
+
+    <!-- Content Template -->
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
-      <span *ngIf="!isAddOn && !isAffix && isFeedback" nz-input-number-group-slot type="suffix">
-        <nz-form-item-feedback-icon *ngIf="isFeedback" [status]="status"></nz-form-item-feedback-icon>
-      </span>
+      <ng-content />
+      @if (!isAddOn && !isAffix && isFeedback) {
+        <span nz-input-number-group-slot type="suffix">
+          @if (isFeedback) {
+            <nz-form-item-feedback-icon [status]="status" />
+          }
+        </span>
+      }
     </ng-template>
   `,
   host: {
@@ -119,7 +124,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-number-affix-wrapper-disabled]': `!isAddOn && isAffix && disabled`,
     '[class.ant-input-number-affix-wrapper-lg]': `!isAddOn && isAffix && isLarge`,
     '[class.ant-input-number-affix-wrapper-sm]': `!isAddOn && isAffix && isSmall`
-  }
+  },
+  imports: [NzInputNumberGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
+  standalone: true
 })
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzCompact: BooleanInput;

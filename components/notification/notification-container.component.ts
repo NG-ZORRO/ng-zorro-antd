@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +13,7 @@ import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 
+import { NzNotificationComponent } from './notification.component';
 import { NzNotificationData, NzNotificationDataOptions, NzNotificationPlacement } from './typings';
 
 const NZ_CONFIG_MODULE_NAME = 'notification';
@@ -114,7 +116,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
         (destroyed)="remove($event.id, $event.userAction)"
       ></nz-notification>
     </div>
-  `
+  `,
+  imports: [NzNotificationComponent, NgForOf],
+  standalone: true
 })
 export class NzNotificationContainerComponent extends NzMNContainerComponent {
   dir: Direction = 'ltr';

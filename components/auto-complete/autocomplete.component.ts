@@ -5,6 +5,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgFor, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -29,7 +30,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, Subscription, defer, merge } from 'rxjs';
+import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -64,6 +65,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [NgClass, NgFor, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `
     <ng-template>
       <div
@@ -108,7 +111,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
-  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> =
+    new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;

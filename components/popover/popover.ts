@@ -4,11 +4,12 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -25,6 +26,8 @@ import {
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import {
@@ -42,7 +45,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'visible'
-  }
+  },
+  standalone: true
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzPopoverArrowPointAtCenter: BooleanInput;
@@ -79,12 +83,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
-    resolver: ComponentFactoryResolver,
     renderer: Renderer2,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective,
     nzConfigService?: NzConfigService
   ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
+    super(elementRef, hostView, renderer, noAnimation, nzConfigService);
   }
 }
 
@@ -136,7 +139,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';

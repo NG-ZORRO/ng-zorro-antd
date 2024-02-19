@@ -37,7 +37,8 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
     '(dragover)': 'onFileDrop($event)'
   },
   preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true
 })
 export class NzUploadBtnComponent implements OnInit, OnDestroy {
   reqs: { [key: string]: Subscription } = {};
@@ -343,7 +344,11 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private ngZone: NgZone, @Optional() private http: HttpClient, private elementRef: ElementRef) {
+  constructor(
+    private ngZone: NgZone,
+    @Optional() private http: HttpClient,
+    private elementRef: ElementRef
+  ) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }

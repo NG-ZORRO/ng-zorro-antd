@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,7 +29,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-item-extra'
-  }
+  },
+  standalone: true
 })
 export class NzListItemExtraComponent {}
 
@@ -36,7 +38,8 @@ export class NzListItemExtraComponent {}
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template><ng-content></ng-content></ng-template> `
+  template: ` <ng-template><ng-content></ng-content></ng-template> `,
+  standalone: true
 })
 export class NzListItemActionComponent {
   @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
@@ -47,15 +50,21 @@ export class NzListItemActionComponent {
   exportAs: 'nzListItemActions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li *ngFor="let i of actions; let last = last">
-      <ng-template [ngTemplateOutlet]="i"></ng-template>
-      <em *ngIf="!last" class="ant-list-item-action-split"></em>
-    </li>
+    @for (i of actions; track i) {
+      <li>
+        <ng-template [ngTemplateOutlet]="i" />
+        @if (!$last) {
+          <em class="ant-list-item-action-split"></em>
+        }
+      </li>
+    }
   `,
   host: {
     class: 'ant-list-item-action'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
 export class NzListItemActionsComponent implements OnChanges {
   @Input() nzActions: Array<TemplateRef<void>> = [];
@@ -74,7 +83,11 @@ export class NzListItemActionsComponent implements OnChanges {
     );
   });
 
-  constructor(private ngZone: NgZone, cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
+  constructor(
+    private ngZone: NgZone,
+    cdr: ChangeDetectorRef,
+    destroy$: NzDestroyService
+  ) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {

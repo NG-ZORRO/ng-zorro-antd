@@ -33,7 +33,8 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   exportAs: 'nzIcon',
   host: {
     '[class.anticon]': 'true'
-  }
+  },
+  standalone: true
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   static ngAcceptInputType_nzSpin: BooleanInput;

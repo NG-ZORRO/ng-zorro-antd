@@ -12,12 +12,14 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
+import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Input,
   OnChanges,
@@ -28,18 +30,17 @@ import {
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
-  forwardRef
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, merge, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, merge, of as observableOf, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
@@ -58,9 +59,10 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
-import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
-import { NzTreeComponent } from 'ng-zorro-antd/tree';
+import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';
+import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 import { NzTreeSelectService } from './tree-select.service';
 
@@ -146,7 +148,7 @@ const listOfPositions = [
     <div cdkOverlayOrigin class="ant-select-selector">
       <ng-container *ngIf="isMultiple">
         <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
+          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
@@ -167,7 +169,7 @@ const listOfPositions = [
         [nzId]="nzId"
         [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
-        (isComposingChange)="isComposing = $event"
+        (isComposingChange)="isComposingChange($event)"
         (valueChange)="setInputValue($event)"
         [value]="inputValue"
         [mirrorSync]="isMultiple"
@@ -232,7 +234,23 @@ const listOfPositions = [
     '[class.ant-select-focused]': 'nzOpen || focused',
     '(click)': 'trigger()',
     '(keydown)': 'onKeydown($event)'
-  }
+  },
+  imports: [
+    NzOverlayModule,
+    CdkConnectedOverlay,
+    NgClass,
+    NzNoAnimationDirective,
+    NgStyle,
+    NzTreeModule,
+    NgIf,
+    NzEmptyModule,
+    CdkOverlayOrigin,
+    SlicePipe,
+    NzSelectModule,
+    NgFor,
+    NzFormPatchModule
+  ],
+  standalone: true
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -334,6 +352,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
 
+  private isComposingChange$ = new Subject<boolean>();
+  private searchValueChange$ = new Subject<string>();
+
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
 
@@ -401,6 +422,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           this.cdr.markForCheck();
         }
       });
+
+    // setInputValue method executed earlier than isComposingChange
+    combineLatest([this.searchValueChange$, this.isComposingChange$.pipe(startWith(false))])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([searchValue, isComposing]) => {
+        this.isComposing = isComposing;
+        if (!isComposing) {
+          this.inputValue = searchValue;
+          this.updatePosition();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -411,7 +443,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   isComposingChange(isComposing: boolean): void {
-    this.isComposing = isComposing;
+    this.isComposingChange$.next(isComposing);
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -550,10 +582,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   setInputValue(value: string): void {
-    if (!this.isComposing) {
-      this.inputValue = value;
-      this.updatePosition();
-    }
+    this.searchValueChange$.next(value);
   }
 
   removeSelected(node: NzTreeNode, emit: boolean = true): void {

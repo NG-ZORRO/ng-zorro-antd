@@ -38,7 +38,8 @@ import { InputBoolean, getStatusClassNames } from 'ng-zorro-antd/core/util';
     '[attr.disabled]': 'disabled || null',
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless`
-  }
+  },
+  standalone: true
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_disabled: BooleanInput;

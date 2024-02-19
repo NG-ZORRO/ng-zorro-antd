@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 9
 title:
   zh-CN: 颜色编码
   en-US: Color Format
