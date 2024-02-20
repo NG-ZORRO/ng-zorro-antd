@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Location, NgIf } from '@angular/common';
+import { Location } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -38,38 +38,48 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
   selector: 'nz-page-header',
   exportAs: 'nzPageHeader',
   template: `
-    <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
+    <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]" />
 
     <div class="ant-page-header-heading">
       <div class="ant-page-header-heading-left">
         <!--back-->
-        <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
-          <div role="button" tabindex="0" class="ant-page-header-back-button">
-            <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-              <span nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline"></span>
-            </ng-container>
+        @if (nzBackIcon !== null) {
+          <div (click)="onBack()" class="ant-page-header-back">
+            <div role="button" tabindex="0" class="ant-page-header-back-button">
+              <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
+                <span nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline"></span>
+              </ng-container>
+            </div>
           </div>
-        </div>
+        }
+
         <!--avatar-->
-        <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
+        <ng-content select="nz-avatar[nz-page-header-avatar]" />
         <!--title-->
-        <span class="ant-page-header-heading-title" *ngIf="nzTitle">
-          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-        </span>
-        <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
+        @if (nzTitle) {
+          <span class="ant-page-header-heading-title">
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </span>
+        } @else {
+          <ng-content select="nz-page-header-title, [nz-page-header-title]" />
+        }
+
         <!--subtitle-->
-        <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
-          <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-        </span>
-        <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
-        <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
+        @if (nzSubtitle) {
+          <span class="ant-page-header-heading-sub-title">
+            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+          </span>
+        } @else {
+          <ng-content select="nz-page-header-subtitle, [nz-page-header-subtitle]" />
+        }
+        <ng-content select="nz-page-header-tags, [nz-page-header-tags]" />
       </div>
 
-      <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>
+      <ng-content select="nz-page-header-extra, [nz-page-header-extra]" />
     </div>
 
-    <ng-content select="nz-page-header-content, [nz-page-header-content]"></ng-content>
-    <ng-content select="nz-page-header-footer, [nz-page-header-footer]"></ng-content>
+    <ng-content select="nz-page-header-content, [nz-page-header-content]" />
+    <ng-content select="nz-page-header-footer, [nz-page-header-footer]" />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -81,7 +91,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-compact]': 'compact',
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   },
-  imports: [NgIf, NzOutletModule, NzIconModule],
+  imports: [NzOutletModule, NzIconModule],
   standalone: true
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
