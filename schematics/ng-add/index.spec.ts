@@ -1,9 +1,4 @@
-import {
-  addModuleImportToRootModule,
-  getProjectFromWorkspace,
-  getProjectTargetOptions,
-  addImportToModule
-} from '@angular/cdk/schematics';
+import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { normalize } from '@angular-devkit/core';
 import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
@@ -129,58 +124,28 @@ describe('ng-add schematic', () => {
     expect(assetsString).toContain(iconPathSegment);
   });
 
-  it('should required modules', async () => {
+  it('should required modules and providers', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
+    expect(fileContent).toContain('provideHttpClient()');
     expect(fileContent).toContain('FormsModule');
-    expect(fileContent).toContain('HttpClientModule');
   });
 
-  it('should add browserAnimationsModuleName if animations is enable', async () => {
+  it('should add provideAnimationsAsync() function call if animations is enable', async () => {
     const options = { ...defaultOptions, animations: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
-    expect(fileContent).toContain('BrowserAnimationsModule');
+    expect(fileContent).toContain('provideAnimationsAsync()');
   });
 
-  it('should add noopAnimationsModuleName if animations is disable', async () => {
+  it(`should add provideAnimationsAsync('noop') function call if animations is disable`, async () => {
     const options = { ...defaultOptions, animations: false };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
-    expect(fileContent).toContain('NoopAnimationsModule');
-  });
-
-  it('should not add BrowserAnimationsModule if NoopAnimationsModule is set up', async () => {
-    const options = { ...defaultOptions, animations: true };
-
-    const workspace = await getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
-
-    addModuleImportToRootModule(appTree, 'NoopAnimationsModule', '@angular/platform-browser/animations', project);
-
-    const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
-
-    expect(fileContent).toContain('NoopAnimationsModule');
-    expect(fileContent).not.toContain('BrowserAnimationsModule');
-  });
-
-  it('should not add NoopAnimationsModule if BrowserAnimationsModule is set up', async () => {
-    const options = { ...defaultOptions, animations: false };
-
-    const workspace = await getWorkspace(appTree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
-
-    addModuleImportToRootModule(appTree, 'BrowserAnimationsModule', '@angular/platform-browser/animations', project);
-
-    const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
-
-    expect(fileContent).not.toContain('NoopAnimationsModule');
-    expect(fileContent).toContain('BrowserAnimationsModule');
+    expect(fileContent).toContain(`provideAnimationsAsync('noop')`);
   });
 
   it('should register default locale id', async () => {

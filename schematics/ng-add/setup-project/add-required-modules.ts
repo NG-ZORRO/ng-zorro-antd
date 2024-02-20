@@ -9,13 +9,12 @@ import { addRootImport } from '@schematics/angular/utility';
 import { Schema } from '../schema';
 
 const modulesMap = {
-  FormsModule: '@angular/forms',
-  HttpClientModule: '@angular/common/http'
+  FormsModule: '@angular/forms'
 };
 
 export function addRequiredModules(options: Schema): Rule {
   const rules = Object.entries(modulesMap).map(([symbolName, moduleName]) => {
-    return addRootImport(options.project, ({code, external}) => {
+    return addRootImport(options.project, ({ code, external }) => {
       return code`${external(symbolName, moduleName)}`;
     });
   });
