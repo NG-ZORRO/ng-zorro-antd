@@ -131,7 +131,12 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
 
   onScrolledIndexChange(index: number): void {
     this.scrolledIndex = index;
-    if (index === this.listOfContainerItem.length - this.maxItemLength) {
+    /**
+     * Tips: 此处针对屏幕缩放程度不一的浏览器设备，进行了一定的兼容
+     * 缩放比例 < 100%：itemSize 偏小，无法触发 onScrollIndexChange，此时减一可以规避此问题
+     * 缩放比例 > 100%：itemSize 偏大，可能出现触发 change 的 index 超过 this.listOfContainerItem.length - this.maxItemLength - 1，所以使用 >= 做兼容
+     */
+    if (index >= this.listOfContainerItem.length - this.maxItemLength - 1) {
       this.scrollToBottom.emit();
     }
   }
