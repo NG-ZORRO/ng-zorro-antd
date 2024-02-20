@@ -18,7 +18,7 @@ import {
   addFunctionalProvidersToStandaloneBootstrap,
   callsProvidersFunction,
   importsProvidersFrom
-} from '@schematics/angular/private/components';
+} from '@schematics/angular/private/standalone';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { Schema } from '../schema';

@@ -4,7 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
@@ -37,7 +37,7 @@ import { getClientSize, getFitContentPosition, getOffset } from './utils';
 export interface NzImageContainerOperation {
   icon: string;
   type: string;
-
+  rotate?: number;
   onClick(): void;
 }
 
@@ -67,7 +67,13 @@ const NZ_DEFAULT_ROTATE = 0;
                 [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
                 (click)="option.onClick()"
               >
-                <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
+                <span
+                  class="ant-image-preview-operations-icon"
+                  nz-icon
+                  [nzType]="option.icon"
+                  [nzRotate]="option.rotate ?? 0"
+                  nzTheme="outline"
+                ></span>
               </li>
             }
           </ul>
@@ -77,7 +83,7 @@ const NZ_DEFAULT_ROTATE = 0;
             cdkDrag
             [style.transform]="previewImageWrapperTransform"
             [cdkDragFreeDragPosition]="position"
-            (cdkDragReleased)="onDragReleased()"
+            (cdkDragEnded)="onDragEnd($event)"
           >
             @for (image of images; track image; let imageIndex = $index) {
               @if (imageIndex === index) {
@@ -185,6 +191,21 @@ export class NzImagePreviewComponent implements OnInit {
         this.onRotateLeft();
       },
       type: 'rotateLeft'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onHorizontalFlip();
+      },
+      type: 'flipHorizontally'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onVerticalFlip();
+      },
+      type: 'flipVertically',
+      rotate: 90
     }
   ];
 
@@ -200,6 +221,8 @@ export class NzImagePreviewComponent implements OnInit {
   private zoom: number;
   private rotate: number;
   private scaleStep: number;
+  private flipHorizontally: boolean;
+  private flipVertically: boolean;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -223,6 +246,8 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+    this.flipHorizontally = this.config.nzFlipHorizontally ?? false;
+    this.flipVertically = this.config.nzFlipVertically ?? false;
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
@@ -243,18 +268,24 @@ export class NzImagePreviewComponent implements OnInit {
         .subscribe(() => {
           this.isDragging = true;
         });
+
+      fromEvent<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => this.wheelZoomEventHandler(event));
+        });
     });
   }
 
   setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
     if (scaleStepMap) this.scaleStepMap = scaleStepMap;
     this.images = images;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   switchTo(index: number): void {
     this.index = index;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   next(): void {
@@ -264,7 +295,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -275,7 +306,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -293,7 +324,6 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
-    this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
@@ -303,7 +333,10 @@ export class NzImagePreviewComponent implements OnInit {
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
-      this.position = { ...initialPosition };
+
+      if (this.zoom <= 1) {
+        this.reCenterImage();
+      }
     }
   }
 
@@ -329,6 +362,29 @@ export class NzImagePreviewComponent implements OnInit {
     this.next();
   }
 
+  onHorizontalFlip(): void {
+    this.flipHorizontally = !this.flipHorizontally;
+    this.updatePreviewImageTransform();
+  }
+
+  onVerticalFlip(): void {
+    this.flipVertically = !this.flipVertically;
+    this.updatePreviewImageTransform();
+  }
+
+  wheelZoomEventHandler(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.handlerImageTransformationWhileZoomingWithMouse(event, event.deltaY);
+    this.handleImageScaleWhileZoomingWithMouse(event.deltaY);
+
+    this.updatePreviewImageWrapperTransform();
+    this.updatePreviewImageTransform();
+
+    this.markForCheck();
+  }
+
   onAnimationStart(event: AnimationEvent): void {
     if (event.toState === 'enter') {
       this.setEnterAnimationClass();
@@ -350,10 +406,10 @@ export class NzImagePreviewComponent implements OnInit {
 
   startLeaveAnimation(): void {
     this.animationState = 'leave';
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
-  onDragReleased(): void {
+  onDragEnd(event: CdkDragEnd): void {
     this.isDragging = false;
     const width = this.imageRef.nativeElement.offsetWidth * this.zoom;
     const height = this.imageRef.nativeElement.offsetHeight * this.zoom;
@@ -371,6 +427,11 @@ export class NzImagePreviewComponent implements OnInit {
     const fitContentPos = getFitContentPosition(fitContentParams);
     if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
       this.position = { ...this.position, ...fitContentPos };
+    } else if (!isNotNil(fitContentPos.x) && !isNotNil(fitContentPos.y)) {
+      this.position = {
+        x: event.source.getFreeDragPosition().x,
+        y: event.source.getFreeDragPosition().y
+      };
     }
   }
 
@@ -379,7 +440,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    this.previewImageTransform = `scale3d(${this.zoom}, ${this.zoom}, 1) rotate(${this.rotate}deg)`;
+    this.previewImageTransform = `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
+      this.zoom * (this.flipVertically ? -1 : 1)
+    }, 1) rotate(${this.rotate}deg)`;
   }
 
   private updatePreviewImageWrapperTransform(): void {
@@ -412,10 +475,53 @@ export class NzImagePreviewComponent implements OnInit {
     }
   }
 
+  private handlerImageTransformationWhileZoomingWithMouse(event: WheelEvent, deltaY: number): void {
+    let scaleValue: number;
+    const imageElement = this.imageRef.nativeElement;
+
+    const elementTransform = getComputedStyle(imageElement).transform;
+    const matrixValue = elementTransform.match(/matrix.*\((.+)\)/);
+
+    if (matrixValue) {
+      scaleValue = +matrixValue[1].split(', ')[0];
+    } else {
+      scaleValue = this.zoom;
+    }
+
+    const x = (event.clientX - imageElement.getBoundingClientRect().x) / scaleValue;
+    const y = (event.clientY - imageElement.getBoundingClientRect().y) / scaleValue;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
+
+    this.position.x += -x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue;
+    this.position.y += -y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue;
+  }
+
+  private handleImageScaleWhileZoomingWithMouse(deltaY: number): void {
+    if (this.isZoomedInWithMouseWheel(deltaY)) {
+      this.onZoomIn();
+    } else {
+      this.onZoomOut();
+    }
+
+    if (this.zoom <= 1) {
+      this.reCenterImage();
+    }
+  }
+
+  private isZoomedInWithMouseWheel(delta: number): boolean {
+    return delta < 0;
+  }
+
   private reset(): void {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+    this.flipHorizontally = false;
+    this.flipVertically = false;
+    this.reCenterImage();
+  }
+
+  private reCenterImage(): void {
     this.position = { ...initialPosition };
   }
 }
