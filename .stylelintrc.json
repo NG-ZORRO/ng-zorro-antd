@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "stylelint-config-standard",
-    "stylelint-config-rational-order",
-    "stylelint-config-prettier"
-  ],
+  "extends": ["stylelint-config-standard", "stylelint-config-rational-order", "stylelint-config-prettier"],
   "customSyntax": "postcss-less",
   "plugins": ["stylelint-declaration-block-no-ignored-properties"],
   "rules": {
@@ -42,5 +38,5 @@
     "selector-not-notation": null,
     "declaration-block-no-redundant-longhand-properties": null
   },
-  "ignoreFiles": ["components/style/color/{bezierEasing,colorPalette,tinyColor}.less"]
+  "ignoreFiles": ["components/style/color/{bezierEasing,colorPalette,tinyColor}.less", "scripts/site/_site/**/*.less"]
 }
