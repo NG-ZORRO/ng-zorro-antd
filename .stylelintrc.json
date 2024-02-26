@@ -38,5 +38,5 @@
     "selector-not-notation": null,
     "declaration-block-no-redundant-longhand-properties": null
   },
-  "ignoreFiles": ["components/style/color/{bezierEasing,colorPalette,tinyColor}.less", "scripts/site/_site/**/*.less"]
+  "ignoreFiles": ["components/style/color/{bezierEasing,colorPalette,tinyColor}.less"]
 }
