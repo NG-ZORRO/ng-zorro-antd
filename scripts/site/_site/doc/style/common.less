@@ -125,6 +125,7 @@ a {
 
   .menu-item-link-outside {
     position: relative;
+
     .anticon {
       position: absolute;
       top: 16px;
@@ -134,6 +135,7 @@ a {
       opacity: 0;
       transition: all 0.3s;
     }
+
     &:hover .anticon {
       opacity: 1;
     }
@@ -173,6 +175,7 @@ a {
   height: 100%;
   transition: transform 0.3s @ease-in-out-circ;
 }
+
 .page-wrapper {
   width: 100%;
   padding: 0;
@@ -185,6 +188,7 @@ a {
 
 .drawer-content {
   padding: 40px 0;
+
   &-wrapper {
     background-color: @component-background;
   }
@@ -198,6 +202,7 @@ a {
   .path1::before {
     color: @primary-color !important;
   }
+
   .path2::before {
     color: @body-background !important;
   }
@@ -222,17 +227,21 @@ a {
       min-width: 100px;
     }
   }
+
   & > div {
     display: block;
   }
+
   &-active {
     color: @primary-color;
   }
+
   & &-avatar {
     color: #000;
     background-color: #fff;
     box-shadow: @shadow-2;
     transition: color 0.3s;
+
     &:hover {
       color: @primary-color;
     }

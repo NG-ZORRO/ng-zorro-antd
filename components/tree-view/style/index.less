@@ -4,13 +4,14 @@
  */
 
 nz-tree-virtual-scroll-view {
-  display: block;
   position: relative;
+  display: block;
   overflow: auto;
-  contain: strict;
   transform: translateZ(0);
   will-change: scroll-position;
+  contain: strict;
   -webkit-overflow-scrolling: touch;
+
   .ant-tree-list, .ant-tree-list-holder {
     height: 100%;
   }

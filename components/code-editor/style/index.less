@@ -4,31 +4,31 @@
 @code-editor-prefix-cls: ~'@{ant-prefix}-code-editor';
 
 .@{code-editor-prefix-cls} {
-  display: block;
   position: relative;
-  height: 100%;
+  display: block;
   width: 100%;
+  height: 100%;
   background-color: @component-background;
 
   .@{code-editor-prefix-cls}-loading {
     position: absolute;
+    z-index: 100;
     display: flex;
     justify-content: center;
-    height: 100%;
     width: 100%;
-    z-index: 100;
+    height: 100%;
     background-color: @component-background;
   }
 
   .@{code-editor-prefix-cls}-toolkit {
+    position: absolute;
     top: 20px;
     right: 160px;
-    position: absolute;
-    height: 24px;
     z-index: 2;
     min-width: 100px;
-    background: transparent;
+    height: 24px;
     text-align: right;
+    background: transparent;
 
     i,
     span[nz-icon] {

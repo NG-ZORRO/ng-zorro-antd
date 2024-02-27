@@ -11,9 +11,9 @@
 }
 
 .pic-plus span {
-  font-size: 30px;
-  color: #aaa;
   margin: 0 20px;
+  color: #aaa;
+  font-size: 30px;
 }
 
 .top-menu-additional {
@@ -33,7 +33,6 @@
 }
 
 .toc-affix {
-
   .ant-anchor {
     font-size: 12px;
 
@@ -43,10 +42,10 @@
     }
 
     .ant-anchor-link-active {
-      border-left: 2px solid @primary-color;
-      margin-left: -2px;
       position: relative;
       z-index: 2;
+      margin-left: -2px;
+      border-left: 2px solid @primary-color;
     }
 
     .ant-anchor-ink-ball.visible {
@@ -64,10 +63,10 @@
       }
 
       .ant-anchor-link-title {
+        width: 110px;
         color: @site-text-color;
         white-space: nowrap;
         text-overflow: ellipsis;
-        width: 110px;
       }
     }
   }
@@ -79,8 +78,8 @@
 }
 
 .site-page-header-ghost-wrapper {
-  background-color: #f5f5f5;
   padding: 24px;
+  background-color: #f5f5f5;
 }
 
 body[data-theme='dark'],
@@ -97,8 +96,8 @@ body[data-theme='dark'],
 
   &::-webkit-scrollbar-thumb {
     background-color: #434343;
-    border-radius: 6px;
     border: 2px solid #262626;
+    border-radius: 6px;
 
     :hover {
       background-color: #262626;
@@ -108,16 +107,16 @@ body[data-theme='dark'],
 
 label {
   &.api-type-label {
-    padding: 1px 10px;
-    font-size: 12px;
-    border-radius: @border-radius-base;
-    line-height: 18px;
     display: inline;
-    vertical-align: middle;
-    color: @text-color-dark;
     margin-left: 8px;
+    padding: 1px 10px;
+    color: @text-color-dark;
     font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
     text-transform: uppercase;
+    vertical-align: middle;
+    border-radius: @border-radius-base;
 
     &.standalone {
       color: @gold-6;
@@ -143,7 +142,6 @@ label {
 
 
 [data-theme='dark'] {
-
   .site-badge-count-4 .ant-badge-count {
     background-color: @component-background !important;
     box-shadow: 0 0 0 1px #434343 inset !important;
@@ -195,19 +193,19 @@ label {
       width: calc(100% + 2px);
       max-width: none;
       height: 184px;
-      margin: -1px -1px 0 -1px;
+      margin: -1px -1px 0;
       object-fit: cover;
     }
 
     .resource-card-title {
-      margin: 16px 20px 8px 20px;
+      margin: 16px 20px 8px;
       color: #0d1a26;
       font-size: 20px;
       line-height: 28px;
     }
 
     .resource-card-description {
-      margin: 0 20px 20px 20px;
+      margin: 0 20px 20px;
       color: #697b8c;
       font-size: 14px;
       line-height: 22px;

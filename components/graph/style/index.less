@@ -10,10 +10,10 @@
 @graph-prefix-cls: ~'nz-graph';
 
 .@{graph-prefix-cls} {
-  display: block;
   position: relative;
-  height: 100%;
+  display: block;
   width: 100%;
+  height: 100%;
   background-color: @component-background;
 
   &-nodes {
@@ -44,8 +44,8 @@
       }
 
       &-text {
-        fill: fade(@text-color, 85%);
         font-size: @font-size-sm;
+        fill: fade(@text-color, 85%);
       }
     }
   }
@@ -59,11 +59,11 @@
     position: absolute;
     right: 0;
     bottom: 0;
+    z-index: 99;
     background-color: @component-background;
+    border: @border-width-base @border-style-base @border-color-base;
     transition: opacity 0.3s linear;
     pointer-events: auto;
-    border: @border-width-base @border-style-base @border-color-base;
-    z-index: 99;
 
     &.hidden {
       opacity: 0;
@@ -75,12 +75,12 @@
     }
 
     rect {
+      cursor: move;
+      filter: url('#minimapDropShadow');
       fill: @component-background;
       stroke: @text-color-secondary;
       stroke-width: @border-width-base;
       fill-opacity: 0;
-      filter: url(#minimapDropShadow);
-      cursor: move;
     }
 
     svg {
