@@ -310,6 +310,7 @@
     position: relative;
     padding-right: 5px;
     padding-left: 5px;
+
     &::before {
       position: absolute;
       top: -1px;
@@ -336,13 +337,16 @@
     padding: 0 12px;
     line-height: 38px;
     border-top: @border-width-base @border-style-base @border-color-split;
+
     &:empty {
       border-top: 0;
     }
+
     &-btn {
       display: block;
       text-align: center;
     }
+
     &-extra {
       text-align: left;
     }
@@ -353,10 +357,12 @@
     display: inline-block;
     margin: 0 0 0 8px;
     text-align: center;
+
     &-disabled {
       color: @disabled-color;
       cursor: not-allowed;
     }
+
     &:only-child {
       margin: 0;
     }

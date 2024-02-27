@@ -25,19 +25,19 @@
     align-items: center;
 
     input {
-      border: none !important;
-      box-shadow: none !important;
       width: 100%;
-      outline: none;
       padding: 0;
+      border: none !important;
       border-radius: 0;
+      outline: none;
+      box-shadow: none !important;
     }
   }
 
   &-input-group-focus {
     border-color: @primary-color;
-    box-shadow: 0 0 0 @outline-width @primary-color-outline;
     outline: 0;
+    box-shadow: 0 0 0 @outline-width @primary-color-outline;
   }
 
   nz-cron-expression-label {
@@ -46,11 +46,12 @@
 
   &-label-group {
     display: flex;
-    width: 100%;
     flex-wrap: nowrap;
     justify-content: space-around;
+    width: 100%;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+
     &-default {
       padding: 0 @padding-sm;
     }
@@ -69,8 +70,8 @@
     padding: @padding-sm;
 
     &-dateTime {
-      flex: 1 1 auto;
       display: flex;
+      flex: 1 1 auto;
       align-items: center;
 
       &-center {
@@ -79,31 +80,32 @@
     }
 
     &-content {
-      flex: 0 0 220px;
       display: flex;
+      flex: 0 0 220px;
       align-items: center;
       padding-left: @padding-md;
     }
 
     &-list, &-icon {
-      list-style: none;
       margin: 0;
       padding: 0;
+      list-style: none;
+
       li {
-        list-style: none;
         margin: 0;
         padding: 0;
+        list-style: none;
       }
     }
 
     &-list {
-      overflow-y: scroll;
       height: 132px;
+      overflow-y: scroll;
     }
 
     &-icon {
-      flex: 0 0 16px;
       display: flex;
+      flex: 0 0 16px;
       justify-content: center;
     }
   }

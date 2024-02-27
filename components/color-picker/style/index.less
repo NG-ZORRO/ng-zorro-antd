@@ -20,29 +20,33 @@
     flex-direction: column;
     width: 250px;
     border-radius: @border-radius-base;
+
     &-disabled {
       cursor: not-allowed;
     }
   }
+
   &-select {
     .@{color-picker-prefix-cls}-palette {
       min-height: 160px;
       overflow: hidden;
       border-radius: @border-radius-base;
+
       & > .@{color-picker-prefix-cls}-gradient {
         border-top-left-radius: 5px;
       }
     }
+
     margin-bottom: @margin-sm;
   }
 
   &-saturation {
     position: absolute;
-    border-radius: inherit;
     top: 0;
-    left: 0;
     right: 0;
-    bottom: 0
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
   }
 
   &-handler {
@@ -61,32 +65,41 @@
   &-slider {
     width: 100%;
     border-radius: @border-radius-base;
+
     .@{color-picker-prefix-cls}-palette {
       height: 8px;
     }
+
     .@{color-picker-prefix-cls}-gradient {
       border-radius: @border-radius-base;
     }
+
     &-hue {
       margin-bottom: @margin-sm;
     }
+
     &-alpha {
-      background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%, transparent 0 50%, rgba(0, 0, 0, 0.06) 0 75%, transparent 0);
+      background-image: conic-gradient(
+        rgba(0, 0, 0, 0.06) 0 25%,
+        transparent 0 50%,
+        rgba(0, 0, 0, 0.06) 0 75%,
+        transparent 0
+      );
       background-size: 8px 8px;
     }
   }
 
   &-trigger {
-    min-width: 32px;
-    height: 32px;
-    border-radius: @border-radius-base;
-    border: @border-width-base solid @border-color-split;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    min-width: 32px;
+    height: 32px;
     padding: 3px;
+    border: @border-width-base solid @border-color-split;
+    border-radius: @border-radius-base;
+    cursor: pointer;
+    transition: all 0.2s;
 
     &:hover {
       border-color: @primary-color;
@@ -116,10 +129,16 @@
     position: relative;
     width: 28px;
     height: 28px;
-    background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%, transparent 0 50%, rgba(0, 0, 0, 0.06) 0 75%, transparent 0);
-    background-size: 50% 50%;
     overflow: hidden;
+    background-image: conic-gradient(
+      rgba(0, 0, 0, 0.06) 0 25%,
+      transparent 0 50%,
+      rgba(0, 0, 0, 0.06) 0 75%,
+      transparent 0
+    );
+    background-size: 50% 50%;
     border-radius: @border-radius-base;
+
     &-inner {
       box-sizing: border-box;
       width: 100%;
@@ -132,12 +151,15 @@
     display: flex;
     gap: @margin-sm;
     margin-bottom: @margin-sm;
+
     .@{color-picker-prefix-cls}-slider-group {
       flex: 1;
+
       &-disabled-alpha {
         display: flex;
         align-items: center;
-        .@{color-picker-prefix-cls}-slider{
+
+        .@{color-picker-prefix-cls}-slider {
           margin-bottom: 0;
         }
       }
@@ -159,26 +181,26 @@
   }
 
   &-clear {
+    position: relative;
     width: 18px;
     height: 18px;
-    border-radius: @border-radius-base;
-    border: @border-width-base solid @border-color-split;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
     margin-bottom: @margin-xs;
+    overflow: hidden;
+    border: @border-width-base solid @border-color-split;
+    border-radius: @border-radius-base;
+    cursor: pointer;
 
     &::after {
-      content: "";
       position: absolute;
-      inset-inline-end: 1px;
       top: 0;
       display: block;
       width: 40px;
       height: 2px;
-      transform-origin: right;
-      transform: rotate(-45deg);
       background-color: #f5222d;
+      transform: rotate(-45deg);
+      transform-origin: right;
+      content: '';
+      inset-inline-end: 1px;
     }
   }
 
@@ -194,8 +216,8 @@
     }
 
     .ant-input-number {
-      font-size: 12px;
       width: auto;
+      font-size: 12px;
     }
 
     .ant-input-number-sm input {
@@ -214,8 +236,8 @@
       flex: 1;
 
       .@{color-picker-prefix-cls}-hex-input {
-        padding: 0;
         margin-right: @margin-xss;
+        padding: 0;
       }
 
       .@{color-picker-prefix-cls}-hsb-input {
@@ -257,10 +279,11 @@
 
   &-inline {
     display: inline-block;
+
     .@{color-picker-prefix-cls}-color-block {
-      margin: 0;
       width: 24px;
       height: 24px;
+      margin: 0;
     }
 
     &-lg {
