@@ -1,5 +1,6 @@
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
-export const moduleList = [ NzCalendarModule, NzBadgeModule, NzAlertModule ];
+export const moduleList = [ NzCalendarModule, NzBadgeModule, NzAlertModule, NzTypographyModule ];
