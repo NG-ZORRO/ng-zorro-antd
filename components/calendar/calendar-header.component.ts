@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,6 +11,7 @@ import {
   Input,
   OnInit,
   Output,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +27,21 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
   template: `
-    <div class="ant-picker-calendar-header">
+    @if (!nzCustomHeader) {
+      <div class="ant-picker-calendar-header">
+        <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
+      </div>
+    } @else {
+      <div style="padding: 8px">
+        <ng-template [ngTemplateOutlet]="nzCustomHeader"></ng-template>
+
+        <div class="ant-row">
+          <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
+        </div>
+      </div>
+    }
+
+    <ng-template #fixedContent>
       <nz-select
         class="ant-picker-calendar-year-select"
         [nzSize]="size"
@@ -61,19 +77,20 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
         <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
         <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
       </nz-radio-group>
-    </div>
+    </ng-template>
   `,
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  imports: [NzSelectModule, FormsModule, NzRadioModule],
+  imports: [NzSelectModule, FormsModule, NzRadioModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
+  @Input() nzCustomHeader?: TemplateRef<void>;
 
   @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
