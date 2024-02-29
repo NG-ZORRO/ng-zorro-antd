@@ -3,9 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Style } from '@schematics/angular/application/schema';
+import { Style, Schema as ComponentSchema } from '@schematics/angular/application/schema';
 
-export interface Schema {
+export interface Schema extends ComponentSchema {
   project: string;
   style: Style;
   prefix: string;

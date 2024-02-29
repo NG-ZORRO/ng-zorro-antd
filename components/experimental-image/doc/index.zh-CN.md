@@ -17,7 +17,7 @@ experimental: true
 - 需要浏览器优先加载图片时（需要在 SSR 下处理）。
 - 需要对高清显示器（如视网膜屏）优化时。
 - 使用图片 CDN 服务时。
-- 以及 [Image documentation](/components/image) 中的功能
+- 以及 [Image documentation](/components/image/zh) 中的功能
 - 下一步计划
   * 添加 [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) 属性及响应式的支持
 

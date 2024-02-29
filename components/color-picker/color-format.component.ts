@@ -20,6 +20,8 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import { generateColor } from 'ng-antd-color-picker';
 
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
 import { NzColorPickerFormatType } from './typings';
 
 @Component({
@@ -103,17 +105,19 @@ import { NzColorPickerFormatType } from './typings';
         </div>
       </div>
 
-      <div class="ant-color-picker-steppers ant-color-picker-alpha-input">
-        <nz-input-number
-          formControlName="roundA"
-          [nzMin]="0"
-          [nzMax]="100"
-          [nzStep]="1"
-          [nzFormatter]="formatterPercent"
-          [nzParser]="parserPercent"
-          nzSize="small"
-        ></nz-input-number>
-      </div>
+      <ng-container *ngIf="!nzDisabledAlpha">
+        <div class="ant-color-picker-steppers ant-color-picker-alpha-input">
+          <nz-input-number
+            formControlName="roundA"
+            [nzMin]="0"
+            [nzMax]="100"
+            [nzStep]="1"
+            [nzFormatter]="formatterPercent"
+            [nzParser]="parserPercent"
+            nzSize="small"
+          ></nz-input-number>
+        </div>
+      </ng-container>
     </div>
   `
 })
@@ -121,6 +125,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
   @Input() format: NzColorPickerFormatType | null = null;
   @Input() colorValue: string = '';
   @Input() clearColor: boolean = false;
+  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
   @Output() readonly formatChange = new EventEmitter<{ color: string; format: NzColorPickerFormatType }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
 

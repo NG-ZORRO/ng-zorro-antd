@@ -10,18 +10,18 @@ import {
   ElementRef,
   Inject,
   Input,
-  Optional,
   Renderer2,
-  SkipSelf,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
-export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
-  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+export function MenuGroupFactory(): boolean {
+  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { optional: true, skipSelf: true });
+  return isMenuInsideDropDownToken ?? false;
 }
 @Component({
   selector: '[nz-menu-group]',
@@ -31,8 +31,7 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuGroupFactory,
-      deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
+      useFactory: MenuGroupFactory
     }
   ],
   encapsulation: ViewEncapsulation.None,

@@ -16,7 +16,7 @@ experimental: true
 - When you need the browser to prioritize image loading (needs to be handled in SSR).
 - When you need to optimize for HD displays (e.g. retina screens).
 - When using image CDN.
-- More in [Image documentation](/components/image)
+- More in [Image documentation](/components/image/en)
 - Next steps
   * Add [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) attribute and responsive support.
 

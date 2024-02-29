@@ -129,6 +129,8 @@
 /components/water-mark/zh
 /components/color-picker/en
 /components/color-picker/zh
+/components/hash-code/en
+/components/hash-code/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -153,8 +155,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v16/en
-/docs/migration-v16/zh
+/docs/migration-v17/en
+/docs/migration-v17/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en

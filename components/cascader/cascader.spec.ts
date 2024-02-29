@@ -20,8 +20,8 @@ import {
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick, waitForAsync } from '@angular/core/testing';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -1820,7 +1820,9 @@ describe('cascader', () => {
   });
   describe('In form', () => {
     let fixture: ComponentFixture<NzDemoCascaderInFormComponent>;
-    let formGroup: UntypedFormGroup;
+    let formGroup: FormGroup<{
+      demo: FormControl<string[] | null>;
+    }>;
     let cascader: DebugElement;
 
     beforeEach(() => {
@@ -1833,9 +1835,9 @@ describe('cascader', () => {
     it('should className correct', () => {
       expect(cascader.nativeElement.className).not.toContain('ant-select-status-error');
       expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
-      formGroup.get('demo')!.markAsDirty();
-      formGroup.get('demo')!.setValue(null);
-      formGroup.get('demo')!.updateValueAndValidity();
+      formGroup.controls.demo.markAsDirty();
+      formGroup.controls.demo.setValue(null);
+      formGroup.controls.demo.updateValueAndValidity();
       fixture.detectChanges();
 
       // show error
@@ -1845,9 +1847,9 @@ describe('cascader', () => {
         'ant-form-item-feedback-icon-error'
       );
 
-      formGroup.get('demo')!.markAsDirty();
-      formGroup.get('demo')!.setValue(['a', 'b']);
-      formGroup.get('demo')!.updateValueAndValidity();
+      formGroup.controls.demo.markAsDirty();
+      formGroup.controls.demo.setValue(['a', 'b']);
+      formGroup.controls.demo.updateValueAndValidity();
       fixture.detectChanges();
       // show success
       expect(cascader.nativeElement.className).toContain('ant-select-status-success');
@@ -2263,9 +2265,9 @@ export class NzDemoCascaderStatusComponent {
   `
 })
 export class NzDemoCascaderInFormComponent {
-  validateForm: UntypedFormGroup = this.fb.group({
-    demo: [null, [Validators.required]]
+  validateForm = this.fb.group({
+    demo: this.fb.control<string[] | null>(null, Validators.required)
   });
   public nzOptions: any[] | null = options1;
-  constructor(private fb: UntypedFormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 }

@@ -20,6 +20,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       [ngModel]="checked"
       [nzDisabled]="disabled"
       [nzIndeterminate]="indeterminate"
+      [attr.aria-label]="label"
       (ngModelChange)="onCheckedChange($event)"
     ></label>
     <div class="ant-table-selection-extra" *ngIf="showRowSelection">
@@ -42,6 +43,7 @@ export class NzTableSelectionComponent {
   @Input() checked = false;
   @Input() disabled = false;
   @Input() indeterminate = false;
+  @Input() label: string | null = null;
   @Input() showCheckbox = false;
   @Input() showRowSelection = false;
   @Output() readonly checkedChange = new EventEmitter<boolean>();

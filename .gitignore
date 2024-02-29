@@ -35,6 +35,8 @@ yarn.lock
 
 # misc
 /.angular/cache
+/.nx-cache
+/.nx
 /.sass-cache
 /connect.lock
 /coverage
