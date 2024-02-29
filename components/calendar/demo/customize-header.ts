@@ -8,13 +8,10 @@ import { Component } from '@angular/core';
     </div>
 
     <ng-template #customHeader>
-      <h4 nz-typography>Custom header</h4>
+      <div style="padding: 8px">
+        <h4>Custom header</h4>
+      </div>
     </ng-template>
-  `,
-  styles: `
-    h3 {
-      margin-bottom: 10px;
-    }
   `
 })
 export class NzDemoCalendarCustomizeHeaderComponent {}

@@ -27,57 +27,47 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
   template: `
-    @if (!nzCustomHeader) {
-      <div class="ant-picker-calendar-header">
-        <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
-      </div>
+    @if (nzCustomHeader) {
+      <ng-container [ngTemplateOutlet]="nzCustomHeader"></ng-container>
     } @else {
-      <div style="padding: 8px">
-        <ng-template [ngTemplateOutlet]="nzCustomHeader"></ng-template>
-
-        <div class="ant-row">
-          <ng-template [ngTemplateOutlet]="fixedContent"></ng-template>
-        </div>
-      </div>
-    }
-
-    <ng-template #fixedContent>
-      <nz-select
-        class="ant-picker-calendar-year-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeYear"
-        (ngModelChange)="updateYear($event)"
-      >
-        @for (year of years; track year.value) {
-          <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
-        }
-      </nz-select>
-
-      @if (mode === 'month') {
+      <div class="ant-picker-calendar-header">
         <nz-select
-          class="ant-picker-calendar-month-select"
+          class="ant-picker-calendar-year-select"
           [nzSize]="size"
           [nzDropdownMatchSelectWidth]="false"
-          [ngModel]="activeMonth"
-          (ngModelChange)="monthChange.emit($event)"
+          [ngModel]="activeYear"
+          (ngModelChange)="updateYear($event)"
         >
-          @for (month of months; track month.value) {
-            <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+          @for (year of years; track year.value) {
+            <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
           }
         </nz-select>
-      }
 
-      <nz-radio-group
-        class="ant-picker-calendar-mode-switch"
-        [(ngModel)]="mode"
-        (ngModelChange)="modeChange.emit($event)"
-        [nzSize]="size"
-      >
-        <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
-        <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
-      </nz-radio-group>
-    </ng-template>
+        @if (mode === 'month') {
+          <nz-select
+            class="ant-picker-calendar-month-select"
+            [nzSize]="size"
+            [nzDropdownMatchSelectWidth]="false"
+            [ngModel]="activeMonth"
+            (ngModelChange)="monthChange.emit($event)"
+          >
+            @for (month of months; track month.value) {
+              <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+            }
+          </nz-select>
+        }
+
+        <nz-radio-group
+          class="ant-picker-calendar-mode-switch"
+          [(ngModel)]="mode"
+          (ngModelChange)="modeChange.emit($event)"
+          [nzSize]="size"
+        >
+          <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
+          <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+        </nz-radio-group>
+      </div>
+    }
   `,
   host: {
     class: 'ant-fullcalendar-header',
