@@ -9,10 +9,10 @@
   background: @calendar-full-bg;
 
   // ========================= Header =========================
-
-  &-header,
-  .@{ant-prefix}-row {
+  &-header {
     display: flex;
+    justify-content: flex-end;
+    padding: @padding-sm 0;
 
     .@{calendar-prefix-cls}-year-select {
       min-width: 80px;
@@ -26,16 +26,6 @@
     .@{calendar-prefix-cls}-mode-switch {
       margin-left: @padding-xs;
     }
-  }
-
-  &-header {
-    justify-content: flex-end;
-    padding: @padding-sm 0;
-  }
-
-  .@{ant-prefix}-row {
-    min-width: 0;
-    flex-flow: wrap;
   }
 
   .@{calendar-picker-prefix-cls}-panel {
