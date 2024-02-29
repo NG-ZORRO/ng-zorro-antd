@@ -22,22 +22,22 @@ export class NzTreeBaseService {
   selectedNode!: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
   flattenNodes$ = new BehaviorSubject<NzTreeNode[]>([]);
-  selectedNodeList: NzTreeNode[] = [];
-  expandedNodeList: NzTreeNode[] = [];
-  checkedNodeList: NzTreeNode[] = [];
-  halfCheckedNodeList: NzTreeNode[] = [];
-  matchedNodeList: NzTreeNode[] = [];
+  selectedNodeList: NzTreeNodeMap = new NzTreeNodeMap();
+  expandedNodeList: NzTreeNodeMap = new NzTreeNodeMap();
+  checkedNodeList: NzTreeNodeMap = new NzTreeNodeMap();
+  halfCheckedNodeList: NzTreeNodeMap = new NzTreeNodeMap();
+  matchedNodeList: NzTreeNodeMap = new NzTreeNodeMap();
 
   /**
    * reset tree nodes will clear default node list
    */
   initTree(nzNodes: NzTreeNode[]): void {
     this.rootNodes = nzNodes;
-    this.expandedNodeList = [];
-    this.selectedNodeList = [];
-    this.halfCheckedNodeList = [];
-    this.checkedNodeList = [];
-    this.matchedNodeList = [];
+    this.expandedNodeList = new NzTreeNodeMap();
+    this.selectedNodeList = new NzTreeNodeMap();
+    this.halfCheckedNodeList = new NzTreeNodeMap();
+    this.checkedNodeList = new NzTreeNodeMap();
+    this.matchedNodeList = new NzTreeNodeMap();
   }
 
   flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
@@ -103,7 +103,7 @@ export class NzTreeBaseService {
         }
       });
       // single mode: remove pre node
-      this.selectedNodeList = [];
+      this.selectedNodeList = new NzTreeNodeMap();
     }
     this.setSelectedNodeList(node, this.isMultiple);
   }
@@ -112,14 +112,14 @@ export class NzTreeBaseService {
    * add or remove node to selectedNodeList
    */
   setSelectedNodeList(node: NzTreeNode, isMultiple: boolean = false): void {
-    const index = this.getIndexOfArray(this.selectedNodeList, node.key);
+    const notHas = !this.selectedNodeList.has(node.key);
     if (isMultiple) {
-      if (node.isSelected && index === -1) {
-        this.selectedNodeList.push(node);
+      if (node.isSelected && notHas) {
+        this.selectedNodeList.set(node);
       }
     } else {
-      if (node.isSelected && index === -1) {
-        this.selectedNodeList = [node];
+      if (node.isSelected && notHas) {
+        this.selectedNodeList = new NzTreeNodeMap([node]);
       }
     }
     if (!node.isSelected) {
@@ -131,19 +131,19 @@ export class NzTreeBaseService {
    * merge checked nodes
    */
   setHalfCheckedNodeList(node: NzTreeNode): void {
-    const index = this.getIndexOfArray(this.halfCheckedNodeList, node.key);
-    if (node.isHalfChecked && index === -1) {
-      this.halfCheckedNodeList.push(node);
-    } else if (!node.isHalfChecked && index > -1) {
+    const notHas = !this.halfCheckedNodeList.has(node.key);
+    if (node.isHalfChecked && notHas) {
+      this.halfCheckedNodeList.set(node);
+    } else if (!node.isHalfChecked && notHas) {
       this.halfCheckedNodeList = this.halfCheckedNodeList.filter(n => node.key !== n.key);
     }
   }
 
   setCheckedNodeList(node: NzTreeNode): void {
-    const index = this.getIndexOfArray(this.checkedNodeList, node.key);
-    if (node.isChecked && index === -1) {
-      this.checkedNodeList.push(node);
-    } else if (!node.isChecked && index > -1) {
+    const has = this.checkedNodeList.has(node.key);
+    if (node.isChecked && !has) {
+      this.checkedNodeList.set(node);
+    } else if (!node.isChecked && has) {
       this.checkedNodeList = this.checkedNodeList.filter(n => node.key !== n.key);
     }
   }
@@ -152,7 +152,7 @@ export class NzTreeBaseService {
    * conduct checked/selected/expanded keys
    */
   conductNodeState(type: string = 'check'): NzTreeNode[] {
-    let resultNodesList: NzTreeNode[] = [];
+    let resultNodesList: NzTreeNodeMap = new NzTreeNodeMap();
     switch (type) {
       case 'select':
         resultNodesList = this.selectedNodeList;
@@ -168,7 +168,7 @@ export class NzTreeBaseService {
         const isIgnore = (node: NzTreeNode): boolean => {
           const parentNode = node.getParentNode();
           if (parentNode) {
-            if (this.checkedNodeList.findIndex(n => n.key === parentNode.key) > -1) {
+            if (this.checkedNodeList.has(parentNode.key)) {
               return true;
             } else {
               return isIgnore(parentNode);
@@ -187,7 +187,7 @@ export class NzTreeBaseService {
         }
         break;
     }
-    return resultNodesList;
+    return resultNodesList.nodes;
   }
 
   /**
@@ -197,20 +197,20 @@ export class NzTreeBaseService {
     if (node.isLeaf) {
       return;
     }
-    const index = this.getIndexOfArray(this.expandedNodeList, node.key);
-    if (node.isExpanded && index === -1) {
-      this.expandedNodeList.push(node);
-    } else if (!node.isExpanded && index > -1) {
-      this.expandedNodeList.splice(index, 1);
+    const has = this.expandedNodeList.has(node.key);
+    if (node.isExpanded && !has) {
+      this.expandedNodeList.set(node);
+    } else if (!node.isExpanded && has) {
+      this.expandedNodeList.delete(node);
     }
   }
 
   setMatchedNodeList(node: NzTreeNode): void {
-    const index = this.getIndexOfArray(this.matchedNodeList, node.key);
-    if (node.isMatched && index === -1) {
-      this.matchedNodeList.push(node);
-    } else if (!node.isMatched && index > -1) {
-      this.matchedNodeList.splice(index, 1);
+    const has = this.matchedNodeList.has(node.key);
+    if (node.isMatched && !has) {
+      this.matchedNodeList.set(node);
+    } else if (!node.isMatched && has) {
+      this.matchedNodeList.delete(node);
     }
   }
 
@@ -456,8 +456,8 @@ export class NzTreeBaseService {
    * @param checkStrictly
    */
   conductCheck(keys: NzTreeNodeKey[] | null, checkStrictly: boolean): void {
-    this.checkedNodeList = [];
-    this.halfCheckedNodeList = [];
+    this.checkedNodeList = new NzTreeNodeMap();
+    this.halfCheckedNodeList = new NzTreeNodeMap();
     const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         if (keys === null) {
@@ -483,7 +483,7 @@ export class NzTreeBaseService {
 
   conductExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
     const expandedKeySet = new Set(keys === true ? [] : keys);
-    this.expandedNodeList = [];
+    this.expandedNodeList = new NzTreeNodeMap();
     const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         node.setExpanded(keys === true || expandedKeySet.has(node.key) || node.isExpanded === true);
@@ -500,7 +500,7 @@ export class NzTreeBaseService {
 
   conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
-    this.selectedNodeList = [];
+    this.selectedNodeList = new NzTreeNodeMap();
     const calc = (nodes: NzTreeNode[]): boolean =>
       nodes.every(node => {
         if (isInArray(node.key, keys)) {
@@ -539,5 +539,65 @@ export class NzTreeBaseService {
       }
     };
     calc(node.getParentNode());
+  }
+}
+
+export class NzTreeNodeMap {
+  private readonly nodeMap: Map<string, NzTreeNode>;
+  private _nodes?: NzTreeNode[] = undefined;
+  constructor(nodes?: NzTreeNode[] | Map<string, NzTreeNode>) {
+    if (nodes && nodes instanceof Map) {
+      this.nodeMap = nodes;
+    } else {
+      const items = nodes || [];
+      this.nodeMap = new Map(items.map(i => [i.key, i]));
+    }
+  }
+  public set(item: NzTreeNode): void {
+    this.nodeMap.set(item.key, item);
+    this.nodes.push(item);
+  }
+
+  public delete(item: NzTreeNode): boolean {
+    this._nodes = undefined;
+    return this.nodeMap.delete(item.key);
+  }
+
+  public forEach(
+    callbackfn: (value: NzTreeNode, key: string, map: Map<string, NzTreeNode>) => void,
+    thisArg?: any
+  ): void {
+    this.nodeMap.forEach(callbackfn, thisArg);
+  }
+
+  public has(key: string): boolean {
+    return this.nodeMap.has(key);
+  }
+
+  public filter(predicate: (value: NzTreeNode) => boolean): NzTreeNodeMap {
+    const nzNodes = this.nodeMap.values();
+    const map = new Map<string, NzTreeNode>();
+    for (const node of nzNodes) {
+      if (predicate(node)) {
+        map.set(node.key, node);
+      }
+    }
+    return new NzTreeNodeMap(map);
+  }
+
+  public map<U>(callbackfn: (value: NzTreeNode) => U): U[] {
+    const results: U[] = [];
+    const nzNodes = this.nodeMap.values();
+    for (const node of nzNodes) {
+      results.push(callbackfn(node));
+    }
+    return results;
+  }
+
+  public get nodes() {
+    if (!this._nodes) {
+      this._nodes = Array.from(this.nodeMap.values());
+    }
+    return this._nodes;
   }
 }

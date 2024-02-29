@@ -383,7 +383,7 @@ export class NzTreeComponent
       }
       return !value || !node.title.toLowerCase().includes(value.toLowerCase()) ? false : true;
     };
-    dataList.forEach(v => {
+    for (const v of dataList) {
       v.isMatched = checkIfMatched(v);
       v.canHide = !v.isMatched;
       if (!v.isMatched) {
@@ -394,7 +394,7 @@ export class NzTreeComponent
         this.nzTreeService.expandNodeAllParentBySearch(v);
       }
       this.nzTreeService.setMatchedNodeList(v);
-    });
+    }
   }
 
   /**
