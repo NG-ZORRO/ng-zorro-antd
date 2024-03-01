@@ -1692,6 +1692,7 @@ describe('NzModal', () => {
       componentInstance.isDraggable = false;
       componentFixture.detectChanges();
       flush();
+
       expect(overlayContainerElement.querySelector('.cdk-drag-disabled')).not.toBeNull();
 
       componentFixture.destroy();
