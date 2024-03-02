@@ -18,7 +18,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
-import { NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -28,48 +28,62 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #renderItemTemplate let-type let-page="page">
-      <ng-container [ngSwitch]="type">
-        <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
-          <ng-container [ngSwitch]="direction">
-            <span *ngSwitchCase="'rtl'" nz-icon nzType="right"></span>
-            <span *ngSwitchDefault nz-icon nzType="left"></span>
-          </ng-container>
-        </button>
-        <button type="button" [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
-          <ng-container [ngSwitch]="direction">
-            <span *ngSwitchCase="'rtl'" nz-icon nzType="left"></span>
-            <span *ngSwitchDefault nz-icon nzType="right"></span>
-          </ng-container>
-        </button>
-        <ng-container *ngSwitchDefault>
-          <a class="ant-pagination-item-link" [ngSwitch]="type">
-            <div class="ant-pagination-item-container" *ngSwitchDefault>
-              <ng-container [ngSwitch]="type">
-                <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
-                  <span
-                    *ngSwitchCase="'rtl'"
-                    nz-icon
-                    nzType="double-right"
-                    class="ant-pagination-item-link-icon"
-                  ></span>
-                  <span *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
-                </ng-container>
-                <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
-                  <span *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
-                  <span *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
-                </ng-container>
-              </ng-container>
+      @switch (type) {
+        @case ('page') {
+          <a>{{ page }}</a>
+        }
+        @case ('prev') {
+          <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+            @if (direction === 'rtl') {
+              <span nz-icon nzType="right"></span>
+            } @else {
+              <span nz-icon nzType="left"></span>
+            }
+          </button>
+        }
+        @case ('next') {
+          <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+            @if (direction === 'rtl') {
+              <span nz-icon nzType="left"></span>
+            } @else {
+              <span nz-icon nzType="right"></span>
+            }
+          </button>
+        }
+        @default {
+          <a class="ant-pagination-item-link">
+            <div class="ant-pagination-item-container">
+              @switch (type) {
+                @case ('prev_5') {
+                  @if (direction === 'rtl') {
+                    <span
+                      nz-icon
+                      nzType="double-right"
+                      class="ant-pagination-item-link-icon"
+                    ></span>
+                  } @else {
+                    <span nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
+                  }
+                }
+                @case ('next_5') {
+                  @if (direction === 'rtl') {
+                    <span nz-icon nzType="double-left"
+                          class="ant-pagination-item-link-icon"></span>
+                  } @else {
+                    <span nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                  }
+                }
+              }
               <span class="ant-pagination-item-ellipsis">•••</span>
             </div>
           </a>
-        </ng-container>
-      </ng-container>
+        }
+      }
     </ng-template>
     <ng-template
       [ngTemplateOutlet]="itemRender || renderItemTemplate"
       [ngTemplateOutletContext]="{ $implicit: type, page: index }"
-    ></ng-template>
+    />
   `,
   host: {
     '[class.ant-pagination-prev]': `type === 'prev'`,
@@ -84,7 +98,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[attr.title]': 'title',
     '(click)': 'clickItem()'
   },
-  imports: [NgSwitch, NgSwitchCase, NzIconModule, NgSwitchDefault, NgTemplateOutlet],
+  imports: [NzIconModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzPaginationItemComponent implements OnChanges {
@@ -122,7 +136,7 @@ export class NzPaginationItemComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { locale, index, type } = changes;
+    const {locale, index, type} = changes;
     if (locale || index || type) {
       this.title = (
         {

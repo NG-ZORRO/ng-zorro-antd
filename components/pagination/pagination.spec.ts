@@ -457,9 +457,17 @@ export class NzTestPaginationComponent {
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <a *ngIf="type === 'prev'">Previous</a>
-      <a *ngIf="type === 'next'">Next</a>
-      <a *ngIf="type === 'page'">{{ page * 2 }}</a>
+      @switch (type) {
+        @case ('prev') {
+          <a>Previous</a>
+        }
+        @case ('next') {
+          <a>Next</a>
+        }
+        @case ('page') {
+          <a>{{ page * 2 }}</a>
+        }
+      }
     </ng-template>
   `
 })
