@@ -8,8 +8,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -70,7 +72,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   imports: [NzSelectModule, FormsModule, NzRadioModule],
   standalone: true
 })
-export class NzCalendarHeaderComponent implements OnInit {
+export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
@@ -113,6 +115,16 @@ export class NzCalendarHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.setUpYears();
     this.setUpMonths();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['activeDate']) {
+      const previousActiveDate = changes['activeDate'].previousValue as CandyDate;
+      const currentActiveDate = changes['activeDate'].currentValue as CandyDate;
+      if (previousActiveDate?.getYear() !== currentActiveDate?.getYear()) {
+        this.setUpYears();
+      }
+    }
   }
 
   updateYear(year: number): void {
