@@ -143,7 +143,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
     return (this.nzMonthFullCell || this.nzMonthFullCellChild)!;
   }
 
-  @Input() nzCustomHeader?: TemplateRef<void>;
+  @Input() nzCustomHeader?: string | TemplateRef<void>;
 
   @Input()
   @InputBoolean()

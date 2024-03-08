@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -28,7 +29,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   exportAs: 'nzCalendarHeader',
   template: `
     @if (nzCustomHeader) {
-      <ng-container [ngTemplateOutlet]="nzCustomHeader"></ng-container>
+      <ng-container *nzStringTemplateOutlet="nzCustomHeader">{{ nzCustomHeader }}</ng-container>
     } @else {
       <div class="ant-picker-calendar-header">
         <nz-select
@@ -73,14 +74,14 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  imports: [NzSelectModule, FormsModule, NzRadioModule, NgTemplateOutlet],
+  imports: [NzSelectModule, FormsModule, NzRadioModule, NgTemplateOutlet, NzStringTemplateOutletDirective],
   standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
-  @Input() nzCustomHeader?: TemplateRef<void>;
+  @Input() nzCustomHeader?: string | TemplateRef<void>;
 
   @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
