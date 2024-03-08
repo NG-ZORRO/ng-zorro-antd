@@ -1,5 +1,5 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   COMMA,
   DELETE,
@@ -21,12 +21,20 @@ import {
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+
+import {
+  createFakeEvent,
+  createMouseEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent
+} from 'ng-zorro-antd/core/testing';
+import { NzStatus } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzFormModule } from '../form';
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
 import { NzCascaderOption, NzShowSearchOptions } from './typings';
@@ -37,29 +45,45 @@ describe('cascader', () => {
 
   function getItemAtColumnAndRow(column: number, row: number): HTMLElement | null {
     if (row === -1) {
-      return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`);
+      return overlayContainerElement.querySelector(
+        `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`
+      );
     }
 
-    return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`);
+    return overlayContainerElement.querySelector(
+      `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`
+    );
   }
 
   function getAllColumns(): NodeListOf<Element> {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
-        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BidiModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        NzCascaderModule,
+        NzIconTestModule,
+        NzFormModule
+      ],
+      declarations: [
+        NzDemoCascaderDefaultComponent,
+        NzDemoCascaderLoadDataComponent,
+        NzDemoCascaderRtlComponent,
+        NzDemoCascaderStatusComponent,
+        NzDemoCascaderInFormComponent
+      ]
+    }).compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -72,7 +96,11 @@ describe('cascader', () => {
     let testComponent: NzDemoCascaderDefaultComponent;
 
     function getLabelText(): string {
-      return cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText;
+      return cascader.nativeElement.querySelector('.ant-select-selection-item').innerText;
+    }
+
+    function getPlaceholder(): string {
+      return cascader.nativeElement.querySelector('.ant-select-selection-placeholder').innerText;
     }
 
     function getInputEl(): HTMLElement {
@@ -87,13 +115,13 @@ describe('cascader', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-cascader ant-cascader-picker');
+      expect(cascader.nativeElement.className).toContain('ant-cascader ant-select');
     });
 
     it('should have input', () => {
       fixture.detectChanges();
       expect(getInputEl()).toBeDefined();
-      expect(getInputEl().getAttribute('placeholder')).toBe('please select');
+      expect(getPlaceholder()).toBe('please select');
     });
 
     it('should input change event stopPropagation', () => {
@@ -105,27 +133,26 @@ describe('cascader', () => {
       expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
     });
 
-    it('should have EMPTY label', () => {
+    it('should not have EMPTY label', () => {
       fixture.detectChanges();
-      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-picker-label');
-      expect(label).toBeDefined();
-      expect(label.innerText).toBe('');
+      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
+      expect(label).toBeNull();
     });
 
     it('should placeholder work', () => {
       const placeholder = 'placeholder test';
       testComponent.nzPlaceHolder = placeholder;
       fixture.detectChanges();
-      expect(getInputEl().getAttribute('placeholder')).toBe(placeholder);
+      expect(getPlaceholder()).toBe(placeholder);
     });
 
     it('should size work', () => {
       testComponent.nzSize = 'small';
       fixture.detectChanges();
-      expect(getInputEl().classList).toContain('ant-input-sm');
+      expect(cascader.nativeElement.classList).toContain('ant-select-sm');
       testComponent.nzSize = 'large';
       fixture.detectChanges();
-      expect(getInputEl().classList).toContain('ant-input-lg');
+      expect(cascader.nativeElement.classList).toContain('ant-select-lg');
     });
 
     it('should value and label property work', fakeAsync(() => {
@@ -133,7 +160,9 @@ describe('cascader', () => {
       testComponent.nzValueProperty = 'id';
       testComponent.nzLabelProperty = 'name';
       fixture.detectChanges();
-      expect(getLabelText()).toBe('');
+      // label will not show if no item selected
+      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
+      expect(label).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = [1, 2, 3];
       fixture.detectChanges();
@@ -147,7 +176,8 @@ describe('cascader', () => {
       testComponent.nzValueProperty = null;
       testComponent.nzLabelProperty = null;
       fixture.detectChanges();
-      expect(getLabelText()).toBe('');
+      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
+      expect(label).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
@@ -160,29 +190,29 @@ describe('cascader', () => {
     it('should showArrow work', () => {
       testComponent.nzShowArrow = true;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeDefined();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow').classList).toContain('anticon-down');
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeDefined();
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon').classList).toContain('anticon-down');
       testComponent.nzShowArrow = false;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeNull();
     });
 
     it('should allowClear work', () => {
       fixture.detectChanges();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeDefined();
+      expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeDefined();
       testComponent.nzAllowClear = false;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
     });
 
     it('should open work', () => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-open');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-open');
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-open');
+      expect(cascader.nativeElement.classList).toContain('ant-select-open');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
       expect(testComponent.cascader.nzOptions).toBe(options1);
     });
@@ -287,10 +317,10 @@ describe('cascader', () => {
 
     it('should disabled work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');
       testComponent.nzDisabled = true;
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
@@ -308,10 +338,10 @@ describe('cascader', () => {
 
     it('should disabled state work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');
       testComponent.cascader.setDisabledState(true);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-disabled');
+      expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
@@ -370,9 +400,11 @@ describe('cascader', () => {
       flush();
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
-      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      spyOn(testComponent, 'onClear');
+      cascader.nativeElement.querySelector('.ant-select-clear span[nz-icon]').click();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
+      expect(testComponent.onClear).toHaveBeenCalled();
     }));
 
     it('should clear value work 2', fakeAsync(() => {
@@ -382,9 +414,11 @@ describe('cascader', () => {
       flush();
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
+      spyOn(testComponent, 'onClear');
       testComponent.cascader.clearSelection();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
+      expect(testComponent.onClear).toHaveBeenCalled();
     }));
 
     it('should autofocus work', () => {
@@ -402,21 +436,21 @@ describe('cascader', () => {
       const fakeInputBlurEvent = createFakeEvent('blur', false, true);
 
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
+      expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
 
       testComponent.cascader.setMenuVisible(true);
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
+      expect(cascader.nativeElement.classList).toContain('ant-select-focused');
     }));
 
     it('should focus and blur function work', () => {
@@ -470,29 +504,21 @@ describe('cascader', () => {
     it('should show input false work', fakeAsync(() => {
       testComponent.nzShowInput = false;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-input')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-selection-search-input')).toBeNull();
       testComponent.nzAllowClear = true;
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.nzOptions).toBe(options1);
-      expect(cascader.nativeElement.querySelector('.ant-cascader-input')).toBeNull();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-clear')).toBeNull();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label')).toBeNull();
-    }));
-
-    it('should input value work', fakeAsync(() => {
-      fixture.detectChanges();
-      expect(cascader.nativeElement.classList).not.toContain('ant-cascader-picker-with-value');
-      testComponent.cascader.inputValue = '12345';
-      fixture.detectChanges();
-      expect(cascader.nativeElement.classList).toContain('ant-cascader-picker-with-value');
+      expect(cascader.nativeElement.querySelector('.ant-select-selection-search-input')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
+      expect(cascader.nativeElement.querySelector('.ant-select-selection-item')).toBeNull();
     }));
 
     it('should create label work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(getLabelText()).toBe('');
+      expect(cascader.nativeElement.querySelector('.ant-select-selection-item')).toBeNull();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
       flush();
@@ -502,7 +528,7 @@ describe('cascader', () => {
 
     it('should label template work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(getLabelText()).toBe('');
+      expect(cascader.nativeElement.querySelector('.ant-select-selection-item')).toBeNull();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       testComponent.nzLabelRender = testComponent.renderTpl;
       fixture.detectChanges();
@@ -836,6 +862,14 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
+    }));
+
+    it('should nzBackdrop works', fakeAsync(() => {
+      testComponent.nzBackdrop = true;
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
@@ -1438,7 +1472,7 @@ describe('cascader', () => {
         sorter(a: NzCascaderOption[], b: NzCascaderOption[], _inputValue: string): number {
           const l1 = a[0].label;
           const l2 = b[0].label; // all reversed, just to be sure it works
-          return ('' + l1).localeCompare(l2!);
+          return `${l1}`.localeCompare(l2!);
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();
@@ -1572,7 +1606,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1);
       expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')!.classList).toContain('anticon-home');
+      expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon')!.classList).toContain('anticon-home');
     });
   });
 
@@ -1706,7 +1740,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
+      cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
@@ -1726,11 +1760,11 @@ describe('cascader', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+      expect(cascader.nativeElement.className).toContain('ant-select-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
+      expect(cascader.nativeElement.className).not.toContain('ant-select-rtl');
     });
 
     it('should menu class work', fakeAsync(() => {
@@ -1740,7 +1774,7 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-menu-rtl');
+      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-rtl');
     }));
 
     it('should item arrow display correct direction', fakeAsync(() => {
@@ -1758,6 +1792,70 @@ describe('cascader', () => {
       const itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
     }));
+  });
+
+  describe('Status', () => {
+    let fixture: ComponentFixture<NzDemoCascaderStatusComponent>;
+    let cascader: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderStatusComponent);
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-select-status-error');
+
+      fixture.componentInstance.status = 'warning';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-select-status-warning');
+
+      fixture.componentInstance.status = '';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).not.toContain('ant-select-status-warning');
+    });
+  });
+  describe('In form', () => {
+    let fixture: ComponentFixture<NzDemoCascaderInFormComponent>;
+    let formGroup: FormGroup<{
+      demo: FormControl<string[] | null>;
+    }>;
+    let cascader: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderInFormComponent);
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+      formGroup = fixture.componentInstance.validateForm;
+      fixture.detectChanges();
+    });
+
+    it('should className correct', () => {
+      expect(cascader.nativeElement.className).not.toContain('ant-select-status-error');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
+      formGroup.controls.demo.markAsDirty();
+      formGroup.controls.demo.setValue(null);
+      formGroup.controls.demo.updateValueAndValidity();
+      fixture.detectChanges();
+
+      // show error
+      expect(cascader.nativeElement.className).toContain('ant-select-status-error');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon').className).toContain(
+        'ant-form-item-feedback-icon-error'
+      );
+
+      formGroup.controls.demo.markAsDirty();
+      formGroup.controls.demo.setValue(['a', 'b']);
+      formGroup.controls.demo.updateValueAndValidity();
+      fixture.detectChanges();
+      // show success
+      expect(cascader.nativeElement.className).toContain('ant-select-status-success');
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
+      expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon').className).toContain(
+        'ant-form-item-feedback-icon-success'
+      );
+    });
   });
 });
 
@@ -1969,10 +2067,10 @@ const options4 = [
   }
 ];
 
-const options5: any[] = []; // tslint:disable-line:no-any
+const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-cascader-default',
   template: `
     <nz-cascader
@@ -2000,13 +2098,17 @@ const options5: any[] = []; // tslint:disable-line:no-any
       [nzTriggerAction]="nzTriggerAction"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzValueProperty]="nzValueProperty"
+      [nzBackdrop]="nzBackdrop"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzSelect)="onSelect($event)"
+      (nzClear)="onClear()"
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">{{ label }}{{ isLast ? '' : ' | ' }}</ng-container>
+      @for (label of labels; track label) {
+        {{ label }}{{ $last ? '' : ' | ' }}
+      }
     </ng-template>
   `,
   styles: [
@@ -2046,19 +2148,19 @@ export class NzDemoCascaderDefaultComponent {
   nzMouseLeaveDelay = 150; // ms
   nzSuffixIcon = 'down';
   nzExpandIcon = 'right';
+  nzBackdrop = false;
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 
-  fakeChangeOn = (node: any, _index: number): boolean => {
-    return node.value === 'zhejiang';
-  };
+  fakeChangeOn = (node: any, _index: number): boolean => node.value === 'zhejiang';
 
   clearSelection(): void {
     this.cascader.clearSelection();
   }
 
   onSelect(_d: { option: NzCascaderOption; index: number }): void {}
+  onClear(): void {}
 }
 
 @Component({
@@ -2139,4 +2241,31 @@ export class NzDemoCascaderRtlComponent {
   public nzOptions: any[] | null = options1;
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: ` <nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader> `
+})
+export class NzDemoCascaderStatusComponent {
+  public nzOptions: any[] | null = options1;
+  public status: NzStatus = 'error';
+}
+
+@Component({
+  template: `
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-control nzHasFeedback>
+          <nz-cascader formControlName="demo" [nzOptions]="nzOptions"></nz-cascader>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzDemoCascaderInFormComponent {
+  validateForm = this.fb.group({
+    demo: this.fb.control<string[] | null>(null, Validators.required)
+  });
+  public nzOptions: any[] | null = options1;
+  constructor(private fb: FormBuilder) {}
 }

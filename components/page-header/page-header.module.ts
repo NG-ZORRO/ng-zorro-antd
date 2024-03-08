@@ -3,12 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
   NzPageHeaderAvatarDirective,
@@ -34,8 +29,7 @@ const NzPageHeaderCells = [
 ];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzOutletModule, NzIconModule],
-  exports: [NzPageHeaderComponent, NzPageHeaderCells],
-  declarations: [NzPageHeaderComponent, NzPageHeaderCells]
+  imports: [NzPageHeaderComponent, NzPageHeaderCells],
+  exports: [NzPageHeaderComponent, NzPageHeaderCells]
 })
 export class NzPageHeaderModule {}

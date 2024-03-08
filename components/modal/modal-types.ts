@@ -5,6 +5,7 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
+
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -20,7 +21,7 @@ export interface StyleObjectLike {
 
 const noopFun = () => void 0;
 
-export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzCentered?: boolean = false;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
@@ -40,7 +41,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
-  nzComponentParams?: Partial<T>;
+  nzData?: D;
   nzMaskStyle?: StyleObjectLike;
   nzBodyStyle?: StyleObjectLike;
   nzWrapClassName?: string;

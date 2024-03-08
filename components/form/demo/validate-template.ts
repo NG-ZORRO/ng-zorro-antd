@@ -37,11 +37,24 @@ import { Component } from '@angular/core';
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Mix</nz-form-label>
         <nz-form-control nzHasFeedback [nzSpan]="12" [nzErrorTip]="combineTpl">
-          <input nz-input [ngModel]="'MaxLength is 12 and MinLength is 6'" name="mix" minlength="6" maxlength="12" required />
+          <input
+            nz-input
+            [ngModel]="'MaxLength is 12 and MinLength is 6'"
+            name="mix"
+            minlength="6"
+            maxlength="12"
+            required
+          />
           <ng-template #combineTpl let-control>
-            <ng-container *ngIf="control.hasError('maxlength')">MaxLength is 12</ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">MinLength is 6</ng-container>
-            <ng-container *ngIf="control.hasError('required')">Input is required</ng-container>
+            @if (control.errors?.['maxlength']) {
+              MaxLength is 12
+            }
+            @if (control.errors?.['minlength']) {
+              MinLength is 6
+            }
+            @if (control.errors?.['required']) {
+              Input is required
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>

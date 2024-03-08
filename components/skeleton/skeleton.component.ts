@@ -3,21 +3,28 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
-import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+
+import { NzSkeletonElementAvatarComponent, NzSkeletonElementDirective } from './skeleton-element.component';
+import {
+  NzSkeletonAvatar,
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonParagraph,
+  NzSkeletonTitle
+} from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +32,7 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
   host: {
+    class: 'ant-skeleton',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive',
     '[class.ant-skeleton-round]': '!!nzRound'
@@ -32,7 +40,11 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size || 'default'" [nzShape]="avatar.shape || 'circle'"></nz-skeleton-element>
+        <nz-skeleton-element
+          nzType="avatar"
+          [nzSize]="avatar.size || 'default'"
+          [nzShape]="avatar.shape || 'circle'"
+        ></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
@@ -44,7 +56,9 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
     <ng-container *ngIf="!nzLoading">
       <ng-content></ng-content>
     </ng-container>
-  `
+  `,
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent, NgIf, NgForOf],
+  standalone: true
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
@@ -60,17 +74,15 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-skeleton');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);
   }
 
   private getTitleProps(): NzSkeletonTitle {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasParagraph: boolean = !!this.nzParagraph;
+    const hasAvatar = !!this.nzAvatar;
+    const hasParagraph = !!this.nzParagraph;
     let width = '';
     if (!hasAvatar && hasParagraph) {
       width = '38%';
@@ -87,8 +99,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getParagraphProps(): NzSkeletonParagraph {
-    const hasAvatar: boolean = !!this.nzAvatar;
-    const hasTitle: boolean = !!this.nzTitle;
+    const hasAvatar = !!this.nzAvatar;
+    const hasTitle = !!this.nzTitle;
     const basicProps: NzSkeletonParagraph = {};
     // Width
     if (!hasAvatar || !hasTitle) {

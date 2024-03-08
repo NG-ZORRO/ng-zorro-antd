@@ -3,10 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceNumberProperty } from '@angular/cdk/coercion';
 /** get some code from https://github.com/angular/material2 */
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
+import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -16,6 +18,7 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -25,13 +28,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
@@ -44,8 +47,11 @@ import {
   NzTabScrollEvent,
   NzTabType
 } from './interfaces';
+import { NzTabBodyComponent } from './tab-body.component';
+import { NzTabCloseButtonComponent } from './tab-close-button.component';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
-import { NzTabComponent, NZ_TAB_SET } from './tab.component';
+import { NzTabNavItemDirective } from './tab-nav-item.directive';
+import { NZ_TAB_SET, NzTabComponent } from './tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
 
@@ -65,7 +71,7 @@ let nextId = 0;
   ],
   template: `
     <nz-tabs-nav
-      *ngIf="tabs.length"
+      *ngIf="tabs.length || addable"
       [ngStyle]="nzTabBarStyle"
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
@@ -88,8 +94,10 @@ let nextId = 0;
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
-        <div
+        <button
+          type="button"
           role="tab"
+          [id]="getTabContentId(i)"
           [attr.tabIndex]="getTabIndex(tab, i)"
           [attr.aria-disabled]="tab.nzDisabled"
           [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
@@ -103,12 +111,13 @@ let nextId = 0;
         >
           <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{ tab.label }}</ng-container>
           <button
+            type="button"
             nz-tab-close-button
             *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
             [closeIcon]="tab.nzCloseIcon"
             (click)="onClose(i, $event)"
           ></button>
-        </div>
+        </button>
       </div>
     </nz-tabs-nav>
     <div class="ant-tabs-content-holder">
@@ -123,9 +132,12 @@ let nextId = 0;
         [style.margin-right]="getTabContentMarginRight()"
       >
         <div
+          role="tabpanel"
+          [id]="getTabContentId(i)"
+          [attr.aria-labelledby]="getTabContentId(i)"
           nz-tab-body
           *ngFor="let tab of tabs; let i = index"
-          [active]="nzSelectedIndex == i && !nzHideAll"
+          [active]="nzSelectedIndex === i && !nzHideAll"
           [content]="tab.content"
           [forceRender]="tab.nzForceRender"
           [tabPaneAnimated]="tabPaneAnimated"
@@ -147,7 +159,19 @@ let nextId = 0;
     '[class.ant-tabs-default]': `nzSize === 'default'`,
     '[class.ant-tabs-small]': `nzSize === 'small'`,
     '[class.ant-tabs-large]': `nzSize === 'large'`
-  }
+  },
+  imports: [
+    NzTabNavBarComponent,
+    NgIf,
+    NgStyle,
+    NgForOf,
+    NzTabNavItemDirective,
+    A11yModule,
+    NzOutletModule,
+    NzTabCloseButtonComponent,
+    NzTabBodyComponent
+  ],
+  standalone: true
 })
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -209,13 +233,16 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   get tabPaneAnimated(): boolean {
     return (
-      this.position === 'horizontal' && this.line && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
+      this.position === 'horizontal' &&
+      this.line &&
+      (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
     );
   }
 
   // Pick up only direct descendants under ivy rendering engine
   // We filter out only the tabs that belong to this tab set in `tabs`.
-  @ContentChildren(NzTabComponent, { descendants: true }) allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+  @ContentChildren(NzTabComponent, { descendants: true })
+  allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
   @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
@@ -232,6 +259,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   constructor(
     public nzConfigService: NzConfigService,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality,
     @Optional() private router: Router
@@ -257,9 +285,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngAfterContentInit(): void {
-    Promise.resolve().then(() => {
-      this.setUpRouter();
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve().then(() => this.setUpRouter());
     });
+
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
 
@@ -364,7 +393,9 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       this.tabLabelSubscription.unsubscribe();
     }
 
-    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() => this.cdr.markForCheck());
+    this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() =>
+      this.cdr.markForCheck()
+    );
   }
 
   private subscribeToAllTabChanges(): void {
@@ -466,12 +497,20 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     return tabs.findIndex(tab => {
       const c = tab.linkDirective;
-      return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
+      return c ? isActive(c.routerLink) : false;
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
-    return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
+  private isLinkActive(router: Router): (link?: RouterLink) => boolean {
+    return (link?: RouterLink) =>
+      link
+        ? router.isActive(link.urlTree || '', {
+            paths: this.nzLinkExact ? 'exact' : 'subset',
+            queryParams: this.nzLinkExact ? 'exact' : 'subset',
+            fragment: 'ignored',
+            matrixParams: 'ignored'
+          })
+        : false;
   }
 
   private getTabContentMarginValue(): number {
@@ -481,7 +520,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginLeft(): string {
     if (this.tabPaneAnimated) {
       if (this.dir !== 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';
@@ -489,7 +528,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   getTabContentMarginRight(): string {
     if (this.tabPaneAnimated) {
       if (this.dir === 'rtl') {
-        return this.getTabContentMarginValue() + '%';
+        return `${this.getTabContentMarginValue()}%`;
       }
     }
     return '';

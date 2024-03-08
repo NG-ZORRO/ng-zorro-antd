@@ -1,5 +1,5 @@
 ---
-order: 13
+order: 14
 title:
   zh-CN: 路由联动
   en-US: With Router

@@ -15,7 +15,8 @@ export default {
     prev_5: 'Predchádzajúcich 5 strán',
     next_5: 'Nasledujúcich 5 strán',
     prev_3: 'Predchádzajúce 3 strany',
-    next_3: 'Nasledujúce 3 strany'
+    next_3: 'Nasledujúce 3 strany',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {

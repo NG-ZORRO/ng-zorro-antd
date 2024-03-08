@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,29 +14,34 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-transfer-search]',
   exportAs: 'nzTransferSearch',
   preserveWhitespaces: false,
   template: `
+    <span class="ant-input-prefix">
+      <span nz-icon nzType="search"></span>
+    </span>
     <input
       [(ngModel)]="value"
       (ngModelChange)="_handle()"
       [disabled]="disabled"
       [placeholder]="placeholder"
-      class="ant-input ant-transfer-list-search"
+      class="ant-input"
       [ngClass]="{ 'ant-input-disabled': disabled }"
     />
-    <a *ngIf="value && value.length > 0; else def" class="ant-transfer-list-search-action" (click)="_clear()">
-      <i nz-icon nzType="close-circle"></i>
-    </a>
-    <ng-template #def>
-      <span class="ant-transfer-list-search-action"><i nz-icon nzType="search"></i></span>
-    </ng-template>
+    <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
+      <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"></span>
+    </span>
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, NzIconModule, NgClass, NgIf],
+  standalone: true
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields

@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import * as fs from 'fs-extra';
 import { minify as jsMinifier } from 'terser';
 
@@ -12,7 +17,7 @@ const minifyJsOptions = {
 };
 
 async function minifyJs(content: string): Promise<string> {
-  return (await jsMinifier(content, minifyJsOptions)).code || ''
+  return (await jsMinifier(content, minifyJsOptions)).code || '';
 }
 
 async function minifyHtml(content: string): Promise<string> {
@@ -32,19 +37,19 @@ async function minifyHtml(content: string): Promise<string> {
     removeStyleLinkTypeAttributes: true,
     trimCustomFragments: true,
     useShortDoctype: true
-  })
+  });
 }
 
 async function minifyJson(content: string): Promise<string> {
-  // tslint:disable-next-line:no-any
-  let json: any = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let json: any = {};
   try {
-    json = JSON.parse(content)
+    json = JSON.parse(content);
     if (json.$schema) {
       // $schema is only needed for autocompletion
-      delete json.$schema
+      delete json.$schema;
     }
-    return JSON.stringify(json)
+    return JSON.stringify(json);
   } catch {
     return content;
   }
@@ -57,16 +62,16 @@ export async function minifyFile(filePath: string, type: 'svg' | 'html' | 'json'
   switch (type) {
     case 'svg':
     case 'html':
-      minified = minifyHtml(content)
-      break
+      minified = minifyHtml(content);
+      break;
     case 'js':
-      minified = minifyJs(content)
-      break
+      minified = minifyJs(content);
+      break;
     case 'json':
-      minified = minifyJson(content)
-      break
+      minified = minifyJson(content);
+      break;
     default:
-      throw new Error('Unknown extension: ' + type)
+      throw new Error(`Unknown extension: ${type}`);
   }
   const result = await minified;
   await fs.writeFile(filePath, result);

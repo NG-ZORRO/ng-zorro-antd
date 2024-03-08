@@ -1,8 +1,14 @@
-import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Migration, UpgradeData } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
 
 export class SecondaryEntryPointsRule extends Migration<UpgradeData> {
-  enabled = this.targetVersion === TargetVersion.V9 || this.targetVersion === TargetVersion.V10;
+  enabled = false;
 
   visitNode(declaration: ts.Node): void {
     if (!ts.isImportDeclaration(declaration) ||

@@ -9,7 +9,10 @@ import { Component } from '@angular/core';
       [nzNotFoundFooter]="footerTpl"
     >
       <ng-template #contentTpl>
-        <span> Customize <a href="#API">Description</a> </span>
+        <span>
+          Customize
+          <a href="#API">Description</a>
+        </span>
       </ng-template>
       <ng-template #footerTpl>
         <button nz-button nzType="primary" (click)="onClick()">Create Now</button>

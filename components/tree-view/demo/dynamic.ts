@@ -1,8 +1,7 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
-import { AfterViewInit, Component } from '@angular/core';
-
-import { BehaviorSubject, merge, Observable, of } from 'rxjs';
+import { Component } from '@angular/core';
+import { BehaviorSubject, Observable, merge, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 
 interface FlatNode {
@@ -55,7 +54,10 @@ class DynamicDatasource implements DataSource<FlatNode> {
   private flattenedData: BehaviorSubject<FlatNode[]>;
   private childrenLoadedSet = new Set<FlatNode>();
 
-  constructor(private treeControl: TreeControl<FlatNode>, initData: FlatNode[]) {
+  constructor(
+    private treeControl: TreeControl<FlatNode>,
+    initData: FlatNode[]
+  ) {
     this.flattenedData = new BehaviorSubject<FlatNode[]>(initData);
     treeControl.dataNodes = initData;
   }
@@ -64,13 +66,9 @@ class DynamicDatasource implements DataSource<FlatNode> {
     const changes = [
       collectionViewer.viewChange,
       this.treeControl.expansionModel.changed.pipe(tap(change => this.handleExpansionChange(change))),
-      this.flattenedData
+      this.flattenedData.asObservable()
     ];
-    return merge(...changes).pipe(
-      map(() => {
-        return this.expandFlattenedNodes(this.flattenedData.getValue());
-      })
-    );
+    return merge(...changes).pipe(map(() => this.expandFlattenedNodes(this.flattenedData.getValue())));
   }
 
   expandFlattenedNodes(nodes: FlatNode[]): FlatNode[] {
@@ -132,17 +130,17 @@ class DynamicDatasource implements DataSource<FlatNode> {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle *ngIf="!node.loading">
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <nz-tree-node-toggle *ngIf="node.loading" nzTreeNodeNoopToggle>
-          <i nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></i>
+          <span nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></span>
         </nz-tree-node-toggle>
         {{ node.label }}
       </nz-tree-node>
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
+export class NzDemoTreeViewDynamicComponent {
   treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,
     node => node.expandable
@@ -152,7 +150,5 @@ export class NzDemoTreeViewDynamicComponent implements AfterViewInit {
 
   constructor() {}
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
-
-  ngAfterViewInit(): void {}
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

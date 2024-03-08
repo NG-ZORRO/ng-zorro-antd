@@ -1,10 +1,14 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
-import { Component, Provider, Type, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createMouseEvent } from 'ng-zorro-antd/core/testing';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
+
+import { createKeyboardEvent, createMouseEvent, dispatchEvent } from 'ng-zorro-antd/core/testing';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 import { NzContextMenuService } from './context-menu.service';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
 import { NzDropDownModule } from './dropdown.module';
@@ -15,11 +19,11 @@ describe('context-menu', () => {
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     declarations: any[] = []
   ): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [NzDropDownModule, NzMenuModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
       declarations: [component, ...declarations],
       providers
     })
@@ -45,7 +49,8 @@ describe('context-menu', () => {
     expect(() => {
       const fakeEvent = createMouseEvent('contextmenu', 300, 300);
       const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      expect(viewRef).toBeTruthy();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
@@ -74,7 +79,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should dropdown close when scroll', fakeAsync(() => {
-    const scrolledSubject = new Subject();
+    const scrolledSubject = new Subject<void>();
     const fixture = createComponent(
       NzTestDropdownContextMenuComponent,
       [{ provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }],
@@ -117,6 +122,43 @@ describe('context-menu', () => {
       expect(overlayContainerElement.textContent).toBe('');
     }).not.toThrowError();
   }));
+  it('should backdrop work with keyboard event ESCAPE', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const keyboardEvent = createKeyboardEvent('keydown', ESCAPE, undefined, 'Escape');
+    fixture.detectChanges();
+    expect(overlayContainerElement.textContent).toBe('');
+    fixture.detectChanges();
+    expect(() => {
+      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+      const component = fixture.componentInstance;
+      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('1st menu item');
+      dispatchEvent(document.body, keyboardEvent);
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toBe('');
+    }).not.toThrowError();
+  }));
+  it('should not run change detection if the overlay is clicked inside', async () => {
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    fixture.detectChanges();
+    const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const appRef = TestBed.inject(ApplicationRef);
+    spyOn(appRef, 'tick');
+    overlayContainerElement.querySelector('ul')!.click();
+    expect(appRef.tick).toHaveBeenCalledTimes(0);
+    document.body.click();
+    expect(appRef.tick).toHaveBeenCalledTimes(1);
+  });
 });
 
 @Component({

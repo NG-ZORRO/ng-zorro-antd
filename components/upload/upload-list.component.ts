@@ -6,20 +6,35 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import {
+  DOCUMENT,
+  NgForOf,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
   Input,
   NgZone,
   OnChanges,
+  OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
@@ -42,11 +57,15 @@ interface UploadListFile extends NzUploadFile {
   templateUrl: './upload-list.component.html',
   animations: [
     trigger('itemState', [
-      transition(':enter', [style({ height: '0', width: '0', opacity: 0 }), animate(150, style({ height: '*', width: '*', opacity: 1 }))]),
+      transition(':enter', [
+        style({ height: '0', width: '0', opacity: 0 }),
+        animate(150, style({ height: '*', width: '*', opacity: 1 }))
+      ]),
       transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
     ])
   ],
   host: {
+    class: 'ant-upload-list',
     '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
     '[class.ant-upload-list-text]': `listType === 'text'`,
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
@@ -54,9 +73,23 @@ interface UploadListFile extends NzUploadFile {
   },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgForOf,
+    NzToolTipModule,
+    NgSwitch,
+    NgTemplateOutlet,
+    NgIf,
+    NgSwitchDefault,
+    NgSwitchCase,
+    NzIconModule,
+    NzButtonModule,
+    NgStyle,
+    NzProgressModule
+  ],
+  standalone: true
 })
-export class NzUploadListComponent implements OnChanges {
+export class NzUploadListComponent implements OnChanges, OnDestroy {
   list: UploadListFile[] = [];
 
   private get showPic(): boolean {
@@ -77,6 +110,8 @@ export class NzUploadListComponent implements OnChanges {
   @Input() previewIsImage?: (file: NzUploadFile) => boolean;
   @Input() iconRender: NzIconRenderTemplate | null = null;
   @Input() dir: Direction = 'ltr';
+
+  private destroy$ = new Subject<void>();
 
   private genErr(file: NzUploadFile): string {
     if (file.response && typeof file.response === 'string') {
@@ -124,47 +159,47 @@ export class NzUploadListComponent implements OnChanges {
     }
   }
 
-  private previewImage(file: File | Blob): Promise<string> {
-    return new Promise(resolve => {
-      if (!isImageFileType(file.type)) {
-        resolve('');
-        return;
-      }
-      this.ngZone.runOutsideAngular(() => {
-        const canvas = this.doc.createElement('canvas');
-        canvas.width = MEASURE_SIZE;
-        canvas.height = MEASURE_SIZE;
-        canvas.style.cssText = `position: fixed; left: 0; top: 0; width: ${MEASURE_SIZE}px; height: ${MEASURE_SIZE}px; z-index: 9999; display: none;`;
-        this.doc.body.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.onload = () => {
-          const { width, height } = img;
+  private previewImage(file: File | Blob): Observable<string> {
+    if (!isImageFileType(file.type) || !this.platform.isBrowser) {
+      return of('');
+    }
 
-          let drawWidth = MEASURE_SIZE;
-          let drawHeight = MEASURE_SIZE;
-          let offsetX = 0;
-          let offsetY = 0;
+    const canvas = this.doc.createElement('canvas');
+    canvas.width = MEASURE_SIZE;
+    canvas.height = MEASURE_SIZE;
+    canvas.style.cssText = `position: fixed; left: 0; top: 0; width: ${MEASURE_SIZE}px; height: ${MEASURE_SIZE}px; z-index: 9999; display: none;`;
+    this.doc.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.src = objectUrl;
+    return fromEvent(img, 'load').pipe(
+      map(() => {
+        const { width, height } = img;
 
-          if (width < height) {
-            drawHeight = height * (MEASURE_SIZE / width);
-            offsetY = -(drawHeight - drawWidth) / 2;
-          } else {
-            drawWidth = width * (MEASURE_SIZE / height);
-            offsetX = -(drawWidth - drawHeight) / 2;
-          }
+        let drawWidth = MEASURE_SIZE;
+        let drawHeight = MEASURE_SIZE;
+        let offsetX = 0;
+        let offsetY = 0;
 
-          try {
-            ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-          } catch {}
-          const dataURL = canvas.toDataURL();
-          this.doc.body.removeChild(canvas);
+        if (width < height) {
+          drawHeight = height * (MEASURE_SIZE / width);
+          offsetY = -(drawHeight - drawWidth) / 2;
+        } else {
+          drawWidth = width * (MEASURE_SIZE / height);
+          offsetX = -(drawWidth - drawHeight) / 2;
+        }
 
-          resolve(dataURL);
-        };
-        img.src = window.URL.createObjectURL(file);
-      });
-    });
+        try {
+          ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        } catch {}
+        const dataURL = canvas.toDataURL();
+        this.doc.body.removeChild(canvas);
+
+        URL.revokeObjectURL(objectUrl);
+        return dataURL;
+      })
+    );
   }
 
   private genThumb(): void {
@@ -173,16 +208,32 @@ export class NzUploadListComponent implements OnChanges {
     }
 
     const win = window as NzSafeAny;
-    if (!this.showPic || typeof document === 'undefined' || typeof win === 'undefined' || !win.FileReader || !win.File) {
+    if (
+      !this.showPic ||
+      typeof document === 'undefined' ||
+      typeof win === 'undefined' ||
+      !win.FileReader ||
+      !win.File
+    ) {
       return;
     }
     this.list
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
       .forEach(file => {
         file.thumbUrl = '';
-        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(dataUrl => {
-          file.thumbUrl = dataUrl;
-          this.detectChanges();
+        // Caretaker note: we shouldn't use promises here since they're not cancellable.
+        // A promise microtask can be resolved after the view is destroyed. Thus running `detectChanges()`
+        // will cause a runtime exception (`detectChanges()` cannot be run on destroyed views).
+        const dataUrl$ = (this.previewFile ? this.previewFile(file) : this.previewImage(file.originFileObj!)).pipe(
+          takeUntil(this.destroy$)
+        );
+        this.ngZone.runOutsideAngular(() => {
+          dataUrl$.subscribe(dataUrl => {
+            this.ngZone.run(() => {
+              file.thumbUrl = dataUrl;
+              this.detectChanges();
+            });
+          });
         });
       });
   }
@@ -233,12 +284,8 @@ export class NzUploadListComponent implements OnChanges {
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private doc: NzSafeAny,
     private ngZone: NgZone,
-    private platform: Platform,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-upload-list');
-  }
+    private platform: Platform
+  ) {}
 
   detectChanges(): void {
     this.fixData();
@@ -248,5 +295,9 @@ export class NzUploadListComponent implements OnChanges {
   ngOnChanges(): void {
     this.fixData();
     this.genThumb();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 }

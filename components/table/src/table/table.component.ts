@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -25,25 +26,30 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
-import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
+import { NzPaginationModule, PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { NzSpinComponent } from 'ng-zorro-antd/spin';
+
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
-  NzTableData,
+  NzCustomColumn,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
   NzTableQueryParams,
   NzTableSize
 } from '../table.types';
+import { NzTableInnerDefaultComponent } from './table-inner-default.component';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
+import { NzTableTitleFooterComponent } from './title-footer.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 
@@ -128,10 +134,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     </ng-template>
   `,
   host: {
-    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
-  }
+    class: 'ant-table-wrapper',
+    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
+    '[class.ant-table-custom-column]': `nzCustomColumn.length`
+  },
+  imports: [
+    NzSpinComponent,
+    NgIf,
+    NgTemplateOutlet,
+    NzTableTitleFooterComponent,
+    NzTableInnerScrollComponent,
+    NzTableInnerDefaultComponent,
+    NzPaginationModule
+  ],
+  standalone: true
 })
-export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzFrontPagination: BooleanInput;
@@ -155,13 +173,15 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() nzVirtualItemSize = 0;
   @Input() nzVirtualMaxBufferPx = 200;
   @Input() nzVirtualMinBufferPx = 100;
-  @Input() nzVirtualForTrackBy: TrackByFunction<NzTableData> = index => index;
+  @Input() nzVirtualForTrackBy: TrackByFunction<T> = index => index;
   @Input() nzLoadingDelay = 0;
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
-  @Input() nzData: ReadonlyArray<T> = [];
+  @Input() nzData: readonly T[] = [];
+  @Input() nzCustomColumn: NzCustomColumn[] = [];
+
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() nzPaginationType: NzTablePaginationType = 'default';
@@ -180,10 +200,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<ReadonlyArray<NzTableData>>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
+  @Output() readonly nzCustomColumnChange = new EventEmitter<readonly NzCustomColumn[]>();
 
   /** public data for ngFor tr */
-  public data: ReadonlyArray<T> = [];
+  public data: readonly T[] = [];
   public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
@@ -194,12 +215,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   hasFixRight = false;
   showPagination = true;
   private destroy$ = new Subject<void>();
-  private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
   dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
-  nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
-  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
+  nzVirtualScrollDirective!: NzTableVirtualScrollDirective<T>;
+  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent<T>;
   verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
     this.nzTableDataService.updatePageSize(size);
@@ -215,11 +235,9 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService,
+    private nzTableDataService: NzTableDataService<T>,
     @Optional() private directionality: Directionality
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-wrapper');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -229,7 +247,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$, listOfCustomColumn$ } =
+      this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
@@ -268,6 +287,12 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       this.cdr.markForCheck();
     });
 
+    listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.nzCustomColumn = data;
+      this.nzCustomColumnChange.next(data);
+      this.cdr.markForCheck();
+    });
+
     theadTemplate$.pipe(takeUntil(this.destroy$)).subscribe(theadTemplate => {
       this.theadTemplate = theadTemplate;
       this.cdr.markForCheck();
@@ -283,9 +308,9 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       this.cdr.markForCheck();
     });
 
-    combineLatest([total$, this.loading$, this.templateMode$])
+    combineLatest([total$, this.templateMode$])
       .pipe(
-        map(([total, loading, templateMode]) => total === 0 && !loading && !templateMode),
+        map(([total, templateMode]) => total === 0 && !templateMode),
         takeUntil(this.destroy$)
       )
       .subscribe(empty => {
@@ -304,7 +329,17 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzLoading, nzTemplateMode } = changes;
+    const {
+      nzScroll,
+      nzPageIndex,
+      nzPageSize,
+      nzFrontPagination,
+      nzData,
+      nzCustomColumn,
+      nzWidthConfig,
+      nzNoResult,
+      nzTemplateMode
+    } = changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }
@@ -315,6 +350,10 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       this.nzData = this.nzData || [];
       this.nzTableDataService.updateListOfData(this.nzData);
     }
+    if (nzCustomColumn) {
+      this.nzCustomColumn = this.nzCustomColumn || [];
+      this.nzTableDataService.updateListOfCustomColumn(this.nzCustomColumn);
+    }
     if (nzFrontPagination) {
       this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);
     }
@@ -323,9 +362,6 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     }
     if (nzWidthConfig) {
       this.nzTableStyleService.setTableWidthConfig(this.nzWidthConfig);
-    }
-    if (nzLoading) {
-      this.loading$.next(this.nzLoading);
     }
     if (nzTemplateMode) {
       this.templateMode$.next(this.nzTemplateMode);

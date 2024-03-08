@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-normal-login',
@@ -30,7 +30,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         </div>
       </div>
       <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-      Or <a> register now! </a>
+      Or
+      <a>register now!</a>
     </form>
   `,
   styles: [
@@ -53,23 +54,29 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     `
   ]
 })
-export class NzDemoFormNormalLoginComponent implements OnInit {
-  validateForm!: FormGroup;
+export class NzDemoFormNormalLoginComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }

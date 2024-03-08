@@ -13,8 +13,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
             [(ngModel)]="inputValue"
             (ngModelChange)="renderPreView()"
             nzMentionTrigger
-          >
-          </textarea>
+          ></textarea>
         </nz-mention>
       </nz-tab>
       <nz-tab nzTitle="Preview">

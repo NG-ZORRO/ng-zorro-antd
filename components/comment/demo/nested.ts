@@ -10,15 +10,15 @@ import { Component } from '@angular/core';
           <p>{{ comment.content }}</p>
         </nz-comment-content>
         <nz-comment-action>Reply to</nz-comment-action>
-        <ng-container *ngIf="comment.children && comment.children.length">
-          <ng-template ngFor let-child [ngForOf]="comment.children">
-            <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }"> </ng-template>
-          </ng-template>
-        </ng-container>
+        @if (comment.children && comment.children.length) {
+          @for (child of comment.children; track child) {
+            <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }" />
+          }
+        }
       </nz-comment>
     </ng-template>
 
-    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"> </ng-template>
+    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"></ng-template>
   `
 })
 export class NzDemoCommentNestedComponent {

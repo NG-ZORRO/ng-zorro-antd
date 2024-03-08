@@ -14,4 +14,5 @@ export * from './outlet';
 export * from './padding';
 export * from './toggle';
 export * from './tree-view';
+export * from './tree';
 export * from './tree-virtual-scroll-view';

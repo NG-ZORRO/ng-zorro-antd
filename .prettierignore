@@ -6,3 +6,4 @@ publish/
 schematics/
 package.json
 **/template/*
+dist

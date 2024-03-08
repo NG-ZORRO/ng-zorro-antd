@@ -3,22 +3,32 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { isPlatformBrowser, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
+  inject,
   Input,
+  NgZone,
   OnChanges,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+
+import { NzOptionItemGroupComponent } from './option-item-group.component';
+import { NzOptionItemComponent } from './option-item.component';
 import { NzSelectItemInterface, NzSelectModeType } from './select.types';
 
 @Component({
@@ -58,6 +68,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               [grouped]="!!item.groupLabel"
               [disabled]="item.nzDisabled"
               [showState]="mode === 'tags' || mode === 'multiple'"
+              [title]="item.nzTitle"
               [label]="item.nzLabel"
               [compareWith]="compareWith"
               [activatedValue]="activatedValue"
@@ -71,7 +82,20 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
       </cdk-virtual-scroll-viewport>
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
-  `
+  `,
+  host: { class: 'ant-select-dropdown' },
+  imports: [
+    NzEmptyModule,
+    NgIf,
+    NgSwitch,
+    NzOptionItemGroupComponent,
+    NgSwitchCase,
+    NzOptionItemComponent,
+    NgTemplateOutlet,
+    OverlayModule,
+    NzOverlayModule
+  ],
+  standalone: true
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
@@ -89,11 +113,8 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
-
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-select-dropdown');
-  }
+  private ngZone = inject(NgZone);
+  private platformId = inject(PLATFORM_ID);
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);
@@ -128,7 +149,10 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
       this.scrollToActivatedValue();
     }
   }
+
   ngAfterViewInit(): void {
-    setTimeout(() => this.scrollToActivatedValue());
+    if (isPlatformBrowser(this.platformId)) {
+      this.ngZone.runOutsideAngular(() => setTimeout(() => this.scrollToActivatedValue()));
+    }
   }
 }

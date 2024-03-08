@@ -7,20 +7,21 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { defer, Observable, Subject } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
-import { defer, Observable, Subject } from 'rxjs';
-import { startWith } from 'rxjs/operators';
 
-import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, NZ_MODAL_DATA } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
-import { BaseModalContainerComponent } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig } from './utils';
 
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
@@ -50,8 +51,8 @@ export class NzModalService implements OnDestroy {
     @Optional() private directionality: Directionality
   ) {}
 
-  create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
-    return this.open<T, R>(config.nzContent as ComponentType<T>, config);
+  create<T, D = NzSafeAny, R = NzSafeAny>(config: ModalOptions<T, D, R>): NzModalRef<T, R> {
+    return this.open<T, D, R>(config.nzContent as ComponentType<T>, config);
   }
 
   closeAll(): void {
@@ -90,11 +91,11 @@ export class NzModalService implements OnDestroy {
     return this.confirmFactory(options, 'warning');
   }
 
-  private open<T, R>(componentOrTemplateRef: ContentType<T>, config?: ModalOptions): NzModalRef<T, R> {
+  private open<T, D, R>(componentOrTemplateRef: ContentType<T>, config?: ModalOptions<T, D, R>): NzModalRef<T, R> {
     const configMerged = applyConfigDefaults(config || {}, new ModalOptions());
     const overlayRef = this.createOverlay(configMerged);
     const modalContainer = this.attachModalContainer(overlayRef, configMerged);
-    const modalRef = this.attachModalContent<T, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
+    const modalRef = this.attachModalContent<T, D, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
     modalContainer.modalRef = modalRef;
 
     this.openModals.push(modalRef);
@@ -157,13 +158,17 @@ export class NzModalService implements OnDestroy {
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
           NzModalContainerComponent;
 
-    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(ContainerComponent, config.nzViewContainerRef, injector);
+    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(
+      ContainerComponent,
+      config.nzViewContainerRef,
+      injector
+    );
     const containerRef = overlayRef.attach<BaseModalContainerComponent>(containerPortal);
 
     return containerRef.instance;
   }
 
-  private attachModalContent<T, R>(
+  private attachModalContent<T, D, R>(
     componentOrTemplateRef: ContentType<T>,
     modalContainer: BaseModalContainerComponent,
     overlayRef: OverlayRef,
@@ -173,14 +178,17 @@ export class NzModalService implements OnDestroy {
 
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
-        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as NzSafeAny)
+        new TemplatePortal<T>(componentOrTemplateRef, null!, {
+          $implicit: config.nzData,
+          modalRef
+        } as NzSafeAny)
       );
     } else if (isNotNil(componentOrTemplateRef) && typeof componentOrTemplateRef !== 'string') {
-      const injector = this.createInjector<T, R>(modalRef, config);
+      const injector = this.createInjector<T, D, R>(modalRef, config);
       const contentRef = modalContainer.attachComponentPortal<T>(
         new ComponentPortal(componentOrTemplateRef, config.nzViewContainerRef, injector)
       );
-      setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
+      modalRef.componentRef = contentRef;
       modalRef.componentInstance = contentRef.instance;
     } else {
       modalContainer.attachStringContent();
@@ -188,12 +196,15 @@ export class NzModalService implements OnDestroy {
     return modalRef;
   }
 
-  private createInjector<T, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T>): Injector {
+  private createInjector<T, D, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T, D, R>): Injector {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
 
     return Injector.create({
       parent: userInjector || this.injector,
-      providers: [{ provide: NzModalRef, useValue: modalRef }]
+      providers: [
+        { provide: NzModalRef, useValue: modalRef },
+        { provide: NZ_MODAL_DATA, useValue: config.nzData }
+      ]
     });
   }
 

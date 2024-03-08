@@ -8,7 +8,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTooltipBaseDirective } from './base';
+import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
 import { NzToolTipModule } from './tooltip.module';
 
@@ -79,7 +79,7 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(overlayElement, 'mouseleave');
       waitingForTooltipToggling();
-      // FIXME@wendellhu95: the following line errors
+      // FIXME@hullis: the following line errors
       // expect(overlayContainerElement.textContent).not.toContain(title);
       // Don't know why this breaks. The website works fine.
 
@@ -134,11 +134,11 @@ describe('nz-tooltip', () => {
       const title = 'focus';
       const triggerElement = component.focusTemplate.nativeElement;
 
-      dispatchMouseEvent(triggerElement, 'focus');
+      dispatchMouseEvent(triggerElement, 'focusin');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(triggerElement, 'blur');
+      dispatchMouseEvent(triggerElement, 'focusout');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
@@ -155,6 +155,23 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
       expect(component.visibilityTogglingCount).toBe(2);
+    }));
+
+    it('should not hide tooltip when `nzTooltipTrigger` is null', fakeAsync(() => {
+      const title = 'always show';
+
+      component.trigger = null;
+      component.visible = true;
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      component.trigger = 'click';
+      waitingForTooltipToggling();
+      dispatchMouseEvent(document.body, 'click');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).not.toContain(title);
     }));
   });
 
@@ -183,7 +200,9 @@ describe('nz-tooltip', () => {
 
       component.style = { color: '#fff' };
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(255, 255, 255)');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe(
+        'rgb(255, 255, 255)'
+      );
 
       component.style = { color: '#000' };
       fixture.detectChanges();
@@ -274,15 +293,19 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain('ant-tooltip-pink');
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
+        'ant-tooltip-pink'
+      );
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor).toBe(
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
         'rgb(255, 85, 0)'
       );
+      expect(
+        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
+      ).toBe('rgb(255, 85, 0)');
     }));
   });
 
@@ -308,7 +331,30 @@ describe('origin', () => {
   }));
 
   it('should target work', () => {
-    expect((component.tooltip!.component!.origin!.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+    expect((component.tooltip!.component!.origin!.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+  });
+});
+
+describe('arrow', () => {
+  let testBed: ComponentBed<NzTestTooltipArrowComponent>;
+  let component: NzTestTooltipArrowComponent;
+
+  beforeEach(fakeAsync(() => {
+    testBed = createComponentBed(NzTestTooltipArrowComponent, {
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    });
+    component = testBed.component;
+  }));
+
+  it('should support arrow pointing at center', () => {
+    const overlayElement = getOverlayElementForTooltip(component.tooltipDirective);
+
+    expect(overlayElement.querySelector('.ant-tooltip-arrow')).toBeTruthy();
+    // just read style.transform wouldn't get us the correct result
+    /** FIXME
+     * This test failed on CI but not on local ...
+     * expect(overlayElement.parentElement!.innerHTML).toContain('transform: translateX');
+     * **/
   });
 });
 
@@ -333,7 +379,9 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">Click</a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger" [nzTooltipColor]="color">
+      Click
+    </a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
@@ -346,6 +394,16 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       (nzTooltipVisibleChange)="onVisibleChange()"
     >
       Manually
+    </a>
+
+    <a
+      #alwaysShow
+      nz-tooltip
+      [nzTooltipTrigger]="trigger"
+      [nzTooltipTitle]="'always show'"
+      [nzTooltipVisible]="visible"
+    >
+      Always Show
     </a>
 
     <div>
@@ -367,8 +425,9 @@ export class NzTooltipTestComponent {
   titleTemplateDirective!: NzTooltipDirective;
 
   @ViewChild('focusTooltip', { static: false }) focusTemplate!: ElementRef;
+  @ViewChild('alwaysShow', { static: false }) alwaysShow!: ElementRef;
 
-  trigger: string | null = 'click';
+  trigger: NzTooltipTrigger = 'click';
 
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup!: ElementRef;
 
@@ -400,4 +459,20 @@ export class NzTooltipTestComponent {
 })
 export class NzTestTooltipTargetComponent {
   @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
+}
+
+@Component({
+  template: ` <a
+    #titleString
+    nz-tooltip
+    [nzTooltipVisible]="true"
+    nzTooltipTitle="Title"
+    nzTooltipPlacement="bottomLeft"
+    [nzTooltipArrowPointAtCenter]="true"
+  >
+    Tooltip
+  </a>`
+})
+export class NzTestTooltipArrowComponent {
+  @ViewChild('titleString', { static: false, read: NzTooltipDirective }) tooltipDirective!: NzTooltipDirective;
 }

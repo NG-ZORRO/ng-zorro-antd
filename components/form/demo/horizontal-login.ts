@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-horizontal-login',
@@ -27,23 +27,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     </form>
   `
 })
-export class NzDemoFormHorizontalLoginComponent implements OnInit {
-  validateForm!: FormGroup;
+export class NzDemoFormHorizontalLoginComponent {
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    password: FormControl<string>;
+    remember: FormControl<boolean>;
+  }> = this.fb.group({
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    remember: [true]
+  });
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
+    console.log('submit', this.validateForm.value);
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }

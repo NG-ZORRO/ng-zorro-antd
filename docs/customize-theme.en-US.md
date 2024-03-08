@@ -219,7 +219,7 @@ You can get more information about custom-webpack builder following the articles
 * [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
 * [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
-All less variables can be viewed [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
+All less variables can be viewed [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less) is a sample of theme define file.
 
 
 

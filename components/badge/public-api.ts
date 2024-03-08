@@ -4,4 +4,5 @@
  */
 
 export * from './badge.component';
+export * from './ribbon.component';
 export * from './badge.module';

@@ -67,8 +67,8 @@
   }
 
   .gh-count {
-    height: auto;
     min-width: 45px;
+    height: auto;
     padding: 4px 8px;
     font-weight: normal;
     background: #fff;
@@ -105,8 +105,8 @@
   img {
     position: relative;
     top: -1.5px;
-    height: 32px;
     width: 28.27px;
+    height: 32px;
     margin-right: 16px;
 
     .page-wrapper-rtl & {
@@ -134,14 +134,18 @@
 
     & > .ant-menu-item,
     & > .ant-menu-submenu {
-      min-width: 40px;
+      min-width: (40px + 12px * 2);
       height: @header-height;
-      line-height: @header-height - @menu-item-border - 2px;
-      border-top: @menu-item-border solid transparent;
+      padding-right: 12px;
+      padding-left: 12px;
+      line-height: @header-height;
 
-      &:hover {
-        border-top: @menu-item-border solid @primary-color;
-        border-bottom: @menu-item-border solid transparent;
+      &::after {
+        top: 0;
+        right: 12px;
+        bottom: auto;
+        left: 12px;
+        border-width: @menu-item-border;
       }
     }
 
@@ -149,14 +153,7 @@
       margin: 0;
     }
 
-    & > .ant-menu-submenu-open {
-      border-top: @menu-item-border solid @primary-color;
-      border-bottom: @menu-item-border solid transparent;
-    }
-
     & > .ant-menu-item-selected {
-      border-top: @menu-item-border solid @primary-color;
-      border-bottom: @menu-item-border solid transparent;
       a {
         color: @primary-color;
       }
@@ -229,8 +226,8 @@
     border-left: none;
 
     input {
-      padding-left: 11px;
       padding-right: 20px;
+      padding-left: 11px;
     }
   }
 
@@ -316,12 +313,15 @@
     border-radius: 0;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
   }
+
   .ant-select-dropdown-menu {
     max-height: 200px;
   }
+
   .ant-select-dropdown-menu-item {
     border-radius: 0 !important;
   }
+
   .ant-component-decs {
     position: absolute;
     right: 16px;
@@ -338,5 +338,23 @@
 @media only screen and (max-width: @mobile-max-width) {
   #search-box {
     display: none;
+  }
+}
+
+@keyframes textGradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  33% {
+    background-position: 100% 50%;
+  }
+
+  66% {
+    background-position: 200% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }

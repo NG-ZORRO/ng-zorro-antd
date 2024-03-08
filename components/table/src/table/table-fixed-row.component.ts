@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -16,6 +17,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { NzTableStyleService } from '../table-style.service';
 
 @Component({
@@ -33,20 +35,27 @@ import { NzTableStyleService } from '../table-style.service';
         <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
       </div>
     </td>
-    <ng-template #contentTemplate><ng-content></ng-content></ng-template>
-  `
+    <ng-template #contentTemplate>
+      <ng-content></ng-content>
+    </ng-template>
+  `,
+  imports: [NgIf, AsyncPipe, NgTemplateOutlet],
+  standalone: true
 })
 export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('tdElement') tdElement!: ElementRef;
+  @ViewChild('tdElement', { static: true }) tdElement!: ElementRef;
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
-  private destroy$ = new Subject();
-  constructor(private nzTableStyleService: NzTableStyleService, private renderer: Renderer2) {}
+  private destroy$ = new Subject<boolean>();
+  constructor(
+    private nzTableStyleService: NzTableStyleService,
+    private renderer: Renderer2
+  ) {}
   ngOnInit(): void {
     if (this.nzTableStyleService) {
       const { enableAutoMeasure$, hostWidth$ } = this.nzTableStyleService;
-      enableAutoMeasure$.subscribe(this.enableAutoMeasure$);
-      hostWidth$.subscribe(this.hostWidth$);
+      enableAutoMeasure$.pipe(takeUntil(this.destroy$)).subscribe(this.enableAutoMeasure$);
+      hostWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.hostWidth$);
     }
   }
   ngAfterViewInit(): void {
@@ -55,7 +64,7 @@ export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

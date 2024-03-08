@@ -5,12 +5,25 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, Optional, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzCheckboxComponent } from './checkbox.component';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -25,16 +38,17 @@ export interface NzCheckBoxOptionInterface {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label
-      nz-checkbox
-      class="ant-checkbox-group-item"
-      *ngFor="let o of options; trackBy: trackByOption"
-      [nzDisabled]="o.disabled || nzDisabled"
-      [nzChecked]="o.checked!"
-      (nzCheckedChange)="onCheckedChange(o, $event)"
-    >
-      <span>{{ o.label }}</span>
-    </label>
+    @for (option of options; track option.value) {
+      <label
+        nz-checkbox
+        class="ant-checkbox-group-item"
+        [nzDisabled]="option.disabled || nzDisabled"
+        [nzChecked]="option.checked!"
+        (nzCheckedChange)="onCheckedChange(option, $event)"
+      >
+        <span>{{ option.label }}</span>
+      </label>
+    }
   `,
   providers: [
     {
@@ -44,8 +58,11 @@ export interface NzCheckBoxOptionInterface {
     }
   ],
   host: {
+    class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NzCheckboxComponent],
+  standalone: true
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -58,10 +75,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
-
-  trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
-    return option.value;
-  }
+  private isNzDisableFirstChange: boolean = true;
 
   onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
     option.checked = checked;
@@ -73,17 +87,17 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-checkbox-group');
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        Promise.resolve().then(() => this.onTouched());
-      }
-    });
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          Promise.resolve().then(() => this.onTouched());
+        }
+      });
 
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -113,7 +127,8 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 }

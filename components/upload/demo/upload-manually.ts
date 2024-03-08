@@ -1,21 +1,25 @@
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { filter } from 'rxjs/operators';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-upload-upload-manually',
   template: `
     <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
-      <button nz-button><i nz-icon nzType="upload"></i>Select File</button>
+      <button nz-button>
+        <span nz-icon nzType="upload"></span>
+        Select File
+      </button>
     </nz-upload>
     <button
       nz-button
       [nzType]="'primary'"
       [nzLoading]="uploading"
       (click)="handleUpload()"
-      [disabled]="fileList.length == 0"
+      [disabled]="fileList.length === 0"
       style="margin-top: 16px"
     >
       {{ uploading ? 'Uploading' : 'Start Upload' }}
@@ -26,7 +30,10 @@ export class NzDemoUploadUploadManuallyComponent {
   uploading = false;
   fileList: NzUploadFile[] = [];
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private msg: NzMessageService
+  ) {}
 
   beforeUpload = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.concat(file);
@@ -35,7 +42,7 @@ export class NzDemoUploadUploadManuallyComponent {
 
   handleUpload(): void {
     const formData = new FormData();
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.fileList.forEach((file: any) => {
       formData.append('files[]', file);
     });

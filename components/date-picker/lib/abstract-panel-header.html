@@ -3,6 +3,7 @@
     [style.visibility]="showSuperPreBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-super-prev-btn"
     role="button"
+    type="button"
     tabindex="-1"
     title="{{ superPreviousTitle() }}"
     (click)="superPrevious()"
@@ -13,6 +14,7 @@
     [style.visibility]="showPreBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-prev-btn"
     role="button"
+    type="button"
     title="{{ previousTitle() }}"
     tabindex="-1"
     (click)="previous()"
@@ -21,7 +23,7 @@
   </button>
 
   <div class="{{ prefixCls }}-view">
-    <ng-container *ngFor="let selector of selectors">
+    @for(selector of selectors; track selector) {
       <button
         class="{{ selector.className }}"
         role="button"
@@ -31,12 +33,13 @@
       >
         {{ selector.label }}
       </button>
-    </ng-container>
+    }
   </div>
   <button
     [style.visibility]="showNextBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-next-btn"
     role="button"
+    type="button"
     tabindex="-1"
     title="{{ nextTitle() }}"
     (click)="next()"
@@ -47,6 +50,7 @@
     [style.visibility]="showSuperNextBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-super-next-btn"
     role="button"
+    type="button"
     tabindex="-1"
     title="{{ superNextTitle() }}"
     (click)="superNext()"

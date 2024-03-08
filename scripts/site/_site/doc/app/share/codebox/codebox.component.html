@@ -18,7 +18,7 @@
       <a (click)="navigateToFragment()"
       >{{ nzTitle }}
         <a class="edit-button" [attr.href]="nzHref" target="_blank" rel="noopener noreferrer">
-          <i nz-icon nzType="edit"></i>
+          <span nz-icon nzType="edit"></span>
         </a>
       </a>
     </div>
@@ -26,7 +26,7 @@
       <ng-content select="[intro]"></ng-content>
     </div>
     <div class="code-box-actions">
-      <i
+      <span
         [nzTooltipTitle]="!onlineIDELoading ?
         language==='zh' ? '在 CodeSandbox 上打开':'Edit On CodeSandbox':
         language==='zh'? '加载中...' : 'Loading...'"
@@ -35,8 +35,8 @@
         nzType="code-sandbox"
         class="code-box-code-copy"
         (click)="openOnlineIDE('CodeSandbox')"
-      ></i>
-      <i
+      ></span>
+      <span
         [nzTooltipTitle]="!onlineIDELoading ?
         language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz':
         language==='zh'? '加载中...' : 'Loading...'"
@@ -46,8 +46,8 @@
         nzTheme="fill"
         class="code-box-code-copy"
         (click)="openOnlineIDE()"
-      ></i>
-      <i
+      ></span>
+      <span
         [nzTooltipTitle]="!copyLoading ?
         language==='zh'? '复制代码' : 'Copy Code' :
         language==='zh'? '加载中...' : 'Loading...'"
@@ -57,8 +57,8 @@
         class="code-box-code-copy"
         [class.ant-tooltip-open]="copied"
         (click)="copyCode()"
-      ></i>
-      <i
+      ></span>
+      <span
         [nzTooltipTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
         *ngIf="nzGenerateCommand"
         nz-tooltip
@@ -67,7 +67,7 @@
         class="code-box-code-copy"
         [class.ant-tooltip-open]="commandCopied"
         (click)="copyGenerateCommand(nzGenerateCommand)"
-      ></i>
+      ></span>
       <span class="code-expand-icon"
             nz-tooltip
             [nzTooltipTitle]="nzExpanded ?

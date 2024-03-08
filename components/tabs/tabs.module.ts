@@ -2,17 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { A11yModule } from '@angular/cdk/a11y';
-import { BidiModule } from '@angular/cdk/bidi';
-import { ObserversModule } from '@angular/cdk/observers';
-import { PlatformModule } from '@angular/cdk/platform';
-import { CdkScrollableModule } from '@angular/cdk/scrolling';
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
 
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgModule } from '@angular/core';
 
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabBodyComponent } from './tab-body.component';
@@ -44,18 +35,7 @@ const DIRECTIVES = [
 ];
 
 @NgModule({
-  declarations: [DIRECTIVES],
-  exports: [DIRECTIVES],
-  imports: [
-    BidiModule,
-    CommonModule,
-    ObserversModule,
-    NzIconModule,
-    NzOutletModule,
-    PlatformModule,
-    A11yModule,
-    CdkScrollableModule,
-    NzDropDownModule
-  ]
+  imports: [DIRECTIVES],
+  exports: [DIRECTIVES]
 })
 export class NzTabsModule {}

@@ -5,41 +5,38 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/select.component';
-import { NzSelectModule } from '../select/select.module';
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
 
 registerLocaleData(zh);
 
 describe('Calendar Header', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule],
-        declarations: [
-          CalendarHeader,
-          NzTestCalendarHeaderModeComponent,
-          NzTestCalendarHeaderFullscreenComponent,
-          NzTestCalendarHeaderActiveDateComponent,
-          NzTestCalendarHeaderChangesComponent
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule, CalendarHeader],
+      declarations: [
+        NzTestCalendarHeaderModeComponent,
+        NzTestCalendarHeaderFullscreenComponent,
+        NzTestCalendarHeaderActiveDateComponent,
+        NzTestCalendarHeaderChangesComponent
+      ]
+    }).compileComponents();
+  }));
 
   describe('mode', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderModeComponent>;
     let component: NzTestCalendarHeaderModeComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarHeaderModeComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarHeaderModeComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should be month by default', () => {
       fixture.detectChanges();
@@ -80,12 +77,10 @@ describe('Calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderFullscreenComponent>;
     let component: NzTestCalendarHeaderFullscreenComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarHeaderFullscreenComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarHeaderFullscreenComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should be true by default', () => {
       fixture.detectChanges();
@@ -117,11 +112,9 @@ describe('Calendar Header', () => {
   describe('activeDate', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderActiveDateComponent>;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
+    }));
 
     it('should be now by default', () => {
       const now = new Date();
@@ -152,12 +145,10 @@ describe('Calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
     let component: NzTestCalendarHeaderChangesComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should emit yearChange when year changed', () => {
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
@@ -221,9 +212,7 @@ class NzTestCalendarHeaderActiveDateComponent {
 }
 
 @Component({
-  template: `
-    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header>
-  `
+  template: ` <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header> `
 })
 class NzTestCalendarHeaderChangesComponent {
   year: number | null = null;

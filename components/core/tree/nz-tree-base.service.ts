@@ -4,9 +4,10 @@
  */
 
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject } from 'rxjs';
+
 import { NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
@@ -52,6 +53,26 @@ export class NzTreeBaseService {
    */
   getSelectedNodeList(): NzTreeNode[] {
     return this.conductNodeState('select');
+  }
+
+  /**
+   * get checked node keys
+   */
+  getCheckedNodeKeys(): NzTreeNodeKey[] {
+    const keys: NzTreeNodeKey[] = [];
+    const checkedNodes = this.getCheckedNodeList();
+
+    const calc = (nodes: NzTreeNode[]): void => {
+      nodes.forEach(node => {
+        keys.push(node.key);
+        if (node.children.length < 1) return;
+        calc(node.children);
+      });
+    };
+
+    calc(checkedNodes);
+
+    return keys;
   }
 
   /**
@@ -215,6 +236,7 @@ export class NzTreeBaseService {
 
   /**
    * check state
+   *
    * @param isCheckStrictly
    */
   refreshCheckState(isCheckStrictly: boolean = false): void {
@@ -281,7 +303,7 @@ export class NzTreeBaseService {
    */
   afterRemove(nodes: NzTreeNode[]): void {
     // to reset selectedNodeList & expandedNodeList
-    const loopNode = (node: NzTreeNode) => {
+    const loopNode = (node: NzTreeNode): void => {
       // remove selected node
       this.selectedNodeList = this.selectedNodeList.filter(n => n.key !== node.key);
       // remove expanded node
@@ -400,9 +422,9 @@ export class NzTreeBaseService {
    */
   formatEvent(eventName: string, node: NzTreeNode | null, event: MouseEvent | DragEvent | null): NzFormatEmitEvent {
     const emitStructure: NzFormatEmitEvent = {
-      eventName: eventName,
-      node: node,
-      event: event
+      eventName,
+      node,
+      event
     };
     switch (eventName) {
       case 'dragstart':
@@ -449,13 +471,14 @@ export class NzTreeBaseService {
   /**
    * Render by nzCheckedKeys
    * When keys equals null, just render with checkStrictly
+   *
    * @param keys
    * @param checkStrictly
    */
   conductCheck(keys: NzTreeNodeKey[] | null, checkStrictly: boolean): void {
     this.checkedNodeList = [];
     this.halfCheckedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
+    const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         if (keys === null) {
           // render tree if no default checked keys found
@@ -481,7 +504,7 @@ export class NzTreeBaseService {
   conductExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
     const expandedKeySet = new Set(keys === true ? [] : keys);
     this.expandedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
+    const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         node.setExpanded(keys === true || expandedKeySet.has(node.key) || node.isExpanded === true);
         if (node.isExpanded) {
@@ -498,8 +521,8 @@ export class NzTreeBaseService {
   conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
-    const calc = (nodes: NzTreeNode[]): boolean => {
-      return nodes.every(node => {
+    const calc = (nodes: NzTreeNode[]): boolean =>
+      nodes.every(node => {
         if (isInArray(node.key, keys)) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
@@ -516,12 +539,12 @@ export class NzTreeBaseService {
         }
         return true;
       });
-    };
     calc(this.rootNodes);
   }
 
   /**
    * Expand parent nodes by child node
+   *
    * @param node
    */
   expandNodeAllParentBySearch(node: NzTreeNode): void {

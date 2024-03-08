@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ pagina',
     jump_to: 'Ga naar',
     jump_to_confirm: 'bevestigen',
-    page: '',
+    page: 'Pagina',
     prev_page: 'Vorige pagina',
     next_page: 'Volgende pagina',
     prev_5: "Vorige 5 pagina's",
     next_5: "Volgende 5 pagina's",
     prev_3: "Vorige 3 pagina's",
-    next_3: "Volgende 3 pagina's"
+    next_3: "Volgende 3 pagina's",
+    page_size: 'pagina grootte'
   },
   DatePicker: {
     lang: {
@@ -46,14 +47,23 @@ export default {
       previousDecade: 'Vorig decennium',
       nextDecade: 'Volgend decennium',
       previousCentury: 'Vorige eeuw',
-      nextCentury: 'Volgende eeuw'
+      nextCentury: 'Volgende eeuw',
+      monthPlaceholder: 'Selecteer maand',
+      quarterPlaceholder: 'Selecteer kwartaal',
+      rangeMonthPlaceholder: ['Begin maand', 'Eind maand'],
+      rangeWeekPlaceholder: ['Begin week', 'Eind week'],
+      rangeYearPlaceholder: ['Begin jaar', 'Eind jaar'],
+      weekPlaceholder: 'Selecteer week',
+      yearPlaceholder: 'Selecteer jaar'
     },
     timePickerLocale: {
-      placeholder: 'Selecteer tijd'
+      placeholder: 'Selecteer tijd',
+      rangePlaceholder: ['Start tijd', 'Eind tijd']
     }
   },
   TimePicker: {
-    placeholder: 'Selecteer tijd'
+    placeholder: 'Selecteer tijd',
+    rangePlaceholder: ['Start tijd', 'Eind tijd']
   },
   Calendar: {
     lang: {
@@ -84,10 +94,18 @@ export default {
       previousDecade: 'Vorig decennium',
       nextDecade: 'Volgend decennium',
       previousCentury: 'Vorige eeuw',
-      nextCentury: 'Volgende eeuw'
+      nextCentury: 'Volgende eeuw',
+      monthPlaceholder: 'Selecteer maand',
+      quarterPlaceholder: 'Selecteer kwartaal',
+      rangeMonthPlaceholder: ['Begin maand', 'Eind maand'],
+      rangeWeekPlaceholder: ['Begin week', 'Eind week'],
+      rangeYearPlaceholder: ['Begin jaar', 'Eind jaar'],
+      weekPlaceholder: 'Selecteer week',
+      yearPlaceholder: 'Selecteer jaar'
     },
     timePickerLocale: {
-      placeholder: 'Selecteer tijd'
+      placeholder: 'Selecteer tijd',
+      rangePlaceholder: ['Start tijd', 'Eind tijd']
     }
   },
   global: {
@@ -98,32 +116,45 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Reset',
     selectAll: 'Selecteer huidige pagina',
-    selectInvert: 'Deselecteer huidige pagina',
+    selectInvert: 'Keer volgorde om',
     sortTitle: 'Sorteren',
     expand: 'Rij uitklappen',
-    collapse: 'Rij inklappen'
+    collapse: 'Rij inklappen',
+    cancelSort: 'Klik om sortering te annuleren',
+    emptyText: 'Geen data',
+    filterEmptyText: 'Geen filters',
+    selectNone: 'Maak selectie leeg',
+    selectionAll: 'Selecteer alle data',
+    triggerAsc: 'Klik om oplopend te sorteren',
+    triggerDesc: 'Klik om aflopend te sorteren'
   },
   Modal: {
     okText: 'OK',
-    cancelText: 'Annuleren',
+    cancelText: 'Annuleer',
     justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Annuleren'
+    cancelText: 'Annuleer'
   },
   Transfer: {
     titles: ['', ''],
-    searchPlaceholder: 'Zoeken',
+    searchPlaceholder: 'Zoek hier',
     itemUnit: 'item',
-    itemsUnit: 'items'
+    itemsUnit: 'items',
+    remove: 'Verwijder',
+    removeAll: 'Verwijder alles',
+    removeCurrent: 'Verwijder huidige pagina',
+    selectAll: 'Selecteer alles',
+    selectCurrent: 'Selecteer huidige pagina',
+    selectInvert: 'Huidige pagina omkeren'
   },
   Upload: {
     uploading: 'Uploaden...',
     removeFile: 'Verwijder bestand',
     uploadError: 'Fout tijdens uploaden',
-    previewFile: 'Bekijk bestand',
-    downloadFile: 'Downloaden bestand'
+    previewFile: 'Preview file',
+    downloadFile: 'Bestand downloaden'
   },
   Empty: {
     description: 'Geen gegevens'
@@ -133,11 +164,14 @@ export default {
   },
   Text: {
     edit: 'Bewerken',
-    copy: 'Kopieren',
+    copy: 'kopiëren',
     copied: 'Gekopieerd',
     expand: 'Uitklappen'
   },
   PageHeader: {
     back: 'Terug'
+  },
+  Image: {
+    preview: 'Voorbeeld'
   }
 };

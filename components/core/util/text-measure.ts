@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export interface MeasureResult {
@@ -73,7 +74,9 @@ export function measure(
   const originStyle = window.getComputedStyle(originEle);
   const originCSS = styleToString(originStyle);
   const lineHeight = pxToNumber(originStyle.lineHeight);
-  const maxHeight = Math.round(lineHeight * (rows + 1) + pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom));
+  const maxHeight = Math.round(
+    lineHeight * (rows + 1) + pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom)
+  );
   // Set shadow
   ellipsisContainer.setAttribute('style', originCSS);
   ellipsisContainer.style.position = 'fixed';
@@ -130,7 +133,9 @@ export function measure(
   const childNodes: ChildNode[] = Array.prototype.slice
     .apply(ellipsisContainer.childNodes[0].childNodes[0].cloneNode(true).childNodes)
     .filter(({ nodeType }: ChildNode) => nodeType !== COMMENT_NODE);
-  const fixedNodes: ChildNode[] = Array.prototype.slice.apply(ellipsisContainer.childNodes[0].childNodes[1].cloneNode(true).childNodes);
+  const fixedNodes: ChildNode[] = Array.prototype.slice.apply(
+    ellipsisContainer.childNodes[0].childNodes[1].cloneNode(true).childNodes
+  );
   ellipsisContainer.removeChild(container);
 
   // ========================= Find match ellipsis content =========================

@@ -9,13 +9,14 @@ export default {
     items_per_page: '/ 쪽',
     jump_to: '이동하기',
     jump_to_confirm: '확인하다',
-    page: '',
+    page: '페이지',
     prev_page: '이전 페이지',
     next_page: '다음 페이지',
     prev_5: '이전 5 페이지',
     next_5: '다음 5 페이지',
     prev_3: '이전 3 페이지',
-    next_3: '다음 3 페이지'
+    next_3: '다음 3 페이지',
+    page_size: '페이지 크기'
   },
   DatePicker: {
     lang: {
@@ -49,11 +50,13 @@ export default {
       nextCentury: '다음 세기'
     },
     timePickerLocale: {
-      placeholder: '날짜 선택'
+      placeholder: '시간 선택',
+      rangePlaceholder: ['시작 시간', '종료 시간']
     }
   },
   TimePicker: {
-    placeholder: '날짜 선택'
+    placeholder: '시간 선택',
+    rangePlaceholder: ['시작 시간', '종료 시간']
   },
   Calendar: {
     lang: {
@@ -87,7 +90,8 @@ export default {
       nextCentury: '다음 세기'
     },
     timePickerLocale: {
-      placeholder: '날짜 선택'
+      placeholder: '시간 선택',
+      rangePlaceholder: ['시작 시간', '종료 시간']
     }
   },
   Table: {
@@ -95,7 +99,9 @@ export default {
     filterConfirm: '확인',
     filterReset: '초기화',
     selectAll: '모두 선택',
-    selectInvert: '선택 반전'
+    selectInvert: '선택 반전',
+    filterEmptyText: '필터 없음',
+    emptyText: '데이터 없음'
   },
   Modal: {
     okText: '확인',

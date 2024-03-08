@@ -3,16 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Inject, Injectable, OnDestroy, Optional, SkipSelf } from '@angular/core';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap, takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType } from './menu.types';
 
 @Injectable()
-export class NzSubmenuService {
+export class NzSubmenuService implements OnDestroy {
   mode$: Observable<NzMenuModeType> = this.nzMenuService.mode$.pipe(
     map(mode => {
       if (mode === 'inline') {
@@ -31,8 +33,10 @@ export class NzSubmenuService {
   /** submenu title & overlay mouse enter status **/
   private isMouseEnterTitleOrOverlay$ = new Subject<boolean>();
   private childMenuItemClick$ = new Subject<NzSafeAny>();
+  private destroy$ = new Subject<void>();
   /**
    * menu item inside submenu clicked
+   *
    * @param menu
    */
   onChildMenuItemClick(menu: NzSafeAny): void {
@@ -64,7 +68,8 @@ export class NzSubmenuService {
     const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(
       map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen),
       auditTime(150),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
     );
     isSubMenuOpenWithDebounce$.pipe(distinctUntilChanged()).subscribe(data => {
       this.setOpenStateWithoutDebounce(data);
@@ -75,5 +80,10 @@ export class NzSubmenuService {
         this.nzMenuService.isChildSubMenuOpen$.next(data);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

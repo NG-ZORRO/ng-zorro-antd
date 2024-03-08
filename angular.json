@@ -11,12 +11,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist",
+            "outputPath": "dist/browser",
             "index": "./site/doc/index.html",
             "main": "./site/doc/main.ts",
             "tsConfig": "./site/doc/tsconfig.app.json",
             "polyfills": "./site/doc/polyfills.ts",
-            "aot": true,
             "assets": [
               "site/doc/assets",
               "site/doc/manifest.json",
@@ -41,8 +40,15 @@
             "allowedCommonJsDependencies": [
               "codesandbox",
               "codesandbox-import-utils",
-              "@ant-design/colors"
-            ]
+              "@ant-design/colors",
+              "cron-parser"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -55,7 +61,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -75,14 +80,18 @@
             "es5": {
               "tsConfig": "./site/doc/tsconfig.es5.json"
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
             "main": "./site/doc/main.server.ts",
-            "tsConfig": "./site/doc/tsconfig.server.json"
+            "tsConfig": "./site/doc/tsconfig.server.json",
+            "sourceMap": true,
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -93,32 +102,22 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng-zorro-antd-doc:build"
+            "buildTarget": "ng-zorro-antd-doc:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng-zorro-antd-doc:build:production"
+              "buildTarget": "ng-zorro-antd-doc:build:production"
             }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "site/doc/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "ng-zorro-antd-doc:build",
             "serverTarget": "ng-zorro-antd-doc:server"
@@ -131,7 +130,7 @@
           }
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "builder": "@angular-devkit/build-angular:prerender",
           "options": {
             "browserTarget": "ng-zorro-antd-doc:build:production",
             "serverTarget": "ng-zorro-antd-doc:server:production",
@@ -151,11 +150,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/iframe",
+            "outputPath": "dist/browser/iframe",
             "index": "./site/iframe/index.html",
             "main": "./site/iframe/main.ts",
             "tsConfig": "./site/iframe/tsconfig.app.json",
-            "aot": true,
             "polyfills": "./site/iframe/polyfills.ts",
             "assets": [
               {
@@ -166,7 +164,13 @@
             ],
             "styles": [
               "components/ng-zorro-antd.less"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -179,35 +183,24 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
               "serviceWorker": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng-zorro-antd-iframe:build"
+            "buildTarget": "ng-zorro-antd-iframe:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng-zorro-antd-iframe:build:production"
+              "buildTarget": "ng-zorro-antd-iframe:build:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "site/iframe/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -219,24 +212,31 @@
     },
     "ng-zorro-antd-lib": {
       "root": "components",
+      "sourceRoot": "components",
       "projectType": "library",
       "prefix": "nz",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "components/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/custom-webpack:karma",
           "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack-spec.config.js"
+            },
             "fileReplacements": [
               {
                 "replace": "components/core/environments/environment.ts",
@@ -256,11 +256,20 @@
             "tsConfig": "components/tsconfig.spec.json",
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "fix": true,
+            "lintFilePatterns": [
+              "components/**/*.ts",
+              "components/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "ng-zorro-antd-doc",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -268,6 +277,12 @@
     },
     "@schematics/angular:directive": {
       "prefix": "app"
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
     }
   },
   "cli": {

@@ -4,6 +4,7 @@
  */
 
 import { from, isObservable, Observable, of } from 'rxjs';
+
 import { isPromise } from './is-promise';
 
 export function wrapIntoObservable<T>(value: T | Promise<T> | Observable<T>): Observable<T> {

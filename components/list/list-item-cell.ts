@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,13 +12,15 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { defer, merge, Observable, of, Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
+import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
+
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
@@ -26,21 +29,20 @@ import { switchMap, take, takeUntil } from 'rxjs/operators';
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-item-extra'
-  }
+  },
+  standalone: true
 })
-export class NzListItemExtraComponent {
-  constructor() {}
-}
+export class NzListItemExtraComponent {}
 
 @Component({
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template><ng-content></ng-content></ng-template> `
+  template: ` <ng-template><ng-content></ng-content></ng-template> `,
+  standalone: true
 })
 export class NzListItemActionComponent {
   @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
-  constructor() {}
 }
 
 @Component({
@@ -48,42 +50,53 @@ export class NzListItemActionComponent {
   exportAs: 'nzListItemActions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li *ngFor="let i of actions; let last = last">
-      <ng-template [ngTemplateOutlet]="i"></ng-template>
-      <em *ngIf="!last" class="ant-list-item-action-split"></em>
-    </li>
+    @for (i of actions; track i) {
+      <li>
+        <ng-template [ngTemplateOutlet]="i" />
+        @if (!$last) {
+          <em class="ant-list-item-action-split"></em>
+        }
+      </li>
+    }
   `,
   host: {
     class: 'ant-list-item-action'
-  }
+  },
+  providers: [NzDestroyService],
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
-export class NzListItemActionsComponent implements OnChanges, OnDestroy {
+export class NzListItemActionsComponent implements OnChanges {
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
   actions: Array<TemplateRef<void>> = [];
-  private destroy$ = new Subject();
   private inputActionChanges$ = new Subject<null>();
-  private contentChildrenChanges$: Observable<null> = defer(() => {
+  private contentChildrenChanges$: Observable<NzSafeAny> = defer(() => {
     if (this.nzListItemActions) {
       return of(null);
     }
-    return this.ngZone.onStable.asObservable().pipe(
+    return this.ngZone.onStable.pipe(
       take(1),
-      switchMap(() => this.contentChildrenChanges$)
+      this.enterZone(),
+      exhaustMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
     );
   });
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {
+  constructor(
+    private ngZone: NgZone,
+    cdr: ChangeDetectorRef,
+    destroy$: NzDestroyService
+  ) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(destroy$))
       .subscribe(() => {
         if (this.nzActions.length) {
           this.actions = this.nzActions;
         } else {
           this.actions = this.nzListItemActions.map(action => action.templateRef!);
         }
-        this.cdr.detectChanges();
+        cdr.detectChanges();
       });
   }
 
@@ -91,8 +104,12 @@ export class NzListItemActionsComponent implements OnChanges, OnDestroy {
     this.inputActionChanges$.next(null);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private enterZone<T>(): MonoTypeOperatorFunction<T> {
+    return (source: Observable<T>) =>
+      new Observable<T>(observer =>
+        source.subscribe({
+          next: value => this.ngZone.run(() => observer.next(value))
+        })
+      );
   }
 }

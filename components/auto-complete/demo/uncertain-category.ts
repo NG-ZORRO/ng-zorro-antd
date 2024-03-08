@@ -6,26 +6,34 @@ import { Component, ViewEncapsulation } from '@angular/core';
   template: `
     <div class="example-input">
       <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
-        <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onChange($event)" [nzAutocomplete]="auto" />
+        <input
+          placeholder="input here"
+          nz-input
+          [(ngModel)]="inputValue"
+          (input)="onChange($event)"
+          [nzAutocomplete]="auto"
+        />
       </nz-input-group>
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary" nzSize="large" nzSearch>
-          <i nz-icon nzType="search" nzTheme="outline"></i>
+          <span nz-icon nzType="search" nzTheme="outline"></span>
         </button>
       </ng-template>
       <nz-autocomplete #auto>
-        <nz-auto-option class="global-search-item" *ngFor="let option of options" [nzValue]="option.category">
-          Found {{ option.value }} on
-          <a
-            class="global-search-item-desc"
-            [href]="'https://s.taobao.com/search?q=' + option.value"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ option.category }}
-          </a>
-          <span class="global-search-item-count">{{ option.count }} results</span>
-        </nz-auto-option>
+        @for (option of options; track option.category) {
+          <nz-auto-option class="global-search-item" [nzValue]="option.category">
+            Found {{ option.value }} on
+            <a
+              class="global-search-item-desc"
+              [href]="'https://s.taobao.com/search?q=' + option.value"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ option.category }}
+            </a>
+            <span class="global-search-item-count">{{ option.count }} results</span>
+          </nz-auto-option>
+        }
       </nz-autocomplete>
     </div>
   `,

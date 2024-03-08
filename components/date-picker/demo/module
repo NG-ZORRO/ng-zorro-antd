@@ -3,5 +3,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
-export const moduleList = [ NzDatePickerModule, NzRadioModule, NzButtonModule, NzSelectModule, NzSpaceModule ];
+export const moduleList = [ NzDatePickerModule, NzRadioModule, NzButtonModule, NzSelectModule, NzSpaceModule, NzTabsModule ];

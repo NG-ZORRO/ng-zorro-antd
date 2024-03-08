@@ -4,9 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-card-inner',
   template: `
     <nz-card nzTitle="Card Title">
-      <p style="font-size:14px;color:rgba(0, 0, 0, 0.85);margin-bottom:16px;font-weight: 500;">
-        Group title
-      </p>
+      <p style="font-size:14px;color:rgba(0, 0, 0, 0.85);margin-bottom:16px;font-weight: 500;">Group title</p>
       <nz-card nzType="inner" nzTitle="Inner Card Title" [nzExtra]="extraTemplate">
         <a>Inner Card Content</a>
       </nz-card>

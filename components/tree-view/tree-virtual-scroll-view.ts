@@ -3,14 +3,23 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { BaseTreeControl, CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TrackByFunction,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
-import { NzTreeVirtualNodeData } from './node';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
+import { NzTreeVirtualNodeData, NzTreeVirtualScrollNodeOutletDirective } from './node';
 import { NzTreeNodeOutletDirective } from './outlet';
-
 import { NzTreeView } from './tree';
 
 const DEFAULT_SIZE = 28;
@@ -22,12 +31,12 @@ const DEFAULT_SIZE = 28;
     <div class="ant-tree-list">
       <cdk-virtual-scroll-viewport
         class="ant-tree-list-holder"
-        [itemSize]="itemSize"
+        [itemSize]="nzItemSize"
         [minBufferPx]="nzMinBufferPx"
         [maxBufferPx]="nzMaxBufferPx"
       >
-        <ng-container *cdkVirtualFor="let item of nodes; let i = index">
-          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item"></ng-template>
+        <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: innerTrackBy">
+          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy"></ng-template>
         </ng-container>
       </cdk-virtual-scroll-viewport>
     </div>
@@ -44,28 +53,50 @@ const DEFAULT_SIZE = 28;
     '[class.ant-tree-block-node]': 'nzDirectoryTree || nzBlockNode',
     '[class.ant-tree-directory]': 'nzDirectoryTree',
     '[class.ant-tree-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzTreeVirtualScrollNodeOutletDirective,
+    CdkVirtualForOf,
+    NzTreeNodeOutletDirective,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll
+  ],
+  standalone: true
 })
 export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implements OnChanges {
-  itemSize = DEFAULT_SIZE;
-
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) readonly nodeOutlet!: NzTreeNodeOutletDirective;
   @ViewChild(CdkVirtualScrollViewport, { static: true }) readonly virtualScrollViewport!: CdkVirtualScrollViewport;
-
-  /**
-   * @deprecated use `nzItemSize` instead
-   * @breaking-change 12.0.0
-   */
-  @Input() nzNodeWidth = DEFAULT_SIZE;
 
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
-
+  @Input() override trackBy!: TrackByFunction<T>;
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
+  innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.trackBy) {
+      if (typeof changes.trackBy.currentValue === 'function') {
+        this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
+      } else {
+        this.innerTrackBy = i => i;
+      }
+    }
+  }
+
+  get compareBy(): ((value: T) => NzSafeAny) | null {
+    const baseTreeControl = this.treeControl as BaseTreeControl<T, NzSafeAny>;
+    if (baseTreeControl.trackBy) {
+      return baseTreeControl.trackBy;
+    }
+
+    return null;
+  }
+
+  override renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
+    this._dataSourceChanged.next();
+    this.changeDetectorRef.markForCheck();
   }
 
   private createNode(nodeData: T, index: number): NzTreeVirtualNodeData<T> {
@@ -81,16 +112,5 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
       context,
       nodeDef: node
     };
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzNodeWidth, nzItemSize } = changes;
-    if (nzNodeWidth) {
-      warnDeprecation('`nzNodeWidth` in nz-tree-virtual-scroll-view will be removed in 12.0.0, please use `nzItemSize` instead.');
-      this.itemSize = nzNodeWidth.currentValue;
-    }
-    if (nzItemSize) {
-      this.itemSize = nzItemSize.currentValue;
-    }
   }
 }

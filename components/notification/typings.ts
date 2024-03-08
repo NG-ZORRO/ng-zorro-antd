@@ -4,17 +4,20 @@
  */
 
 import { TemplateRef } from '@angular/core';
-
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 
-export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
+
+import type { NzNotificationComponent } from './notification.component';
+
+export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
   nzStyle?: NgStyleInterface;
   nzClass?: NgClassInterface | string;
   nzCloseIcon?: TemplateRef<void> | string;
+  nzButton?: TemplateRef<{ $implicit: NzNotificationComponent }>;
   nzPlacement?: NzNotificationPlacement;
   nzData?: T;
   nzDuration?: number;
@@ -23,13 +26,13 @@ export interface NzNotificationDataOptions<T = {}> {
 }
 
 export interface NzNotificationData {
+  title?: string | TemplateRef<void>;
   content?: string | TemplateRef<void>;
   createdAt?: Date;
   messageId?: string;
   options?: NzNotificationDataOptions;
   state?: 'enter' | 'leave';
   template?: TemplateRef<{}>;
-  title?: string;
   type?: 'success' | 'info' | 'warning' | 'error' | 'blank' | string;
 
   // observables exposed to users

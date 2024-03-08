@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,19 +22,35 @@ import {
   SimpleChange,
   TemplateRef
 } from '@angular/core';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { Observable, Subject, fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import {
+  NzFormatBeforeDropEvent,
+  NzFormatEmitEvent,
+  NzTreeBaseService,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
+import { NzTreeIndentComponent } from './tree-indent.component';
+import { NzTreeNodeBuiltinCheckboxComponent } from './tree-node-checkbox.component';
+import { NzTreeNodeSwitcherComponent } from './tree-node-switcher.component';
+import { NzTreeNodeTitleComponent } from './tree-node-title.component';
 
 @Component({
   selector: 'nz-tree-node[builtin]',
   exportAs: 'nzTreeBuiltinNode',
   template: `
-    <nz-tree-indent [nzTreeLevel]="nzTreeNode.level" [nzSelectMode]="nzSelectMode" [nzIsStart]="isStart" [nzIsEnd]="isEnd"></nz-tree-indent>
+    <nz-tree-indent
+      [nzTreeLevel]="nzTreeNode.level"
+      [nzSelectMode]="nzSelectMode"
+      [nzIsStart]="isStart"
+      [nzIsEnd]="isEnd"
+    ></nz-tree-indent>
     <nz-tree-node-switcher
       *ngIf="nzShowExpand"
       [nzShowExpand]="nzShowExpand"
@@ -97,9 +114,17 @@ import { takeUntil } from 'rxjs/operators';
     '[class.ant-tree-treenode-checkbox-indeterminate]': `!nzSelectMode && isHalfChecked`,
     '[class.ant-tree-treenode-selected]': `!nzSelectMode && isSelected`,
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
-    '[style.display]': 'displayStyle',
-    '(mousedown)': 'onMousedown($event)'
-  }
+    '[class.dragging]': `draggingKey === nzTreeNode.key`,
+    '[style.display]': 'displayStyle'
+  },
+  imports: [
+    NzTreeIndentComponent,
+    NzTreeNodeSwitcherComponent,
+    NgIf,
+    NzTreeNodeBuiltinCheckboxComponent,
+    NzTreeNodeTitleComponent
+  ],
+  standalone: true
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowLine: BooleanInput;
@@ -158,20 +183,23 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   /**
    * drag var
    */
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   dragPos = 2;
   dragPosClass: { [key: string]: string } = {
-    '0': 'drag-over',
-    '1': 'drag-over-gap-bottom',
+    0: 'drag-over',
+    1: 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
   };
+  draggingKey: string | null = null;
   showIndicator = false;
   /**
    * default set
    */
   get displayStyle(): string {
     // to hide unmatched nodes
-    return this.nzSearchValue && this.nzHideUnMatched && !this.isMatched && !this.isExpanded && this.canHide ? 'none' : '';
+    return this.nzSearchValue && this.nzHideUnMatched && !this.isMatched && !this.isExpanded && this.canHide
+      ? 'none'
+      : '';
   }
 
   get isSwitcherOpen(): boolean {
@@ -182,14 +210,9 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     return !this.isExpanded && !this.isLeaf;
   }
 
-  onMousedown(event: MouseEvent): void {
-    if (this.nzSelectMode) {
-      event.preventDefault();
-    }
-  }
-
   /**
    * collapse node
+   *
    * @param event
    */
   clickExpand(event: MouseEvent): void {
@@ -230,6 +253,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   /**
    * check node
+   *
    * @param event
    */
   clickCheckBox(event: MouseEvent): void {
@@ -254,6 +278,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
 
   /**
    * drag event
+   *
    * @param e
    */
   handleDragStart(e: DragEvent): void {
@@ -265,6 +290,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       // empty
     }
     this.nzTreeService.setSelectedNode(this.nzTreeNode);
+    this.draggingKey = this.nzTreeNode.key;
     const eventNext = this.nzTreeService.formatEvent('dragstart', this.nzTreeNode, e);
     this.nzOnDragStart.emit(eventNext);
   }
@@ -305,6 +331,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   handleDragDrop(e: DragEvent): void {
+    e.preventDefault();
+    e.stopPropagation();
     this.ngZone.run(() => {
       this.showIndicator = false;
       this.clearDragClass();
@@ -339,8 +367,14 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     this.ngZone.run(() => {
       // if user do not custom beforeDrop
       if (!this.nzBeforeDrop) {
+        // clear dragging state
+        this.draggingKey = null;
         const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
         this.nzOnDragEnd.emit(eventNext);
+      } else {
+        // clear dragging state
+        this.draggingKey = null;
+        this.markForCheck();
       }
     });
   }
@@ -372,7 +406,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
           .pipe(takeUntil(this.destroy$))
           .subscribe((e: DragEvent) => this.handleDragEnd(e));
       } else {
-        this.destroy$.next();
+        this.destroy$.next(true);
         this.destroy$.complete();
       }
     });
@@ -386,13 +420,23 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     public nzTreeService: NzTreeBaseService,
     private ngZone: NgZone,
     private renderer: Renderer2,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
   ngOnInit(): void {
     this.nzTreeNode.component = this;
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (this.nzSelectMode) {
+            event.preventDefault();
+          }
+        });
+    });
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
@@ -403,7 +447,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

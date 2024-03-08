@@ -10,10 +10,22 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
+  OnInit,
   Output,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzDropDownDirective, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
 @Component({
   selector: 'nz-filter-trigger',
@@ -27,37 +39,39 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
       class="ant-table-filter-trigger"
       nzTrigger="click"
       nzPlacement="bottomRight"
-      [nzHasBackdrop]="nzHasBackdrop"
+      [nzBackdrop]="nzBackdrop"
       [nzClickHide]="false"
       [nzDropdownMenu]="nzDropdownMenu"
       [class.active]="nzActive"
       [class.ant-table-filter-open]="nzVisible"
       [nzVisible]="nzVisible"
       (nzVisibleChange)="onVisibleChange($event)"
-      (click)="onFilterClick($event)"
     >
       <ng-content></ng-content>
     </span>
   `,
-  host: {
-    '[class.ant-table-filter-trigger-container-open]': 'nzVisible'
-  }
+  providers: [NzDestroyService],
+  imports: [NzDropDownModule],
+  standalone: true
 })
-export class NzFilterTriggerComponent {
+export class NzFilterTriggerComponent implements OnInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  static ngAcceptInputType_nzBackdrop: BooleanInput;
+
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
-  @Input() nzHasBackdrop = false;
+
+  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+
+  @ViewChild(NzDropDownDirective, { static: true, read: ElementRef }) nzDropdown!: ElementRef<HTMLElement>;
 
   onVisibleChange(visible: boolean): void {
     this.nzVisible = visible;
     this.nzVisibleChange.next(visible);
-  }
-
-  onFilterClick($event: MouseEvent): void {
-    $event.stopPropagation();
   }
 
   hide(): void {
@@ -70,8 +84,20 @@ export class NzFilterTriggerComponent {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-filter-trigger-container');
+  constructor(
+    public readonly nzConfigService: NzConfigService,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private destroy$: NzDestroyService
+  ) {}
+
+  ngOnInit(): void {
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.nzDropdown.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          event.stopPropagation();
+        });
+    });
   }
 }

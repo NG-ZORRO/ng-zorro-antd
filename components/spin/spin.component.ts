@@ -2,7 +2,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -15,12 +17,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
+import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-
-import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
-import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 
@@ -57,7 +59,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   `,
   host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

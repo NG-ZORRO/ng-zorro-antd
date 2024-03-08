@@ -35,8 +35,8 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| title | 标题 | `string` | - |
-| content | 提示内容 | `string` | - |
+| title | 标题 | `string \| TemplateRef<void>` | - |
+| content | 提示内容 | `string \| TemplateRef<void>` | - |
 | options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
@@ -51,7 +51,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzClass | 自定义 CSS class | `object` |
 | nzData | 任何想要在模板中作为上下文的数据 | `any` |
 | nzCloseIcon | 自定义关闭图标 | `TemplateRef<void> \| string` |
-
+| nzButton | 自定义按钮 | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
 
 还提供了全局销毁方法：
 
@@ -59,7 +59,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 ### 全局配置
 
-可以通过 `NzConfigService` 进行全局配置。
+可以通过 `NzConfigService` 进行全局配置，详情请见文档中 [全局配置项](/docs/global-config/zh) 章节。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息从顶部弹出时，距离顶部的位置。 | `string` | 24px |
 | nzBottom | 消息从底部弹出时，距离底部的位置。 | `string` | 24px |
-| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+| nzPlacement | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string` | `topRight` |
 | nzDirection | 通知的文字方向 | `'ltr' \| 'rtl'` | - |
 
 ### NzNotificationRef

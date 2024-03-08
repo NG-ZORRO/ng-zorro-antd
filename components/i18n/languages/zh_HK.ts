@@ -15,7 +15,8 @@ export default {
     prev_5: '向前 5 頁',
     next_5: '向後 5 頁',
     prev_3: '向前 3 頁',
-    next_3: '向後 3 頁'
+    next_3: '向後 3 頁',
+    page_size: '頁碼'
   },
   DatePicker: {
     lang: {
@@ -46,7 +47,14 @@ export default {
       previousDecade: '上一年代',
       nextDecade: '下一年代',
       previousCentury: '上一世紀',
-      nextCentury: '下一世紀'
+      nextCentury: '下一世紀',
+      yearPlaceholder: '請選擇年份',
+      quarterPlaceholder: '請選擇季度',
+      monthPlaceholder: '請選擇月份',
+      weekPlaceholder: '請選擇周',
+      rangeYearPlaceholder: ['開始年份', '結束年份'],
+      rangeMonthPlaceholder: ['開始月份', '結束月份'],
+      rangeWeekPlaceholder: ['開始周', '結束周']
     },
     timePickerLocale: {
       placeholder: '請選擇時間'
@@ -84,7 +92,14 @@ export default {
       previousDecade: '上一年代',
       nextDecade: '下一年代',
       previousCentury: '上一世紀',
-      nextCentury: '下一世紀'
+      nextCentury: '下一世紀',
+      yearPlaceholder: '請選擇年份',
+      quarterPlaceholder: '請選擇季度',
+      monthPlaceholder: '請選擇月份',
+      weekPlaceholder: '請選擇周',
+      rangeYearPlaceholder: ['開始年份', '結束年份'],
+      rangeMonthPlaceholder: ['開始月份', '結束月份'],
+      rangeWeekPlaceholder: ['開始周', '結束周']
     },
     timePickerLocale: {
       placeholder: '請選擇時間'
@@ -106,7 +121,8 @@ export default {
     collapse: '關閉行',
     triggerDesc: '點擊降序',
     triggerAsc: '點擊升序',
-    cancelSort: '取消排序'
+    cancelSort: '取消排序',
+    selectNone: '清空所有'
   },
   Modal: {
     okText: '確定',
@@ -120,7 +136,13 @@ export default {
   Transfer: {
     searchPlaceholder: '搜尋資料',
     itemUnit: '項目',
-    itemsUnit: '項目'
+    itemsUnit: '項目',
+    remove: '刪除',
+    selectCurrent: '全選當頁',
+    removeCurrent: '刪除當頁',
+    selectAll: '全選所有',
+    removeAll: '刪除全部',
+    selectInvert: '反選當頁'
   },
   Upload: {
     uploading: '正在上傳...',
@@ -143,5 +165,8 @@ export default {
   },
   PageHeader: {
     back: '返回'
+  },
+  Image: {
+    preview: '預覽'
   }
 };

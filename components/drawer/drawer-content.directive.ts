@@ -4,11 +4,13 @@
  */
 
 import { Directive, TemplateRef } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nzDrawerContent]',
-  exportAs: 'nzDrawerContent'
+  exportAs: 'nzDrawerContent',
+  standalone: true
 })
 export class NzDrawerContentDirective {
   constructor(public templateRef: TemplateRef<NzSafeAny>) {}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
@@ -12,7 +13,11 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
       [nzAction]="mockOSSData.host"
       (nzChange)="onChange($event)"
     >
-      Photos: <button nz-button><i nz-icon nzType="upload"></i> Click to Upload</button>
+      Photos:
+      <button nz-button>
+        <span nz-icon nzType="upload"></span>
+        Click to Upload
+      </button>
     </nz-upload>
   `
 })
@@ -27,7 +32,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     signature: 'ZGFob25nc2hhbw=='
   };
 
-  transformFile = (file: NzUploadFile) => {
+  transformFile = (file: NzUploadFile): NzUploadFile => {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
     file.url = this.mockOSSData.dir + filename;
@@ -35,13 +40,13 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     return file;
   };
 
-  getExtraData = (file: NzUploadFile) => {
+  getExtraData = (file: NzUploadFile): {} => {
     const { accessId, policy, signature } = this.mockOSSData;
 
     return {
       key: file.url,
       OSSAccessKeyId: accessId,
-      policy: policy,
+      policy,
       Signature: signature
     };
   };

@@ -1,4 +1,9 @@
-// tslint:disable:no-import-side-effect
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+/* eslint-disable import/no-unassigned-import */
 import { series, task } from 'gulp';
 import './tasks/clean';
 import './tasks/default';
@@ -9,19 +14,8 @@ import './tasks/universal';
 import './tasks/library';
 import './tasks/site';
 
-task('build:release', series(
-  'clean',
-  'build:library',
-  'build:release-site'
-));
+task('build:release', series('clean', 'build:library', 'build:release-site'));
 
-task('build:preview', series(
-  'clean',
-  'init:site',
-  'build:site-doc-es5'
-));
+task('build:preview', series('clean', 'init:site', 'build:site-doc-es5'));
 
-task('start:dev', series(
-  'clean',
-  'start:site'
-));
+task('start:dev', series('clean', 'start:site'));

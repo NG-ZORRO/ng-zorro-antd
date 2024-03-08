@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NzFormatBeforeDropEvent } from 'ng-zorro-antd/tree';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { NzFormatBeforeDropEvent } from 'ng-zorro-antd/tree';
+
 @Component({
   selector: 'nz-demo-tree-draggable-confirm',
-  template: ` <nz-tree [nzData]="nodes" nzDraggable nzBlockNode [nzBeforeDrop]="beforeDrop"> </nz-tree> `
+  template: ` <nz-tree [nzData]="nodes" nzDraggable nzBlockNode [nzBeforeDrop]="beforeDrop"></nz-tree> `
 })
 export class NzDemoTreeDraggableConfirmComponent {
   nodes = [

@@ -1,5 +1,13 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import * as fs from 'fs-extra';
+
 import * as path from 'path';
+
+
 import { buildConfig } from '../build-config';
 
 const glob = require('glob').sync;
@@ -106,7 +114,7 @@ function createSchematic(demoComponent: DemoMeta): void {
   fs.copySync(path.resolve(__dirname, `./template/schema.ts.template`), `${demoPath}/schema.ts`);
 
   const schemaJson = fs.readJsonSync(schemaPath);
-  schemaJson.id = `${demoComponent.demoName}-${demoComponent.componentName}`;
+  schemaJson.$id = `${demoComponent.demoName}-${demoComponent.componentName}`;
   schemaJson.title = `NG-ZORRO ${demoComponent.demoName} ${demoComponent.componentName}`;
   fs.outputJsonSync(schemaPath, schemaJson);
 

@@ -3,9 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,22 +24,35 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   selector: '[nz-rate-item]',
   exportAs: 'nzRateItem',
   template: `
-    <div class="ant-rate-star-second" (mouseover)="hoverRate(false); $event.stopPropagation()" (click)="clickRate(false)">
-      <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+    <div
+      class="ant-rate-star-second"
+      (mouseover)="hoverRate(false); $event.stopPropagation()"
+      (click)="clickRate(false)"
+    >
+      <ng-template
+        [ngTemplateOutlet]="character || defaultCharacter"
+        [ngTemplateOutletContext]="{ $implicit: index }"
+      ></ng-template>
     </div>
     <div class="ant-rate-star-first" (mouseover)="hoverRate(true); $event.stopPropagation()" (click)="clickRate(true)">
-      <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="character || defaultCharacter"
+        [ngTemplateOutletContext]="{ $implicit: index }"
+      ></ng-template>
     </div>
 
     <ng-template #defaultCharacter>
-      <i nz-icon nzType="star" nzTheme="fill"></i>
+      <span nz-icon nzType="star" nzTheme="fill"></span>
     </ng-template>
-  `
+  `,
+  imports: [NgTemplateOutlet, NzIconModule],
+  standalone: true
 })
 export class NzRateItemComponent {
   static ngAcceptInputType_allowHalf: BooleanInput;
 
-  @Input() character!: TemplateRef<void>;
+  @Input() character!: TemplateRef<{ $implicit: number }>;
+  @Input() index = 0;
   @Input() @InputBoolean() allowHalf: boolean = false;
   @Output() readonly itemHover = new EventEmitter<boolean>();
   @Output() readonly itemClick = new EventEmitter<boolean>();

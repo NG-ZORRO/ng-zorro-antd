@@ -49,21 +49,21 @@ interface ExampleFlatNode {
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <i nz-icon nzType="file" nzTheme="outline"></i>
+          <span nz-icon nzType="file" nzTheme="outline"></span>
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'folder-open' : 'folder'" nzTheme="outline"></i>
+          <span nz-icon [nzType]="treeControl.isExpanded(node) ? 'folder-open' : 'folder'" nzTheme="outline"></span>
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
@@ -71,14 +71,12 @@ interface ExampleFlatNode {
   `
 })
 export class NzDemoTreeViewDirectoryComponent implements AfterViewInit {
-  private transformer = (node: FoodNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-      disabled: !!node.disabled
-    };
-  };
+  private transformer = (node: FoodNode, level: number): ExampleFlatNode => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level,
+    disabled: !!node.disabled
+  });
   selectListSelection = new SelectionModel<ExampleFlatNode>();
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(
@@ -99,7 +97,7 @@ export class NzDemoTreeViewDirectoryComponent implements AfterViewInit {
     this.dataSource.setData(TREE_DATA);
   }
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: ExampleFlatNode): boolean => node.expandable;
 
   ngAfterViewInit(): void {
     setTimeout(() => {

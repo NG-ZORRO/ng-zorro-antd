@@ -15,12 +15,20 @@ export default {
     prev_5: '۵ صفحه قبلی',
     next_5: '۵ صفحه بعدی',
     prev_3: '۳ صفحه قبلی',
-    next_3: '۳ صفحه بعدی'
+    next_3: '۳ صفحه بعدی',
+    page_size: 'اندازه صفحه'
   },
   DatePicker: {
     lang: {
       placeholder: 'انتخاب تاریخ',
+      yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
@@ -31,6 +39,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'یک هفته رو انتخاب کنید',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -49,16 +58,25 @@ export default {
       nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
-      placeholder: 'انتخاب زمان'
+      placeholder: 'انتخاب زمان',
+      rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
   },
   TimePicker: {
-    placeholder: 'انتخاب زمان'
+    placeholder: 'انتخاب زمان',
+    rangePlaceholder: ['زمان شروع', 'زمان پایان']
   },
   Calendar: {
     lang: {
       placeholder: 'انتخاب تاریخ',
+      yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
@@ -69,6 +87,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'انتخاب هفته',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -87,13 +106,19 @@ export default {
       nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
-      placeholder: 'انتخاب زمان'
+      placeholder: 'انتخاب زمان',
+      rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
+  },
+  global: {
+    placeholder: 'لطفا انتخاب کنید'
   },
   Table: {
     filterTitle: 'منوی فیلتر',
     filterConfirm: 'تایید',
     filterReset: 'پاک کردن',
+    filterEmptyText: 'بدون فیلتر',
+    emptyText: 'بدون داده',
     selectAll: 'انتخاب صفحه‌ی کنونی',
     selectInvert: 'معکوس کردن انتخاب‌ها در صفحه ی کنونی',
     selectionAll: 'انتخاب همه داده‌ها',
@@ -102,7 +127,10 @@ export default {
     collapse: 'بستن ردیف',
     triggerDesc: 'ترتیب نزولی',
     triggerAsc: 'ترتیب صعودی',
-    cancelSort: 'لغوِ ترتیبِ داده شده'
+    cancelSort: 'لغوِ ترتیبِ داده شده',
+    filterCheckall: 'انتخاب همه موارد',
+    filterSearchPlaceholder: 'جست‌و‌جو در فیلتر‌ها',
+    selectNone: 'انتخاب هیچکدام'
   },
   Modal: {
     okText: 'تایید',
@@ -116,8 +144,14 @@ export default {
   Transfer: {
     titles: ['', ''],
     searchPlaceholder: 'جستجو',
-    itemUnit: '',
-    itemsUnit: ''
+    itemUnit: 'عدد',
+    itemsUnit: 'عدد',
+    remove: 'حذف',
+    selectCurrent: 'انتخاب صفحه فعلی',
+    removeCurrent: 'پاک کردن انتخاب‌های صفحه فعلی',
+    selectAll: 'انتخاب همه',
+    removeAll: 'پاک کردن همه انتخاب‌ها',
+    selectInvert: 'معکوس کردن انتخاب‌ها در صفحه ی کنونی'
   },
   Upload: {
     uploading: 'در حال آپلود...',
@@ -134,11 +168,27 @@ export default {
   },
   Text: {
     edit: 'ویرایش',
-    copy: 'کپس',
+    copy: 'کپی',
     copied: 'کپی شد',
     expand: 'توسعه'
   },
   PageHeader: {
     back: 'برگشت'
+  },
+  Image: {
+    preview: 'نمایش'
+  },
+  CronExpression: {
+    cronError: 'Invalid cron expression',
+    second: 'ثانیه',
+    minute: 'دقیقه',
+    hour: 'ساعت',
+    day: 'روز',
+    month: 'ماه',
+    week: 'هفته'
+  },
+  QRCode: {
+    expired: 'کد QR منقضی شده است',
+    refresh: 'تازه کردن'
   }
 };

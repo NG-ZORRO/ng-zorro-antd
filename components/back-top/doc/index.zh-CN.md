@@ -19,7 +19,7 @@ import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
 ## API
 
-### nz-back-top
+### nz-back-top:standalone
 
 > 有默认样式，距离底部 `50px`，可覆盖。
 > 自定义样式宽高不大于 `40px * 40px`。

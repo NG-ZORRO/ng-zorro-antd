@@ -4,11 +4,16 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { TemplateRef, Type } from '@angular/core';
+import { InjectionToken, TemplateRef, Type } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzDrawerRef } from './drawer-ref';
 
+export const DRAWER_DEFAULT_SIZE = 378;
+export const DRAWER_LARGE_SIZE = 736;
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
+export type NzDrawerSize = 'default' | 'large';
 
 export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzClosable?: boolean;
@@ -19,12 +24,16 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzKeyboard?: boolean;
   nzNoAnimation?: boolean;
   nzTitle?: string | TemplateRef<{}>;
+  nzExtra?: string | TemplateRef<{}>;
   nzFooter?: string | TemplateRef<{}>;
   nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
+  /**@Deprecated**/
   nzContentParams?: Partial<T & D>;
+  nzData?: D;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
   nzWrapClassName?: string;
+  nzSize?: NzDrawerSize;
   nzWidth?: number | string;
   nzHeight?: number | string;
   nzPlacement?: NzDrawerPlacement;
@@ -36,3 +45,5 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
 export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> extends NzDrawerOptionsOfComponent<T, D> {
   nzOnCancel?(): Promise<NzSafeAny>;
 }
+
+export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>('NZ_DRAWER_DATA');

@@ -1,15 +1,16 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { ChangeDetection, Style } from '@schematics/angular/component/schema';
+
 import { createTestApp } from '../testing/test-app';
 
 const appOptions = {
-  name           : 'ng-zorro',
-  inlineStyle    : false,
-  inlineTemplate : false,
-  routing        : false,
-  style          : Style.Less,
-  skipTests      : false,
+  name: 'ng-zorro',
+  inlineStyle: false,
+  inlineTemplate: false,
+  routing: false,
+  style: Style.Less,
+  skipTests: false,
   skipPackageJson: false
 };
 
@@ -22,6 +23,7 @@ const defaultOptions = {
   skipTests: false,
   module: undefined,
   export: false,
+  standalone: true,
   project: 'ng-zorro'
 };
 
@@ -31,12 +33,12 @@ describe('ng-component schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../collection.json'));
-    appTree = await createTestApp(runner, appOptions);
+    appTree = await createTestApp(runner, { ...appOptions });
   });
 
   it('should create a component', async () => {
     const options = { ...defaultOptions };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const files = tree.files;
 
     expect(files).toEqual(
@@ -51,7 +53,7 @@ describe('ng-component schematic', () => {
 
   it('should create a flat component', async () => {
     const options = { ...defaultOptions, flat: true };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const files = tree.files;
 
     expect(files).toEqual(
@@ -65,7 +67,7 @@ describe('ng-component schematic', () => {
   });
 
   it('should find the closest module', async () => {
-    const options = { ...defaultOptions };
+    const options = { ...defaultOptions, standalone: false };
     const closestModule = '/projects/ng-zorro/src/app/test/test.module.ts';
 
     appTree.create(
@@ -79,14 +81,14 @@ describe('ng-component schematic', () => {
       export class ClosestModule { }
     `
     );
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const fooModuleContent = tree.readContent(closestModule);
 
     expect(fooModuleContent).toMatch(/import { TestComponent } from '.\/test.component'/);
   });
 
   it('should set classname with the closest module', async () => {
-    const options = { ...defaultOptions, classnameWithModule: true };
+    const options = { ...defaultOptions, classnameWithModule: true, standalone: false };
     const testModule = '/projects/ng-zorro/src/app/test/test.module.ts';
 
     appTree.create(
@@ -101,18 +103,18 @@ describe('ng-component schematic', () => {
     `
     );
 
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const tree = await runner.runSchematic('component', options, appTree);
     const fooModuleContent = tree.readContent(testModule);
 
     expect(fooModuleContent).toMatch(/import { TestTestComponent } from '.\/test.component'/);
   });
 
   it('should set classname with the specified module', async () => {
-    const options = { ...defaultOptions, classnameWithModule: true, module: 'app.module.ts' };
-    const tree = await runner.runSchematicAsync('component', options, appTree).toPromise();
+    const options = { ...defaultOptions, classnameWithModule: true, module: 'app.module.ts', standalone: false };
+    const app = await createTestApp(runner, { ...appOptions, standalone: false });
+    const tree = await runner.runSchematic('component', options, app);
 
-    const appModuleContent = tree.readContent('/projects/ng-zorro/src/app/app.module.ts');
-
-    expect(appModuleContent).toMatch(/import { AppTestComponent } from '.\/test\/test.component'/);
+    const appComponentContent = tree.readContent('/projects/ng-zorro/src/app/app.module.ts');
+    expect(appComponentContent).toMatch(/import { AppTestComponent } from '.\/test\/test.component'/);
   });
 });

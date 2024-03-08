@@ -56,6 +56,9 @@ interface FlatNode {
         >
           {{ node.name }}
         </nz-tree-node-option>
+        <button nz-button nzType="text" nzSize="small" (click)="delete(node)">
+          <span nz-icon nzType="minus" nzTheme="outline"></span>
+        </button>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasNoContent" nzTreeNodeIndentLine>
@@ -66,11 +69,11 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         {{ node.name }}
         <button nz-button nzType="text" nzSize="small" (click)="addNewNode(node)">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          <span nz-icon nzType="plus" nzTheme="outline"></span>
         </button>
       </nz-tree-node>
     </nz-tree-view>
@@ -78,7 +81,7 @@ interface FlatNode {
   styles: [``]
 })
 export class NzDemoTreeViewEditableComponent {
-  private transformer = (node: TreeNode, level: number) => {
+  private transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode =
       existingNode && existingNode.key === node.key
@@ -86,7 +89,7 @@ export class NzDemoTreeViewEditableComponent {
         : {
             expandable: !!node.children && node.children.length > 0,
             name: node.name,
-            level: level,
+            level,
             key: node.key
           };
     flatNode.name = node.name;
@@ -118,10 +121,37 @@ export class NzDemoTreeViewEditableComponent {
     this.treeControl.expandAll();
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
-  hasNoContent = (_: number, node: FlatNode) => node.name === '';
-  trackBy = (_: number, node: FlatNode) => `${node.key}-${node.name}`;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
+  hasNoContent = (_: number, node: FlatNode): boolean => node.name === '';
+  trackBy = (_: number, node: FlatNode): string => `${node.key}-${node.name}`;
 
+  delete(node: FlatNode): void {
+    const originNode = this.flatNodeMap.get(node);
+
+    const dfsParentNode = (): TreeNode | null => {
+      const stack = [...this.treeData];
+      while (stack.length > 0) {
+        const n = stack.pop()!;
+        if (n.children) {
+          if (n.children.find(e => e === originNode)) {
+            return n;
+          }
+
+          for (let i = n.children.length - 1; i >= 0; i--) {
+            stack.push(n.children[i]);
+          }
+        }
+      }
+      return null;
+    };
+
+    const parentNode = dfsParentNode();
+    if (parentNode && parentNode.children) {
+      parentNode.children = parentNode.children.filter(e => e !== originNode);
+    }
+
+    this.dataSource.setData(this.treeData);
+  }
   addNewNode(node: FlatNode): void {
     const parentNode = this.flatNodeMap.get(node);
     if (parentNode) {

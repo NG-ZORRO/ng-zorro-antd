@@ -1,3 +1,7 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
 export interface Version {
   major: number;
@@ -10,7 +14,7 @@ export interface Version {
 const versionNameRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d+))?$/;
 
 export function validVerison(version: string): boolean {
-  return versionNameRegex.test(version)
+  return versionNameRegex.test(version);
 }
 
 export function parseVersion(version: string): Version | null {
@@ -21,12 +25,12 @@ export function parseVersion(version: string): Version | null {
   }
 
   return {
-    major : Number(matches[1]),
-    minor : Number(matches[2]),
-    patch : Number(matches[3]),
+    major: Number(matches[1]),
+    minor: Number(matches[2]),
+    patch: Number(matches[3]),
     preTag: matches[4],
-    pre   : Number(matches[5])
-  }
+    pre: Number(matches[5])
+  };
 }
 
 export function checkVersionNumber(cur: string, next: string): boolean {
@@ -39,7 +43,7 @@ export function checkVersionNumber(cur: string, next: string): boolean {
   const nextVersion = parseVersion(next);
 
   if (!nextVersion || !curVersion) {
-    return false
+    return false;
   }
 
   if (curVersion.major !== nextVersion.major) {
@@ -58,5 +62,5 @@ export function checkVersionNumber(cur: string, next: string): boolean {
     return true;
   }
 
-  return curVersion.pre < nextVersion.pre
+  return curVersion.pre < nextVersion.pre;
 }

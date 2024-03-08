@@ -3,7 +3,17 @@
   "dest": "../publish",
   "deleteDestPath": true,
   "lib": {
-    "entryFile": "./public_api"
+    "entryFile": "./public_api.ts"
   },
-  "whitelistedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular", "resize-observer-polyfill"]
+  "allowedNonPeerDependencies": [
+    "tslib",
+    "angular",
+    "date-fns",
+    "@ant-design/icons-angular",
+    "monaco-editor",
+    "ng-antd-color-picker",
+    "cron-parser",
+    "dagre-compound",
+    "d3"
+  ]
 }

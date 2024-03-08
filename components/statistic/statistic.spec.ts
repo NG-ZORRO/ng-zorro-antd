@@ -51,11 +51,11 @@ describe('nz-statistic', () => {
 
     it('should className correct on dir change', () => {
       fixture.detectChanges();
-      expect(statisticEl.nativeElement.querySelector('.ant-statistic').classList).toContain('ant-statistic-rtl');
+      expect(statisticEl.nativeElement.classList).toContain('ant-statistic-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(statisticEl.nativeElement.querySelector('.ant-statistic').classList).not.toContain('ant-statistic-rtl');
+      expect(statisticEl.nativeElement.classList).not.toContain('ant-statistic-rtl');
     });
   });
 });

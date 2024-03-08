@@ -2,12 +2,16 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzColDirective } from './col.directive';
 import { NzGridModule } from './grid.module';
 import { NzRowDirective } from './row.directive';
 
-const setWindowWidth = (width: number) => {
+declare const viewport: NzSafeAny;
+const setWindowWidth = (width: number): void => {
   viewport.set(width);
   window.dispatchEvent(new Event('resize'));
   tick(100);
@@ -46,6 +50,14 @@ describe('grid', () => {
       expect(rowElement.style.cssText).toBe('');
       expect(colElement.style.cssText).toBe('');
       testBed.component.gutter = 16;
+      testBed.fixture.detectChanges();
+      expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
+      expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
+    });
+    it('should gutter string work', () => {
+      expect(rowElement.style.cssText).toBe('');
+      expect(colElement.style.cssText).toBe('');
+      testBed.component.gutter = '16';
       testBed.fixture.detectChanges();
       expect(rowElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
       expect(colElement.style.cssText).toBe('padding-left: 8px; padding-right: 8px;');
@@ -135,15 +147,12 @@ describe('grid', () => {
       expect(propertySizeMatch('xxl', 8)).toBe(true);
     });
     it('should apply className according to responsive size object', () => {
-      const batchSizeMatch = (count: number, size: string): boolean => {
-        return (
-          sizeMatch('span', count, size) &&
-          sizeMatch('offset', count, size) &&
-          sizeMatch('order', count, size) &&
-          sizeMatch('pull', count, size) &&
-          sizeMatch('push', count, size)
-        );
-      };
+      const batchSizeMatch = (count: number, size: string): boolean =>
+        sizeMatch('span', count, size) &&
+        sizeMatch('offset', count, size) &&
+        sizeMatch('order', count, size) &&
+        sizeMatch('pull', count, size) &&
+        sizeMatch('push', count, size);
       testBed.component.xs = { span: 1, offset: 1, order: 1, pull: 1, push: 1 };
       testBed.component.sm = { span: 2, offset: 2, order: 2, pull: 2, push: 2 };
       testBed.component.md = { span: 3, offset: 3, order: 3, pull: 3, push: 3 };
@@ -202,7 +211,13 @@ describe('grid', () => {
   `
 })
 export class TestGridComponent {
-  gutter: number | null | [number, number] | { [key: string]: number } | [{ [key: string]: number }, { [key: string]: number }] = null;
+  gutter:
+    | string
+    | number
+    | null
+    | [number, number]
+    | { [key: string]: number }
+    | [{ [key: string]: number }, { [key: string]: number }] = null;
   flex: string | null = null;
   justify: string | null = null;
   align: string | null = null;

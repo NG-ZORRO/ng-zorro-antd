@@ -24,6 +24,7 @@ title: 资源推荐
 组件库|[ngx-charts](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
 组件库|[ngx-graph](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
 组件库|[ngx-formly](https://github.com/ngx-formly/ngx-formly) | 基于 JSON Schema 的表单方案
+组件库|[ng-ant-admin](https://github.com/huajian123/ng-ant-admin) | [huajian123](https://github.com/huajian123) 个人开发的仿 Ant Design Pro 的 Admin 模板
 开发工具|[Component Dev Kit](https://material.angular.io/cdk/categories) | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能
 开发工具|[Spectator](https://github.com/ngneat/spectator) | Angular 测试工具库
 开发工具|[Scully](https://github.com/scullyio/scully) | 基于 Angular 的静态博客生成器

@@ -8,9 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'nz-avatar-group',
   exportAs: 'nzAvatarGroup',
-  template: `
-    <ng-content></ng-content>
-  `,
+  standalone: true,
+  template: ` <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-avatar-group'

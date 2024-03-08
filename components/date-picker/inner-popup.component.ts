@@ -14,24 +14,28 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+
+import { LibPackerModule } from './lib';
 import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
   exportAs: 'innerPopup',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">
-        <ng-container [ngSwitch]="panelMode">
-          <ng-container *ngSwitchCase="'decade'">
+        @switch (panelMode) {
+          @case ('decade') {
             <decade-header
               [(value)]="activeDate"
               [locale]="locale"
@@ -41,7 +45,7 @@ import { PREFIX_CLASS } from './util';
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
-            ></decade-header>
+            />
             <div class="{{ prefixCls }}-body">
               <decade-table
                 [activeDate]="activeDate"
@@ -49,10 +53,10 @@ import { PREFIX_CLASS } from './util';
                 [locale]="locale"
                 (valueChange)="onChooseDecade($event)"
                 [disabledDate]="disabledDate"
-              ></decade-table>
+              />
             </div>
-          </ng-container>
-          <ng-container *ngSwitchCase="'year'">
+          }
+          @case ('year') {
             <year-header
               [(value)]="activeDate"
               [locale]="locale"
@@ -62,7 +66,7 @@ import { PREFIX_CLASS } from './util';
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
-            ></year-header>
+            />
             <div class="{{ prefixCls }}-body">
               <year-table
                 [activeDate]="activeDate"
@@ -73,10 +77,10 @@ import { PREFIX_CLASS } from './util';
                 [hoverValue]="hoverValue"
                 (valueChange)="onChooseYear($event)"
                 (cellHover)="cellHover.emit($event)"
-              ></year-table>
+              />
             </div>
-          </ng-container>
-          <ng-container *ngSwitchCase="'month'">
+          }
+          @case ('month') {
             <month-header
               [(value)]="activeDate"
               [locale]="locale"
@@ -86,7 +90,7 @@ import { PREFIX_CLASS } from './util';
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
-            ></month-header>
+            />
             <div class="{{ prefixCls }}-body">
               <month-table
                 [value]="value"
@@ -97,21 +101,22 @@ import { PREFIX_CLASS } from './util';
                 [hoverValue]="hoverValue"
                 (valueChange)="onChooseMonth($event)"
                 (cellHover)="cellHover.emit($event)"
-              ></month-table>
+              />
             </div>
-          </ng-container>
-
-          <ng-container *ngSwitchDefault>
+          }
+          @default {
             <date-header
               [(value)]="activeDate"
               [locale]="locale"
-              [showSuperPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
-              [showSuperNextBtn]="showWeek ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
-              [showPreBtn]="showWeek ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
-              [showNextBtn]="showWeek ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
+              [showSuperPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
+              [showSuperNextBtn]="
+                panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')
+              "
+              [showPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
+              [showNextBtn]="panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
-            ></date-header>
+            />
             <div class="{{ prefixCls }}-body">
               <date-table
                 [locale]="locale"
@@ -122,14 +127,15 @@ import { PREFIX_CLASS } from './util';
                 [cellRender]="dateRender"
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
+                [canSelectWeek]="panelMode === 'week'"
                 (valueChange)="onSelectDate($event)"
                 (cellHover)="cellHover.emit($event)"
-              ></date-table>
+              />
             </div>
-          </ng-container>
-        </ng-container>
+          }
+        }
       </div>
-      <ng-container *ngIf="showTimePicker && timeOptions">
+      @if (showTimePicker && timeOptions) {
         <nz-time-picker-panel
           [nzInDatePicker]="true"
           [ngModel]="value?.nativeDate"
@@ -145,11 +151,12 @@ import { PREFIX_CLASS } from './util';
           [nzDefaultOpenValue]="$any(timeOptions.nzDefaultOpenValue)"
           [nzUse12Hours]="!!timeOptions.nzUse12Hours"
           [nzAddOn]="$any(timeOptions.nzAddOn)"
-        ></nz-time-picker-panel>
-        <!-- use [opened] to trigger time panel \`initPosition()\` -->
-      </ng-container>
+        />
+      }
     </div>
-  `
+  `,
+  imports: [LibPackerModule, NzTimePickerModule, FormsModule],
+  standalone: true
 })
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
@@ -178,18 +185,16 @@ export class InnerPopupComponent implements OnChanges {
   /**
    * Hide "next" arrow in left panel,
    * hide "prev" arrow in right panel
+   *
    * @param direction
    * @param panelMode
    */
   enablePrevNext(direction: 'prev' | 'next', panelMode: NzDateMode): boolean {
-    if (
+    return !(
       !this.showTimePicker &&
       panelMode === this.endPanelMode &&
       ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
-    ) {
-      return false;
-    }
-    return true;
+    );
   }
 
   onSelectTime(date: Date): void {

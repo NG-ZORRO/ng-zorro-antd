@@ -4,11 +4,13 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,12 +21,17 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzBadgeSupComponent } from './badge-sup.component';
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
@@ -37,8 +44,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
+  standalone: true,
+  imports: [NgStyle, NzBadgeSupComponent, NzOutletModule],
   template: `
-    <ng-container *ngIf="nzStatus || nzColor">
+    @if (nzStatus || nzColor) {
       <span
         class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
         [style.background]="!presetColor && nzColor"
@@ -47,22 +56,26 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
       <span class="ant-badge-status-text">
         <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       </span>
-    </ng-container>
-    <ng-content></ng-content>
+    }
+    <ng-content />
     <ng-container *nzStringTemplateOutlet="nzCount">
-      <nz-badge-sup
-        *ngIf="showSup"
-        [nzOffset]="nzOffset"
-        [nzTitle]="nzTitle"
-        [nzStyle]="nzStyle"
-        [nzDot]="nzDot"
-        [nzOverflowCount]="nzOverflowCount"
-        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor)"
-        [nzCount]="nzCount"
-      ></nz-badge-sup>
+      @if (showSup) {
+        <nz-badge-sup
+          [nzOffset]="nzOffset"
+          [nzSize]="nzSize"
+          [nzTitle]="nzTitle"
+          [nzStyle]="nzStyle"
+          [nzDot]="nzDot"
+          [nzOverflowCount]="nzOverflowCount"
+          [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
+          [nzCount]="nzCount"
+          [noAnimation]="!!noAnimation?.nzNoAnimation"
+        />
+      }
     </ng-container>
   `,
   host: {
+    class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
@@ -89,17 +102,16 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzStatus?: NzBadgeStatusType | string;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
+  @Input() nzSize: NzSizeDSType = 'default';
 
   constructor(
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-badge');
-  }
+    @Optional() private directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {}
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -116,7 +128,10 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
       this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
     if (nzShowDot || nzDot || nzCount || nzShowZero) {
-      this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount! > 0 || (this.nzCount! <= 0 && this.nzShowZero);
+      this.showSup =
+        (this.nzShowDot && this.nzDot) ||
+        (typeof this.nzCount === 'number' && this.nzCount! > 0) ||
+        (typeof this.nzCount === 'number' && this.nzCount! <= 0 && this.nzShowZero);
     }
   }
 

@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Locale } from 'date-fns';
 
 export interface NzPaginationI18nInterface {
@@ -130,6 +131,26 @@ export interface NzTextI18nInterface {
   expand: string;
 }
 
+export interface NzCronExpressionLabelI18n {
+  second?: string;
+  minute?: string;
+  hour?: string;
+  day?: string;
+  month?: string;
+  week?: string;
+}
+
+export interface NzCronExpressionCronErrorI18n {
+  cronError?: string;
+}
+
+export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
+
+export interface NzQRCodeI18nInterface {
+  expired: string;
+  refresh: string;
+}
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -144,6 +165,8 @@ export interface NzI18nInterface {
   Upload: NzUploadI18nInterface;
   Empty: NzEmptyI18nInterface;
   Text?: NzTextI18nInterface;
+  CronExpression?: NzCronExpressionI18nInterface;
+  QRCode?: NzQRCodeI18nInterface;
 }
 
 export type DateLocale = Locale;

@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { Observable } from 'rxjs';
 
 interface RandomUser {
   gender: string;
@@ -34,7 +36,9 @@ export class RandomUserService {
         params = params.append(filter.key, value);
       });
     });
-    return this.http.get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params });
+    return this.http
+      .get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params })
+      .pipe(catchError(() => of({ results: [] })));
   }
 
   constructor(private http: HttpClient) {}

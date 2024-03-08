@@ -7,10 +7,10 @@ title: 全局配置项
 
 ## 如何使用
 
-想要为某些组件提供默认配置项，请在根注入器中根据注入令牌 `NZ_CONFIG` 提供一个符合 `NzConfig` 接口的对象，例如：
+想要为某些组件提供默认配置项, 可以使用 `provideNzConfig` 函数，传入一个符合 `NzConfig` 接口的对象。例如：
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   // 注意组件名称没有 nz 前缀
@@ -24,7 +24,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
   template: `
     <ng-template #nzIndicatorTpl>
       <span class="ant-spin-dot">
-        <i nz-icon [nzType]="'loading'"></i>
+        <span nz-icon [nzType]="'loading'"></span>
       </span>
     </ng-template>
   `
@@ -74,12 +74,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -96,17 +93,69 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
 export class AppModule {}
 ```
 
-## 动态变更全局配置
 
-你可以通过调用 `NzConfigService` 的 `set` 方法来改变某个组件的全局配置项，例如：
+## 局部生效
+
+开发者可以利用 Angular 自带的依赖注入机制，在特定组件内重新设定 `NZ_CONFIG`， 该设定不会影响该组件以外的配置。
+
+```typescript
+@Component({
+  providers: [
+    // 重设本地 NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useValue: {
+        button: {
+          nzSize: 'large'
+        }
+      }
+    }
+  ]
+})
+```
+
+也可以使用 `useFactory` 将全局配置与区域配置合并后生效
+
+> 注意：全局配置在初始化之后修改将不会影响该部分配置结果
+
+```typescript
+@Component({
+  providers: [
+    // 重设本地 NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useFactory: () => {
+        // 获取全局 NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
+        const localConfig = {
+          select: {
+            nzBorderless: true
+          }
+        };
+        // 合并全局配置与本地配置
+        const mergedConfig = {
+          ...globalConfig,
+          ...localConfig
+        };
+        return mergedConfig;
+      },
+    }
+  ]
+})
+```
+
+## 动态变更
+
+你可以通过调用 `NzConfigService` 的 `set` 方法来改变某个组件的配置项，例如：
 
 ```typescript
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -118,7 +167,6 @@ export class ChangeZorroConfigComponent {
   constructor(private nzConfigService: NzConfigService) {}
 
   onChangeConfig() {
-    // 爷爷：我就喜欢大号字！
     this.nzConfigService.set('button', { nzSize: 'large' })
   }
 }
@@ -126,7 +174,7 @@ export class ChangeZorroConfigComponent {
 
 所有的组件实例都会响应这些改变（只要它们没有被单独赋值）。
 
-## 全局配置项的优先级
+## 优先级说明
 
 对于任何一个属性来说，各个来源的值的优先级如下：
 
@@ -140,6 +188,6 @@ export class ChangeZorroConfigComponent {
 
 最终该 Notification 将会显示 6000 毫秒。
 
-## 查看所有可用的全局配置项
+## 可配置项
 
 `NzConfig` 接口提供的类型定义信息能够帮助你找到所有支持全局配置项的组件和属性。另外，每个组件的文档都会指出哪些属性可以通过全局配置项的方式指定。

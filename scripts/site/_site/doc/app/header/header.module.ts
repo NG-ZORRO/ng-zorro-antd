@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from "ng-zorro-antd/grid";
@@ -32,7 +33,8 @@ import { SearchbarComponent } from './searchbar.component';
     NzSelectModule,
     NzButtonModule,
     NzDropDownModule,
-    NzPopoverModule
+    NzPopoverModule,
+    NzAlertModule
   ],
   declarations: [
     HeaderComponent,

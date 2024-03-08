@@ -23,7 +23,7 @@ export function getStyleAsText(styles?: NgStyleInterface): string {
   return Object.keys(styles)
     .map(key => {
       const val = styles[key];
-      return `${key}:${typeof val === 'string' ? val : val + 'px'}`;
+      return `${key}:${typeof val === 'string' ? val : `${val}px`}`;
     })
     .join(';');
 }

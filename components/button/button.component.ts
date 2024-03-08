@@ -13,6 +13,7 @@ import {
   ContentChild,
   ElementRef,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -21,22 +22,15 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-
-import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-/**
- * @deprecated `danger` not supported, use `nzDanger` instead
- * @breaking-change 12.0.0
- */
-type NzLegacyButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
 
-export type NzButtonType = NzLegacyButtonType;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -49,15 +43,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <i nz-icon nzType="loading" *ngIf="nzLoading"></i>
+    @if (nzLoading) {
+      <span nz-icon nzType="loading"></span>
+    }
     <ng-content></ng-content>
   `,
   host: {
+    class: 'ant-btn',
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
     '[class.ant-btn-text]': `nzType === 'text'`,
-    '[class.ant-btn-danger]': `nzType === 'danger'`,
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
     '[class.ant-btn-lg]': `nzSize === 'large'`,
@@ -68,9 +64,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
     '[class.ant-btn-rtl]': `dir === 'rtl'`,
+    '[class.ant-btn-icon-only]': `iconOnly`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
-  }
+  },
+  imports: [NzIconModule],
+  standalone: true
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -107,26 +106,25 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     });
   }
 
-  assertIconOnly(element: HTMLButtonElement, renderer: Renderer2): void {
-    const listOfNode = Array.from(element.childNodes);
-    const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
+  public get iconOnly(): boolean {
+    const listOfNode = Array.from((this.elementRef?.nativeElement as HTMLButtonElement)?.childNodes || []);
     const noText = listOfNode.every(node => node.nodeName !== '#text');
-    const noSpan = listOfNode.every(node => node.nodeName !== 'SPAN');
-    const isIconOnly = noSpan && noText && iconCount >= 1;
-    if (isIconOnly) {
-      renderer.addClass(element, 'ant-btn-icon-only');
-    }
+    // ignore icon and comment
+    const noSpan =
+      listOfNode.filter(node => {
+        return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.attributes?.getNamedItem('nz-icon'));
+      }).length == 0;
+    return !!this.nzIconDirectiveElement && noSpan && noText;
   }
 
   constructor(
+    private ngZone: NgZone,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     public nzConfigService: NzConfigService,
     @Optional() private directionality: Directionality
   ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-btn');
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -142,21 +140,31 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     });
 
     this.dir = this.directionality.value;
+
+    this.ngZone.runOutsideAngular(() => {
+      // Caretaker note: this event listener could've been added through `host.click` or `HostListener`.
+      // The compiler generates the `ɵɵlistener` instruction which wraps the actual listener internally into the
+      // function, which runs `markDirty()` before running the actual listener (the decorated class method).
+      // Since we're preventing the default behavior and stopping event propagation this doesn't require Angular to run the change detection.
+      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click', { capture: true })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if ((this.disabled && (event.target as HTMLElement)?.tagName === 'A') || this.nzLoading) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        });
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading, nzType } = changes;
+    const { nzLoading } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
-    }
-
-    if (nzType?.currentValue === 'danger') {
-      warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
     }
   }
 
   ngAfterViewInit(): void {
-    this.assertIconOnly(this.elementRef.nativeElement, this.renderer);
     this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
   }
 

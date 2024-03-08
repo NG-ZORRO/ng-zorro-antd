@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
@@ -23,18 +22,21 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { LibPackerModule } from 'ng-zorro-antd/date-picker';
+
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
   NzMonthCellDirective as MonthCell,
   NzMonthFullCellDirective as MonthFullCell
 } from './calendar-cells';
+import { NzCalendarHeaderComponent } from './calendar-header.component';
 
 export type NzCalendarMode = 'month' | 'year';
 type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
@@ -57,41 +59,40 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
         <div class="ant-picker-body">
-          <ng-container *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"></ng-container>
+          @if (nzMode === 'month') {
+            <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
+            <date-table
+              [prefixCls]="prefixCls"
+              [value]="activeDate"
+              [activeDate]="activeDate"
+              [cellRender]="$any(dateCell)"
+              [fullCellRender]="$any(dateFullCell)"
+              [disabledDate]="nzDisabledDate"
+              (valueChange)="onDateSelect($event)"
+            ></date-table>
+          } @else {
+            <month-table
+              [prefixCls]="prefixCls"
+              [value]="activeDate"
+              [activeDate]="activeDate"
+              [cellRender]="$any(monthCell)"
+              [fullCellRender]="$any(monthFullCell)"
+              (valueChange)="onDateSelect($event)"
+            ></month-table>
+          }
         </div>
       </div>
     </div>
-    <ng-template #monthModeTable>
-      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
-      <date-table
-        [prefixCls]="prefixCls"
-        [value]="activeDate"
-        [activeDate]="activeDate"
-        [cellRender]="$any(dateCell)"
-        [fullCellRender]="$any(dateFullCell)"
-        [disabledDate]="nzDisabledDate"
-        (valueChange)="onDateSelect($event)"
-      ></date-table>
-    </ng-template>
-
-    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
-    <ng-template #yearModeTable>
-      <month-table
-        [prefixCls]="prefixCls"
-        [value]="activeDate"
-        [activeDate]="activeDate"
-        [cellRender]="$any(monthCell)"
-        [fullCellRender]="$any(monthFullCell)"
-        (valueChange)="onDateSelect($event)"
-      ></month-table>
-    </ng-template>
   `,
   host: {
+    class: 'ant-picker-calendar',
     '[class.ant-picker-calendar-full]': 'nzFullscreen',
     '[class.ant-picker-calendar-mini]': '!nzFullscreen',
     '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
+  imports: [NzCalendarHeaderComponent, LibPackerModule],
+  standalone: true
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzFullscreen: BooleanInput;
@@ -143,10 +144,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-picker-calendar');
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;

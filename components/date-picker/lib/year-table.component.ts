@@ -4,23 +4,28 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
+import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'year-table',
   exportAs: 'yearTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault],
+  standalone: true
 })
 export class YearTableComponent extends AbstractTable {
-  MAX_ROW = 4;
-  MAX_COL = 3;
+  override MAX_ROW = 4;
+  override MAX_COL = 3;
 
   constructor(private dateHelper: DateHelperService) {
     super();
@@ -74,7 +79,7 @@ export class YearTableComponent extends AbstractTable {
     return years;
   }
 
-  getClassMap(cell: YearCell): { [key: string]: boolean } {
+  override getClassMap(cell: YearCell): { [key: string]: boolean } {
     return {
       ...super.getClassMap(cell),
       [`ant-picker-cell-in-view`]: !!cell.isSameDecade

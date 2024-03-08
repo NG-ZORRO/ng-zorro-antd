@@ -4,11 +4,11 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,6 +19,13 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzResultNotFoundComponent } from './partial/not-found';
+import { NzResultServerErrorComponent } from './partial/server-error.component';
+import { NzResultUnauthorizedComponent } from './partial/unauthorized';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -42,7 +49,7 @@ const ExceptionStatus = ['404', '500', '403'];
       <ng-container *ngIf="!isException; else exceptionTpl">
         <ng-container *ngIf="icon">
           <ng-container *nzStringTemplateOutlet="icon; let icon">
-            <i nz-icon [nzType]="icon" nzTheme="fill"></i>
+            <span nz-icon [nzType]="icon" nzTheme="fill"></span>
           </ng-container>
         </ng-container>
         <ng-content *ngIf="!icon" select="[nz-result-icon]"></ng-content>
@@ -77,12 +84,24 @@ const ExceptionStatus = ['404', '500', '403'];
     </ng-template>
   `,
   host: {
+    class: 'ant-result',
     '[class.ant-result-success]': `nzStatus === 'success'`,
     '[class.ant-result-error]': `nzStatus === 'error'`,
     '[class.ant-result-info]': `nzStatus === 'info'`,
     '[class.ant-result-warning]': `nzStatus === 'warning'`,
     '[class.ant-result-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NgIf,
+    NzOutletModule,
+    NzIconModule,
+    NgSwitch,
+    NzResultNotFoundComponent,
+    NzResultServerErrorComponent,
+    NzResultUnauthorizedComponent,
+    NgSwitchCase
+  ],
+  standalone: true
 })
 export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;
@@ -97,10 +116,10 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-result');
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -129,7 +148,7 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-      ? undefined
-      : IconMap[this.nzStatus as NzResultIconType];
+        ? undefined
+        : IconMap[this.nzStatus as NzResultIconType];
   }
 }

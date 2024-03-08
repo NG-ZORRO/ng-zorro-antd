@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -15,11 +16,14 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span *ngIf="nzText" class="ant-divider-inner-text">
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
-    </span>
+    @if (nzText) {
+      <span class="ant-divider-inner-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
+    }
   `,
   host: {
+    class: 'ant-divider',
     '[class.ant-divider-horizontal]': `nzType === 'horizontal'`,
     '[class.ant-divider-vertical]': `nzType === 'vertical'`,
     '[class.ant-divider-with-text]': `nzText`,
@@ -28,7 +32,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
     '[class.ant-divider-dashed]': `nzDashed`
-  }
+  },
+  imports: [NzOutletModule],
+  standalone: true
 })
 export class NzDividerComponent {
   static ngAcceptInputType_nzDashed: BooleanInput;
@@ -40,8 +46,5 @@ export class NzDividerComponent {
   @Input() @InputBoolean() nzDashed = false;
   @Input() @InputBoolean() nzPlain = false;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-divider');
-  }
+  constructor() {}
 }

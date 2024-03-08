@@ -1,8 +1,13 @@
-import { findInputsOnElementWithTag, Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { findInputsOnElementWithTag, Migration, ResolvedResource, UpgradeData } from '@angular/cdk/schematics';
 
 export class CalendarTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V9;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

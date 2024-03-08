@@ -2,8 +2,11 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+
+import { NzDemoTimelineLabelComponent } from './demo/label';
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
 
@@ -78,7 +81,9 @@ describe('nz-timeline', () => {
       testComponent.pending = true;
       testComponent.reverse = true;
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-timeline-item-pending');
+      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain(
+        'ant-timeline-item-pending'
+      );
       expect(items[0].classList).toContain('ant-timeline-item-last');
       expect(items[3].classList).not.toContain('ant-timeline-item-last');
     });
@@ -145,8 +150,12 @@ describe('nz-timeline', () => {
     it('should support custom color', () => {
       fixture.detectChanges();
       expect((items[0].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('cyan');
-      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(200, 0, 0)');
-      expect((items[2].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
+      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe(
+        'rgb(200, 0, 0)'
+      );
+      expect((items[2].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe(
+        'rgb(120, 18, 65)'
+      ); // hex would be converted to rgb()
       expect((items[3].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('');
     });
   });
@@ -173,27 +182,57 @@ describe('nz-timeline', () => {
     });
   });
 
+  describe('label', () => {
+    let testBed: ComponentBed<NzDemoTimelineLabelComponent>;
+    let fixture: ComponentFixture<NzDemoTimelineLabelComponent>;
+    let timeline: DebugElement;
+    let items: HTMLLIElement[];
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzDemoTimelineLabelComponent, {
+        imports: [NzTimelineModule, NzRadioModule]
+      });
+      fixture = testBed.fixture;
+
+      fixture.detectChanges();
+
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    });
+
+    it('should label work', () => {
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-label');
+      expect(items[0].firstElementChild!.classList).toContain('ant-timeline-item-label');
+      expect(items[2].firstElementChild!.classList).not.toContain('ant-timeline-item-label');
+    });
+
+    it('should mode right not affecting classnames', () => {
+      fixture.componentInstance.mode = 'right';
+      fixture.detectChanges();
+
+      expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-right');
+    });
+  });
+
   describe('RTL', () => {
     let testBed: ComponentBed<NzTestTimelineRtlComponent>;
     let fixture: ComponentFixture<NzTestTimelineRtlComponent>;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
-    beforeEach(
-      waitForAsync(() => {
-        testBed = createComponentBed(NzTestTimelineRtlComponent, {
-          imports: [BidiModule, NzTimelineModule],
-          declarations: [NzTestTimelineBasicComponent]
-        });
+    beforeEach(waitForAsync(() => {
+      testBed = createComponentBed(NzTestTimelineRtlComponent, {
+        imports: [BidiModule, NzTimelineModule],
+        declarations: [NzTestTimelineBasicComponent]
+      });
 
-        fixture = testBed.fixture;
+      fixture = testBed.fixture;
 
-        fixture.detectChanges();
+      fixture.detectChanges();
 
-        timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-        items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-      })
-    );
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    }));
 
     it('should init className correct', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');
@@ -204,10 +243,31 @@ describe('nz-timeline', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-rtl');
     });
   });
+
+  describe('clear', () => {
+    let testBed: ComponentBed<NzTestTimelineClearItemsComponent>;
+    let fixture: ComponentFixture<NzTestTimelineClearItemsComponent>;
+    let timeline: NzTimelineComponent;
+
+    beforeEach(() => {
+      testBed = createComponentBed(NzTestTimelineClearItemsComponent, {
+        imports: [NzTimelineModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+      timeline = fixture.componentInstance.nzTimeLine;
+    });
+
+    it('test clear items', () => {
+      fixture.componentInstance.reset();
+      fixture.detectChanges();
+      expect(timeline.timelineItems.length).toBe(0);
+    });
+  });
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-timeline',
   template: `
     <ng-template #dotTemplate>template</ng-template>
@@ -272,4 +332,21 @@ export class NzTestTimelineCustomPositionComponent {}
 export class NzTestTimelineRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: `
+    <nz-timeline nzMode="custom">
+      <nz-timeline-item *ngFor="let item of data">{{ item }}</nz-timeline-item>
+    </nz-timeline>
+    <span (click)="reset()">reset</span>
+  `
+})
+export class NzTestTimelineClearItemsComponent {
+  @ViewChild(NzTimelineComponent)
+  nzTimeLine!: NzTimelineComponent;
+  data = [1, 2, 3];
+  reset(): void {
+    this.data = [];
+  }
 }

@@ -6,5 +6,15 @@
   data: '数据类图标',
   other: '网站通用图标',
   logo: '品牌和标识',
-  search: '在此搜索图标，点击图标可复制代码'
+  search: '在此搜索图标，点击图标可复制代码',
+  picSearcherIntro: 'AI 截图搜索上线了，快来体验吧！🎉',
+  picSearcherMatching: '匹配中...',
+  picSearcherModelLoading: '神经网络模型加载中...',
+  picSearcherResultTip: '为您匹配到以下图标：',
+  picSearcherServerError: '识别服务暂不可用',
+  picSearcherThIcon: '图标',
+  picSearcherThScore: '匹配度',
+  picSearcherTitle: '上传图片搜索图标',
+  picSearcherUploadHint: '我们会通过上传的图片进行匹配，得到最相似的图标',
+  picSearcherUploadText: '点击/拖拽/粘贴上传图片'
 }

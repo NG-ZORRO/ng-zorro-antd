@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
@@ -46,8 +47,12 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-hover',
   template: `
-    <nz-cascader [nzExpandTrigger]="'hover'" [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)">
-    </nz-cascader>
+    <nz-cascader
+      [nzExpandTrigger]="'hover'"
+      [nzOptions]="nzOptions"
+      [(ngModel)]="values"
+      (ngModelChange)="onChanges($event)"
+    ></nz-cascader>
   `
 })
 export class NzDemoCascaderHoverComponent {

@@ -1,13 +1,13 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -221,6 +221,46 @@ describe('nz-slider', () => {
     }));
   });
 
+  describe('show template tooltip', () => {
+    let testBed: ComponentBed<SliderShowTemplateTooltipComponent>;
+    let fixture: ComponentFixture<SliderShowTemplateTooltipComponent>;
+    let testComponent: SliderShowTemplateTooltipComponent;
+
+    beforeEach(() => {
+      testBed = createComponentBed(SliderShowTemplateTooltipComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
+      sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
+      sliderNativeElement = sliderInstance.slider.nativeElement;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should preview template tooltip', fakeAsync(() => {
+      testComponent.show = 'always';
+      fixture.detectChanges();
+      tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 0');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      // Always show tooltip even when handle is not hovered.
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      tick(400);
+    }));
+  });
+
   describe('setting value', () => {
     let testBed: ComponentBed<SliderWithValueComponent>;
     let fixture: ComponentFixture<SliderWithValueComponent>;
@@ -339,7 +379,7 @@ describe('nz-slider', () => {
 
     // TODO: Pass this testing by increase precision
     xit('should round the value inside the label based on the provided step', () => {
-      const testStep = (step: number, expected: string) => {
+      const testStep = (step: number, expected: string): void => {
         fixture.componentInstance.step = step;
         fixture.detectChanges();
         dispatchSlideEventSequence(sliderNativeElement, 0, 0.333333);
@@ -481,6 +521,38 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('min and max and value is zero', () => {
+    let testBed: ComponentBed<SliderWithValueZeroComponent>;
+    let fixture: ComponentFixture<SliderWithValueZeroComponent>;
+    let trackFillElement: HTMLElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(SliderWithValueZeroComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
+    });
+
+    it('should set the value equal to the middle value', () => {
+      fixture.whenStable().then(() => {
+        expect(sliderInstance.value).toBe(0);
+        expect(sliderInstance.nzMin).toBe(-5);
+        expect(sliderInstance.nzMax).toBe(5);
+      });
+    });
+
+    it('should set the fill to the middle value', () => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        expect(trackFillElement.style.width).toBe('50%');
+      });
+    });
+  });
+
   describe('vertical', () => {
     let testBed: ComponentBed<VerticalSliderComponent>;
     let fixture: ComponentFixture<VerticalSliderComponent>;
@@ -537,14 +609,20 @@ describe('nz-slider', () => {
     });
 
     it('should reverse work', () => {
-      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.right).toBe('0%');
 
-      const rangeTrackElement = (sliderDebugElements[1].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const rangeTrackElement = (sliderDebugElements[1].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.right).toBe('0%');
       expect(rangeTrackElement.style.width).toBe('100%');
 
-      const verticalTrackElement = (sliderDebugElements[2].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const verticalTrackElement = (sliderDebugElements[2].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(verticalTrackElement.style.top).toBe('0%');
     });
 
@@ -559,12 +637,16 @@ describe('nz-slider', () => {
 
       fixture.detectChanges();
 
-      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-track'
+      ) as HTMLElement;
       expect(trackElement.style.width).toBe('1%');
     });
 
     it('should reverse marks', () => {
-      const markList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-mark') as HTMLElement;
+      const markList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-mark'
+      ) as HTMLElement;
       const value0Mark = markList.children[0] as HTMLElement;
       const value100Mark = markList.children[1] as HTMLElement;
 
@@ -573,7 +655,9 @@ describe('nz-slider', () => {
     });
 
     it('should reverse steps', () => {
-      const stepList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-step') as HTMLElement;
+      const stepList = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector(
+        '.ant-slider-step'
+      ) as HTMLElement;
       const value0Step = stepList.children[0] as HTMLElement;
       const value100Step = stepList.children[1] as HTMLElement;
 
@@ -672,7 +756,7 @@ describe('nz-slider', () => {
     });
 
     it('should stop at new steps when step=null or dots=true', () => {
-      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // tslint:disable-line:no-any
+      testComponent.marks = { 15: { style: { color: 'red' }, label: '15' }, 33: '33' } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
       testComponent.step = null;
       fixture.detectChanges();
 
@@ -740,70 +824,77 @@ describe('nz-slider', () => {
         imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
       });
       fixture = testBed.fixture;
-      fixture.detectChanges();
-
-      testComponent = fixture.debugElement.componentInstance;
-
+      testComponent = fixture.componentInstance;
+      sliderControl = testComponent.formControl;
       getReferenceFromFixture(fixture);
-      sliderControl = testComponent.form.controls.slider;
     });
 
-    it('should have correct initial value', () => {
+    it('should have correct initial value', fakeAsync(() => {
+      fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
       expect(sliderInstance.value).toBe(42);
-    });
+      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
+    }));
 
     it('should not update the control when the value is updated', () => {
       expect(sliderControl.value).toBe(42);
 
       sliderInstance.value = 11;
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(42);
     });
 
-    it('should update the control on click', () => {
+    it('should update the control', () => {
       expect(sliderControl.value).toBe(42);
 
       dispatchClickEventSequence(sliderNativeElement, 0.76);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(76);
-    });
-
-    it('should update the control on slide', () => {
-      expect(sliderControl.value).toBe(42);
 
       dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(19);
-    });
-
-    it('should update the value when the control is set', () => {
-      expect(sliderInstance.value).toBe(42);
 
       sliderControl.setValue(7);
       fixture.detectChanges();
-
+      expect(sliderControl.value).toBe(7);
       expect(sliderInstance.value).toBe(7);
     });
-
-    it('should update the disabled state when control is disabled', () => {
-      expect(sliderInstance.nzDisabled).toBe(false);
-
-      sliderControl.disable();
+    it('should be disable initially even if nzDisable is set to false', () => {
+      testComponent.disable();
       fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
 
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
     });
-
-    it('should update the disabled state when the control is enabled', () => {
-      sliderInstance.nzDisabled = true;
-
-      sliderControl.enable();
+    it('should disable work', () => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
 
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      expect(sliderControl.value).toBe(42);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(42);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(false);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
     });
 
     it('should have the correct control state initially and after interaction', () => {
@@ -872,6 +963,53 @@ describe('nz-slider', () => {
       fixture.detectChanges();
 
       expect(sliderInstance.value).toEqual([2, 99]);
+    });
+
+    it('should trigger nzOnAfterChange', () => {
+      const onChangeSpy = jasmine.createSpy('slider onChange');
+
+      sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+
+      expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should work for range slider when activeValueIndex is undefined', () => {
+      testComponent.range = true;
+      fixture.detectChanges();
+
+      const handleElements = sliderNativeElement.querySelectorAll('nz-slider-handle');
+      expect(handleElements.length).toBe(2);
+
+      dispatchFakeEvent(handleElements[0]!, 'focusin');
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual([1, 100]);
+
+      dispatchFakeEvent(handleElements[1]!, 'focusin');
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', LEFT_ARROW);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual([1, 99]);
+    });
+
+    it('should not respond to keyboard event when disabled', () => {
+      expect(sliderInstance.value).toBe(0);
+
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(1);
+
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(1);
+
+      testComponent.disabled = false;
+      fixture.detectChanges();
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      expect(sliderInstance.value).toBe(2);
     });
   });
 
@@ -949,18 +1087,14 @@ const styles = `
 `;
 
 @Component({
-  template: `
-    <nz-slider [nzDisabled]="disabled"></nz-slider>
-  `,
+  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: `
-    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -969,26 +1103,20 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="26"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: `
-    <nz-slider [nzMarks]="marks"></nz-slider>
-  `
+  template: ` <nz-slider [nzMarks]="marks"></nz-slider> `
 })
 class SliderWithMarksComponent {
   marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
-  template: `
-    <nz-slider [nzStep]="step"></nz-slider>
-  `,
+  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -996,25 +1124,25 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider> `,
+  styles: [styles]
+})
+class SliderWithValueZeroComponent {}
+
+@Component({
+  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: `
-    <nz-slider nzVertical></nz-slider>
-  `,
+  template: ` <nz-slider nzVertical></nz-slider> `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -1031,9 +1159,7 @@ class ReverseSliderComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider> `,
   styles: [styles]
 })
 class ReverseSliderWithMinAndMaxComponent {}
@@ -1069,46 +1195,60 @@ class MixedSliderComponent {
 
 @Component({
   template: `
-    <form [formGroup]="form">
-      <nz-slider formControlName="slider"></nz-slider>
+    <form>
+      <nz-slider [formControl]="formControl" [nzDisabled]="disabled"></nz-slider>
     </form>
   `,
   styles: [styles]
 })
-class SliderWithFormControlComponent implements OnInit {
-  form!: FormGroup;
+class SliderWithFormControlComponent {
+  formControl = new FormControl(42);
 
-  constructor(private fb: FormBuilder) {}
+  disabled = false;
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      slider: [42]
-    });
+  disable(): void {
+    this.formControl.disable();
+  }
+
+  enable(): void {
+    this.formControl.enable();
   }
 }
 
 @Component({
-  template: `
-    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
-  `
+  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
+
   value = 0;
 }
 
 @Component({
-  template: `
-    <nz-slider [nzRange]="range"></nz-slider>
-  `
+  template: ` <nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider> `
 })
 class NzTestSliderKeyboardComponent {
   range = false;
+  disabled = false;
+}
+
+@Component({
+  template: `
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value" [nzTipFormatter]="titleTemplate"></nz-slider>
+    <ng-template #titleTemplate let-value>
+      <span>Slider value: {{ value }}</span>
+    </ng-template>
+  `
+})
+class SliderShowTemplateTooltipComponent {
+  show: NzSliderShowTooltip = 'default';
+  value = 0;
 }
 
 /**
  * Dispatches a click event sequence (consisting of moueseenter, click) from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percentage The percentage of the slider where the click should occur. Used to find the
  * physical location of the click.
@@ -1126,12 +1266,18 @@ function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: numb
 
 /**
  * Dispatches a slide event sequence (consisting of slidestart, slide, slideend) from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param startPercent The percentage of the slider where the slide will begin.
  * @param endPercent The percentage of the slider where the slide will end.
  * @param stick Whether stick on and not mouseup when move at the end
  */
-function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: number, endPercent: number, stick: boolean = false): void {
+function dispatchSlideEventSequence(
+  sliderElement: HTMLElement,
+  startPercent: number,
+  endPercent: number,
+  stick: boolean = false
+): void {
   dispatchMouseenterEvent(sliderElement);
   dispatchSlideStartEvent(sliderElement, startPercent);
   dispatchSlideEvent(sliderElement, startPercent);
@@ -1143,6 +1289,7 @@ function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: nu
 
 /**
  * Dispatches a slide event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will happen.
  */
@@ -1157,6 +1304,7 @@ function dispatchSlideEvent(sliderElement: HTMLElement, percent: number): void {
 
 /**
  * Dispatches a slidestart event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will begin.
  */
@@ -1173,6 +1321,7 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
 
 /**
  * Dispatches a slideend event from an element.
+ *
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percent The percentage of the slider where the slide will end.
  */
@@ -1188,6 +1337,7 @@ function dispatchSlideEndEvent(sliderElement: HTMLElement, percent: number): voi
 /**
  * Dispatches a mouseenter event from an element.
  * Note: The mouse event truncates the position for the click.
+ *
  * @param element The element from which the event will be dispatched.
  */
 function dispatchMouseenterEvent(element: HTMLElement): void {

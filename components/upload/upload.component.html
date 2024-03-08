@@ -16,9 +16,7 @@
     [dir]="dir"
   ></nz-upload-list>
   <ng-container *ngIf="nzFileListRender">
-    <ng-container
-      *ngTemplateOutlet="nzFileListRender; context: { $implicit: nzFileList }"
-    ></ng-container>
+    <ng-container *ngTemplateOutlet="nzFileListRender; context: { $implicit: nzFileList }"></ng-container>
   </ng-container>
 </ng-template>
 <ng-template #con><ng-content></ng-content></ng-template>
@@ -30,12 +28,7 @@
   </div>
 </ng-template>
 <ng-container *ngIf="nzType === 'drag'; else select">
-  <div
-    [ngClass]="classList"
-    (drop)="fileDrop($event)"
-    (dragover)="fileDrop($event)"
-    (dragleave)="fileDrop($event)"
-  >
+  <div [ngClass]="classList" (drop)="fileDrop($event)" (dragover)="fileDrop($event)" (dragleave)="fileDrop($event)">
     <div nz-upload-btn #uploadComp [options]="_btnOptions!" class="ant-upload-btn">
       <div class="ant-upload-drag-container">
         <ng-template [ngTemplateOutlet]="con"></ng-template>

@@ -4,6 +4,7 @@
  */
 
 import { CdkTreeNode, CdkTreeNodeDef, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,6 +24,9 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTreeNodeIndentsComponent } from './indent';
+import { NzNodeBase } from './node-base';
+import { NzTreeNodeNoopToggleDirective } from './toggle';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
@@ -35,7 +39,10 @@ export interface NzTreeVirtualNodeData<T> {
   selector: 'nz-tree-node:not([builtin])',
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CdkTreeNode, useExisting: NzTreeNodeComponent }],
+  providers: [
+    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
+    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+  ],
   template: `
     <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
@@ -49,9 +56,11 @@ export interface NzTreeVirtualNodeData<T> {
   host: {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
-  }
+  },
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective, NgIf],
+  standalone: true
 })
-export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy, OnInit {
+export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
   disabled = false;
   selected = false;
@@ -67,7 +76,7 @@ export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy,
     this._elementRef.nativeElement.classList.add('ant-tree-treenode');
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
   }
 
@@ -115,18 +124,21 @@ export class NzTreeNodeComponent<T> extends CdkTreeNode<T> implements OnDestroy,
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }]
+  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }],
+  standalone: true
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({
-  selector: '[nzTreeVirtualScrollNodeOutlet]'
+  selector: '[nzTreeVirtualScrollNodeOutlet]',
+  standalone: true
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
   @Input() data!: NzTreeVirtualNodeData<T>;
+  @Input() compareBy?: ((value: T) => T | string | number) | null;
 
   constructor(private _viewContainerRef: ViewContainerRef) {}
 
@@ -139,7 +151,9 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
         viewContainerRef.remove(viewContainerRef.indexOf(this._viewRef));
       }
 
-      this._viewRef = this.data ? viewContainerRef.createEmbeddedView(this.data.nodeDef.template, this.data.context) : null;
+      this._viewRef = this.data
+        ? viewContainerRef.createEmbeddedView(this.data.nodeDef.template, this.data.context)
+        : null;
 
       if (CdkTreeNode.mostRecentTreeNode && this._viewRef) {
         CdkTreeNode.mostRecentTreeNode.data = this.data.data;
@@ -151,7 +165,7 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
 
   private shouldRecreateView(changes: SimpleChanges): boolean {
     const ctxChange = changes.data;
-    return !!changes.data || (ctxChange && this.hasContextShapeChanged(ctxChange));
+    return ctxChange && this.hasContextShapeChanged(ctxChange);
   }
 
   private hasContextShapeChanged(ctxChange: SimpleChange): boolean {
@@ -164,9 +178,20 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
           return true;
         }
       }
-      return false;
+      return (
+        this.innerCompareBy(ctxChange.previousValue?.data ?? null) !==
+        this.innerCompareBy(ctxChange.currentValue?.data ?? null)
+      );
     }
     return true;
+  }
+
+  get innerCompareBy(): (value: T | null) => T | string | number | null {
+    return value => {
+      if (value === null) return value;
+      if (this.compareBy) return this.compareBy(value as T);
+      return value;
+    };
   }
 
   private updateExistingContext(ctx: NzSafeAny): void {

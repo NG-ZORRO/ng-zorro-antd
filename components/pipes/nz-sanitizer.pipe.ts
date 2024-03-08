@@ -5,12 +5,14 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeStyle, SafeUrl } from '@angular/platform-browser';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 type DomSanitizerType = 'html' | 'style' | 'url' | 'resourceUrl';
 
 @Pipe({
-  name: 'nzSanitizer'
+  name: 'nzSanitizer',
+  standalone: true
 })
 export class NzSanitizerPipe implements PipeTransform {
   constructor(protected sanitizer: DomSanitizer) {}

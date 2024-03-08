@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// TODO(@wendellhu95): replace other size with this type.
+// TODO(@hullis): replace other size with this type.
 export type NzSizeLDSType = 'large' | 'default' | 'small';
 export type NzSizeMDSType = 'middle' | 'default' | 'small';
 export type NzSizeDSType = 'default' | 'small';

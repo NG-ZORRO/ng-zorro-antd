@@ -4,6 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -15,7 +16,8 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
   host: {
     '[class.ant-tree-drop-indicator]': 'true',
     '[style]': 'style'
-  }
+  },
+  standalone: true
 })
 export class NzTreeDropIndicatorComponent implements OnChanges {
   @Input() dropPosition?: number;

@@ -1,4 +1,5 @@
 import differenceInCalendarMonths from 'date-fns/differenceInCalendarMonths';
+
 import { CandyDate, normalizeRangeValue, SingleValue } from './candy-date';
 
 describe('candy-date coverage supplements', () => {
@@ -36,7 +37,7 @@ describe('candy-date coverage supplements', () => {
 
   it('should throw error while putting invalid date input', () => {
     const errorMessage = 'The input date type is not supported ("Date" is now recommended)';
-    expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // tslint:disable-line:no-any
+    expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
 
   it('should normalizeRangeValue work', () => {
@@ -70,6 +71,14 @@ describe('candy-date coverage supplements', () => {
     result = normalizeRangeValue([randomDay, new CandyDate()], false, 'month', 'right');
     expect(result[1]!.getMonth()).toEqual(now.getMonth());
     expect(differenceInCalendarMonths(result[0]!.nativeDate, now)).toEqual(-1);
+
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false, 'month', 'left');
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
+
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false, 'month', 'right');
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(differenceInCalendarMonths(result[1]!.nativeDate, now)).toEqual(1);
 
     result = normalizeRangeValue([new CandyDate(), new CandyDate()], true);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());

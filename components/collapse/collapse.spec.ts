@@ -9,20 +9,18 @@ import { NzCollapseComponent } from './collapse.component';
 import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
-        declarations: [
-          NzTestCollapseBasicComponent,
-          NzTestCollapseTemplateComponent,
-          NzTestCollapseIconComponent,
-          NzTestCollapseRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
+      declarations: [
+        NzTestCollapseBasicComponent,
+        NzTestCollapseTemplateComponent,
+        NzTestCollapseIconComponent,
+        NzTestCollapseRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
     let testComponent: NzTestCollapseBasicComponent;
@@ -193,7 +191,7 @@ describe('collapse', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-collapse',
   template: `
     <ng-template #headerTemplate>template</ng-template>
@@ -252,7 +250,7 @@ export class NzTestCollapseTemplateComponent {}
         <p>Panel01</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <i nz-icon nzType="caret-right" class="ant-collapse-arrow"></i>
+        <span nz-icon nzType="caret-right" class="ant-collapse-arrow"></span>
       </ng-template>
     </nz-collapse>
   `

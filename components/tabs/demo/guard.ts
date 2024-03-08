@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzTabsCanDeactivateFn } from 'ng-zorro-antd/tabs';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'nz-demo-tabs-guard',

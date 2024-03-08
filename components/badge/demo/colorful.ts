@@ -5,9 +5,11 @@ import { Component } from '@angular/core';
   template: `
     <div>
       <h4>Presets:</h4>
-      <div *ngFor="let color of colors">
-        <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
-      </div>
+      @for (color of colors; track color) {
+        <div>
+          <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
+        </div>
+      }
       <br />
       <h4>Custom:</h4>
       <nz-badge nzColor="#f50" nzText="#f50"></nz-badge>
@@ -21,5 +23,19 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoBadgeColorfulComponent {
-  colors = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
+  colors = [
+    'pink',
+    'red',
+    'yellow',
+    'orange',
+    'cyan',
+    'green',
+    'blue',
+    'purple',
+    'geekblue',
+    'magenta',
+    'volcano',
+    'gold',
+    'lime'
+  ];
 }

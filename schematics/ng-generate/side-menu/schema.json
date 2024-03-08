@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "sidebar-nav",
+  "$id": "sidebar-nav",
   "title": "Sidebar Navigation Layout",
   "type": "object",
   "properties": {

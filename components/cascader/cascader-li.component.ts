@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,12 +12,14 @@ import {
   ElementRef,
   Input,
   OnInit,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
-import { Direction } from '@angular/cdk/bidi';
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzCascaderOption } from './typings';
 
 @Component({
@@ -24,27 +28,39 @@ import { NzCascaderOption } from './typings';
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
   template: `
-    <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
-      <ng-template [ngTemplateOutlet]="optionTemplate" [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"></ng-template>
-    </ng-container>
-    <ng-template #defaultOptionTemplate>
-      <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
-    </ng-template>
-    <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
-      <ng-template #icon>
-        <ng-container *nzStringTemplateOutlet="expandIcon">
-          <i nz-icon [nzType]="$any(expandIcon)"></i>
-        </ng-container>
-      </ng-template>
-    </span>
+    @if (optionTemplate) {
+      <ng-template
+        [ngTemplateOutlet]="optionTemplate"
+        [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"
+      />
+    } @else {
+      <div
+        class="ant-cascader-menu-item-content"
+        [innerHTML]="optionLabel | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
+      ></div>
+    }
+
+    @if (!option.isLeaf || option.children?.length || option.loading) {
+      <div class="ant-cascader-menu-item-expand-icon">
+        @if (option.loading) {
+          <span nz-icon nzType="loading"></span>
+        } @else {
+          <ng-container *nzStringTemplateOutlet="expandIcon">
+            <span nz-icon [nzType]="$any(expandIcon)"></span>
+          </ng-container>
+        }
+      </div>
+    }
   `,
   host: {
+    class: 'ant-cascader-menu-item ant-cascader-menu-item-expanded',
     '[attr.title]': 'option.title || optionLabel',
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
-  }
+  },
+  imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
@@ -58,8 +74,10 @@ export class NzCascaderOptionComponent implements OnInit {
 
   readonly nativeElement: HTMLElement;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+  constructor(
+    private cdr: ChangeDetectorRef,
+    elementRef: ElementRef
+  ) {
     this.nativeElement = elementRef.nativeElement;
   }
   ngOnInit(): void {

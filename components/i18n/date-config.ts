@@ -4,6 +4,7 @@
  */
 
 import { InjectionToken } from '@angular/core';
+
 import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 
 export interface NzDateConfig {
@@ -17,6 +18,6 @@ export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
   firstDayOfWeek: undefined
 };
 
-export function mergeDateConfig(config: NzDateConfig): NzDateConfig {
+export function mergeDateConfig(config: NzDateConfig | null): NzDateConfig {
   return { ...NZ_DATE_CONFIG_DEFAULT, ...config };
 }

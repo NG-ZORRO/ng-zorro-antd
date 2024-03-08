@@ -116,10 +116,16 @@ export class AppComponent implements OnInit {
       style.rel = 'stylesheet';
       style.id = `site-theme-${theme}`;
       style.href = `assets/${theme}.css`;
+      document.body.append(style);
+
       style.onload = () => {
         successLoaded();
       };
-      document.body.append(style);
+      style.onerror = () => {
+        this.nzMessageService.remove(loading?.messageId);
+        this.nzMessageService.error(this.language === 'en' ? `Switching theme failed` : `切换主题失败`);
+        document.getElementById(style.id)?.remove();
+      };
     } else {
       successLoaded();
     }

@@ -1,9 +1,11 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { Observable, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzListComponent } from './list.component';
@@ -67,13 +69,17 @@ describe('list', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
+          fixtureTemp.componentInstance.footer as string
+        );
       });
       it('change string to template', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
-        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(fixtureTemp.componentInstance.footer as string);
+        expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
+          fixtureTemp.componentInstance.footer as string
+        );
         (fixtureTemp.debugElement.query(By.css('#change')).nativeElement as HTMLButtonElement).click();
         fixtureTemp.detectChanges();
         expect(fixtureTemp.debugElement.query(By.css('.list-footer')) != null).toBe(true);
@@ -159,6 +165,11 @@ describe('list', () => {
       expect(dl.query(By.css('.ant-list-item-main')) != null).toBe(true);
       expect(dl.query(By.css('.ant-list-item-extra')) != null).toBe(true);
     });
+    it('should display the asynchronous action', fakeAsync(() => {
+      tick(2000);
+      fixture.detectChanges();
+      expect(dl.query(By.css('.ant-list-item-action')) != null).toBe(true);
+    }));
   });
 
   describe('item', () => {
@@ -169,9 +180,9 @@ describe('list', () => {
     });
     it('with string', () => {
       expect(
-        (fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item')).nativeElement as HTMLElement).textContent!.includes(
-          'content'
-        )
+        (
+          fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item')).nativeElement as HTMLElement
+        ).textContent!.includes('content')
       ).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-action')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .extra-logo')) != null).toBe(true);
@@ -230,7 +241,7 @@ describe('list RTL', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-list',
   template: `
     <nz-list
@@ -255,6 +266,11 @@ describe('list RTL', () => {
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
           ></nz-list-item-meta>
+          <ul nz-list-item-actions>
+            @for (action of actions$ | async; track action) {
+              <nz-list-item-action>{{ action }}</nz-list-item-action>
+            }
+          </ul>
         </nz-list-item>
       </ng-template>
       <ng-template #loadMore>
@@ -284,8 +300,9 @@ class TestListComponent {
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.'
   ];
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nzGrid: any = { gutter: 16, span: 12 };
+  actions$: Observable<string[]> = timer(500).pipe(map(() => ['Edit', 'Delete']));
 }
 
 @Component({
@@ -308,11 +325,16 @@ class TestListWithTemplateComponent {
     <nz-list id="item-string">
       <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
         <ng-template #action>
-          <i nz-icon nzType="star-o" style="margin-right: 8px;"></i>
+          <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
           156
         </ng-template>
         <ng-template #extra>
-          <img width="272" class="extra-logo" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
+          <img
+            width="272"
+            class="extra-logo"
+            alt="logo"
+            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+          />
         </ng-template>
         <nz-list-item-meta
           nzTitle="title"

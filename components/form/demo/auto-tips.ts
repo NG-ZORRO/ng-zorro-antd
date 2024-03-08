@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-demo-form-auto-tips',
   template: `
-    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
@@ -36,12 +45,12 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
+            @if (control.errors?.['required']) {
               Please confirm your password!
-            </ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">
+            }
+            @if (control.errors?.['confirm']) {
               Password is inconsistent!
-            </ng-container>
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -61,7 +70,13 @@ import { Observable, Observer } from 'rxjs';
   ]
 })
 export class NzDemoFormAutoTipsComponent {
-  validateForm: FormGroup;
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    mobile: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    confirm: FormControl<string>;
+  }>;
 
   // current locale is key of the nzAutoTips
   // if it is not found, it will be searched again with `default`
@@ -77,19 +92,24 @@ export class NzDemoFormAutoTipsComponent {
     }
   };
 
-  submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
-    for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
-    console.log(value);
   }
 
   validateConfirmPassword(): void {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
-  userNameAsyncValidator = (control: FormControl) =>
+  userNameAsyncValidator: AsyncValidatorFn = (control: AbstractControl) =>
     new Observable((observer: Observer<MyValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
@@ -103,7 +123,7 @@ export class NzDemoFormAutoTipsComponent {
       }, 1000);
     });
 
-  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
+  confirmValidator: ValidatorFn = (control: AbstractControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { error: true, required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
@@ -112,7 +132,7 @@ export class NzDemoFormAutoTipsComponent {
     return {};
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: NonNullableFormBuilder) {
     // use `MyValidators`
     const { required, maxLength, minLength, email, mobile } = MyValidators;
     this.validateForm = this.fb.group({
@@ -130,7 +150,7 @@ export type MyErrorsOptions = { 'zh-cn': string; en: string } & Record<string, N
 export type MyValidationErrors = Record<string, MyErrorsOptions>;
 
 export class MyValidators extends Validators {
-  static minLength(minLength: number): ValidatorFn {
+  static override minLength(minLength: number): ValidatorFn {
     return (control: AbstractControl): MyValidationErrors | null => {
       if (Validators.minLength(minLength)(control) === null) {
         return null;
@@ -139,7 +159,7 @@ export class MyValidators extends Validators {
     };
   }
 
-  static maxLength(maxLength: number): ValidatorFn {
+  static override maxLength(maxLength: number): ValidatorFn {
     return (control: AbstractControl): MyValidationErrors | null => {
       if (Validators.maxLength(maxLength)(control) === null) {
         return null;
@@ -155,7 +175,9 @@ export class MyValidators extends Validators {
       return null;
     }
 
-    return isMobile(value) ? null : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
+    return isMobile(value)
+      ? null
+      : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
   }
 }
 

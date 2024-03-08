@@ -4,13 +4,15 @@
  */
 
 import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { NzDateMode } from '../standard-types';
 import { PanelSelector } from './interface';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];

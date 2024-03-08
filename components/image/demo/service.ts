@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+
 import { NzImageService } from 'ng-zorro-antd/image';
 
 @Component({
   selector: 'nz-demo-image-service',
-  template: `
-    <button nz-button nzType="primary" (click)="onClick()">Preview</button>
-  `
+  template: ` <button nz-button nzType="primary" (click)="onClick()">Preview</button> `
 })
 export class NzDemoImageServiceComponent {
   constructor(private nzImageService: NzImageService) {}

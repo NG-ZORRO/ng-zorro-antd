@@ -5,4 +5,5 @@
 
 export type NzSpaceDirection = 'vertical' | 'horizontal';
 export type NzSpaceAlign = 'start' | 'end' | 'center' | 'baseline';
-export type NzSpaceSize = 'small' | 'middle' | 'large';
+export type NzSpaceType = 'small' | 'middle' | 'large';
+export type NzSpaceSize = NzSpaceType | number;

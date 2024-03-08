@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export const badgePresetColors: ReadonlyArray<string> = [
+export const badgePresetColors: readonly string[] = [
   'pink',
   'red',
   'yellow',

@@ -4,7 +4,9 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,6 +15,7 @@ import {
   ElementRef,
   forwardRef,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -21,13 +24,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 
@@ -50,6 +55,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       type="button"
       class="ant-switch"
       #switchElement
+      [attr.id]="nzId"
       [disabled]="nzDisabled"
       [class.ant-switch-checked]="isChecked"
       [class.ant-switch-loading]="nzLoading"
@@ -57,10 +63,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [class.ant-switch-small]="nzSize === 'small'"
       [class.ant-switch-rtl]="dir === 'rtl'"
       [nzWaveExtraNode]="true"
-      (keydown)="onKeyDown($event)"
     >
       <span class="ant-switch-handle">
-        <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+        <span *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></span>
       </span>
       <span class="ant-switch-inner">
         <ng-container *ngIf="isChecked; else uncheckTemplate">
@@ -73,9 +78,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       <div class="ant-click-animating-node"></div>
     </button>
   `,
-  host: {
-    '(click)': 'onHostClick($event)'
-  }
+  imports: [NzWaveModule, NzIconModule, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -87,24 +91,19 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   isChecked = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('switchElement', { static: true }) private switchElement?: ElementRef;
+  @ViewChild('switchElement', { static: true }) switchElement!: ElementRef<HTMLElement>;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
+  @Input() nzId: string | null = null;
 
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
-
-  onHostClick(e: MouseEvent): void {
-    e.preventDefault();
-    if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
-      this.updateValue(!this.isChecked);
-    }
-  }
+  private isNzDisableFirstChange = true;
 
   updateValue(value: boolean): void {
     if (this.isChecked !== value) {
@@ -113,52 +112,86 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     }
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    if (!this.nzControl && !this.nzDisabled && !this.nzLoading) {
-      if (e.keyCode === LEFT_ARROW) {
-        this.updateValue(false);
-        e.preventDefault();
-      } else if (e.keyCode === RIGHT_ARROW) {
-        this.updateValue(true);
-        e.preventDefault();
-      } else if (e.keyCode === SPACE || e.keyCode === ENTER) {
-        this.updateValue(!this.isChecked);
-        e.preventDefault();
-      }
-    }
-  }
-
   focus(): void {
-    this.focusMonitor.focusVia(this.switchElement?.nativeElement, 'keyboard');
+    this.focusMonitor.focusVia(this.switchElement.nativeElement, 'keyboard');
   }
 
   blur(): void {
-    this.switchElement?.nativeElement.blur();
+    this.switchElement.nativeElement.blur();
   }
 
   constructor(
     public nzConfigService: NzConfigService,
+    private host: ElementRef<HTMLElement>,
+    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     @Optional() private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.host.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          event.preventDefault();
+
+          if (this.nzControl || this.nzDisabled || this.nzLoading) {
+            return;
+          }
+
+          this.ngZone.run(() => {
+            this.updateValue(!this.isChecked);
+            this.cdr.markForCheck();
+          });
+        });
+
+      fromEvent<KeyboardEvent>(this.switchElement.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (this.nzControl || this.nzDisabled || this.nzLoading) {
+            return;
+          }
+
+          const { keyCode } = event;
+          if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW && keyCode !== SPACE && keyCode !== ENTER) {
+            return;
+          }
+
+          event.preventDefault();
+
+          this.ngZone.run(() => {
+            if (keyCode === LEFT_ARROW) {
+              this.updateValue(false);
+            } else if (keyCode === RIGHT_ARROW) {
+              this.updateValue(true);
+            } else if (keyCode === SPACE || keyCode === ENTER) {
+              this.updateValue(!this.isChecked);
+            }
+
+            this.cdr.markForCheck();
+          });
+        });
+    });
   }
 
   ngAfterViewInit(): void {
-    this.focusMonitor.monitor(this.switchElement!.nativeElement, true).subscribe(focusOrigin => {
-      if (!focusOrigin) {
-        /** https://github.com/angular/angular/issues/17793 **/
-        Promise.resolve().then(() => this.onTouched());
-      }
-    });
+    this.focusMonitor
+      .monitor(this.switchElement!.nativeElement, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        if (!focusOrigin) {
+          /** https://github.com/angular/angular/issues/17793 **/
+          Promise.resolve().then(() => this.onTouched());
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -181,7 +214,8 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 }

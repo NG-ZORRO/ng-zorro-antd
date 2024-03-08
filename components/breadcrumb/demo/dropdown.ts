@@ -4,18 +4,14 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-breadcrumb-dropdown',
   template: `
     <nz-breadcrumb>
-      <nz-breadcrumb-item>
-        Ant Design
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Ant Design</nz-breadcrumb-item>
       <nz-breadcrumb-item>
         <a>Component</a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item [nzOverlay]="menu">
         <a href>An Application</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        Button
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Button</nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu nzSelectable>

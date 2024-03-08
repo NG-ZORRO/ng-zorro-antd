@@ -4,6 +4,7 @@
  */
 
 import { Directive, Input } from '@angular/core';
+
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -11,7 +12,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   selector: 'th[nzBreakWord],td[nzBreakWord]',
   host: {
     '[style.word-break]': `nzBreakWord ? 'break-all' : ''`
-  }
+  },
+  standalone: true
 })
 export class NzCellBreakWordDirective {
   static ngAcceptInputType_nzBreakWord: BooleanInput;

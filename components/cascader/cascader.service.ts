@@ -4,12 +4,19 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, from, Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
 
-import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
+import {
+  isShowSearchObject,
+  NzCascaderComponentAsSource,
+  NzCascaderFilter,
+  NzCascaderOption,
+  NzCascaderSearchOption
+} from './typings';
 import { isChildOption, isParentOption } from './utils';
 
 /**
@@ -81,8 +88,8 @@ export class NzCascaderService implements OnDestroy {
     const values = this.values;
     const hasValue = values && values.length;
     const lastColumnIndex = values.length - 1;
-    const initColumnWithIndex = (columnIndex: number) => {
-      const activatedOptionSetter = () => {
+    const initColumnWithIndex = (columnIndex: number): void => {
+      const activatedOptionSetter = (): void => {
         const currentValue = values[columnIndex];
 
         if (!isNotNil(currentValue)) {
@@ -152,16 +159,21 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Try to set a option as activated.
+   *
    * @param option Cascader option
    * @param columnIndex Of which column this option is in
    * @param performSelect Select
    * @param loadingChildren Try to load children asynchronously.
    */
-  setOptionActivated(option: NzCascaderOption, columnIndex: number, performSelect: boolean = false, loadingChildren: boolean = true): void {
+  setOptionActivated(
+    option: NzCascaderOption,
+    columnIndex: number,
+    performSelect: boolean = false,
+    loadingChildren: boolean = true
+  ): void {
     if (option.disabled) {
       return;
     }
-
     this.activatedOptions[columnIndex] = option;
     this.trackAncestorActivatedOptions(columnIndex);
     this.dropBehindActivatedOptions(columnIndex);
@@ -189,9 +201,8 @@ export class NzCascaderService implements OnDestroy {
 
   setOptionSelected(option: NzCascaderOption, index: number): void {
     const changeOn = this.cascaderComponent.nzChangeOn;
-    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean => {
-      return typeof changeOn === 'function' ? changeOn(o, i) : false;
-    };
+    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean =>
+      typeof changeOn === 'function' ? changeOn(o, i) : false;
 
     if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
       this.selectedOptions = [...this.activatedOptions];
@@ -209,6 +220,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Set a searching option as selected, finishing up things.
+   *
    * @param option
    */
   setSearchOptionSelected(option: NzCascaderSearchOption): void {
@@ -230,21 +242,21 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Filter cascader options to reset `columns`.
+   *
    * @param searchValue The string user wants to search.
    */
   prepareSearchOptions(searchValue: string): void {
     const results: NzCascaderOption[] = []; // Search results only have one layer.
     const path: NzCascaderOption[] = [];
-    const defaultFilter: NzCascaderFilter = (i, p) => {
-      return p.some(o => {
+    const defaultFilter: NzCascaderFilter = (i, p) =>
+      p.some(o => {
         const label = this.getOptionLabel(o);
         return !!label && label.indexOf(i) !== -1;
       });
-    };
     const showSearch = this.cascaderComponent.nzShowSearch;
     const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
     const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
-    const loopChild = (node: NzCascaderOption, forceDisabled = false) => {
+    const loopChild = (node: NzCascaderOption, forceDisabled = false): void => {
       path.push(node);
       const cPath = Array.from(path);
       if (filter(searchValue, cPath)) {
@@ -259,7 +271,7 @@ export class NzCascaderService implements OnDestroy {
       }
       path.pop();
     };
-    const loopParent = (node: NzCascaderOption, forceDisabled = false) => {
+    const loopParent = (node: NzCascaderOption, forceDisabled = false): void => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children!.forEach(sNode => {
@@ -294,6 +306,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Toggle searching mode by UI. It deals with things not directly related to UI.
+   *
    * @param toSearching If this cascader is entering searching mode
    */
   toggleSearchingMode(toSearching: boolean): void {
@@ -322,7 +335,6 @@ export class NzCascaderService implements OnDestroy {
     this.selectedOptions = [];
     this.activatedOptions = [];
     this.dropBehindColumns(0);
-    this.prepareEmitValue();
     this.$redraw.next();
     this.$optionSelected.next(null);
   }
@@ -337,6 +349,7 @@ export class NzCascaderService implements OnDestroy {
 
   /**
    * Try to insert options into a column.
+   *
    * @param options Options to insert
    * @param columnIndex Position
    */
@@ -373,7 +386,12 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Load children of an option asynchronously.
    */
-  loadChildren(option: NzCascaderOption | NzSafeAny, columnIndex: number, success?: VoidFunction, failure?: VoidFunction): void {
+  loadChildren(
+    option: NzCascaderOption | NzSafeAny,
+    columnIndex: number,
+    success?: VoidFunction,
+    failure?: VoidFunction
+  ): void {
     const loadFn = this.cascaderComponent.nzLoadData;
 
     if (loadFn) {
@@ -384,27 +402,26 @@ export class NzCascaderService implements OnDestroy {
         option.loading = true;
       }
 
-      loadFn(option, columnIndex).then(
-        () => {
-          option.loading = false;
-          if (option.children) {
-            this.setColumnData(option.children, columnIndex + 1, option);
+      from(loadFn(option, columnIndex))
+        .pipe(
+          finalize(() => {
+            option.loading = false;
+            this.$loading.next(false);
+            this.$redraw.next();
+          })
+        )
+        .subscribe({
+          next: () => {
+            if (option.children) {
+              this.setColumnData(option.children, columnIndex + 1, option);
+            }
+            success?.();
+          },
+          error: () => {
+            option.isLeaf = true;
+            failure?.();
           }
-          if (success) {
-            success();
-          }
-          this.$loading.next(false);
-          this.$redraw.next();
-        },
-        () => {
-          option.loading = false;
-          option.isLeaf = true;
-          if (failure) {
-            failure();
-          }
-          this.$redraw.next();
-        }
-      );
+        });
     }
   }
 

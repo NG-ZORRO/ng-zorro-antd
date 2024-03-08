@@ -11,7 +11,7 @@ title: 贡献指南
 
 ## 透明的开发
 
-我们所有的工作都会放在 [GitHub](https://github.com/NG-ZORRO/ng-zorro-antd) 上。不管是核心团队的成员还是外部贡献者的 pull request 都需要进过同样流程的 review。
+我们所有的工作都会放在 [GitHub](https://github.com/NG-ZORRO/ng-zorro-antd) 上。不管是核心团队的成员还是外部贡献者的 pull request 都需要经过同样流程的 review。
 
 ## Bugs
 

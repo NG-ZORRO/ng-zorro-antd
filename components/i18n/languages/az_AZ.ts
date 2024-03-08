@@ -15,7 +15,8 @@ export default {
     prev_5: 'Əvvəlki 5 Səhifə',
     next_5: 'Növbəti 5 Səhifə',
     prev_3: 'Əvvəlki 3 Səhifə',
-    next_3: 'Növbəti 3 Səhifə'
+    next_3: 'Növbəti 3 Səhifə',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {

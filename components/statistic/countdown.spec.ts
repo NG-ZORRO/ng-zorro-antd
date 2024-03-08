@@ -74,8 +74,7 @@ describe('nz-countdown', () => {
       [nzFormat]="format"
       [nzValueTemplate]="template"
       (nzCountdownFinish)="onFinish()"
-    >
-    </nz-countdown>
+    ></nz-countdown>
     <ng-template #tpl let-diff>
       {{ diff }}
     </ng-template>

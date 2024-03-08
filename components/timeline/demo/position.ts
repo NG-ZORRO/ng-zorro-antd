@@ -9,9 +9,7 @@ import { Component } from '@angular/core';
       <nz-timeline-item nzPosition="right" nzColor="red" [nzDot]="soccerTemplate">Tim 45'</nz-timeline-item>
       <nz-timeline-item nzPosition="left" [nzDot]="soccerTemplate">Bob 79'</nz-timeline-item>
     </nz-timeline>
-    <ng-template #soccerTemplate>
-      ⚽
-    </ng-template>
+    <ng-template #soccerTemplate>⚽</ng-template>
   `
 })
 export class NzDemoTimelinePositionComponent {}

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "esnext",
+    "module": "es2020",
     "types": [],
     "paths": {
       "ng-zorro-antd": [ "../components/ng-zorro-antd.module.ts" ],

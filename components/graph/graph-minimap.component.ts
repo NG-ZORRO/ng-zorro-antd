@@ -3,9 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
+
 import { ZoomBehavior } from 'd3-zoom';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { Minimap } from './core/minimap';
 import { NzZoomTransform } from './interface';
 
@@ -35,29 +38,31 @@ import { NzZoomTransform } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-graph-minimap]': 'true'
-  }
+  },
+  standalone: true
 })
-export class NzGraphMinimapComponent implements OnInit {
+export class NzGraphMinimapComponent implements OnDestroy {
   minimap?: Minimap;
-  constructor(private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private ngZone: NgZone
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.minimap?.destroy();
+  }
 
   init(containerEle: ElementRef, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {
     const svgEle = containerEle.nativeElement.querySelector('svg');
     const zoomEle = containerEle.nativeElement.querySelector('svg > g');
-    this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
+    this.minimap = new Minimap(this.ngZone, svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
   }
 
   zoom(transform: NzZoomTransform): void {
-    if (this.minimap) {
-      this.minimap.zoom(transform);
-    }
+    this.minimap?.zoom(transform);
   }
 
   update(): void {
-    if (this.minimap) {
-      this.minimap.update();
-    }
+    this.minimap?.update();
   }
 }

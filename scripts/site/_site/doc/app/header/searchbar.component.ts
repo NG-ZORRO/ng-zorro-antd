@@ -22,7 +22,7 @@ declare const docsearch: any;
   selector: 'div[app-searchbar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <i nz-icon nzType="search"></i>
+    <span nz-icon nzType="search"></span>
     <input
       nz-input
       #searchInput

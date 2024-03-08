@@ -4,11 +4,11 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -20,14 +20,17 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
+import { NzPaginationDefaultComponent } from './pagination-default.component';
+import { NzPaginationSimpleComponent } from './pagination-simple.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
@@ -39,11 +42,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="showPagination">
-      <ng-container *ngIf="nzSimple; else defaultPagination.template">
-        <ng-template [ngTemplateOutlet]="simplePagination.template"></ng-template>
-      </ng-container>
-    </ng-container>
+    @if (showPagination) {
+      @if (nzSimple) {
+        <ng-template [ngTemplateOutlet]="simplePagination.template" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="defaultPagination.template" />
+      }
+    }
+
     <nz-pagination-simple
       #simplePagination
       [disabled]="nzDisabled"
@@ -72,11 +78,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     ></nz-pagination-default>
   `,
   host: {
+    class: 'ant-pagination',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent],
+  standalone: true
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -146,7 +155,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   onTotalChange(total: number): void {
     const lastIndex = this.getLastIndex(total, this.nzPageSize);
     if (this.nzPageIndex > lastIndex) {
-      Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
+      Promise.resolve().then(() => {
+        this.onPageIndexChange(lastIndex);
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -159,12 +171,8 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
     protected nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-pagination');
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -205,7 +213,8 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.total$.next(this.nzTotal);
     }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
-      this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
+      this.showPagination =
+        (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
     }
 
     if (nzSize) {

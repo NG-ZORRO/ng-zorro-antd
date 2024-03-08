@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
 
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzDisplayedStep, NzExtendedMark } from './typings';
@@ -25,7 +26,9 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
         [ngStyle]="mark.style!"
       ></span>
     </div>
-  `
+  `,
+  imports: [NgStyle, NgForOf],
+  standalone: true
 })
 export class NzSliderStepComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;
@@ -75,7 +78,8 @@ export class NzSliderStepComponent implements OnChanges {
         config,
         active: false,
         style: {
-          [orient]: `${offset}%`
+          [orient]: `${offset}%`,
+          transform: 'translateX(-50%)'
         }
       };
     });
@@ -86,7 +90,8 @@ export class NzSliderStepComponent implements OnChanges {
       this.steps.forEach(step => {
         const value = step.value;
         const isActive =
-          (!this.included && value === this.upperBound) || (this.included && value <= this.upperBound! && value >= this.lowerBound!);
+          (!this.included && value === this.upperBound) ||
+          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
         step.active = isActive;
       });
     }

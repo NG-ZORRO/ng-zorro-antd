@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
@@ -46,7 +47,7 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-default-value-and-asyn-options',
   template: `
-    <nz-cascader [(ngModel)]="values" [nzOptions]="nzOptions" (ngModelChange)="onChanges($event)"> </nz-cascader>
+    <nz-cascader [(ngModel)]="values" [nzOptions]="nzOptions" (ngModelChange)="onChanges($event)"></nz-cascader>
   `
 })
 export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {

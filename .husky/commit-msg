@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+export 'HUSKY_GIT_PARAMS'="$1"
+npx --no-install commitlint --edit "$1"

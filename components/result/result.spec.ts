@@ -2,19 +2,19 @@ import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzResultComponent } from './result.component';
 import { NzResultModule } from './result.module';
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-result',
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
-      <i nz-icon nz-result-icon nzType="up" nzTheme="outline"></i>
+      <span nz-icon nz-result-icon nzType="up" nzTheme="outline"></span>
       <div nz-result-title>Content Title</div>
       <div nz-result-subtitle>Content SubTitle</div>
       <div nz-result-content>Content</div>
@@ -75,7 +75,12 @@ describe('nz-result', () => {
     });
 
     it('should content work', () => {
-      testComponent.icon = testComponent.title = testComponent.subtitle = testComponent.status = testComponent.extra = undefined;
+      testComponent.icon =
+        testComponent.title =
+        testComponent.subtitle =
+        testComponent.status =
+        testComponent.extra =
+          undefined;
       fixture.detectChanges();
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');

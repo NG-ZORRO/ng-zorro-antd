@@ -8,19 +8,19 @@ import { Component } from '@angular/core';
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <i nz-icon nzType="user"></i>
+            <span nz-icon nzType="user"></span>
             <span>nav 1</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="video-camera"></i>
+            <span nz-icon nzType="video-camera"></span>
             <span>nav 2</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="upload"></i>
+            <span nz-icon nzType="upload"></span>
             <span>nav 3</span>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="user"></i>
+            <span nz-icon nzType="user"></span>
             <span>nav 4</span>
           </li>
         </ul>
@@ -28,9 +28,7 @@ import { Component } from '@angular/core';
       <nz-layout>
         <nz-header></nz-header>
         <nz-content>
-          <div class="inner-content">
-            Content
-          </div>
+          <div class="inner-content">Content</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>

@@ -2,11 +2,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/* tslint:disable:component-selector */
+
+/* eslint-disable @angular-eslint/component-selector */
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -15,8 +15,11 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzTableSelectionComponent } from '../addon/selection.component';
 
 @Component({
   selector: 'th[nzSelections],th[nzChecked],th[nzShowCheckbox],th[nzShowRowSelection]',
@@ -28,13 +31,17 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
       [checked]="nzChecked"
       [disabled]="nzDisabled"
       [indeterminate]="nzIndeterminate"
+      [label]="nzLabel"
       [listOfSelections]="nzSelections"
       [showCheckbox]="nzShowCheckbox"
       [showRowSelection]="nzShowRowSelection"
       (checkedChange)="onCheckedChange($event)"
     ></nz-table-selection>
     <ng-content></ng-content>
-  `
+  `,
+  host: { class: 'ant-table-selection-column' },
+  imports: [NzTableSelectionComponent],
+  standalone: true
 })
 export class NzThSelectionComponent implements OnChanges {
   static ngAcceptInputType_nzShowCheckbox: BooleanInput;
@@ -44,6 +51,7 @@ export class NzThSelectionComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzLabel: string | null = null;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
@@ -51,10 +59,7 @@ export class NzThSelectionComponent implements OnChanges {
   private isNzShowExpandChanged = false;
   private isNzShowCheckboxChanged = false;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-selection-column');
-  }
+  constructor() {}
 
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;
@@ -62,7 +67,8 @@ export class NzThSelectionComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
+    const isFirstChange = (value: SimpleChange): boolean =>
+      value && value.firstChange && value.currentValue !== undefined;
     const { nzChecked, nzSelections, nzShowExpand, nzShowCheckbox } = changes;
     if (nzShowExpand) {
       this.isNzShowExpandChanged = true;

@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -14,6 +14,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Inject,
   Input,
@@ -28,16 +29,21 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzMenuItemDirective } from './menu-item.directive';
+
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
+import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
+import { NzSubMenuTitleComponent } from './submenu-title.component';
 import { NzSubmenuService } from './submenu.service';
 
 const listOfVerticalPositions = [
@@ -48,7 +54,12 @@ const listOfVerticalPositions = [
   POSITION_MAP.left,
   POSITION_MAP.leftBottom
 ];
-const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
+const listOfHorizontalPositions = [
+  POSITION_MAP.bottomLeft,
+  POSITION_MAP.bottomRight,
+  POSITION_MAP.topRight,
+  POSITION_MAP.topLeft
+];
 
 @Component({
   selector: '[nz-submenu]',
@@ -71,19 +82,21 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
-    <div
-      *ngIf="mode === 'inline'; else nonInlineTemplate"
-      nz-submenu-inline-child
-      [mode]="mode"
-      [nzOpen]="nzOpen"
-      [@.disabled]="noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      [menuClass]="nzMenuClassName"
-      [templateOutlet]="subMenuTemplate"
-    ></div>
-    <ng-template #nonInlineTemplate>
+    @if (mode === 'inline') {
+      <div
+        nz-submenu-inline-child
+        [mode]="mode"
+        [nzOpen]="nzOpen"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [menuClass]="nzMenuClassName"
+        [templateOutlet]="subMenuTemplate"
+      ></div>
+    } @else {
       <ng-template
         cdkConnectedOverlay
         (positionChange)="onPositionChange($event)"
@@ -103,15 +116,15 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
           [isMenuInsideDropDown]="isMenuInsideDropDown"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
-          [@.disabled]="noAnimation?.nzNoAnimation"
+          [@.disabled]="!!noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           (subMenuMouseState)="setMouseEnterState($event)"
         ></div>
       </ng-template>
-    </ng-template>
+    }
 
     <ng-template #subMenuTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {
@@ -132,7 +145,15 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
     '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
     '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzSubMenuTitleComponent,
+    NzSubmenuInlineChildComponent,
+    NzNoAnimationDirective,
+    NzSubmenuNoneInlineChildComponent,
+    OverlayModule
+  ],
+  standalone: true
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   static ngAcceptInputType_nzOpen: BooleanInput;
@@ -144,12 +165,15 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() nzIcon: string | null = null;
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
-  @ContentChildren(NzSubMenuComponent, { descendants: true })
+  // fix errors about circular dependency
+  // Can't construct a query for the property ... since the query selector wasn't defined"
+  @ContentChildren(forwardRef(() => NzSubMenuComponent), { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
-  @ContentChildren(NzMenuItemDirective, { descendants: true })
-  listOfNzMenuItemDirective: QueryList<NzMenuItemDirective> | null = null;
+  @ContentChildren(NzMenuItemComponent, { descendants: true })
+  listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
   private level = this.nzSubmenuService.level;
   private destroy$ = new Subject<void>();
   position = 'right';
@@ -179,7 +203,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setTriggerWidth(): void {
-    if (this.mode === 'horizontal' && this.platform.isBrowser && this.cdkOverlayOrigin) {
+    if (
+      this.mode === 'horizontal' &&
+      this.platform.isBrowser &&
+      this.cdkOverlayOrigin &&
+      this.nzPlacement === 'bottomLeft'
+    ) {
       /** TODO: fast dom **/
       this.triggerWidth = this.cdkOverlayOrigin!.nativeElement.getBoundingClientRect().width;
     }
@@ -192,7 +221,6 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     } else if (placement === 'leftTop' || placement === 'leftBottom' || placement === 'left') {
       this.position = 'left';
     }
-    this.cdr.markForCheck();
   }
 
   constructor(
@@ -215,7 +243,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     this.nzSubmenuService.mode$.pipe(takeUntil(this.destroy$)).subscribe(mode => {
       this.mode = mode;
       if (mode === 'horizontal') {
-        this.overlayPositions = listOfHorizontalPositions;
+        this.overlayPositions = [POSITION_MAP[this.nzPlacement], ...listOfHorizontalPositions];
       } else if (mode === 'vertical') {
         this.overlayPositions = listOfVerticalPositions;
       }

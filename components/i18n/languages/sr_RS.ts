@@ -14,12 +14,13 @@ export default {
     prev_5: 'Prethodnih 5 Strana',
     next_5: 'Sledećih 5 Strana',
     prev_3: 'Prethodnih 3 Strane',
-    next_3: 'Sledećih 3 Strane'
+    next_3: 'Sledećih 3 Strane',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
-      placeholder: 'Izaberite datum',
-      rangePlaceholder: ['Početni datum', 'Krajnji datum'],
+      placeholder: 'Izaberi datum',
+      rangePlaceholder: ['Datum početka', 'Datum završetka'],
       locale: 'sr_RS',
       today: 'Danas',
       now: 'Sada',
@@ -45,19 +46,28 @@ export default {
       previousDecade: 'Prethodna decenija',
       nextDecade: 'Sledeća decenija',
       previousCentury: 'Prethodni vek',
-      nextCentury: 'Sledeći vek'
+      nextCentury: 'Sledeći vek',
+      yearPlaceholder: 'Izaberi godinu',
+      quarterPlaceholder: 'Izaberi tromesečje',
+      monthPlaceholder: 'Izaberi mesec',
+      weekPlaceholder: 'Izaberi sedmicu',
+      rangeYearPlaceholder: ['Godina početka', 'Godina završetka'],
+      rangeMonthPlaceholder: ['Mesec početka', 'Mesec završetka'],
+      rangeWeekPlaceholder: ['Sedmica početka', 'Sedmica završetka']
     },
     timePickerLocale: {
-      placeholder: 'Izaberite vreme'
+      placeholder: 'Izaberi vreme',
+      rangePlaceholder: ['Vreme početka', 'Vreme završetka']
     }
   },
   TimePicker: {
-    placeholder: 'Izaberite vreme'
+    placeholder: 'Izaberi vreme',
+    rangePlaceholder: ['Vreme početka', 'Vreme završetka']
   },
   Calendar: {
     lang: {
-      placeholder: 'Izaberite datum',
-      rangePlaceholder: ['Početni datum', 'Krajnji datum'],
+      placeholder: 'Izaberi datum',
+      rangePlaceholder: ['Datum početka', 'Datum završetka'],
       locale: 'sr_RS',
       today: 'Danas',
       now: 'Sada',
@@ -83,18 +93,36 @@ export default {
       previousDecade: 'Prethodna decenija',
       nextDecade: 'Sledeća decenija',
       previousCentury: 'Prethodni vek',
-      nextCentury: 'Sledeći vek'
+      nextCentury: 'Sledeći vek',
+      yearPlaceholder: 'Izaberi godinu',
+      quarterPlaceholder: 'Izaberi tromesečje',
+      monthPlaceholder: 'Izaberi mesec',
+      weekPlaceholder: 'Izaberi sedmicu',
+      rangeYearPlaceholder: ['Godina početka', 'Godina završetka'],
+      rangeMonthPlaceholder: ['Mesec početka', 'Mesec završetka'],
+      rangeWeekPlaceholder: ['Sedmica početka', 'Sedmica završetka']
     },
     timePickerLocale: {
-      placeholder: 'Izaberite vreme'
+      placeholder: 'Izaberi vreme',
+      rangePlaceholder: ['Vreme početka', 'Vreme završetka']
     }
   },
   Table: {
-    filterTitle: 'Filter',
-    filterConfirm: 'Primeni filter',
-    filterReset: 'Resetuj filter',
-    selectAll: 'Obeleži sve na trenutnoj strani',
-    selectInvert: 'Obrni selekciju na trenutnoj stranici'
+    filterTitle: 'Meni filtera',
+    filterConfirm: 'U redu',
+    filterReset: 'Poništi',
+    selectAll: 'Izaberi trenutnu stranicu',
+    selectInvert: 'Obrni izbor trenutne stranice',
+    filterEmptyText: 'Nema filtera',
+    emptyText: 'Nema podataka',
+    selectNone: 'Obriši sve podatke',
+    selectionAll: 'Izaberi sve podatke',
+    sortTitle: 'Sortiraj',
+    expand: 'Proširi red',
+    collapse: 'Skupi red',
+    triggerDesc: 'Klikni da sortiraš po padajućem redosledu',
+    triggerAsc: 'Klikni da sortiraš po rastućem redosledu',
+    cancelSort: 'Klikni da otkažeš sortiranje'
   },
   Modal: {
     okText: 'U redu',
@@ -106,18 +134,43 @@ export default {
     cancelText: 'Otkaži'
   },
   Transfer: {
-    searchPlaceholder: 'Pretražite ovde',
+    searchPlaceholder: 'Pretraži ovde',
     itemUnit: 'stavka',
-    itemsUnit: 'stavki'
+    itemsUnit: 'stavki',
+    titles: ['', ''],
+    remove: 'Ukloni',
+    selectCurrent: 'Izaberi trenutnu stranicu',
+    removeCurrent: 'Ukloni trenutnu stranicu',
+    selectAll: 'Izaberi sve podatke',
+    removeAll: 'Ukloni sve podatke',
+    selectInvert: 'Obrni izbor trenutne stranice'
   },
   Upload: {
-    uploading: 'Slanje...',
-    removeFile: 'Ukloni fajl',
-    uploadError: 'Greška prilikom slanja',
-    previewFile: 'Pogledaj fajl',
+    uploading: 'Otpremanje...',
+    removeFile: 'Ukloni datoteku',
+    uploadError: 'Greška pri otpremanju',
+    previewFile: 'Pregledaj datoteku',
     downloadFile: 'Preuzmi datoteku'
   },
   Empty: {
     description: 'Nema podataka'
+  },
+  global: {
+    placeholder: 'Izaberi'
+  },
+  Icon: {
+    icon: 'ikona'
+  },
+  Text: {
+    edit: 'Uredi',
+    copy: 'Kopiraj',
+    copied: 'Kopirano',
+    expand: 'Proširi'
+  },
+  PageHeader: {
+    back: 'Nazad'
+  },
+  Image: {
+    preview: 'Pregled'
   }
 };

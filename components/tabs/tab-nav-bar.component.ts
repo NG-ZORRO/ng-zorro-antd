@@ -8,6 +8,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { DOWN_ARROW, ENTER, hasModifierKey, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -21,7 +22,6 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -30,18 +30,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
 import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
+import { NzTabScrollListDirective } from './tab-scroll-list.directive';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
 
 const RESIZE_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? animationFrameScheduler : asapScheduler;
@@ -62,9 +62,23 @@ const CSS_TRANSFORM_TIME = 150;
       [class.ant-tabs-nav-wrap-ping-bottom]="pingBottom"
       #navWarp
     >
-      <div class="ant-tabs-nav-list" #navList nzTabScrollList (offsetChange)="onOffsetChange($event)" (tabScroll)="tabScroll.emit($event)">
+      <div
+        class="ant-tabs-nav-list"
+        #navList
+        nzTabScrollList
+        (offsetChange)="onOffsetChange($event)"
+        (tabScroll)="tabScroll.emit($event)"
+        role="tablist"
+      >
         <ng-content></ng-content>
-        <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+        <button
+          role="tab"
+          [attr.tabindex]="-1"
+          *ngIf="showAddButton"
+          nz-tab-add-button
+          [addIcon]="addIcon"
+          (click)="addClicked.emit()"
+        ></button>
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
       </div>
     </div>
@@ -80,12 +94,20 @@ const CSS_TRANSFORM_TIME = 150;
     </div>
   `,
   host: {
-    role: 'tablist',
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
-  }
+  },
+  imports: [
+    NzTabScrollListDirective,
+    NgIf,
+    NzTabAddButtonComponent,
+    NzTabsInkBarDirective,
+    NzTabNavOperationComponent,
+    NgTemplateOutlet
+  ],
+  standalone: true
 })
-export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
   static ngAcceptInputType_selectedIndex: NumberInput;
 
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
@@ -172,20 +194,18 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     @Optional() private dir: Directionality
   ) {}
 
-  ngOnInit(): void {}
-
   ngAfterViewInit(): void {
-    const dirChange = this.dir ? this.dir.change : of(null);
+    const dirChange = this.dir ? this.dir.change.asObservable() : of(null);
     const resize = this.viewportRuler.change(150);
 
-    const realign = () => {
+    const realign = (): void => {
       this.updateScrollListPosition();
       this.alignInkBarToSelectedTab();
     };
     this.keyManager = new FocusKeyManager<NzTabNavItemDirective>(this.items)
       .withHorizontalOrientation(this.getLayoutDirection())
       .withWrap();
-    this.keyManager.updateActiveItem(0);
+    this.keyManager.updateActiveItem(this.selectedIndex);
 
     reqAnimFrame(realign);
 

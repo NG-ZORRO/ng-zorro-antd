@@ -21,5 +21,5 @@ import { Component } from '@angular/core';
 })
 export class NzDemoDatePickerExtraFooterComponent {
   plainFooter = 'plain extra footer';
-  footerRender = () => 'extra footer';
+  footerRender = (): string => 'extra footer';
 }

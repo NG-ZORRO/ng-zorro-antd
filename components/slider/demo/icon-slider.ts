@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-slider-icon-slider',
   template: `
     <div class="icon-wrapper test-class">
-      <i nz-icon nzType="frown" [class.icon-highlight]="preHighLight"></i>
+      <span nz-icon nzType="frown" [class.icon-highlight]="preHighLight"></span>
       <nz-slider [nzMin]="0" [nzMax]="20" [(ngModel)]="sliderValue"></nz-slider>
-      <i nz-icon nzType="smile" [class.icon-highlight]="nextHighLight"></i>
+      <span nz-icon nzType="smile" [class.icon-highlight]="nextHighLight"></span>
     </div>
   `,
   styles: [

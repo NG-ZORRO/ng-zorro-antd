@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "PLACEHOLDER_SCHEMATICS_ID",
+  "$id": "PLACEHOLDER_SCHEMATICS_ID",
   "title": "PLACEHOLDER_SCHEMATICS_TITLE",
   "type": "object",
   "properties": {
@@ -37,6 +37,12 @@
       "type": "boolean",
       "default": false,
       "alias": "t"
+    },
+    "standalone": {
+      "description": "Whether the generated component is standalone.",
+      "type": "boolean",
+      "default": true,
+      "x-user-analytics": "ep.ng_standalone"
     },
     "viewEncapsulation": {
       "description": "The view encapsulation strategy to use in the new component.",

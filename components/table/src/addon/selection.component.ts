@@ -3,8 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { NgForOf, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-table-selection',
@@ -19,11 +25,12 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       [ngModel]="checked"
       [nzDisabled]="disabled"
       [nzIndeterminate]="indeterminate"
+      [attr.aria-label]="label"
       (ngModelChange)="onCheckedChange($event)"
     ></label>
     <div class="ant-table-selection-extra" *ngIf="showRowSelection">
       <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
-        <i nz-icon nzType="down"></i>
+        <span nz-icon nzType="down"></span>
       </span>
       <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
         <ul nz-menu class="ant-table-selection-menu">
@@ -33,21 +40,22 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         </ul>
       </nz-dropdown-menu>
     </div>
-  `
+  `,
+  host: { class: 'ant-table-selection' },
+  imports: [NgIf, FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule, NgForOf],
+  standalone: true
 })
 export class NzTableSelectionComponent {
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
   @Input() checked = false;
   @Input() disabled = false;
   @Input() indeterminate = false;
+  @Input() label: string | null = null;
   @Input() showCheckbox = false;
   @Input() showRowSelection = false;
   @Output() readonly checkedChange = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-selection');
-  }
+  constructor() {}
 
   onCheckedChange(checked: boolean): void {
     this.checked = checked;
