@@ -188,20 +188,6 @@ describe('Calendar Header', () => {
   });
 
   describe('custom Header', () => {
-    // let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
-    // let component: NzTestCalendarHeaderChangesComponent;
-    //
-    // beforeEach(waitForAsync(() => {
-    //   fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
-    //   component = fixture.componentInstance;
-    // }));
-    //
-    // it('should have the default header if custom header is not passed', () => {
-    //   const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
-    //   const headerComponent = header.injector.get(NzCalendarHeaderComponent);
-    //   console.log('heer: ', header.children);
-    // });
-
     let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
 
     beforeEach(waitForAsync(() => {
@@ -216,7 +202,7 @@ describe('Calendar Header', () => {
       const defaultHeader = fixture.debugElement.query(By.css('.ant-picker-calendar-header'));
       expect(defaultHeader).toBeTruthy();
 
-      fixture.componentInstance.customHeader = fixture.componentInstance.custom;
+      fixture.componentInstance.customHeader = fixture.componentInstance.customHeaderElement;
       tick(1);
       fixture.detectChanges();
 
@@ -264,13 +250,13 @@ class NzTestCalendarHeaderActiveDateComponent {
       (monthChange)="month = $event"
     ></nz-calendar-header>
 
-    <ng-template #custom>
-      <p>custom</p>
+    <ng-template #customHeaderElement>
+      <p>custom header</p>
     </ng-template>
   `
 })
 class NzTestCalendarHeaderChangesComponent {
-  @ViewChild('custom', { static: true }) custom!: TemplateRef<NzSafeAny>;
+  @ViewChild('customHeaderElement', { static: true }) customHeaderElement!: TemplateRef<NzSafeAny>;
 
   year: number | null = null;
   month: number | null = null;
