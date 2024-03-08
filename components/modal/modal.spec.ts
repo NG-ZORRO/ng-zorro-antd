@@ -1697,6 +1697,21 @@ describe('NzModal', () => {
 
       componentFixture.destroy();
     }));
+
+    it('should have "move" cursor on the top of modal when modal is draggable', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = true;
+      componentFixture.detectChanges();
+      flush();
+      const modalHeader = overlayContainerElement.querySelector('.ant-modal-header');
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('move');
+
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = false;
+      componentFixture.detectChanges();
+      flush();
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('auto');
+    }));
   });
 });
 
