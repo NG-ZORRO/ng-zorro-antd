@@ -22,14 +22,14 @@ import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { defaultColor, generateColor, NgAntdColorPickerModule } from 'ng-antd-color-picker';
-
 import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 
 import { NzColorBlockComponent } from './color-block.component';
 import { NzColorFormatComponent } from './color-format.component';
+import { NgAntdColorPickerModule } from './src/ng-antd-color-picker.module';
+import { defaultColor, generateColor } from './src/util/util';
 import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './typings';
 
 @Component({

@@ -121,7 +121,6 @@
     "marked": "^4.0.10",
     "minimist": "^1.2.5",
     "monaco-editor": "^0.33.0",
-    "ng-antd-color-picker": "^1.1.0",
     "ng-packagr": "~17.1.1",
     "ngx-color": "^8.0.3",
     "node-prismjs": "^0.1.2",
