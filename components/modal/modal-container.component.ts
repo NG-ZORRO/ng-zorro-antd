@@ -53,7 +53,7 @@ import { ModalOptions } from './modal-types';
           <button nz-modal-close (click)="onCloseClick()"></button>
         }
         @if (config.nzTitle) {
-          <div nz-modal-title cdkDragHandle [style.cursor]="config.nzDraggable ? 'move' : 'default'"></div>
+          <div nz-modal-title cdkDragHandle [style.cursor]="config.nzDraggable ? 'move' : 'auto'"></div>
         }
 
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
