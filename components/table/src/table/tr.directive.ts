@@ -17,7 +17,7 @@ import { NzTfootSummaryDirective } from './tfoot-summary.directive';
     'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
   host: {
     '[class.ant-table-row]': 'isInsideTable && !isInsideSummaryTfoot'
-  }
+  },
   standalone: true
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
