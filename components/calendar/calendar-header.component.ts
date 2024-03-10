@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,10 +11,12 @@ import {
   Input,
   OnInit,
   Output,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -25,55 +28,60 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
   template: `
-    <div class="ant-picker-calendar-header">
-      <nz-select
-        class="ant-picker-calendar-year-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeYear"
-        (ngModelChange)="updateYear($event)"
-      >
-        @for (year of years; track year.value) {
-          <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
-        }
-      </nz-select>
-
-      @if (mode === 'month') {
+    @if (nzCustomHeader) {
+      <ng-container *nzStringTemplateOutlet="nzCustomHeader">{{ nzCustomHeader }}</ng-container>
+    } @else {
+      <div class="ant-picker-calendar-header">
         <nz-select
-          class="ant-picker-calendar-month-select"
+          class="ant-picker-calendar-year-select"
           [nzSize]="size"
           [nzDropdownMatchSelectWidth]="false"
-          [ngModel]="activeMonth"
-          (ngModelChange)="monthChange.emit($event)"
+          [ngModel]="activeYear"
+          (ngModelChange)="updateYear($event)"
         >
-          @for (month of months; track month.value) {
-            <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+          @for (year of years; track year.value) {
+            <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
           }
         </nz-select>
-      }
 
-      <nz-radio-group
-        class="ant-picker-calendar-mode-switch"
-        [(ngModel)]="mode"
-        (ngModelChange)="modeChange.emit($event)"
-        [nzSize]="size"
-      >
-        <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
-        <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
-      </nz-radio-group>
-    </div>
+        @if (mode === 'month') {
+          <nz-select
+            class="ant-picker-calendar-month-select"
+            [nzSize]="size"
+            [nzDropdownMatchSelectWidth]="false"
+            [ngModel]="activeMonth"
+            (ngModelChange)="monthChange.emit($event)"
+          >
+            @for (month of months; track month.value) {
+              <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+            }
+          </nz-select>
+        }
+
+        <nz-radio-group
+          class="ant-picker-calendar-mode-switch"
+          [(ngModel)]="mode"
+          (ngModelChange)="modeChange.emit($event)"
+          [nzSize]="size"
+        >
+          <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
+          <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+        </nz-radio-group>
+      </div>
+    }
   `,
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  imports: [NzSelectModule, FormsModule, NzRadioModule],
+  imports: [NzSelectModule, FormsModule, NzRadioModule, NgTemplateOutlet, NzStringTemplateOutletDirective],
   standalone: true
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
+  @Input() nzCustomHeader?: string | TemplateRef<void>;
 
   @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();

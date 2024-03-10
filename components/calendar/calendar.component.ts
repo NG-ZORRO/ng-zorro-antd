@@ -50,6 +50,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     <nz-calendar-header
       [fullscreen]="nzFullscreen"
       [activeDate]="activeDate"
+      [nzCustomHeader]="nzCustomHeader"
       [(mode)]="nzMode"
       (modeChange)="onModeChange($event)"
       (yearChange)="onYearSelect($event)"
@@ -142,7 +143,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
     return (this.nzMonthFullCell || this.nzMonthFullCellChild)!;
   }
 
-  @Input() @InputBoolean() nzFullscreen: boolean = true;
+  @Input() nzCustomHeader?: string | TemplateRef<void>;
+
+  @Input()
+  @InputBoolean()
+  nzFullscreen: boolean = true;
 
   constructor(
     private cdr: ChangeDetectorRef,
