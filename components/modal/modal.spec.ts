@@ -138,6 +138,18 @@ describe('NzModal', () => {
     modalRef.close();
   });
 
+  it('should give correct z-index value to overlay', fakeAsync(() => {
+    const Z_INDEX = 9999;
+    modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzData: 'Modal',
+      nzZIndex: Z_INDEX
+    });
+
+    const overlay = document.querySelector('.cdk-global-overlay-wrapper');
+    expect((overlay as HTMLElement).style.zIndex).toEqual(`${Z_INDEX}`);
+  }));
+
   it('should open a modal with data', () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent,
