@@ -16,12 +16,6 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 ## API
 
-Install `ng-antd-color-picker` in your project first:
-
-```sh
-npm install ng-antd-color-picker
-```
-
 ### nz-color-picker:standalone
 
 | Parameter            | Description                           | Type                                               | Default   |

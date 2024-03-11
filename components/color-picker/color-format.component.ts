@@ -26,13 +26,12 @@ import {
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
-import { generateColor } from 'ng-antd-color-picker';
-
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
+import { generateColor } from './src/util/util';
 import { NzColorPickerFormatType } from './typings';
 
 @Component({

@@ -5,9 +5,10 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { defaultColor, NgAntdColorPickerModule } from 'ng-antd-color-picker';
-
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+
+import { NgAntdColorPickerModule } from './src/ng-antd-color-picker.module';
+import { defaultColor } from './src/util/util';
 
 @Component({
   selector: 'nz-color-block',
