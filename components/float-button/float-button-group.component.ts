@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,10 +20,16 @@ import { takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzFloatButtonComponent } from './float-button.component';
+import { NzFloatButtonService } from './float-button.service';
 
 @Component({
+  standalone: true,
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
+  imports: [CommonModule, NzFloatButtonComponent, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeMotion],
   template: `
@@ -66,10 +73,10 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
     '[class.ant-float-btn-group-circle]': `nzShape === 'circle'`,
     '[class.ant-float-btn-group-circle-shadow]': `nzShape === 'circle'`,
     '[class.ant-float-btn-group-square]': `nzShape === 'square'`,
-    '[class.ant-float-btn-group-square-shadow]': `nzShape === 'square'`,
+    '[class.ant-float-btn-group-square-shadow]': `nzShape === 'square' && !nzTrigger`,
     '[class.ant-float-btn-group-rtl]': `dir === 'rtl'`
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService, NzFloatButtonService]
 })
 export class NzFloatButtonGroupComponent implements OnInit {
   @Input() nzHref: string | null = null;
@@ -88,6 +95,7 @@ export class NzFloatButtonGroupComponent implements OnInit {
   constructor(
     private destroy$: NzDestroyService,
     @Optional() private directionality: Directionality,
+    private nzFloatButtonService: NzFloatButtonService,
     private cdr: ChangeDetectorRef
   ) {
     this.dir = this.directionality.value;
@@ -98,6 +106,7 @@ export class NzFloatButtonGroupComponent implements OnInit {
       this.dir = direction;
       this.cdr.detectChanges();
     });
+    this.nzFloatButtonService.updateShape(this.nzShape);
 
     this.dir = this.directionality.value;
   }

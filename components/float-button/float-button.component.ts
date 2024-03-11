@@ -4,12 +4,14 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -17,11 +19,17 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
+import { NzFloatButtonContentComponent } from './float-button-content.component';
+import { NzFloatButtonService } from './float-button.service';
+
 @Component({
+  standalone: true,
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
+  imports: [NgIf, NzButtonModule, NzFloatButtonContentComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="!!nzHref; else buttonTemplate">
@@ -65,7 +73,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
   },
   providers: [NzDestroyService]
 })
-export class NzFloatButtonComponent implements OnInit {
+export class NzFloatButtonComponent implements OnInit, OnDestroy {
   @Input() nzHref: string | null = null;
   @Input() nzTarget: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
@@ -78,6 +86,7 @@ export class NzFloatButtonComponent implements OnInit {
   constructor(
     private destroy$: NzDestroyService,
     @Optional() private directionality: Directionality,
+    private nzFloatButtonService: NzFloatButtonService,
     private cdr: ChangeDetectorRef
   ) {
     this.dir = this.directionality.value;
@@ -89,6 +98,18 @@ export class NzFloatButtonComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
+    this.nzFloatButtonService.nzShapeSource.pipe(takeUntil(this.destroy$)).subscribe(shape => {
+      if (!!shape) {
+        this.nzShape = shape;
+        this.cdr.markForCheck();
+      }
+    });
+
     this.dir = this.directionality.value;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

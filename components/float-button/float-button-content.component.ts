@@ -3,11 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
+  standalone: true,
   selector: 'nz-float-button-content',
   exportAs: 'nzFloatButtonContent',
+  imports: [CommonModule, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-float-btn-body">
@@ -33,5 +38,4 @@ export class NzFloatButtonContentComponent {
   @Input() nzIcon: TemplateRef<void> | null = null;
   @Input() nzDescription: TemplateRef<void> | null = null;
   @Input() nzShape: 'circle' | 'square' = 'circle';
-  constructor() {}
 }

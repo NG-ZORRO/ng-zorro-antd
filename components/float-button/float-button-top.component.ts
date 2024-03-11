@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -33,14 +33,19 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzFloatButtonComponent } from './float-button.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
 const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
 @Component({
+  standalone: true,
   selector: 'nz-float-button-top',
   exportAs: 'nzFloatButtonTop',
+  imports: [CommonModule, NzFloatButtonComponent, NzIconModule],
   animations: [fadeMotion],
   template: `
     <div #backTop class="ant-float-btn-top" @fadeMotion *ngIf="visible">
