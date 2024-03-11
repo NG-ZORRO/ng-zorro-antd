@@ -31,8 +31,6 @@
 /components/checkbox/zh
 /components/collapse/en
 /components/collapse/zh
-/components/color-picker/en
-/components/color-picker/zh
 /components/comment/en
 /components/comment/zh
 /components/date-picker/en
@@ -47,8 +45,6 @@
 /components/dropdown/zh
 /components/empty/en
 /components/empty/zh
-/components/float-button/en
-/components/float-button/zh
 /components/form/en
 /components/form/zh
 /components/flex/en

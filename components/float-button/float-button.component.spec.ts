@@ -9,15 +9,13 @@ import { NzFloatButtonComponent } from './float-button.component';
 import { NzFloatButtonModule } from './float-button.module';
 
 describe('nz-float-button', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzFloatButtonModule, NzIconTestModule],
-        declarations: [NzTestFloatButtonBasicComponent]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzFloatButtonModule, NzIconTestModule],
+      declarations: [NzTestFloatButtonBasicComponent]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('float-button basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonBasicComponent>;
@@ -72,16 +70,14 @@ describe('nz-float-button RTL', () => {
   let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
   let resultEl: DebugElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzFloatButtonModule, NzIconTestModule],
-        declarations: [NzTestFloatButtonRtlComponent]
-      }).compileComponents();
-      fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
-      resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzFloatButtonModule, NzIconTestModule],
+      declarations: [NzTestFloatButtonRtlComponent]
+    }).compileComponents();
+    fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
+    resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
+  }));
 
   it('rtl', () => {
     fixture.detectChanges();

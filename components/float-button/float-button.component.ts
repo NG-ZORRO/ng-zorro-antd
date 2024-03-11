@@ -10,6 +10,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -17,14 +18,19 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
+import { NzFloatButtonContentComponent } from './float-button-content.component';
+
 @Component({
+  standalone: true,
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
+  imports: [NzButtonModule, NzFloatButtonContentComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="!!nzHref; else buttonTemplate">
+    @if (!!nzHref) {
       <a
         [target]="nzTarget"
         [href]="nzHref"
@@ -40,8 +46,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
           [nzShape]="nzShape"
         ></nz-float-button-content>
       </a>
-    </ng-container>
-    <ng-template #buttonTemplate>
+    } @else {
       <button
         nz-button
         [nzType]="nzType"
@@ -55,7 +60,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
           [nzShape]="nzShape"
         ></nz-float-button-content>
       </button>
-    </ng-template>
+    }
   `,
   host: {
     class: 'ant-float-btn',
@@ -65,7 +70,7 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
   },
   providers: [NzDestroyService]
 })
-export class NzFloatButtonComponent implements OnInit {
+export class NzFloatButtonComponent implements OnInit, OnDestroy {
   @Input() nzHref: string | null = null;
   @Input() nzTarget: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
@@ -90,5 +95,14 @@ export class NzFloatButtonComponent implements OnInit {
     });
 
     this.dir = this.directionality.value;
+  }
+
+  detectChanges(): void {
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

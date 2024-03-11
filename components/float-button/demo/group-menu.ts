@@ -4,11 +4,23 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-float-button-group-menu',
   template: `
     <div class="menu">
-      <nz-float-button-group [nzIcon]="icon" nzShape="circle" nzType="primary" nzTrigger="click" style="right: 24px">
+      <nz-float-button-group
+        [nzIcon]="icon"
+        nzType="primary"
+        nzTrigger="click"
+        style="right: 24px"
+        (nzOnOpenChange)="openChange($event)"
+      >
         <nz-float-button></nz-float-button>
         <nz-float-button [nzIcon]="inner"></nz-float-button>
       </nz-float-button-group>
-      <nz-float-button-group [nzIcon]="icon" nzShape="circle" nzType="primary" nzTrigger="hover" style="right: 94px">
+      <nz-float-button-group
+        [nzIcon]="icon"
+        nzType="primary"
+        nzTrigger="hover"
+        style="right: 94px"
+        (nzOnOpenChange)="openChange($event)"
+      >
         <nz-float-button></nz-float-button>
         <nz-float-button [nzIcon]="inner"></nz-float-button>
       </nz-float-button-group>
@@ -33,4 +45,8 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoFloatButtonGroupMenuComponent {}
+export class NzDemoFloatButtonGroupMenuComponent {
+  openChange(status: boolean): void {
+    console.log(status);
+  }
+}
