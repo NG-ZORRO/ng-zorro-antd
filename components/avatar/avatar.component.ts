@@ -3,15 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform, PlatformModule } from '@angular/cdk/platform';
+import { PlatformModule } from '@angular/cdk/platform';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   Output,
   ViewChild,
@@ -59,7 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAvatarComponent implements OnChanges {
+export class NzAvatarComponent implements OnChanges, AfterViewInit {
   static ngAcceptInputType_nzGap: NumberInput;
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -86,9 +86,7 @@ export class NzAvatarComponent implements OnChanges {
   constructor(
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private ngZone: NgZone
+    private cdr: ChangeDetectorRef
   ) {}
 
   imgError($event: Event): void {
@@ -104,7 +102,7 @@ export class NzAvatarComponent implements OnChanges {
       }
       this.cdr.detectChanges();
       this.setSizeStyle();
-      this.notifyCalc();
+      this.calcStringSize();
     }
   }
 
@@ -114,15 +112,19 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setSizeStyle();
-    this.notifyCalc();
+    this.calcStringSize();
+  }
+
+  ngAfterViewInit(): void {
+    this.calcStringSize();
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) {
+    if (!this.hasText || !this.textEl) {
       return;
     }
 
-    const textEl = this.textEl!.nativeElement;
+    const textEl = this.textEl.nativeElement;
     const childrenWidth = textEl.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
     const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
@@ -132,23 +134,13 @@ export class NzAvatarComponent implements OnChanges {
     textEl.style.lineHeight = this.customSize || '';
   }
 
-  private notifyCalc(): void {
-    // If use ngAfterViewChecked, always demands more computations, so......
-    if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.calcStringSize();
-        });
-      });
-    }
-  }
-
   private setSizeStyle(): void {
     if (typeof this.nzSize === 'number') {
       this.customSize = `${this.nzSize}px`;
     } else {
       this.customSize = null;
     }
+
     this.cdr.markForCheck();
   }
 }
