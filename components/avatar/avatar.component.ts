@@ -126,7 +126,7 @@ export class NzAvatarComponent implements OnChanges, AfterViewInit {
 
     const textEl = this.textEl.nativeElement;
     const childrenWidth = textEl.offsetWidth;
-    const avatarWidth = this.el.getBoundingClientRect().width;
+    const avatarWidth = this.el.getBoundingClientRect?.().width ?? 0;
     const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
     const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
 
