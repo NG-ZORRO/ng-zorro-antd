@@ -1,13 +1,13 @@
 ---
 order: 11
 title:
-  zh-CN: 基本
+  zh-CN: 可拖拽
   en-US: Draggable
 ---
 
 ## zh-CN
 
-可拖动模态。
+可拖拽的对话框。
 
 ## en-US
 
