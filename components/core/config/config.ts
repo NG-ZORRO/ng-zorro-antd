@@ -93,6 +93,7 @@ export interface SelectConfig {
   nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
   nzBackdrop?: boolean;
+  nzOptionHeightPx?: number;
 }
 
 export interface AffixConfig {
@@ -295,6 +296,7 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  nzVirtualItemSize?: number;
 }
 
 export interface TabsConfig {
@@ -329,6 +331,7 @@ export interface TreeConfig {
   nzBlockNode?: boolean;
   nzShowIcon?: boolean;
   nzHideUnMatched?: boolean;
+  nzVirtualItemSize?: number;
 }
 
 export interface TreeSelectConfig {
