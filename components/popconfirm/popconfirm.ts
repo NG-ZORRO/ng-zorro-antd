@@ -6,7 +6,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { DOCUMENT, NgClass, NgIf, NgStyle } from '@angular/common';
+import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -111,7 +111,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   constructor(
     elementRef: ElementRef,
     hostView: ViewContainerRef,
-
     renderer: Renderer2,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective,
     nzConfigService?: NzConfigService
@@ -168,9 +167,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow">
-            <span class="ant-popover-arrow-content"></span>
-          </div>
+          @if (nzPopconfirmShowArrow) {
+            <div class="ant-popover-arrow">
+              <span class="ant-popover-arrow-content"></span>
+            </div>
+          }
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
@@ -190,8 +191,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     (click)="onCancel()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'cancel' || null"
                   >
-                    <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
-                    <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
+                    @if (nzCancelText) {
+                      {{ nzCancelText }}
+                    } @else {
+                      {{ 'Modal.cancelText' | nzI18n }}
+                    }
                   </button>
                   <button
                     nz-button
@@ -203,8 +207,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
-                    <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
-                    <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
+                    @if (nzOkText) {
+                      {{ nzOkText }}
+                    } @else {
+                      {{ 'Modal.okText' | nzI18n }}
+                    }
                   </button>
                 </div>
               </div>
@@ -221,7 +228,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     NgClass,
     NgStyle,
     NzNoAnimationDirective,
-    NgIf,
     NzOutletModule,
     NzIconModule,
     NzButtonModule,
