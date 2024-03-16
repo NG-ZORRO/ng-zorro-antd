@@ -171,7 +171,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @WithConfig() nzStrokeColor?: NzProgressStrokeColorType = undefined;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
-  @Input() @InputNumber() nzSuccessPercent?: number;
+  @Input() @InputNumber() nzSuccessPercent?: number = 0;
   @Input() @InputNumber() nzPercent: number = 0;
   @Input() @WithConfig() @InputNumber() nzStrokeWidth?: number = undefined;
   @Input() @WithConfig() @InputNumber() nzGapDegree?: number = undefined;
