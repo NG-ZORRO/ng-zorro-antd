@@ -43,7 +43,6 @@ export class OnlineIdeService {
     'monaco-editor': '^0.33.0'
   };
 
-  // tslint:disable-next-line:no-any
   constructor(@Inject(DOCUMENT) document: any) {
     this.document = document;
   }
