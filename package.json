@@ -80,7 +80,6 @@
     "chalk": "^4.1.0",
     "clean-css": "~4.2.3",
     "codecov": "^3.8.1",
-    "codelyzer": "^6.0.1",
     "codesandbox": "^2.2.1",
     "conventional-changelog-cli": "^2.1.1",
     "cron-parser": "^4.6.0",
