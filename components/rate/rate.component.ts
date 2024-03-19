@@ -234,7 +234,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   onRateLeave(): void {
     this.hasHalf = !Number.isInteger(this.nzValue);
     this.hoverValue = Math.ceil(this.nzValue);
-
+    this.nzOnHoverChange.emit(this.hoverValue);
     this.updateStarStyle();
   }
 
