@@ -185,6 +185,7 @@ export default {
   },
   QRCode: {
     expired: '二维码过期',
-    refresh: '点击刷新'
+    refresh: '点击刷新',
+    scanned: '已扫描'
   }
 };
