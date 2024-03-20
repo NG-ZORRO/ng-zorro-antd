@@ -93,12 +93,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 <div class="ant-drawer-header" [class.ant-drawer-header-close-only]="!nzTitle">
                   <div class="ant-drawer-header-title">
                     @if (nzClosable) {
-                      <button
-                        (click)="closeClick()"
-                        aria-label="Close"
-                        class="ant-drawer-close"
-                        style="--scroll-bar: 0px;"
-                      >
+                      <button (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
                         <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
                           <span nz-icon [nzType]="closeIcon"></span>
                         </ng-container>
