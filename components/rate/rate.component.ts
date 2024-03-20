@@ -220,9 +220,12 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   onItemHover(index: number, isHalf: boolean): void {
-    if (this.nzDisabled || (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
-      this.nzOnHoverChange.emit(this.hoverValue);
+    if (this.nzDisabled) {
       return;
+    }
+
+    if (this.hoverValue === index + 1 && isHalf === this.hasHalf) {
+      return this.nzOnHoverChange.emit(this.hoverValue);
     }
 
     this.hoverValue = index + 1;
