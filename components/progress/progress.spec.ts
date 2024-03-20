@@ -243,6 +243,7 @@ describe('progress', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('50%');
       testComponent.percent = 100;
+      testComponent.successPercent = 100;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('');
       expect(progress.nativeElement.querySelector('.anticon-check-circle')).toBeDefined();
@@ -479,6 +480,7 @@ export class NzTestProgressDashBoardComponent {
   format?: NzProgressFormatter;
   strokeWidth?: number;
   percent = 0;
+  successPercent = 0;
   showInfo = true;
   width = 132;
   strokeLinecap = 'round';
