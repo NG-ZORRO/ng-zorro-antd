@@ -265,7 +265,9 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
           return;
         }
       }
-      e.event.preventDefault();
+      if (e.event.cancelable) {
+        e.event.preventDefault();
+      }
       this.transformX = this.clampTransformX(this.transformX + e.x);
       this.setTransform(this.transformX, 0);
     } else {
@@ -277,7 +279,9 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
           return;
         }
       }
-      e.event.preventDefault();
+      if (e.event.cancelable) {
+        e.event.preventDefault();
+      }
       this.transformY = this.clampTransformY(this.transformY + e.y);
       this.setTransform(0, this.transformY);
     }
