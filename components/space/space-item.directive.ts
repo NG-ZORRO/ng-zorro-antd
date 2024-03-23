@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive } from '@angular/core';
+import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[nzSpaceItem]',
   standalone: true
 })
 export class NzSpaceItemDirective {
-  constructor() {}
+  constructor(public templateRef: TemplateRef<{}>) {}
 }
