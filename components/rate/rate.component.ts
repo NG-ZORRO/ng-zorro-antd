@@ -223,16 +223,12 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     if (this.nzDisabled) {
       return;
     }
-
-    if (this.hoverValue === index + 1 && isHalf === this.hasHalf) {
-      return this.nzOnHoverChange.emit(this.hoverValue);
+    if (this.hoverValue !== index + 1 || isHalf !== this.hasHalf) {
+      this.hoverValue = index + 1;
+      this.hasHalf = isHalf;
+      this.updateStarStyle();
     }
-
-    this.hoverValue = index + 1;
-    this.hasHalf = isHalf;
     this.nzOnHoverChange.emit(this.hoverValue);
-
-    this.updateStarStyle();
   }
 
   onRateLeave(): void {
