@@ -201,6 +201,14 @@ Other property
 | ---------------- | ---------------------------------- | -------- | ------- |
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
 
+
+### thead
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | - |
+
+
 ### tr
 
 | Property     | Description                                              | Type      | Default |
