@@ -5,10 +5,4 @@ import { Component } from '@angular/core';
   templateUrl  : './{{component}}-{{language}}.html',
   preserveWhitespaces: false
 })
-export class NzDoc{{componentName}}Component {
-  goLink(link: string) {
-    if (window) {
-      window.location.hash = link;
-    }
-  }
-}
+export class NzDoc{{componentName}}Component { }
