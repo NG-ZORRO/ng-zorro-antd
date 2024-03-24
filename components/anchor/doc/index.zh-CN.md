@@ -36,8 +36,8 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ### nz-link:standalone
 
-| 成员         | 说明                             | 类型                          | 默认值 |
-| ------------ | -------------------------------- | ----------------------------- | ------ | --- |
-| `[nzHref]`   | 锚点链接                         | `string`                      | -      |
-| `[nzTarget]` | 该属性指定在何处显示链接的资源。 | string                        | -      |     |
-| `[nzTitle]`  | 文字内容                         | `string \| TemplateRef<void>` | -      |
+| 成员         | 说明                             | 类型                          |
+| ------------ | -------------------------------- | ----------------------------- |
+| `[nzHref]`   | 锚点链接                         | `string`                      |
+| `[nzTarget]` | 该属性指定在何处显示链接的资源。 | `string`                      |
+| `[nzTitle]`  | 文字内容                         | `string \| TemplateRef<void>` |
