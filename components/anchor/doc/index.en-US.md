@@ -35,8 +35,8 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ### nz-link:standalone
 
-| Property     | Description                               | Type                          | Default |
-| ------------ | ----------------------------------------- | ----------------------------- | ------- | --- |
-| `[nzHref]`   | target of hyperlink                       | `string`                      | -       |
-| `[nzTarget]` | Specifies where to display the linked URL | string                        | -       |     |
-| `[nzTitle]`  | content of hyperlink                      | `string \| TemplateRef<void>` | -       |
+| Property     | Description                               | Type                          |
+| ------------ | ----------------------------------------- | ----------------------------- |
+| `[nzHref]`   | target of hyperlink                       | `string`                      |
+| `[nzTarget]` | Specifies where to display the linked URL | string                        |
+| `[nzTitle]`  | content of hyperlink                      | `string \| TemplateRef<void>` |
