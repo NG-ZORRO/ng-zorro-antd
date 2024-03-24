@@ -21,7 +21,13 @@ export default {
   DatePicker: {
     lang: {
       placeholder: '日付を選択',
+      yearPlaceholder: '年を選択',
+      monthPlaceholder: '月を選択',
+      weekPlaceholder: '週を選択',
       rangePlaceholder: ['開始日付', '終了日付'],
+      rangeYearPlaceholder: ['開始年', '終了年'],
+      rangeMonthPlaceholder: ['開始月', '終了月'],
+      rangeWeekPlaceholder: ['開始週', '終了週'],
       locale: 'ja_JP',
       today: '今日',
       now: '現在時刻',

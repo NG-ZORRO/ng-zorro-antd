@@ -5,7 +5,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -128,9 +128,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
           </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
-              <div class="ant-popover-title" *ngIf="nzTitle">
-                <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-              </div>
+              @if (nzTitle) {
+                <div class="ant-popover-title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                </div>
+              }
               <div class="ant-popover-inner-content">
                 <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
               </div>
@@ -140,7 +142,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NgIf, NzOutletModule],
+  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule],
   standalone: true
 })
 export class NzPopoverComponent extends NzToolTipComponent {

@@ -22,7 +22,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzBottom: '24px',
   nzPlacement: 'topRight',
   nzDuration: 4500,
-  nzMaxStack: 7,
+  nzMaxStack: 8,
   nzPauseOnHover: true,
   nzAnimate: true,
   nzDirection: 'ltr'

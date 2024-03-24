@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -61,19 +61,20 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   exportAs: 'nzProgress',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NgIf, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet, NgForOf, NgStyle],
+  imports: [NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet, NgStyle],
   template: `
     <ng-template #progressInfoTemplate>
-      <span class="ant-progress-text" *ngIf="nzShowInfo">
-        <ng-container *ngIf="(status === 'exception' || status === 'success') && !nzFormat; else formatTemplate">
-          <span nz-icon [nzType]="icon"></span>
-        </ng-container>
-        <ng-template #formatTemplate>
-          <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }; let formatter">
-            {{ formatter(nzPercent) }}
-          </ng-container>
-        </ng-template>
-      </span>
+      @if (nzShowInfo) {
+        <span class="ant-progress-text">
+          @if ((status === 'exception' || status === 'success') && !nzFormat) {
+            <span nz-icon [nzType]="icon"></span>
+          } @else {
+            <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }; let formatter">
+              {{ formatter(nzPercent) }}
+            </ng-container>
+          }
+        </span>
+      }
     </ng-template>
 
     <div
@@ -86,74 +87,87 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [class.ant-progress-steps]="isSteps"
       [class.ant-progress-rtl]="dir === 'rtl'"
     >
-      <!-- line progress -->
-      <div *ngIf="nzType === 'line'">
-        <!-- normal line style -->
-        <ng-container *ngIf="!isSteps">
-          <div class="ant-progress-outer" *ngIf="!isSteps">
-            <div class="ant-progress-inner">
-              <div
-                class="ant-progress-bg"
-                [style.width.%]="nzPercent"
-                [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
-                [style.background]="!isGradient ? nzStrokeColor : null"
-                [style.background-image]="isGradient ? lineGradient : null"
-                [style.height.px]="strokeWidth"
-              ></div>
-              <div
-                *ngIf="nzSuccessPercent || nzSuccessPercent === 0"
-                class="ant-progress-success-bg"
-                [style.width.%]="nzSuccessPercent"
-                [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
-                [style.height.px]="strokeWidth"
-              ></div>
+      @if (nzType === 'line') {
+        <div>
+          <!-- normal line style -->
+          @if (isSteps) {
+            <div class="ant-progress-steps-outer">
+              @for (step of steps; track step) {
+                <div class="ant-progress-steps-item" [ngStyle]="step"></div>
+              }
+              <ng-template [ngTemplateOutlet]="progressInfoTemplate" />
             </div>
-          </div>
-          <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
-        </ng-container>
-        <!-- step style -->
-        <div class="ant-progress-steps-outer" *ngIf="isSteps">
-          <div *ngFor="let step of steps; let i = index" class="ant-progress-steps-item" [ngStyle]="step"></div>
-          <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
+          } @else {
+            <div class="ant-progress-outer">
+              <div class="ant-progress-inner">
+                <div
+                  class="ant-progress-bg"
+                  [style.width.%]="nzPercent"
+                  [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
+                  [style.background]="!isGradient ? nzStrokeColor : null"
+                  [style.background-image]="isGradient ? lineGradient : null"
+                  [style.height.px]="strokeWidth"
+                ></div>
+                @if (nzSuccessPercent || nzSuccessPercent === 0) {
+                  <div
+                    class="ant-progress-success-bg"
+                    [style.width.%]="nzSuccessPercent"
+                    [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
+                    [style.height.px]="strokeWidth"
+                  ></div>
+                }
+              </div>
+            </div>
+            <ng-template [ngTemplateOutlet]="progressInfoTemplate" />
+          }
         </div>
-      </div>
+      }
+      <!-- line progress -->
 
       <!-- circle / dashboard progress -->
-      <div
-        [style.width.px]="this.nzWidth"
-        [style.height.px]="this.nzWidth"
-        [style.fontSize.px]="this.nzWidth * 0.15 + 6"
-        class="ant-progress-inner"
-        [class.ant-progress-circle-gradient]="isGradient"
-        *ngIf="isCircleStyle"
-      >
-        <svg class="ant-progress-circle " viewBox="0 0 100 100">
-          <defs *ngIf="isGradient">
-            <linearGradient [id]="'gradient-' + gradientId" x1="100%" y1="0%" x2="0%" y2="0%">
-              <stop *ngFor="let i of circleGradient" [attr.offset]="i.offset" [attr.stop-color]="i.color"></stop>
-            </linearGradient>
-          </defs>
-          <path
-            class="ant-progress-circle-trail"
-            stroke="#f3f3f3"
-            fill-opacity="0"
-            [attr.stroke-width]="strokeWidth"
-            [attr.d]="pathString"
-            [ngStyle]="trailPathStyle"
-          ></path>
-          <path
-            *ngFor="let p of progressCirclePath; trackBy: trackByFn"
-            class="ant-progress-circle-path"
-            fill-opacity="0"
-            [attr.d]="pathString"
-            [attr.stroke-linecap]="nzStrokeLinecap"
-            [attr.stroke]="p.stroke"
-            [attr.stroke-width]="nzPercent ? strokeWidth : 0"
-            [ngStyle]="p.strokePathStyle"
-          ></path>
-        </svg>
-        <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
-      </div>
+
+      @if (isCircleStyle) {
+        <div
+          [style.width.px]="this.nzWidth"
+          [style.height.px]="this.nzWidth"
+          [style.fontSize.px]="this.nzWidth * 0.15 + 6"
+          class="ant-progress-inner"
+          [class.ant-progress-circle-gradient]="isGradient"
+        >
+          <svg class="ant-progress-circle " viewBox="0 0 100 100">
+            @if (isGradient) {
+              <defs>
+                <linearGradient [id]="'gradient-' + gradientId" x1="100%" y1="0%" x2="0%" y2="0%">
+                  @for (i of circleGradient; track i) {
+                    <stop [attr.offset]="i.offset" [attr.stop-color]="i.color"></stop>
+                  }
+                </linearGradient>
+              </defs>
+            }
+
+            <path
+              class="ant-progress-circle-trail"
+              stroke="#f3f3f3"
+              fill-opacity="0"
+              [attr.stroke-width]="strokeWidth"
+              [attr.d]="pathString"
+              [ngStyle]="trailPathStyle"
+            ></path>
+            @for (p of progressCirclePath; track p) {
+              <path
+                class="ant-progress-circle-path"
+                fill-opacity="0"
+                [attr.d]="pathString"
+                [attr.stroke-linecap]="nzStrokeLinecap"
+                [attr.stroke]="p.stroke"
+                [attr.stroke-width]="nzPercent ? strokeWidth : 0"
+                [ngStyle]="p.strokePathStyle"
+              ></path>
+            }
+          </svg>
+          <ng-template [ngTemplateOutlet]="progressInfoTemplate" />
+        </div>
+      }
     </div>
   `
 })
@@ -207,8 +221,6 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   icon!: string;
 
   dir: Direction = 'ltr';
-
-  trackByFn = (index: number): string => `${index}`;
 
   get formatter(): NzProgressFormatter {
     return this.nzFormat || defaultFormatter;

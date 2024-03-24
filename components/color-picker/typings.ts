@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Color } from 'ng-antd-color-picker';
+import { Color } from './src/interfaces/color';
 
 export type NzColorPickerFormatType = 'rgb' | 'hex' | 'hsb';
 

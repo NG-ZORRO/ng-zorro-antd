@@ -1,6 +1,6 @@
 ---
 category: Components
-subtitle: 栅格
+subtitle: 弹性布局
 type: 布局
 cols: 1
 title: Flex

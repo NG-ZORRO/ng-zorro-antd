@@ -139,7 +139,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  // tslint:disable-next-line:no-any
   constructor(
     @Inject(DOCUMENT) private dom: any,
     private sanitizer: DomSanitizer,

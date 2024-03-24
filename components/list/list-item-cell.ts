@@ -5,19 +5,19 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   Input,
-  NgZone,
   OnChanges,
   QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
-import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
+import { defer, merge, Observable, of, Subject } from 'rxjs';
+import { mergeMap, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -66,7 +66,7 @@ export class NzListItemActionComponent {
   imports: [NgTemplateOutlet],
   standalone: true
 })
-export class NzListItemActionsComponent implements OnChanges {
+export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
@@ -76,18 +76,14 @@ export class NzListItemActionsComponent implements OnChanges {
     if (this.nzListItemActions) {
       return of(null);
     }
-    return this.ngZone.onStable.pipe(
-      take(1),
-      this.enterZone(),
-      exhaustMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
+    return this.initialized.pipe(
+      mergeMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
     );
   });
 
-  constructor(
-    private ngZone: NgZone,
-    cdr: ChangeDetectorRef,
-    destroy$: NzDestroyService
-  ) {
+  private initialized = new Subject<void>();
+
+  constructor(cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {
@@ -104,12 +100,8 @@ export class NzListItemActionsComponent implements OnChanges {
     this.inputActionChanges$.next(null);
   }
 
-  private enterZone<T>(): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>) =>
-      new Observable<T>(observer =>
-        source.subscribe({
-          next: value => this.ngZone.run(() => observer.next(value))
-        })
-      );
+  ngAfterContentInit(): void {
+    this.initialized.next();
+    this.initialized.complete();
   }
 }

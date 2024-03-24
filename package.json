@@ -80,7 +80,6 @@
     "chalk": "^4.1.0",
     "clean-css": "~4.2.3",
     "codecov": "^3.8.1",
-    "codelyzer": "^6.0.1",
     "codesandbox": "^2.2.1",
     "conventional-changelog-cli": "^2.1.1",
     "cron-parser": "^4.6.0",
@@ -121,7 +120,6 @@
     "marked": "^4.0.10",
     "minimist": "^1.2.5",
     "monaco-editor": "^0.33.0",
-    "ng-antd-color-picker": "^1.1.0",
     "ng-packagr": "~17.1.1",
     "ngx-color": "^8.0.3",
     "node-prismjs": "^0.1.2",
@@ -150,10 +148,5 @@
     "typescript": "~5.3.3",
     "yaml-front-matter": "^4.1.1",
     "zone.js": "~0.14.2"
-  },
-  "lint-staged": {
-    "(schematics|scripts|components)/**/!(tslint-rules|testing)/!(polyfills).{html,ts}": [
-      "eslint --fix"
-    ]
   }
 }

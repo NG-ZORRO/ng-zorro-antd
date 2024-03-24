@@ -29,7 +29,7 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NumberInput, NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
@@ -61,7 +61,11 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     }
 
     <ng-template #content>
-      <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
+      <div
+        class="ant-anchor-wrapper"
+        [ngClass]="{ 'ant-anchor-wrapper-horizontal': nzDirection === 'horizontal' }"
+        [ngStyle]="wrapperStyle"
+      >
         <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
@@ -107,6 +111,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   @Input() nzContainer?: string | HTMLElement;
   @Input() nzCurrentAnchor?: string;
+  @Input() nzDirection: NzDirectionVHType = 'vertical';
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzChange = new EventEmitter<string>();
@@ -219,7 +224,11 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     targetComp.setActive();
     const linkNode = targetComp.getLinkTitleElement();
-    this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    if (this.nzDirection === 'vertical') {
+      this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    } else {
+      this.ink.nativeElement.style.left = `${linkNode.offsetLeft + linkNode.clientWidth / 2}px`;
+    }
     this.activeLink = (comp || targetComp).nzHref;
     if (originalActiveLink !== this.activeLink) {
       this.nzChange.emit(this.activeLink);

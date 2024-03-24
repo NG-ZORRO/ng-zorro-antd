@@ -21,7 +21,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Chọn thời điểm',
+      yearPlaceholder: 'Chọn năm',
+      quarterPlaceholder: 'Chọn quý',
+      monthPlaceholder: 'Chọn tháng',
+      weekPlaceholder: 'Chọn tuần',
       rangePlaceholder: ['Ngày bắt đầu', 'Ngày kết thúc'],
+      rangeYearPlaceholder: ['Năm bắt đầu', 'Năm kết thúc'],
+      rangeMonthPlaceholder: ['Tháng bắt đầu', 'Tháng kết thúc'],
+      rangeWeekPlaceholder: ['Tuần bắt đầu', 'Tuần kết thúc'],
       locale: 'vi_VN',
       today: 'Hôm nay',
       now: 'Bây giờ',
@@ -60,7 +67,14 @@ export default {
   Calendar: {
     lang: {
       placeholder: 'Chọn thời điểm',
+      yearPlaceholder: 'Chọn năm',
+      quarterPlaceholder: 'Chọn quý',
+      monthPlaceholder: 'Chọn tháng',
+      weekPlaceholder: 'Chọn tuần',
       rangePlaceholder: ['Ngày bắt đầu', 'Ngày kết thúc'],
+      rangeYearPlaceholder: ['Năm bắt đầu', 'Năm kết thúc'],
+      rangeMonthPlaceholder: ['Tháng bắt đầu', 'Tháng kết thúc'],
+      rangeWeekPlaceholder: ['Tuần bắt đầu', 'Tuần kết thúc'],
       locale: 'vi_VN',
       today: 'Hôm nay',
       now: 'Bây giờ',
