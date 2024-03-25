@@ -109,7 +109,7 @@ export class AppModule {
   "assets": [
     {
       "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+      "input": "./node_modules/@ant-design/icons-svg/inline-svg/",
       "output": "/assets/"
     }
   ]
