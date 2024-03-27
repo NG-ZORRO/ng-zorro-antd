@@ -87,7 +87,9 @@ export class AppComponent implements OnInit {
     }
     let loading: NzMessageRef | null = null;
     if (notification) {
-      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, { nzDuration: 0 });
+      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, {
+        nzDuration: 0
+      });
     }
     this.renderer.addClass(this.document.activeElement, 'preload');
     const successLoaded = () => {
@@ -210,7 +212,11 @@ export class AppComponent implements OnInit {
           } else {
             this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
           }
-          this.updateDocMetaAndLocale(currentDemoComponent.description, `${currentDemoComponent.label}, ${currentDemoComponent.zh}`, path);
+          this.updateDocMetaAndLocale(
+            currentDemoComponent.description,
+            `${currentDemoComponent.label}, ${currentDemoComponent.zh}`,
+            path
+          );
         }
 
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
@@ -291,7 +297,8 @@ export class AppComponent implements OnInit {
     const isEn = this.language === 'en';
     const enDescription =
       'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
-    const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
+    const zhDescription =
+      'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
     let descriptionContent = isEn ? enDescription : zhDescription;
     if (description) {
       descriptionContent = description;
@@ -372,16 +379,18 @@ export class AppComponent implements OnInit {
     if (!this.platform.isBrowser) {
       return;
     }
-    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, { nzDuration: 0 });
+    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, {
+      nzDuration: 0
+    });
     const changeColor = () => {
       (window as any).less
         .modifyVars({
-          '@primary-color': res.color.hex
+          '@primary-color': res.color.toRgbString()
         })
         .then(() => {
           this.nzMessageService.remove(loading.messageId);
           this.nzMessageService.success(this.language === 'en' ? `Switching color successfully` : `应用成功`);
-          this.color = res.color.hex;
+          this.color = res.color.toRgbString();
           window.scrollTo(0, 0);
         });
     };
