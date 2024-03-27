@@ -43,7 +43,7 @@ function generateToc(meta, raw) {
   }
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
-    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed>
         ${links}
     </nz-anchor>
 </nz-affix>`;

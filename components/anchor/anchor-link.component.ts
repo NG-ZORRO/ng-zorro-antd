@@ -57,6 +57,7 @@ import { NzAnchorComponent } from './anchor.component';
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
   @Input() nzTarget?: string;
+  @Input() nzReplace: boolean = false;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
@@ -99,11 +100,11 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     this.renderer.removeClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
   }
 
-  goToClick(e: Event): void {
+  async goToClick(e: Event): Promise<void> {
     e.preventDefault();
     e.stopPropagation();
     if (this.platform.isBrowser) {
-      this.anchorComp.handleScrollTo(this);
+      await this.anchorComp.handleScrollTo(this);
     }
   }
 

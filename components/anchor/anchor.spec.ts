@@ -1,14 +1,25 @@
 /* eslint-disable */
 // eslint-disable
-import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzAnchorModule } from './anchor.module';
 import { NzAnchorComponent } from './anchor.component';
 import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const throttleTime = 51;
+
+const activatedRouteStub = {
+  paramMap: {
+    subscribe() {
+      return of();
+    }
+  }
+};
 
 describe('anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
@@ -16,9 +27,11 @@ describe('anchor', () => {
   let context: TestComponent;
   let page: PageObject;
   let srv: NzScrollService;
+  let router: Router;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzAnchorModule],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteStub }, RouterTestingModule],
       declarations: [TestComponent]
     });
     fixture = TestBed.createComponent(TestComponent);
@@ -26,6 +39,7 @@ describe('anchor', () => {
     context = fixture.componentInstance;
     fixture.detectChanges();
     page = new PageObject();
+    router = TestBed.get(Router);
     spyOn(context, '_scroll');
     spyOn(context, '_change');
     srv = TestBed.inject(NzScrollService);
@@ -121,6 +135,28 @@ describe('anchor', () => {
         done();
       }, throttleTime);
     });
+
+    it('should call updateUrlFragment method when an anchor link is clicked', () => {
+      spyOn(context.comp, 'updateUrlFragment');
+      const linkList = dl.queryAll(By.css('.ant-anchor-link-title'));
+      (linkList[0].nativeElement as HTMLLinkElement).click();
+      fixture.detectChanges();
+      expect(context.comp.updateUrlFragment).toHaveBeenCalled();
+    });
+
+    it('should update fragment part of url when anchor link is clicked', fakeAsync(() => {
+      fixture['ngZone']!.run(() => {
+        router.initialNavigation();
+        router.navigateByUrl('/');
+
+        const linkList = dl.queryAll(By.css('.ant-anchor-link-title'));
+        (linkList[1].nativeElement as HTMLLinkElement).click();
+        fixture.detectChanges();
+      });
+      tick();
+
+      expect(router.url).toBe(`/#basic`);
+    }));
   });
 
   describe('property', () => {
@@ -302,6 +338,7 @@ describe('anchor', () => {
       [nzContainer]="nzContainer"
       [nzCurrentAnchor]="nzCurrentAnchor"
       [nzDirection]="nzDirection"
+      [nzReplace]="replace"
       (nzClick)="_click($event)"
       (nzScroll)="_scroll($event)"
       (nzChange)="_change($event)"
@@ -362,6 +399,7 @@ export class TestComponent {
   nzContainer: any = null;
   nzCurrentAnchor?: string;
   nzDirection: NzDirectionVHType = 'vertical';
+  replace = false;
   _click() {}
   _change() {}
   _scroll() {}
