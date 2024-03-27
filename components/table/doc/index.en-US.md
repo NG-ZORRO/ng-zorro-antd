@@ -207,6 +207,12 @@ Other property
 | ------------ | -------------------------------------------------------- | --------- | ------- |
 | `[nzExpand]` | Whether expand current row，used with `nzExpand` of `td` | `boolean` | -       |
 
+### tfoot
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzSummary]` | Summary content  | `boolean` | - |
+
 ### nz-filter-trigger:standalone
 
 Customized filter panel
