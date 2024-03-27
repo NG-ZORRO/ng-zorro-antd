@@ -29,6 +29,7 @@ import { NZ_DEFAULT_SCALE_STEP } from './image-preview.component';
 import { NzImageService } from './image.service';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
+const INTERSECTION_THRESHOLD = 0.1;
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
 export type NzImageUrl = string;
@@ -49,6 +50,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
+  @Input() nzLoading: 'eager' | 'lazy' = 'eager';
   @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
@@ -135,7 +137,9 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSrc } = changes;
     if (nzSrc) {
-      this.getElement().nativeElement.src = nzSrc.currentValue;
+      if (this.nzLoading === 'eager') {
+        this.getElement().nativeElement.src = nzSrc.currentValue;
+      }
       this.backLoad();
     }
   }
@@ -147,18 +151,35 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
    */
   private backLoad(): void {
     this.backLoadImage = this.document.createElement('img');
-    this.backLoadImage.src = this.nzSrc;
-    this.backLoadImage.srcset = this.nzSrcset;
+
+    if (this.nzLoading === 'eager') {
+      this.backLoadImage.src = this.nzSrc;
+      this.backLoadImage.srcset = this.nzSrcset;
+    }
     this.status = 'loading';
 
     // unsubscribe last backLoad
     this.backLoadDestroy$.next();
     this.backLoadDestroy$.complete();
     this.backLoadDestroy$ = new Subject();
+
     if (this.backLoadImage.complete) {
-      this.status = 'normal';
-      this.getElement().nativeElement.src = this.nzSrc;
-      this.getElement().nativeElement.srcset = this.nzSrcset;
+      if (this.nzLoading === 'lazy') {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                this.backLoadCompleteStateHandler();
+                observer.disconnect();
+              }
+            });
+          },
+          { threshold: INTERSECTION_THRESHOLD }
+        );
+        observer.observe(this.getElement().nativeElement);
+      } else {
+        this.backLoadCompleteStateHandler();
+      }
     } else {
       if (this.nzPlaceholder) {
         this.getElement().nativeElement.src = this.nzPlaceholder;
@@ -188,5 +209,11 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
           }
         });
     }
+  }
+
+  private backLoadCompleteStateHandler(): void {
+    this.status = 'normal';
+    this.getElement().nativeElement.src = this.nzSrc;
+    this.getElement().nativeElement.srcset = this.nzSrcset;
   }
 }
