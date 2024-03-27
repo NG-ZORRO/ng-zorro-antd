@@ -1,8 +1,8 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -40,7 +40,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
   declarations: [AppComponent, DEMOComponent, SideComponent],
   imports: [
     BidiModule,
-    BrowserModule.withServerTransition({ appId: 'docs' }),
+    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
@@ -67,15 +67,16 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
       routes,
       environment.production
         ? {
-            preloadingStrategy: QuicklinkStrategy,
-            scrollPositionRestoration: 'enabled'
-          }
+          preloadingStrategy: QuicklinkStrategy,
+          scrollPositionRestoration: 'enabled'
+        }
         : { preloadingStrategy: QuicklinkStrategy }
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [
     Title,
+    { provide: APP_ID, useValue: 'docs' },
     {
       provide: NZ_CONFIG,
       useValue: {
@@ -85,8 +86,9 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
         icon: { nzTwotoneColor: '#1890ff' },
         global: { nzDirection: 'ltr' }
       }
-    }
+    },
+    provideClientHydration()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
