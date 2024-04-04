@@ -4,9 +4,12 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import isBefore from 'date-fns/isBefore';
+
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -120,6 +123,61 @@ describe('NzQuarterPickerComponent', () => {
     });
   }));
 
+  it('should support year panel changes', fakeAsync(() => {
+    fixtureInstance.useSuite = 3;
+
+    fixtureInstance.nzValue = new Date('2024-04-30');
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    openPickerByClickTrigger();
+    // Click year select to show year panel
+    dispatchMouseEvent(queryFromOverlay('.ant-picker-header-quarter-btn'), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    expect(queryFromOverlay('.ant-picker-year-panel')).toBeDefined();
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2020');
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2029');
+    // Goto previous year
+    dispatchMouseEvent(getSuperPreBtn(), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2010');
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2019');
+    // Goto next year * 2
+    dispatchMouseEvent(getSuperNextBtn(), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    dispatchMouseEvent(getSuperNextBtn(), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2030');
+    expect(queryFromOverlay('.ant-picker-header-year-btn').textContent).toContain('2039');
+  }));
+
+  it('should support nzDisabledDate', fakeAsync(() => {
+    fixtureInstance.useSuite = 1;
+    fixtureInstance.nzValue = null;
+    fixture.detectChanges();
+    const compareDate = new Date('2024-8-01');
+    fixtureInstance.nzValue = new Date('2024-04-01');
+    fixtureInstance.nzDisabledDate = (current: Date) => isBefore(current, compareDate);
+    fixture.detectChanges();
+    flush();
+    fixture.detectChanges();
+
+    openPickerByClickTrigger();
+    const allDisabledCells = overlayContainerElement.querySelectorAll(
+      '.ant-picker-quarter-panel tr td.ant-picker-cell-disabled'
+    );
+    const disabledCell = allDisabledCells[allDisabledCells.length - 1];
+    expect(disabledCell.textContent).toContain('Q4');
+  }));
+
   ////////////
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -136,13 +194,27 @@ describe('NzQuarterPickerComponent', () => {
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-picker-quarter-panel') as HTMLElement;
   }
+
+  function getSuperPreBtn(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-header-super-prev-btn`);
+  }
+
+  function getSuperNextBtn(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-header-super-next-btn`);
+  }
 });
 
 @Component({
   template: `
     @switch (useSuite) {
       @case (1) {
-        <nz-date-picker nzMode="quarter" [nzFormat]="nzFormat!" [ngModel]="nzValue" />
+        <nz-date-picker
+          nzMode="quarter"
+          [nzFormat]="nzFormat!"
+          [ngModel]="nzValue"
+          [nzDisabled]="nzDisabled"
+          [nzDisabledDate]="nzDisabledDate"
+        />
       }
       @case (2) {
         <nz-quarter-picker [ngModel]="nzValue" />
@@ -160,4 +232,6 @@ export class NzTestQuarterPickerComponent {
   useSuite!: 1 | 2 | 3 | 4;
   nzFormat?: string;
   nzValue: Date | Date[] | null = null;
+  nzDisabled: boolean = false;
+  nzDisabledDate!: (d: Date) => boolean;
 }
