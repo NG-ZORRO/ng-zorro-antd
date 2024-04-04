@@ -23,5 +23,5 @@ import { Component } from '@angular/core';
 export class NzDemoDatePickerFormatComponent {
   dateFormat = 'yyyy/MM/dd';
   monthFormat = 'yyyy/MM';
-  quarterFormat = 'yyyy/QQ';
+  quarterFormat = 'yyyy/[Q]Q';
 }

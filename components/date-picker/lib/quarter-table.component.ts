@@ -52,7 +52,7 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
     for (let colIndex = 1; colIndex <= this.MAX_COL; colIndex++, quarterValue++) {
       const date = this.activeDate.setQuarter(quarterValue);
       const isDisabled = this.isDisabledQuarter(date);
-      const content = this.dateHelper.format(date.nativeDate, 'QQ');
+      const content = this.dateHelper.format(date.nativeDate, '[Q]Q');
       const cell: DateCell = {
         trackByIndex: colIndex,
         value: date.nativeDate,

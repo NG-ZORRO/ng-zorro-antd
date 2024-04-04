@@ -6,7 +6,7 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Optional, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse, getQuarter } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -107,9 +107,8 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date | null, formatStr: string): string {
-    return date
-      ? formatDate(date, formatStr, this.i18n.getLocaleId())!.replace(/Q(?=[^Q]*$)/, getQuarter(date).toString())
-      : '';
+    // angular formatDate does not support the quarter format parameter. This is to be compatible with the quarter format "Q" of date-fns.
+    return date ? this.replaceQuarter(formatDate(date, formatStr, this.i18n.getLocaleId())!, date) : '';
   }
 
   parseDate(text: string): Date {
@@ -119,5 +118,15 @@ export class DateHelperByDatePipe extends DateHelperService {
   parseTime(text: string, formatStr: string): Date {
     const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
     return parser.toDate(text);
+  }
+
+  private getQuarter(date: Date): number {
+    return Math.floor((date.getMonth() + 3) / 3);
+  }
+
+  private replaceQuarter(dateStr: string, date: Date): string {
+    const quarter = this.getQuarter(date).toString();
+    const record: Record<string, string> = { Q: quarter, QQ: `0${quarter}`, QQQ: `Q${quarter}` };
+    return dateStr.replace(/Q+(?![^\[]*])/g, match => record[match] ?? quarter).replace(/\[([^[\]]*Q[^[\]]*)]/g, '$1');
   }
 }

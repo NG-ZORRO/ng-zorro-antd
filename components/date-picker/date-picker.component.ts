@@ -763,7 +763,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   setModeAndFormat(): void {
     const inputFormats: { [key in NzDateMode]?: string } = {
       year: 'yyyy',
-      quarter: 'yyyy-QQ',
+      quarter: 'yyyy-[Q]Q',
       month: 'yyyy-MM',
       week: 'YYYY-ww',
       date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
