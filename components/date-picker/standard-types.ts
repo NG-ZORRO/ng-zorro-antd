@@ -9,7 +9,7 @@ export type DisabledDateFn = (d: Date) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
-export type NzDateMode = 'decade' | 'year' | 'month' | 'week' | 'date' | 'time';
+export type NzDateMode = 'decade' | 'year' | 'quarter' | 'month' | 'week' | 'date' | 'time';
 
 export type RangePartType = 'left' | 'right';
 

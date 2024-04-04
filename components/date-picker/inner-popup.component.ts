@@ -104,6 +104,31 @@ import { PREFIX_CLASS } from './util';
               />
             </div>
           }
+          @case ('quarter') {
+            <quarter-header
+              [(value)]="activeDate"
+              [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'month')"
+              [showSuperNextBtn]="enablePrevNext('next', 'month')"
+              [showNextBtn]="false"
+              [showPreBtn]="false"
+              (panelModeChange)="panelModeChange.emit($event)"
+              (valueChange)="headerChange.emit($event)"
+            />
+            <div class="{{ prefixCls }}-body">
+              <quarter-table
+                [value]="value"
+                [activeDate]="activeDate"
+                [locale]="locale"
+                [disabledDate]="disabledDate"
+                [selectedValue]="selectedValue"
+                [hoverValue]="hoverValue"
+                (valueChange)="onChooseQuarter($event)"
+                (cellHover)="cellHover.emit($event)"
+                [cellRender]="dateRender"
+              />
+            </div>
+          }
           @default {
             <date-header
               [(value)]="activeDate"
@@ -217,6 +242,17 @@ export class InnerPopupComponent implements OnChanges {
   onChooseMonth(value: CandyDate): void {
     this.activeDate = this.activeDate.setMonth(value.getMonth());
     if (this.endPanelMode === 'month') {
+      this.value = value;
+      this.selectDate.emit(value);
+    } else {
+      this.headerChange.emit(value);
+      this.panelModeChange.emit(this.endPanelMode);
+    }
+  }
+
+  onChooseQuarter(value: CandyDate): void {
+    this.activeDate = this.activeDate.setQuarter(value.getQuarter());
+    if (this.endPanelMode === 'quarter') {
       this.value = value;
       this.selectDate.emit(value);
     } else {

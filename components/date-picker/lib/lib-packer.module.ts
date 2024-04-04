@@ -15,6 +15,8 @@ import { DecadeHeaderComponent } from './decade-header.component';
 import { DecadeTableComponent } from './decade-table.component';
 import { MonthHeaderComponent } from './month-header.component';
 import { MonthTableComponent } from './month-table.component';
+import { QuarterHeaderComponent } from './quarter-header.component';
+import { QuarterTableComponent } from './quarter-table.component';
 import { YearHeaderComponent } from './year-header.component';
 import { YearTableComponent } from './year-table.component';
 
@@ -27,7 +29,9 @@ import { YearTableComponent } from './year-table.component';
     MonthHeaderComponent,
     MonthTableComponent,
     YearHeaderComponent,
-    YearTableComponent
+    YearTableComponent,
+    QuarterHeaderComponent,
+    QuarterTableComponent
   ],
   exports: [
     DateHeaderComponent,
@@ -37,7 +41,9 @@ import { YearTableComponent } from './year-table.component';
     MonthHeaderComponent,
     MonthTableComponent,
     YearHeaderComponent,
-    YearTableComponent
+    YearTableComponent,
+    QuarterHeaderComponent,
+    QuarterTableComponent
   ]
 })
 export class LibPackerModule {}

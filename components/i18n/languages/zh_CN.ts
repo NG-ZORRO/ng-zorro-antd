@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: '请选择周',
       rangePlaceholder: ['开始日期', '结束日期'],
       rangeYearPlaceholder: ['开始年份', '结束年份'],
+      rangeQuarterPlaceholder: ['开始季度', '结束季度'],
       rangeMonthPlaceholder: ['开始月份', '结束月份'],
       rangeWeekPlaceholder: ['开始周', '结束周'],
       locale: 'zh_CN',

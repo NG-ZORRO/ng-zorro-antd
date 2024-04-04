@@ -10,6 +10,7 @@ import { NzDatePickerComponent } from './date-picker.component';
 import { DateRangePopupComponent } from './date-range-popup.component';
 import { InnerPopupComponent } from './inner-popup.component';
 import { NzMonthPickerComponent } from './month-picker.component';
+import { NzQuarterPickerComponent } from './quarter-picker.component';
 import { NzRangePickerComponent } from './range-picker.component';
 import { NzWeekPickerComponent } from './week-picker.component';
 import { NzYearPickerComponent } from './year-picker.component';
@@ -23,14 +24,16 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzRangePickerComponent,
     CalendarFooterComponent,
     InnerPopupComponent,
-    DateRangePopupComponent
+    DateRangePopupComponent,
+    NzQuarterPickerComponent
   ],
   exports: [
     NzDatePickerComponent,
     NzRangePickerComponent,
     NzMonthPickerComponent,
     NzYearPickerComponent,
-    NzWeekPickerComponent
+    NzWeekPickerComponent,
+    NzQuarterPickerComponent
   ]
 })
 export class NzDatePickerModule {}
