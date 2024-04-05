@@ -6,7 +6,7 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Optional, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, getQuarter, parse as fnsParse } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -120,13 +120,16 @@ export class DateHelperByDatePipe extends DateHelperService {
     return parser.toDate(text);
   }
 
-  private getQuarter(date: Date): number {
-    return Math.floor((date.getMonth() + 3) / 3);
-  }
-
   private replaceQuarter(dateStr: string, date: Date): string {
-    const quarter = this.getQuarter(date).toString();
+    const quarter = getQuarter(date).toString();
     const record: Record<string, string> = { Q: quarter, QQ: `0${quarter}`, QQQ: `Q${quarter}` };
-    return dateStr.replace(/Q+(?![^\[]*])/g, match => record[match] ?? quarter).replace(/\[([^[\]]*Q[^[\]]*)]/g, '$1');
+    // Q Pattern format compatible with date-fns (quarter).
+    return (
+      dateStr
+        // Match Q+ outside of brackets, then replace it with the specified quarterly format
+        .replace(/Q+(?![^\[]*])/g, match => record[match] ?? quarter)
+        // Match the Q+ surrounded by bracket, then remove bracket.
+        .replace(/\[(Q+)]/g, '$1')
+    );
   }
 }
