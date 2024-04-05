@@ -6,6 +6,8 @@
 import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
+import { startOfQuarter } from 'date-fns';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { isNonEmptyString, isTemplateRef, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -63,7 +65,6 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
         classMap: {},
         cellRender: valueFunctionProp(this.cellRender!, date),
         fullCellRender: valueFunctionProp(this.fullCellRender!, date),
-        // onClick: () => this.chooseQuarter(quarter.getQuarter()),
         onClick: () => this.changeValueFromInside(date),
         onMouseEnter: () => this.cellHover.emit(date)
       };
@@ -79,17 +80,13 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
       return false;
     }
 
-    const firstDayOfQuarter = new CandyDate(new Date(quarter.getYear(), this.getQuarterStartMonth(quarter.getMonth())));
+    const firstDayOfQuarter = new CandyDate(startOfQuarter(quarter.nativeDate));
     for (let date = firstDayOfQuarter; date.getQuarter() === quarter.getQuarter(); date = date.addMonths(1)) {
       if (!this.disabledDate(date.nativeDate)) {
         return false;
       }
     }
     return true;
-  }
-
-  private getQuarterStartMonth(month: number): number {
-    return Math.floor(month / 3) * 3;
   }
 
   private addCellProperty(cell: DateCell, month: CandyDate): void {
