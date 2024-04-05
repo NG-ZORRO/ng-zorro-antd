@@ -7,7 +7,7 @@ export * from './animation-consts';
 export * from './collapse';
 export * from './drawer';
 export * from './fade';
-export * from './help';
+export * from './form';
 export * from './move';
 export * from './notification';
 export * from './slide';
