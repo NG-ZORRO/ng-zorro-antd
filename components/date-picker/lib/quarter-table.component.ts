@@ -79,15 +79,17 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
       return false;
     }
 
-    const firstOfQuarter = quarter.setQuarter(1);
-
-    for (let date = firstOfQuarter; date.getQuarter() === quarter.getQuarter(); date = date.addQuarter(1)) {
+    const firstDayOfQuarter = new CandyDate(new Date(quarter.getYear(), this.getQuarterStartMonth(quarter.getMonth())));
+    for (let date = firstDayOfQuarter; date.getQuarter() === quarter.getQuarter(); date = date.addMonths(1)) {
       if (!this.disabledDate(date.nativeDate)) {
         return false;
       }
     }
-
     return true;
+  }
+
+  private getQuarterStartMonth(month: number): number {
+    return Math.floor(month / 3) * 3;
   }
 
   private addCellProperty(cell: DateCell, month: CandyDate): void {
