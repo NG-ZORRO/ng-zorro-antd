@@ -1,0 +1,8 @@
+.@{tag-prefix-cls} {
+  .make-color-classes(@i: length(@preset-colors)) when (@i > 0) {
+    // This is a feature of Antd 5, so we need add in the patch file.
+    &-borderless {
+      border-color: transparent;
+    }
+  }
+}
