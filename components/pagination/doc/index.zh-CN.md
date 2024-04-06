@@ -35,7 +35,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 | `[nzShowQuickJumper]`  | 是否可以快速跳转至某页                                     | `boolean`                                                                                    | `false`            | ✅       |
 | `[nzShowSizeChanger]`  | 是否可以改变 `nzPageSize`                                  | `boolean`                                                                                    | `false`            | ✅       |
 | `[nzSimple]`           | 当添加该属性时，显示为简单分页                             | `boolean`                                                                                    | -                  | ✅       |
-| `[nzSize]`             | 当为「small」时，是小尺寸分页                              | `'small'`                                                                                    | `'default'`        | ✅       |
+| `[nzSize]`             | 当为「small」时，是小尺寸分页                              | `'small' \| 'default'`                                                                       | `'default'`        | ✅       |
 | `[nzResponsive]`       | 当 `nzSize` 未指定时，根据屏幕宽度自动调整尺寸             | `boolean`                                                                                    | `false`            | -        |
 | `[nzPageSizeOptions]`  | 指定每页可以显示多少条                                     | `number[]`                                                                                   | `[10, 20, 30, 40]` | ✅       |
 | `[nzItemRender]`       | 用于自定义页码的结构                                       | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | -                  | -        |
