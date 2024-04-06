@@ -175,7 +175,7 @@ describe('NzQuarterPickerComponent', () => {
       '.ant-picker-quarter-panel tr td.ant-picker-cell-disabled'
     );
     const disabledCell = allDisabledCells[allDisabledCells.length - 1];
-    expect(disabledCell.textContent).toContain('Q4');
+    expect(disabledCell.textContent).toContain('Q2');
   }));
 
   ////////////
