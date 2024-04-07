@@ -14,15 +14,14 @@ export const tabSwitchMotion: AnimationTriggerMetadata = trigger('tabSwitchMotio
       display: 'none'
     })
   ),
-  // enter <=> leave
-  transition('leave => enter', [
+  transition('* => enter', [
     style({
       display: 'block',
       opacity: 0
     }),
     animate(AnimationDuration.SLOW)
   ]),
-  transition('enter => leave', [
+  transition('* => leave, :leave', [
     style({
       position: 'absolute',
       top: 0,
@@ -38,32 +37,5 @@ export const tabSwitchMotion: AnimationTriggerMetadata = trigger('tabSwitchMotio
     style({
       display: 'none'
     })
-  ]),
-  // insert <=> remove
-  transition(':enter', [
-    style({
-      opacity: 0
-    }),
-    animate(
-      AnimationDuration.SLOW,
-      style({
-        opacity: 1
-      })
-    )
-  ]),
-  transition(':leave', [
-    style({
-      opacity: 1,
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%'
-    }),
-    animate(
-      AnimationDuration.SLOW,
-      style({
-        opacity: 0
-      })
-    )
   ])
 ]);
