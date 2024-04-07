@@ -2,7 +2,7 @@ import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, Routes } from '@angular/router';
@@ -812,7 +812,7 @@ xdescribe('NzTabSet router', () => {
   describe('basic', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        imports: [CommonModule, NoopAnimationsModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
         declarations: [RouterTabsTestComponent]
       }).compileComponents();
 
@@ -865,7 +865,7 @@ describe('NzTabSet router', () => {
   describe('basic', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        imports: [CommonModule, NoopAnimationsModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
         declarations: [RouterTabsTestComponent]
       }).compileComponents();
 
