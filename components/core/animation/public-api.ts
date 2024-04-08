@@ -11,5 +11,6 @@ export * from './form';
 export * from './move';
 export * from './notification';
 export * from './slide';
+export * from './tabs';
 export * from './thumb';
 export * from './zoom';
