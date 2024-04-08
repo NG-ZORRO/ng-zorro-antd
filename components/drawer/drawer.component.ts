@@ -30,7 +30,8 @@ import {
   TemplateRef,
   Type,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,8 +41,8 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
@@ -154,21 +155,15 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzClosable: BooleanInput;
-  static ngAcceptInputType_nzMaskClosable: BooleanInput;
-  static ngAcceptInputType_nzMask: BooleanInput;
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
-  static ngAcceptInputType_nzKeyboard: BooleanInput;
-  static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
-  @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzMask: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzCloseOnNavigation: boolean = true;
-  @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @Input({ transform: booleanAttribute }) nzClosable: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzMaskClosable: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzMask: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzCloseOnNavigation: boolean = true;
+  @Input({ transform: booleanAttribute }) nzNoAnimation = false;
+  @Input({ transform: booleanAttribute }) nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzExtra?: string | TemplateRef<{}>;
   @Input() nzFooter?: string | TemplateRef<{}>;
@@ -185,7 +180,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private componentInstance: T | null = null;
   private componentRef: ComponentRef<T> | null = null;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzVisible(value: boolean) {
     this.isOpen = value;
   }

@@ -15,12 +15,12 @@ import {
   OnChanges,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
@@ -60,12 +60,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges, AfterViewInit {
-  static ngAcceptInputType_nzGap: NumberInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
-  @Input() @WithConfig() @InputNumber() nzGap = 4;
+  @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;

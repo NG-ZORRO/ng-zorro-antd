@@ -15,12 +15,13 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzTooltipDirective, NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
+import { NzToolTipModule, NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 import { NzSliderService } from './slider.service';
 import { NzSliderShowTooltip } from './typings';
@@ -52,19 +53,17 @@ import { NzSliderShowTooltip } from './typings';
   standalone: true
 })
 export class NzSliderHandleComponent implements OnChanges {
-  static ngAcceptInputType_active: BooleanInput;
-
   @ViewChild('handle', { static: false }) handleEl?: ElementRef;
   @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
-  @Input() vertical?: boolean;
-  @Input() reverse?: boolean;
-  @Input() offset?: number;
-  @Input() value?: number;
+  @Input({ transform: booleanAttribute }) vertical?: boolean;
+  @Input({ transform: booleanAttribute }) reverse?: boolean;
+  @Input({ transform: numberAttributeWithZeroFallback }) offset?: number;
+  @Input({ transform: numberAttributeWithZeroFallback }) value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
   @Input() tooltipPlacement?: string;
   @Input() tooltipFormatter?: null | ((value: number) => string) | TemplateRef<void>;
-  @Input() @InputBoolean() active = false;
+  @Input({ transform: booleanAttribute }) active = false;
   @Input() dir: Direction = 'ltr';
 
   tooltipTitle?: NzTSType;

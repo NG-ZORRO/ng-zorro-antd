@@ -26,7 +26,9 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -34,8 +36,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';
@@ -125,24 +127,17 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
 export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzCopyable: BooleanInput;
-  static ngAcceptInputType_nzEditable: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzExpandable: BooleanInput;
-  static ngAcceptInputType_nzEllipsis: BooleanInput;
-  static ngAcceptInputType_nzEllipsisRows: NumberInput;
-
-  @Input() @InputBoolean() nzCopyable = false;
-  @Input() @InputBoolean() nzEditable = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzExpandable = false;
-  @Input() @InputBoolean() nzEllipsis = false;
+  @Input({ transform: booleanAttribute }) nzCopyable = false;
+  @Input({ transform: booleanAttribute }) nzEditable = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzExpandable = false;
+  @Input({ transform: booleanAttribute }) nzEllipsis = false;
   @Input() @WithConfig() nzCopyTooltips?: [NzTSType, NzTSType] | null = undefined;
   @Input() @WithConfig() nzCopyIcons: [NzTSType, NzTSType] = ['copy', 'check'];
   @Input() @WithConfig() nzEditTooltip?: null | NzTSType = undefined;
   @Input() @WithConfig() nzEditIcon: NzTSType = 'edit';
   @Input() nzContent?: string;
-  @Input() @WithConfig() @InputNumber() nzEllipsisRows: number = 1;
+  @Input({ transform: numberAttribute }) @WithConfig() nzEllipsisRows: number = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;

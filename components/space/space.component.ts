@@ -14,14 +14,14 @@ import {
   OnChanges,
   OnDestroy,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';
@@ -73,14 +73,12 @@ const SPACE_SIZE: {
   standalone: true
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
-  static ngAcceptInputType_nzWrap: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
   @Input() nzSplit: TemplateRef<{ $implicit: number }> | null = null;
-  @Input() @InputBoolean() nzWrap: boolean = false;
+  @Input({ transform: booleanAttribute }) nzWrap: boolean = false;
   @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
 
   @ContentChildren(NzSpaceItemDirective, { read: TemplateRef }) items!: QueryList<TemplateRef<NzSafeAny>>;

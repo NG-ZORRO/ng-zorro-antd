@@ -7,6 +7,7 @@ import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform
 import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,6 +16,7 @@ import {
   Inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   Output,
@@ -29,8 +31,8 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgStyleInterface, NumberInput, NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
 import { getOffsetTop } from './util';
@@ -81,32 +83,24 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAffix: BooleanInput;
-  static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
-  static ngAcceptInputType_nzBounds: NumberInput;
-  static ngAcceptInputType_nzOffsetTop: NumberInput;
 
   @ViewChild('ink', { static: false }) private ink!: ElementRef;
 
-  @Input() @InputBoolean() nzAffix = true;
+  @Input({ transform: booleanAttribute }) nzAffix = true;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   @WithConfig()
-  @InputBoolean()
   nzShowInkInFixed: boolean = false;
 
-  @Input()
+  @Input({ transform: numberAttribute })
   @WithConfig()
-  @InputNumber()
   nzBounds: number = 5;
 
-  @Input()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number>()
   nzOffsetTop?: number = undefined;
 
-  @Input()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number>()
   nzTargetOffset?: number = undefined;
 

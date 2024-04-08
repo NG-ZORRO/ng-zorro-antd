@@ -3,9 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  numberAttribute
+} from '@angular/core';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tree-drop-indicator',
@@ -20,8 +29,8 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
   standalone: true
 })
 export class NzTreeDropIndicatorComponent implements OnChanges {
-  @Input() dropPosition?: number;
-  @Input() level: number = 1;
+  @Input({ transform: numberAttributeWithZeroFallback }) dropPosition?: number;
+  @Input({ transform: numberAttribute }) level: number = 1;
   @Input() direction: string = 'ltr';
   style: NgStyleInterface = {};
 

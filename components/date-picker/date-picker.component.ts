@@ -22,7 +22,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Inject,
   Input,
@@ -37,7 +36,9 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -51,7 +52,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -62,7 +63,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -275,17 +276,9 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
-  static ngAcceptInputType_nzInline: BooleanInput;
-  static ngAcceptInputType_nzOpen: BooleanInput;
-  static ngAcceptInputType_nzShowToday: BooleanInput;
-  static ngAcceptInputType_nzShowNow: BooleanInput;
-  static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
+
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
+  static ngAcceptInputType_nzMode: NzDateMode | string;
 
   isRange: boolean = false; // Indicate whether the value is a range value
   extraFooter?: TemplateRef<NzSafeAny> | string;
@@ -302,13 +295,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private showTime: SupportTimeOptions | boolean = false;
   private isNzDisableFirstChange: boolean = true;
   // --- Common API
-  @Input() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzBorderless: boolean = false;
-  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
-  @Input() @InputBoolean() nzInline: boolean = false;
-  @Input() @InputBoolean() nzOpen?: boolean;
+  @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
+  @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
+  @Input({ transform: booleanAttribute }) nzInline: boolean = false;
+  @Input({ transform: booleanAttribute }) nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | string[] = '';
@@ -320,9 +313,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
-  @Input() @InputBoolean() nzShowToday: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowToday: boolean = true;
   @Input() nzMode: NzDateMode = 'date';
-  @Input() @InputBoolean() nzShowNow: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowNow: boolean = true;
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string | TemplateRef<NzSafeAny> = undefined;
@@ -330,7 +323,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
-  @Input() @InputBoolean() nzShowWeekNumber: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowWeekNumber: boolean = false;
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
   @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();

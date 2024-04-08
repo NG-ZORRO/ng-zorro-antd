@@ -17,12 +17,12 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { TabTemplateContext } from './interfaces';
 import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
@@ -48,15 +48,11 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>('NZ_TAB_SET');
   standalone: true
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzClosable: BooleanInput;
-  static ngAcceptInputType_nzForceRender: BooleanInput;
-
   @Input() nzTitle: string | TemplateRef<TabTemplateContext> = '';
-  @Input() @InputBoolean() nzClosable = false;
+  @Input({ transform: booleanAttribute }) nzClosable = false;
   @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzForceRender = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzForceRender = false;
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
   @Output() readonly nzClick = new EventEmitter<void>();

@@ -17,7 +17,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,8 +26,6 @@ import { takeUntil } from 'rxjs/operators';
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
@@ -105,10 +104,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
 })
 export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzCloseable: BooleanInput;
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-  static ngAcceptInputType_nzBanner: BooleanInput;
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
   @Input() nzAction: string | TemplateRef<void> | null = null;
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
@@ -116,10 +111,10 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzMessage: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig() @InputBoolean() nzCloseable: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzShowIcon: boolean = false;
-  @Input() @InputBoolean() nzBanner = false;
-  @Input() @InputBoolean() nzNoAnimation = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzCloseable: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBanner = false;
+  @Input({ transform: booleanAttribute }) nzNoAnimation = false;
   @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;

@@ -7,6 +7,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgClass, NgStyle } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -25,8 +26,7 @@ import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import {
   isTooltipEmpty,
@@ -45,8 +45,6 @@ import {
   standalone: true
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  static ngAcceptInputType_nzTooltipArrowPointAtCenter: BooleanInput;
-
   @Input('nzTooltipTitle') override title?: NzTSType | null;
   @Input('nzTooltipTitleContext') titleContext?: Object | null = null;
   @Input('nz-tooltip') override directiveTitle?: NzTSType | null;
@@ -58,8 +56,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipMouseLeaveDelay') override mouseLeaveDelay?: number;
   @Input('nzTooltipOverlayClassName') override overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') override overlayStyle?: NgStyleInterface;
-  @Input('nzTooltipArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
-  @Input() @InputBoolean() override cdkConnectedOverlayPush?: boolean = true;
+  @Input({ alias: 'nzTooltipArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
+  @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = true;
   @Input() nzTooltipColor?: string;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename

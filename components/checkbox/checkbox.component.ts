@@ -12,7 +12,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   NgZone,
   OnDestroy,
@@ -20,15 +19,16 @@ import {
   Optional,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 
@@ -77,11 +77,6 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
   standalone: true
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzIndeterminate: BooleanInput;
-  static ngAcceptInputType_nzChecked: BooleanInput;
-
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
@@ -91,10 +86,10 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzIndeterminate = false;
-  @Input() @InputBoolean() nzChecked = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzIndeterminate = false;
+  @Input({ transform: booleanAttribute }) nzChecked = false;
   @Input() nzId: string | null = null;
 
   innerCheckedChange(checked: boolean): void {

@@ -17,15 +17,15 @@ import {
   Optional,
   QueryList,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { NzCardGridDirective } from './card-grid.directive';
@@ -99,15 +99,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 })
 export class NzCardComponent implements OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzHoverable: BooleanInput;
 
-  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzBorderless: boolean = false;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig() @InputBoolean() nzHoverable: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHoverable: boolean = false;
   @Input() nzBodyStyle: NgStyleInterface | null = null;
   @Input() nzCover?: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];

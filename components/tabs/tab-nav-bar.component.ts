@@ -28,14 +28,15 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
@@ -108,16 +109,14 @@ const CSS_TRANSFORM_TIME = 150;
   standalone: true
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
-  static ngAcceptInputType_selectedIndex: NumberInput;
-
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly selectFocusedIndex: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
 
   @Input() position: NzTabPositionMode = 'horizontal';
-  @Input() addable: boolean = false;
-  @Input() hideBar: boolean = false;
+  @Input({ transform: booleanAttribute }) addable: boolean = false;
+  @Input({ transform: booleanAttribute }) hideBar: boolean = false;
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() inkBarAnimated = true;
   @Input() extraTemplate?: TemplateRef<void>;

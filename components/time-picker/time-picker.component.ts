@@ -24,10 +24,11 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
@@ -38,8 +39,8 @@ import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'n
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNil } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -157,14 +158,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzUse12Hours: BooleanInput;
-  static ngAcceptInputType_nzHideDisabledOptions: BooleanInput;
-  static ngAcceptInputType_nzAllowEmpty: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
-
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
   private destroy$ = new Subject<void>();
@@ -233,18 +226,18 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDisabledSeconds?: (hour: number, minute: number) => number[];
   @Input() @WithConfig() nzFormat: string = 'HH:mm:ss';
   @Input() nzOpen = false;
-  @Input() @WithConfig() @InputBoolean() nzUse12Hours: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzUse12Hours: boolean = false;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'clock-circle';
 
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
-  @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @WithConfig() @InputBoolean() nzAllowEmpty: boolean = true;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzHideDisabledOptions = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAllowEmpty: boolean = true;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
-  @Input() @InputBoolean() nzBorderless: boolean = false;
-  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
   emitValue(value: Date | null): void {
     this.setValue(value, true);
