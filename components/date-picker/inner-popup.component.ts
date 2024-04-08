@@ -252,13 +252,8 @@ export class InnerPopupComponent implements OnChanges {
 
   onChooseQuarter(value: CandyDate): void {
     this.activeDate = this.activeDate.setQuarter(value.getQuarter());
-    if (this.endPanelMode === 'quarter') {
-      this.value = value;
-      this.selectDate.emit(value);
-    } else {
-      this.headerChange.emit(value);
-      this.panelModeChange.emit(this.endPanelMode);
-    }
+    this.value = value;
+    this.selectDate.emit(value);
   }
 
   onChooseYear(value: CandyDate): void {

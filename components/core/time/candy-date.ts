@@ -30,8 +30,7 @@ import {
   startOfMonth,
   startOfWeek,
   getQuarter,
-  setQuarter,
-  addQuarters
+  setQuarter
 } from 'date-fns';
 
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -203,10 +202,6 @@ export class CandyDate implements IndexableObject {
 
   setQuarter(quarter: number): CandyDate {
     return new CandyDate(setQuarter(this.nativeDate, quarter));
-  }
-
-  addQuarter(quarter: number): CandyDate {
-    return new CandyDate(addQuarters(this.nativeDate, quarter));
   }
 
   addDays(amount: number): CandyDate {

@@ -73,8 +73,6 @@ describe('NzQuarterPickerComponent', () => {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
-    var sss = queryFromOverlay('.ant-picker-quarter-panel td.ant-picker-cell-selected');
-    console.log(sss);
     expect(queryFromOverlay('.ant-picker-quarter-panel td.ant-picker-cell-selected').textContent).toContain('Q2');
 
     // Click the first cell to change ngModel
@@ -178,7 +176,35 @@ describe('NzQuarterPickerComponent', () => {
     expect(disabledCell.textContent).toContain('Q2');
   }));
 
+  it('should support hover date cell style', fakeAsync(() => {
+    fixtureInstance.useSuite = 4;
+    fixture.detectChanges();
+    openPickerByClickTrigger();
+    tick(500);
+    fixture.detectChanges();
+
+    const left = getFirstCell('left'); // Use the first cell
+    dispatchMouseEvent(left, 'click');
+    const rightInNextMonth = queryFromRightPanel('table tr td.ant-picker-cell');
+    dispatchMouseEvent(rightInNextMonth, 'mouseenter');
+    fixture.detectChanges();
+    expect(rightInNextMonth.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
+  }));
+
   ////////////
+
+  function queryFromRightPanel(selector: string): HTMLElement {
+    return overlayContainerElement
+      .querySelector('.ant-picker-panel:last-child')!
+      .querySelector(selector) as HTMLElement;
+  }
+
+  function getFirstCell(partial: 'left' | 'right'): HTMLElement {
+    const flg = partial === 'left' ? 'first' : 'last';
+    return queryFromOverlay(
+      `.ant-picker-quarter-panel:${flg}-child td:first-child .ant-picker-cell-inner`
+    ) as HTMLElement;
+  }
 
   function queryFromOverlay(selector: string): HTMLElement {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
