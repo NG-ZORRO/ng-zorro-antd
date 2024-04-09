@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { NgClass, NgForOf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -56,22 +56,23 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 1"
     >
-      <li
-        *ngFor="let star of starArray; let i = index"
-        class="ant-rate-star"
-        [ngClass]="starStyleArray[i] || ''"
-        nz-tooltip
-        [nzTooltipTitle]="nzTooltips[i]"
-      >
-        <div
-          nz-rate-item
-          [allowHalf]="nzAllowHalf"
-          [character]="nzCharacter"
-          [index]="i"
-          (itemHover)="onItemHover(i, $event)"
-          (itemClick)="onItemClick(i, $event)"
-        ></div>
-      </li>
+      @for (star of starArray; track star) {
+        <li
+          class="ant-rate-star"
+          [ngClass]="starStyleArray[$index] || ''"
+          nz-tooltip
+          [nzTooltipTitle]="nzTooltips[$index]"
+        >
+          <div
+            nz-rate-item
+            [allowHalf]="nzAllowHalf"
+            [character]="nzCharacter"
+            [index]="$index"
+            (itemHover)="onItemHover($index, $event)"
+            (itemClick)="onItemClick($index, $event)"
+          ></div>
+        </li>
+      }
     </ul>
   `,
   providers: [
@@ -82,7 +83,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       multi: true
     }
   ],
-  imports: [NgClass, NgForOf, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
+  imports: [NgClass, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
   standalone: true
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
