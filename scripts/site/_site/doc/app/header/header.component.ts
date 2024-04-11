@@ -102,6 +102,7 @@ const RESPONSIVE_SM = 1200;
             {{ nextDirection | uppercase }}
           </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
+          <app-twitter-btn />
         </ng-template>
       </ng-container>
     </ng-template>
@@ -137,7 +138,10 @@ export class HeaderComponent implements OnChanges {
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 
-  constructor(private nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);

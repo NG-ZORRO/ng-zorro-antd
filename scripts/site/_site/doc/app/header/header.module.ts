@@ -1,15 +1,15 @@
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzGridModule } from "ng-zorro-antd/grid";
-import { NzIconModule } from "ng-zorro-antd/icon";
-import { NzInputModule } from "ng-zorro-antd/input";
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -19,6 +19,7 @@ import { HeaderComponent } from './header.component';
 import { LogoComponent } from './logo.component';
 import { NavigationComponent } from './navigation.component';
 import { SearchbarComponent } from './searchbar.component';
+import { TwitterButtonComponent } from './twitter-button.component';
 
 @NgModule({
   imports: [
@@ -41,10 +42,9 @@ import { SearchbarComponent } from './searchbar.component';
     LogoComponent,
     SearchbarComponent,
     NavigationComponent,
-    GithubButtonComponent
+    GithubButtonComponent,
+    TwitterButtonComponent
   ],
   exports: [HeaderComponent]
 })
-export class HeaderModule {
-
-}
+export class HeaderModule {}
