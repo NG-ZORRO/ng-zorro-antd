@@ -23,6 +23,4 @@ import { Component } from '@angular/core';
   `,
   standalone: true
 })
-export class NzGraphDefsComponent {
-  constructor() {}
-}
+export class NzGraphDefsComponent {}
