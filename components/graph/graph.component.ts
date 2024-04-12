@@ -34,11 +34,11 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzGraphDefsComponent } from 'ng-zorro-antd/graph/graph-defs.component';
 
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraph } from './graph';
+import { NzGraphDefsComponent } from './graph-defs.component';
 import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
