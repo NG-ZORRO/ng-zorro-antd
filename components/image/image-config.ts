@@ -5,6 +5,7 @@
 
 import { NzConfigKey } from 'ng-zorro-antd/core/config';
 
+/** @deprecated Will be removed in v19. */
 export const FADE_CLASS_NAME_MAP = {
   enter: 'ant-fade-enter',
   enterActive: 'ant-fade-enter-active',
@@ -12,5 +13,6 @@ export const FADE_CLASS_NAME_MAP = {
   leaveActive: 'ant-fade-leave-active'
 };
 
+/** @deprecated Will be removed in v19. */
 export const IMAGE_PREVIEW_MASK_CLASS_NAME = 'ant-image-preview-mask';
 export const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';

@@ -40,6 +40,7 @@ interface Section {
   top: number;
 }
 
+const VISIBLE_CLASSNAME = 'ant-anchor-ink-ball-visible';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
@@ -244,13 +245,12 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   private setVisible(): void {
-    const visible = this.visible;
-    const visibleClassname = 'visible';
     if (this.ink) {
+      const visible = this.visible;
       if (visible) {
-        this.renderer.addClass(this.ink.nativeElement, visibleClassname);
+        this.renderer.addClass(this.ink.nativeElement, VISIBLE_CLASSNAME);
       } else {
-        this.renderer.removeClass(this.ink.nativeElement, visibleClassname);
+        this.renderer.removeClass(this.ink.nativeElement, VISIBLE_CLASSNAME);
       }
     }
   }
