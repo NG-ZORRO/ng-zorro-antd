@@ -863,17 +863,17 @@ describe('nz-slider', () => {
     it('should be disable initially even if nzDisable is set to false', () => {
       testComponent.disable();
       fixture.detectChanges();
-      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
+      const sliderElement = sliderDebugElement.nativeElement;
 
-      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
     });
     it('should disable work', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
-      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
+      const sliderElement = sliderDebugElement.nativeElement;
 
-      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
       expect(sliderControl.value).toBe(42);
       dispatchClickEventSequence(sliderNativeElement, 0.76);
@@ -882,7 +882,7 @@ describe('nz-slider', () => {
 
       testComponent.enable();
       fixture.detectChanges();
-      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
+      expect(sliderElement!.classList).not.toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(false);
       dispatchClickEventSequence(sliderNativeElement, 0.76);
       fixture.detectChanges();
@@ -890,7 +890,7 @@ describe('nz-slider', () => {
 
       testComponent.disable();
       fixture.detectChanges();
-      expect(firstElementChildSlider!.classList).toContain('ant-slider-disabled');
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
       dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
       fixture.detectChanges();
@@ -1076,7 +1076,7 @@ describe('nz-slider', () => {
 });
 
 const styles = `
-  ::ng-deep .ant-slider { position: relative; width: 100px; height: 12px; }
+  ::ng-deep .ant-slider { display: block; position: relative; width: 100px; height: 12px; }
   ::ng-deep .ant-slider .ant-slider-rail { position: absolute; width: 100%; height: 4px; }
   ::ng-deep .ant-slider .ant-slider-track { position: absolute; height: 4px; }
   ::ng-deep .ant-slider .ant-slider-handle { position: absolute; margin-left: -7px; margin-top: -5px; width: 14px; height: 14px; }
