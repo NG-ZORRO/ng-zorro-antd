@@ -13,6 +13,25 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 17.3.1
+
+`2024-04-15`
+
+### Bug Fixes
+
+* **autocomplete:** 移除 `NgZone` 依赖 ([#8462](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8462)) ([24bb1bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/24bb1bc5959c0e617090f0459c39db00fd4e2d9a))
+* **date-picker:** 移除内联样式 ([#8458](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8458)) ([e6b83eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e6b83eb1881ece341b68f9048e9d3e5ea438ba19))
+* **drawer:** 移除内联样式 ([#8065](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8065)) ([5e89441](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5e89441c26a7df50d0feed746d5595cde2589a7a))
+* **graph:** 修复线的箭头渲染异常问题 ([#8493](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8493)) ([342841c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/342841ceafddb1b74f55e31bfa9ca3e7734e842e))
+* **graph:** 移除 `NgZone` 依赖 ([#8460](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8460)) ([a4ec21a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a4ec21a684b5c96a64bd66670c270533926252bb))
+* **image:** missing swip icon ([#8433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8433)) ([f1a4050](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f1a405042f84fbc96ed0587ea2e748dc7d468719))
+* **list:** 移除 `NgZone` 依赖 ([#8439](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8439)) ([1ec0e76](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ec0e7672eaba0890b145c706fcc0a75cb5c47f8))
+* **notification:** 修复 `nzMaxStack` 初始值问题 ([#8451](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8451)) ([2c09162](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c0916265c00cdc026a55b3ab9d829c5e207cf31))
+* **pagination:** 为 `nz-pagination-item` 添加可访问名称 ([#8476](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8476)) ([47ee143](https://github.com/NG-ZORRO/ng-zorro-antd/commit/47ee14325910c154f1541ee2d5e97539ba9a4e52))
+* **typography:** 移除 `NgZone` 依赖 ([#8440](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8440)) ([af7fb5d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af7fb5d27254d26a284faaaa5b812b105f539e3f))
+* **upload:** 移除内联样式 ([#8064](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8064)) ([1ac84a8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ac84a8428fe644362e0f733c9a151fa848cedbf))
+
+
 ## 17.3.0
 
 `2024-03-11`
