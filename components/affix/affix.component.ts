@@ -85,7 +85,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
   private offsetChanged$ = new ReplaySubject<void>(1);
   private destroy$ = new Subject<boolean>();
-  private timeout?: number;
+  private timeout?: ReturnType<typeof setTimeout>;
   private document: Document;
 
   private get target(): Element | Window {

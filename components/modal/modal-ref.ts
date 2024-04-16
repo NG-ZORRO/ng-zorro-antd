@@ -35,7 +35,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   afterClose: Subject<R | undefined> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
-  private closeTimeout?: number;
+  private closeTimeout?: ReturnType<typeof setTimeout>;
 
   private destroy$ = new Subject<void>();
 

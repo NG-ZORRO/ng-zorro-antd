@@ -9,13 +9,23 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/browser",
-            "index": "./site/doc/index.html",
-            "main": "./site/doc/main.ts",
-            "tsConfig": "./site/doc/tsconfig.app.json",
-            "polyfills": "./site/doc/polyfills.ts",
+            "outputPath": "dist",
+            "index": "site/doc/index.html",
+            "browser": "site/doc/main.ts",
+            "server": "site/doc/main.server.ts",
+            "tsConfig": "site/doc/tsconfig.app.json",
+            "serviceWorker": "ngsw-config.json",
+            "prerender": {
+              "routesFile": "scripts/prerender/route-paths.txt"
+            },
+            "ssr": {
+              "entry": "site/doc/server.ts"
+            },
+            "polyfills": [
+              "site/doc/polyfills.ts"
+            ],
             "assets": [
               "site/doc/assets",
               "site/doc/manifest.json",
@@ -25,12 +35,12 @@
               "site/doc/robots.txt",
               {
                 "glob": "**/*",
-                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/monaco-editor/min/vs",
+                "input": "node_modules/monaco-editor/min/vs",
                 "output": "/assets/vs/"
               }
             ],
@@ -42,68 +52,38 @@
               "codesandbox-import-utils",
               "@ant-design/colors",
               "cron-parser"
-            ],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            ]
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "./site/doc/environments/environment.ts",
-                  "with": "./site/doc/environments/environment.prod.ts"
+                  "replace": "site/doc/environments/environment.ts",
+                  "with": "site/doc/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "outputHashing": "all"
             },
             "pre-production": {
               "fileReplacements": [
                 {
-                  "replace": "./site/doc/environments/environment.ts",
-                  "with": "./site/doc/environments/environment.pre-prod.ts"
+                  "replace": "site/doc/environments/environment.ts",
+                  "with": "site/doc/environments/environment.pre-prod.ts"
                 }
               ],
-              "serviceWorker": false
+              "outputHashing": "all"
             },
-            "es5": {
-              "tsConfig": "./site/doc/tsconfig.es5.json"
+            "preview": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
-          "defaultConfiguration": ""
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/server",
-            "main": "./site/doc/main.server.ts",
-            "tsConfig": "./site/doc/tsconfig.server.json",
-            "sourceMap": true,
-            "optimization": false,
-            "buildOptimizer": false
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "./site/doc/environments/environment.ts",
-                  "with": "./site/doc/environments/environment.prod.ts"
-                }
-              ]
-            }
-          },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -115,30 +95,6 @@
               "buildTarget": "ng-zorro-antd-doc:build:production"
             }
           }
-        },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "options": {
-            "browserTarget": "ng-zorro-antd-doc:build",
-            "serverTarget": "ng-zorro-antd-doc:server"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "ng-zorro-antd-doc:production",
-              "serverTarget": "ng-zorro-antd-doc:production"
-            }
-          }
-        },
-        "prerender": {
-          "builder": "@angular-devkit/build-angular:prerender",
-          "options": {
-            "browserTarget": "ng-zorro-antd-doc:build:production",
-            "serverTarget": "ng-zorro-antd-doc:server:production",
-            "routesFile": "scripts/prerender/route-paths.txt"
-          },
-          "configurations": {
-            "production": {}
-          }
         }
       }
     },
@@ -148,26 +104,29 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/browser/iframe",
-            "index": "./site/iframe/index.html",
-            "main": "./site/iframe/main.ts",
-            "tsConfig": "./site/iframe/tsconfig.app.json",
-            "polyfills": "./site/iframe/polyfills.ts",
+            "outputPath": {
+              "base": "dist/browser/iframe",
+              "browser": ""
+            },
+            "index": "site/iframe/index.html",
+            "browser": "site/iframe/main.ts",
+            "tsConfig": "site/iframe/tsconfig.app.json",
+            "polyfills": [
+              "site/iframe/polyfills.ts"
+            ],
             "assets": [
               {
                 "glob": "**/*",
-                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
               }
             ],
             "styles": [
               "components/ng-zorro-antd.less"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true
@@ -176,21 +135,20 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "./site/iframe/environments/environment.ts",
-                  "with": "./site/iframe/environments/environment.prod.ts"
+                  "replace": "site/iframe/environments/environment.ts",
+                  "with": "site/iframe/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -204,11 +162,6 @@
           }
         }
       }
-    },
-    "ng-zorro-antd-doc-e2e": {
-      "root": "",
-      "sourceRoot": "",
-      "projectType": "application"
     },
     "ng-zorro-antd-lib": {
       "root": "components",
@@ -235,7 +188,7 @@
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
             "customWebpackConfig": {
-              "path": "./custom-webpack-spec.config.js"
+              "path": "custom-webpack-spec.config.js"
             },
             "fileReplacements": [
               {
@@ -246,7 +199,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "./node_modules/monaco-editor/min/vs",
+                "input": "node_modules/monaco-editor/min/vs",
                 "output": "/assets/vs/"
               }
             ],

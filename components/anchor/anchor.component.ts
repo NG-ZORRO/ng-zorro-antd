@@ -127,7 +127,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
   private destroy$ = new Subject<boolean>();
-  private handleScrollTimeoutID = -1;
+  private handleScrollTimeoutID?: ReturnType<typeof setTimeout>;
 
   constructor(
     @Inject(DOCUMENT) private doc: NzSafeAny,

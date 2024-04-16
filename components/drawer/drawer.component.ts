@@ -206,7 +206,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
-  placementChangeTimeoutId = -1;
+  placementChangeTimeoutId?: ReturnType<typeof setTimeout>;
   nzContentParams?: NzSafeAny; // only service
   nzData?: D;
   overlayRef?: OverlayRef | null;
