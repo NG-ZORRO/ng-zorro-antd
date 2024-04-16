@@ -27,7 +27,7 @@ import { RouterList } from '../router';
                 <a routerLink="{{ component.path }}">
                   <span>{{ component.label }}</span>
                   <span class="chinese">{{ component.zh }}</span>
-                  <span class="ant-tag ant-tag-warning" style="margin: 0 8px;" *ngIf="!!component.tag">{{ component.tag }}</span>
+                  <span class="ant-tag ant-tag-success" style="margin: 0 8px;" *ngIf="!!component.tag">{{ component.tag }}</span>
                 </a>
               </li>
             </ng-container>
