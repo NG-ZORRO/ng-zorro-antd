@@ -6,7 +6,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,7 +13,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   NgZone,
   OnChanges,
@@ -25,10 +23,11 @@ import {
   Renderer2,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, merge, Subject } from 'rxjs';
+import { Subject, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -42,7 +41,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -87,11 +86,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         (ngModelChange)="onModelChange($event)"
       />
     </div>
-    <nz-form-item-feedback-icon
-      class="ant-input-number-suffix"
-      *ngIf="hasFeedback && !!status && !nzFormNoStatusService"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status && !nzFormNoStatusService) {
+      <nz-form-item-feedback-icon class="ant-input-number-suffix" [status]="status" />
+    }
   `,
   providers: [
     {
@@ -114,7 +111,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
-  imports: [NzIconModule, FormsModule, NzFormPatchModule, NgIf],
+  imports: [NzIconModule, FormsModule, NzFormPatchModule],
   standalone: true
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
@@ -123,7 +120,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
 
-  private autoStepTimer?: number;
+  private autoStepTimer?: ReturnType<typeof setTimeout>;
   private parsedValue?: string | number;
   private value?: number;
   private isNzDisableFirstChange: boolean = true;

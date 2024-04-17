@@ -56,7 +56,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
           </ng-container>
         </div>
       }
-      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      <span class="ant-collapse-header-text">
+        <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      </span>
       @if (nzExtra) {
         <div class="ant-collapse-extra">
           <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>

@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzAnchorModule } from './anchor.module';
 import { NzAnchorComponent } from './anchor.component';
+import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
 
 const throttleTime = 51;
 
@@ -56,6 +57,19 @@ describe('anchor', () => {
       setTimeout(() => {
         const inkNode = page.getEl('.ant-anchor-ink-ball');
         expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
+        expect(context._scroll).toHaveBeenCalled();
+        done();
+      }, throttleTime);
+    });
+
+    it('should actived when scrolling to the anchor - horizontal', (done: () => void) => {
+      context.nzDirection = 'horizontal';
+      fixture.detectChanges();
+      expect(context._scroll).not.toHaveBeenCalled();
+      page.scrollTo();
+      setTimeout(() => {
+        const inkNode = page.getEl('.ant-anchor-ink-ball');
+        expect(+inkNode.style.left!.replace('px', '')).not.toBeNull();
         expect(context._scroll).toHaveBeenCalled();
         done();
       }, throttleTime);
@@ -226,6 +240,20 @@ describe('anchor', () => {
     });
   });
 
+  describe('direction', () => {
+    it(`should have vertical direction by default`, () => {
+      const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
+      expect(wrapperEl.nativeElement.classList).not.toContain('ant-anchor-wrapper-horizontal');
+    });
+
+    it(`should have correct class name in horizontal mode`, () => {
+      context.nzDirection = 'horizontal';
+      fixture.detectChanges();
+      const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
+      expect(wrapperEl.nativeElement.classList).toContain('ant-anchor-wrapper-horizontal');
+    });
+  });
+
   describe('**boundary**', () => {
     it('#getOffsetTop', (done: () => void) => {
       const el1 = document.getElementById('何时使用')!;
@@ -273,6 +301,7 @@ describe('anchor', () => {
       [nzTargetOffset]="nzTargetOffset"
       [nzContainer]="nzContainer"
       [nzCurrentAnchor]="nzCurrentAnchor"
+      [nzDirection]="nzDirection"
       (nzClick)="_click($event)"
       (nzScroll)="_scroll($event)"
       (nzChange)="_change($event)"
@@ -332,6 +361,7 @@ export class TestComponent {
   nzShowInkInFixed = false;
   nzContainer: any = null;
   nzCurrentAnchor?: string;
+  nzDirection: NzDirectionVHType = 'vertical';
   _click() {}
   _change() {}
   _scroll() {}

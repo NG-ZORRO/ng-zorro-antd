@@ -5,7 +5,7 @@
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { EventEmitter } from '@angular/core';
+import { ComponentRef, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
@@ -29,12 +29,13 @@ export const enum NzTriggerAction {
 
 export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null = null;
+  componentRef: ComponentRef<T> | null = null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
   afterClose: Subject<R | undefined> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
-  private closeTimeout?: number;
+  private closeTimeout?: ReturnType<typeof setTimeout>;
 
   private destroy$ = new Subject<void>();
 
@@ -66,7 +67,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         this._finishDialogClose();
       });
 
-    containerInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
+    containerInstance.containerClick.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);
@@ -103,12 +104,17 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         config.nzAfterClose.emit(this.result);
       }
       this.componentInstance = null;
+      this.componentRef = null;
       this.overlayRef.dispose();
     });
   }
 
   getContentComponent(): T {
     return this.componentInstance as T;
+  }
+
+  getContentComponentRef(): Readonly<ComponentRef<T> | null> {
+    return this.componentRef as Readonly<ComponentRef<T> | null>;
   }
 
   getElement(): HTMLElement {

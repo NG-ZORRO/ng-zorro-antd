@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -41,63 +41,77 @@ import {
   selector: 'nz-list, [nz-list]',
   exportAs: 'nzList',
   template: `
-    <ng-template #itemsTpl>
-      <div class="ant-list-items">
-        <ng-container *ngFor="let item of nzDataSource; let index = index">
-          <ng-template
-            [ngTemplateOutlet]="nzRenderItem"
-            [ngTemplateOutletContext]="{ $implicit: item, index: index }"
-          ></ng-template>
-        </ng-container>
-        <ng-content></ng-content>
-      </div>
-    </ng-template>
+    @if (nzHeader) {
+      <nz-list-header>
+        <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      </nz-list-header>
+    }
 
-    <nz-list-header *ngIf="nzHeader">
-      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
-    </nz-list-header>
-    <ng-content select="nz-list-header"></ng-content>
+    <ng-content select="nz-list-header" />
 
     <nz-spin [nzSpinning]="nzLoading">
       <ng-container>
-        <div *ngIf="nzLoading && nzDataSource && nzDataSource.length === 0" [style.min-height.px]="53"></div>
-        <div *ngIf="nzGrid && nzDataSource; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter || null">
-          <div
-            nz-col
-            [nzSpan]="nzGrid.span || null"
-            [nzXs]="nzGrid.xs || null"
-            [nzSm]="nzGrid.sm || null"
-            [nzMd]="nzGrid.md || null"
-            [nzLg]="nzGrid.lg || null"
-            [nzXl]="nzGrid.xl || null"
-            [nzXXl]="nzGrid.xxl || null"
-            *ngFor="let item of nzDataSource; let index = index"
-          >
-            <ng-template
-              [ngTemplateOutlet]="nzRenderItem"
-              [ngTemplateOutletContext]="{ $implicit: item, index: index }"
-            ></ng-template>
+        @if (nzLoading && nzDataSource && nzDataSource.length === 0) {
+          <div [style.min-height.px]="53"></div>
+        }
+        @if (nzGrid && nzDataSource) {
+          <div nz-row [nzGutter]="nzGrid.gutter || null">
+            @for (item of nzDataSource; track item; let index = $index) {
+              <div
+                nz-col
+                [nzSpan]="nzGrid.span || null"
+                [nzXs]="nzGrid.xs || null"
+                [nzSm]="nzGrid.sm || null"
+                [nzMd]="nzGrid.md || null"
+                [nzLg]="nzGrid.lg || null"
+                [nzXl]="nzGrid.xl || null"
+                [nzXXl]="nzGrid.xxl || null"
+              >
+                <ng-template
+                  [ngTemplateOutlet]="nzRenderItem"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+                />
+              </div>
+            }
           </div>
-        </div>
-        <nz-list-empty
-          *ngIf="!nzLoading && nzDataSource && nzDataSource.length === 0"
-          [nzNoResult]="nzNoResult"
-        ></nz-list-empty>
+        } @else {
+          <div class="ant-list-items">
+            @for (item of nzDataSource; track item; let index = $index) {
+              <ng-container>
+                <ng-template
+                  [ngTemplateOutlet]="nzRenderItem"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+                />
+              </ng-container>
+            }
+            <ng-content />
+          </div>
+        }
+
+        @if (!nzLoading && nzDataSource && nzDataSource.length === 0) {
+          <nz-list-empty [nzNoResult]="nzNoResult" />
+        }
       </ng-container>
     </nz-spin>
 
-    <nz-list-footer *ngIf="nzFooter">
-      <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
-    </nz-list-footer>
-    <ng-content select="nz-list-footer, [nz-list-footer]"></ng-content>
+    @if (nzFooter) {
+      <nz-list-footer>
+        <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
+      </nz-list-footer>
+    }
+
+    <ng-content select="nz-list-footer, [nz-list-footer]" />
 
     <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
-    <ng-content select="nz-list-load-more, [nz-list-load-more]"></ng-content>
+    <ng-content select="nz-list-load-more, [nz-list-load-more]" />
 
-    <nz-list-pagination *ngIf="nzPagination">
-      <ng-template [ngTemplateOutlet]="nzPagination"></ng-template>
-    </nz-list-pagination>
-    <ng-content select="nz-list-pagination, [nz-list-pagination]"></ng-content>
+    @if (nzPagination) {
+      <nz-list-pagination>
+        <ng-template [ngTemplateOutlet]="nzPagination" />
+      </nz-list-pagination>
+    }
+
+    <ng-content select="nz-list-pagination, [nz-list-pagination]" />
   `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
@@ -115,9 +129,7 @@ import {
   },
   imports: [
     NgTemplateOutlet,
-    NgForOf,
     NzListHeaderComponent,
-    NgIf,
     NzOutletModule,
     NzSpinModule,
     NzGridModule,

@@ -17,7 +17,6 @@ import {
   EventEmitter,
   Host,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -28,13 +27,15 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -149,29 +150,28 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   private selectionChangeSubscription: Subscription | null = Subscription.EMPTY;
   private optionMouseEnterSubscription: Subscription | null = Subscription.EMPTY;
   private dataSourceChangeSubscription: Subscription | null = Subscription.EMPTY;
+
   /** Options changes listener */
-  readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
+  private readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
       return merge<NzOptionSelectionChange[]>(...this.options.map(option => option.selectionChange));
     }
-    return this.ngZone.onStable.asObservable().pipe(
-      take(1),
-      switchMap(() => this.optionSelectionChanges)
-    );
+
+    return this.afterNextRender$.pipe(switchMap(() => this.optionSelectionChanges));
   });
-  readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
+
+  private readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
     if (this.options) {
       return merge<NzAutocompleteOptionComponent[]>(...this.options.map(option => option.mouseEntered));
     }
-    return this.ngZone.onStable.asObservable().pipe(
-      take(1),
-      switchMap(() => this.optionMouseEnter)
-    );
+
+    return this.afterNextRender$.pipe(switchMap(() => this.optionMouseEnter));
   });
+
+  private afterNextRender$ = inject(NZ_AFTER_NEXT_RENDER$);
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone,
     @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}

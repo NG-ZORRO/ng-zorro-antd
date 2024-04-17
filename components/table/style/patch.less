@@ -31,6 +31,7 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
 .nz-table-hide-scrollbar {
   scrollbar-color: @table-header-bg @table-header-bg;
+
   &::-webkit-scrollbar {
     background-color: @table-header-bg;
   }
@@ -39,6 +40,7 @@ cdk-virtual-scroll-viewport.ant-table-body {
 .@{table-prefix-cls}.@{table-prefix-cls}-small {
   .nz-table-hide-scrollbar {
     scrollbar-color: @table-header-bg-sm @table-header-bg-sm;
+
     &::-webkit-scrollbar {
       background-color: transparent;
     }
@@ -53,7 +55,6 @@ cdk-virtual-scroll-viewport.ant-table-body {
 .@{table-prefix-cls}.@{table-prefix-cls}-bordered {
 
   > .@{table-prefix-cls}-container {
-
     > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
       > table {
         // ============================= Cell =============================
@@ -139,16 +140,16 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
 .@{table-prefix-cls}-custom-column {
   col {
+    display: none;
     width: auto !important;
     min-width: auto !important;
-    display: none;
   }
 
   .@{table-prefix-cls}-thead {
     .@{table-prefix-cls}-row, tr {
-      width: 100%;
       display: flex;
       justify-content: space-between;
+      width: 100%;
 
       th {
         overflow: hidden;
@@ -158,9 +159,9 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
   .@{table-prefix-cls}-tbody {
     .@{table-prefix-cls}-row, tr {
-      width: 100%;
       display: flex;
       justify-content: space-between;
+      width: 100%;
 
       td {
         overflow: hidden;

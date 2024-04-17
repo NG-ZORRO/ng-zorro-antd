@@ -14,6 +14,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ComponentRef,
   ContentChild,
   EventEmitter,
   Inject,
@@ -34,9 +35,11 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { drawerMaskMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -75,8 +78,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [style.transition]="placementChanging ? 'none' : null"
         [style.zIndex]="nzZIndex"
       >
-        @if (nzMask) {
-          <div class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
+        @if (nzMask && isOpen) {
+          <div @drawerMaskMotion class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
         }
         <div
           class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
@@ -91,12 +94,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 <div class="ant-drawer-header" [class.ant-drawer-header-close-only]="!nzTitle">
                   <div class="ant-drawer-header-title">
                     @if (nzClosable) {
-                      <button
-                        (click)="closeClick()"
-                        aria-label="Close"
-                        class="ant-drawer-close"
-                        style="--scroll-bar: 0px;"
-                      >
+                      <button (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
                         <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
                           <span nz-icon [nzType]="closeIcon"></span>
                         </ng-container>
@@ -147,6 +145,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [drawerMaskMotion],
   imports: [NzNoAnimationDirective, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
   standalone: true
 })
@@ -184,6 +183,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
+  private componentRef: ComponentRef<T> | null = null;
 
   @Input()
   set nzVisible(value: boolean) {
@@ -206,7 +206,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
-  placementChangeTimeoutId = -1;
+  placementChangeTimeoutId?: ReturnType<typeof setTimeout>;
   nzContentParams?: NzSafeAny; // only service
   nzData?: D;
   overlayRef?: OverlayRef | null;
@@ -387,6 +387,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
       this.componentInstance = null;
+      this.componentRef = null;
     }, this.getAnimationDuration());
   }
 
@@ -412,6 +413,10 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     return this.componentInstance;
   }
 
+  override getContentComponentRef(): ComponentRef<T> | null {
+    return this.componentRef;
+  }
+
   closeClick(): void {
     this.nzOnClose.emit();
   }
@@ -434,13 +439,14 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
         ]
       });
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
-      const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
-      this.componentInstance = componentRef.instance;
+      this.componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
+
+      this.componentInstance = this.componentRef.instance;
       /**TODO
        * When nzContentParam will be remove in the next major version, we have to remove the following line
        * **/
-      Object.assign(componentRef.instance!, this.nzData || this.nzContentParams);
-      componentRef.changeDetectorRef.detectChanges();
+      Object.assign(this.componentRef.instance!, this.nzData || this.nzContentParams);
+      this.componentRef.changeDetectorRef.detectChanges();
     }
   }
 
@@ -448,6 +454,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.drawerTemplate, this.viewContainerRef);
       this.overlayRef = this.overlay.create(this.getOverlayConfig());
+
+      overlayZIndexSetter(this.overlayRef, this.nzZIndex);
     }
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {

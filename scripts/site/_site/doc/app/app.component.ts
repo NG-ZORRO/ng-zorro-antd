@@ -142,7 +142,6 @@ export class AppComponent implements OnInit {
     private meta: Meta,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
   ) {}
 

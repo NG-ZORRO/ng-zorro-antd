@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -427,6 +427,7 @@ describe('radio', () => {
     });
   });
 });
+
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-radio-single',
@@ -555,7 +556,9 @@ export class NzTestRadioGroupDisabledComponent {
   template: `
     <form nz-form>
       <nz-radio-group [formControl]="formControl">
-        <label nz-radio *ngFor="let val of radioValues" [nzValue]="val">{{ val }}</label>
+        @for (val of radioValues; track val) {
+          <label nz-radio [nzValue]="val">{{ val }}</label>
+        }
       </nz-radio-group>
     </form>
   `
@@ -584,9 +587,11 @@ export class NzTestRadioGroupSolidComponent {
 @Component({
   template: `
     <nz-radio-group>
-      <label nz-radio *ngFor="let item of items" [nzValue]="item.label" [(ngModel)]="item.checked">
-        {{ item.label }}
-      </label>
+      @for (item of items; track item) {
+        <label nz-radio [nzValue]="item.label" [(ngModel)]="item.checked">
+          {{ item.label }}
+        </label>
+      }
     </nz-radio-group>
   `
 })

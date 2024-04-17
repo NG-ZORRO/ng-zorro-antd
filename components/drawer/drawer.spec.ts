@@ -697,6 +697,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     tick(300);
     expect(component.templateDrawerRef?.getContentComponent()).toBeNull();
+    expect(component.templateDrawerRef?.getContentComponentRef()).toBeNull();
     expect(component.templateOpenSpy).toHaveBeenCalled();
     fixture.detectChanges();
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
@@ -719,6 +720,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     expect(drawerRef.getContentComponent()).not.toBeNull();
+    expect(drawerRef.getContentComponentRef()).not.toBeNull();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
@@ -727,6 +729,7 @@ describe('NzDrawerService', () => {
     expect(closeSpy).toHaveBeenCalled();
     fixture.detectChanges();
     expect(drawerRef.getContentComponent()).toBeNull();
+    expect(drawerRef.getContentComponentRef()).toBeNull();
   }));
 
   it('should create a component drawer and use nzData instead of nzContentParams', fakeAsync(() => {
@@ -744,6 +747,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     expect(drawerRef.getContentComponent()).not.toBeNull();
+    expect(drawerRef.getContentComponentRef()).not.toBeNull();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
@@ -752,6 +756,7 @@ describe('NzDrawerService', () => {
     expect(closeSpy).toHaveBeenCalled();
     fixture.detectChanges();
     expect(drawerRef.getContentComponent()).toBeNull();
+    expect(drawerRef.getContentComponentRef()).toBeNull();
   }));
 
   it('should `nzOnCancel` work', fakeAsync(() => {

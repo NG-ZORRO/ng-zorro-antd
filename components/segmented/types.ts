@@ -3,13 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export interface NzSegmentedOption {
-  label: string;
+export type NzSegmentedOption = {
   value: string | number;
   useTemplate?: boolean;
-  icon?: string;
   disabled?: boolean;
   className?: string;
+} & (NzSegmentedWithLabel | NzSegmentedWithIcon);
+
+export interface NzSegmentedWithLabel {
+  label: string;
+  icon?: string;
+}
+
+export interface NzSegmentedWithIcon {
+  icon: string;
+  label?: string;
 }
 
 export type NzSegmentedOptions = Array<NzSegmentedOption | string | number>;

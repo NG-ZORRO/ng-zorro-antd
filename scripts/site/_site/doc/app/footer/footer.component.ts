@@ -89,20 +89,21 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
     </footer>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./footer.component.less']
+  styleUrls: ['./footer.component.less'],
+  host: {
+    ngSkipHydration: ''
+  }
 })
 export class FooterComponent implements OnInit {
   @Input() language: string = 'zh';
   @Input() colorHex: string = '#1890ff';
-  // tslint:disable-next-line:no-any
   @Output() colorChange = new EventEmitter<any>();
 
-  constructor() {}
+  constructor() { }
 
-  // tslint:disable-next-line:no-any
   changeColor(res: any): void {
     this.colorChange.emit(res);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -13,7 +13,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -23,25 +22,25 @@ import {
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import {
+  InputBoolean,
+  InputNumber,
+  MouseTouchObserverConfig,
   arraysEqual,
   ensureNumberInRange,
   getElementOffset,
   getPercent,
   getPrecision,
-  InputBoolean,
-  InputNumber,
   isNil,
-  MouseTouchObserverConfig,
   silentEvent
 } from 'ng-zorro-antd/core/util';
 
@@ -66,63 +65,51 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     },
     NzSliderService
   ],
-  host: {
-    '(keydown)': 'onKeyDown($event)'
-  },
   template: `
-    <div
-      #slider
-      class="ant-slider"
-      [class.ant-slider-rtl]="dir === 'rtl'"
-      [class.ant-slider-disabled]="nzDisabled"
-      [class.ant-slider-vertical]="nzVertical"
-      [class.ant-slider-with-marks]="marksArray"
-    >
-      <div class="ant-slider-rail"></div>
-      <nz-slider-track
-        [vertical]="nzVertical"
-        [included]="nzIncluded"
-        [offset]="track.offset!"
-        [length]="track.length!"
-        [reverse]="nzReverse"
-        [dir]="dir"
-      ></nz-slider-track>
-      <nz-slider-step
-        *ngIf="marksArray"
-        [vertical]="nzVertical"
-        [min]="nzMin"
-        [max]="nzMax"
-        [lowerBound]="$any(bounds.lower)"
-        [upperBound]="$any(bounds.upper)"
-        [marksArray]="marksArray"
-        [included]="nzIncluded"
-        [reverse]="nzReverse"
-      ></nz-slider-step>
-      <nz-slider-handle
-        *ngFor="let handle of handles; index as handleIndex"
-        [vertical]="nzVertical"
-        [reverse]="nzReverse"
-        [offset]="handle.offset!"
-        [value]="handle.value!"
-        [active]="handle.active"
-        [tooltipFormatter]="nzTipFormatter"
-        [tooltipVisible]="nzTooltipVisible"
-        [tooltipPlacement]="nzTooltipPlacement"
-        [dir]="dir"
-        (focusin)="onHandleFocusIn(handleIndex)"
-      ></nz-slider-handle>
-      <nz-slider-marks
-        *ngIf="marksArray"
-        [vertical]="nzVertical"
-        [min]="nzMin"
-        [max]="nzMax"
-        [lowerBound]="$any(bounds.lower)"
-        [upperBound]="$any(bounds.upper)"
-        [marksArray]="marksArray"
-        [included]="nzIncluded"
-        [reverse]="nzReverse"
-      ></nz-slider-marks>
-    </div>
+    <div class="ant-slider-rail"></div>
+    <nz-slider-track
+      [vertical]="nzVertical"
+      [included]="nzIncluded"
+      [offset]="track.offset!"
+      [length]="track.length!"
+      [reverse]="nzReverse"
+      [dir]="dir"
+    ></nz-slider-track>
+    <nz-slider-step
+      *ngIf="marksArray"
+      [vertical]="nzVertical"
+      [min]="nzMin"
+      [max]="nzMax"
+      [lowerBound]="$any(bounds.lower)"
+      [upperBound]="$any(bounds.upper)"
+      [marksArray]="marksArray"
+      [included]="nzIncluded"
+      [reverse]="nzReverse"
+    ></nz-slider-step>
+    <nz-slider-handle
+      *ngFor="let handle of handles; index as handleIndex"
+      [vertical]="nzVertical"
+      [reverse]="nzReverse"
+      [offset]="handle.offset!"
+      [value]="handle.value!"
+      [active]="handle.active"
+      [tooltipFormatter]="nzTipFormatter"
+      [tooltipVisible]="nzTooltipVisible"
+      [tooltipPlacement]="nzTooltipPlacement"
+      [dir]="dir"
+      (focusin)="onHandleFocusIn(handleIndex)"
+    ></nz-slider-handle>
+    <nz-slider-marks
+      *ngIf="marksArray"
+      [vertical]="nzVertical"
+      [min]="nzMin"
+      [max]="nzMax"
+      [lowerBound]="$any(bounds.lower)"
+      [upperBound]="$any(bounds.upper)"
+      [marksArray]="marksArray"
+      [included]="nzIncluded"
+      [reverse]="nzReverse"
+    ></nz-slider-marks>
   `,
   imports: [
     NzSliderTrackComponent,
@@ -132,7 +119,15 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     NzSliderMarksComponent,
     NgIf
   ],
-  standalone: true
+  standalone: true,
+  host: {
+    class: 'ant-slider',
+    '[class.ant-slider-rtl]': `dir === 'rtl'`,
+    '[class.ant-slider-disabled]': 'nzDisabled',
+    '[class.ant-slider-vertical]': 'nzVertical',
+    '[class.ant-slider-with-marks]': 'marksArray',
+    '(keydown)': 'onKeyDown($event)'
+  }
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -145,7 +140,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   static ngAcceptInputType_nzStep: NumberInput;
   static ngAcceptInputType_nzReverse: BooleanInput;
 
-  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
   @Input() @InputBoolean() nzDisabled = false;
@@ -185,6 +179,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private isNzDisableFirstChange = true;
 
   constructor(
+    public slider: ElementRef<HTMLDivElement>,
     private sliderService: NzSliderService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,

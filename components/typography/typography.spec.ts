@@ -2,7 +2,7 @@ import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -279,22 +279,18 @@ describe('typography', () => {
       expect(testComponent.str).toBe('test');
     }));
 
-    it('should edit focus', fakeAsync(() => {
+    it('should edit focus', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
-      // The zone may be already stable (see `isStable` condition), thus there're no tasks
-      // in the queue that have been scheduled previously.
-      // This will schedule a microtask (except of waiting for `onStable`).
-      flushMicrotasks();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
 
       expect(document.activeElement === textarea).toBe(true);
-      dispatchFakeEvent(textarea, 'blur');
-      flush();
-      fixture.detectChanges();
-    }));
+    });
 
     it('should apply changes when Enter keydown', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');

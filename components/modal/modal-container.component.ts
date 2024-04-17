@@ -4,9 +4,10 @@
  */
 
 import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import { DOCUMENT, NgClass, NgIf, NgStyle } from '@angular/common';
+import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -38,6 +39,9 @@ import { ModalOptions } from './modal-types';
   template: `
     <div
       #modalElement
+      cdkDrag
+      cdkDragBoundary=".cdk-overlay-container"
+      [cdkDragDisabled]="!config.nzDraggable"
       role="document"
       class="ant-modal"
       [ngClass]="config.nzClassName!"
@@ -45,19 +49,27 @@ import { ModalOptions } from './modal-types';
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
-        <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
-        <div *ngIf="config.nzTitle" nz-modal-title></div>
+        @if (config.nzClosable) {
+          <button nz-modal-close (click)="onCloseClick()"></button>
+        }
+        @if (config.nzTitle) {
+          <div nz-modal-title cdkDragHandle [style.cursor]="config.nzDraggable ? 'move' : 'auto'"></div>
+        }
+
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
-          <ng-template cdkPortalOutlet></ng-template>
-          <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
+          <ng-template cdkPortalOutlet />
+          @if (isStringContent) {
+            <div [innerHTML]="config.nzContent"></div>
+          }
         </div>
-        <div
-          *ngIf="config.nzFooter !== null"
-          nz-modal-footer
-          [modalRef]="modalRef"
-          (cancelTriggered)="onCloseClick()"
-          (okTriggered)="onOkClick()"
-        ></div>
+        @if (config.nzFooter !== null) {
+          <div
+            nz-modal-footer
+            [modalRef]="modalRef"
+            (cancelTriggered)="onCloseClick()"
+            (okTriggered)="onOkClick()"
+          ></div>
+        }
       </div>
     </div>
   `,
@@ -80,12 +92,13 @@ import { ModalOptions } from './modal-types';
   imports: [
     NgClass,
     NgStyle,
-    NgIf,
     NzModalCloseComponent,
     NzModalTitleComponent,
     PortalModule,
     NzModalFooterComponent,
-    NzPipesModule
+    NzPipesModule,
+    CdkDrag,
+    CdkDragHandle
   ],
   standalone: true
 })

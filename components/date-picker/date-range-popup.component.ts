@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -59,7 +59,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     @if (isRange) {
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [style]="arrowPosition"></div>
+        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="arrowPosition"></div>
         <div class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }}">
           <div class="{{ prefixCls }}-panels">
             @if (hasTimePicker) {
@@ -143,7 +143,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       }
     </ng-template>
   `,
-  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent],
+  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent, NgStyle],
   standalone: true
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {

@@ -35,7 +35,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       [ngClass]="{ 'ant-input-disabled': disabled }"
     />
     <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
+      <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"></span>
     </span>
   `,
   encapsulation: ViewEncapsulation.None,
