@@ -58,8 +58,7 @@ import { NzWaterMarkComponent } from 'ng-zorro-antd/water-mark';
 
 ### Handle abnormal image watermarks
 
-When using an image watermark and the image loads abnormally, you can add `nzContent` at the same time to prevent the
-watermark from becoming invalid.
+When using an image watermark and the image loads abnormally, you can add `nzContent` at the same time to prevent the watermark from becoming invalid.
 
 ```html
 <nz-water-mark
