@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
@@ -51,6 +51,9 @@ describe('button', () => {
       expect(buttonElement.classList).toContain('ant-btn-block');
     });
     it('should apply classname based on nzType', () => {
+      testBed.component.nzType = 'default';
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-default');
       testBed.component.nzType = 'primary';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-primary');
