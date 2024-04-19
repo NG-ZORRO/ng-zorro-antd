@@ -136,11 +136,11 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
         max-width: 600px;
       }
 
-      .phone-select {
+      .ant-select.ant-select-in-form-item.phone-select {
         width: 70px;
       }
 
-      .register-are {
+      .register-area {
         margin-bottom: 8px;
       }
     `
