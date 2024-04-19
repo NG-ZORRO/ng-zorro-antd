@@ -13,6 +13,38 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 17.4.0
+
+`2024-04-19`
+
+### Bug Fixes
+
+* **autocomplete:** 移除 `NgZone` 依赖 ([#8462](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8462)) ([24bb1bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/24bb1bc5959c0e617090f0459c39db00fd4e2d9a))
+* **button:** 补充 `ant-btn-default` Class ([#8501](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8501)) ([1588199](https://github.com/NG-ZORRO/ng-zorro-antd/commit/15881996f0a9b1e93b0c81843132ba5d7651e528))
+* **calendar:** 修复年份下拉框数据更新异常问题 ([#8286](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8286)) ([ee68a2c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ee68a2c90370a6e3a599fe9f914af20117d2faa6))
+* **date-picker:** 移除内联样式 ([#8458](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8458)) ([e6b83eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e6b83eb1881ece341b68f9048e9d3e5ea438ba19))
+* **drawer:** 移除内联样式 ([#8065](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8065)) ([5e89441](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5e89441c26a7df50d0feed746d5595cde2589a7a))
+* **graph:** 修复箭头渲染异常问题 ([#8493](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8493)) ([342841c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/342841ceafddb1b74f55e31bfa9ca3e7734e842e))
+* **graph:** 移除 `NgZone` 依赖 ([#8460](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8460)) ([a4ec21a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a4ec21a684b5c96a64bd66670c270533926252bb))
+* **icon:** 补充 SwapOutline 图标 ([#8433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8433)) ([f1a4050](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f1a405042f84fbc96ed0587ea2e748dc7d468719))
+* **image:** 修复 rtl 模式下预览切换按钮位置异常 ([#8468](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8468)) ([886138d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/886138d630965b9a0a89d1727f76fed81c6f9528))
+* **list:** 移除 `NgZone` 依赖 ([#8439](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8439)) ([1ec0e76](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ec0e7672eaba0890b145c706fcc0a75cb5c47f8))
+* **notification:** 修复 `nzMaxStack` 初始值问题 ([#8451](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8451)) ([2c09162](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c0916265c00cdc026a55b3ab9d829c5e207cf31))
+* **pagination:** `nz-pagination-item` 支持可访问名称 ([#8476](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8476)) ([47ee143](https://github.com/NG-ZORRO/ng-zorro-antd/commit/47ee14325910c154f1541ee2d5e97539ba9a4e52))
+* **slider:** 修复垂直模式下标度刻记样式异常 ([#8494](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8494)) ([9bcce6c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9bcce6c969c0bef7bdf4526407b2dfc56b7ff660))
+* **tag:** 修复无边框样式异常 ([#8495](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8495)) ([b35e6d6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b35e6d6ba2422eb2c4725b2029a2f9c60720b697)), closes [#8492](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8492)
+* **typography:** 移除 `NgZone` 依赖 ([#8440](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8440)) ([af7fb5d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af7fb5d27254d26a284faaaa5b812b105f539e3f))
+* **upload:** 移除内联样式 ([#8064](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8064)) ([1ac84a8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ac84a8428fe644362e0f733c9a151fa848cedbf))
+
+
+### Features
+
+* **modal:** 遮罩层支持响应每次点击 ([#8429](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8429)) ([31b90fa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/31b90fa52232abe7b090f60797d4335329677c4c))
+* **notification:** 调整弹出顺序 ([#8450](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8450)) ([742f14a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/742f14a93472772cbdd96ce89797dc4120c55330))
+* **select:** 支持在全局配置中设置 `nzOptionHeightPx` ([#8504](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8504)) ([4efc5ab](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4efc5ab38f74ce07a769f57453b0da375c17ce5c)), closes [#8503](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8503)
+* **skeleton:** 支持正方形骨架按钮 ([#8481](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8481)) ([af1483a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af1483a9be544bd41b8f2a4a4c8027425f22b925))
+
+
 ## 17.3.0
 
 `2024-03-11`
