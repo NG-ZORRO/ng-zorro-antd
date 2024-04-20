@@ -11,7 +11,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -22,10 +21,8 @@ import {
   Optional,
   Output,
   QueryList,
-  Renderer2,
   TemplateRef,
   ViewChildren,
-  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
@@ -33,7 +30,7 @@ import { finalize, first, takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -41,7 +38,7 @@ import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-an
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+import { NzToolTipComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
 
@@ -89,9 +86,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
-  protected override readonly componentRef: ComponentRef<NzPopconfirmComponent> =
-    this.hostView.createComponent(NzPopconfirmComponent);
-
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzOkText: ['nzOkText', () => this.nzOkText],
@@ -108,14 +102,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     };
   }
 
-  constructor(
-    elementRef: ElementRef,
-    hostView: ViewContainerRef,
-    renderer: Renderer2,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective,
-    nzConfigService?: NzConfigService
-  ) {
-    super(elementRef, hostView, renderer, noAnimation, nzConfigService);
+  constructor() {
+    super(NzPopconfirmComponent);
   }
 
   /**
