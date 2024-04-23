@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -95,7 +95,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzSegmentedComponent), multi: true }],
   animations: [thumbMotion],
-  imports: [NgIf, NgClass, NgForOf, NzIconModule, NzOutletModule],
+  imports: [NgClass, NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
