@@ -35,7 +35,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   afterClose: Subject<R | undefined> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
-  private closeTimeout?: number;
+  private closeTimeout?: ReturnType<typeof setTimeout>;
 
   private destroy$ = new Subject<void>();
 
@@ -67,7 +67,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         this._finishDialogClose();
       });
 
-    containerInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
+    containerInstance.containerClick.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);

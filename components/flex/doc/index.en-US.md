@@ -4,10 +4,10 @@ type: Layout
 cols: 1
 title: Flex
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*SMzgSJZE_AwAAAAAAAAAAAAADrJ8AQ/original
-tag: New
+tag: 17.1.0
 ---
 
-Wrapper for `Display: flex`.
+Wrapper for `display: flex`.
 
 ## When To Use
 
@@ -16,8 +16,10 @@ Wrapper for `Display: flex`.
 
 ### Difference with Space component
 
-- Space is used to set the spacing between inline elements. It will add a wrapper element for each child element for inline alignment. Suitable for equidistant arrangement of multiple child elements in rows and columns.
-- Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of child elements in vertical or horizontal direction, and provides more flexibility and control.
+- Space is used to set the spacing between inline elements. It will add a wrapper element for each child element for
+  inline alignment. Suitable for equidistant arrangement of multiple child elements in rows and columns.
+- Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of
+  child elements in vertical or horizontal direction, and provides more flexibility and control.
 
 ### Import Module
 
@@ -30,7 +32,7 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 ### [nz-flex]:standalone
 
 | Property       | Description                                                                | Type                                                                                          | Default    |
-| -------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
+|----------------|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------|
 | `[nzVertical]` | Is direction of the flex vertical, use `flex-direction: column`            | `boolean`                                                                                     | `false`    |
 | `[nzJustify]`  | Sets the alignment of elements in the direction of the main axis           | reference [justify-content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content) | `'normal'` |
 | `[nzAlign]`    | Sets the alignment of elements in the direction of the cross axis          | reference [align-items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items)         | `'normal'` |

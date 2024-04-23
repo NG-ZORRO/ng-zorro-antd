@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -46,42 +45,51 @@ const ExceptionStatus = ['404', '500', '403'];
   exportAs: 'nzResult',
   template: `
     <div class="ant-result-icon">
-      <ng-container *ngIf="!isException; else exceptionTpl">
-        <ng-container *ngIf="icon">
+      @if (!isException) {
+        @if (icon) {
           <ng-container *nzStringTemplateOutlet="icon; let icon">
             <span nz-icon [nzType]="icon" nzTheme="fill"></span>
           </ng-container>
-        </ng-container>
-        <ng-content *ngIf="!icon" select="[nz-result-icon]"></ng-content>
-      </ng-container>
+        } @else {
+          <ng-content select="[nz-result-icon]"></ng-content>
+        }
+      } @else {
+        @switch (nzStatus) {
+          @case ('404') {
+            <nz-result-not-found />
+          }
+          @case ('500') {
+            <nz-result-server-error />
+          }
+          @case ('403') {
+            <nz-result-unauthorized />
+          }
+        }
+      }
     </div>
-    <ng-container *ngIf="nzTitle">
+    @if (nzTitle) {
       <div class="ant-result-title" *nzStringTemplateOutlet="nzTitle">
         {{ nzTitle }}
       </div>
-    </ng-container>
-    <ng-content *ngIf="!nzTitle" select="div[nz-result-title]"></ng-content>
-    <ng-container *ngIf="nzSubTitle">
+    } @else {
+      <ng-content select="div[nz-result-title]"></ng-content>
+    }
+
+    @if (nzSubTitle) {
       <div class="ant-result-subtitle" *nzStringTemplateOutlet="nzSubTitle">
         {{ nzSubTitle }}
       </div>
-    </ng-container>
-    <ng-content *ngIf="!nzSubTitle" select="div[nz-result-subtitle]"></ng-content>
+    } @else {
+      <ng-content select="div[nz-result-subtitle]"></ng-content>
+    }
     <ng-content select="nz-result-content, [nz-result-content]"></ng-content>
-    <div class="ant-result-extra" *ngIf="nzExtra">
-      <ng-container *nzStringTemplateOutlet="nzExtra">
+    @if (nzExtra) {
+      <div class="ant-result-extra" *nzStringTemplateOutlet="nzExtra">
         {{ nzExtra }}
-      </ng-container>
-    </div>
-    <ng-content *ngIf="!nzExtra" select="div[nz-result-extra]"></ng-content>
-
-    <ng-template #exceptionTpl>
-      <ng-container [ngSwitch]="nzStatus">
-        <nz-result-not-found *ngSwitchCase="'404'"></nz-result-not-found>
-        <nz-result-server-error *ngSwitchCase="'500'"></nz-result-server-error>
-        <nz-result-unauthorized *ngSwitchCase="'403'"></nz-result-unauthorized>
-      </ng-container>
-    </ng-template>
+      </div>
+    } @else {
+      <ng-content select="div[nz-result-extra]"></ng-content>
+    }
   `,
   host: {
     class: 'ant-result',
@@ -92,14 +100,11 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-rtl]': `dir === 'rtl'`
   },
   imports: [
-    NgIf,
     NzOutletModule,
     NzIconModule,
-    NgSwitch,
     NzResultNotFoundComponent,
     NzResultServerErrorComponent,
-    NzResultUnauthorizedComponent,
-    NgSwitchCase
+    NzResultUnauthorizedComponent
   ],
   standalone: true
 })

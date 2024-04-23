@@ -13,7 +13,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   NgZone,
   OnChanges,
@@ -24,10 +23,11 @@ import {
   Renderer2,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, merge, Subject } from 'rxjs';
+import { Subject, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -41,7 +41,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -120,7 +120,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
 
-  private autoStepTimer?: number;
+  private autoStepTimer?: ReturnType<typeof setTimeout>;
   private parsedValue?: string | number;
   private value?: number;
   private isNzDisableFirstChange: boolean = true;

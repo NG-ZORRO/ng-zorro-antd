@@ -15,6 +15,7 @@
   top: 0;
   left: 0;
   z-index: @zindex-popover;
+  max-width: 100vw;
   font-weight: normal;
   white-space: normal;
   text-align: left;
@@ -65,7 +66,6 @@
     background-clip: padding-box;
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
-    box-shadow: ~'0 0 8px @{shadow-color} \9';
   }
 
   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -86,26 +86,23 @@
   }
 
   &-inner-content {
+    width: max-content;
+    max-width: 100%;
     padding: @padding-sm @popover-padding-horizontal;
     color: @popover-color;
   }
 
   &-message {
-    position: relative;
+    display: flex;
     padding: 4px 0 12px;
     color: @popover-color;
     font-size: @font-size-base;
-    > .@{iconfont-css-prefix} {
-      position: absolute;
-      top: (
-        4px + ((@line-height-base * @font-size-base - @font-size-base) / 2)
-      ); // 4px for padding-top, 4px for vertical middle
+
+    &-icon {
+      display: inline-block;
+      margin-right: 8px;
       color: @warning-color;
       font-size: @font-size-base;
-    }
-
-    &-title {
-      padding-left: @font-size-base + 8px;
     }
   }
 
@@ -113,7 +110,7 @@
     margin-bottom: 4px;
     text-align: right;
 
-    button {
+    button:not(:first-child) {
       margin-left: 8px;
     }
   }

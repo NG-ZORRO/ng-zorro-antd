@@ -24,21 +24,26 @@
 
     &-disabled {
       .@{ant-prefix}-input[disabled] {
-        background: transparent;
+        background: rgba(255, 255, 255, 0);
       }
     }
 
-    > input.@{ant-prefix}-input {
-      padding: 0;
+    > .@{ant-prefix}-input {
+      font-size: inherit;
       border: none;
       outline: none;
 
       &:focus {
         box-shadow: none !important;
       }
+
+      &:not(textarea) {
+        padding: 0;
+      }
     }
 
     &::before {
+      display: inline-block;
       width: 0;
       visibility: hidden;
       content: '\a0';

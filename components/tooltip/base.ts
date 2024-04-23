@@ -22,12 +22,12 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { asapScheduler, Subject } from 'rxjs';
+import { Subject, asapScheduler } from 'rxjs';
 import { delay, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
@@ -114,7 +114,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   protected readonly destroy$ = new Subject<void>();
   protected readonly triggerDisposables: Array<() => void> = [];
 
-  private delayTimer?: number;
+  private delayTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     public elementRef: ElementRef,

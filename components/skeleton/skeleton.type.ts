@@ -4,7 +4,7 @@
  */
 
 export type NzSkeletonParagraphWidth = number | string | Array<number | string>;
-export type NzSkeletonButtonShape = 'circle' | 'round' | 'default';
+export type NzSkeletonButtonShape = 'square' | 'circle' | 'round' | 'default';
 export type NzSkeletonAvatarShape = 'square' | 'circle';
 export type NzSkeletonInputSize = 'large' | 'small' | 'default';
 export type NzSkeletonButtonSize = NzSkeletonInputSize;

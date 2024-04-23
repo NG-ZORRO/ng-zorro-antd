@@ -10,6 +10,8 @@ import { debounce } from 'lodash';
 import { join } from 'path';
 
 import { buildConfig } from '../../build-config';
+import { generate } from '../../prerender/ngsw-config';
+import { generateSitemap } from '../../prerender/sitemap';
 import { execNodeTask, execTask } from '../util/task-helpers';
 
 const detectPort = require('detect-port');
@@ -64,33 +66,33 @@ task('serve:site', done => {
   });
 });
 
-/** Run `ng build --prod --project=ng-zorro-antd-doc` */
+/** Run `ng build ng-zorro-antd-doc --configuration=production` */
 task(
   'build:site-doc',
-  execNodeTask(
-    '@angular/cli',
-    'ng',
-    CI
-      ? ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production,pre-production']
-      : ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production']
-  )
+  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=production'])
 );
 
-/** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
+/** Run `ng build ng-zorro-antd-doc --configuration=pre-production` */
 task(
-  'build:site-doc-es5',
-  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--configuration', 'production,es5'])
+  'build:site-doc/pre-production',
+  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=pre-production'])
 );
 
-/** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
+/** Run `ng build ng-zorro-antd-doc --configuration=preview` */
+task(
+  'build:site-doc-preview',
+  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=preview'])
+);
+
+/** Run `ng build ng-zorro-antd-iframe --base-href=./ --configuration=production --delete-output-path=false` */
 task(
   'build:site-iframe',
   execNodeTask('@angular/cli', 'ng', [
     'build',
-    '--project=ng-zorro-antd-iframe',
-    '--configuration',
-    'production',
-    '--base-href=./'
+    'ng-zorro-antd-iframe',
+    '--configuration=production',
+    '--base-href=./',
+    '--delete-output-path=false'
   ])
 );
 
@@ -103,13 +105,29 @@ task('site:replace-path', () => {
   return fs.writeJSON(tsconfigFile, tsconfig);
 });
 
+/** Run sitemap script on the output directory, to create sitemap.xml */
+task('site:sitemap', done => {
+  generateSitemap();
+  done();
+});
+
+/** Regenerate the ngsw-config to fix https://github.com/angular/angular/issues/23613 */
+task('site:regen-ngsw-config', generate);
+
 /** Run release-helper.sh
  * Clone issue-helper builds from github and copy to the output directory.
  */
 task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** Build all site projects to the output directory. */
-task('build:site', series('prerender', 'build:site-iframe', 'build:site-issue-helper'));
+task(
+  'build:site',
+  series(
+    'build:site-doc',
+    parallel('site:sitemap', 'site:regen-ngsw-config'),
+    parallel('build:site-iframe', 'build:site-issue-helper')
+  )
+);
 
 /** Init site directory, and start watch and ng-serve */
 task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
@@ -117,7 +135,7 @@ task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
 /** Task that use source code to build ng-zorro-antd-doc project,
  * output not included issue-helper/iframe and prerender.
  */
-task('build:simple-site', series('init:site', 'build:site-doc'));
+task('build:simple-site', series('init:site', CI ? 'build:site-doc/pre-production' : 'build:site-doc'));
 
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper/iframe and prerender.

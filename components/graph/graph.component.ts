@@ -38,6 +38,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraph } from './graph';
+import { NzGraphDefsComponent } from './graph-defs.component';
 import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
@@ -126,7 +127,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   },
-  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent],
+  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent],
   standalone: true
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {

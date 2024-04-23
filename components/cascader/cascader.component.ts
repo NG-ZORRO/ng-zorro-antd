@@ -13,7 +13,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   HostListener,
   Input,
@@ -29,10 +28,11 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -50,7 +50,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -347,8 +347,8 @@ export class NzCascaderComponent
 
   private inputString = '';
   private isOpening = false;
-  private delayMenuTimer: number | null = null;
-  private delaySelectTimer: number | null = null;
+  private delayMenuTimer?: ReturnType<typeof setTimeout>;
+  private delaySelectTimer?: ReturnType<typeof setTimeout>;
   private isNzDisableFirstChange: boolean = true;
 
   get inSearchingMode(): boolean {
@@ -556,7 +556,7 @@ export class NzCascaderComponent
   private clearDelayMenuTimer(): void {
     if (this.delayMenuTimer) {
       clearTimeout(this.delayMenuTimer);
-      this.delayMenuTimer = null;
+      this.delayMenuTimer = undefined;
     }
   }
 
@@ -740,7 +740,7 @@ export class NzCascaderComponent
   private clearDelaySelectTimer(): void {
     if (this.delaySelectTimer) {
       clearTimeout(this.delaySelectTimer);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }
   }
 
@@ -748,7 +748,7 @@ export class NzCascaderComponent
     this.clearDelaySelectTimer();
     this.delaySelectTimer = setTimeout(() => {
       this.cascaderService.setOptionActivated(option, columnIndex, performSelect);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }, 150);
   }
 

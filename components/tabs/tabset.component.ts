@@ -128,8 +128,6 @@ let nextId = 0;
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left]="getTabContentMarginLeft()"
-        [style.margin-right]="getTabContentMarginRight()"
       >
         <div
           role="tabpanel"
@@ -140,7 +138,7 @@ let nextId = 0;
           [active]="nzSelectedIndex === i && !nzHideAll"
           [content]="tab.content"
           [forceRender]="tab.nzForceRender"
-          [tabPaneAnimated]="tabPaneAnimated"
+          [animated]="tabPaneAnimated"
         ></div>
       </div>
     </div>
@@ -232,11 +230,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   get tabPaneAnimated(): boolean {
-    return (
-      this.position === 'horizontal' &&
-      this.line &&
-      (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
-    );
+    return typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane;
   }
 
   // Pick up only direct descendants under ivy rendering engine
@@ -511,26 +505,5 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
             matrixParams: 'ignored'
           })
         : false;
-  }
-
-  private getTabContentMarginValue(): number {
-    return -(this.nzSelectedIndex || 0) * 100;
-  }
-
-  getTabContentMarginLeft(): string {
-    if (this.tabPaneAnimated) {
-      if (this.dir !== 'rtl') {
-        return `${this.getTabContentMarginValue()}%`;
-      }
-    }
-    return '';
-  }
-  getTabContentMarginRight(): string {
-    if (this.tabPaneAnimated) {
-      if (this.dir === 'rtl') {
-        return `${this.getTabContentMarginValue()}%`;
-      }
-    }
-    return '';
   }
 }
