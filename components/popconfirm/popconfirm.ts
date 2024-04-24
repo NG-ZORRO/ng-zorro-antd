@@ -41,7 +41,7 @@ import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-an
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+import { NzToolTipComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
 
@@ -178,7 +178,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                 <div class="ant-popover-message">
                   <ng-container *nzStringTemplateOutlet="nzTitle">
                     <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-                      <span nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></span>
+                      <span class="ant-popover-message-icon">
+                        <span nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></span>
+                      </span>
                     </ng-container>
                     <div class="ant-popover-message-title">{{ nzTitle }}</div>
                   </ng-container>
