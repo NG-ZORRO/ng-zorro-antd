@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -18,8 +17,6 @@ import {
   Input,
   Optional,
   Output,
-  Renderer2,
-  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -68,16 +65,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
-  override componentRef: ComponentRef<NzToolTipComponent> = this.hostView.createComponent(NzToolTipComponent);
-
-  constructor(
-    elementRef: ElementRef,
-    hostView: ViewContainerRef,
-
-    renderer: Renderer2,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective
-  ) {
-    super(elementRef, hostView, renderer, noAnimation);
+  constructor() {
+    super(NzToolTipComponent);
   }
 
   protected override getProxyPropertyMap(): PropertyMapping {
