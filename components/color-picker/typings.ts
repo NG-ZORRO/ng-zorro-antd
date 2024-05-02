@@ -9,4 +9,18 @@ export type NzColorPickerFormatType = 'rgb' | 'hex' | 'hsb';
 
 export type NzColorPickerTriggerType = 'click' | 'hover';
 
+export interface ValidForm {
+  isFormat: NzColorPickerFormatType | null;
+  hex: string | null;
+  hsbH: number;
+  hsbS: number;
+  hsbB: number;
+  rgbR: number;
+  rgbG: number;
+  rgbB: number;
+  roundA: number;
+}
+
+export type ValidFormKey = keyof ValidForm;
+
 export interface NzColor extends Color {}
