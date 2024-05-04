@@ -13,7 +13,7 @@ Checkbox.
 - If you use only one checkbox, it is the same as using Switch to toggle between two states. The difference is that Switch will trigger the state change directly, but Checkbox just marks the state as changed and this needs to be submitted.
 
 ```ts
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox'; 
 ```
 
 ## API
