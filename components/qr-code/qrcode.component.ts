@@ -51,6 +51,11 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
               </button>
             </div>
           }
+          @case ('scanned') {
+            <div>
+              <p class="ant-qrcode-expired">{{ locale.scanned }}</p>
+            </div>
+          }
         }
       </div>
     }
@@ -76,7 +81,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzIcon: string = '';
   @Input() nzIconSize: number = 40;
   @Input() nzBordered: boolean = true;
-  @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
+  @Input() nzStatus: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
   @Input() nzLevel: keyof typeof ERROR_LEVEL_MAP = 'M';
 
   @Output() readonly nzRefresh = new EventEmitter<string>();
