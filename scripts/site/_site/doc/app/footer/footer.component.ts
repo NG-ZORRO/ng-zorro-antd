@@ -90,9 +90,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./footer.component.less'],
-  host: {
-    ngSkipHydration: ''
-  }
 })
 export class FooterComponent implements OnInit {
   @Input() language: string = 'zh';

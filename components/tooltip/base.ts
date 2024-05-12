@@ -5,10 +5,10 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -16,11 +16,14 @@ import {
   OnDestroy,
   OnInit,
   Optional,
+  PLATFORM_ID,
   Renderer2,
   SimpleChanges,
   TemplateRef,
+  Type,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  inject
 } from '@angular/core';
 import { Subject, asapScheduler } from 'rxjs';
 import { delay, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
@@ -38,7 +41,7 @@ export interface PropertyMapping {
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
-export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
+export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges, OnDestroy {
   arrowPointAtCenter?: boolean;
   config?: Required<PopoverConfig | PopConfirmConfig>;
   directiveTitle?: NzTSType | null;
@@ -55,11 +58,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   overlayStyle?: NgStyleInterface;
   cdkConnectedOverlayPush?: boolean;
   visibleChange = new EventEmitter<boolean>();
-
-  /**
-   * For create tooltip dynamically. This should be override for each different component.
-   */
-  protected componentRef!: ComponentRef<NzTooltipBaseComponent>;
 
   /**
    * This true title that would be used in other parts on this component.
@@ -116,13 +114,21 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
   private delayTimer?: ReturnType<typeof setTimeout>;
 
-  constructor(
-    public elementRef: ElementRef,
-    protected hostView: ViewContainerRef,
-    protected renderer: Renderer2,
-    protected noAnimation?: NzNoAnimationDirective,
-    protected nzConfigService?: NzConfigService
-  ) {}
+  elementRef = inject(ElementRef);
+  protected hostView = inject(ViewContainerRef);
+  protected renderer = inject(Renderer2);
+  protected noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  protected nzConfigService = inject(NzConfigService);
+  protected platformId = inject(PLATFORM_ID);
+
+  constructor(protected componentType: Type<NzTooltipBaseComponent>) {}
+
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.createComponent();
+      this.registerTriggers();
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { trigger } = changes;
@@ -134,11 +140,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     if (this.component) {
       this.updatePropertiesByChanges(changes);
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.createComponent();
-    this.registerTriggers();
   }
 
   ngOnDestroy(): void {
@@ -171,7 +172,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
    * Create a dynamic tooltip component. This method can be override.
    */
   protected createComponent(): void {
-    const componentRef = this.componentRef;
+    const componentRef = this.hostView.createComponent(this.componentType);
+
     this.component = componentRef.instance as NzTooltipBaseComponent;
 
     // Remove the component's DOM because it should be in the overlay container.
