@@ -232,7 +232,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         class="ant-picker-wrapper"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
         [@slideMotion]="'enter'"
-        style="position: relative;"
+        [style.position]="'relative'"
       >
         <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
       </div>

@@ -92,7 +92,7 @@ export class NzTabNavOperationComponent implements OnDestroy {
 
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly selected = new EventEmitter<NzTabNavItemDirective>();
-  closeAnimationWaitTimeoutId = -1;
+  closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
   menuOpened = false;
 
   private readonly element: HTMLElement;

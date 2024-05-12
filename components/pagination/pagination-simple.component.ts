@@ -42,6 +42,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul>
         <li
           nz-pagination-item
+          [locale]="locale"
           [attr.title]="locale.prev_page"
           [disabled]="isFirstIndex"
           [direction]="dir"
@@ -56,6 +57,7 @@ import { PaginationItemRenderContext } from './pagination.types';
         </li>
         <li
           nz-pagination-item
+          [locale]="locale"
           [attr.title]="locale?.next_page"
           [disabled]="isLastIndex"
           [direction]="dir"

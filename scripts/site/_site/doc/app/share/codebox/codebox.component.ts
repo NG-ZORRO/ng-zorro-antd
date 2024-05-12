@@ -22,7 +22,10 @@ import { OnlineIdeService } from '../../online-ide/online-ide.service';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './codebox.component.html',
-  styleUrls: ['./codebox.component.less']
+  styleUrls: ['./codebox.component.less'],
+  host: {
+    ngSkipHydration: ''
+  }
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
   highlightCode?: string;
@@ -146,7 +149,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private platform: Platform,
     private onlineIdeService: OnlineIdeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
