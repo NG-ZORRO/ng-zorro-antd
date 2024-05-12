@@ -109,21 +109,6 @@ import { FontType } from 'ng-zorro-antd/water-mark';
         margin-right: 12px;
         width: 40%;
       }
-
-      .theme-pick-wrap {
-        padding: 4px;
-        background: rgb(255, 255, 255);
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px;
-        display: inline-block;
-        cursor: pointer;
-      }
-
-      .theme-pick {
-        width: 80px;
-        height: 16px;
-        border-radius: 2px;
-      }
     `
   ]
 })
