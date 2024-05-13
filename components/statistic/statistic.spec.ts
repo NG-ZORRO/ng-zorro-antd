@@ -35,6 +35,13 @@ describe('nz-statistic', () => {
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-prefix').innerText).toBe('prefix');
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-suffix').innerText).toBe('suffix');
     });
+
+    it('should render skeleton', () => {
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeFalsy();
+      testComponent.loading = true;
+      fixture.detectChanges();
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeTruthy();
+    });
   });
 
   describe('RTL', () => {
@@ -62,13 +69,20 @@ describe('nz-statistic', () => {
 
 @Component({
   template: `
-    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix"></nz-statistic>
+    <nz-statistic
+      [nzValue]="123.45"
+      [nzTitle]="title"
+      [nzSuffix]="suffix"
+      [nzPrefix]="prefix"
+      [nzLoading]="loading"
+    ></nz-statistic>
   `
 })
 export class NzTestStatisticComponent {
   title = 'title';
   prefix = '';
   suffix = '';
+  loading = false;
 }
 
 @Component({
