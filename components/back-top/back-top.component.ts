@@ -106,7 +106,6 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private platform: Platform,
-    private cd: ChangeDetectorRef,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService,
@@ -135,7 +134,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.visible = !this.visible;
-    this.cd.detectChanges();
+    this.cdr.detectChanges();
   }
 
   private registerScrollEvent(): void {
