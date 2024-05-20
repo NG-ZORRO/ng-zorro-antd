@@ -55,6 +55,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzOkDanger: BooleanInput;
+  static ngAcceptInputType_nzOkDisabled: BooleanInput;
   static ngAcceptInputType_nzCondition: BooleanInput;
   static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
   static ngAcceptInputType_nzPopconfirmArrowPointAtCenter: BooleanInput;
@@ -72,6 +73,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmVisible') override visible?: boolean;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
+  @Input() @InputBoolean() nzOkDisabled?: boolean;
   @Input() @InputBoolean() nzOkDanger?: boolean;
   @Input() nzCancelText?: string;
   @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
@@ -91,6 +93,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzOkText: ['nzOkText', () => this.nzOkText],
       nzOkType: ['nzOkType', () => this.nzOkType],
       nzOkDanger: ['nzOkDanger', () => this.nzOkDanger],
+      nzOkDisabled: ['nzOkDisabled', () => this.nzOkDisabled],
       nzCancelText: ['nzCancelText', () => this.nzCancelText],
       nzBeforeConfirm: ['nzBeforeConfirm', () => this.nzBeforeConfirm],
       nzCondition: ['nzCondition', () => this.nzCondition],
@@ -194,6 +197,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
                     [nzDanger]="nzOkDanger || nzOkType === 'danger'"
                     [nzLoading]="confirmLoading"
+                    [disabled]="nzOkDisabled"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
@@ -236,6 +240,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzOkText?: string;
   nzOkType: NzButtonType | 'danger' = 'primary';
   nzOkDanger: boolean = false;
+  nzOkDisabled: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
   nzBeforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
 
