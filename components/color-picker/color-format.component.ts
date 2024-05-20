@@ -24,7 +24,7 @@ import {
   ValidatorFn
 } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
@@ -32,7 +32,7 @@ import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { generateColor } from './src/util/util';
-import { NzColorPickerFormatType } from './typings';
+import { NzColorPickerFormatType, ValidFormKey } from './typings';
 
 @Component({
   selector: 'nz-color-format',
@@ -183,6 +183,9 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
       .pipe(
         filter(() => this.validateForm.valid),
         debounceTime(200),
+        distinctUntilChanged((prev, current) =>
+          Object.keys(prev).every(key => prev[key as ValidFormKey] === current[key as ValidFormKey])
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe(value => {
