@@ -26,9 +26,9 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { NzCardGridDirective } from './card-grid.directive';
-import { NzCardLoadingComponent } from './card-loading.component';
 import { NzCardTabComponent } from './card-tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
@@ -67,10 +67,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     }
 
     <div class="ant-card-body" [ngStyle]="nzBodyStyle">
-      @if (!nzLoading) {
-        <ng-content />
+      @if (nzLoading) {
+        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
       } @else {
-        <nz-card-loading />
+        <ng-content />
       }
     </div>
     @if (nzActions.length) {
@@ -94,7 +94,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzCardLoadingComponent],
+  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzSkeletonModule],
   standalone: true
 })
 export class NzCardComponent implements OnDestroy, OnInit {
