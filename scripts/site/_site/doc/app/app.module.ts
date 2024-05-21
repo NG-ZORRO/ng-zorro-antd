@@ -20,7 +20,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { ColorSketchModule } from 'ngx-color/sketch';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -45,7 +44,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     FormsModule,
     HttpClientModule,
     NzNavBottomModule,
-    ColorSketchModule,
     NzIconModule.forRoot(icons),
     NzGridModule,
     NzAffixModule,
