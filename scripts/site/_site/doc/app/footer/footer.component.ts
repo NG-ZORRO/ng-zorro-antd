@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -101,19 +101,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
       </section>
     </footer>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./footer.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
   @Input() language: string = 'zh';
   @Input() colorHex: string = '#1890ff';
   @Output() colorChange = new EventEmitter<any>();
 
-  constructor() { }
-
   changeColor(res: any): void {
     this.colorChange.emit(res);
   }
-
-  ngOnInit(): void { }
 }
