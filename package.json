@@ -76,7 +76,6 @@
     "@types/shelljs": "^0.8.8",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
-    "antd-theme-generator": "1.2.2",
     "chalk": "^4.1.0",
     "clean-css": "~4.2.3",
     "codecov": "^3.8.1",
