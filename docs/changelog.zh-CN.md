@@ -13,6 +13,30 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 17.4.1
+
+`2024-05-24`
+
+### Bug Fixes
+
+* **card:** 使用 `skeleton` 代替 `card-loading-content` ([#8528](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8528)) ([a36ebd3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a36ebd329d042dad19733543ce96f459e4cc09d3))
+* **color-picker:** 避免两次 `nzOnChange` 事件 ([#8530](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8530)) ([5dea059](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5dea059202947caf5ef86f802f08ba14a0867288))
+* **list:** 静态查询列表项操作模板 ([#8527](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8527)) ([85301e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/85301e0267593457560c5cdcc7fb09ed38944d45))
+* **popconfirm:** icon 样式丢失 ([#8511](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8511)) ([4f1f9bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f1f9bba03f38d9ef4ee57380d61e5ca4188648c))
+* **tooltip,popover,popconfirm:**  SSR 引入的异常 ([#8512](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8512)) ([5009ec0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5009ec0b3a6ff770186681bd4eb61ec662d9896e))
+
+
+### Features
+
+* **popconfirm:** popconfirm 确认按钮支持禁用 ([#8542](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8542)) ([8c247db](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8c247dbda2b633d522c53113456600315192a792))
+
+
+### Performance Improvements
+
+* **back-top:** 删除多余的 `changeDetectorRef` ([c1e39e7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c1e39e7bbc1f863c3a1d26a9cc9cc359b4054dc5))
+* **qr-code:** 提高背景绘制效率 ([#8543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8543)) ([db09bf7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/db09bf73e45d03817c89bba97e1f340cc09ed5d0))
+
+
 ## 17.4.0
 
 `2024-04-19`
