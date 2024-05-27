@@ -12,9 +12,7 @@ const themeContent = `
 `;
 
 function generateTheme(vars, fileName) {
-
   return less.render(themeContent, {
-    javascriptEnabled: true,
     plugins: [new LessPluginCleanCSS({ advanced: true })],
     modifyVars: {
       'hack': `true;@import '${colorPalettePath}';`,

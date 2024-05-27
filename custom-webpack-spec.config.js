@@ -6,9 +6,7 @@ module.exports = {
         loader: 'less-loader',
         options: {
           additionalData: `@root-entry-name: default;`,
-          lessOptions: {
-            javascriptEnabled: true
-          }
+          lessOptions: {}
         }
       }
     ]
