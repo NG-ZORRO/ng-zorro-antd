@@ -130,7 +130,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     }
 
     this._value = input;
-    this.hasHalf = !Number.isInteger(input);
+    this.hasHalf = !Number.isInteger(input) && this.nzAllowHalf;
     this.hoverValue = Math.ceil(input);
   }
 
