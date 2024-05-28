@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NzColor } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'app-footer',
@@ -106,9 +107,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class FooterComponent {
   @Input() language: string = 'zh';
   @Input() colorHex: string = '#1890ff';
-  @Output() colorChange = new EventEmitter<any>();
+  @Output() colorChange = new EventEmitter<{ color: NzColor; format: string }>();
 
-  changeColor(res: any): void {
+  changeColor(res: { color: NzColor; format: string }): void {
     this.colorChange.emit(res);
   }
 }

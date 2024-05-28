@@ -30,13 +30,15 @@ function generateTheme(vars, fileName) {
 }
 
 function generateAllTheme() {
-  return generateTheme(compactPaletteLess, 'compact.css')
-    .then(() => generateTheme(darkPaletteLess, 'dark.css'))
-    .then(() => generateTheme(aliyunPaletteLess, 'aliyun.css'));
+  return Promise.all([
+    generateTheme(compactPaletteLess, 'compact.css'),
+    generateTheme(darkPaletteLess, 'dark.css'),
+    generateTheme(aliyunPaletteLess, 'aliyun.css')
+  ]);
 }
 
 if (require.main === module) {
-  generateAllTheme().then();
+  generateAllTheme();
 }
 
 module.exports = () => generateAllTheme();

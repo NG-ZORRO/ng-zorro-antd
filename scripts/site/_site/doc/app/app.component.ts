@@ -3,7 +3,9 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
+import { NzColor } from 'ng-zorro-antd/color-picker';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzI18nService, en_US, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzMessageRef, NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
@@ -11,7 +13,6 @@ import { debounceTime } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppService } from './app.service';
 import { ROUTER_LIST } from './router';
-import { loadScript } from './utils/load-script';
 
 interface DocPageMeta {
   path: string;
@@ -52,6 +53,8 @@ export class AppComponent implements OnInit {
   searchComponent = null;
 
   theme: SiteTheme = 'default';
+  // region: color
+  color = `#1890ff`;
 
   language: 'zh' | 'en' = 'en';
   direction: 'ltr' | 'rtl' = 'ltr';
@@ -139,13 +142,14 @@ export class AppComponent implements OnInit {
     private title: Title,
     private nzI18nService: NzI18nService,
     private nzMessageService: NzMessageService,
+    private nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: any
-  ) {}
+  ) { }
 
   navigateToPage(url: string): void {
     if (url) {
@@ -276,7 +280,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.initColor();
     this.initTheme();
     this.detectLanguage();
   }
@@ -359,55 +362,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // region: color
-  color = `#1890ff`;
-
-  initColor(): void {
+  changeColor(res: { color: NzColor; format: string }): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    const node = document.createElement('link');
-    node.rel = 'stylesheet/less';
-    node.type = 'text/css';
-    node.href = '/assets/color.less';
-    document.getElementsByTagName('head')[0].appendChild(node);
-  }
 
-  lessLoaded = false;
-
-  changeColor(res: any): void {
-    if (!this.platform.isBrowser) {
-      return;
-    }
-    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, {
-      nzDuration: 0
-    });
-    const changeColor = () => {
-      (window as any).less
-        .modifyVars({
-          '@primary-color': res.color.toRgbString()
-        })
-        .then(() => {
-          this.nzMessageService.remove(loading.messageId);
-          this.nzMessageService.success(this.language === 'en' ? `Switching color successfully` : `应用成功`);
-          this.color = res.color.toRgbString();
-          window.scrollTo(0, 0);
-        });
-    };
-
-    const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
-
-    if (this.lessLoaded) {
-      changeColor();
-    } else {
-      (window as any).less = {
-        async: true
-      };
-      loadScript(lessUrl).then(() => {
-        this.lessLoaded = true;
-        changeColor();
-      });
-    }
+    this.nzConfigService.set('theme', { primaryColor: res.color.toHexString() })
   }
 
   // endregion
