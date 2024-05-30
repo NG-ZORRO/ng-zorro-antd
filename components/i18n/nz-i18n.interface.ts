@@ -149,6 +149,7 @@ export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCr
 export interface NzQRCodeI18nInterface {
   expired: string;
   refresh: string;
+  scanned: string;
 }
 
 export interface NzI18nInterface {
