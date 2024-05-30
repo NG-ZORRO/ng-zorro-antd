@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -44,15 +44,18 @@ import {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-table-filter
-      *ngIf="nzShowFilter || nzCustomFilter; else notFilterTemplate"
-      [contentTemplate]="notFilterTemplate"
-      [extraTemplate]="extraTemplate"
-      [customFilter]="nzCustomFilter"
-      [filterMultiple]="nzFilterMultiple"
-      [listOfFilter]="nzFilters"
-      (filterChange)="onFilterValueChange($event)"
-    ></nz-table-filter>
+    @if (nzShowFilter || nzCustomFilter) {
+      <nz-table-filter
+        [contentTemplate]="notFilterTemplate"
+        [extraTemplate]="extraTemplate"
+        [customFilter]="nzCustomFilter"
+        [filterMultiple]="nzFilterMultiple"
+        [listOfFilter]="nzFilters"
+        (filterChange)="onFilterValueChange($event)"
+      ></nz-table-filter>
+    } @else {
+      <ng-container [ngTemplateOutlet]="notFilterTemplate"></ng-container>
+    }
     <ng-template #notFilterTemplate>
       <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
     </ng-template>
@@ -76,7 +79,7 @@ import {
     '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
   },
   providers: [NzDestroyService],
-  imports: [NzTableFilterComponent, NgIf, NgTemplateOutlet, NzTableSortersComponent],
+  imports: [NzTableFilterComponent, NgTemplateOutlet, NzTableSortersComponent],
   standalone: true
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {

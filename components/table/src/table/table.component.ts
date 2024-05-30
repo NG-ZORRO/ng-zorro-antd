@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -62,9 +62,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">
-      <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
+      @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'top') {
         <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
-      </ng-container>
+      }
       <div
         #tableMainElement
         class="ant-table"
@@ -78,56 +78,61 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [class.ant-table-middle]="nzSize === 'middle'"
         [class.ant-table-small]="nzSize === 'small'"
       >
-        <nz-table-title-footer [title]="nzTitle" *ngIf="nzTitle"></nz-table-title-footer>
-        <nz-table-inner-scroll
-          *ngIf="scrollY || scrollX; else defaultTemplate"
-          [data]="data"
-          [scrollX]="scrollX"
-          [scrollY]="scrollY"
-          [contentTemplate]="contentTemplate"
-          [listOfColWidth]="listOfAutoColWidth"
-          [theadTemplate]="theadTemplate"
-          [verticalScrollBarWidth]="verticalScrollBarWidth"
-          [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
-          [virtualItemSize]="nzVirtualItemSize"
-          [virtualMaxBufferPx]="nzVirtualMaxBufferPx"
-          [virtualMinBufferPx]="nzVirtualMinBufferPx"
-          [tableMainElement]="tableMainElement"
-          [virtualForTrackBy]="nzVirtualForTrackBy"
-        ></nz-table-inner-scroll>
-        <ng-template #defaultTemplate>
+        @if (nzTitle) {
+          <nz-table-title-footer [title]="nzTitle"></nz-table-title-footer>
+        }
+        @if (scrollY || scrollX) {
+          <nz-table-inner-scroll
+            [data]="data"
+            [scrollX]="scrollX"
+            [scrollY]="scrollY"
+            [contentTemplate]="contentTemplate"
+            [listOfColWidth]="listOfAutoColWidth"
+            [theadTemplate]="theadTemplate"
+            [verticalScrollBarWidth]="verticalScrollBarWidth"
+            [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
+            [virtualItemSize]="nzVirtualItemSize"
+            [virtualMaxBufferPx]="nzVirtualMaxBufferPx"
+            [virtualMinBufferPx]="nzVirtualMinBufferPx"
+            [tableMainElement]="tableMainElement"
+            [virtualForTrackBy]="nzVirtualForTrackBy"
+          ></nz-table-inner-scroll>
+        } @else {
           <nz-table-inner-default
             [tableLayout]="nzTableLayout"
             [listOfColWidth]="listOfManualColWidth"
             [theadTemplate]="theadTemplate"
             [contentTemplate]="contentTemplate"
           ></nz-table-inner-default>
-        </ng-template>
-        <nz-table-title-footer [footer]="nzFooter" *ngIf="nzFooter"></nz-table-title-footer>
+        }
+        @if (nzFooter) {
+          <nz-table-title-footer [footer]="nzFooter"></nz-table-title-footer>
+        }
       </div>
-      <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'">
+      @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom') {
         <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
-      </ng-container>
+      }
     </nz-spin>
     <ng-template #paginationTemplate>
-      <nz-pagination
-        *ngIf="nzShowPagination && data.length"
-        [hidden]="!showPagination"
-        class="ant-table-pagination ant-table-pagination-right"
-        [nzShowSizeChanger]="nzShowSizeChanger"
-        [nzPageSizeOptions]="nzPageSizeOptions"
-        [nzItemRender]="nzItemRender!"
-        [nzShowQuickJumper]="nzShowQuickJumper"
-        [nzHideOnSinglePage]="nzHideOnSinglePage"
-        [nzShowTotal]="nzShowTotal"
-        [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
-        [nzPageSize]="nzPageSize"
-        [nzTotal]="nzTotal"
-        [nzSimple]="nzSimple"
-        [nzPageIndex]="nzPageIndex"
-        (nzPageSizeChange)="onPageSizeChange($event)"
-        (nzPageIndexChange)="onPageIndexChange($event)"
-      ></nz-pagination>
+      @if (nzShowPagination && data.length) {
+        <nz-pagination
+          [hidden]="!showPagination"
+          class="ant-table-pagination ant-table-pagination-right"
+          [nzShowSizeChanger]="nzShowSizeChanger"
+          [nzPageSizeOptions]="nzPageSizeOptions"
+          [nzItemRender]="nzItemRender!"
+          [nzShowQuickJumper]="nzShowQuickJumper"
+          [nzHideOnSinglePage]="nzHideOnSinglePage"
+          [nzShowTotal]="nzShowTotal"
+          [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
+          [nzPageSize]="nzPageSize"
+          [nzTotal]="nzTotal"
+          [nzSimple]="nzSimple"
+          [nzPageIndex]="nzPageIndex"
+          (nzPageSizeChange)="onPageSizeChange($event)"
+          (nzPageIndexChange)="onPageIndexChange($event)"
+        ></nz-pagination>
+      }
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -140,7 +145,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   },
   imports: [
     NzSpinComponent,
-    NgIf,
     NgTemplateOutlet,
     NzTableTitleFooterComponent,
     NzTableInnerScrollComponent,

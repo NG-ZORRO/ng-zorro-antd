@@ -4,8 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
-
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,36 +33,36 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
+    @if (nzShowExpand || nzIndentSize > 0) {
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
-      <ng-template #rowExpand>
+      @if (nzExpandIcon) {
+        <ng-template [ngTemplateOutlet]="nzExpandIcon"></ng-template>
+      } @else {
         <button
           nz-row-expand-button
           [expand]="nzExpand"
           (expandChange)="onExpandChange($event)"
           [spaceMode]="!nzShowExpand"
         ></button>
-      </ng-template>
-      <ng-container *ngIf="nzExpandIcon; else rowExpand">
-        <ng-template [ngTemplateOutlet]="nzExpandIcon"></ng-template>
-      </ng-container>
-    </ng-container>
-    <label
-      nz-checkbox
-      *ngIf="nzShowCheckbox"
-      [nzDisabled]="nzDisabled"
-      [ngModel]="nzChecked"
-      [nzIndeterminate]="nzIndeterminate"
-      [attr.aria-label]="nzLabel"
-      (ngModelChange)="onCheckedChange($event)"
-    ></label>
+      }
+    }
+    @if (nzShowCheckbox) {
+      <label
+        nz-checkbox
+        [nzDisabled]="nzDisabled"
+        [ngModel]="nzChecked"
+        [nzIndeterminate]="nzIndeterminate"
+        [attr.aria-label]="nzLabel"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
+    }
     <ng-content></ng-content>
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`
   },
-  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgIf, NgTemplateOutlet, NzCheckboxModule, FormsModule],
+  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule],
   standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
