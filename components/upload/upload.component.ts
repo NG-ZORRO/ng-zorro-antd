@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -21,7 +22,8 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -177,6 +179,8 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     };
     return this;
   }
+
+  private readonly platform = inject(Platform);
 
   // #endregion
 
@@ -353,15 +357,17 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngAfterViewInit(): void {
-    // fix firefox drop open new tab
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent<MouseEvent>(this.document.body, 'drop')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.preventDefault();
-          event.stopPropagation();
-        })
-    );
+    if (this.platform.FIREFOX) {
+      // fix firefox drop open new tab
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<MouseEvent>(this.document.body, 'drop')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(event => {
+            event.preventDefault();
+            event.stopPropagation();
+          })
+      );
+    }
   }
 
   ngOnChanges(): void {
