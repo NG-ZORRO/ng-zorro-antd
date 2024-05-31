@@ -35,7 +35,6 @@
     "ngx-quicklink": "^0.4.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "17.0.2",
     "@angular-devkit/build-angular": "^17.3.0",
     "@angular-devkit/core": "^17.3.0",
     "@angular-devkit/schematics": "^17.3.0",

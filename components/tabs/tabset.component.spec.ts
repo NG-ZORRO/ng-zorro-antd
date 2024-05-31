@@ -1039,7 +1039,11 @@ class DynamicTabsTestComponent {
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../style/entry.less', './style/entry.less']
+  styles: `
+    @import '../style/testing.less';
+    @import '../style/entry.less';
+    @import './style/entry.less';
+  `
 })
 class ScrollableTabsTestComponent {
   selectedIndex = 0;
