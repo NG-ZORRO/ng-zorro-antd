@@ -106,21 +106,29 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 
 Checkbox property
 
-| Property            | Description                                         | Type                    | Default |
-| ------------------- | --------------------------------------------------- | ----------------------- | ------- |
-| `[nzShowCheckbox]`  | Whether `nz-checkbox` should be shown in the header | `boolean`               | -       |
-| `[nzDisabled]`      | Whether the `nz-checkbox` is disabled               | `boolean`               | -       |
-| `[nzIndeterminate]` | `nz-checkbox` indeterminate status                  | `boolean`               | -       |
-| `[nzLabel]`         | ARIA label for the `nz-checkbox`                    | `string`                | -       |
-| `[nzChecked]`       | Checked status, double binding                      | `boolean`               | -       |
-| `(nzCheckedChange)` | Callback when checked status changes                | `EventEmitter<boolean>` | -       |
+| Property               | Description                                         | Type                    | Default      |
+| ---------------------- | --------------------------------------------------- | ----------------------- | ------------ |
+| `[nzShowCheckbox]`     | Whether `nz-checkbox` should be shown in the header | `boolean`               | -            |
+| `[nzDisabled]`         | Whether the `nz-checkbox` is disabled               | `boolean`               | -            |
+| `[nzIndeterminate]`    | `nz-checkbox` indeterminate status                  | `boolean`               | -            |
+| `[nzLabel]`            | ARIA label for the `nz-checkbox`                    | `string`                | -            |
+| `[nzChecked]`          | Checked status, double binding                      | `boolean`               | -            |
+| `[nzRowSelectionType]` | Checkbox or radio                                   | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `(nzCheckedChange)`    | Callback when checked status changes                | `EventEmitter<boolean>` | -            |
+
+radio property
+
+| Property               | Description                                                                                              | Type                    | Default      |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------- | ------------ |
+| `[nzRowSelectionType]` | Checkbox or radio, should have `nzShowRowSelection = true` if trying to have a column with radio buttons | `'checkbox' \| 'radio'` | `'checkbox'` |
 
 Selection property
 
-| Property               | Description                                                         | Type                                     | Default |
-| ---------------------- | ------------------------------------------------------------------- | ---------------------------------------- | ------- |
-| `[nzShowRowSelection]` | Whether to show row selection options                               | `boolean`                                | -       |
-| `[nzSelections]`       | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | -       |
+| Property               | Description                                                         | Type                                     | Default      |
+| ---------------------- | ------------------------------------------------------------------- | ---------------------------------------- | ------------ |
+| `[nzShowRowSelection]` | Whether to show row selection options                               | `boolean`                                | -            |
+| `[nzRowSelectionType]` | Checkbox or radio                                                   | `'checkbox' \| 'radio'`                  | `'checkbox'` |
+| `[nzSelections]`       | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | -            |
 
 Sort property
 
@@ -164,16 +172,29 @@ Other
 
 Checkbox property
 
-| Property            | Description                       | Type                    | Default |
-| ------------------- | --------------------------------- | ----------------------- | ------- |
-| `[nzShowCheckbox]`  | Whether add nz-checkbox           | `boolean`               | -       |
-| `[nzDisabled]`      | Whether disable checkbox          | `boolean`               | -       |
-| `[nzIndeterminate]` | Indeterminate status              | `boolean`               | -       |
-| `[nzLabel]`         | ARIA label for the `nz-checkbox`  | `string`                | -       |
-| `[nzChecked]`       | Checked status, double binding    | `boolean`               | -       |
-| `(nzCheckedChange)` | Checked status change callback    | `EventEmitter<boolean>` | -       |
-| `[colSpan]`         | how many columns the cell extends | `number`                | `null`  |
-| `[rowSpan]`         | how many rows the cell extends    | `number`                | `null`  |
+| Property               | Description                       | Type                    | Default      |
+| ---------------------- | --------------------------------- | ----------------------- | ------------ |
+| `[nzShowCheckbox]`     | Whether add nz-checkbox           | `boolean`               | -            |
+| `[nzDisabled]`         | Whether disable checkbox          | `boolean`               | -            |
+| `[nzIndeterminate]`    | Indeterminate status              | `boolean`               | -            |
+| `[nzLabel]`            | ARIA label for the `nz-checkbox`  | `string`                | -            |
+| `[nzChecked]`          | Checked status, double binding    | `boolean`               | -            |
+| `(nzCheckedChange)`    | Checked status change callback    | `EventEmitter<boolean>` | -            |
+| `[nzRowSelectionType]` | Checkbox or radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[colSpan]`            | how many columns the cell extends | `number`                | `null`       |
+| `[rowSpan]`            | how many rows the cell extends    | `number`                | `null`       |
+
+radio property
+
+| Property               | Description                       | Type                    | Default      |
+| ---------------------- | --------------------------------- | ----------------------- | ------------ |
+| `[nzDisabled]`         | Whether disable checkbox          | `boolean`               | -            |
+| `[nzLabel]`            | ARIA label for the `nz-checkbox`  | `string`                | -            |
+| `[nzChecked]`          | Checked status, double binding    | `boolean`               | -            |
+| `(nzCheckedChange)`    | Checked status change callback    | `EventEmitter<boolean>` | -            |
+| `[nzRowSelectionType]` | Checkbox or radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[colSpan]`            | how many columns the cell extends | `number`                | `null`       |
+| `[rowSpan]`            | how many rows the cell extends    | `number`                | `null`       |
 
 Expand property
 

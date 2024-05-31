@@ -116,12 +116,19 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzChecked]`       | checkbox 是否被选中，可双向绑定 | `boolean`               | -      |
 | `(nzCheckedChange)` | 选中的回调                      | `EventEmitter<boolean>` | -      |
 
+无线电财产
+
+| 参数                   | 说明                                                                              | 类型                    | 默认值       |
+| ---------------------- | --------------------------------------------------------------------------------- | ----------------------- | ------------ |
+| `[nzRowSelectionType]` | 复选框或单选框，如果尝试使用带有单选按钮的列，则应具有“nzShowRowSelection = true” | `'checkbox' \| 'radio'` | `'checkbox'` |
+
 下拉选择属性
 
-| 参数                   | 说明                                        | 类型                                     | 默认值 |
-| ---------------------- | ------------------------------------------- | ---------------------------------------- | ------ |
-| `[nzShowRowSelection]` | 是否显示下拉选择                            | `boolean`                                | -      |
-| `[nzSelections]`       | 下拉选择的内容 `text` 及回调函数 `onSelect` | `Array<{ text: string, onSelect: any }>` | -      |
+| 参数                   | 说明                                        | 类型                                     | 默认值       |
+| ---------------------- | ------------------------------------------- | ---------------------------------------- | ------------ |
+| `[nzShowRowSelection]` | 是否显示下拉选择                            | `boolean`                                | -            |
+| `[nzRowSelectionType]` | Checkbox or radio                           | `'checkbox' \| 'radio'`                  | `'checkbox'` |
+| `[nzSelections]`       | 下拉选择的内容 `text` 及回调函数 `onSelect` | `Array<{ text: string, onSelect: any }>` | -            |
 
 排序属性
 
@@ -177,6 +184,18 @@ Table 组件同时具备了易用性和高度可定制性
 | `(nzCheckedChange)` | 选中的回调                      | `EventEmitter<boolean>` | -      |
 | `[colSpan]`         | 单元格可横跨的列数              | `number`                | `null` |
 | `[rowSpan]`         | 单元格可横跨的行数              | `number`                | `null` |
+
+勾选属性
+
+| 参数                   | 说明                            | 类型                    | 默认值       |
+| ---------------------- | ------------------------------- | ----------------------- | ------------ |
+| `[nzDisabled]`         | checkbox 是否禁用               | `boolean`               | -            |
+| `[nzLabel]`            | checkbox 的可访问性标签         | `string`                | -            |
+| `[nzChecked]`          | checkbox 是否被选中，可双向绑定 | `boolean`               | -            |
+| `[nzRowSelectionType]` | Checkbox or radio               | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `(nzCheckedChange)`    | 选中的回调                      | `EventEmitter<boolean>` | -            |
+| `[colSpan]`            | 单元格可横跨的列数              | `number`                | `null`       |
+| `[rowSpan]`            | 单元格可横跨的行数              | `number`                | `null`       |
 
 展开属性
 
