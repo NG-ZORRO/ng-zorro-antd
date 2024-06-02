@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 
-import { NZ_CONFIG } from './config';
+import { provideNzConfig } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
@@ -23,14 +23,12 @@ describe('nz global config', () => {
   let buttonEl: HTMLButtonElement;
 
   describe('without config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent]
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
@@ -50,24 +48,19 @@ describe('nz global config', () => {
   });
 
   describe('with config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent],
-          providers: [
-            {
-              provide: NZ_CONFIG,
-              useValue: {
-                button: {
-                  nzSize: 'large'
-                }
-              }
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent],
+        providers: [
+          provideNzConfig({
+            button: {
+              nzSize: 'large'
             }
-          ]
-        }).compileComponents();
-      })
-    );
+          })
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);

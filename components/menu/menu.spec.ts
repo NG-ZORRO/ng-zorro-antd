@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
 import { NzMenuModule } from './menu.module';
 import { NzSubMenuComponent } from './submenu.component';
@@ -17,34 +17,32 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
-        declarations: [
-          NzTestBasicMenuHorizontalComponent,
-          NzTestBasicMenuInlineComponent,
-          NzTestMenuInlineCollapsedComponent,
-          NzTestMenuSiderCurrentComponent,
-          NzTestMenuThemeComponent,
-          NzTestMenuSwitchModeComponent,
-          NzTestMenuHorizontalComponent,
-          NzTestMenuInlineComponent,
-          NzDemoMenuNgForComponent,
-          NzTestNgIfMenuComponent,
-          NzTestSubMenuSelectedComponent,
-          NzTestMenuRtlComponent
-        ]
-      });
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzTestBasicMenuHorizontalComponent,
+        NzTestBasicMenuInlineComponent,
+        NzTestMenuInlineCollapsedComponent,
+        NzTestMenuSiderCurrentComponent,
+        NzTestMenuThemeComponent,
+        NzTestMenuSwitchModeComponent,
+        NzTestMenuHorizontalComponent,
+        NzTestMenuInlineComponent,
+        NzDemoMenuNgForComponent,
+        NzTestNgIfMenuComponent,
+        NzTestSubMenuSelectedComponent,
+        NzTestMenuRtlComponent
+      ]
+    });
 
-      TestBed.compileComponents();
+    TestBed.compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -58,7 +56,7 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuHorizontalComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -94,7 +92,7 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuInlineComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
@@ -615,20 +613,26 @@ export class NzTestMenuInlineComponent {
 @Component({
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li *ngFor="let l1 of menus" nz-submenu>
-        <span title>
-          <span nz-icon nzType="appstore"></span>
-          {{ l1.text }}
-        </span>
-        <ul>
-          <li *ngFor="let l2 of l1.children" nz-submenu>
-            <span title>{{ l2.text }}</span>
-            <ul>
-              <li *ngFor="let l3 of l2.children" nz-menu-item>{{ l3.text }}</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
+      @for (l1 of menus; track l1) {
+        <li nz-submenu>
+          <span title>
+            <span nz-icon nzType="appstore"></span>
+            {{ l1.text }}
+          </span>
+          <ul>
+            @for (l2 of l1.children; track l2) {
+              <li nz-submenu>
+                <span title>{{ l2.text }}</span>
+                <ul>
+                  @for (l3 of l2.children; track l3) {
+                    <li nz-menu-item>{{ l3.text }}</li>
+                  }
+                </ul>
+              </li>
+            }
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
@@ -747,12 +751,14 @@ export class NzTestBasicMenuInlineComponent {}
 @Component({
   template: `
     <ul nz-menu nzMode="horizontal">
-      <li *ngIf="display" nz-submenu>
-        <span title>{{ text }}</span>
-        <ul>
-          <li nz-menu-item>item</li>
-        </ul>
-      </li>
+      @if (display) {
+        <li nz-submenu>
+          <span title>{{ text }}</span>
+          <ul>
+            <li nz-menu-item>item</li>
+          </ul>
+        </li>
+      }
     </ul>
   `
 })

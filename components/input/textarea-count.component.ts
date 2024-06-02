@@ -27,7 +27,8 @@ import { NzInputDirective } from './input.directive';
   host: {
     class: 'ant-input-textarea-show-count'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   @ContentChild(NzInputDirective, { static: true }) nzInputDirective!: NzInputDirective;
@@ -36,9 +37,12 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
   @Input() nzFormatter: (cur: number, max: number) => string = (c, m) => `${c}${m > 0 ? `/${m}` : ``}`;
 
   private configChange$ = new Subject();
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef<HTMLElement>
+  ) {}
 
   ngAfterContentInit(): void {
     if (!this.nzInputDirective && isDevMode()) {
@@ -68,7 +72,7 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.configChange$.complete();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

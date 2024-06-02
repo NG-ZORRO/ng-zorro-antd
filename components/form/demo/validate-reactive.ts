@@ -1,5 +1,14 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 
 @Component({
@@ -11,8 +20,12 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
           <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
           <ng-template #userErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
-            <ng-container *ngIf="control.hasError('duplicated')">The username is redundant!</ng-container>
+            @if (control.errors?.['required']) {
+              Please input your username!
+            }
+            @if (control.errors?.['duplicated']) {
+              The username is redundant!
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -21,8 +34,12 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
           <input nz-input formControlName="email" placeholder="email" type="email" />
           <ng-template #emailErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
-            <ng-container *ngIf="control.hasError('required')">Please input your E-mail!</ng-container>
+            @if (control.errors?.['email']) {
+              The input is not valid E-mail!
+            }
+            @if (control.errors?.['required']) {
+              Please input your E-mail!
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -37,8 +54,12 @@ import { Observable, Observer } from 'rxjs';
         <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
+            @if (control.errors?.['required']) {
+              Please confirm your password!
+            }
+            @if (control.errors?.['confirm']) {
+              Password is inconsistent!
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -72,7 +93,13 @@ import { Observable, Observer } from 'rxjs';
   ]
 })
 export class NzDemoFormValidateReactiveComponent {
-  validateForm: UntypedFormGroup;
+  validateForm: FormGroup<{
+    userName: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    confirm: FormControl<string>;
+    comment: FormControl<string>;
+  }>;
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
@@ -81,20 +108,13 @@ export class NzDemoFormValidateReactiveComponent {
   resetForm(e: MouseEvent): void {
     e.preventDefault();
     this.validateForm.reset();
-    for (const key in this.validateForm.controls) {
-      if (this.validateForm.controls.hasOwnProperty(key)) {
-        this.validateForm.controls[key].markAsPristine();
-        this.validateForm.controls[key].updateValueAndValidity();
-      }
-    }
   }
 
   validateConfirmPassword(): void {
     setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  userNameAsyncValidator = (control: UntypedFormControl) =>
+  userNameAsyncValidator: AsyncValidatorFn = (control: AbstractControl) =>
     new Observable((observer: Observer<ValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
@@ -107,7 +127,7 @@ export class NzDemoFormValidateReactiveComponent {
       }, 1000);
     });
 
-  confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+  confirmValidator: ValidatorFn = (control: AbstractControl) => {
     if (!control.value) {
       return { error: true, required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
@@ -116,7 +136,7 @@ export class NzDemoFormValidateReactiveComponent {
     return {};
   };
 
-  constructor(private fb: UntypedFormBuilder) {
+  constructor(private fb: NonNullableFormBuilder) {
     this.validateForm = this.fb.group({
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],
       email: ['', [Validators.email, Validators.required]],

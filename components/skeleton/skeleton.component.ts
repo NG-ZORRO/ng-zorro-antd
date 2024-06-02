@@ -3,21 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
+import { NzSkeletonElementAvatarComponent, NzSkeletonElementDirective } from './skeleton-element.component';
 import {
   NzSkeletonAvatar,
   NzSkeletonAvatarShape,
@@ -32,6 +32,7 @@ import {
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
   host: {
+    class: 'ant-skeleton',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive',
     '[class.ant-skeleton-round]': '!!nzRound'
@@ -55,7 +56,9 @@ import {
     <ng-container *ngIf="!nzLoading">
       <ng-content></ng-content>
     </ng-container>
-  `
+  `,
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent, NgIf, NgForOf],
+  standalone: true
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
@@ -71,9 +74,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-skeleton');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);

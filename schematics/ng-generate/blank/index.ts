@@ -27,7 +27,6 @@ export default function(options: Schema): Rule {
     const buffer = host.read(appHTMLFile);
 
     if (!buffer) {
-
       context.logger.error(
        `Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`
       );

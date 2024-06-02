@@ -21,24 +21,22 @@ import { NzStepsComponent } from './steps.component';
 import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
-        declarations: [
-          NzTestOuterStepsComponent,
-          NzDemoStepsClickableComponent,
-          NzTestInnerStepStringComponent,
-          NzTestInnerStepTemplateComponent,
-          NzTestStepForComponent,
-          NzTestStepAsyncComponent,
-          NzDemoStepsNavComponent,
-          NzTestOuterStepsRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
+      declarations: [
+        NzTestOuterStepsComponent,
+        NzDemoStepsClickableComponent,
+        NzTestInnerStepStringComponent,
+        NzTestInnerStepTemplateComponent,
+        NzTestStepForComponent,
+        NzTestStepAsyncComponent,
+        NzDemoStepsNavComponent,
+        NzTestOuterStepsRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('outer steps', () => {
     let fixture: ComponentFixture<NzTestOuterStepsComponent>;
     let testComponent: NzTestOuterStepsComponent;

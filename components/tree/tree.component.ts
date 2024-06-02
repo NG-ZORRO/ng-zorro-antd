@@ -4,7 +4,8 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,6 +15,7 @@ import {
   EventEmitter,
   forwardRef,
   Host,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,7 +23,6 @@ import {
   Optional,
   Output,
   SimpleChange,
-  SkipSelf,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -46,13 +47,13 @@ import {
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
+import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeService } from './tree.service';
 
-export function NzTreeServiceFactory(
-  higherOrderService: NzTreeBaseService,
-  treeService: NzTreeService
-): NzTreeBaseService {
-  return higherOrderService ? higherOrderService : treeService;
+export function NzTreeServiceFactory(): NzTreeBaseService {
+  const higherOrderService = inject(NzTreeHigherOrderServiceToken, { skipSelf: true, optional: true });
+  const treeService = inject(NzTreeService);
+  return higherOrderService ?? treeService;
 }
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
@@ -148,8 +149,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NzTreeService,
     {
       provide: NzTreeBaseService,
-      useFactory: NzTreeServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), NzTreeHigherOrderServiceToken], NzTreeService]
+      useFactory: NzTreeServiceFactory
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -168,7 +168,19 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.ant-tree-icon-hide]': `!nzSelectMode && !nzShowIcon`,
     '[class.ant-tree-block-node]': `!nzSelectMode && nzBlockNode`,
     '[class.draggable-tree]': `nzDraggable`
-  }
+  },
+  imports: [
+    NgStyle,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    NgIf,
+    CdkVirtualForOf,
+    NgTemplateOutlet,
+    NzNoAnimationDirective,
+    NgForOf,
+    NzTreeNodeBuiltinComponent
+  ],
+  standalone: true
 })
 export class NzTreeComponent
   extends NzTreeBase
@@ -226,7 +238,7 @@ export class NzTreeComponent
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzCheckedKeysChange: EventEmitter<NzTreeNodeKey[]> = new EventEmitter<NzTreeNodeKey[]>();
   @Output() readonly nzSearchValueChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
@@ -259,7 +271,7 @@ export class NzTreeComponent
     overflow: 'hidden'
   };
 
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
@@ -428,6 +440,8 @@ export class NzTreeComponent
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
         this.nzCheckBoxChange.emit(eventNext);
+        const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
+        this.nzCheckedKeysChange.emit(checkedKeys);
         break;
       case 'dragstart':
         // if node is expanded
@@ -508,7 +522,7 @@ export class NzTreeComponent
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

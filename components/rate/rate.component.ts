@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,6 +33,9 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+import { NzRateItemComponent } from './rate-item.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 
@@ -52,22 +56,23 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 1"
     >
-      <li
-        *ngFor="let star of starArray; let i = index"
-        class="ant-rate-star"
-        [ngClass]="starStyleArray[i] || ''"
-        nz-tooltip
-        [nzTooltipTitle]="nzTooltips[i]"
-      >
-        <div
-          nz-rate-item
-          [allowHalf]="nzAllowHalf"
-          [character]="nzCharacter"
-          [index]="i"
-          (itemHover)="onItemHover(i, $event)"
-          (itemClick)="onItemClick(i, $event)"
-        ></div>
-      </li>
+      @for (star of starArray; track star) {
+        <li
+          class="ant-rate-star"
+          [ngClass]="starStyleArray[$index] || ''"
+          nz-tooltip
+          [nzTooltipTitle]="nzTooltips[$index]"
+        >
+          <div
+            nz-rate-item
+            [allowHalf]="nzAllowHalf"
+            [character]="nzCharacter"
+            [index]="$index"
+            (itemHover)="onItemHover($index, $event)"
+            (itemClick)="onItemClick($index, $event)"
+          ></div>
+        </li>
+      }
     </ul>
   `,
   providers: [
@@ -77,7 +82,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       useExisting: forwardRef(() => NzRateComponent),
       multi: true
     }
-  ]
+  ],
+  imports: [NgClass, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
+  standalone: true
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -94,7 +101,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() nzCharacter!: TemplateRef<void>;
+  @Input() nzCharacter!: TemplateRef<{ $implicit: number }>;
   @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
@@ -123,7 +130,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     }
 
     this._value = input;
-    this.hasHalf = !Number.isInteger(input);
+    this.hasHalf = !Number.isInteger(input) && this.nzAllowHalf;
     this.hoverValue = Math.ceil(input);
   }
 

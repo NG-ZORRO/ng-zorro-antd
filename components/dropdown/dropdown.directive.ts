@@ -20,7 +20,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -44,7 +44,8 @@ const listOfPositions = [
   exportAs: 'nzDropdown',
   host: {
     class: 'ant-dropdown-trigger'
-  }
+  },
+  standalone: true
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -56,7 +57,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private positionStrategy = this.overlay
     .position()
     .flexibleConnectedTo(this.elementRef.nativeElement)
@@ -196,7 +197,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
     if (this.overlayRef) {
       this.overlayRef.dispose();

@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,11 +24,13 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
+import { NzPaginationDefaultComponent } from './pagination-default.component';
+import { NzPaginationSimpleComponent } from './pagination-simple.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
@@ -39,11 +42,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="showPagination">
-      <ng-container *ngIf="nzSimple; else defaultPagination.template">
-        <ng-template [ngTemplateOutlet]="simplePagination.template"></ng-template>
-      </ng-container>
-    </ng-container>
+    @if (showPagination) {
+      @if (nzSimple) {
+        <ng-template [ngTemplateOutlet]="simplePagination.template" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="defaultPagination.template" />
+      }
+    }
+
     <nz-pagination-simple
       #simplePagination
       [disabled]="nzDisabled"
@@ -75,9 +81,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     class: 'ant-pagination',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
-    '[class.mini]': `!nzSimple && size === 'small'`,
+    '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent],
+  standalone: true
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

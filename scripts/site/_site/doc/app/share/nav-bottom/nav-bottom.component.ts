@@ -20,7 +20,6 @@ import { ROUTER_LIST } from '../../router';
   `
 })
 export class NzNavBottomComponent implements OnInit {
-  // tslint:disable-next-line:no-any
   list: any[] = [];
   index = 0;
   language = 'en';
@@ -41,7 +40,6 @@ export class NzNavBottomComponent implements OnInit {
             (pre, cur) => {
               return pre.concat(cur.children);
             },
-            // tslint:disable-next-line:no-any
             [] as any[]
           );
         this.list = [

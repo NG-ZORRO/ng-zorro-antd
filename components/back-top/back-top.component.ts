@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -33,6 +33,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
@@ -42,17 +43,21 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
+  standalone: true,
+  imports: [NgIf, NgTemplateOutlet, NzIconModule],
   template: `
-    <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion *ngIf="visible">
-      <ng-template #defaultContent>
-        <div class="ant-back-top-content">
-          <div class="ant-back-top-icon">
-            <span nz-icon nzType="vertical-align-top"></span>
+    @if (visible) {
+      <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
+        <ng-template #defaultContent>
+          <div class="ant-back-top-content">
+            <div class="ant-back-top-icon">
+              <span nz-icon nzType="vertical-align-top"></span>
+            </div>
           </div>
-        </div>
-      </ng-template>
-      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
-    </div>
+        </ng-template>
+        <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -64,7 +69,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_nzVisibilityHeight: NumberInput;
   static ngAcceptInputType_nzDuration: NumberInput;
 
-  private scrollListenerDestroy$ = new Subject();
+  private scrollListenerDestroy$ = new Subject<boolean>();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
@@ -101,7 +106,6 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private platform: Platform,
-    private cd: ChangeDetectorRef,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService,
@@ -130,14 +134,14 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.visible = !this.visible;
-    this.cd.detectChanges();
+    this.cdr.detectChanges();
   }
 
   private registerScrollEvent(): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.scrollListenerDestroy$.next();
+    this.scrollListenerDestroy$.next(true);
     this.handleScroll();
     this.zone.runOutsideAngular(() => {
       fromEvent(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
@@ -147,7 +151,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.scrollListenerDestroy$.next();
+    this.scrollListenerDestroy$.next(true);
     this.scrollListenerDestroy$.complete();
   }
 

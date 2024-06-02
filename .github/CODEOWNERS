@@ -67,6 +67,12 @@ components/transfer/**                    @Ricbet
 components/i18n/**                        @wenqi73
 components/pipes/**                       @chensimeng
 components/image/**                       @stygian-desolator
+components/qr-code/**                     @OriginRing
+components/cron-expression/**             @OriginRing
+components/water-mark/**                  @OriginRing
+components/color-picker/**                @OriginRing
+components/hash-code/**                   @OriginRing
+components/flex/**                        @ParsaArvanehPA
 
 # The `components/core/*` owners
 components/core/config/**                 @hullis

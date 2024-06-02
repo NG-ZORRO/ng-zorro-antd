@@ -1,7 +1,7 @@
-<section class="markdown">
+<section>
   <h1>{{ language === 'en' ? 'Components Overview' : '组件总览' }}</h1>
 
-  <section class="markdown">
+  <section>
     <p *ngIf="language === 'en'">
       <span><code>ng-zorro-antd</code></span>
       is an Angular UI lib, follow Ant Design specification, to provide high quantity UI components
@@ -14,55 +14,60 @@
     </p>
   </section>
 
-  <nz-divider></nz-divider>
-  <nz-input-group [nzSuffix]="suffixIconSearch" class="components-overview-search">
-    <input
-      type="text"
-      #searchBox
-      nz-input
-      placeholder="{{ language === 'en' ? 'Search in components' : '搜索组件' }}"
-      nzSize="large"
-      (input)="onSearch(searchBox.value)"
-    />
-  </nz-input-group>
-  <ng-template #suffixIconSearch>
-    <span nz-icon nzType="search"></span>
-  </ng-template>
-  <nz-divider></nz-divider>
+  <section #componentsList>
+    <nz-divider></nz-divider>
 
-  <ng-container *ngFor="let group of routerList.components">
-    <ng-container *ngIf="group.language === language && group.children.length > 0">
-      <div class="components-overview">
-        <h3 nz-typography class="components-overview-group-title">
-          {{ group.name }}
-          <nz-tag>{{ group.children.length }}</nz-tag>
-        </h3>
+    <nz-affix [nzOffsetTop]="10" (nzChange)="onSearchAffixed($event)">
+      <nz-input-group [nzSuffix]="suffixIconSearch" class="components-overview-search">
+        <input
+          type="text"
+          #searchBox
+          nz-input
+          placeholder="{{ language === 'en' ? 'Search in components' : '搜索组件' }}"
+          nzSize="large"
+          (input)="onSearch(searchBox.value)"
+          />
+      </nz-input-group>
+    </nz-affix>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <nz-divider></nz-divider>
 
-        <div nz-row>
-          <div
-            nz-col
-            nzXs="24"
-            nzSm="12"
-            nzMd="12"
-            nzLg="8"
-            nzXl="6"
-            nzXXl="6"
-            *ngFor="let component of group.children"
-            class="components-overview-card"
-          >
-            <a routerLink="/{{ component.path }}">
-              <nz-card
-                nzHoverable
-                nzTitle="{{ component.label }} {{ language === 'zh' ? component.zh : '' }}"
-              >
-                <div class="components-overview-img">
-                  <img [alt]="component.label" [src]="component.cover" />
-                </div>
-              </nz-card>
-            </a>
+    <ng-container *ngFor="let group of routerList.components">
+      <ng-container *ngIf="group.language === language && group.children.length > 0">
+        <div class="components-overview">
+          <h3 nz-typography class="components-overview-group-title">
+            {{ group.name }}
+            <nz-tag>{{ group.children.length }}</nz-tag>
+          </h3>
+
+          <div nz-row>
+            <div
+              nz-col
+              nzXs="24"
+              nzSm="12"
+              nzMd="12"
+              nzLg="8"
+              nzXl="6"
+              nzXXl="6"
+              *ngFor="let component of group.children"
+              class="components-overview-card"
+            >
+              <a routerLink="/{{ component.path }}">
+                <nz-card
+                  nzHoverable
+                  nzTitle="{{ component.label }} {{ language === 'zh' ? component.zh : '' }}"
+                >
+                  <div class="components-overview-img">
+                    <img [alt]="component.label" [src]="component.cover" />
+                  </div>
+                </nz-card>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
-  </ng-container>
+  </section>
 </section>

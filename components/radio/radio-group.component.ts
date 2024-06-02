@@ -8,14 +8,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -49,13 +49,14 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
     '[class.ant-radio-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
   private value: NzSafeAny | null = null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -102,7 +103,7 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

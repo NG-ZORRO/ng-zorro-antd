@@ -3,17 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkTreeNodeToggle } from '@angular/cdk/tree';
-import { Directive, Input } from '@angular/core';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { booleanAttribute, Directive, Input } from '@angular/core';
 
 @Directive({
   selector: 'nz-tree-node-toggle[nzTreeNodeNoopToggle], [nzTreeNodeNoopToggle]',
   host: {
     class: 'ant-tree-switcher ant-tree-switcher-noop'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeNoopToggleDirective {}
 
@@ -24,18 +22,11 @@ export class NzTreeNodeNoopToggleDirective {}
     class: 'ant-tree-switcher',
     '[class.ant-tree-switcher_open]': 'isExpanded',
     '[class.ant-tree-switcher_close]': '!isExpanded'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
-  static ngAcceptInputType_recursive: BooleanInput;
-
-  @Input('nzTreeNodeToggleRecursive')
-  override get recursive(): boolean {
-    return this._recursive;
-  }
-  override set recursive(value: boolean) {
-    this._recursive = coerceBooleanProperty(value);
-  }
+  @Input({ alias: 'nzTreeNodeToggleRecursive', transform: booleanAttribute }) override recursive = false;
 
   get isExpanded(): boolean {
     return this._treeNode.isExpanded;
@@ -46,7 +37,8 @@ export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
   selector: '[nz-icon][nzTreeNodeToggleRotateIcon]',
   host: {
     class: 'ant-tree-switcher-icon'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleRotateIconDirective {}
 
@@ -54,6 +46,7 @@ export class NzTreeNodeToggleRotateIconDirective {}
   selector: '[nz-icon][nzTreeNodeToggleActiveIcon]',
   host: {
     class: 'ant-tree-switcher-loading-icon'
-  }
+  },
+  standalone: true
 })
 export class NzTreeNodeToggleActiveIconDirective {}

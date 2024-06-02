@@ -19,7 +19,7 @@ import {
   OnDestroy,
   Renderer2
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -55,7 +55,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   private focusTrap!: FocusTrap;
   private mouseDown = false;
   private oldMaskStyle: { [key: string]: string } | null = null;
-  protected destroy$ = new Subject();
+  protected destroy$ = new Subject<boolean>();
 
   get showMask(): boolean {
     const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
@@ -323,7 +323,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
 
   ngOnDestroy(): void {
     this.setMaskExitAnimationClass(true);
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

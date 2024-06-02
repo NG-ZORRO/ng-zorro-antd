@@ -54,12 +54,17 @@ export abstract class NzMNService {
     });
     const componentPortal = new ComponentPortal(ctor, null, this.injector);
     const componentRef = overlayRef.attach(componentPortal);
-    const overlayPane = overlayRef.overlayElement;
-    overlayPane.style.zIndex = '1010';
+    const overlayWrapper = overlayRef.hostElement;
+    overlayWrapper.style.zIndex = '1010';
 
     if (!containerInstance) {
       this.container = containerInstance = componentRef.instance;
       this.nzSingletonService.registerSingletonWithKey(this.componentPrefix, containerInstance);
+      this.container.afterAllInstancesRemoved.subscribe(() => {
+        this.container = undefined;
+        this.nzSingletonService.unregisterSingletonWithKey(this.componentPrefix);
+        overlayRef.dispose();
+      });
     }
 
     return containerInstance as T;
@@ -71,9 +76,16 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   config?: Required<MessageConfig>;
   instances: Array<Required<NzMessageData>> = [];
 
+  private readonly _afterAllInstancesRemoved = new Subject<void>();
+
+  readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
+
   protected readonly destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    protected nzConfigService: NzConfigService
+  ) {
     this.updateConfig();
   }
 
@@ -101,16 +113,19 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   }
 
   remove(id: string, userAction: boolean = false): void {
-    this.instances.some((instance, index) => {
-      if (instance.messageId === id) {
+    this.instances
+      .map((instance, index) => ({ index, instance }))
+      .filter(({ instance }) => instance.messageId === id)
+      .forEach(({ index, instance }) => {
         this.instances.splice(index, 1);
         this.instances = [...this.instances];
         this.onRemove(instance, userAction);
         this.readyInstances();
-        return true;
-      }
-      return false;
-    });
+      });
+
+    if (!this.instances.length) {
+      this.onAllInstancesRemoved();
+    }
   }
 
   removeAll(): void {
@@ -118,6 +133,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.instances = [];
 
     this.readyInstances();
+    this.onAllInstancesRemoved();
   }
 
   protected onCreate(instance: NzMessageData): Required<NzMessageData> {
@@ -129,6 +145,11 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   protected onRemove(instance: Required<NzMessageData>, userAction: boolean): void {
     instance.onClose.next(userAction);
     instance.onClose.complete();
+  }
+
+  private onAllInstancesRemoved(): void {
+    this._afterAllInstancesRemoved.next();
+    this._afterAllInstancesRemoved.complete();
   }
 
   protected readyInstances(): void {
@@ -155,9 +176,9 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
-  protected closeTimer?: number;
+  protected closeTimer?: ReturnType<typeof setTimeout>;
   protected userAction: boolean = false;
-  protected eraseTimer: number | null = null;
+  protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
@@ -245,7 +266,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   private clearEraseTimeout(): void {
     if (this.eraseTimer !== null) {
       clearTimeout(this.eraseTimer);
-      this.eraseTimer = null;
+      this.eraseTimer = undefined;
     }
   }
 }

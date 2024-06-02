@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -18,21 +18,19 @@ declare const viewport: NzSafeAny;
 describe('pagination', () => {
   let injector: Injector;
 
-  beforeEach(
-    waitForAsync(() => {
-      injector = TestBed.configureTestingModule({
-        imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
-        declarations: [
-          NzTestPaginationComponent,
-          NzTestPaginationRenderComponent,
-          NzTestPaginationTotalComponent,
-          NzTestPaginationAutoResizeComponent,
-          NzTestPaginationRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    injector = TestBed.configureTestingModule({
+      imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
+      declarations: [
+        NzTestPaginationComponent,
+        NzTestPaginationRenderComponent,
+        NzTestPaginationTotalComponent,
+        NzTestPaginationAutoResizeComponent,
+        NzTestPaginationRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('pagination complex', () => {
     let fixture: ComponentFixture<NzTestPaginationComponent>;
@@ -66,7 +64,7 @@ describe('pagination', () => {
       it('should small size className correct', () => {
         testComponent.size = 'small';
         fixture.detectChanges();
-        expect(paginationRootElement.classList.contains('mini')).toBe(true);
+        expect(paginationRootElement.classList.contains('ant-pagination-mini')).toBe(true);
       });
 
       it('should pageIndex change work', () => {
@@ -177,19 +175,16 @@ describe('pagination', () => {
         expect(paginationElement.children.length).toBe(9);
       });
 
-      it(
-        'should showSizeChanger work',
-        waitForAsync(() => {
-          testComponent.total = 500;
-          testComponent.pageIndex = 50;
-          testComponent.showSizeChanger = true;
-          fixture.detectChanges();
-          fixture.whenStable().then(() => {
-            expect(paginationElement.children.length).toBe(10);
-            expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
-          });
-        })
-      );
+      it('should showSizeChanger work', waitForAsync(() => {
+        testComponent.total = 500;
+        testComponent.pageIndex = 50;
+        testComponent.showSizeChanger = true;
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          expect(paginationElement.children.length).toBe(10);
+          expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
+        });
+      }));
 
       it('should change pageSize correct', () => {
         testComponent.pageIndex = 5;
@@ -359,7 +354,7 @@ describe('pagination', () => {
     viewport.set(1200, 350);
     fixture.detectChanges();
     let paginationElement = pagination.nativeElement;
-    expect(paginationElement.classList).not.toContain('mini');
+    expect(paginationElement.classList).not.toContain('ant-pagination-mini');
 
     viewport.set(350, 350);
     window.dispatchEvent(new Event('resize'));
@@ -367,7 +362,7 @@ describe('pagination', () => {
     tick(1000);
     fixture.detectChanges();
     paginationElement = pagination.nativeElement;
-    expect(paginationElement.classList).toContain('mini');
+    expect(paginationElement.classList).toContain('ant-pagination-mini');
     viewport.reset();
   }));
 
@@ -462,9 +457,17 @@ export class NzTestPaginationComponent {
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <a *ngIf="type === 'prev'">Previous</a>
-      <a *ngIf="type === 'next'">Next</a>
-      <a *ngIf="type === 'page'">{{ page * 2 }}</a>
+      @switch (type) {
+        @case ('prev') {
+          <a>Previous</a>
+        }
+        @case ('next') {
+          <a>Next</a>
+        }
+        @case ('page') {
+          <a>{{ page * 2 }}</a>
+        }
+      }
     </ng-template>
   `
 })

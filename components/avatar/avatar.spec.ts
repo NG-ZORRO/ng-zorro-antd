@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -136,6 +136,7 @@ describe('avatar', () => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
+      context.comp.ngAfterViewInit();
       const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBeLessThan(1);
     }));
@@ -149,6 +150,7 @@ describe('avatar', () => {
         fixture.detectChanges();
         tick();
         avatarText = dl.nativeElement.querySelector('.ant-avatar-string')!;
+        context.comp.ngAfterViewInit();
         firstScale = getScaleFromCSSTransform(avatarText.style.transform);
       }));
 
@@ -224,6 +226,21 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
     });
+
+    it('should set `lineHeight` on the text element considering `nzSize`', fakeAsync(() => {
+      const size = 64;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      context.nzSize = size;
+      context.nzText = 'LongUsername';
+      fixture.detectChanges();
+      flush();
+      const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      context.comp.ngAfterViewInit();
+      const scale = getScaleFromCSSTransform(textEl.style.transform);
+      expect(scale).toBeLessThan(1);
+      expect(textEl.style.lineHeight).toEqual(`${size}px`);
+    }));
   });
 
   describe('order: image > icon > text', () => {
@@ -280,7 +297,10 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzAlt]="nzAlt"
     ></nz-avatar>
   `,
-  styleUrls: ['./style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import './style/index.less';
+  `
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;

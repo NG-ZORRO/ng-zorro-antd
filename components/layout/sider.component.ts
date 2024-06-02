@@ -28,6 +28,8 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 
+import { NzSiderTriggerComponent } from './sider-trigger.component';
+
 @Component({
   selector: 'nz-sider',
   exportAs: 'nzSider',
@@ -38,19 +40,20 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     <div class="ant-layout-sider-children">
       <ng-content></ng-content>
     </div>
-    <div
-      *ngIf="nzCollapsible && nzTrigger !== null"
-      nz-sider-trigger
-      [matchBreakPoint]="matchBreakPoint"
-      [nzCollapsedWidth]="nzCollapsedWidth"
-      [nzCollapsed]="nzCollapsed"
-      [nzBreakpoint]="nzBreakpoint"
-      [nzReverseArrow]="nzReverseArrow"
-      [nzTrigger]="nzTrigger"
-      [nzZeroTrigger]="nzZeroTrigger"
-      [siderWidth]="widthSetting"
-      (click)="setCollapsed(!nzCollapsed)"
-    ></div>
+    @if (nzCollapsible && nzTrigger !== null) {
+      <div
+        nz-sider-trigger
+        [matchBreakPoint]="matchBreakPoint"
+        [nzCollapsedWidth]="nzCollapsedWidth"
+        [nzCollapsed]="nzCollapsed"
+        [nzBreakpoint]="nzBreakpoint"
+        [nzReverseArrow]="nzReverseArrow"
+        [nzTrigger]="nzTrigger"
+        [nzZeroTrigger]="nzZeroTrigger"
+        [siderWidth]="widthSetting"
+        (click)="setCollapsed(!nzCollapsed)"
+      ></div>
+    }
   `,
   host: {
     class: 'ant-layout-sider',
@@ -63,14 +66,16 @@ import { NzMenuDirective } from 'ng-zorro-antd/menu';
     '[style.maxWidth]': 'widthSetting',
     '[style.minWidth]': 'widthSetting',
     '[style.width]': 'widthSetting'
-  }
+  },
+  imports: [NzSiderTriggerComponent],
+  standalone: true
 })
 export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   static ngAcceptInputType_nzReverseArrow: BooleanInput;
   static ngAcceptInputType_nzCollapsible: BooleanInput;
   static ngAcceptInputType_nzCollapsed: BooleanInput;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
   @Input() nzWidth: string | number = 200;
@@ -149,7 +154,7 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -19,12 +20,14 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Observable } from 'rxjs';
+import { Observable, fromEvent, merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
-import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
-import { TransferDirection, TransferItem } from './interface';
+import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
+import { NzTransferSearchComponent } from './transfer-search.component';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -120,7 +123,9 @@ import { TransferDirection, TransferItem } from './interface';
   host: {
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
-  }
+  },
+  imports: [NgIf, NgForOf, NgClass, NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent],
+  standalone: true
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields
@@ -140,9 +145,9 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<void> | null = null;
-  @Input() render: TemplateRef<void> | null = null;
-  @Input() footer: TemplateRef<void> | null = null;
+  @Input() renderList: TemplateRef<RenderListContext> | null = null;
+  @Input() render: TemplateRef<{ $implicit: TransferItem }> | null = null;
+  @Input() footer: TemplateRef<{ $implicit: TransferDirection }> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -153,7 +158,7 @@ export class NzTransferListComponent implements AfterViewInit {
 
   @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
 
-  stat = {
+  stat: TransferStat = {
     checkAll: false,
     checkHalf: false,
     checkCount: 0,
@@ -237,7 +242,10 @@ export class NzTransferListComponent implements AfterViewInit {
 
   // #endregion
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

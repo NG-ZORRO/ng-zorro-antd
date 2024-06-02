@@ -1,30 +1,29 @@
 import { ApplicationRef, Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
 
-import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
 describe('time-picker-panel', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzI18nModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzTimePickerPanelComponent,
-          NzTestTimePanelComponent,
-          NzTestTimePanelDisabledComponent,
-          NzTest12HourTimePanelComponent,
-          NzTest12HourTimePanelDisabledComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        NzI18nModule,
+        NzTimePickerPanelComponent,
+        NzTestTimePanelComponent,
+        NzTestTimePanelDisabledComponent,
+        NzTest12HourTimePanelComponent,
+        NzTest12HourTimePanelDisabledComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelComponent>;
@@ -343,6 +342,15 @@ describe('time-picker-panel', () => {
       expect(listHourLi[6].classList).toContain('ant-picker-time-panel-cell-disabled');
       expect(listHourLi[7].classList).toContain('ant-picker-time-panel-cell-disabled');
       expect(listHourLi[8].classList).toContain('ant-picker-time-panel-cell-disabled');
+
+      fixture12Hour.detectChanges();
+      tick(500);
+      flush();
+      listHourLi = panelElement.nativeElement
+        .querySelectorAll('.ant-picker-time-panel-column')[3]
+        .querySelectorAll('li');
+
+      expect(listHourLi.length).not.toBe(0);
     }));
   });
 });
@@ -359,7 +367,13 @@ describe('time-picker-panel', () => {
       [nzHourStep]="hourStep"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import '../style/index.less';
+    @import './style/index.less';
+  `,
+  imports: [NzTimePickerPanelComponent, FormsModule],
+  standalone: true
 })
 export class NzTestTimePanelComponent {
   secondStep = 1;
@@ -388,7 +402,13 @@ export class NzTestTimePanelComponent {
       [nzHourStep]="hourStep"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import '../style/index.less';
+    @import './style/index.less';
+  `,
+  imports: [NzTimePickerPanelComponent, FormsModule],
+  standalone: true
 })
 export class NzTestTimePanelDisabledComponent {
   inDatePicker = false;
@@ -432,7 +452,13 @@ export class NzTestTimePanelDisabledComponent {
       [format]="format"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import '../style/index.less';
+    @import './style/index.less';
+  `,
+  imports: [NzTimePickerPanelComponent, FormsModule],
+  standalone: true
 })
 export class NzTest12HourTimePanelComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
@@ -451,9 +477,16 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledHours]="disabledHours"
       [nzDisabledMinutes]="disabledMinutes"
       [nzDisabledSeconds]="disabledSeconds"
+      [nzHideDisabledOptions]="false"
     ></nz-time-picker-panel>
   `,
-  styleUrls: ['../style/index.less', './style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import '../style/index.less';
+    @import './style/index.less';
+  `,
+  imports: [NzTimePickerPanelComponent, FormsModule],
+  standalone: true
 })
 export class NzTest12HourTimePanelDisabledComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;

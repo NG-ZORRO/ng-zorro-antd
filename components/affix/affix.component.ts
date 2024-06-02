@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform } from '@angular/cdk/platform';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -45,6 +45,8 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
+  standalone: true,
+  imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>
       <ng-content></ng-content>
@@ -81,9 +83,9 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
-  private offsetChanged$ = new ReplaySubject(1);
-  private destroy$ = new Subject<void>();
-  private timeout?: number;
+  private offsetChanged$ = new ReplaySubject<void>(1);
+  private destroy$ = new Subject<boolean>();
+  private timeout?: ReturnType<typeof setTimeout>;
   private document: Document;
 
   private get target(): Element | Window {
@@ -160,7 +162,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

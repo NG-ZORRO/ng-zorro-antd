@@ -7,30 +7,37 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   template: `
     <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Default Size</h3>
     <nz-list nzBordered nzHeader="Header" nzFooter="Footer">
-      <nz-list-item *ngFor="let item of data">
-        <span nz-typography><mark>[ITEM]</mark></span>
-        {{ item }}
-      </nz-list-item>
+      @for (item of data; track item) {
+        <nz-list-item>
+          <span nz-typography><mark>[ITEM]</mark></span>
+          {{ item }}
+        </nz-list-item>
+      }
     </nz-list>
 
     <h3 [ngStyle]="{ margin: '16px 0' }">Small Size</h3>
     <nz-list nzBordered nzSize="small">
       <nz-list-header>Header</nz-list-header>
-      <nz-list-item *ngFor="let item of data">item</nz-list-item>
+      @for (item of data; track item) {
+        <nz-list-item>{{ item }}</nz-list-item>
+      }
+
       <nz-list-footer>Footer</nz-list-footer>
     </nz-list>
 
     <h3 [ngStyle]="{ margin: '16px 0' }">Large Size</h3>
     <ul nz-list [nzDataSource]="data" nzBordered nzSize="large">
       <nz-list-header>Header</nz-list-header>
-      <li nz-list-item *ngFor="let item of data" nzNoFlex>
-        <ul nz-list-item-actions>
-          <nz-list-item-action>
-            <a (click)="msg.info('edit')">edit</a>
-          </nz-list-item-action>
-        </ul>
-        {{ item }}
-      </li>
+      @for (item of data; track item) {
+        <li nz-list-item nzNoFlex>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <a (click)="msg.info('edit')">edit</a>
+            </nz-list-item-action>
+          </ul>
+          {{ item }}
+        </li>
+      }
       <nz-list-footer>Footer</nz-list-footer>
     </ul>
   `

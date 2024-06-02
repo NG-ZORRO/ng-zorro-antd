@@ -4,6 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
+import { NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
@@ -24,7 +25,9 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `
+  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `,
+  imports: [NgStyle],
+  standalone: true
 })
 export class NzSliderTrackComponent implements OnChanges {
   static ngAcceptInputType_offset: NumberInput;

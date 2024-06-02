@@ -1,6 +1,15 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -13,7 +22,10 @@ import { OnlineIdeService } from '../../online-ide/online-ide.service';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './codebox.component.html',
-  styleUrls: ['./codebox.component.less']
+  styleUrls: ['./codebox.component.less'],
+  host: {
+    ngSkipHydration: ''
+  }
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
   highlightCode?: string;
@@ -24,7 +36,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   iframe?: SafeUrl;
   language = 'zh';
   theme = 'default';
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   codeLoaded = false;
   onlineIDELoading = false;
   copyLoading = false;
@@ -130,7 +142,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  // tslint:disable-next-line:no-any
   constructor(
     @Inject(DOCUMENT) private dom: any,
     private sanitizer: DomSanitizer,
@@ -138,7 +149,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private platform: Platform,
     private onlineIdeService: OnlineIdeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
@@ -165,7 +176,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

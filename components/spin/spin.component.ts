@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -58,7 +59,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   `,
   host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet],
+  standalone: true
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

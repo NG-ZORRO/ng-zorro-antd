@@ -6,7 +6,7 @@ import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponent
 
 import { NzFormSplitComponent } from './form-split.component';
 
-const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormSplitComponent] };
+const testBedOptions = { imports: [NoopAnimationsModule, NzFormSplitComponent] };
 
 describe('nz-form-split', () => {
   describe('default', () => {

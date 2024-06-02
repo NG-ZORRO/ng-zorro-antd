@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectionStrategy,
@@ -37,12 +38,15 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraph } from './graph';
+import { NzGraphDefsComponent } from './graph-defs.component';
+import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
 import { NzGraphZoomDirective } from './graph-zoom.directive';
 import {
+  NZ_GRAPH_LAYOUT_SETTING,
   NzGraphDataDef,
   NzGraphEdge,
   NzGraphEdgeDef,
@@ -53,8 +57,7 @@ import {
   NzGraphOption,
   NzLayoutSetting,
   NzRankDirection,
-  nzTypeDefinition,
-  NZ_GRAPH_LAYOUT_SETTING
+  nzTypeDefinition
 } from './interface';
 
 /** Checks whether an object is a data source. */
@@ -87,7 +90,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            <ng-container *ngFor="let edge of $asNzGraphEdges(renderNode.edges); trackBy: edgeTrackByFun">
+            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun) {
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -95,31 +98,26 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                 [edgeType]="nzGraphLayoutConfig?.defaultEdge?.type"
                 [customTemplate]="customGraphEdgeTemplate"
               ></g>
-            </ng-container>
+            }
           </svg:g>
 
           <svg:g class="nz-graph-nodes">
-            <ng-container *ngFor="let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun">
-              <g
-                *ngIf="node.type === 1"
-                class="nz-graph-node"
-                nz-graph-node
-                [node]="node"
-                [customTemplate]="nodeTemplate"
-              ></g>
-              <g
-                *ngIf="node.type === 0"
-                class="nz-graph-node"
-                nz-graph-node
-                [node]="node"
-                [customTemplate]="groupNodeTemplate"
-              ></g>
-              <ng-container
-                *ngIf="node.expanded"
-                [ngTemplateOutlet]="groupTemplate"
-                [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
-              ></ng-container>
-            </ng-container>
+            @for (node of typedNodes(renderNode.nodes); track node.name) {
+              @if (node.type === 1) {
+                <g class="nz-graph-node" nz-graph-node [node]="node" [customTemplate]="nodeTemplate"></g>
+              }
+
+              @if (node.type === 0) {
+                <g class="nz-graph-node" nz-graph-node [node]="node" [customTemplate]="groupNodeTemplate"></g>
+              }
+
+              @if (node.expanded) {
+                <ng-container
+                  [ngTemplateOutlet]="groupTemplate"
+                  [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
+                />
+              }
+            }
           </svg:g>
         </svg:g>
       </svg:g>
@@ -128,7 +126,9 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   host: {
     '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
-  }
+  },
+  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent],
+  standalone: true
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
   static ngAcceptInputType_nzAutoSize: BooleanInput;
@@ -173,7 +173,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private _dataSubscription?: Subscription | null;
   private destroy$ = new Subject<void>();
 
-  nodeTrackByFun = (_: number, node: NzGraphNode | NzGraphGroupNode): string => node.name;
   edgeTrackByFun = (_: number, edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
   subGraphTransform = (node: NzGraphGroupNode): string => {
@@ -441,8 +440,8 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    *
    * @private
    */
-  private makeNodesAnimation(): Observable<void> {
-    return forkJoin(...this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
+  private makeNodesAnimation(): Observable<void[]> {
+    return forkJoin(this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
       finalize(() => {
         this.cdr.detectChanges();
       })

@@ -16,7 +16,8 @@ import { NzTableStyleService } from '../table-style.service';
     'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
   host: {
     '[class.ant-table-row]': 'isInsideTable'
-  }
+  },
+  standalone: true
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
   @ContentChildren(NzThMeasureDirective) listOfNzThDirective!: QueryList<NzThMeasureDirective>;

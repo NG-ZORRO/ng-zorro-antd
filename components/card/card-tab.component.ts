@@ -14,7 +14,8 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsu
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
-  `
+  `,
+  standalone: true
 })
 export class NzCardTabComponent {
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<void>;

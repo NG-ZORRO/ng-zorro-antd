@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -17,15 +18,18 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   exportAs: 'nzSliderStep',
   preserveWhitespaces: false,
   template: `
-    <div class="ant-slider-step">
-      <span
-        class="ant-slider-dot"
-        *ngFor="let mark of steps; trackBy: trackById"
-        [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style!"
-      ></span>
-    </div>
-  `
+    <span
+      class="ant-slider-dot"
+      *ngFor="let mark of steps; trackBy: trackById"
+      [class.ant-slider-dot-active]="mark.active"
+      [ngStyle]="mark.style!"
+    ></span>
+  `,
+  imports: [NgStyle, NgForOf],
+  standalone: true,
+  host: {
+    class: 'ant-slider-step'
+  }
 })
 export class NzSliderStepComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;
@@ -75,7 +79,8 @@ export class NzSliderStepComponent implements OnChanges {
         config,
         active: false,
         style: {
-          [orient]: `${offset}%`
+          [orient]: `${offset}%`,
+          transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
         }
       };
     });

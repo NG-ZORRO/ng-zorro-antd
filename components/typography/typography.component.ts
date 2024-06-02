@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -118,7 +118,9 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     '[class.ant-typography-ellipsis-single-line]': 'canCssEllipsis && nzEllipsisRows === 1',
     '[class.ant-typography-ellipsis-multiple-line]': 'canCssEllipsis && nzEllipsisRows > 1',
     '[style.-webkit-line-clamp]': '(canCssEllipsis && nzEllipsisRows > 1) ? nzEllipsisRows : null'
-  }
+  },
+  imports: [NgIf, NgTemplateOutlet, NzTextEditComponent, NzTextCopyComponent],
+  standalone: true
 })
 export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -181,7 +183,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   private viewInit = false;
   private rfaId: number = -1;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private windowResizeSubscription = Subscription.EMPTY;
   get copyText(): string {
     return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)!;
@@ -365,7 +367,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
     this.expandableBtnElementCache = null;
     this.windowResizeSubscription.unsubscribe();

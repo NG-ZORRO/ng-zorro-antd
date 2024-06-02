@@ -6,7 +6,7 @@ import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponent
 
 import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
 
-const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormLabelComponent] };
+const testBedOptions = { imports: [NoopAnimationsModule, NzFormLabelComponent] };
 
 describe('nz-form-label', () => {
   describe('default', () => {
@@ -59,6 +59,24 @@ describe('nz-form-label', () => {
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
       expect(label.nativeElement.querySelector('.anticon-info-circle')).toBeDefined();
     });
+    it('should label align work', () => {
+      expect(label.nativeElement.classList).not.toContain('ant-form-item-label-left');
+
+      testComponent.align = 'left';
+
+      testBed.fixture.detectChanges();
+
+      expect(label.nativeElement.classList).toContain('ant-form-item-label-left');
+    });
+
+    it('should label wrap work', () => {
+      expect(label.nativeElement.classList).not.toContain('ant-form-item-label-wrap');
+
+      testComponent.labelWrap = true;
+      testBed.fixture.detectChanges();
+
+      expect(label.nativeElement.classList).toContain('ant-form-item-label-wrap');
+    });
   });
 });
 
@@ -70,6 +88,8 @@ describe('nz-form-label', () => {
       [nzRequired]="required"
       [nzTooltipTitle]="tooltipTitle"
       [nzTooltipIcon]="tooltipIcon"
+      [nzLabelAlign]="align"
+      [nzLabelWrap]="labelWrap"
     ></nz-form-label>
   `
 })
@@ -79,4 +99,6 @@ export class NzTestFormLabelComponent {
   noColon = false;
   tooltipTitle?: string;
   tooltipIcon?: string | NzFormTooltipIcon;
+  align = 'right';
+  labelWrap = false;
 }

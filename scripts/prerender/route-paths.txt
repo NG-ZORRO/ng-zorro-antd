@@ -47,6 +47,8 @@
 /components/empty/zh
 /components/form/en
 /components/form/zh
+/components/flex/en
+/components/flex/zh
 /components/grid/en
 /components/grid/zh
 /components/icon/en
@@ -59,8 +61,6 @@
 /components/input-number/zh
 /components/layout/en
 /components/layout/zh
-/components/list/en
-/components/list/zh
 /components/mention/en
 /components/mention/zh
 /components/menu/en
@@ -89,8 +89,6 @@
 /components/result/zh
 /components/segmented/en
 /components/segmented/zh
-/components/select/en
-/components/select/zh
 /components/skeleton/en
 /components/skeleton/zh
 /components/slider/en
@@ -105,8 +103,6 @@
 /components/steps/zh
 /components/switch/en
 /components/switch/zh
-/components/table/en
-/components/table/zh
 /components/tabs/en
 /components/tabs/zh
 /components/tag/en
@@ -129,6 +125,14 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
+/components/qr-code/en
+/components/qr-code/zh
+/components/water-mark/en
+/components/water-mark/zh
+/components/color-picker/en
+/components/color-picker/zh
+/components/hash-code/en
+/components/hash-code/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -153,8 +157,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v15/en
-/docs/migration-v15/zh
+/docs/migration-v17/en
+/docs/migration-v17/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en
@@ -171,3 +175,5 @@
 /experimental/pipes/zh
 /experimental/resizable/zh
 /experimental/resizable/en
+/experimental/cron-expression/zh
+/experimental/cron-expression/en

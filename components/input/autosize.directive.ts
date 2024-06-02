@@ -23,7 +23,8 @@ export interface AutoSizeType {
     // Browsers normally show two rows by default and therefore this limits the minRows binding.
     rows: '1',
     '(input)': 'noopInputHandler()'
-  }
+  },
+  standalone: true
 })
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private autosize: boolean = false;
@@ -35,7 +36,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private maxRows: number | undefined;
   private maxHeight: number | null = null;
   private minHeight: number | null = null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private inputGap = 10;
 
   @Input()
@@ -193,7 +194,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

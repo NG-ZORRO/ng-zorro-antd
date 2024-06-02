@@ -2,10 +2,10 @@ import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormControl,
+  FormBuilder,
+  FormControl,
   FormControlName,
-  UntypedFormGroup,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   ValidatorFn,
@@ -57,7 +57,11 @@ describe('nz-form-control', () => {
   });
   describe('reactive status', () => {
     let testBed: ComponentBed<NzTestReactiveFormControlComponent>;
-    let formGroup: UntypedFormGroup;
+    let formGroup: FormGroup<{
+      input: FormControl<string | null>;
+      input2: FormControl<string | null>;
+      input3: FormControl<string | null>;
+    }>;
     let formItems: DebugElement[];
     let formControls: DebugElement[];
     beforeEach(() => {
@@ -155,7 +159,13 @@ describe('nz-form-control', () => {
   describe('auto tips', () => {
     let testBed: ComponentBed<NzTestReactiveFormAutoTipsComponent>;
     let testComponent: NzTestReactiveFormAutoTipsComponent;
-    let formGroup: UntypedFormGroup;
+    let formGroup: FormGroup<{
+      userName: FormControl<string | null>;
+      mobile: FormControl<string | null>;
+      email: FormControl<string | null>;
+      password: FormControl<string | null>;
+      confirmPassword: FormControl<string | null>;
+    }>;
     let formControls: DebugElement[];
 
     beforeEach(() => {
@@ -385,16 +395,15 @@ export class NzTestStaticFormControlComponent {
   `
 })
 export class NzTestReactiveFormControlComponent {
-  formGroup: UntypedFormGroup;
-  validateStatus: string | FormControlName | UntypedFormControl;
+  formGroup = this.formBuilder.group({
+    input: ['', [Validators.required]],
+    input2: ['', [Validators.required]],
+    input3: ['', [Validators.required]]
+  });
+  validateStatus: string | FormControlName | FormControl<string | null>;
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      input: ['', [Validators.required]],
-      input2: ['', [Validators.required]],
-      input3: ['', [Validators.required]]
-    });
-    this.validateStatus = this.formGroup.get('input2') as UntypedFormControl;
+  constructor(private formBuilder: FormBuilder) {
+    this.validateStatus = this.formGroup.controls.input2;
   }
 }
 
@@ -411,12 +420,11 @@ export class NzTestReactiveFormControlComponent {
   `
 })
 export class NzTestReactiveFormControlInitStatusComponent {
-  formGroup: UntypedFormGroup;
+  formGroup = this.formBuilder.group({
+    input: ['', [Validators.required]]
+  });
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      input: ['', [Validators.required]]
-    });
+  constructor(private formBuilder: FormBuilder) {
     this.formGroup.controls.input.markAsDirty();
   }
 }
@@ -444,16 +452,24 @@ export class NzTestReactiveFormControlInitStatusComponent {
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item *ngIf="showConfirmPassword">
-        <nz-form-control>
-          <input nz-input type="password" formControlName="confirmPassword" />
-        </nz-form-control>
-      </nz-form-item>
+      @if (showConfirmPassword) {
+        <nz-form-item>
+          <nz-form-control>
+            <input nz-input type="password" formControlName="confirmPassword" />
+          </nz-form-control>
+        </nz-form-item>
+      }
     </form>
   `
 })
 export class NzTestReactiveFormAutoTipsComponent {
-  formGroup: UntypedFormGroup;
+  formGroup: FormGroup<{
+    userName: FormControl<string | null>;
+    mobile: FormControl<string | null>;
+    email: FormControl<string | null>;
+    password: FormControl<string | null>;
+    confirmPassword: FormControl<string | null>;
+  }>;
 
   showConfirmPassword = false;
 
@@ -483,7 +499,10 @@ export class NzTestReactiveFormAutoTipsComponent {
     }
   };
 
-  constructor(private formBuilder: UntypedFormBuilder, public i18n: NzI18nService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public i18n: NzI18nService
+  ) {
     const { required, minLength, email, mobile } = MyValidators;
     this.formGroup = this.formBuilder.group({
       userName: ['', [required, minLength(6)]],

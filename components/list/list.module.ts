@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import {
   NzListEmptyComponent,
@@ -50,8 +42,7 @@ const DIRECTIVES = [
 ];
 
 @NgModule({
-  imports: [BidiModule, CommonModule, NzSpinModule, NzGridModule, NzAvatarModule, NzOutletModule, NzEmptyModule],
-  declarations: [DIRECTIVES],
+  imports: [DIRECTIVES],
   exports: [DIRECTIVES]
 })
 export class NzListModule {}

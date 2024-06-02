@@ -38,7 +38,8 @@ import { getConfigFromComponent } from './utils';
   selector: 'nz-modal',
   exportAs: 'nzModal',
   template: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy
@@ -56,6 +57,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
   static ngAcceptInputType_nzOkDanger: BooleanInput;
   static ngAcceptInputType_nzCentered: BooleanInput;
+  static ngAcceptInputType_nzDraggable: BooleanInput;
 
   @Input() @InputBoolean() nzMask?: boolean;
   @Input() @InputBoolean() nzMaskClosable?: boolean;
@@ -69,8 +71,8 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzCentered = false;
+  @Input() @InputBoolean() nzDraggable = false;
   @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
-  @Input() nzComponentParams?: T;
   @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;

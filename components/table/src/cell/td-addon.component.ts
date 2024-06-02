@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
-
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,11 +14,17 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzRowExpandButtonDirective } from '../addon/row-expand-button.directive';
+import { NzRowIndentDirective } from '../addon/row-indent.directive';
 
 @Component({
   selector:
@@ -27,29 +33,37 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
+    @if (nzShowExpand || nzIndentSize > 0) {
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
-      <button
-        nz-row-expand-button
-        [expand]="nzExpand"
-        (expandChange)="onExpandChange($event)"
-        [spaceMode]="!nzShowExpand"
-      ></button>
-    </ng-container>
-    <label
-      nz-checkbox
-      *ngIf="nzShowCheckbox"
-      [nzDisabled]="nzDisabled"
-      [ngModel]="nzChecked"
-      [nzIndeterminate]="nzIndeterminate"
-      (ngModelChange)="onCheckedChange($event)"
-    ></label>
+      @if (nzExpandIcon) {
+        <ng-template [ngTemplateOutlet]="nzExpandIcon"></ng-template>
+      } @else {
+        <button
+          nz-row-expand-button
+          [expand]="nzExpand"
+          (expandChange)="onExpandChange($event)"
+          [spaceMode]="!nzShowExpand"
+        ></button>
+      }
+    }
+    @if (nzShowCheckbox) {
+      <label
+        nz-checkbox
+        [nzDisabled]="nzDisabled"
+        [ngModel]="nzChecked"
+        [nzIndeterminate]="nzIndeterminate"
+        [attr.aria-label]="nzLabel"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
+    }
     <ng-content></ng-content>
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`
-  }
+  },
+  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule],
+  standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
   static ngAcceptInputType_nzShowExpand: BooleanInput;
@@ -59,10 +73,12 @@ export class NzTdAddOnComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
+  @Input() nzLabel: string | null = null;
   @Input() nzIndentSize = 0;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzExpand = false;
+  @Input() nzExpandIcon: TemplateRef<void> | null = null;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
   private isNzShowExpandChanged = false;

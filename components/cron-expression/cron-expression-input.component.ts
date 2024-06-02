@@ -4,6 +4,9 @@
  */
 
 import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { CronChangeType, TimeType } from './typings';
 
@@ -18,16 +21,20 @@ import { CronChangeType, TimeType } from './typings';
         nz-input
         [(ngModel)]="value"
         [name]="label"
+        [disabled]="disabled"
         (focus)="focusInputEffect($event)"
         (blur)="blurInputEffect()"
         (ngModelChange)="setValue()"
       />
     </div>
-  `
+  `,
+  imports: [NzInputModule, FormsModule],
+  standalone: true
 })
 export class NzCronExpressionInputComponent {
   @Input() value: string = '0';
   @Input() label: TimeType = 'second';
+  @Input() disabled: boolean = false;
   @Output() readonly focusEffect = new EventEmitter<TimeType>();
   @Output() readonly blurEffect = new EventEmitter<void>();
   @Output() readonly getValue = new EventEmitter<CronChangeType>();

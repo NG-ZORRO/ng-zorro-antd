@@ -35,8 +35,8 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| title | 标题 | `string` | - |
-| content | 提示内容 | `string` | - |
+| title | 标题 | `string \| TemplateRef<void>` | - |
+| content | 提示内容 | `string \| TemplateRef<void>` | - |
 | options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
@@ -51,7 +51,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzClass | 自定义 CSS class | `object` |
 | nzData | 任何想要在模板中作为上下文的数据 | `any` |
 | nzCloseIcon | 自定义关闭图标 | `TemplateRef<void> \| string` |
-
+| nzButton | 自定义按钮 | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
 
 还提供了全局销毁方法：
 

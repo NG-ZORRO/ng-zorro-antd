@@ -30,7 +30,8 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
     <ng-content select="[appOverflowRest]"></ng-content>
     <ng-content select="[appOverflowSuffix]"></ng-content>`,
   providers: [NzResizeObserver],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NzOverflowContainerComponent implements OnInit, AfterContentInit, OnDestroy {
   contentInit$ = new Subject<void>();

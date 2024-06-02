@@ -4,27 +4,15 @@
  */
 
 import { BidiModule } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-
 import { NzCardGridDirective } from './card-grid.directive';
-import { NzCardLoadingComponent } from './card-loading.component';
 import { NzCardMetaComponent } from './card-meta.component';
 import { NzCardTabComponent } from './card-tab.component';
 import { NzCardComponent } from './card.component';
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule],
-  declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
-  exports: [
-    BidiModule,
-    NzCardComponent,
-    NzCardGridDirective,
-    NzCardMetaComponent,
-    NzCardLoadingComponent,
-    NzCardTabComponent
-  ]
+  imports: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardTabComponent],
+  exports: [BidiModule, NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardTabComponent]
 })
 export class NzCardModule {}

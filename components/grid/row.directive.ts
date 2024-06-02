@@ -43,7 +43,8 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-space-between]': `nzJustify === 'space-between'`,
     '[class.ant-row-space-evenly]': `nzJustify === 'space-evenly'`,
     '[class.ant-row-rtl]': `dir === "rtl"`
-  }
+  },
+  standalone: true
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() nzAlign: NzAlign | null = null;
@@ -54,7 +55,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
   dir: Direction = 'ltr';
-  private readonly destroy$ = new Subject();
+  private readonly destroy$ = new Subject<boolean>();
 
   getGutter(): [number | null, number | null] {
     const results: [number | null, number | null] = [null, null];
@@ -127,7 +128,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

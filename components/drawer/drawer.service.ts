@@ -14,14 +14,16 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
-import { NzDrawerServiceModule } from './drawer.service.module';
 
 export class DrawerBuilderForService<T extends {}, R> {
   private drawerRef: NzDrawerComponent<T, R> | null;
   private overlayRef: OverlayRef;
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private overlay: Overlay, private options: NzDrawerOptions) {
+  constructor(
+    private overlay: Overlay,
+    private options: NzDrawerOptions
+  ) {
     /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
     const { nzOnCancel, ...componentOption } = this.options;
     this.overlayRef = this.overlay.create();
@@ -61,7 +63,7 @@ export class DrawerBuilderForService<T extends {}, R> {
   }
 }
 
-@Injectable({ providedIn: NzDrawerServiceModule })
+@Injectable()
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 

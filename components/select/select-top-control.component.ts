@@ -4,6 +4,7 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,6 +29,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzSelectItemComponent } from './select-item.component';
+import { NzSelectPlaceholderComponent } from './select-placeholder.component';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
 
@@ -89,7 +92,18 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
-  host: { class: 'ant-select-selector' }
+  host: { class: 'ant-select-selector' },
+  imports: [
+    NgSwitch,
+    NzSelectSearchComponent,
+    NgSwitchCase,
+    NzSelectItemComponent,
+    NgIf,
+    NgSwitchDefault,
+    NgFor,
+    NzSelectPlaceholderComponent
+  ],
+  standalone: true
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;
@@ -138,7 +152,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   }
 
   tokenSeparate(inputValue: string, tokenSeparators: string[]): void {
-    const includesSeparators = (str: string | string[], separators: string[]): boolean => {
+    const includesSeparators = (str: string, separators: string[]): boolean => {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < separators.length; ++i) {
         if (str.lastIndexOf(separators[i]) > 0) {
@@ -147,9 +161,9 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
       }
       return false;
     };
-    const splitBySeparators = (str: string | string[], separators: string[]): string[] => {
+    const splitBySeparators = (str: string, separators: string[]): string[] => {
       const reg = new RegExp(`[${separators.join()}]`);
-      const array = (str as string).split(reg).filter(token => token);
+      const array = str.split(reg).filter(token => token);
       return [...new Set(array)];
     };
     if (

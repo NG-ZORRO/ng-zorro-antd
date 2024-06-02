@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -37,10 +37,13 @@ import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zor
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
+import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
+import { NzSubMenuTitleComponent } from './submenu-title.component';
 import { NzSubmenuService } from './submenu.service';
 
 const listOfVerticalPositions = [
@@ -79,19 +82,21 @@ const listOfHorizontalPositions = [
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
-    <div
-      *ngIf="mode === 'inline'; else nonInlineTemplate"
-      nz-submenu-inline-child
-      [mode]="mode"
-      [nzOpen]="nzOpen"
-      [@.disabled]="!!noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      [menuClass]="nzMenuClassName"
-      [templateOutlet]="subMenuTemplate"
-    ></div>
-    <ng-template #nonInlineTemplate>
+    @if (mode === 'inline') {
+      <div
+        nz-submenu-inline-child
+        [mode]="mode"
+        [nzOpen]="nzOpen"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [menuClass]="nzMenuClassName"
+        [templateOutlet]="subMenuTemplate"
+      ></div>
+    } @else {
       <ng-template
         cdkConnectedOverlay
         (positionChange)="onPositionChange($event)"
@@ -116,10 +121,10 @@ const listOfHorizontalPositions = [
           (subMenuMouseState)="setMouseEnterState($event)"
         ></div>
       </ng-template>
-    </ng-template>
+    }
 
     <ng-template #subMenuTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {
@@ -140,7 +145,15 @@ const listOfHorizontalPositions = [
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
     '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
     '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzSubMenuTitleComponent,
+    NzSubmenuInlineChildComponent,
+    NzNoAnimationDirective,
+    NzSubmenuNoneInlineChildComponent,
+    OverlayModule
+  ],
+  standalone: true
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   static ngAcceptInputType_nzOpen: BooleanInput;
@@ -159,8 +172,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   // Can't construct a query for the property ... since the query selector wasn't defined"
   @ContentChildren(forwardRef(() => NzSubMenuComponent), { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
-  @ContentChildren(NzMenuItemDirective, { descendants: true })
-  listOfNzMenuItemDirective: QueryList<NzMenuItemDirective> | null = null;
+  @ContentChildren(NzMenuItemComponent, { descendants: true })
+  listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
   private level = this.nzSubmenuService.level;
   private destroy$ = new Subject<void>();
   position = 'right';

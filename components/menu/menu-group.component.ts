@@ -9,19 +9,21 @@ import {
   Component,
   ElementRef,
   Inject,
+  inject,
   Input,
-  Optional,
   Renderer2,
-  SkipSelf,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
-export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
-  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+export function MenuGroupFactory(): boolean {
+  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { optional: true, skipSelf: true });
+  return isMenuInsideDropDownToken ?? false;
 }
 @Component({
   selector: '[nz-menu-group]',
@@ -31,8 +33,7 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuGroupFactory,
-      deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
+      useFactory: MenuGroupFactory
     }
   ],
   encapsulation: ViewEncapsulation.None,
@@ -43,11 +44,15 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
     <ng-content></ng-content>
   `,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [NzOutletModule],
+  standalone: true
 })
 export class NzMenuGroupComponent implements AfterViewInit {
   @Input() nzTitle?: string | TemplateRef<void>;

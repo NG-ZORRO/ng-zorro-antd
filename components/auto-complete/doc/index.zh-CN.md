@@ -32,13 +32,13 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 </nz-autocomplete>
 ```
 
-### [nzAutocomplete]
+### [nzAutocomplete]:standalone
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzAutocomplete]` | 用于绑定 nzAutocomplete 组件 | `NzAutocompleteComponent` | - |
 
-### nz-autocomplete
+### nz-autocomplete:standalone
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 | `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
 | `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 
-### nz-auto-option
+### nz-auto-option:standalone
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

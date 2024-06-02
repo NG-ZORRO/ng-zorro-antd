@@ -38,6 +38,10 @@
       "default": false,
       "alias": "t"
     },
+    "standalone": {
+      "description": "Whether the generated component is standalone.",
+      "type": "boolean"
+    },
     "prefix": {
       "type": "string",
       "description": "The prefix to apply to the generated component selector.",

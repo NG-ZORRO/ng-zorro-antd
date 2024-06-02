@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 
 import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableSize } from 'ng-zorro-antd/table';
 
@@ -12,6 +12,8 @@ interface ItemData {
   description: string;
   disabled?: boolean;
 }
+
+type TableScroll = 'unset' | 'scroll' | 'fixed';
 
 interface Setting {
   bordered: boolean;
@@ -28,7 +30,7 @@ interface Setting {
   ellipsis: boolean;
   simple: boolean;
   size: NzTableSize;
-  tableScroll: string;
+  tableScroll: TableScroll;
   tableLayout: NzTableLayout;
   position: NzTablePaginationPosition;
   paginationType: NzTablePaginationType;
@@ -38,7 +40,7 @@ interface Setting {
   selector: 'nz-demo-table-dynamic-settings',
   template: `
     <div class="components-table-demo-control-bar">
-      <form nz-form nzLayout="inline" [formGroup]="settingForm!">
+      <form nz-form nzLayout="inline" [formGroup]="settingForm">
         <nz-form-item *ngFor="let switch of listOfSwitch">
           <nz-form-label>{{ switch.name }}</nz-form-label>
           <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>
@@ -124,7 +126,7 @@ interface Setting {
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  settingForm?: UntypedFormGroup;
+  settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }>;
   listOfData: readonly ItemData[] = [];
   displayData: readonly ItemData[] = [];
   allChecked = false;
@@ -132,7 +134,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   fixedColumn = false;
   scrollX: string | null = null;
   scrollY: string | null = null;
-  settingValue!: Setting;
+  settingValue: Setting;
   listOfSwitch = [
     { name: 'Bordered', formControlName: 'bordered' },
     { name: 'Loading', formControlName: 'loading' },
@@ -231,39 +233,43 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     return data;
   }
 
-  constructor(private formBuilder: UntypedFormBuilder) {}
+  constructor(private formBuilder: NonNullableFormBuilder) {
+    this.settingForm = this.formBuilder.group({
+      bordered: [false],
+      loading: [false],
+      pagination: [true],
+      sizeChanger: [false],
+      title: [true],
+      header: [true],
+      footer: [true],
+      expandable: [true],
+      checkbox: [true],
+      fixHeader: [false],
+      noResult: [false],
+      ellipsis: [false],
+      simple: [false],
+      size: 'small' as NzTableSize,
+      paginationType: 'default' as NzTablePaginationType,
+      tableScroll: 'unset' as TableScroll,
+      tableLayout: 'auto' as NzTableLayout,
+      position: 'bottom' as NzTablePaginationPosition
+    });
+
+    this.settingValue = this.settingForm.value as Setting;
+  }
 
   ngOnInit(): void {
-    this.settingForm = this.formBuilder.group({
-      bordered: false,
-      loading: false,
-      pagination: true,
-      sizeChanger: false,
-      title: true,
-      header: true,
-      footer: true,
-      expandable: true,
-      checkbox: true,
-      fixHeader: false,
-      noResult: false,
-      ellipsis: false,
-      simple: false,
-      size: 'small',
-      paginationType: 'default',
-      tableScroll: 'unset',
-      tableLayout: 'auto',
-      position: 'bottom'
+    this.settingForm.valueChanges.subscribe(value => {
+      this.settingValue = value as Setting;
     });
-    this.settingValue = this.settingForm.value;
-    this.settingForm.valueChanges.subscribe(value => (this.settingValue = value));
-    this.settingForm.get('tableScroll')!.valueChanges.subscribe(scroll => {
+    this.settingForm.controls.tableScroll.valueChanges.subscribe(scroll => {
       this.fixedColumn = scroll === 'fixed';
       this.scrollX = scroll === 'scroll' || scroll === 'fixed' ? '100vw' : null;
     });
-    this.settingForm.get('fixHeader')!.valueChanges.subscribe(fixed => {
+    this.settingForm.controls.fixHeader.valueChanges.subscribe(fixed => {
       this.scrollY = fixed ? '240px' : null;
     });
-    this.settingForm.get('noResult')!.valueChanges.subscribe(empty => {
+    this.settingForm.controls.noResult.valueChanges.subscribe(empty => {
       if (empty) {
         this.listOfData = [];
       } else {

@@ -3,20 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -27,6 +26,7 @@ import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 
 import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -47,18 +47,28 @@ import { NzFormDirective } from './form.directive';
         <ng-content></ng-content>
       </div>
     </div>
-    <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected" *ngIf="innerTip">
-      <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
-        <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
-          innerTip
-        }}</ng-container>
+    @if (innerTip) {
+      <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
+        <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
+          <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
+            innerTip
+          }}</ng-container>
+        </div>
       </div>
-    </div>
-    <div class="ant-form-item-extra" *ngIf="nzExtra">
-      <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-    </div>
+    }
+
+    @if (nzExtra) {
+      <div class="ant-form-item-extra">
+        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+      </div>
+    }
   `,
-  providers: [NzFormStatusService]
+  providers: [NzFormStatusService],
+  host: {
+    class: 'ant-form-item-control'
+  },
+  imports: [NgClass, NzOutletModule],
+  standalone: true
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
@@ -230,16 +240,12 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   }
 
   constructor(
-    elementRef: ElementRef,
     @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     private cdr: ChangeDetectorRef,
-    renderer: Renderer2,
     i18n: NzI18nService,
     @Optional() private nzFormDirective: NzFormDirective,
     private nzFormStatusService: NzFormStatusService
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
-
     this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
     this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
     this.subscribeAutoTips(

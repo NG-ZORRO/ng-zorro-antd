@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -30,9 +31,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -44,10 +46,10 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 import {
   FromToInterface,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselDotPosition,
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   PointerVector
 } from './typings';
 
@@ -77,25 +79,24 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         </div>
       </div>
       <!-- Render dots. -->
-      <ul
-        class="slick-dots"
-        *ngIf="nzDots"
-        [class.slick-dots-top]="nzDotPosition === 'top'"
-        [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
-        [class.slick-dots-left]="nzDotPosition === 'left'"
-        [class.slick-dots-right]="nzDotPosition === 'right'"
-      >
-        <li
-          *ngFor="let content of carouselContents; let i = index"
-          [class.slick-active]="i === activeIndex"
-          (click)="onLiClick(i)"
+      @if (nzDots) {
+        <ul
+          class="slick-dots"
+          [class.slick-dots-top]="nzDotPosition === 'top'"
+          [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
+          [class.slick-dots-left]="nzDotPosition === 'left'"
+          [class.slick-dots-right]="nzDotPosition === 'right'"
         >
-          <ng-template
-            [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
-            [ngTemplateOutletContext]="{ $implicit: i }"
-          ></ng-template>
-        </li>
-      </ul>
+          @for (content of carouselContents; track content) {
+            <li [class.slick-active]="$index === activeIndex" (click)="onLiClick($index)">
+              <ng-template
+                [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
+                [ngTemplateOutletContext]="{ $implicit: $index }"
+              ></ng-template>
+            </li>
+          }
+        </ul>
+      }
     </div>
 
     <ng-template #renderDotTemplate let-index>
@@ -103,9 +104,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
+    class: 'ant-carousel',
     '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir ==='rtl'`
-  }
+    '[class.ant-carousel-rtl]': `dir === 'rtl'`
+  },
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -161,7 +165,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   slickTrackEl!: HTMLElement;
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
-  transitionInProgress: number | null = null;
+  transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
@@ -179,12 +183,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
+    private nzResizeObserver: NzResizeObserver,
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
-
-    this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
   ngOnInit(): void {
@@ -221,6 +224,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           });
         });
     });
+
+    this.nzResizeObserver
+      .observe(this.el)
+      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.layout();
+      });
   }
 
   ngAfterContentInit(): void {
@@ -352,7 +362,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private clearScheduledTransition(): void {
     if (this.transitionInProgress) {
       clearTimeout(this.transitionInProgress);
-      this.transitionInProgress = null;
+      this.transitionInProgress = undefined;
     }
   }
 

@@ -138,13 +138,6 @@ export interface NzCronExpressionLabelI18n {
   day?: string;
   month?: string;
   week?: string;
-  // innerHTML
-  secondError?: string;
-  minuteError?: string;
-  hourError?: string;
-  dayError?: string;
-  monthError?: string;
-  weekError?: string;
 }
 
 export interface NzCronExpressionCronErrorI18n {
@@ -152,6 +145,12 @@ export interface NzCronExpressionCronErrorI18n {
 }
 
 export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCronExpressionLabelI18n;
+
+export interface NzQRCodeI18nInterface {
+  expired: string;
+  refresh: string;
+  scanned: string;
+}
 
 export interface NzI18nInterface {
   locale: string;
@@ -168,6 +167,7 @@ export interface NzI18nInterface {
   Empty: NzEmptyI18nInterface;
   Text?: NzTextI18nInterface;
   CronExpression?: NzCronExpressionI18nInterface;
+  QRCode?: NzQRCodeI18nInterface;
 }
 
 export type DateLocale = Locale;
