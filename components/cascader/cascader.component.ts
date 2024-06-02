@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -671,7 +672,8 @@ export class NzCascaderComponent
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.el.contains(event.target as Node)) {
+    const target = _getEventTarget(event);
+    if (!this.el.contains(target as Node)) {
       this.closeMenu();
     }
   }

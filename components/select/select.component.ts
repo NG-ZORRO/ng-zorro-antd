@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
+import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import { NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
@@ -547,7 +547,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.host.nativeElement.contains(event.target as HTMLElement)) {
+    const target = _getEventTarget(event);
+    if (!this.host.nativeElement.contains(target as Node)) {
       this.setOpenState(false);
     }
   }

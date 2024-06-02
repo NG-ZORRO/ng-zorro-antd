@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
@@ -472,7 +473,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.nativeElement.contains(event.target) && this.nzTrigger !== null) {
+    const target = _getEventTarget(event);
+    if (!this.origin.nativeElement.contains(target) && this.nzTrigger !== null) {
       this.hide();
     }
   }
