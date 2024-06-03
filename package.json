@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development gulp start:dev",
+    "start:dev": "ng serve --project=ng-zorro-antd-doc --configuration=development",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
     "test:watch": "gulp test:watch --tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
