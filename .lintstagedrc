@@ -1,4 +1,4 @@
 {
-  "*.{less}": "stylelint --fix",
+  "*.less": "stylelint --fix",
   "(schematics|scripts|components)/**/*.{html,ts}": "eslint --fix"
 }
