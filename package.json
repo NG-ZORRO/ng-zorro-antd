@@ -7,7 +7,7 @@
     "node": "^18.13.0 || ^20.9.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development gulp start:dev",
+    "start": "cross-env NODE_ENV=development gulp start:dev",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
     "test:watch": "gulp test:watch --tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
@@ -35,7 +35,6 @@
     "ngx-quicklink": "^0.4.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "17.0.2",
     "@angular-devkit/build-angular": "^17.3.0",
     "@angular-devkit/core": "^17.3.0",
     "@angular-devkit/schematics": "^17.3.0",
@@ -82,6 +81,7 @@
     "codesandbox": "^2.2.1",
     "conventional-changelog-cli": "^2.1.1",
     "cron-parser": "^4.6.0",
+    "cross-env": "^7.0.3",
     "d3": "^6.3.1",
     "dagre": "^0.8.5",
     "dagre-compound": "^0.0.8",

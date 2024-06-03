@@ -6,6 +6,7 @@
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -18,8 +19,6 @@ import {
 } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzGraph } from './graph';
 import { NzGraphGroupNode, NzGraphNode } from './interface';
@@ -54,7 +53,7 @@ interface Info {
 })
 export class NzGraphNodeComponent implements OnInit, OnDestroy {
   @Input() node!: NzGraphNode | NzGraphGroupNode;
-  @Input() @InputBoolean() noAnimation?: boolean;
+  @Input({ transform: booleanAttribute }) noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
   }>;

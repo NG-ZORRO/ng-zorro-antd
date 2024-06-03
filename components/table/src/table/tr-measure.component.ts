@@ -5,7 +5,6 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 
-import { NgForOf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -31,15 +30,11 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <td
-      #tdElement
-      class="nz-disable-td"
-      style="padding: 0px; border: 0px; height: 0px;"
-      *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
-    ></td>
+    @for (th of listOfMeasureColumn; track th) {
+      <td #tdElement class="nz-disable-td" style="padding: 0; border: 0; height: 0;"></td>
+    }
   `,
   host: { class: 'ant-table-measure-now' },
-  imports: [NgForOf],
   standalone: true
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
@@ -51,9 +46,7 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
     private nzResizeObserver: NzResizeObserver,
     private ngZone: NgZone
   ) {}
-  trackByFunc(_: number, key: string): string {
-    return key;
-  }
+
   ngAfterViewInit(): void {
     this.listOfTdElement.changes
       .pipe(startWith(this.listOfTdElement))

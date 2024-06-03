@@ -1,5 +1,6 @@
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
-export const moduleList = [ NzStatisticModule, NzCardModule, NzIconModule ];
+export const moduleList = [NzStatisticModule, NzCardModule, NzIconModule, NzButtonModule];

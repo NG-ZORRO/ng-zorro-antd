@@ -4,6 +4,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,9 +18,8 @@ import {
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
-import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
-import { NgTemplateOutlet } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
 @Component({
   selector: 'li[nz-pagination-item]',
@@ -102,15 +102,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true
 })
 export class NzPaginationItemComponent implements OnChanges {
-  static ngAcceptInputType_type: PaginationItemType | string | null | undefined;
-  static ngAcceptInputType_index: number | null | undefined;
-
   @Input() active = false;
   @Input() locale!: NzPaginationI18nInterface;
-  @Input() index: number | null = null;
+  @Input() index: number | null | undefined = null;
   @Input() disabled = false;
   @Input() direction = 'ltr';
-  @Input() type: PaginationItemType | string | null = null;
+  @Input() type: PaginationItemType | string | null | undefined = null;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Output() readonly diffIndex = new EventEmitter<number>();
   @Output() readonly gotoIndex = new EventEmitter<number>();
@@ -136,7 +133,7 @@ export class NzPaginationItemComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const {locale, index, type} = changes;
+    const { locale, index, type } = changes;
     if (locale || index || type) {
       this.title = (
         {

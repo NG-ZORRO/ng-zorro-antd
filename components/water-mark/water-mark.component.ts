@@ -15,10 +15,11 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
+  numberAttribute
 } from '@angular/core';
 
-import { MarkStyleType, FontType } from './typings';
+import { FontType, MarkStyleType } from './typings';
 import { getPixelRatio, getStyleStr, reRendering, rotateWatermark } from './util';
 
 /**
@@ -39,10 +40,10 @@ const FontGap = 3;
   }
 })
 export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @Input() nzWidth: number = 120;
-  @Input() nzHeight: number = 64;
-  @Input() nzRotate: number = -22;
-  @Input() nzZIndex: number = 9;
+  @Input({ transform: numberAttribute }) nzWidth: number = 120;
+  @Input({ transform: numberAttribute }) nzHeight: number = 64;
+  @Input({ transform: numberAttribute }) nzRotate: number = -22;
+  @Input({ transform: numberAttribute }) nzZIndex: number = 9;
   @Input() nzImage: string = '';
   @Input() nzContent: string | string[] = '';
   @Input() nzFont: FontType = {};

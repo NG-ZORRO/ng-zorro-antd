@@ -5,7 +5,7 @@ subtitle: 水印
 title: WaterMark
 cols: 1
 tag: 15.1.0
-cover: https://img.alicdn.com/imgextra/i3/O1CN0194FGAd1FlrwQShfR8_!!6000000000528-0-tps-952-502.jpg
+cover: https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg
 ---
 
 给页面的某个区域加上水印。

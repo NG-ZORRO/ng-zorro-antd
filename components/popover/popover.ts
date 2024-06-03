@@ -17,7 +17,8 @@ import {
   Input,
   Optional,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
@@ -25,8 +26,7 @@ import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import {
   NzToolTipComponent,
   NzTooltipBaseDirective,
@@ -46,11 +46,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   standalone: true
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
-  static ngAcceptInputType_nzPopoverArrowPointAtCenter: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  @Input('nzPopoverArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
+  @Input({ alias: 'nzPopoverArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') override title?: NzTSType;
   @Input('nzPopoverContent') override content?: NzTSType;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;

@@ -14,15 +14,15 @@ import {
   OnInit,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
 
@@ -109,15 +109,13 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
   standalone: true
 })
 export class NzStepComponent implements OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
   @ViewChild('itemContainer', { static: true }) itemContainer!: ElementRef<HTMLElement>;
 
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
   @Input() nzDescription?: string | TemplateRef<void>;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzPercentage: number | null = null;
   @Input() nzSize: NzSizeDSType = 'default';
 

@@ -32,8 +32,8 @@ import { map, takeUntil, throttleTime } from 'rxjs/operators';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { getStyleAsText, numberAttributeWithZeroFallback, shallowEqual } from 'ng-zorro-antd/core/util';
 
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
@@ -57,21 +57,17 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzOffsetTop: NumberInput;
-  static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
   @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
   @Input() nzTarget?: string | Element | Window;
 
-  @Input()
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number | null>()
-  @InputNumber(undefined)
   nzOffsetTop?: null | number;
 
-  @Input()
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number | null>()
-  @InputNumber(undefined)
   nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();

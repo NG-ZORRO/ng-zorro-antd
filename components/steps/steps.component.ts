@@ -22,7 +22,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { merge, Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -33,7 +33,7 @@ import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
 export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
-export type nzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
+export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +58,7 @@ export type nzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
   standalone: true
 })
 export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
-  static ngAcceptInputType_nzProgressDot: BooleanInput | nzProgressDotTemplate | undefined | null;
+  static ngAcceptInputType_nzProgressDot: BooleanInput | NzProgressDotTemplate | undefined | null;
 
   @ContentChildren(NzStepComponent) steps!: QueryList<NzStepComponent>;
 
@@ -71,7 +71,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   @Input() nzStatus: NzStatusType = 'process';
 
   @Input()
-  set nzProgressDot(value: boolean | nzProgressDotTemplate) {
+  set nzProgressDot(value: boolean | NzProgressDotTemplate | undefined | null) {
     if (value instanceof TemplateRef) {
       this.showProcessDot = true;
       this.customProcessDotTemplate = value;

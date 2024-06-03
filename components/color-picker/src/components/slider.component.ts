@@ -16,7 +16,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  booleanAttribute
 } from '@angular/core';
 
 import { Color } from '../interfaces/color';
@@ -81,7 +82,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() type: HsbaColorType = 'hue';
   @Input() color: Color | null = null;
   @Input() value: string | null = null;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
   @Output() readonly nzOnChange = new EventEmitter<Color>();
   @Output() readonly nzOnChangeComplete = new EventEmitter<HsbaColorType>();
 

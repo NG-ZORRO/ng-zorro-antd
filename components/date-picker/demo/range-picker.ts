@@ -13,6 +13,8 @@ import { getISOWeek } from 'date-fns';
     <br />
     <nz-range-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
+    <nz-range-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+    <br />
     <nz-range-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
   `,
   styles: [

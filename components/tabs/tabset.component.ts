@@ -12,6 +12,7 @@ import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -35,8 +36,8 @@ import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import {
   NzAnimatedInterface,
@@ -174,13 +175,6 @@ let nextId = 0;
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzHideAdd: BooleanInput;
-  static ngAcceptInputType_nzHideAll: BooleanInput;
-  static ngAcceptInputType_nzCentered: BooleanInput;
-  static ngAcceptInputType_nzLinkRouter: BooleanInput;
-  static ngAcceptInputType_nzLinkExact: BooleanInput;
-  static ngAcceptInputType_nzSelectedIndex: NumberInput;
-
   @Input()
   get nzSelectedIndex(): number | null {
     return this.selectedIndex;
@@ -197,11 +191,11 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
   @Input() @WithConfig() nzAnimated: NzAnimatedInterface | boolean = true;
   @Input() @WithConfig() nzTabBarGutter?: number = undefined;
-  @Input() @InputBoolean() nzHideAdd: boolean = false;
-  @Input() @InputBoolean() nzCentered: boolean = false;
-  @Input() @InputBoolean() nzHideAll = false;
-  @Input() @InputBoolean() nzLinkRouter = false;
-  @Input() @InputBoolean() nzLinkExact = true;
+  @Input({ transform: booleanAttribute }) nzHideAdd: boolean = false;
+  @Input({ transform: booleanAttribute }) nzCentered: boolean = false;
+  @Input({ transform: booleanAttribute }) nzHideAll = false;
+  @Input({ transform: booleanAttribute }) nzLinkRouter = false;
+  @Input({ transform: booleanAttribute }) nzLinkExact = true;
 
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
   @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();

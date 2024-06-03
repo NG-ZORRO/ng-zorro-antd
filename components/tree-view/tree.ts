@@ -16,14 +16,14 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
   template: '',
@@ -31,9 +31,6 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDirectoryTree: BooleanInput;
-  static ngAcceptInputType_nzBlockNode: BooleanInput;
-
   private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
@@ -45,8 +42,8 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   override set dataSource(dataSource: DataSource<T> | Observable<T[]> | T[]) {
     super.dataSource = dataSource;
   }
-  @Input() @InputBoolean() nzDirectoryTree = false;
-  @Input() @InputBoolean() nzBlockNode = false;
+  @Input({ transform: booleanAttribute }) nzDirectoryTree = false;
+  @Input({ transform: booleanAttribute }) nzBlockNode = false;
 
   constructor(
     protected differs: IterableDiffers,

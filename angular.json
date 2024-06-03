@@ -93,8 +93,12 @@
           "configurations": {
             "production": {
               "buildTarget": "ng-zorro-antd-doc:build:production"
+            },
+            "development": {
+              "buildTarget": "ng-zorro-antd-doc:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         }
       }
     },
@@ -185,11 +189,9 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "customWebpackConfig": {
-              "path": "custom-webpack-spec.config.js"
-            },
+            "inlineStyleLanguage": "less",
             "fileReplacements": [
               {
                 "replace": "components/core/environments/environment.ts",

@@ -17,14 +17,14 @@ import {
   Optional,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
@@ -140,23 +140,18 @@ import {
   standalone: true
 })
 export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzSplit: BooleanInput;
-  static ngAcceptInputType_nzGrid: '' | NzListGrid | null | undefined;
-
   @Input() nzDataSource?: NzSafeAny[];
-  @Input() @InputBoolean() nzBordered = false;
-  @Input() nzGrid?: NzListGrid | '' = '';
+  @Input({ transform: booleanAttribute }) nzBordered = false;
+  @Input() nzGrid?: NzListGrid | '' | null | undefined = '';
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzFooter?: string | TemplateRef<void>;
   @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
   @Input() nzRenderItem: TemplateRef<{ $implicit: NzSafeAny; index: number }> | null = null;
-  @Input() @InputBoolean() nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input() nzLoadMore: TemplateRef<void> | null = null;
   @Input() nzPagination?: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() @InputBoolean() nzSplit = true;
+  @Input({ transform: booleanAttribute }) nzSplit = true;
   @Input() nzNoResult?: string | TemplateRef<void>;
 
   @ContentChild(NzListFooterComponent) nzListFooterComponent!: NzListFooterComponent;
