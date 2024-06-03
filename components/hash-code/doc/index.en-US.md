@@ -3,7 +3,7 @@ category: Components
 type: Featured Components
 title: HashCode
 tag: 17.0.0
-cover: https://img.alicdn.com/imgextra/i3/O1CN01ePPF8q1cxXFz041Q9_!!6000000003667-0-tps-172-57.jpg
+cover: https://img.alicdn.com/imgextra/i3/O1CN01jn3OGS1qq7Xkq6O6b_!!6000000005546-2-tps-1074-374.png
 ---
 
 ## Import Module
