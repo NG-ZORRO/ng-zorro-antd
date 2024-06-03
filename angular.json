@@ -93,8 +93,12 @@
           "configurations": {
             "production": {
               "buildTarget": "ng-zorro-antd-doc:build:production"
+            },
+            "development": {
+              "buildTarget": "ng-zorro-antd-doc:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         }
       }
     },
