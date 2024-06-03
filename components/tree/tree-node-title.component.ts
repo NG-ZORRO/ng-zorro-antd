@@ -17,7 +17,6 @@ import {
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
-import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
@@ -91,7 +90,7 @@ export class NzTreeNodeTitleComponent implements OnChanges {
   @Input({ transform: booleanAttribute }) isLeaf!: boolean;
   // Drag indicator
   @Input() showIndicator = true;
-  @Input({ transform: numberAttributeWithZeroFallback }) dragPosition?: number;
+  @Input() dragPosition?: number;
 
   get canDraggable(): boolean | null {
     return this.draggable && !this.isDisabled ? true : null;

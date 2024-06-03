@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tree-drop-indicator',
@@ -29,7 +28,7 @@ import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
   standalone: true
 })
 export class NzTreeDropIndicatorComponent implements OnChanges {
-  @Input({ transform: numberAttributeWithZeroFallback }) dropPosition?: number;
+  @Input() dropPosition?: number;
   @Input({ transform: numberAttribute }) level: number = 1;
   @Input() direction: string = 'ltr';
   style: NgStyleInterface = {};

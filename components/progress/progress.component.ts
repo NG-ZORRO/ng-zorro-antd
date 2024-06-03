@@ -182,8 +182,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzFormat?: NzProgressFormatter;
   @Input({ transform: numberAttributeWithZeroFallback }) nzSuccessPercent?: number;
   @Input({ transform: numberAttribute }) nzPercent: number = 0;
-  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzStrokeWidth?: number = undefined;
-  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzGapDegree?: number = undefined;
+  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzStrokeWidth?: number;
+  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzGapDegree?: number;
   @Input() nzStatus?: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
   @Input() @WithConfig() nzGapPosition: NzProgressGapPositionType = 'top';

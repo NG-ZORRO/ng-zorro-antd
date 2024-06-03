@@ -17,6 +17,10 @@ export function numberAttributeWithZeroFallback(value: unknown): number {
   return numberAttribute(value, 0);
 }
 
+export function numberAttributeWithOneFallback(value: unknown): number {
+  return numberAttribute(value, 1);
+}
+
 export function toNumber(value: number | string): number;
 export function toNumber<D>(value: number | string, fallback: D): number | D;
 export function toNumber(value: number | string, fallbackValue: number = 0): number {

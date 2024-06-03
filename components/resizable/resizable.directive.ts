@@ -21,7 +21,7 @@ import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { ensureInBounds, numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
+import { ensureInBounds } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
@@ -48,8 +48,8 @@ export interface NzResizeEvent {
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
-  @Input({ transform: numberAttributeWithZeroFallback }) nzMaxHeight?: number;
-  @Input({ transform: numberAttributeWithZeroFallback }) nzMaxWidth?: number;
+  @Input() nzMaxHeight?: number;
+  @Input() nzMaxWidth?: number;
   @Input({ transform: numberAttribute }) nzMinHeight: number = 40;
   @Input({ transform: numberAttribute }) nzMinWidth: number = 40;
   @Input({ transform: numberAttribute }) nzGridColumnCount: number = -1;

@@ -143,7 +143,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() nzMarks: NzMarks | null = null;
   @Input({ transform: numberAttribute }) nzMax = 100;
   @Input({ transform: numberAttribute }) nzMin = 0;
-  @Input({ transform: numberAttributeWithZeroFallback }) nzStep = 1;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzStep: number = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
   @Input() nzTipFormatter?: null | ((value: number) => string) | TemplateRef<void>;

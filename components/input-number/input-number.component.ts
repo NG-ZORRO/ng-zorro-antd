@@ -154,7 +154,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
   @Input() nzStatus: NzStatus = '';
-  @Input() nzStep = 1;
+  @Input({ transform: numberAttribute }) nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
