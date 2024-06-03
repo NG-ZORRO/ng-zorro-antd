@@ -95,7 +95,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
+  selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-quarter-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
     @if (!nzInline) {
@@ -763,6 +763,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   setModeAndFormat(): void {
     const inputFormats: { [key in NzDateMode]?: string } = {
       year: 'yyyy',
+      quarter: 'yyyy-[Q]Q',
       month: 'yyyy-MM',
       week: 'YYYY-ww',
       date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
@@ -834,6 +835,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     if (!this.isCustomPlaceHolder && this.nzLocale) {
       const defaultPlaceholder: { [key in NzDateMode]?: string } = {
         year: this.getPropertyOfLocale('yearPlaceholder'),
+        quarter: this.getPropertyOfLocale('quarterPlaceholder'),
         month: this.getPropertyOfLocale('monthPlaceholder'),
         week: this.getPropertyOfLocale('weekPlaceholder'),
         date: this.getPropertyOfLocale('placeholder')
@@ -841,6 +843,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
       const defaultRangePlaceholder: { [key in NzDateMode]?: string[] } = {
         year: this.getPropertyOfLocale('rangeYearPlaceholder'),
+        quarter: this.getPropertyOfLocale('rangeQuarterPlaceholder'),
         month: this.getPropertyOfLocale('rangeMonthPlaceholder'),
         week: this.getPropertyOfLocale('rangeWeekPlaceholder'),
         date: this.getPropertyOfLocale('rangePlaceholder')

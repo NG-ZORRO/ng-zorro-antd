@@ -53,6 +53,7 @@ export default {
       monthPlaceholder: '請選擇月份',
       weekPlaceholder: '請選擇周',
       rangeYearPlaceholder: ['開始年份', '結束年份'],
+      rangeQuarterPlaceholder: ['開始季度', '結束季度'],
       rangeMonthPlaceholder: ['開始月份', '結束月份'],
       rangeWeekPlaceholder: ['開始周', '結束周']
     },
