@@ -97,7 +97,8 @@
             "development": {
               "buildTarget": "ng-zorro-antd-doc:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         }
       }
     },
