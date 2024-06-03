@@ -19,8 +19,8 @@ import { NzColor } from 'ng-zorro-antd/color-picker';
               description="React"
             ></app-footer-item>
             <app-footer-item title="Ant Design" link="https://vue.ant.design/" description="Vue"></app-footer-item>
-            <app-footer-item title="Angular" link="https://angular.io/"></app-footer-item>
-            <app-footer-item title="Angular CLI" link="https://cli.angular.io/"></app-footer-item>
+            <app-footer-item title="Angular" link="https://angular.dev/"></app-footer-item>
+            <app-footer-item title="Angular CLI" link="https://angular.dev/tools/cli"></app-footer-item>
           </div>
           <div app-footer-col [title]="language === 'zh' ? '社区' : 'Community'">
             <app-footer-item
