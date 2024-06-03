@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzMenuModeType } from './menu.types';
+import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
 
 @Component({
   selector: '[nz-submenu-title]',
@@ -72,6 +72,7 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   @Input() nzDisabled = false;
   @Input() paddingLeft: number | null = null;
   @Input() mode: NzMenuModeType = 'vertical';
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Output() readonly toggleSubMenu = new EventEmitter();
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
@@ -96,12 +97,13 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   }
 
   setMouseState(state: boolean): void {
-    if (!this.nzDisabled) {
+    if ((!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') || !state) {
       this.subMenuMouseState.next(state);
     }
   }
   clickTitle(): void {
-    if (this.mode === 'inline' && !this.nzDisabled) {
+    if ((this.mode === 'inline' || this.nzTriggerSubMenuAction === 'click') && !this.nzDisabled) {
+      this.subMenuMouseState.next(true);
       this.toggleSubMenu.emit();
     }
   }

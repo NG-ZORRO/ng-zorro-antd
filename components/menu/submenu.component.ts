@@ -40,7 +40,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
-import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
 import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
 import { NzSubMenuTitleComponent } from './submenu-title.component';
@@ -79,6 +79,7 @@ const listOfHorizontalPositions = [
       [nzDisabled]="nzDisabled"
       [isMenuInsideDropDown]="isMenuInsideDropDown"
       [paddingLeft]="nzPaddingLeft || inlinePaddingLeft"
+      [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
@@ -163,6 +164,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
