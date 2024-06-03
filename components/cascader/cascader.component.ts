@@ -30,7 +30,9 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
-  forwardRef
+  booleanAttribute,
+  forwardRef,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
@@ -43,7 +45,6 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NgClassType,
   NgStyleInterface,
@@ -51,7 +52,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -249,12 +250,6 @@ export class NzCascaderComponent
   implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzShowInput: BooleanInput;
-  static ngAcceptInputType_nzShowArrow: BooleanInput;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
 
@@ -273,12 +268,12 @@ export class NzCascaderComponent
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
-  @Input() @InputBoolean() nzShowInput = true;
-  @Input() @InputBoolean() nzShowArrow = true;
-  @Input() @InputBoolean() nzAllowClear = true;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzChangeOnSelect = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzShowInput = true;
+  @Input({ transform: booleanAttribute }) nzShowArrow = true;
+  @Input({ transform: booleanAttribute }) nzAllowClear = true;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzChangeOnSelect = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
@@ -291,8 +286,8 @@ export class NzCascaderComponent
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
   @Input() nzMenuStyle: NgStyleInterface | null = null;
-  @Input() nzMouseEnterDelay: number = 150; // ms
-  @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150; // ms
   @Input() nzStatus: NzStatus = '';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];

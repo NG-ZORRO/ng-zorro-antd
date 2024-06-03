@@ -9,11 +9,10 @@ import {
   ConnectedOverlayPositionChange,
   FlexibleConnectedPositionStrategyOrigin
 } from '@angular/cdk/overlay';
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { getPlacementName } from './overlay-position';
 
@@ -26,7 +25,7 @@ type Dimensions = Omit<ClientRect, 'x' | 'y' | 'toJSON'>;
   providers: [NzDestroyService]
 })
 export class NzConnectedOverlayDirective {
-  @Input() @InputBoolean() nzArrowPointAtCenter: boolean = false;
+  @Input({ transform: booleanAttribute }) nzArrowPointAtCenter: boolean = false;
 
   constructor(
     private readonly cdkConnectedOverlay: CdkConnectedOverlay,

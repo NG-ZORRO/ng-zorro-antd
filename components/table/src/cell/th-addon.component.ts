@@ -18,14 +18,13 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzTableFilterComponent } from '../addon/filter.component';
 import { NzTableSortersComponent } from '../addon/sorters.component';
@@ -83,10 +82,6 @@ import {
   standalone: true
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
-  static ngAcceptInputType_nzShowSort: BooleanInput;
-  static ngAcceptInputType_nzShowFilter: BooleanInput;
-  static ngAcceptInputType_nzCustomFilter: BooleanInput;
-
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject<void>();
   nzFilterValue: NzTableFilterValue = null;
@@ -103,9 +98,9 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   @Input() nzFilters: NzTableFilterList = [];
   @Input() nzSortFn: NzTableSortFn<T> | boolean | null = null;
   @Input() nzFilterFn: NzTableFilterFn<T> | boolean | null = null;
-  @Input() @InputBoolean() nzShowSort = false;
-  @Input() @InputBoolean() nzShowFilter = false;
-  @Input() @InputBoolean() nzCustomFilter = false;
+  @Input({ transform: booleanAttribute }) nzShowSort = false;
+  @Input({ transform: booleanAttribute }) nzShowFilter = false;
+  @Input({ transform: booleanAttribute }) nzCustomFilter = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();

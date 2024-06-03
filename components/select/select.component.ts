@@ -22,7 +22,6 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Input,
   NgZone,
@@ -36,7 +35,9 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
@@ -46,11 +47,10 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NzSafeAny,
   NzStatus,
@@ -58,7 +58,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -222,16 +222,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzShowSearch: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzAutoClearSearchValue: BooleanInput;
-  static ngAcceptInputType_nzServerSearch: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzOpen: BooleanInput;
-
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
@@ -258,20 +248,20 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
-  @Input() @InputBoolean() nzAllowClear = false;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBorderless = false;
-  @Input() @InputBoolean() nzShowSearch = false;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzAutoClearSearchValue = true;
-  @Input() @InputBoolean() nzServerSearch = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzOpen = false;
-  @Input() @InputBoolean() nzSelectOnTab = false;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) nzShowSearch = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzAutoClearSearchValue = true;
+  @Input({ transform: booleanAttribute }) nzServerSearch = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzOpen = false;
+  @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
+  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzShowArrow(value: boolean) {
     this._nzShowArrow = value;
   }

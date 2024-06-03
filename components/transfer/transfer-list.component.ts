@@ -18,7 +18,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
@@ -139,8 +140,8 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
-  @Input() disabled: boolean = false;
-  @Input() showSearch?: boolean;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) showSearch?: boolean;
   @Input() searchPlaceholder?: string;
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;

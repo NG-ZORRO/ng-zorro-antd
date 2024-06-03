@@ -12,7 +12,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -187,9 +188,9 @@ export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
   @Input() endPanelMode!: NzDateMode;
   @Input() panelMode!: NzDateMode;
-  @Input() showWeek!: boolean;
+  @Input({ transform: booleanAttribute }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showTimePicker!: boolean;
+  @Input({ transform: booleanAttribute }) showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;

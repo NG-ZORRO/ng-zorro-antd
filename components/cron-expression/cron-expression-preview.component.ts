@@ -12,10 +12,10 @@ import {
   Input,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzCronExpressionCronErrorI18n } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -62,7 +62,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 })
 export class NzCronExpressionPreviewComponent {
   @Input() TimeList: Date[] = [];
-  @Input() @InputBoolean() visible: boolean = true;
+  @Input({ transform: booleanAttribute }) visible: boolean = true;
   @Input() locale!: NzCronExpressionCronErrorI18n;
   @Input() nzSemantic: TemplateRef<void> | null = null;
   @Output() readonly loadMorePreview = new EventEmitter<void>();

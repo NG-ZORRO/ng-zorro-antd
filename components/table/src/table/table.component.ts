@@ -24,15 +24,16 @@ import {
   TemplateRef,
   TrackByFunction,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { measureScrollbar } from 'ng-zorro-antd/core/util';
 import { NzPaginationModule, PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
@@ -156,17 +157,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzFrontPagination: BooleanInput;
-  static ngAcceptInputType_nzTemplateMode: BooleanInput;
-  static ngAcceptInputType_nzShowPagination: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzOuterBordered: BooleanInput;
-  static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
-  static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
-  static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
-  static ngAcceptInputType_nzSimple: BooleanInput;
-
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
@@ -189,18 +179,18 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() nzPaginationType: NzTablePaginationType = 'default';
-  @Input() @InputBoolean() nzFrontPagination = true;
-  @Input() @InputBoolean() nzTemplateMode = false;
-  @Input() @InputBoolean() nzShowPagination = true;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzOuterBordered = false;
+  @Input({ transform: booleanAttribute }) nzFrontPagination = true;
+  @Input({ transform: booleanAttribute }) nzTemplateMode = false;
+  @Input({ transform: booleanAttribute }) nzShowPagination = true;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzOuterBordered = false;
   @Input() @WithConfig() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
-  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() @WithConfig() nzSize: NzTableSize = 'default';
-  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzHideOnSinglePage: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzSimple: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowSizeChanger: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHideOnSinglePage: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowQuickJumper: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzSimple: boolean = false;
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();

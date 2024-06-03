@@ -15,15 +15,16 @@ import {
   OnInit,
   Optional,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
-import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { isNotNil, numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
@@ -174,27 +175,21 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzSuccessPercent: NumberInput;
-  static ngAcceptInputType_nzPercent: NumberInput;
-  static ngAcceptInputType_nzStrokeWidth: NumberInput;
-  static ngAcceptInputType_nzGapDegree: NumberInput;
-  static ngAcceptInputType_nzSteps: NumberInput;
-
   @Input() @WithConfig() nzShowInfo: boolean = true;
   @Input() nzWidth = 132;
   @Input() @WithConfig() nzStrokeColor?: NzProgressStrokeColorType = undefined;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
-  @Input() @InputNumber() nzSuccessPercent?: number;
-  @Input() @InputNumber() nzPercent: number = 0;
-  @Input() @WithConfig() @InputNumber() nzStrokeWidth?: number = undefined;
-  @Input() @WithConfig() @InputNumber() nzGapDegree?: number = undefined;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzSuccessPercent?: number;
+  @Input({ transform: numberAttribute }) nzPercent: number = 0;
+  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzStrokeWidth?: number;
+  @Input({ transform: numberAttributeWithZeroFallback }) @WithConfig() nzGapDegree?: number;
   @Input() nzStatus?: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
   @Input() @WithConfig() nzGapPosition: NzProgressGapPositionType = 'top';
   @Input() @WithConfig() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
-  @Input() @InputNumber() nzSteps: number = 0;
+  @Input({ transform: numberAttribute }) nzSteps: number = 0;
 
   steps: NzProgressStepItem[] = [];
 

@@ -15,13 +15,12 @@ import {
   SimpleChange,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzRowExpandButtonDirective } from '../addon/row-expand-button.directive';
 import { NzRowIndentDirective } from '../addon/row-indent.directive';
@@ -66,18 +65,14 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
   standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
-  static ngAcceptInputType_nzShowExpand: BooleanInput;
-  static ngAcceptInputType_nzShowCheckbox: BooleanInput;
-  static ngAcceptInputType_nzExpand: BooleanInput;
-
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzLabel: string | null = null;
   @Input() nzIndentSize = 0;
-  @Input() @InputBoolean() nzShowExpand = false;
-  @Input() @InputBoolean() nzShowCheckbox = false;
-  @Input() @InputBoolean() nzExpand = false;
+  @Input({ transform: booleanAttribute }) nzShowExpand = false;
+  @Input({ transform: booleanAttribute }) nzShowCheckbox = false;
+  @Input({ transform: booleanAttribute }) nzExpand = false;
   @Input() nzExpandIcon: TemplateRef<void> | null = null;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();

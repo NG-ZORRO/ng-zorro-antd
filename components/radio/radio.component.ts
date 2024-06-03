@@ -7,12 +7,10 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
-  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
   Inject,
   Input,
   NgZone,
@@ -20,15 +18,16 @@ import {
   OnInit,
   Optional,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioService } from './radio.service';
 
@@ -82,9 +81,6 @@ import { NzRadioService } from './radio.service';
   standalone: true
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-
   private isNgModel = false;
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
@@ -94,8 +90,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
 
   dir: Direction = 'ltr';

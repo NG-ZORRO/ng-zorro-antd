@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgClass } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -29,8 +30,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { normalizeOptions, NzNormalizedOptions, NzSegmentedOption, NzSegmentedOptions } from './types';
@@ -99,19 +99,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   standalone: true
 })
 export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzBlock: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChildren('itemLabels', { read: ElementRef }) listOfOptions!: QueryList<ElementRef>;
 
-  @Input()
-  @InputBoolean()
+  @Input({ transform: booleanAttribute })
   nzBlock: boolean = false;
 
-  @Input()
-  @InputBoolean()
+  @Input({ transform: booleanAttribute })
   nzDisabled: boolean = false;
 
   @Input() nzOptions: NzSegmentedOptions = [];

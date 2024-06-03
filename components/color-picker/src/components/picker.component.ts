@@ -16,7 +16,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  booleanAttribute
 } from '@angular/core';
 
 import { Color } from '../interfaces/color';
@@ -76,7 +77,7 @@ export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() color: Color | null = null;
   @Output() readonly nzOnChange = new EventEmitter<Color>();
   @Output() readonly nzOnChangeComplete = new EventEmitter<HsbaColorType>();
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   offsetValue: TransformOffset = { x: 0, y: 0 };
   dragRef: boolean = false;

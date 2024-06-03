@@ -13,7 +13,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -89,12 +90,12 @@ import { PREFIX_CLASS } from './util';
 })
 export class CalendarFooterComponent implements OnChanges {
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showToday: boolean = false;
-  @Input() showNow: boolean = false;
-  @Input() hasTimePicker: boolean = false;
-  @Input() isRange: boolean = false;
+  @Input({ transform: booleanAttribute }) showToday: boolean = false;
+  @Input({ transform: booleanAttribute }) showNow: boolean = false;
+  @Input({ transform: booleanAttribute }) hasTimePicker: boolean = false;
+  @Input({ transform: booleanAttribute }) isRange: boolean = false;
 
-  @Input() okDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) okDisabled: boolean = false;
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() rangeQuickSelector: TemplateRef<NzSafeAny> | null = null;
