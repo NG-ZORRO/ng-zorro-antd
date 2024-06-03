@@ -5,7 +5,7 @@ title: Getting Started
 
 Ant Design of Angular is dedicated to providing a **good development experience** for programmers.
 
-> The prerequisite of Ant Design Angular is a solid background knowledge of [Angular](https://angular.io/) and [JavaScript ES2015](http://babeljs.io/docs/learn-es2015/).
+> The prerequisite of Ant Design Angular is a solid background knowledge of [Angular](https://angular.dev) and [JavaScript ES2015](http://babeljs.io/docs/learn-es2015/).
 
 ## Playground
 

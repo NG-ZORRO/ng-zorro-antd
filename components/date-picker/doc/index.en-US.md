@@ -17,24 +17,27 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 ## API
 
-**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `app.module.ts`.
+**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be
+provided in the file of `app.module.ts`.
 
 For example:
 
 ```typescript
-import { registerLocaleData } from '@angular/common';
+import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
-**Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it with [date-fns](https://date-fns.org/).
+**Note:** All input and output date objects
+are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it
+with [date-fns](https://date-fns.org/).
 
 ### Common API
 
 The following APIs are shared by nz-date-picker, nz-range-picker.
 
 | Property                 | Description                                                                                                                        | Type                                                       | Default                                                                                                    | Global Config |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|---------------|
 | `[nzId]`                 | input id attribute inside the component                                                                                            | `string`                                                   | -                                                                                                          |
 | `[nzAllowClear]`         | Whether to show clear button                                                                                                       | `boolean`                                                  | `true`                                                                                                     | -             |
 | `[nzAutoFocus]`          | get focus when component mounted                                                                                                   | `boolean`                                                  | `false`                                                                                                    | -             |
@@ -53,7 +56,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzSize]`               | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'`                                       | -                                                                                                          | -             |
 | `[nzStatus]`             | Set validation status                                                                                                              | `'error' \| 'warning'`                                     | -                                                                                                          |
 | `[nzPlacement]`          | The position where the selection box pops up                                                                                       | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | `'bottomLeft'`                                                                                             |               |
-| `[nzSuffixIcon]`         | the custom suffix icon                                                                                                             | `string` \| `TemplateRef`                                  | -                                                                                                          | ✅            |
+| `[nzSuffixIcon]`         | the custom suffix icon                                                                                                             | `string` \| `TemplateRef`                                  | -                                                                                                          | ✅             |
 | `[nzBorderless]`         | remove the border                                                                                                                  | `boolean`                                                  | `false`                                                                                                    | -             |
 | `[nzInline]`             | inline mode                                                                                                                        | `boolean`                                                  | `false`                                                                                                    | -             |
 | `(nzOnOpenChange)`       | a callback emitter, can be executed whether the popup calendar is popped up or closed                                              | `EventEmitter<boolean>`                                    | -                                                                                                          | -             |
@@ -61,20 +64,20 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 ### Common Methods
 
 | Name      | Description          |
-| --------- | -------------------- |
+|-----------|----------------------|
 | `open()`  | open calendar panel  |
 | `close()` | close calendar panel |
 
 ### nz-date-picker:standalone
 
 | Property      | Description | Type   | Default |
-| ------------- | ----------- | ------ | ------- |
+|---------------|-------------|--------|---------|
 | `[(ngModel)]` | Date        | `Date` | -       |
 
 ### nz-date-picker[nzMode="date"]:standalone
 
 | Property             | Description                                                                                                        | Type                                                                           | Default                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+|----------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | `[nzDateRender]`     | custom rendering function for date cells (Not support by month-picker/year-picker)                                 | -                                                                              | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` |
 | `[nzDisabledTime]`   | to specify the time that cannot be selected                                                                        | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | -                                                                           |
 | `[nzShowTime]`       | to provide an additional time selection                                                                            | `object \| boolean`                                                            | [TimePicker Options](/components/time-picker/en#api)                        |
@@ -86,7 +89,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 ### nz-range-picker:standalone
 
 | Property               | Description                                                 | Type                                                               | Default |
-| ---------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ | ------- |
+|------------------------|-------------------------------------------------------------|--------------------------------------------------------------------|---------|
 | `[(ngModel)]`          | Date                                                        | `Date[]`                                                           | -       |
 | `[nzRanges]`           | preseted ranges for quick selection                         | `{ [ key: string ]: Date[] } \| { [ key: string ]: () => Date[] }` | -       |
 | `[nzSeparator]`        | separator                                                   | `string \| TemplateRef`                                            | `'~'`   |
@@ -95,16 +98,20 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 ### nz-range-picker[nzMode="date"]:standalone
 
 | Property             | Description                                                                                                        | Type                                                                                                      | Default                                              |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+|----------------------|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|------------------------------------------------------|
 | `[nzShowTime]`       | to provide an additional time selection                                                                            | `object \| boolean`                                                                                       | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzDisabledTime]`   | to specify the time that cannot be selected                                                                        | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | -                                                    |
 | `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean`                                                                                                 | `false`                                              |
 | `(nzOnOk)`           | click ok callback                                                                                                  | `EventEmitter<Date[]>`                                                                                    | -                                                    |
 
-> Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
+> Currently, supported `nz-time-picker` parameters in `nzShowTime`
+> are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
 ## FAQ
 
 ### Why does manual input not take effect after setting `nzFormat="dd/MM/yyyy"`
 
-You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (default, [syntax reference](https://angular.io/api/common/DatePipe)) and `date-fns` (see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO takes the function provided by `date-fns` to implement date deserialization after using it.
+You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (
+default, [syntax reference](https://angular.dev/api/common/DatePipe)) and `date-fns` (
+see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO
+takes the function provided by `date-fns` to implement date deserialization after using it.
