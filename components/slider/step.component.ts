@@ -18,17 +18,18 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   exportAs: 'nzSliderStep',
   preserveWhitespaces: false,
   template: `
-    <div class="ant-slider-step">
-      <span
-        class="ant-slider-dot"
-        *ngFor="let mark of steps; trackBy: trackById"
-        [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style!"
-      ></span>
-    </div>
+    <span
+      class="ant-slider-dot"
+      *ngFor="let mark of steps; trackBy: trackById"
+      [class.ant-slider-dot-active]="mark.active"
+      [ngStyle]="mark.style!"
+    ></span>
   `,
   imports: [NgStyle, NgForOf],
-  standalone: true
+  standalone: true,
+  host: {
+    class: 'ant-slider-step'
+  }
 })
 export class NzSliderStepComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;
@@ -79,7 +80,7 @@ export class NzSliderStepComponent implements OnChanges {
         active: false,
         style: {
           [orient]: `${offset}%`,
-          transform: 'translateX(-50%)'
+          transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
         }
       };
     });

@@ -18,18 +18,19 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   selector: 'nz-slider-marks',
   exportAs: 'nzSliderMarks',
   template: `
-    <div class="ant-slider-mark">
-      <span
-        class="ant-slider-mark-text"
-        *ngFor="let attr of marks; trackBy: trackById"
-        [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style!"
-        [innerHTML]="attr.label"
-      ></span>
-    </div>
+    <span
+      class="ant-slider-mark-text"
+      *ngFor="let attr of marks; trackBy: trackById"
+      [class.ant-slider-mark-active]="attr.active"
+      [ngStyle]="attr.style!"
+      [innerHTML]="attr.label"
+    ></span>
   `,
   imports: [NgStyle, NgForOf],
-  standalone: true
+  standalone: true,
+  host: {
+    class: 'ant-slider-mark'
+  }
 })
 export class NzSliderMarksComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;

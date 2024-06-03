@@ -4,6 +4,7 @@
  */
 
 import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
@@ -38,6 +39,9 @@ import { ModalOptions } from './modal-types';
   template: `
     <div
       #modalElement
+      cdkDrag
+      cdkDragBoundary=".cdk-overlay-container"
+      [cdkDragDisabled]="!config.nzDraggable"
       role="document"
       class="ant-modal"
       [ngClass]="config.nzClassName!"
@@ -49,7 +53,7 @@ import { ModalOptions } from './modal-types';
           <button nz-modal-close (click)="onCloseClick()"></button>
         }
         @if (config.nzTitle) {
-          <div nz-modal-title></div>
+          <div nz-modal-title cdkDragHandle [style.cursor]="config.nzDraggable ? 'move' : 'auto'"></div>
         }
 
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
@@ -92,7 +96,9 @@ import { ModalOptions } from './modal-types';
     NzModalTitleComponent,
     PortalModule,
     NzModalFooterComponent,
-    NzPipesModule
+    NzPipesModule,
+    CdkDrag,
+    CdkDragHandle
   ],
   standalone: true
 })

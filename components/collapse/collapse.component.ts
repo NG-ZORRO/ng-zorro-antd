@@ -32,8 +32,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-collapse',
-    '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
-    '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
+    '[class.ant-collapse-icon-position-start]': `nzExpandIconPosition === 'left'`,
+    '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'right'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
     '[class.ant-collapse-rtl]': "dir === 'rtl'"
@@ -50,6 +50,7 @@ export class NzCollapseComponent implements OnInit {
   @Input() @WithConfig() @InputBoolean() nzAccordion: boolean = false;
   @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
   @Input() @WithConfig() @InputBoolean() nzGhost: boolean = false;
+  // TODO(v18): change 'left' | 'right' to 'start' | 'end, it's gonna be a break changing.
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
 
   dir: Direction = 'ltr';

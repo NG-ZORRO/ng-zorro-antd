@@ -39,6 +39,7 @@ export class NzSkeletonElementDirective {
   template: `
     <span
       class="ant-skeleton-button"
+      [class.ant-skeleton-button-square]="nzShape === 'square'"
       [class.ant-skeleton-button-round]="nzShape === 'round'"
       [class.ant-skeleton-button-circle]="nzShape === 'circle'"
       [class.ant-skeleton-button-lg]="nzSize === 'large'"

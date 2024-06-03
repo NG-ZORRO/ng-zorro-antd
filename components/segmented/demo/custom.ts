@@ -4,23 +4,25 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-custom',
-  template: `<nz-segmented [nzLabelTemplate]="templateRef" [nzOptions]="options"></nz-segmented>
+  template: `
+    <nz-segmented [nzLabelTemplate]="templateRef" [nzOptions]="options"></nz-segmented>
     <ng-template #temp let-index="index">
-      <ng-container [ngSwitch]="index">
-        <ng-container *ngSwitchCase="0">
+      @switch (index) {
+        @case (0) {
           <nz-avatar nzSrc="https://joeschmoe.io/api/v1/random"></nz-avatar>
           <div>User 1</div>
-        </ng-container>
-        <ng-container *ngSwitchCase="1">
+        }
+        @case (1) {
           <nz-avatar nzText="K"></nz-avatar>
           <div>User 2</div>
-        </ng-container>
-        <ng-container *ngSwitchCase="2">
+        }
+        @case (2) {
           <nz-avatar nzIcon="user"></nz-avatar>
           <div>User 3</div>
-        </ng-container>
-      </ng-container>
-    </ng-template> `,
+        }
+      }
+    </ng-template>
+  `,
   styles: [
     `
       .code-box-demo {

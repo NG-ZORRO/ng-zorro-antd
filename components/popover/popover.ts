@@ -5,12 +5,11 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -18,24 +17,22 @@ import {
   Input,
   Optional,
   Output,
-  Renderer2,
-  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import {
-  isTooltipEmpty,
-  NzTooltipBaseDirective,
   NzToolTipComponent,
+  NzTooltipBaseDirective,
   NzTooltipTrigger,
-  PropertyMapping
+  PropertyMapping,
+  isTooltipEmpty
 } from 'ng-zorro-antd/tooltip';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
@@ -71,8 +68,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopoverVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
-  override componentRef: ComponentRef<NzPopoverComponent> = this.hostView.createComponent(NzPopoverComponent);
-
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
@@ -80,14 +75,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     };
   }
 
-  constructor(
-    elementRef: ElementRef,
-    hostView: ViewContainerRef,
-    renderer: Renderer2,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective,
-    nzConfigService?: NzConfigService
-  ) {
-    super(elementRef, hostView, renderer, noAnimation, nzConfigService);
+  constructor() {
+    super(NzPopoverComponent);
   }
 }
 
@@ -128,9 +117,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
           </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
-              <div class="ant-popover-title" *ngIf="nzTitle">
-                <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-              </div>
+              @if (nzTitle) {
+                <div class="ant-popover-title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                </div>
+              }
               <div class="ant-popover-inner-content">
                 <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
               </div>
@@ -140,7 +131,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NgIf, NzOutletModule],
+  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule],
   standalone: true
 })
 export class NzPopoverComponent extends NzToolTipComponent {

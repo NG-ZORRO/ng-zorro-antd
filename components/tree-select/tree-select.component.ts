@@ -12,6 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -699,7 +700,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    const target = _getEventTarget(event);
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.closeDropDown();
     }
   }

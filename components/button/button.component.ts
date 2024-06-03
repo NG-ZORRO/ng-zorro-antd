@@ -22,7 +22,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -50,6 +50,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   `,
   host: {
     class: 'ant-btn',
+    '[class.ant-btn-default]': `nzType === 'default'`,
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,

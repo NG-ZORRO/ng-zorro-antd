@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
+import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import { NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
@@ -126,12 +126,15 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
     <nz-select-arrow
-      *ngIf="nzShowArrow || (hasFeedback && !!status)"
+      *ngIf="nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet"
       [showArrow]="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
       [feedbackIcon]="feedbackIconTpl"
+      [nzMaxMultipleCount]="nzMaxMultipleCount"
+      [listOfValue]="listOfValue"
+      [isMaxTagCountSet]="isMaxTagCountSet"
     >
       <ng-template #feedbackIconTpl>
         <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
@@ -178,6 +181,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
         [dropdownRender]="nzDropdownRender"
         [compareWith]="compareWith"
         [mode]="nzMode"
+        [isMaxLimitReached]="isMaxLimitReached"
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
@@ -231,7 +235,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() nzOptionHeightPx = 32;
+  @Input() @WithConfig<number>() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -275,6 +279,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
   }
 
+  get isMaxTagCountSet(): boolean {
+    return this.nzMaxMultipleCount !== Infinity;
+  }
+
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
@@ -309,6 +317,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   focused = false;
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
+  isMaxLimitReached = false;
 
   // status
   prefixCls: string = 'ant-select';
@@ -422,6 +431,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.value = model;
       this.onChange(this.value);
     }
+
+    this.isMaxLimitReached =
+      this.nzMaxMultipleCount !== Infinity && this.listOfValue.length === this.nzMaxMultipleCount;
   }
 
   onTokenSeparate(listOfLabel: string[]): void {
@@ -535,7 +547,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.host.nativeElement.contains(event.target as HTMLElement)) {
+    const target = _getEventTarget(event);
+    if (!this.host.nativeElement.contains(target as Node)) {
       this.setOpenState(false);
     }
   }

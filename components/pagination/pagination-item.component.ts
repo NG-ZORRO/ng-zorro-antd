@@ -33,7 +33,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
           <a>{{ page }}</a>
         }
         @case ('prev') {
-          <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+          <button type="button" [disabled]="disabled" [attr.title]="locale.prev_page" class="ant-pagination-item-link">
             @if (direction === 'rtl') {
               <span nz-icon nzType="right"></span>
             } @else {
@@ -42,7 +42,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
           </button>
         }
         @case ('next') {
-          <button type="button" [disabled]="disabled" class="ant-pagination-item-link">
+          <button type="button" [disabled]="disabled" [attr.title]="locale.next_page" class="ant-pagination-item-link">
             @if (direction === 'rtl') {
               <span nz-icon nzType="left"></span>
             } @else {
