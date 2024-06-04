@@ -61,7 +61,7 @@
     "@commitlint/cli": "^13.0.0",
     "@commitlint/config-angular": "^13.0.0",
     "@ctrl/tinycolor": "^3.6.0",
-    "@schematics/angular": "^17.3.0",
+    "@schematics/angular": "^18.0.2",
     "@stackblitz/sdk": "^1.5.2",
     "@types/d3": "^6.2.0",
     "@types/fs-extra": "^9.0.5",
