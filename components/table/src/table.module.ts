@@ -3,25 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { PlatformModule } from '@angular/cdk/platform';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzI18nModule } from 'ng-zorro-antd/i18n';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { NzFilterTriggerComponent } from './addon/filter-trigger.component';
 import { NzTableFilterComponent } from './addon/filter.component';
@@ -53,7 +35,7 @@ import { NzTrMeasureComponent } from './table/tr-measure.component';
 import { NzTrDirective } from './table/tr.directive';
 
 @NgModule({
-  declarations: [
+  imports: [
     NzTableComponent,
     NzThAddOnComponent,
     NzTableCellDirective,
@@ -102,25 +84,6 @@ import { NzTrDirective } from './table/tr.directive';
     NzCellEllipsisDirective,
     NzTableFixedRowComponent,
     NzThSelectionComponent
-  ],
-  imports: [
-    BidiModule,
-    NzMenuModule,
-    FormsModule,
-    NzOutletModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NzDropDownModule,
-    NzButtonModule,
-    CommonModule,
-    PlatformModule,
-    NzPaginationModule,
-    NzResizeObserverModule,
-    NzSpinModule,
-    NzI18nModule,
-    NzIconModule,
-    NzEmptyModule,
-    ScrollingModule
   ]
 })
 export class NzTableModule {}

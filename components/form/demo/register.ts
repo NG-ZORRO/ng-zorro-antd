@@ -37,10 +37,12 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
         <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
           <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
           <ng-template #errorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">
+            @if (control.errors?.['required']) {
+              Please confirm your password!
+            }
+            @if (control.errors?.['confirm']) {
               Two passwords that you enter is inconsistent!
-            </ng-container>
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -134,11 +136,11 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
         max-width: 600px;
       }
 
-      .phone-select {
+      .ant-select.ant-select-in-form-item.phone-select {
         width: 70px;
       }
 
-      .register-are {
+      .register-area {
         margin-bottom: 8px;
       }
     `

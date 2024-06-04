@@ -3,20 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   Input,
-  NgZone,
   OnChanges,
   QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { defer, merge, MonoTypeOperatorFunction, Observable, of, Subject } from 'rxjs';
-import { exhaustMap, startWith, take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, defer, merge, of } from 'rxjs';
+import { mergeMap, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -25,10 +26,11 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
   exportAs: 'nzListItemExtra',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-list-item-extra'
-  }
+  },
+  standalone: true
 })
 export class NzListItemExtraComponent {}
 
@@ -36,10 +38,11 @@ export class NzListItemExtraComponent {}
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template><ng-content></ng-content></ng-template> `
+  template: `<ng-template><ng-content></ng-content></ng-template>`,
+  standalone: true
 })
 export class NzListItemActionComponent {
-  @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) templateRef?: TemplateRef<void>;
 }
 
 @Component({
@@ -47,17 +50,23 @@ export class NzListItemActionComponent {
   exportAs: 'nzListItemActions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li *ngFor="let i of actions; let last = last">
-      <ng-template [ngTemplateOutlet]="i"></ng-template>
-      <em *ngIf="!last" class="ant-list-item-action-split"></em>
-    </li>
+    @for (i of actions; track i) {
+      <li>
+        <ng-template [ngTemplateOutlet]="i" />
+        @if (!$last) {
+          <em class="ant-list-item-action-split"></em>
+        }
+      </li>
+    }
   `,
   host: {
     class: 'ant-list-item-action'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
-export class NzListItemActionsComponent implements OnChanges {
+export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
@@ -67,14 +76,14 @@ export class NzListItemActionsComponent implements OnChanges {
     if (this.nzListItemActions) {
       return of(null);
     }
-    return this.ngZone.onStable.pipe(
-      take(1),
-      this.enterZone(),
-      exhaustMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
+    return this.initialized.pipe(
+      mergeMap(() => this.nzListItemActions.changes.pipe(startWith(this.nzListItemActions)))
     );
   });
 
-  constructor(private ngZone: NgZone, cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
+  private initialized = new Subject<void>();
+
+  constructor(cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
       .pipe(takeUntil(destroy$))
       .subscribe(() => {
@@ -91,12 +100,8 @@ export class NzListItemActionsComponent implements OnChanges {
     this.inputActionChanges$.next(null);
   }
 
-  private enterZone<T>(): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>) =>
-      new Observable<T>(observer =>
-        source.subscribe({
-          next: value => this.ngZone.run(() => observer.next(value))
-        })
-      );
+  ngAfterContentInit(): void {
+    this.initialized.next();
+    this.initialized.complete();
   }
 }

@@ -4,9 +4,10 @@
  */
 
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,6 +16,7 @@ import {
   Inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   Output,
@@ -26,10 +28,11 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
 import { getOffsetTop } from './util';
@@ -39,6 +42,7 @@ interface Section {
   top: number;
 }
 
+const VISIBLE_CLASSNAME = 'ant-anchor-ink-ball-visible';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
@@ -48,12 +52,23 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-anchor',
   exportAs: 'nzAnchor',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
   template: `
-    <nz-affix *ngIf="nzAffix; else content" [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
+    @if (nzAffix) {
+      <nz-affix [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
+        <ng-template [ngTemplateOutlet]="content"></ng-template>
+      </nz-affix>
+    } @else {
       <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </nz-affix>
+    }
+
     <ng-template #content>
-      <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
+      <div
+        class="ant-anchor-wrapper"
+        [ngClass]="{ 'ant-anchor-wrapper-horizontal': nzDirection === 'horizontal' }"
+        [ngStyle]="wrapperStyle"
+      >
         <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
@@ -68,37 +83,30 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAffix: BooleanInput;
-  static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
-  static ngAcceptInputType_nzBounds: NumberInput;
-  static ngAcceptInputType_nzOffsetTop: NumberInput;
 
   @ViewChild('ink', { static: false }) private ink!: ElementRef;
 
-  @Input() @InputBoolean() nzAffix = true;
+  @Input({ transform: booleanAttribute }) nzAffix = true;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   @WithConfig()
-  @InputBoolean()
   nzShowInkInFixed: boolean = false;
 
-  @Input()
+  @Input({ transform: numberAttribute })
   @WithConfig()
-  @InputNumber()
   nzBounds: number = 5;
 
-  @Input()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number>()
   nzOffsetTop?: number = undefined;
 
-  @Input()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number>()
   nzTargetOffset?: number = undefined;
 
   @Input() nzContainer?: string | HTMLElement;
   @Input() nzCurrentAnchor?: string;
+  @Input() nzDirection: NzDirectionVHType = 'vertical';
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzChange = new EventEmitter<string>();
@@ -113,7 +121,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
   private destroy$ = new Subject<boolean>();
-  private handleScrollTimeoutID = -1;
+  private handleScrollTimeoutID?: ReturnType<typeof setTimeout>;
 
   constructor(
     @Inject(DOCUMENT) private doc: NzSafeAny,
@@ -211,7 +219,11 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     targetComp.setActive();
     const linkNode = targetComp.getLinkTitleElement();
-    this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    if (this.nzDirection === 'vertical') {
+      this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    } else {
+      this.ink.nativeElement.style.left = `${linkNode.offsetLeft + linkNode.clientWidth / 2}px`;
+    }
     this.activeLink = (comp || targetComp).nzHref;
     if (originalActiveLink !== this.activeLink) {
       this.nzChange.emit(this.activeLink);
@@ -227,13 +239,12 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   private setVisible(): void {
-    const visible = this.visible;
-    const visibleClassname = 'visible';
     if (this.ink) {
+      const visible = this.visible;
       if (visible) {
-        this.renderer.addClass(this.ink.nativeElement, visibleClassname);
+        this.renderer.addClass(this.ink.nativeElement, VISIBLE_CLASSNAME);
       } else {
-        this.renderer.removeClass(this.ink.nativeElement, visibleClassname);
+        this.renderer.removeClass(this.ink.nativeElement, VISIBLE_CLASSNAME);
       }
     }
   }

@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 10
 title:
   zh-CN: 色彩块
   en-US: Color Block

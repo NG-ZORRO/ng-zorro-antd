@@ -19,7 +19,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ## API
 
-### [nz-image]
+### [nz-image]:standalone
 
 | 参数                | 说明                                                                                                     | 类型        | 默认值  | 支持全局配置 |
 | ------------------- | -------------------------------------------------------------------------------------------------------- | ----------- | ------- | ------------ |
@@ -63,6 +63,8 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzZoom              | 缩放比例                                                                                                 | `number`  | 1      |
 | nzRotate            | 旋转角度                                                                                                 | `number`  | 0      |
 | nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`  | 0.5    |
+| nzFlipHorizontally  | 在水平向量上翻转图像                                                                                     | `boolean` | `false` |
+| nzFlipVertically    | 在垂直向量上翻转图像                                                                                     | `boolean` | `false` |
 
 ### NzImagePreviewRef
 
@@ -73,8 +75,8 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | next(): void                  | 下一张       |
 | close(): void                 | 关闭预览     |
 
-### NzImageGroupComponent
+### NzImageGroupComponent:standalone
 
-| Property    | Description                                                                                                                     | Type | Default |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ---- | ------- |
-| nzScaleStep | The value of `nzScaleStep` will be applied to all the images inside, unless an image has its own `nzScaleStep` value specified. |
+| 名称        | 描述                                   | 类型     | 默认值 |
+| ----------- | -------------------------------------- | -------- | ------ |
+| nzScaleStep | `1 + nzScaleStep` 为缩放放大的每步倍数 | `number` | -      |

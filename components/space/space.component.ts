@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -13,14 +14,14 @@ import {
   OnChanges,
   OnDestroy,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';
@@ -67,17 +68,17 @@ const SPACE_SIZE: {
     '[class.ant-space-align-center]': 'mergedAlign === "center"',
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
-  }
+  },
+  imports: [NgTemplateOutlet, NgIf, NgForOf],
+  standalone: true
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
-  static ngAcceptInputType_nzWrap: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
   @Input() nzSplit: TemplateRef<{ $implicit: number }> | null = null;
-  @Input() @InputBoolean() nzWrap: boolean = false;
+  @Input({ transform: booleanAttribute }) nzWrap: boolean = false;
   @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
 
   @ContentChildren(NzSpaceItemDirective, { read: TemplateRef }) items!: QueryList<TemplateRef<NzSafeAny>>;
@@ -86,7 +87,10 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   spaceSize: number = SPACE_SIZE.small;
   private destroy$ = new Subject<boolean>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;

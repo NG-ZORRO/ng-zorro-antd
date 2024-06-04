@@ -15,18 +15,22 @@ import {
   OnInit,
   Optional,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
 export class NzOptionSelectionChange {
-  constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
+  constructor(
+    public source: NzAutocompleteOptionComponent,
+    public isUserInput: boolean = false
+  ) {}
 }
 
 @Component({
@@ -35,6 +39,7 @@ export class NzOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
   template: `
     <div class="ant-select-item-option-content">
       <ng-content></ng-content>
@@ -53,11 +58,9 @@ export class NzOptionSelectionChange {
   }
 })
 export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzValue: NzSafeAny;
   @Input() nzLabel?: string;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
   @Output() readonly mouseEntered = new EventEmitter<NzAutocompleteOptionComponent>();
 

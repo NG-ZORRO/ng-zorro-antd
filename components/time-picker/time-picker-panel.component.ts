@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { DecimalPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,16 +20,18 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { isNotNil } from 'ng-zorro-antd/core/util';
+import { DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { TimeHolder } from './time-holder';
 
@@ -126,11 +129,11 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }],
+  imports: [NgIf, NgForOf, DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule],
+  standalone: true
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
-  static ngAcceptInputType_nzUse12Hours: BooleanInput;
-
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
@@ -159,23 +162,21 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @ViewChild('secondListElement', { static: false }) secondListElement?: DebugElement;
   @ViewChild('use12HoursListElement', { static: false }) use12HoursListElement?: DebugElement;
 
-  @Input() nzInDatePicker: boolean = false; // If inside a date-picker, more diff works need to be done
+  @Input({ transform: booleanAttribute }) nzInDatePicker: boolean = false; // If inside a date-picker, more diff works need to be done
   @Input() nzAddOn?: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
   @Input() nzClearText?: string;
   @Input() nzNowText?: string;
   @Input() nzOkText?: string;
   @Input() nzPlaceHolder?: string | null;
-  @Input() @InputBoolean() nzUse12Hours = false;
+  @Input({ transform: booleanAttribute }) nzUse12Hours = false;
   @Input() nzDefaultOpenValue?: Date;
 
   @Output() readonly closePanel = new EventEmitter<void>();
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzAllowEmpty(value: boolean) {
-    if (isNotNil(value)) {
-      this._allowEmpty = value;
-    }
+    this._allowEmpty = value;
   }
 
   get nzAllowEmpty(): boolean {
@@ -246,36 +247,30 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     return this._format;
   }
 
-  @Input()
+  @Input({ transform: numberAttribute })
   set nzHourStep(value: number) {
-    if (isNotNil(value)) {
-      this._nzHourStep = value;
-      this.buildHours();
-    }
+    this._nzHourStep = value || 1;
+    this.buildHours();
   }
 
   get nzHourStep(): number {
     return this._nzHourStep;
   }
 
-  @Input()
+  @Input({ transform: numberAttribute })
   set nzMinuteStep(value: number) {
-    if (isNotNil(value)) {
-      this._nzMinuteStep = value;
-      this.buildMinutes();
-    }
+    this._nzMinuteStep = value || 1;
+    this.buildMinutes();
   }
 
   get nzMinuteStep(): number {
     return this._nzMinuteStep;
   }
 
-  @Input()
+  @Input({ transform: numberAttribute })
   set nzSecondStep(value: number) {
-    if (isNotNil(value)) {
-      this._nzSecondStep = value;
-      this.buildSeconds();
-    }
+    this._nzSecondStep = value || 1;
+    this.buildSeconds();
   }
 
   get nzSecondStep(): number {

@@ -43,7 +43,8 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-space-between]': `nzJustify === 'space-between'`,
     '[class.ant-row-space-evenly]': `nzJustify === 'space-evenly'`,
     '[class.ant-row-rtl]': `dir === "rtl"`
-  }
+  },
+  standalone: true
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() nzAlign: NzAlign | null = null;

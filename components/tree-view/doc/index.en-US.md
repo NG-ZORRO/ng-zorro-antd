@@ -16,139 +16,137 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 ## API
 
-### nz-tree-view
+### nz-tree-view:standalone
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| [nzTreeControl] | The tree controller | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl) | - |
-| [nzDataSource] | The data array to render | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | - |
-| [nzDirectoryTree] | Whether nodes are displayed as directory style | `boolean` | `false` |
-| [nzBlockNode] | Whether tree nodes fill remaining horizontal space| `boolean` | `false` |
+| Property          | Description                                        | Type                                                                                                       | Default |
+| ----------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------- |
+| [nzTreeControl]   | The tree controller                                | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -       |
+| [nzDataSource]    | The data array to render                           | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -       |
+| [nzDirectoryTree] | Whether nodes are displayed as directory style     | `boolean`                                                                                                  | `false` |
+| [nzBlockNode]     | Whether tree nodes fill remaining horizontal space | `boolean`                                                                                                  | `false` |
 
-### nz-tree-virtual-scroll-view
+### nz-tree-virtual-scroll-view:standalone
 
 The virtual scroll tree view, which can be accessed from
 the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) instance through
 the `virtualScrollViewport` member of the component instance.
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| [nzTreeControl] | The tree controller | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl) | - |
-| [nzDataSource] | The data array to render | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | - |
-| [nzDirectoryTree] | Whether nodes are displayed as directory style | `boolean` | `false` |
-| [nzBlockNode] | Whether tree nodes fill remaining horizontal space| `boolean` | `false` |
-| [nzItemSize] | The size of nodes in the tree (in pixels) | `number` | `28` |
-| [nzMinBufferPx] | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number` | `28 * 5` |
-| [nzMaxBufferPx] |  The amount of buffer required for rendering new nodes (in pixels) | `number` | `28 * 10` |
+| Property          | Description                                                                    | Type                                                                                                       | Default   |
+| ----------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | --------- |
+| [nzTreeControl]   | The tree controller                                                            | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -         |
+| [nzDataSource]    | The data array to render                                                       | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -         |
+| [nzDirectoryTree] | Whether nodes are displayed as directory style                                 | `boolean`                                                                                                  | `false`   |
+| [nzBlockNode]     | Whether tree nodes fill remaining horizontal space                             | `boolean`                                                                                                  | `false`   |
+| [nzItemSize]      | The size of nodes in the tree (in pixels)                                      | `number`                                                                                                   | `28`      |
+| [nzMinBufferPx]   | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number`                                                                                                   | `28 * 5`  |
+| [nzMaxBufferPx]   | The amount of buffer required for rendering new nodes (in pixels)              | `number`                                                                                                   | `28 * 10` |
 
-### [nzTreeNodeDef]
+### [nzTreeNodeDef]:standalone
 
 Directive to define `nz-tree-node`.
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| [nzTreeNodeDefWhen] |  A matching function which indicates whether inputted node should be used. It matches the very first node that makes this function return `true`. If no nodes that makes this function return `true`, the node which does not define this function would be matched instead. | `(index: number, nodeData: T) => boolean` | - |
+| Property            | Description                                                                                                                                                                                                                                                                 | Type                                      | Default |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------- |
+| [nzTreeNodeDefWhen] | A matching function which indicates whether inputted node should be used. It matches the very first node that makes this function return `true`. If no nodes that makes this function return `true`, the node which does not define this function would be matched instead. | `(index: number, nodeData: T) => boolean` | -       |
 
-### nz-tree-node
+### nz-tree-node:standalone
 
 The tree node container component, which needs to be defined by the `nzTreeNodeDef` directive.
 
-### [nzTreeNodePadding]
+### [nzTreeNodePadding]:standalone
 
 ```html
-
 <nz-tree-node nzTreeNodePadding></nz-tree-node>
 ```
 
 Show node indentation by adding `padding` **Best Performance**.
 
-### nzTreeNodeIndentLine
+### nzTreeNodeIndentLine:standalone
 
 ```html
-
 <nz-tree-node nzTreeNodeIndentLine></nz-tree-node>
 ```
 
 Show node indentation by adding indent lines.
 
-### nz-tree-node-toggle
+### nz-tree-node-toggle:standalone
 
 A toggle which is used to expand / collapse the node.
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
+| Property                    | Description                         | Type      | Default |
+| --------------------------- | ----------------------------------- | --------- | ------- |
 | [nzTreeNodeToggleRecursive] | Is it recursively expand / collapse | `boolean` | `false` |
 
-### nz-tree-node-toggle[nzTreeNodeNoopToggle]
+### nz-tree-node-toggle[nzTreeNodeNoopToggle]:standalone
 
 A toggle that does no actions. This can be used for placeholders or displays icons.
 
-### [nz-icon][nzTreeNodeToggleRotateIcon]
+### [nz-icon][nztreenodetogglerotateicon]:standalone
 
 Define an icon in the toggle, which it will automatically rotate depending on the collapse/expand state.
 
-### [nz-icon][nzTreeNodeToggleActiveIcon]
+### [nz-icon][nztreenodetoggleactiveicon]:standalone
 
 Define an icon in the toggle for an active style, which it can be used for the loading state.
 
-### nz-tree-node-option
+### nz-tree-node-option:standalone
 
 Define the selectable feature of a node.
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| [nzSelected] | Whether the option is selected | `boolean` | `false` |
-| [nzDisabled] | Whether the option is disabled | `boolean` | `false` |
-| (nzClick) | Event on click | `EventEmitter<MouseEvent>` | - |
+| Property     | Description                    | Type                       | Default |
+| ------------ | ------------------------------ | -------------------------- | ------- |
+| [nzSelected] | Whether the option is selected | `boolean`                  | `false` |
+| [nzDisabled] | Whether the option is disabled | `boolean`                  | `false` |
+| (nzClick)    | Event on click                 | `EventEmitter<MouseEvent>` | -       |
 
-### nz-tree-node-checkbox
+### nz-tree-node-checkbox:standalone
 
 Define the checkbox feature of a node.
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| [nzChecked] | Whether the checkbox is checked | `boolean` | `false` |
-| [nzDisabled] | Whether the checkbox is disabled | `boolean` | `false` |
-| [nzIndeterminate] | Whether the checkbox is indeterminate | `boolean` | `false` |
-| (nzClick) | Event on click | `EventEmitter<MouseEvent>` | - |
+| Property          | Description                           | Type                       | Default |
+| ----------------- | ------------------------------------- | -------------------------- | ------- |
+| [nzChecked]       | Whether the checkbox is checked       | `boolean`                  | `false` |
+| [nzDisabled]      | Whether the checkbox is disabled      | `boolean`                  | `false` |
+| [nzIndeterminate] | Whether the checkbox is indeterminate | `boolean`                  | `false` |
+| (nzClick)         | Event on click                        | `EventEmitter<MouseEvent>` | -       |
 
 ## Classes
 
-### __NzTreeFlatDataSource extends DataSource__
+### **NzTreeFlatDataSource extends DataSource**
 
 ### Construction Parameters
 
-| Name | Description |
-| --- | --- |
-| `treeControl: FlatTreeControl<F, K>` | The tree controller. |
+| Name                                      | Description                                                      |
+| ----------------------------------------- | ---------------------------------------------------------------- |
+| `treeControl: FlatTreeControl<F, K>`      | The tree controller.                                             |
 | `treeFlattener: NzTreeFlattener<T, F, K>` | Flattener for convert nested nodes `T` into flattened nodes `F`. |
-| `initialData: T[] = []` | Initialized data. |
+| `initialData: T[] = []`                   | Initialized data.                                                |
 
 ### Methods
 
-| Name | Description |
-| --- | --- |
+| Name                                                           | Description                                                  |
+| -------------------------------------------------------------- | ------------------------------------------------------------ |
 | `connect(collectionViewer: CollectionViewer): Observable<F[]>` | Call from the TreeView component to listen for data updates. |
-| `disconnect(): void` | Call when TreeView component is destroyed. |
-| `setData(value: T[]): void` | Set the origin data |
-| `getData(): T[]` | Get the origin data |
+| `disconnect(): void`                                           | Call when TreeView component is destroyed.                   |
+| `setData(value: T[]): void`                                    | Set the origin data                                          |
+| `getData(): T[]`                                               | Get the origin data                                          |
 
-### __NzTreeFlattener__
+### **NzTreeFlattener**
 
 Convert nested data with child nodes into node data with level information.
 
 ### Construction Parameters
 
-| Name | Description |
-| --- | --- |
-| `transformFunction: (node: T, level: number) => F` | Receive a nested node and return a flattened node |
-| `getLevel: (node: F) => number` | Define the method to get the `level` property |
-| `isExpandable: (node: F) => boolean` | Methods for defining whether a node is expandable |
+| Name                                                                    | Description                                           |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `transformFunction: (node: T, level: number) => F`                      | Receive a nested node and return a flattened node     |
+| `getLevel: (node: F) => number`                                         | Define the method to get the `level` property         |
+| `isExpandable: (node: F) => boolean`                                    | Methods for defining whether a node is expandable     |
 | `getChildren: (node: T) => Observable<T[]> \| T[] \| undefined \| null` | Define methods to get children nodes from nested node |
 
 ### Methods
 
-| Name | Description |
-| --- | --- |
-| `flattenNodes(structuredData: T[]): F[]` | Receive nested data and return flattened data |
+| Name                                                                    | Description                                       |
+| ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `flattenNodes(structuredData: T[]): F[]`                                | Receive nested data and return flattened data     |
 | `expandFlattenedNodes(nodes: F[], treeControl: TreeControl<F, K>): F[]` | Get flattened node data based on expansion status |

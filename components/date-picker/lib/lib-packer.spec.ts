@@ -1,11 +1,10 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService } from '../../i18n/date-helper.service';
-import { NzI18nService } from '../../i18n/nz-i18n.service';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { DateTableComponent } from './date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month-table.component';
@@ -25,10 +24,13 @@ describe('Coverage supplements', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzI18nService, DateHelperService], (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
-    dateHelper = dateHelperService;
-    i18n = i18nService;
-  }));
+  beforeEach(inject(
+    [NzI18nService, DateHelperService],
+    (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
+      dateHelper = dateHelperService;
+      i18n = i18nService;
+    }
+  ));
 
   // describe('CalendarHeader', () => {
   //   beforeEach(() => {

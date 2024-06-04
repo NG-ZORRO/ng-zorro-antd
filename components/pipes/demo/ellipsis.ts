@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <input type="text" nz-input [(ngModel)]="str" />
     <br />
-    <p>{{ str | nzEllipsis: 36:'...' }}</p>
+    <p>{{ str | nzEllipsis: 36 : '...' }}</p>
   `,
   styles: [
     `

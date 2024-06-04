@@ -38,11 +38,15 @@ import { NzZoomTransform } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-graph-minimap]': 'true'
-  }
+  },
+  standalone: true
 })
 export class NzGraphMinimapComponent implements OnDestroy {
   minimap?: Minimap;
-  constructor(private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private ngZone: NgZone
+  ) {}
 
   ngOnDestroy(): void {
     this.minimap?.destroy();

@@ -10,11 +10,11 @@ import { Injectable, Injector, Optional } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 
-import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-config';
+import { NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
-import { TImageScaleStep, TImageUrl } from './image.directive';
+import { NzImageScaleStep, NzImageUrl } from './image.directive';
 
 export interface NzImageService {
   preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
@@ -32,7 +32,7 @@ export class NzImageService {
   preview(
     images: NzImage[],
     options?: NzImagePreviewOptions,
-    zoomMap?: Map<TImageUrl, TImageScaleStep>
+    zoomMap?: Map<NzImageUrl, NzImageScaleStep>
   ): NzImagePreviewRef {
     return this.display(images, options, zoomMap);
   }
@@ -40,7 +40,7 @@ export class NzImageService {
   private display(
     images: NzImage[],
     config?: NzImagePreviewOptions,
-    scaleStepMap?: Map<TImageUrl, TImageScaleStep>
+    scaleStepMap?: Map<NzImageUrl, NzImageScaleStep>
   ): NzImagePreviewRef {
     const configMerged = { ...new NzImagePreviewOptions(), ...(config ?? {}) };
     const overlayRef = this.createOverlay(configMerged);
@@ -70,11 +70,9 @@ export class NzImageService {
   private createOverlay(config: NzImagePreviewOptions): OverlayRef {
     const globalConfig = (this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) as ImageConfig) || {};
     const overLayConfig = new OverlayConfig({
-      hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
       disposeOnNavigation: config.nzCloseOnNavigation ?? globalConfig.nzCloseOnNavigation ?? true,
-      backdropClass: IMAGE_PREVIEW_MASK_CLASS_NAME,
       direction: config.nzDirection || globalConfig.nzDirection || this.directionality.value
     });
 

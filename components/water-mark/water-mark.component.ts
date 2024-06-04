@@ -15,10 +15,11 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
+  numberAttribute
 } from '@angular/core';
 
-import { MarkStyleType, FontType } from './typings';
+import { FontType, MarkStyleType } from './typings';
 import { getPixelRatio, getStyleStr, reRendering, rotateWatermark } from './util';
 
 /**
@@ -30,6 +31,7 @@ const FontGap = 3;
 
 @Component({
   selector: 'nz-water-mark',
+  standalone: true,
   exportAs: 'NzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: ` <ng-content></ng-content> `,
@@ -38,10 +40,10 @@ const FontGap = 3;
   }
 })
 export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @Input() nzWidth: number = 120;
-  @Input() nzHeight: number = 64;
-  @Input() nzRotate: number = -22;
-  @Input() nzZIndex: number = 9;
+  @Input({ transform: numberAttribute }) nzWidth: number = 120;
+  @Input({ transform: numberAttribute }) nzHeight: number = 64;
+  @Input({ transform: numberAttribute }) nzRotate: number = -22;
+  @Input({ transform: numberAttribute }) nzZIndex: number = 9;
   @Input() nzImage: string = '';
   @Input() nzContent: string | string[] = '';
   @Input() nzFont: FontType = {};
@@ -63,7 +65,11 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
     });
   });
 
-  constructor(private el: ElementRef, @Inject(DOCUMENT) private document: Document, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private el: ElementRef,
+    @Inject(DOCUMENT) private document: Document,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.observer.observe(this.el.nativeElement, {
@@ -120,7 +126,8 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
       width: '100%',
       height: '100%',
       pointerEvents: 'none',
-      backgroundRepeat: 'repeat'
+      backgroundRepeat: 'repeat',
+      visibility: 'visible'
     };
 
     /** Calculate the style of the nzOffset */

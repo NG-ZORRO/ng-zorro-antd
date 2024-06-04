@@ -6,7 +6,7 @@ import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponent
 
 import { NzFormTextComponent } from './form-text.component';
 
-const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormTextComponent] };
+const testBedOptions = { imports: [NoopAnimationsModule, NzFormTextComponent] };
 
 describe('nz-form-text', () => {
   describe('default', () => {

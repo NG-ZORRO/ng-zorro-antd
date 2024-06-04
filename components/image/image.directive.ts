@@ -15,42 +15,41 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzImageGroupComponent } from './image-group.component';
-import { DEFAULT_NZ_SCALE_STEP } from './image-preview.component';
+import { NZ_DEFAULT_SCALE_STEP } from './image-preview.component';
 import { NzImageService } from './image.service';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'image';
 const INTERSECTION_THRESHOLD = 0.1;
 
 export type ImageStatusType = 'error' | 'loading' | 'normal';
-export type TImageUrl = string;
-export type TImageScaleStep = number;
+export type NzImageUrl = string;
+export type NzImageScaleStep = number;
 
 @Directive({
   selector: 'img[nz-image]',
   exportAs: 'nzImage',
   host: {
     '(click)': 'onPreview()'
-  }
+  },
+  standalone: true
 })
 export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzDisablePreview: BooleanInput;
-
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
   @Input() nzLoading: 'eager' | 'lazy' = 'eager';
-  @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
   @Input() @WithConfig() nzScaleStep: number | null = null;
@@ -104,11 +103,11 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
       const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc, srcset: e.nzSrcset }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
-      const scaleStepMap = new Map<TImageUrl, TImageScaleStep>();
+      const scaleStepMap = new Map<NzImageUrl, NzImageScaleStep>();
       previewAbleImages.forEach(imageDirective => {
         scaleStepMap.set(
           imageDirective.nzSrc ?? imageDirective.nzSrcset,
-          imageDirective.nzScaleStep ?? this.parentGroup.nzScaleStep ?? this.nzScaleStep ?? DEFAULT_NZ_SCALE_STEP
+          imageDirective.nzScaleStep ?? this.parentGroup.nzScaleStep ?? this.nzScaleStep ?? NZ_DEFAULT_SCALE_STEP
         );
       });
       const previewRef = this.nzImageService.preview(
@@ -124,7 +123,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       const previewImages = [{ src: this.nzSrc, srcset: this.nzSrcset }];
       this.nzImageService.preview(previewImages, {
         nzDirection: this.dir,
-        nzScaleStep: this.nzScaleStep ?? DEFAULT_NZ_SCALE_STEP
+        nzScaleStep: this.nzScaleStep ?? NZ_DEFAULT_SCALE_STEP
       });
     }
   }

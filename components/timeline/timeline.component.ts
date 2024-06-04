@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -19,10 +20,14 @@ import {
   SimpleChange,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
@@ -72,7 +77,9 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
     </ng-template>
     <!-- Grasp items -->
     <ng-content></ng-content>
-  `
+  `,
+  imports: [NgIf, NgTemplateOutlet, NgForOf, NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
@@ -80,7 +87,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   @Input() nzMode: NzTimelineMode = 'left';
   @Input() nzPending?: string | boolean | TemplateRef<void>;
   @Input() nzPendingDot?: string | TemplateRef<void>;
-  @Input() nzReverse: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
@@ -168,10 +175,10 @@ function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): N
   return mode === 'custom'
     ? undefined
     : mode === 'left'
-    ? 'left'
-    : mode === 'right'
-    ? 'right'
-    : mode === 'alternate' && index % 2 === 0
-    ? 'left'
-    : 'right';
+      ? 'left'
+      : mode === 'right'
+        ? 'right'
+        : mode === 'alternate' && index % 2 === 0
+          ? 'left'
+          : 'right';
 }

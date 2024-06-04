@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgIf, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,22 +22,18 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { Observable, of as observableOf, of, Subject } from 'rxjs';
+import { Observable, Subject, of as observableOf, of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import {
-  BooleanInput,
-  NgClassInterface,
-  NgStyleInterface,
-  NzSafeAny,
-  NzStatus,
-  NzValidateStatus
-} from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
   TransferCanMove,
@@ -155,13 +152,11 @@ import { NzTransferListComponent } from './transfer-list.component';
     '[class.ant-transfer-customize-list]': `nzRenderList`
   },
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzTransferListComponent, NgStyle, NzIconModule, NzButtonModule, NgIf],
+  standalone: true
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzShowSelectAll: BooleanInput;
-  static ngAcceptInputType_nzShowSearch: BooleanInput;
-
   private unsubscribe$ = new Subject<void>();
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
@@ -178,19 +173,19 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region fields
 
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: NgStyleInterface = {};
-  @Input() @InputBoolean() nzShowSelectAll = true;
+  @Input({ transform: booleanAttribute }) nzShowSelectAll = true;
   @Input() nzItemUnit?: string;
   @Input() nzItemsUnit?: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
   @Input() nzRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzFooter: TemplateRef<NzSafeAny> | null = null;
-  @Input() @InputBoolean() nzShowSearch = false;
+  @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input() nzFilterOption?: (inputValue: string, item: TransferItem) => boolean;
   @Input() nzSearchPlaceholder?: string;
   @Input() nzNotFoundContent?: string;

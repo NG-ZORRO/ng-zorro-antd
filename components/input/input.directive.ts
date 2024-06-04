@@ -16,15 +16,16 @@ import {
   Renderer2,
   Self,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
@@ -38,16 +39,15 @@ import { InputBoolean, getStatusClassNames } from 'ng-zorro-antd/core/util';
     '[attr.disabled]': 'disabled || null',
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless`
-  }
+  },
+  standalone: true
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_disabled: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  @Input() @InputBoolean() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() @InputBoolean() nzStepperless: boolean = true;
+  @Input({ transform: booleanAttribute }) nzStepperless: boolean = true;
   @Input() nzStatus: NzStatus = '';
-  @Input()
+  @Input({ transform: booleanAttribute })
   get disabled(): boolean {
     if (this.ngControl && this.ngControl.disabled !== null) {
       return this.ngControl.disabled;
@@ -55,7 +55,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     return this._disabled;
   }
   set disabled(value: boolean) {
-    this._disabled = value != null && `${value}` !== 'false';
+    this._disabled = value;
   }
   _disabled = false;
   disabled$ = new Subject<boolean>();

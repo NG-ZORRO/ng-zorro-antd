@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { NzCursorType, NzResizeDirection } from './resize-handle.component';
+import { NzCursorType, NzResizeDirection, NzResizeHandleComponent } from './resize-handle.component';
 
 export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
   'bottomRight',
@@ -40,13 +40,13 @@ function normalizeResizeHandleOptions(value: Array<NzResizeDirection | NzResizeH
   selector: 'nz-resize-handles',
   exportAs: 'nzResizeHandles',
   template: `
-    <nz-resize-handle
-      *ngFor="let option of resizeHandleOptions"
-      [nzDirection]="option.direction"
-      [nzCursorType]="option.cursorType"
-    ></nz-resize-handle>
+    @for (option of resizeHandleOptions; track option) {
+      <nz-resize-handle [nzDirection]="option.direction" [nzCursorType]="option.cursorType" />
+    }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzResizeHandleComponent],
+  standalone: true
 })
 export class NzResizeHandlesComponent implements OnChanges {
   @Input() nzDirections: Array<NzResizeDirection | NzResizeHandleOption> = DEFAULT_RESIZE_DIRECTION;

@@ -8,7 +8,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NzI18nService } from './nz-i18n.service';
 
 @Pipe({
-  name: 'nzI18n'
+  name: 'nzI18n',
+  standalone: true
 })
 export class NzI18nPipe implements PipeTransform {
   constructor(private _locale: NzI18nService) {}

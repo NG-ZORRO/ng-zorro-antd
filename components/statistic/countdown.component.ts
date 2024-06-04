@@ -22,6 +22,8 @@ import {
 } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
+import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
+
 import { NzStatisticComponent } from './statistic.component';
 
 const REFRESH_INTERVAL = 1000 / 30;
@@ -42,7 +44,9 @@ const REFRESH_INTERVAL = 1000 / 30;
     ></nz-statistic>
 
     <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
-  `
+  `,
+  imports: [NzStatisticComponent, NzPipesModule],
+  standalone: true
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFormat: string = 'HH:mm:ss';

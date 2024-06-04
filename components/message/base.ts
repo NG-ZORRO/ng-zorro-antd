@@ -82,7 +82,10 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
 
   protected readonly destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    protected nzConfigService: NzConfigService
+  ) {
     this.updateConfig();
   }
 
@@ -173,9 +176,9 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
-  protected closeTimer?: number;
+  protected closeTimer?: ReturnType<typeof setTimeout>;
   protected userAction: boolean = false;
-  protected eraseTimer: number | null = null;
+  protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
@@ -263,7 +266,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   private clearEraseTimeout(): void {
     if (this.eraseTimer !== null) {
       clearTimeout(this.eraseTimer);
-      this.eraseTimer = null;
+      this.eraseTimer = undefined;
     }
   }
 }

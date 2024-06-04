@@ -30,7 +30,8 @@ function encodeEntities(value: string): string {
 
 @Pipe({
   name: 'nzHighlight',
-  pure: true
+  pure: true,
+  standalone: true
 })
 export class NzHighlightPipe implements PipeTransform {
   private UNIQUE_WRAPPERS: [string, string] = ['##==-open_tag-==##', '##==-close_tag-==##'];

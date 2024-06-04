@@ -28,7 +28,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 <nz-badge [nzCount]="5" nzStandalone></nz-badge>
 ```
 
-### nz-badge
+### nz-badge:standalone
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzOffset]` | 设置状态点的位置偏移，格式为 [x, y] (非独立使用时) | `[number, number]` | - |
 
 
-### nz-ribbon
+### nz-ribbon:standalone
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

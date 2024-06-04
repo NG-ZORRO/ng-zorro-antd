@@ -54,7 +54,10 @@ class DynamicDatasource implements DataSource<FlatNode> {
   private flattenedData: BehaviorSubject<FlatNode[]>;
   private childrenLoadedSet = new Set<FlatNode>();
 
-  constructor(private treeControl: TreeControl<FlatNode>, initData: FlatNode[]) {
+  constructor(
+    private treeControl: TreeControl<FlatNode>,
+    initData: FlatNode[]
+  ) {
     this.flattenedData = new BehaviorSubject<FlatNode[]>(initData);
     treeControl.dataNodes = initData;
   }

@@ -66,6 +66,7 @@ export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
   weekPlaceholder?: string;
   rangePlaceholder?: string[];
   rangeYearPlaceholder?: string[];
+  rangeQuarterPlaceholder?: string[];
   rangeMonthPlaceholder?: string[];
   rangeWeekPlaceholder?: string[];
 }
@@ -149,6 +150,7 @@ export type NzCronExpressionI18nInterface = NzCronExpressionCronErrorI18n & NzCr
 export interface NzQRCodeI18nInterface {
   expired: string;
   refresh: string;
+  scanned: string;
 }
 
 export interface NzI18nInterface {

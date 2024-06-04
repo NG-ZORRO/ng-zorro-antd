@@ -8,7 +8,8 @@ import { AfterViewInit, Directive, ElementRef, Host, Optional, Renderer2 } from 
 import { NzButtonGroupComponent } from 'ng-zorro-antd/button';
 
 @Directive({
-  selector: '[nz-button][nz-dropdown]'
+  selector: '[nz-button][nz-dropdown]',
+  standalone: true
 })
 export class NzDropdownButtonDirective implements AfterViewInit {
   constructor(

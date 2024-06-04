@@ -47,6 +47,8 @@
 /components/empty/zh
 /components/form/en
 /components/form/zh
+/components/flex/en
+/components/flex/zh
 /components/grid/en
 /components/grid/zh
 /components/icon/en
@@ -155,8 +157,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v16/en
-/docs/migration-v16/zh
+/docs/migration-v17/en
+/docs/migration-v17/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en

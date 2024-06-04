@@ -4,9 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-carousel-basic',
   template: `
     <nz-carousel [nzEffect]="effect">
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
     </nz-carousel>
   `,
   styles: [

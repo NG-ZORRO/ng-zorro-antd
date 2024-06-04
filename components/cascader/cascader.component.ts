@@ -5,7 +5,9 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,20 +30,21 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
-  forwardRef
+  booleanAttribute,
+  forwardRef,
+  numberAttribute
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NgClassType,
   NgStyleInterface,
@@ -49,8 +52,10 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { InputBoolean, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
@@ -75,7 +80,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   preserveWhitespaces: false,
   template: `
     <div cdkOverlayOrigin #origin="cdkOverlayOrigin" #trigger>
-      <ng-container *ngIf="nzShowInput">
+      @if (nzShowInput) {
         <div #selectContainer class="ant-select-selector">
           <span class="ant-select-selection-search">
             <input
@@ -93,36 +98,42 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               (focus)="handleInputFocus()"
             />
           </span>
-          <span *ngIf="showLabelRender" class="ant-select-selection-item" [title]="labelRenderText">
-            <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
-            <ng-template #labelTemplate>
-              <ng-template
-                [ngTemplateOutlet]="nzLabelRender"
-                [ngTemplateOutletContext]="labelRenderContext"
-              ></ng-template>
-            </ng-template>
-          </span>
-          <span
-            *ngIf="!showLabelRender"
-            class="ant-select-selection-placeholder"
-            [style.visibility]="!inputValue ? 'visible' : 'hidden'"
-            >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
-          >
+          @if (showLabelRender) {
+            <span class="ant-select-selection-item" [title]="labelRenderText">
+              @if (!isLabelRenderTemplate) {
+                <ng-container>{{ labelRenderText }}</ng-container>
+              } @else {
+                <ng-template
+                  [ngTemplateOutlet]="nzLabelRender"
+                  [ngTemplateOutletContext]="labelRenderContext"
+                ></ng-template>
+              }
+            </span>
+          } @else {
+            <span class="ant-select-selection-placeholder" [style.visibility]="!inputValue ? 'visible' : 'hidden'">{{
+              showPlaceholder ? nzPlaceHolder || locale?.placeholder : null
+            }}</span>
+          }
         </div>
-        <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading" *ngIf="nzShowArrow">
-          <span
-            *ngIf="!isLoading"
-            nz-icon
-            [nzType]="$any(nzSuffixIcon)"
-            [class.ant-cascader-picker-arrow-expand]="menuVisible"
-          ></span>
-          <span *ngIf="isLoading" nz-icon nzType="loading"></span>
-          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-        </span>
-        <span class="ant-select-clear" *ngIf="clearIconVisible">
-          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
-        </span>
-      </ng-container>
+        @if (nzShowArrow) {
+          <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
+            @if (!isLoading) {
+              <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+            } @else {
+              <span nz-icon nzType="loading"></span>
+            }
+
+            @if (hasFeedback && !!status) {
+              <nz-form-item-feedback-icon [status]="status" />
+            }
+          </span>
+        }
+        @if (clearIconVisible) {
+          <span class="ant-select-clear">
+            <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
+          </span>
+        }
+      }
       <ng-content></ng-content>
     </div>
     <ng-template
@@ -154,46 +165,44 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           [ngClass]="menuCls"
           [ngStyle]="nzMenuStyle"
         >
-          <ul
-            *ngIf="shouldShowEmpty; else hasOptionsTemplate"
-            class="ant-cascader-menu"
-            [style.width]="dropdownWidthStyle"
-            [style.height]="dropdownHeightStyle"
-          >
-            <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
-              <nz-embed-empty
-                class="ant-cascader-menu-item-content"
-                [nzComponentName]="'cascader'"
-                [specificContent]="nzNotFoundContent"
-              ></nz-embed-empty>
-            </li>
-          </ul>
-          <ng-template #hasOptionsTemplate>
-            <ul
-              *ngFor="let options of cascaderService.columns; let i = index"
-              class="ant-cascader-menu"
-              role="menuitemcheckbox"
-              [ngClass]="menuColumnCls"
-              [style.height]="dropdownHeightStyle"
-              [style.width]="dropdownWidthStyle"
-            >
-              <li
-                nz-cascader-option
-                *ngFor="let option of options"
-                [expandIcon]="nzExpandIcon"
-                [columnIndex]="i"
-                [nzLabelProperty]="nzLabelProperty"
-                [optionTemplate]="nzOptionRender"
-                [activated]="isOptionActivated(option, i)"
-                [highlightText]="inSearchingMode ? inputValue : ''"
-                [option]="option"
-                [dir]="dir"
-                (mouseenter)="onOptionMouseEnter(option, i, $event)"
-                (mouseleave)="onOptionMouseLeave(option, i, $event)"
-                (click)="onOptionClick(option, i, $event)"
-              ></li>
+          @if (shouldShowEmpty) {
+            <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
+              <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
+                <nz-embed-empty
+                  class="ant-cascader-menu-item-content"
+                  [nzComponentName]="'cascader'"
+                  [specificContent]="nzNotFoundContent"
+                />
+              </li>
             </ul>
-          </ng-template>
+          } @else {
+            @for (options of cascaderService.columns; track options; let i = $index) {
+              <ul
+                class="ant-cascader-menu"
+                role="menuitemcheckbox"
+                [ngClass]="menuColumnCls"
+                [style.height]="dropdownHeightStyle"
+                [style.width]="dropdownWidthStyle"
+              >
+                @for (option of options; track option.value) {
+                  <li
+                    nz-cascader-option
+                    [expandIcon]="nzExpandIcon"
+                    [columnIndex]="i"
+                    [nzLabelProperty]="nzLabelProperty"
+                    [optionTemplate]="nzOptionRender"
+                    [activated]="isOptionActivated(option, i)"
+                    [highlightText]="inSearchingMode ? inputValue : ''"
+                    [option]="option"
+                    [dir]="dir"
+                    (mouseenter)="onOptionMouseEnter(option, i, $event)"
+                    (mouseleave)="onOptionMouseLeave(option, i, $event)"
+                    (click)="onOptionClick(option, i, $event)"
+                  ></li>
+                }
+              </ul>
+            }
+          }
         </div>
       </div>
     </ng-template>
@@ -220,19 +229,27 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-open]': 'menuVisible',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-single]': 'true',
-    '[class.ant-select-rtl]': `dir ==='rtl'`
-  }
+    '[class.ant-select-rtl]': `dir === 'rtl'`
+  },
+  imports: [
+    OverlayModule,
+    FormsModule,
+    NgTemplateOutlet,
+    NzIconModule,
+    NzFormPatchModule,
+    NzOverlayModule,
+    NzNoAnimationDirective,
+    NgClass,
+    NgStyle,
+    NzEmptyModule,
+    NzCascaderOptionComponent
+  ],
+  standalone: true
 })
 export class NzCascaderComponent
   implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzShowInput: BooleanInput;
-  static ngAcceptInputType_nzShowArrow: BooleanInput;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
 
@@ -251,12 +268,12 @@ export class NzCascaderComponent
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
-  @Input() @InputBoolean() nzShowInput = true;
-  @Input() @InputBoolean() nzShowArrow = true;
-  @Input() @InputBoolean() nzAllowClear = true;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzChangeOnSelect = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzShowInput = true;
+  @Input({ transform: booleanAttribute }) nzShowArrow = true;
+  @Input({ transform: booleanAttribute }) nzAllowClear = true;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzChangeOnSelect = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
@@ -269,8 +286,8 @@ export class NzCascaderComponent
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
   @Input() nzMenuStyle: NgStyleInterface | null = null;
-  @Input() nzMouseEnterDelay: number = 150; // ms
-  @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150; // ms
   @Input() nzStatus: NzStatus = '';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
@@ -326,8 +343,8 @@ export class NzCascaderComponent
 
   private inputString = '';
   private isOpening = false;
-  private delayMenuTimer: number | null = null;
-  private delaySelectTimer: number | null = null;
+  private delayMenuTimer?: ReturnType<typeof setTimeout>;
+  private delaySelectTimer?: ReturnType<typeof setTimeout>;
   private isNzDisableFirstChange: boolean = true;
 
   get inSearchingMode(): boolean {
@@ -535,7 +552,7 @@ export class NzCascaderComponent
   private clearDelayMenuTimer(): void {
     if (this.delayMenuTimer) {
       clearTimeout(this.delayMenuTimer);
-      this.delayMenuTimer = null;
+      this.delayMenuTimer = undefined;
     }
   }
 
@@ -650,7 +667,8 @@ export class NzCascaderComponent
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.el.contains(event.target as Node)) {
+    const target = _getEventTarget(event);
+    if (!this.el.contains(target as Node)) {
       this.closeMenu();
     }
   }
@@ -719,7 +737,7 @@ export class NzCascaderComponent
   private clearDelaySelectTimer(): void {
     if (this.delaySelectTimer) {
       clearTimeout(this.delaySelectTimer);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }
   }
 
@@ -727,7 +745,7 @@ export class NzCascaderComponent
     this.clearDelaySelectTimer();
     this.delaySelectTimer = setTimeout(() => {
       this.cascaderService.setOptionActivated(option, columnIndex, performSelect);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }, 150);
   }
 

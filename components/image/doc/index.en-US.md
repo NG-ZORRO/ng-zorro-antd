@@ -18,7 +18,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 ## API
 
-### [nz-image]
+### [nz-image]:standalone
 
 | Property            | Description                                                                                                                                                                                        | Type        | Default | Global Config |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------- | ------------- |
@@ -62,6 +62,8 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | nzZoom              | Zoom rate                                                                                                                                                                                          | `number`  | 1       |
 | nzRotate            | Rotate rate                                                                                                                                                                                        | `number`  | 0       |
 | nzScaleStep         | `1 + nzScaleStep` is the step to increase or decrease the scale                                                                                                                                    | `number`  | 0.5     |
+| nzFlipHorizontally  | Flip image on horizontal vector                                                                                                                                                                    | `boolean` | `false` |
+| nzFlipVertically    | Flip image on vertical vector                                                                                                                                                                      | `boolean` | `false` |
 
 ### NzImagePreviewRef
 
@@ -72,7 +74,7 @@ Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Elem
 | next(): void                  | Next image          |
 | close(): void                 | Close image preview |
 
-### NzImageGroupComponent
+### NzImageGroupComponent:standalone
 
 | Property    | Description                                                                                                                     | Type     | Default |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |

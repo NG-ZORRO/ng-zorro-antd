@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzAnchorComponent } from './anchor.component';
 
@@ -26,6 +27,8 @@ import { NzAnchorComponent } from './anchor.component';
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgTemplateOutlet],
   template: `
     <a
       #linkTitle
@@ -35,9 +38,15 @@ import { NzAnchorComponent } from './anchor.component';
       [target]="nzTarget"
       (click)="goToClick($event)"
     >
-      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+      @if (titleStr) {
+        <span>{{ titleStr }}</span>
+      } @else {
+        <ng-template [ngTemplateOutlet]="titleTpl || nzTemplate" />
+      }
     </a>
-    <ng-content></ng-content>
+    @if (nzDirection === 'vertical') {
+      <ng-content></ng-content>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +60,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
+  nzDirection: NzDirectionVHType = 'vertical';
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -74,6 +84,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+    this.nzDirection = this.anchorComp.nzDirection;
   }
 
   getLinkTitleElement(): HTMLAnchorElement {

@@ -3,13 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -18,12 +20,15 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
+import { NzOptionItemGroupComponent } from './option-item-group.component';
+import { NzOptionItemComponent } from './option-item.component';
 import { NzSelectItemInterface, NzSelectModeType } from './select.types';
 
 @Component({
@@ -61,7 +66,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               [customContent]="item.nzCustomContent"
               [template]="item.template"
               [grouped]="!!item.groupLabel"
-              [disabled]="item.nzDisabled"
+              [disabled]="item.nzDisabled || (isMaxLimitReached && !listOfSelectedValue.includes(item['nzValue']))"
               [showState]="mode === 'tags' || mode === 'multiple'"
               [title]="item.nzTitle"
               [label]="item.nzLabel"
@@ -78,7 +83,19 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
   `,
-  host: { class: 'ant-select-dropdown' }
+  host: { class: 'ant-select-dropdown' },
+  imports: [
+    NzEmptyModule,
+    NgIf,
+    NgSwitch,
+    NzOptionItemGroupComponent,
+    NgSwitchCase,
+    NzOptionItemComponent,
+    NgTemplateOutlet,
+    OverlayModule,
+    NzOverlayModule
+  ],
+  standalone: true
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
@@ -91,6 +108,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() matchWidth = true;
   @Input() itemSize = 32;
   @Input() maxItemLength = 8;
+  @Input() isMaxLimitReached = false;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
@@ -114,7 +132,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
 
   onScrolledIndexChange(index: number): void {
     this.scrolledIndex = index;
-    if (index === this.listOfContainerItem.length - this.maxItemLength) {
+    if (index === this.listOfContainerItem.length - this.maxItemLength - 1) {
       this.scrollToBottom.emit();
     }
   }

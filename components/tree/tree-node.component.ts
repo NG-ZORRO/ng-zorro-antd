@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,7 +20,8 @@ import {
   Output,
   Renderer2,
   SimpleChange,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -32,8 +34,11 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+
+import { NzTreeIndentComponent } from './tree-indent.component';
+import { NzTreeNodeBuiltinCheckboxComponent } from './tree-node-checkbox.component';
+import { NzTreeNodeSwitcherComponent } from './tree-node-switcher.component';
+import { NzTreeNodeTitleComponent } from './tree-node-title.component';
 
 @Component({
   selector: 'nz-tree-node[builtin]',
@@ -110,50 +115,49 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-treenode-loading]': `!nzSelectMode && isLoading`,
     '[class.dragging]': `draggingKey === nzTreeNode.key`,
     '[style.display]': 'displayStyle'
-  }
+  },
+  imports: [
+    NzTreeIndentComponent,
+    NzTreeNodeSwitcherComponent,
+    NgIf,
+    NzTreeNodeBuiltinCheckboxComponent,
+    NzTreeNodeTitleComponent
+  ],
+  standalone: true
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzShowLine: BooleanInput;
-  static ngAcceptInputType_nzShowExpand: BooleanInput;
-  static ngAcceptInputType_nzCheckable: BooleanInput;
-  static ngAcceptInputType_nzAsyncData: BooleanInput;
-  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
-  static ngAcceptInputType_nzSelectMode: BooleanInput;
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-
   /**
    * for global property
    */
   @Input() icon: string = '';
   @Input() title: string = '';
-  @Input() isLoading: boolean = false;
-  @Input() isSelected: boolean = false;
-  @Input() isDisabled: boolean = false;
-  @Input() isMatched: boolean = false;
-  @Input() isExpanded!: boolean;
-  @Input() isLeaf!: boolean;
-  @Input() isChecked?: boolean;
-  @Input() isHalfChecked?: boolean;
-  @Input() isDisableCheckbox?: boolean;
-  @Input() isSelectable?: boolean;
-  @Input() canHide?: boolean;
+  @Input({ transform: booleanAttribute }) isLoading: boolean = false;
+  @Input({ transform: booleanAttribute }) isSelected: boolean = false;
+  @Input({ transform: booleanAttribute }) isDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) isMatched: boolean = false;
+  @Input({ transform: booleanAttribute }) isExpanded!: boolean;
+  @Input({ transform: booleanAttribute }) isLeaf!: boolean;
+  @Input({ transform: booleanAttribute }) isChecked?: boolean;
+  @Input({ transform: booleanAttribute }) isHalfChecked?: boolean;
+  @Input({ transform: booleanAttribute }) isDisableCheckbox?: boolean;
+  @Input({ transform: booleanAttribute }) isSelectable?: boolean;
+  @Input({ transform: booleanAttribute }) canHide?: boolean;
   @Input() isStart: boolean[] = [];
   @Input() isEnd: boolean[] = [];
   @Input() nzTreeNode!: NzTreeNode;
-  @Input() @InputBoolean() nzShowLine?: boolean;
-  @Input() @InputBoolean() nzShowExpand?: boolean;
-  @Input() @InputBoolean() nzCheckable?: boolean;
-  @Input() @InputBoolean() nzAsyncData?: boolean;
-  @Input() @InputBoolean() nzHideUnMatched = false;
-  @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() @InputBoolean() nzSelectMode = false;
-  @Input() @InputBoolean() nzShowIcon = false;
+  @Input({ transform: booleanAttribute }) nzShowLine?: boolean;
+  @Input({ transform: booleanAttribute }) nzShowExpand?: boolean;
+  @Input({ transform: booleanAttribute }) nzCheckable?: boolean;
+  @Input({ transform: booleanAttribute }) nzAsyncData?: boolean;
+  @Input({ transform: booleanAttribute }) nzHideUnMatched = false;
+  @Input({ transform: booleanAttribute }) nzNoAnimation = false;
+  @Input({ transform: booleanAttribute }) nzSelectMode = false;
+  @Input({ transform: booleanAttribute }) nzShowIcon = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
   @Input() nzBeforeDrop?: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
-  @Input() nzDraggable: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDraggable: boolean = false;
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();

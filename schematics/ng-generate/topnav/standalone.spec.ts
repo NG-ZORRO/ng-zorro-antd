@@ -16,7 +16,7 @@ describe('[standalone] top-nav schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav', standalone: true});
+    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav'});
   });
 
   it('should create top-nav files', async () => {
@@ -38,14 +38,15 @@ describe('[standalone] top-nav schematic', () => {
     );
   });
 
-  it('should mark components as standalone', async () => {
+  it('should fall back to the @schematics/angular:component option value', async () => {
     const options = {...defaultOptions};
     const tree = await runner.runSchematic('topnav', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
+
+    expect(tree.exists('/projects/material/src/app/app.module.ts')).toBe(false);
 
     expect(appContent).toContain('standalone: true');
-    expect(welcomeContent).toContain('standalone: true');
+    expect(appContent).toContain('imports: [');
   });
 
   it('should set the style preprocessor correctly', async () => {
@@ -76,5 +77,4 @@ describe('[standalone] top-nav schematic', () => {
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
   });
-
 });

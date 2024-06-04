@@ -1,16 +1,16 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import {
-  ɵComponentBed as ComponentBed,
-  ɵcreateComponentBed as createComponentBed,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
-  dispatchMouseEvent
+  dispatchMouseEvent,
+  ɵComponentBed as ComponentBed,
+  ɵcreateComponentBed as createComponentBed
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
@@ -586,6 +586,8 @@ describe('select', () => {
     let component: TestSelectTemplateMultipleComponent;
     let fixture: ComponentFixture<TestSelectTemplateMultipleComponent>;
     let selectElement!: HTMLElement;
+    let overlayContainerElement: HTMLElement;
+
     beforeEach(() => {
       testBed = createComponentBed(TestSelectTemplateMultipleComponent, {
         imports: [NzSelectModule, NzIconTestModule, FormsModule]
@@ -593,6 +595,7 @@ describe('select', () => {
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
     });
     it('should classname correct', () => {
       expect(selectElement.classList).toContain('ant-select-multiple');
@@ -771,6 +774,35 @@ describe('select', () => {
       dispatchFakeEvent(inputElement, 'input');
       dispatchMouseEvent(listOfContainerItem[0], 'click');
       flushRefresh();
+      expect(inputElement.value).toBe('test');
+    }));
+    it('should nzAutoClearSearchValue work when cdkOverlay send emit close', fakeAsync(() => {
+      const flushRefresh = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzOpen = true;
+      component.listOfOption = [
+        { nzValue: 'test_01', nzLabel: 'test_01' },
+        { nzValue: 'test_02', nzLabel: 'test_02' }
+      ];
+      flushRefresh();
+      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'test';
+      dispatchFakeEvent(inputElement, 'input');
+      dispatchMouseEvent(listOfContainerItem[0], 'click');
+      flushRefresh();
+      expect(inputElement.value).toBe('');
+      component.nzAutoClearSearchValue = false;
+      flushRefresh();
+      inputElement.value = 'test';
+      dispatchFakeEvent(inputElement, 'input');
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+      fixture.detectChanges();
+      flushRefresh();
+      fixture.detectChanges();
       expect(inputElement.value).toBe('test');
     }));
   });
@@ -1079,6 +1111,8 @@ describe('select', () => {
     let component: TestSelectReactiveMultipleComponent;
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
     let selectElement!: HTMLElement;
+    let overlayContainerElement: HTMLElement;
+
     beforeEach(() => {
       testBed = createComponentBed(TestSelectReactiveMultipleComponent, {
         imports: [NzSelectModule, NzIconTestModule, FormsModule]
@@ -1086,6 +1120,7 @@ describe('select', () => {
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
     });
     it('should ngModel works', fakeAsync(() => {
       component.listOfOption = [
@@ -1235,7 +1270,15 @@ describe('select', () => {
       flushRefresh();
       expect(component.value.length).toBe(1);
       expect(component.value[0]).toBe('test_01');
+      expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
     }));
+    it('should show nzShowArrow component when having nzMaxMultipleCount', () => {
+      component.nzMaxMultipleCount = 0;
+      expect(selectElement.querySelector('nz-select-arrow')).toBeFalsy();
+      component.nzMaxMultipleCount = 1;
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-select-arrow')).toBeTruthy();
+    });
     it('should nzAutoClearSearchValue work', fakeAsync(() => {
       const flushRefresh = (): void => {
         fixture.detectChanges();
@@ -1261,6 +1304,35 @@ describe('select', () => {
       dispatchFakeEvent(inputElement, 'input');
       dispatchMouseEvent(listOfContainerItem[0], 'click');
       flushRefresh();
+      expect(inputElement.value).toBe('test');
+    }));
+    it('should nzAutoClearSearchValue work when cdkOverlay send emit close', fakeAsync(() => {
+      const flushRefresh = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzOpen = true;
+      component.listOfOption = [
+        { value: 'test_01', label: 'test_01' },
+        { value: 'test_02', label: 'test_02' }
+      ];
+      flushRefresh();
+      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'test';
+      dispatchFakeEvent(inputElement, 'input');
+      dispatchMouseEvent(listOfContainerItem[0], 'click');
+      flushRefresh();
+      expect(inputElement.value).toBe('');
+      component.nzAutoClearSearchValue = false;
+      flushRefresh();
+      inputElement.value = 'test';
+      dispatchFakeEvent(inputElement, 'input');
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+      fixture.detectChanges();
+      flushRefresh();
+      fixture.detectChanges();
       expect(inputElement.value).toBe('test');
     }));
   });
@@ -1360,6 +1432,33 @@ describe('select', () => {
       expect(detectChangesSpy).toHaveBeenCalledTimes(1);
       // expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     }));
+
+    it('should isMaxTagCountSet work correct', () => {
+      component.nzMaxMultipleCount = Infinity;
+      fixture.detectChanges();
+      let isMaxTagCountSet;
+      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
+      expect(isMaxTagCountSet).toBeFalsy();
+
+      component.nzMaxMultipleCount = 1;
+      fixture.detectChanges();
+      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
+      expect(isMaxTagCountSet).toBeTruthy();
+    });
+
+    it('should isMaxLimitReached be set correctly', () => {
+      selectComponent.nzMaxMultipleCount = 2;
+      selectComponent.listOfValue = ['a', 'b'];
+      fixture.detectChanges();
+      selectComponent.updateListOfValue(['a', 'b']);
+      expect(selectComponent.isMaxLimitReached).toBeTruthy();
+
+      selectComponent.nzMaxMultipleCount = 20;
+      selectComponent.listOfValue = ['a', 'b'];
+      fixture.detectChanges();
+      selectComponent.updateListOfValue(['a', 'b']);
+      expect(selectComponent.isMaxLimitReached).toBeFalsy();
+    });
 
     it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
       const appRef = TestBed.inject(ApplicationRef);
@@ -1561,6 +1660,7 @@ describe('select', () => {
       [(nzOpen)]="nzOpen"
       [nzPlacement]="nzPlacement"
       [nzSelectOnTab]="nzSelectOnTab"
+      [nzMaxMultipleCount]="nzMaxMultipleCount"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1607,6 +1707,7 @@ export class TestSelectTemplateDefaultComponent {
   nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
   nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   nzShowArrow = true;
+  nzMaxMultipleCount: number = Infinity;
   nzFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
     if (item && item.nzLabel) {
       return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;

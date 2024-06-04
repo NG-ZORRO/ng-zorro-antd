@@ -27,35 +27,33 @@ describe('tree-select component', () => {
   let overlayContainerElement: HTMLElement;
   let zone: MockNgZone;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzFormModule],
-        declarations: [
-          NzTestTreeSelectBasicComponent,
-          NzTestTreeSelectCheckableComponent,
-          NzTestTreeSelectFormComponent,
-          NzTestTreeSelectCustomizedIconComponent,
-          NzTestTreeSelectStatusComponent,
-          NzTestTreeSelectInFormComponent
-        ],
-        providers: [
-          {
-            provide: NgZone,
-            useFactory: () => {
-              zone = new MockNgZone();
-              return zone;
-            }
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzFormModule],
+      declarations: [
+        NzTestTreeSelectBasicComponent,
+        NzTestTreeSelectCheckableComponent,
+        NzTestTreeSelectFormComponent,
+        NzTestTreeSelectCustomizedIconComponent,
+        NzTestTreeSelectStatusComponent,
+        NzTestTreeSelectInFormComponent
+      ],
+      providers: [
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
           }
-        ]
-      });
-      TestBed.compileComponents();
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+        }
+      ]
+    });
+    TestBed.compileComponents();
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -350,6 +348,15 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    }));
+
+    it('should isComposing/inputValue is correct', fakeAsync(() => {
+      treeSelectComponent.inputValue = '';
+      treeSelectComponent.isComposingChange(true);
+      treeSelectComponent.setInputValue('1011');
+      flush();
+      expect(treeSelectComponent.isComposing).toBe(true);
+      expect(treeSelectComponent.inputValue).toBe('');
     }));
   });
 

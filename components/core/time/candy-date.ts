@@ -9,6 +9,7 @@ import {
   differenceInCalendarDays,
   differenceInCalendarMonths,
   differenceInCalendarYears,
+  differenceInCalendarQuarters,
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
@@ -20,19 +21,22 @@ import {
   isSameMonth,
   isSameSecond,
   isSameYear,
+  isSameQuarter,
   isToday,
   isValid,
   setDay,
   setMonth,
   setYear,
   startOfMonth,
-  startOfWeek
+  startOfWeek,
+  getQuarter,
+  setQuarter
 } from 'date-fns';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export type CandyDateMode = 'decade' | 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+export type CandyDateMode = 'decade' | 'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type NormalizedMode = 'decade' | 'year' | 'month';
 export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateType = CandyDate | Date | null;
@@ -192,6 +196,14 @@ export class CandyDate implements IndexableObject {
     return new CandyDate(date);
   }
 
+  getQuarter(): number {
+    return getQuarter(this.nativeDate);
+  }
+
+  setQuarter(quarter: number): CandyDate {
+    return new CandyDate(setQuarter(this.nativeDate, quarter));
+  }
+
   addDays(amount: number): CandyDate {
     return this.setDate(this.getDate() + amount);
   }
@@ -218,6 +230,9 @@ export class CandyDate implements IndexableObject {
       case 'year':
         fn = isSameYear;
         break;
+      case 'quarter':
+        fn = isSameQuarter;
+        break;
       case 'month':
         fn = isSameMonth;
         break;
@@ -242,6 +257,9 @@ export class CandyDate implements IndexableObject {
 
   isSameYear(date: CandyDateType): boolean {
     return this.isSame(date, 'year');
+  }
+  isSameQuarter(date: CandyDateType): boolean {
+    return this.isSame(date, 'quarter');
   }
 
   isSameMonth(date: CandyDateType): boolean {
@@ -273,6 +291,9 @@ export class CandyDate implements IndexableObject {
       case 'year':
         fn = differenceInCalendarYears;
         break;
+      case 'quarter':
+        fn = differenceInCalendarQuarters;
+        break;
       case 'month':
         fn = differenceInCalendarMonths;
         break;
@@ -297,6 +318,10 @@ export class CandyDate implements IndexableObject {
 
   isBeforeYear(date: CandyDateType): boolean {
     return this.isBefore(date, 'year');
+  }
+
+  isBeforeQuarter(date: CandyDateType): boolean {
+    return this.isBefore(date, 'quarter');
   }
 
   isBeforeMonth(date: CandyDateType): boolean {

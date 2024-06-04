@@ -22,5 +22,5 @@ export interface MaterialCssSelectorData {
 }
 
 export const cssSelectors: VersionChanges<MaterialCssSelectorData> = {
-  [TargetVersion.V17]: []
+  [TargetVersion.V18]: []
 };

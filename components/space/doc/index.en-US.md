@@ -18,13 +18,12 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 ## API
 
-### nz-space
+### nz-space:standalone
 
-
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzSize]` | The space size | `'small' \| 'middle' \| 'large' \| number` | `small` | ✅ |
-| `[nzDirection]` | The space direction | `'vertical' \| 'horizontal'` | `horizontal` |  |
-| `[nzAlign]` | Align items | `'start' \| 'end' \| 'baseline' \| 'center'` | - | |
-| `[nzWrap]` | Auto wrap line, when `horizontal` effective| `boolean` | `false` | |
-| `[nzSplit]` | Set split | `TemplateRef` | - | |
+| Property        | Description                                 | Type                                         | Default      | Global Config |
+| --------------- | ------------------------------------------- | -------------------------------------------- | ------------ | ------------- |
+| `[nzSize]`      | The space size                              | `'small' \| 'middle' \| 'large' \| number`   | `small`      | ✅            |
+| `[nzDirection]` | The space direction                         | `'vertical' \| 'horizontal'`                 | `horizontal` |               |
+| `[nzAlign]`     | Align items                                 | `'start' \| 'end' \| 'baseline' \| 'center'` | -            |               |
+| `[nzWrap]`      | Auto wrap line, when `horizontal` effective | `boolean`                                    | `false`      |               |
+| `[nzSplit]`     | Set split                                   | `TemplateRef`                                | -            |               |

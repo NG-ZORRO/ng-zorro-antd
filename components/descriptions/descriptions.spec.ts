@@ -154,11 +154,9 @@ describe('nz descriptions', () => {
   selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item
-        *ngFor="let col of colspanArray; let i = index"
-        [nzTitle]="itemTitle + i"
-        [nzSpan]="col"
-      ></nz-descriptions-item>
+      @for (col of colspanArray; track i; let i = $index) {
+        <nz-descriptions-item [nzTitle]="itemTitle + i" [nzSpan]="col" />
+      }
     </nz-descriptions>
   `
 })

@@ -5,6 +5,8 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -20,7 +22,9 @@ import { ModalOptions } from './modal-types';
   host: {
     class: 'ant-modal-header'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzOutletModule],
+  standalone: true
 })
 export class NzModalTitleComponent {
   constructor(public config: ModalOptions) {}

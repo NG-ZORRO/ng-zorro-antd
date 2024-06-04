@@ -12,18 +12,18 @@ achieved more efficient within the same context.
 
 ## When To Use
 
-* Use a Form to create or edit a set of information.
-* Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of
+- Use a Form to create or edit a set of information.
+- Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of
   the main task, Drawer comes very handy.
-* When a same Form is needed in multiple places.
+- When a same Form is needed in multiple places.
 
 ```ts
-import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ```
 
 ## API
 
-### nz-drawer
+### nz-drawer:standalone
 
 | Props                   | Description                                                                                                                                                                                 | Type                                     | Default     | Global Config |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|-------------|---------------|
@@ -84,19 +84,22 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 | nzOffsetX           | The the X coordinate offset(px).                                                                                                                                                                               | `number`                                                           | `0`         |
 | nzOffsetY           | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                                 | `number`                                                           | `0`         |
 
-
 ### NZ_DRAWER_DATA
 
-NZ_DRAWER_DATA injection token is used to retrieve nzData in the custom component. The drawer created by the service method NzDrawerService.create() inject a NZ_DRAWER_DATA token (if nzContent is used as Component) to retrieve the parameters that have used to the 'nzContent component'
+NZ_DRAWER_DATA injection token is used to retrieve nzData in the custom component. The drawer created by the service
+method NzDrawerService.create() inject a NZ_DRAWER_DATA token (if nzContent is used as Component) to retrieve the
+parameters that have used to the 'nzContent component'
+
 ### NzDrawerRef
 
 #### Methods
 
-| Name                | Description                                             | Type                   |
-|---------------------|---------------------------------------------------------|------------------------|
-| close               | close the drawer.                                       | `(result?: R) => void` |
-| open                | open the drawer.                                        | `() => void`           |
-| getContentComponent | Returns the instance when `nzContent` is the component. | `() => T \| null`      |
+| Name                   | Description                                                               | Type                            |
+|------------------------|---------------------------------------------------------------------------|---------------------------------|
+| close                  | close the drawer.                                                         | `(result?: R) => void`          |
+| open                   | open the drawer.                                                          | `() => void`                    |
+| getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`               |
+| getContentComponentRef | Returns the reference of the component when `nzContent` is the component. | `() => ComponentRef<T> \| null` |
 
 #### Property
 

@@ -12,23 +12,21 @@ import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 
 describe('input-group', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputGroupAddonComponent,
-          NzTestInputGroupAffixComponent,
-          NzTestInputGroupMultipleComponent,
-          NzTestInputGroupColComponent,
-          NzTestInputGroupMixComponent,
-          NzTestInputGroupWithStatusComponent,
-          NzTestInputGroupInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputGroupAddonComponent,
+        NzTestInputGroupAffixComponent,
+        NzTestInputGroupMultipleComponent,
+        NzTestInputGroupColComponent,
+        NzTestInputGroupMixComponent,
+        NzTestInputGroupWithStatusComponent,
+        NzTestInputGroupInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;
@@ -397,17 +395,16 @@ export class NzTestInputGroupColComponent {}
 
 @Component({
   template: `
-    <ng-container *ngIf="!isAddon">
+    @if (!isAddon) {
       <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
         <input type="text" nz-input />
       </nz-input-group>
       <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isAddon">
+    } @else {
       <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
         <input type="text" nz-input />
       </nz-input-group>
-    </ng-container>
+    }
   `
 })
 export class NzTestInputGroupWithStatusComponent {

@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
     <br />
     <nz-date-picker nzMode="month" [nzFormat]="monthFormat"></nz-date-picker>
     <br />
+    <nz-date-picker nzMode="quarter" [nzFormat]="quarterFormat"></nz-date-picker>
+    <br />
     <nz-range-picker [nzFormat]="dateFormat"></nz-range-picker>
   `,
   styles: [
@@ -21,4 +23,5 @@ import { Component } from '@angular/core';
 export class NzDemoDatePickerFormatComponent {
   dateFormat = 'yyyy/MM/dd';
   monthFormat = 'yyyy/MM';
+  quarterFormat = 'yyyy/[Q]Q';
 }

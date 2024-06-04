@@ -9,20 +9,18 @@ import { NzCollapseComponent } from './collapse.component';
 import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
-        declarations: [
-          NzTestCollapseBasicComponent,
-          NzTestCollapseTemplateComponent,
-          NzTestCollapseIconComponent,
-          NzTestCollapseRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
+      declarations: [
+        NzTestCollapseBasicComponent,
+        NzTestCollapseTemplateComponent,
+        NzTestCollapseIconComponent,
+        NzTestCollapseRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
     let testComponent: NzTestCollapseBasicComponent;

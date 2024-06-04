@@ -18,7 +18,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nzStringTemplateOutlet]',
-  exportAs: 'nzStringTemplateOutlet'
+  exportAs: 'nzStringTemplateOutlet',
+  standalone: true
 })
 export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges {
   private embeddedViewRef: EmbeddedViewRef<NzSafeAny> | null = null;
@@ -54,7 +55,10 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
     }
   }
 
-  constructor(private viewContainer: ViewContainerRef, private templateRef: TemplateRef<NzSafeAny>) {}
+  constructor(
+    private viewContainer: ViewContainerRef,
+    private templateRef: TemplateRef<NzSafeAny>
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = changes;

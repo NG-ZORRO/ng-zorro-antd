@@ -4,6 +4,10 @@
 @hashcode-prefix-cls: ~'@{ant-prefix}-hashCode';
 
 .@{hashcode-prefix-cls} {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -11,10 +15,6 @@
   font-size: @font-size-base;
   line-height: @line-height-base;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
 }
 
@@ -94,7 +94,9 @@
     opacity: 1;
   }
 
-  .@{hashcode-prefix-cls}-header-title, .@{hashcode-prefix-cls}-header-copy, .@{hashcode-prefix-cls}-header-logo {
+  .@{hashcode-prefix-cls}-header-title,
+  .@{hashcode-prefix-cls}-header-copy,
+  .@{hashcode-prefix-cls}-header-logo {
     color: @text-color-dark;
   }
 }
@@ -116,7 +118,7 @@
 .@{hashcode-prefix-cls}-code-value-block {
   height: 16px;
   font-size: @font-size-base;
-  font-family: Menlo;
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .@{hashcode-prefix-cls}-value-primary {
@@ -152,4 +154,3 @@
   height: 72px;
   margin-top: -71px;
 }
-

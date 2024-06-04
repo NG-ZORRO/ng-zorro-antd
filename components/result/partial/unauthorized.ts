@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result-unauthorized',
   exportAs: 'nzResultUnauthorized',
+  standalone: true,
   template: `
     <svg width="251" height="294">
       <g fill="none" fillRule="evenodd">

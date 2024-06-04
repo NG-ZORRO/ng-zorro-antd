@@ -5,6 +5,8 @@
 
 import { ChangeDetectionStrategy, Component, Directive, Input, TemplateRef } from '@angular/core';
 
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+
 @Component({
   selector: 'nz-list-empty',
   exportAs: 'nzListHeader',
@@ -12,7 +14,9 @@ import { ChangeDetectionStrategy, Component, Directive, Input, TemplateRef } fro
   template: ` <nz-embed-empty [nzComponentName]="'list'" [specificContent]="nzNoResult"></nz-embed-empty> `,
   host: {
     class: 'ant-list-empty-text'
-  }
+  },
+  imports: [NzEmptyModule],
+  standalone: true
 })
 export class NzListEmptyComponent {
   @Input() nzNoResult?: string | TemplateRef<void>;
@@ -25,7 +29,8 @@ export class NzListEmptyComponent {
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-header'
-  }
+  },
+  standalone: true
 })
 export class NzListHeaderComponent {}
 
@@ -36,7 +41,8 @@ export class NzListHeaderComponent {}
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-footer'
-  }
+  },
+  standalone: true
 })
 export class NzListFooterComponent {}
 
@@ -47,13 +53,15 @@ export class NzListFooterComponent {}
   template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-pagination'
-  }
+  },
+  standalone: true
 })
 export class NzListPaginationComponent {}
 
 @Directive({
   selector: 'nz-list-load-more',
-  exportAs: 'nzListLoadMoreDirective'
+  exportAs: 'nzListLoadMoreDirective',
+  standalone: true
 })
 export class NzListLoadMoreDirective {}
 
@@ -61,6 +69,7 @@ export class NzListLoadMoreDirective {}
   selector: 'nz-list[nzGrid]',
   host: {
     class: 'ant-list-grid'
-  }
+  },
+  standalone: true
 })
 export class NzListGridDirective {}

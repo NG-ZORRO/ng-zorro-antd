@@ -6,13 +6,13 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
   Input,
   NgZone,
   OnDestroy,
@@ -20,15 +20,19 @@ import {
   Optional,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 
@@ -73,22 +77,20 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       </span>
       <div class="ant-click-animating-node"></div>
     </button>
-  `
+  `,
+  imports: [NzWaveModule, NzIconModule, NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzControl: BooleanInput;
 
   isChecked = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('switchElement', { static: true }) switchElement!: ElementRef<HTMLElement>;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzControl = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
