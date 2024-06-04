@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -23,6 +23,7 @@ describe('radio', () => {
         NzTestRadioGroupDisabledComponent,
         NzTestRadioGroupDisabledFormComponent,
         NzTestRadioGroupLabelNgModelComponent,
+        NzTestRadioGroupSolidComponent,
         NzTestRadioSingleRtlComponent,
         NzTestRadioGroupRtlComponent,
         NzTestRadioButtonRtlComponent
@@ -228,14 +229,16 @@ describe('radio', () => {
   describe('radio group solid', () => {
     let fixture: ComponentFixture<NzTestRadioGroupSolidComponent>;
     let radioGroup: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupSolidComponent);
       fixture.detectChanges();
       radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
-      it('should support solid css', () => {
-        fixture.detectChanges();
-        expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-solid');
-      });
+    });
+
+    it('should support solid css', () => {
+      fixture.detectChanges();
+      expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-solid');
     });
   });
   describe('radio form', () => {
