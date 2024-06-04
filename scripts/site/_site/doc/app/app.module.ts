@@ -1,5 +1,5 @@
 import { BidiModule } from '@angular/cdk/bidi';
-import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title, provideClientHydration } from '@angular/platform-browser';
@@ -42,7 +42,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule,
     NzNavBottomModule,
     NzIconModule.forRoot(icons),
     NzGridModule,
@@ -55,7 +54,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     NzButtonModule,
     NzInputModule,
     NzBadgeModule,
-    HttpClientJsonpModule,
     HeaderModule,
     FooterModule,
     NzContributorsListModule,
@@ -85,6 +83,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
         global: { nzDirection: 'ltr' }
       }
     },
+    provideHttpClient(withJsonpSupport()),
     provideClientHydration()
   ],
   bootstrap: [AppComponent]

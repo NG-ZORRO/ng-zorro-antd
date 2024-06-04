@@ -18,19 +18,21 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
           @if (item.loading) {
             <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="true" />
           } @else {
-            <nz-list-item-meta
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-            >
-              <nz-list-item-meta-title>
-                <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </nz-list-item-meta-title>
-            </nz-list-item-meta>
-            content
-            <ul nz-list-item-actions>
-              <nz-list-item-action><a (click)="edit(item)">edit</a></nz-list-item-action>
-              <nz-list-item-action><a (click)="edit(item)">more</a></nz-list-item-action>
-            </ul>
+            <ng-container>
+              <nz-list-item-meta
+                nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+              >
+                <nz-list-item-meta-title>
+                  <a href="https://ng.ant.design">{{ item.name.last }}</a>
+                </nz-list-item-meta-title>
+              </nz-list-item-meta>
+              content
+              <ul nz-list-item-actions>
+                <nz-list-item-action><a (click)="edit(item)">edit</a></nz-list-item-action>
+                <nz-list-item-action><a (click)="edit(item)">more</a></nz-list-item-action>
+              </ul>
+            </ng-container>
           }
         </nz-list-item>
       }

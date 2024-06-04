@@ -350,7 +350,9 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     private elementRef: ElementRef
   ) {
     if (!http) {
-      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
+      throw new Error(
+        `Not found 'HttpClient', You can configure 'HttpClient' with 'provideHttpClient()' in your root module.`
+      );
     }
   }
 
