@@ -17,7 +17,6 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
@@ -122,7 +121,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

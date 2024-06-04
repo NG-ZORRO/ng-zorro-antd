@@ -20,12 +20,10 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -33,6 +31,7 @@ import {
   ViewChild,
   booleanAttribute,
   forwardRef,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -354,17 +353,18 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.nzMultiple || this.nzCheckable;
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     nzTreeService: NzTreeSelectService,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality,
-    private focusMonitor: FocusMonitor,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality,
+    private focusMonitor: FocusMonitor
   ) {
     super(nzTreeService);
 

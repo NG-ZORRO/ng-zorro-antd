@@ -16,13 +16,11 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Host,
-  Inject,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -181,6 +179,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   isSelected = false;
   isActive = false;
   dir: Direction = 'ltr';
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private directionality = inject(Directionality);
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -223,10 +224,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     public nzMenuService: MenuService,
     private cdr: ChangeDetectorRef,
     public nzSubmenuService: NzSubmenuService,
-    private platform: Platform,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private platform: Platform
   ) {}
 
   ngOnInit(): void {

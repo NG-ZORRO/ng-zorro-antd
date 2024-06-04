@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -112,7 +111,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
   }

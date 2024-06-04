@@ -12,18 +12,17 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { Subject, Subscription, fromEvent } from 'rxjs';
@@ -32,7 +31,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
@@ -98,16 +96,16 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private backTopClickSubscription = Subscription.EMPTY;
+  private doc: Document = inject(DOCUMENT);
 
   constructor(
-    @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private platform: Platform,
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.dir = this.directionality.value;
   }
@@ -156,7 +154,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTarget } = changes;
     if (nzTarget) {
-      this.target = typeof this.nzTarget === 'string' ? this.doc.querySelector(this.nzTarget) : this.nzTarget;
+      this.target = typeof this.nzTarget === 'string' ? this.doc.querySelector(this.nzTarget) : this.nzTarget!;
       this.registerScrollEvent();
     }
   }

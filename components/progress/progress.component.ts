@@ -13,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   ViewEncapsulation,
   numberAttribute
@@ -240,7 +239,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     public nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

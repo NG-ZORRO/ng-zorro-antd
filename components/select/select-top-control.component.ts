@@ -10,18 +10,17 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
@@ -207,10 +206,11 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     }
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective | null
+    private ngZone: NgZone
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

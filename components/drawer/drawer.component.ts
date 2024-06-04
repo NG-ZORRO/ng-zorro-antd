@@ -17,13 +17,11 @@ import {
   ComponentRef,
   ContentChild,
   EventEmitter,
-  Inject,
   Injector,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -31,7 +29,8 @@ import {
   Type,
   ViewChild,
   ViewContainerRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -286,11 +285,10 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @WithConfig() nzDirection?: Direction = undefined;
 
   dir: Direction = 'ltr';
+  private document: Document = inject(DOCUMENT);
 
   constructor(
     private cdr: ChangeDetectorRef,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private overlay: Overlay,
@@ -299,7 +297,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     super();
   }

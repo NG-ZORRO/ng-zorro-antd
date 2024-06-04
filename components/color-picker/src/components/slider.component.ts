@@ -10,14 +10,14 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { Color } from '../interfaces/color';
@@ -90,11 +90,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
   dragRef: boolean = false;
   mouseMoveRef: (e: MouseEvent | TouchEvent) => void = () => null;
   mouseUpRef: (e: MouseEvent | TouchEvent) => void = () => null;
+  private document: Document = inject(DOCUMENT);
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.document.removeEventListener('mousemove', this.mouseMoveRef);

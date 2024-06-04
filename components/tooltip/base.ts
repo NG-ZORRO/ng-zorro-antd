@@ -16,7 +16,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   PLATFORM_ID,
   Renderer2,
   SimpleChanges,
@@ -334,6 +333,10 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+
   nzTitle: NzTSType | null = null;
   nzContent: NzTSType | null = null;
   nzArrowPointAtCenter: boolean = false;
@@ -388,12 +391,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
   protected destroy$ = new Subject<void>();
-
-  constructor(
-    public cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    public noAnimation?: NzNoAnimationDirective
-  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

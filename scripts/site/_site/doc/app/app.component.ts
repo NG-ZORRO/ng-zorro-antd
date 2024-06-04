@@ -1,6 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { NzColor } from 'ng-zorro-antd/color-picker';
@@ -59,6 +59,8 @@ export class AppComponent implements OnInit {
   language: 'zh' | 'en' = 'en';
   direction: 'ltr' | 'rtl' = 'ltr';
   currentVersion = VERSION.full;
+
+  private document: Document = inject(DOCUMENT);
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
@@ -147,8 +149,7 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: any
+    private cdr: ChangeDetectorRef
   ) { }
 
   navigateToPage(url: string): void {
