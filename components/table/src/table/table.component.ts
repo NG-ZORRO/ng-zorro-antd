@@ -97,6 +97,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
             [virtualMinBufferPx]="nzVirtualMinBufferPx"
             [tableMainElement]="tableMainElement"
             [virtualForTrackBy]="nzVirtualForTrackBy"
+            [noDataVirtualHeight]="noDataVirtualHeight"
           ></nz-table-inner-scroll>
         } @else {
           <nz-table-inner-default
@@ -178,6 +179,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
 
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
+  @Input() noDataVirtualHeight = '182px';
   @Input() nzPaginationType: NzTablePaginationType = 'default';
   @Input({ transform: booleanAttribute }) nzFrontPagination = true;
   @Input({ transform: booleanAttribute }) nzTemplateMode = false;

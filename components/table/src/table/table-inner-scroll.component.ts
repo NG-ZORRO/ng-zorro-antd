@@ -62,7 +62,7 @@ import { NzTbodyComponent } from './tbody.component';
           [itemSize]="virtualItemSize"
           [maxBufferPx]="virtualMaxBufferPx"
           [minBufferPx]="virtualMinBufferPx"
-          [style.height]="data.length ? scrollY : noDateVirtualHeight"
+          [style.height]="data.length ? scrollY : noDataVirtualHeight"
         >
           <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
             <tbody>
@@ -114,7 +114,7 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   headerStyleMap = {};
   bodyStyleMap = {};
   @Input() verticalScrollBarWidth = 0;
-  noDateVirtualHeight = '182px';
+  @Input() noDataVirtualHeight = '182px';
   private data$ = new Subject<void>();
   private scroll$ = new Subject<void>();
   private destroy$ = new Subject<void>();
