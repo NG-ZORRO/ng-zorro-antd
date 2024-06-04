@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
 // Import the require modules
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 import zh from '@angular/common/locales/zh';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,12 +28,12 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
   imports: [
     AppModule,
     ServerModule,
-    HttpClientModule,
     NoopAnimationsModule,
     NzI18nModule
   ],
   bootstrap: [AppComponent],
   providers: [
+    provideHttpClient(),
     { provide: NZ_I18N, useValue: en_US },
     { provide: NZ_ICONS, useValue: icons }
   ]

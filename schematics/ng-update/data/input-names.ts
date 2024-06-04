@@ -7,5 +7,5 @@ import { InputNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cd
 
 
 export const inputNames: VersionChanges<InputNameUpgradeData> = {
- [TargetVersion.V17]: []
+ [TargetVersion.V18]: []
 };

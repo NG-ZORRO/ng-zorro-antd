@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ClassNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
+import { CssTokenUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
-export const classNames: VersionChanges<ClassNameUpgradeData> = {
+export const cssTokens: VersionChanges<CssTokenUpgradeData> = {
   [TargetVersion.V18]: []
 };
