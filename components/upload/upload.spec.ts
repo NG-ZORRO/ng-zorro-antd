@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ApplicationRef,
   Component,
@@ -93,9 +94,9 @@ describe('upload', () => {
     let httpMock: HttpTestingController;
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
+        declarations: [TestUploadComponent],
         imports: [
           NoopAnimationsModule,
-          HttpClientTestingModule,
           CommonModule,
           FormsModule,
           NzToolTipModule,
@@ -106,7 +107,7 @@ describe('upload', () => {
           NzUploadComponent,
           NzUploadListComponent
         ],
-        declarations: [TestUploadComponent]
+        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
       dl = fixture.debugElement;
@@ -1005,8 +1006,9 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzIconTestModule, NzUploadBtnComponent],
-          declarations: [TestUploadBtnComponent]
+          declarations: [TestUploadBtnComponent],
+          imports: [NzIconTestModule, NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);
         dl = fixture.debugElement;
@@ -1262,7 +1264,8 @@ describe('upload', () => {
       let http: HttpTestingController;
       beforeEach(() => {
         injector = TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzUploadBtnComponent]
+          imports: [NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         (injector as TestBed).compileComponents();
         fixture = TestBed.createComponent(NzUploadBtnComponent);
