@@ -1,8 +1,8 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -20,7 +20,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { ColorSketchModule } from 'ngx-color/sketch';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -40,12 +39,11 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
   declarations: [AppComponent, DEMOComponent, SideComponent],
   imports: [
     BidiModule,
-    BrowserModule.withServerTransition({ appId: 'docs' }),
+    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     NzNavBottomModule,
-    ColorSketchModule,
     NzIconModule.forRoot(icons),
     NzGridModule,
     NzAffixModule,
@@ -67,15 +65,16 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
       routes,
       environment.production
         ? {
-            preloadingStrategy: QuicklinkStrategy,
-            scrollPositionRestoration: 'enabled'
-          }
+          preloadingStrategy: QuicklinkStrategy,
+          scrollPositionRestoration: 'enabled'
+        }
         : { preloadingStrategy: QuicklinkStrategy }
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [
     Title,
+    { provide: APP_ID, useValue: 'docs' },
     {
       provide: NZ_CONFIG,
       useValue: {
@@ -85,8 +84,9 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
         icon: { nzTwotoneColor: '#1890ff' },
         global: { nzDirection: 'ltr' }
       }
-    }
+    },
+    provideClientHydration()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

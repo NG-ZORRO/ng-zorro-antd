@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -13,7 +14,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   HostListener,
   Input,
@@ -29,10 +29,13 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -42,7 +45,6 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NgClassType,
   NgStyleInterface,
@@ -50,7 +52,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -248,12 +250,6 @@ export class NzCascaderComponent
   implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzShowInput: BooleanInput;
-  static ngAcceptInputType_nzShowArrow: BooleanInput;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
 
@@ -272,12 +268,12 @@ export class NzCascaderComponent
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
-  @Input() @InputBoolean() nzShowInput = true;
-  @Input() @InputBoolean() nzShowArrow = true;
-  @Input() @InputBoolean() nzAllowClear = true;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzChangeOnSelect = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzShowInput = true;
+  @Input({ transform: booleanAttribute }) nzShowArrow = true;
+  @Input({ transform: booleanAttribute }) nzAllowClear = true;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzChangeOnSelect = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
@@ -290,8 +286,8 @@ export class NzCascaderComponent
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
   @Input() nzMenuStyle: NgStyleInterface | null = null;
-  @Input() nzMouseEnterDelay: number = 150; // ms
-  @Input() nzMouseLeaveDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150; // ms
+  @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150; // ms
   @Input() nzStatus: NzStatus = '';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
@@ -347,8 +343,8 @@ export class NzCascaderComponent
 
   private inputString = '';
   private isOpening = false;
-  private delayMenuTimer: number | null = null;
-  private delaySelectTimer: number | null = null;
+  private delayMenuTimer?: ReturnType<typeof setTimeout>;
+  private delaySelectTimer?: ReturnType<typeof setTimeout>;
   private isNzDisableFirstChange: boolean = true;
 
   get inSearchingMode(): boolean {
@@ -556,7 +552,7 @@ export class NzCascaderComponent
   private clearDelayMenuTimer(): void {
     if (this.delayMenuTimer) {
       clearTimeout(this.delayMenuTimer);
-      this.delayMenuTimer = null;
+      this.delayMenuTimer = undefined;
     }
   }
 
@@ -671,7 +667,8 @@ export class NzCascaderComponent
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.el.contains(event.target as Node)) {
+    const target = _getEventTarget(event);
+    if (!this.el.contains(target as Node)) {
       this.closeMenu();
     }
   }
@@ -740,7 +737,7 @@ export class NzCascaderComponent
   private clearDelaySelectTimer(): void {
     if (this.delaySelectTimer) {
       clearTimeout(this.delaySelectTimer);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }
   }
 
@@ -748,7 +745,7 @@ export class NzCascaderComponent
     this.clearDelaySelectTimer();
     this.delaySelectTimer = setTimeout(() => {
       this.cascaderService.setOptionActivated(option, columnIndex, performSelect);
-      this.delaySelectTimer = null;
+      this.delaySelectTimer = undefined;
     }, 150);
   }
 

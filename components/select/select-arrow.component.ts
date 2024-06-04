@@ -4,7 +4,14 @@
  */
 
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
+  numberAttribute
+} from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -47,7 +54,7 @@ export class NzSelectArrowComponent {
   @Input() isMaxTagCountSet = false;
   @Input() suffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() feedbackIcon: TemplateRef<NzSafeAny> | string | null = null;
-  @Input() nzMaxMultipleCount: number = Infinity;
+  @Input({ transform: numberAttribute }) nzMaxMultipleCount: number = Infinity;
 
   constructor() {}
 }

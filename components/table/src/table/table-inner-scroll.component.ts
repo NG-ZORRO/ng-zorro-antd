@@ -5,7 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -36,7 +36,7 @@ import { NzTbodyComponent } from './tbody.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="scrollY">
+    @if (scrollY) {
       <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
@@ -46,48 +46,51 @@ import { NzTbodyComponent } from './tbody.component';
           [theadTemplate]="theadTemplate"
         ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
+      @if (!virtualTemplate) {
+        <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+          <table
+            nz-table-content
+            tableLayout="fixed"
+            [scrollX]="scrollX"
+            [listOfColWidth]="listOfColWidth"
+            [contentTemplate]="contentTemplate"
+          ></table>
+        </div>
+      } @else {
+        <cdk-virtual-scroll-viewport
+          #tableBodyElement
+          [itemSize]="virtualItemSize"
+          [maxBufferPx]="virtualMaxBufferPx"
+          [minBufferPx]="virtualMinBufferPx"
+          [style.height]="data.length ? scrollY : noDateVirtualHeight"
+        >
+          <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
+            <tbody>
+              <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
+                <ng-template
+                  [ngTemplateOutlet]="virtualTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+                ></ng-template>
+              </ng-container>
+            </tbody>
+          </table>
+        </cdk-virtual-scroll-viewport>
+      }
+    } @else {
+      <div class="ant-table-content" #tableBodyElement [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
           tableLayout="fixed"
           [scrollX]="scrollX"
           [listOfColWidth]="listOfColWidth"
+          [theadTemplate]="theadTemplate"
           [contentTemplate]="contentTemplate"
         ></table>
       </div>
-      <cdk-virtual-scroll-viewport
-        #tableBodyElement
-        *ngIf="virtualTemplate"
-        [itemSize]="virtualItemSize"
-        [maxBufferPx]="virtualMaxBufferPx"
-        [minBufferPx]="virtualMinBufferPx"
-        [style.height]="data.length ? scrollY : noDateVirtualHeight"
-      >
-        <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
-          <tbody>
-            <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
-              <ng-template
-                [ngTemplateOutlet]="virtualTemplate"
-                [ngTemplateOutletContext]="{ $implicit: item, index: i }"
-              ></ng-template>
-            </ng-container>
-          </tbody>
-        </table>
-      </cdk-virtual-scroll-viewport>
-    </ng-container>
-    <div class="ant-table-content" #tableBodyElement *ngIf="!scrollY" [ngStyle]="bodyStyleMap">
-      <table
-        nz-table-content
-        tableLayout="fixed"
-        [scrollX]="scrollX"
-        [listOfColWidth]="listOfColWidth"
-        [theadTemplate]="theadTemplate"
-        [contentTemplate]="contentTemplate"
-      ></table>
-    </div>
+    }
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent, NgIf, NgStyle, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
+  imports: [NzTableContentComponent, NgStyle, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
   standalone: true
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {

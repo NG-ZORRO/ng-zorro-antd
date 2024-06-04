@@ -1,12 +1,12 @@
 /* eslint-disable */
 // eslint-disable
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NzAnchorModule } from './anchor.module';
-import { NzAnchorComponent } from './anchor.component';
 import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { NzAnchorComponent } from './anchor.component';
+import { NzAnchorModule } from './anchor.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -387,7 +387,10 @@ describe('anchor', () => {
       <h2 id="basic-target"></h2>
     </div>
   `,
-  styleUrls: ['./style/patch.less']
+  styles: `
+    @import '../style/testing.less';
+    @import './style/patch.less';
+  `
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;

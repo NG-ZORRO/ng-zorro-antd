@@ -18,7 +18,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 ## API
 
-**Note:** Some of Calendar's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `app.module.ts`.
+**Note:** Some of Calendar's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be provided in the file of `app.module.ts`.
 
 For example:
 

@@ -47,6 +47,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzOkText]`        | 确认按钮文字                                                            | `string`                                                             | `'确定'`    | -        |
 | `[nzOkType]`        | 确认按钮类型                                                            | `'primary' \| 'ghost' \| 'dashed' \| 'default'`                      | `'primary'` | -        |
 | `[nzOkDanger]`      | 确认按钮是否为危险按钮。<i>与 `nz-button` 的 `nzDanger` 值保持一致</i>  | `boolean`                                                            | `false`     | -        |
+| `[nzOkDisabled]`    | 禁止与确认按钮交互。<i>与 `nz-button` 的 `disabled` 值保持一致</i>  | `boolean`                                                            | `false`     | -        |
 | `[nzCondition]`     | 是否直接触发 `nzOnConfirm` 而不弹出框                                   | `boolean`                                                            | `false`     | -        |
 | `[nzIcon]`          | 自定义弹出框的 icon                                                     | `string \| TemplateRef<void>`                                        | -           | -        |
 | `[nzAutoFocus]`     | 按钮的自动聚焦                                                          | `null \| 'ok' \| 'cancel'`                                           | `null`      | ✅       |

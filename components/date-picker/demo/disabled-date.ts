@@ -16,6 +16,8 @@ import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
     <br />
     <nz-date-picker nzMode="month" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />
+    <nz-date-picker nzMode="quarter" [nzDisabledDate]="disabledDate"></nz-date-picker>
+    <br />
     <nz-date-picker nzMode="year" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />
     <nz-range-picker

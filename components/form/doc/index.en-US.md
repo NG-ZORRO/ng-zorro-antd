@@ -8,7 +8,7 @@ cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 
 Form is used to collect, validate, and submit the user input, usually contains various form items including checkbox, radio, input, select, and etc.
 
-Form is totally based on [Angular Forms](https://angular.io/guide/forms#forms), you can use [reactive forms](https://angular.io/guide/reactive-forms#reactive-forms) or [template-driven-forms](https://angular.io/guide/forms#template-driven-forms).
+Form is totally based on [Angular Forms](https://angular.dev/guide/forms), you can use [reactive forms](https://angular.dev/guide/forms/reactive-forms) or [template-driven-forms](https://angular.dev/guide/forms/template-driven-forms).
 
 > Please make sure you have read the official form document before using the component.
 

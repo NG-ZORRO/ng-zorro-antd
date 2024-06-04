@@ -59,6 +59,7 @@ import {
         Button Shape:
         <nz-radio-group [(ngModel)]="buttonShape">
           <label nz-radio-button nzValue="default">Default</label>
+          <label nz-radio-button nzValue="square">Square</label>
           <label nz-radio-button nzValue="circle">Circle</label>
           <label nz-radio-button nzValue="round">Round</label>
         </nz-radio-group>

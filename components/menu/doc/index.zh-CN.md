@@ -48,13 +48,13 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 ### [nz-menu-item]:standalone
 
-| 参数                   | 说明                                                                                                                         | 类型      | 默认值  |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `[nzDisabled]`         | 是否禁用                                                                                                                     | `boolean` | `false` |
-| `[nzSelected]`         | 是否被选中                                                                                                                   | `boolean` | `false` |
-| `[nzMatchRouter]`      | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected`                                    | `boolean` | `false` |
-| `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
-| `[nzDanger]`           | 展示错误状态样式                                                                                                             | `boolean` | `false` |
+| 参数                   | 说明                                                                                         | 类型      | 默认值  |
+| ---------------------- |--------------------------------------------------------------------------------------------| --------- | ------- |
+| `[nzDisabled]`         | 是否禁用                                                                                       | `boolean` | `false` |
+| `[nzSelected]`         | 是否被选中                                                                                      | `boolean` | `false` |
+| `[nzMatchRouter]`      | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected`          | `boolean` | `false` |
+| `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.dev/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
+| `[nzDanger]`           | 展示错误状态样式                                                                                   | `boolean` | `false` |
 
 ### [nz-submenu]:standalone
 

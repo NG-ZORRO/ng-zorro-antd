@@ -12,14 +12,13 @@ import {
   Input,
   NgZone,
   OnInit,
-  Output
+  Output,
+  booleanAttribute
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tree-node-checkbox:not([builtin])',
@@ -36,11 +35,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   standalone: true
 })
 export class NzTreeNodeCheckboxComponent implements OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
-  @Input() nzChecked?: boolean;
-  @Input() nzIndeterminate?: boolean;
-  @Input() @InputBoolean() nzDisabled?: boolean;
+  @Input({ transform: booleanAttribute }) nzChecked?: boolean;
+  @Input({ transform: booleanAttribute }) nzIndeterminate?: boolean;
+  @Input({ transform: booleanAttribute }) nzDisabled?: boolean;
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
 
   constructor(

@@ -19,7 +19,8 @@ import {
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,8 +29,7 @@ import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeSupComponent } from './badge-sup.component';
 import { badgePresetColors } from './preset-colors';
@@ -82,18 +82,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
 })
 export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzShowZero: BooleanInput;
-  static ngAcceptInputType_nzShowDot: BooleanInput;
-  static ngAcceptInputType_nzDot: BooleanInput;
-  static ngAcceptInputType_nzStandalone: BooleanInput;
+
   showSup = false;
   presetColor: string | null = null;
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
-  @Input() @InputBoolean() nzShowZero: boolean = false;
-  @Input() @InputBoolean() nzShowDot = true;
-  @Input() @InputBoolean() nzStandalone = false;
-  @Input() @InputBoolean() nzDot = false;
+  @Input({ transform: booleanAttribute }) nzShowZero: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowDot = true;
+  @Input({ transform: booleanAttribute }) nzStandalone = false;
+  @Input({ transform: booleanAttribute }) nzDot = false;
   @Input() @WithConfig() nzOverflowCount: number = 99;
   @Input() @WithConfig() nzColor?: string = undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;

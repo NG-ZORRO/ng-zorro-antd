@@ -46,8 +46,8 @@
   }
 
   .@{confirm-prefix-cls}-btns {
-    float: right;
     margin-top: 24px;
+    text-align: right;
 
     .@{ant-prefix}-btn + .@{ant-prefix}-btn {
       margin-bottom: 0;
@@ -70,5 +70,10 @@
 
   &-success &-body > .@{iconfont-css-prefix} {
     color: @success-color;
+  }
+
+  // https://github.com/ant-design/ant-design/issues/37329
+  .@{ant-prefix}-zoom-leave .@{confirm-prefix-cls}-btns {
+    pointer-events: none;
   }
 }

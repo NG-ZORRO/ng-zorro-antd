@@ -5,6 +5,7 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -36,8 +37,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CronExpression, parseExpression } from 'cron-parser';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCronExpressionInputComponent } from './cron-expression-input.component';
@@ -130,16 +130,13 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
   standalone: true
 })
 export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValueAccessor, AsyncValidator {
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzSize: NzCronExpressionSize = 'default';
   @Input() nzType: NzCronExpressionType = 'linux';
-  @Input() @InputBoolean() nzCollapseDisable: boolean = false;
+  @Input({ transform: booleanAttribute }) nzCollapseDisable: boolean = false;
   @Input() nzExtra?: TemplateRef<void> | null = null;
   @Input() nzSemantic: TemplateRef<void> | null = null;
-  @Input() @InputBoolean() nzBorderless = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzBorderless = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
 
   locale!: NzCronExpressionI18nInterface;
   focus: boolean = false;

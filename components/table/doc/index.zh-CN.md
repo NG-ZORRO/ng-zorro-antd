@@ -32,7 +32,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### 数据处理
 
-将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
+将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.dev/guide/templates/template-statements#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -228,7 +228,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ## 注意
 
-为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
+为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
 
 ```typescript
 // 增加数据

@@ -61,9 +61,22 @@ describe('rate', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should allow half work', fakeAsync(() => {
-      testComponent.allowHalf = true;
+      testComponent.allowHalf = false;
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
+      testComponent.value = 3.5;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
+      expect(rate.nativeElement.firstElementChild.children[4].classList).toContain('ant-rate-star-zero');
+      flush();
+
+      testComponent.allowHalf = true;
+      testComponent.value = 0;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.children[1].click();
       fixture.detectChanges();
       flush();

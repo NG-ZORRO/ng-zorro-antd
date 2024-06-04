@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: 'Select week',
       rangePlaceholder: ['Start date', 'End date'],
       rangeYearPlaceholder: ['Start year', 'End year'],
+      rangeQuarterPlaceholder: ['Start quarter', 'End quarter'],
       rangeMonthPlaceholder: ['Start month', 'End month'],
       rangeWeekPlaceholder: ['Start week', 'End week'],
       locale: 'en_US',
@@ -189,6 +190,7 @@ export default {
   },
   QRCode: {
     expired: 'QR code expired',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    scanned: 'Scanned'
   }
 };
