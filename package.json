@@ -29,10 +29,10 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@angular/cdk": "^17.3.0",
-    "@ant-design/icons-angular": "^17.0.0",
+    "@angular/cdk": "^18.0.1",
+    "@ant-design/icons-angular": "^18.0.0",
     "date-fns": "^2.16.1",
-    "ngx-quicklink": "^0.4.2"
+    "ngx-quicklink": "^0.4.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.2",
