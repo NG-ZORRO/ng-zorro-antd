@@ -1,7 +1,7 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -172,11 +172,12 @@ describe('rate', () => {
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
       dispatchFakeEvent(rate.nativeElement.firstElementChild, 'mouseleave');
       fixture.detectChanges();
+      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-zero');
       testComponent.disabled = true;
       fixture.detectChanges();
       dispatchFakeEvent(rate.nativeElement.firstElementChild.children[2].firstElementChild, 'mouseover');
-      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
     });
     it('should keydown work', () => {
       fixture.detectChanges();
@@ -314,6 +315,7 @@ describe('rate', () => {
     });
   });
 });
+
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-rate',
@@ -368,6 +370,7 @@ export class NzTestRateFormComponent {
     this.formControl.enable();
   }
 }
+
 @Component({
   template: `
     <div [dir]="direction">
