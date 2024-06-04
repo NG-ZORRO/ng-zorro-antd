@@ -48,8 +48,7 @@ const migrations: NullableDevkitMigration[] = [
   SpaceTemplateRule
 ];
 
-
-export function updateToV17(): Rule {
+export function updateToV18(): Rule {
   return createMigrationSchematicRule(TargetVersion.V18, migrations, ruleUpgradeData, postUpdate);
 }
 
