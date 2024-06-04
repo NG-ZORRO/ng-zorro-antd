@@ -3,7 +3,7 @@ order: 2
 title: 脚手架
 ---
 使用脚手架可以更加方便的初始化项目，生成模板代码，节省开发时间。
-> 脚手架部分完全基于 [Schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2) 部分进行开发。
+> 脚手架部分完全基于 [Schematics](https://blog.angular.dev/schematics-an-introduction-dc1dfbc2a2b2) 部分进行开发。
 
 ## 项目初始化
 

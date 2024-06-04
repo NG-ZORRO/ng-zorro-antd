@@ -49,7 +49,7 @@ NG-ZORRO
 
 - Angular `^17.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
-- 现代浏览器，[浏览器支持](https://angular.io/guide/browser-support)
+- 现代浏览器，[浏览器支持](https://angular.dev/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Electron |
@@ -76,7 +76,7 @@ $ ng add ng-zorro-antd
 
 ## 🔨 使用
 
-将想要使用的组件模块引入到你的 `app.module.ts` 文件和其它的[特性模块](https://angular.cn/guide/feature-modules)中。
+将想要使用的组件模块引入到你的 `app.module.ts` 文件中和其它的[特性模块](https://angular.dev/guide/ngmodules/feature-modules)中。
 
 ```ts
 import { NzButtonModule } from 'ng-zorro-antd/button';

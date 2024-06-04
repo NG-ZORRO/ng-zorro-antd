@@ -9,9 +9,9 @@ cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 
 具有数据收集、校验和提交功能的表单，包含复选框、单选框、输入框、下拉选择框等元素。
 
-该组件需要与 [Angular 表单](https://angular.io/guide/forms#forms) 结合使用，开发者根据需要可以自由选择 [响应式表单](https://angular.io/guide/reactive-forms#reactive-forms) 或 [模板驱动表单](https://angular.io/guide/forms#template-driven-forms).
+该组件需要与 [Angular 表单](https://angular.dev/guide/forms) 结合使用，开发者根据需要可以自由选择 [响应式表单](https://angular.dev/guide/forms/reactive-forms) 或 [模板驱动表单](https://angular.dev/guide/forms/template-driven-forms).
 
-> 使用该组件前请确保您已经阅读并掌握了 [Forms](https://angular.io/guide/forms#forms) 的使用方式。
+> 使用该组件前请确保您已经阅读并掌握了 [Forms](https://angular.dev/guide/forms) 的使用方式。
 
 ## 表单
 
