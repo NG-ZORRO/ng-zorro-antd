@@ -13,6 +13,28 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 18.0.0
+
+`2024-06-06`
+
+### Bug Fixes
+
+* **cascader,select,time-picker,tooltip,tree-select:** 修复在 shadow DOM 中获取 `EventTarget` 异常问题 ([#7853](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7853)) ([843b703](https://github.com/NG-ZORRO/ng-zorro-antd/commit/843b7035225df3d3a635a5ef8926d1e80f10ae18))
+* **tooltip:** 修复箭头颜色未被自定义颜色覆盖问题 ([#8555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8555)) ([92c586b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/92c586b8f5e5fc0ec0e4cb2cc10b73a699b1555a))
+* **upload:** 仅在 firefox 浏览器中阻止拖拽事件 ([#8551](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8551)) ([c6e7bd7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c6e7bd7682a776a7ad3f34b589c9c473430e6baa))
+* **rate:** 修复 `nzAllowHalf` 为 `false` 时展示半星 ([#8536](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8536)) ([7742fe3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7742fe30b718aa19f2988f6354d982d439ad2c7b))
+
+
+### Features
+
+* **collapse:** `nzExpandIconPosition` 类型从 `left` | `right` 变更为 `start` | `end` ([#8561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8561)) ([3ad5674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ad56749b0c8222b37444f27f81942fba4bc53e3))
+* **date-picker:** 支持季度选择 ([#8478](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8478)) ([3513889](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3513889367ef468b9e792698f85bb6b890edec86)), closes [#7818](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7818) [#7380](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7380)
+* **qrcode:** 新增已扫描状态 ([#8447](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8447)) ([0be6178](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0be617854d1493a342c9354ce1156fcf323acc97))
+* **rate:** 鼠标离开时触发 `nzOnHoverChange` 事件 ([#8448](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8448)) ([38dcc31](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38dcc3196c62369cd8061a9ead8ab20752e56a66))
+* **statistic:** 新增加载中状态 ([#8537](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8537)) ([21c8b62](https://github.com/NG-ZORRO/ng-zorro-antd/commit/21c8b621f15d642c391253ca91c3b124227ca2d9))
+* **table:**  支持设置空数据时内部滚动的高度 ([#8457](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8457)) ([724d841](https://github.com/NG-ZORRO/ng-zorro-antd/commit/724d841ebd88a329c59e2cfeee3f9625393c8372))
+
+
 ## 17.4.1
 
 `2024-05-24`
