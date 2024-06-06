@@ -1,14 +1,14 @@
 ---
 order: 15
-title: v17 升级指南
+title: v18 升级指南
 toc: false
 ---
 
-本文档将帮助你从 `ng-zorro-antd` 16.x 版本升级到 17.x 版本。
+本文档将帮助你从 `ng-zorro-antd` 17.x 版本升级到 18.x 版本。
 
 ## 开始之前
 
-1. 首先确保你 `Node.js` >= `18.13.0` 或 >= `20.9.0`
+1. 首先确保你 `Node.js` >= `18.19.1` 或 >= `20.11.0` 或 >= `22.0.0`
 2. 创建新的分支，或者使用其他方式备份当前项目
 3. 删除项目下 package-lock.json 文件
 
@@ -16,7 +16,7 @@ toc: false
 
 ### 1. 升级相关依赖
 
-- 前往 [https://update.angular.io/](https://update.angular.io/) 将项目升级到 Angular 17
+- 前往 [https://angular.dev/update-guide](https://angular.dev/update-guide) 将项目升级到 Angular 18
 - 如果你有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
 
 ### 升级 NG-ZORRO
