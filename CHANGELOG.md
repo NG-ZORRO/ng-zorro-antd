@@ -1,5 +1,17 @@
 # [18.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.1...18.0.0) (2024-06-06)
 
+### ⚠ BREAKING CHANGES
+
+* **collapse:** change nzExpandIconPosition type from `left` | `right` to `start` | `end` ([#8561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8561)) ([3ad5674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ad56749b0c8222b37444f27f81942fba4bc53e3))
+* no longer use inline JavaScript in Less ([#8552](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8552)) ([7e873c8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7e873c863a1c8e9c053f64aca86bf9c7c9a11a21))
+
+No need to wrap our built-in Less functions such as `colorPalette` with ~\`\` anymore.
+
+```diff
+- color(~`colorPalette('@{primary-color}', 5)`)
++ color(colorPalette('@{primary-color}', 5))
+```
+
 
 ### Bug Fixes
 
@@ -11,7 +23,6 @@
 
 ### Features
 
-* **collapse:** change nzExpandIconPosition type from `left` | `right` to `start` | `end` ([#8561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8561)) ([3ad5674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ad56749b0c8222b37444f27f81942fba4bc53e3))
 * **date-picker:** support quarter selection of date picker ([#8478](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8478)) ([3513889](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3513889367ef468b9e792698f85bb6b890edec86)), closes [#7818](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7818) [#7380](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7380)
 * **qrcode:** qrcode supports scanned state ([#8447](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8447)) ([0be6178](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0be617854d1493a342c9354ce1156fcf323acc97))
 * **rate:** emit hover change when leave ([#8448](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8448)) ([38dcc31](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38dcc3196c62369cd8061a9ead8ab20752e56a66))
