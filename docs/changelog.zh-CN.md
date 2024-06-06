@@ -22,12 +22,14 @@ timeline: true
 * **collapse:** `nzExpandIconPosition` 类型从 `left` | `right` 变更为 `start` | `end` ([#8561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8561)) ([3ad5674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ad56749b0c8222b37444f27f81942fba4bc53e3))
 * Less 中不再使用 inline JavaScript ([#8552](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8552)) ([7e873c8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7e873c863a1c8e9c053f64aca86bf9c7c9a11a21))
 
-使用内置 Less 函数时不再需要用 ~\`\` 包裹。例如：
+使用 antd 提供的 Less 函数时不再需要用 ~\`\` 包裹，例如：
 
 ```diff
 - color(~`colorPalette('@{primary-color}', 5)`)
 + color(colorPalette('@{primary-color}', 5))
 ```
+
+受影响的函数包括：`colorEasing`，`colorPalette`，`tinycolor`
 
 
 ### Bug Fixes
