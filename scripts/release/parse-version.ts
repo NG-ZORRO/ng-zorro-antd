@@ -13,7 +13,7 @@ export interface Version {
 
 const versionNameRegex = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d+))?$/;
 
-export function validVerison(version: string): boolean {
+export function validVersion(version: string): boolean {
   return versionNameRegex.test(version);
 }
 
@@ -35,7 +35,7 @@ export function parseVersion(version: string): Version | null {
 
 export function checkVersionNumber(cur: string, next: string): boolean {
   // Must be numbers and dots.
-  if (!validVerison(next)) {
+  if (!validVersion(next)) {
     return false;
   }
 
