@@ -3,34 +3,43 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { PlatformModule } from '@angular/cdk/platform';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
+  standalone: true,
+  imports: [NzIconModule, PlatformModule],
   template: `
-    <span nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></span>
-    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    <span class="ant-avatar-string" #textEl *ngIf="nzText && hasText">{{ nzText }}</span>
+    @if (nzIcon && hasIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
+    @if (nzSrc && hasSrc) {
+      <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    }
+    @if (nzText && hasText) {
+      <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
+    }
   `,
   host: {
     class: 'ant-avatar',
@@ -50,13 +59,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAvatarComponent implements OnChanges {
-  static ngAcceptInputType_nzGap: NumberInput;
-
+export class NzAvatarComponent implements OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
-  @Input() @WithConfig() @InputNumber() nzGap = 4;
+  @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;
@@ -77,9 +84,7 @@ export class NzAvatarComponent implements OnChanges {
   constructor(
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private ngZone: NgZone
+    private cdr: ChangeDetectorRef
   ) {}
 
   imgError($event: Event): void {
@@ -95,7 +100,7 @@ export class NzAvatarComponent implements OnChanges {
       }
       this.cdr.detectChanges();
       this.setSizeStyle();
-      this.notifyCalc();
+      this.calcStringSize();
     }
   }
 
@@ -105,33 +110,26 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setSizeStyle();
-    this.notifyCalc();
+    this.calcStringSize();
+  }
+
+  ngAfterViewInit(): void {
+    this.calcStringSize();
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) {
+    if (!this.hasText || !this.textEl) {
       return;
     }
 
-    const textEl = this.textEl!.nativeElement;
+    const textEl = this.textEl.nativeElement;
     const childrenWidth = textEl.offsetWidth;
-    const avatarWidth = this.el.getBoundingClientRect().width;
+    const avatarWidth = this.el.getBoundingClientRect?.().width ?? 0;
     const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
     const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
 
     textEl.style.transform = `scale(${scale}) translateX(-50%)`;
     textEl.style.lineHeight = this.customSize || '';
-  }
-
-  private notifyCalc(): void {
-    // If use ngAfterViewChecked, always demands more computations, so......
-    if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.calcStringSize();
-        });
-      });
-    }
   }
 
   private setSizeStyle(): void {
@@ -140,6 +138,7 @@ export class NzAvatarComponent implements OnChanges {
     } else {
       this.customSize = null;
     }
+
     this.cdr.markForCheck();
   }
 }

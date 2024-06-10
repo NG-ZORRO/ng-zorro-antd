@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { NzMentionComponent } from 'ng-zorro-antd/mention';
 
@@ -25,35 +25,42 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
       </nz-form-item>
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-          <button type="button" nz-button nzType="primary" (click)="submitForm()">Submit</button>
-          &nbsp;&nbsp;&nbsp;
-          <button type="button" nz-button (click)="resetForm()">Reset</button>
+          <div class="cta-wrapper">
+            <button type="button" nz-button nzType="primary" (click)="submitForm()">Submit</button>
+            <button type="button" nz-button (click)="resetForm()">Reset</button>
+          </div>
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  styles: [
+    `
+      .cta-wrapper {
+        display: flex;
+        gap: 1rem;
+      }
+    `
+  ]
 })
-export class NzDemoMentionFormComponent implements OnInit {
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
-  validateForm!: UntypedFormGroup;
+export class NzDemoMentionFormComponent {
+  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
+  validateForm: FormGroup<{ mention: FormControl<string | null> }>;
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
-  get mention(): AbstractControl {
-    return this.validateForm.get('mention')!;
+  get mention(): FormControl<string | null> {
+    return this.validateForm.controls.mention;
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder) {
     this.validateForm = this.fb.group({
       mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
     });
   }
 
-  mentionValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+  mentionValidator: ValidatorFn = (control: AbstractControl) => {
     if (!control.value) {
       return { required: true };
-    } else if (this.mentionChild.getMentions().length < 2) {
+    } else if (this.mentionChild?.getMentions().length < 2) {
       return { confirm: true, error: true };
     }
     return {};
@@ -71,7 +78,7 @@ export class NzDemoMentionFormComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.validateForm?.reset({
+    this.validateForm.reset({
       mention: '@afc163 '
     });
   }

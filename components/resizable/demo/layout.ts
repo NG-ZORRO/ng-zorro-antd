@@ -15,7 +15,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
           [nzMaxWidth]="300"
           (nzResize)="onSideResize($event)"
         >
-          <nz-resize-handle nzDirection="right">
+          <nz-resize-handle nzDirection="right" nzCursorType="grid">
             <div class="sider-resize-line"></div>
           </nz-resize-handle>
           Sider
@@ -29,7 +29,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
             [nzMinHeight]="50"
             (nzResize)="onContentResize($event)"
           >
-            <nz-resize-handle nzDirection="bottom">
+            <nz-resize-handle nzDirection="bottom" nzCursorType="grid">
               <div class="content-resize-line"></div>
             </nz-resize-handle>
             Content 1

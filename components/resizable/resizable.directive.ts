@@ -6,11 +6,13 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
+  booleanAttribute,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
   NgZone,
+  numberAttribute,
   OnDestroy,
   Output,
   Renderer2
@@ -19,18 +21,18 @@ import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
+import { ensureInBounds } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
-import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
+import { NzResizeDirection, NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 export interface NzResizeEvent {
   width?: number;
   height?: number;
   col?: number;
   mouseEvent?: MouseEvent | TouchEvent;
+  direction?: NzResizeDirection;
 }
 
 @Directive({
@@ -41,24 +43,21 @@ export interface NzResizeEvent {
     class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
     '[class.nz-resizable-disabled]': 'nzDisabled'
-  }
+  },
+  standalone: true
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
-  static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
-  static ngAcceptInputType_nzPreview: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight?: number;
   @Input() nzMaxWidth?: number;
-  @Input() nzMinHeight: number = 40;
-  @Input() nzMinWidth: number = 40;
-  @Input() nzGridColumnCount: number = -1;
-  @Input() nzMaxColumn: number = -1;
-  @Input() nzMinColumn: number = -1;
-  @Input() @InputBoolean() nzLockAspectRatio: boolean = false;
-  @Input() @InputBoolean() nzPreview: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input({ transform: numberAttribute }) nzMinHeight: number = 40;
+  @Input({ transform: numberAttribute }) nzMinWidth: number = 40;
+  @Input({ transform: numberAttribute }) nzGridColumnCount: number = -1;
+  @Input({ transform: numberAttribute }) nzMaxColumn: number = -1;
+  @Input({ transform: numberAttribute }) nzMinColumn: number = -1;
+  @Input({ transform: booleanAttribute }) nzLockAspectRatio: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPreview: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   @Output() readonly nzResize = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeEnd = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();
@@ -85,9 +84,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.resizing = true;
       this.nzResizableService.startResizing(event.mouseEvent);
       this.currentHandleEvent = event;
-      this.setCursor();
       if (this.nzResizeStart.observers.length) {
-        this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent }));
+        this.ngZone.run(() => this.nzResizeStart.emit({ mouseEvent: event.mouseEvent, direction: event.direction }));
       }
       this.elRect = this.el.getBoundingClientRect();
     });
@@ -184,28 +182,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     };
   }
 
-  setCursor(): void {
-    switch (this.currentHandleEvent!.direction) {
-      case 'left':
-      case 'right':
-        this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
-        break;
-      case 'top':
-      case 'bottom':
-        this.renderer.setStyle(document.body, 'cursor', 'ns-resize');
-        break;
-      case 'topLeft':
-      case 'bottomRight':
-        this.renderer.setStyle(document.body, 'cursor', 'nwse-resize');
-        break;
-      case 'topRight':
-      case 'bottomLeft':
-        this.renderer.setStyle(document.body, 'cursor', 'nesw-resize');
-        break;
-    }
-    this.renderer.setStyle(document.body, 'user-select', 'none');
-  }
-
   resize(event: MouseEvent | TouchEvent): void {
     const elRect = this.elRect;
     const resizeEvent = getEventWithPoint(event);
@@ -250,7 +226,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.ngZone.run(() => {
         this.nzResize.emit({
           ...size,
-          mouseEvent: event
+          mouseEvent: event,
+          direction: this.currentHandleEvent!.direction
         });
       });
     }
@@ -260,8 +237,6 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   endResize(event: MouseEvent | TouchEvent): void {
-    this.renderer.setStyle(document.body, 'cursor', '');
-    this.renderer.setStyle(document.body, 'user-select', '');
     this.removeGhostElement();
     const size = this.sizeCache
       ? { ...this.sizeCache }
@@ -275,7 +250,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       this.ngZone.run(() => {
         this.nzResizeEnd.emit({
           ...size,
-          mouseEvent: event
+          mouseEvent: event,
+          direction: this.currentHandleEvent!.direction
         });
       });
     }

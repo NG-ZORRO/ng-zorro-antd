@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
         <nz-option nzValue="date" nzLabel="Date"></nz-option>
         <nz-option nzValue="week" nzLabel="Week"></nz-option>
         <nz-option nzValue="month" nzLabel="Month"></nz-option>
+        <nz-option nzValue="quarter" nzLabel="Quarter"></nz-option>
         <nz-option nzValue="year" nzLabel="Year"></nz-option>
       </nz-select>
       <nz-date-picker *nzSpaceItem [nzMode]="mode"></nz-date-picker>

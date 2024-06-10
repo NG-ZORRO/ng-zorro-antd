@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 
-import { ColorEvent } from 'ngx-color/color-wrap.component';
-
+import { NzColor } from 'ng-zorro-antd/color-picker';
 import { FontType } from 'ng-zorro-antd/water-mark';
 
 @Component({
@@ -10,9 +9,9 @@ import { FontType } from 'ng-zorro-antd/water-mark';
   template: `
     <div style="display: flex;">
       <nz-water-mark
-        [nzContent]="content"
-        [nzRotate]="rotate"
-        [nzZIndex]="zIndex"
+        [nzContent]="validateForm.value.content!"
+        [nzRotate]="validateForm.value.rotate!"
+        [nzZIndex]="validateForm.value.zIndex!"
         [nzGap]="gap"
         [nzOffset]="offset"
         [nzFont]="font"
@@ -53,18 +52,7 @@ import { FontType } from 'ng-zorro-antd/water-mark';
         <nz-form-item>
           <nz-form-label>Color</nz-form-label>
           <nz-form-control>
-            <div
-              class="theme-pick-wrap"
-              nz-popover
-              [nzPopoverTrigger]="'click'"
-              nzPopoverOverlayClassName="theme-color-content"
-              [nzPopoverContent]="colorTpl"
-            >
-              <div class="theme-pick" [ngStyle]="{ background: color }"></div>
-            </div>
-            <ng-template #colorTpl>
-              <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
-            </ng-template>
+            <nz-color-picker [nzValue]="color" (nzOnChange)="changeColor($event)"></nz-color-picker>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -121,40 +109,32 @@ import { FontType } from 'ng-zorro-antd/water-mark';
         margin-right: 12px;
         width: 40%;
       }
-
-      .theme-pick-wrap {
-        padding: 4px;
-        background: rgb(255, 255, 255);
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px;
-        display: inline-block;
-        cursor: pointer;
-      }
-
-      .theme-pick {
-        width: 80px;
-        height: 16px;
-        border-radius: 2px;
-      }
     `
   ]
 })
 export class NzDemoWaterMarkCustomComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
-  content: string = 'NG Ant Design';
+  validateForm: FormGroup<{
+    content: FormControl<string>;
+    fontSize: FormControl<number>;
+    zIndex: FormControl<number>;
+    rotate: FormControl<number>;
+    gapX: FormControl<number>;
+    gapY: FormControl<number>;
+    offsetX: FormControl<number>;
+    offsetY: FormControl<number>;
+  }>;
   color: string = 'rgba(0,0,0,.15)';
   font: FontType = {
     color: 'rgba(0,0,0,.15)',
     fontSize: 16
   };
-  zIndex: number = 11;
-  rotate: number = -22;
   gap: [number, number] = [100, 100];
   offset: [number, number] = [50, 50];
 
-  constructor(private fb: UntypedFormBuilder, private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {
     this.validateForm = this.fb.group({
       content: ['NG Ant Design'],
       fontSize: [16],
@@ -165,26 +145,25 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
       offsetX: [50],
       offsetY: [50]
     });
+  }
 
+  ngOnInit(): void {
     this.validateForm.valueChanges.subscribe(item => {
-      this.content = item.content;
       this.font = {
         fontSize: item.fontSize,
         color: this.color
       };
-      this.zIndex = item.zIndex;
-      this.rotate = item.rotate;
-      this.gap = [item.gapX, item.gapY];
-      this.offset = [item.offsetX, item.offsetY];
+      this.gap = [item.gapX!, item.gapY!];
+      this.offset = [item.offsetX!, item.offsetY!];
       this.cdr.markForCheck();
     });
   }
 
-  changeColor(value: ColorEvent): void {
-    this.color = value.color.hex;
+  changeColor(value: { color: NzColor; format: string }): void {
+    this.color = value.color.toRgbString();
     this.font = {
-      fontSize: this.validateForm.get('fontSize')?.value,
-      color: value.color.hex
+      fontSize: this.validateForm.controls.fontSize.value,
+      color: value.color.toRgbString()
     };
     this.cdr.markForCheck();
   }

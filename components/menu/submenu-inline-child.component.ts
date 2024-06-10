@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +38,9 @@ import { NzMenuModeType } from './menu.types';
     class: 'ant-menu ant-menu-inline ant-menu-sub',
     '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
-  }
+  },
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
 export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;

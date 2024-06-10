@@ -1,0 +1,3 @@
+import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
+
+export const moduleList = [NzHashCodeModule];

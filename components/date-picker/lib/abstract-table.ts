@@ -3,18 +3,28 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  booleanAttribute
+} from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { DateBodyRow, DateCell } from './interface';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractTable implements OnInit, OnChanges {
-  isTemplateRef = isTemplateRef;
-  isNonEmptyString = isNonEmptyString;
   headRow: DateCell[] = [];
   bodyRows: DateBodyRow[] = [];
   MAX_ROW = 6;
@@ -24,13 +34,13 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
   @Input() activeDate: CandyDate = new CandyDate();
-  @Input() showWeek: boolean = false;
+  @Input({ transform: booleanAttribute }) showWeek: boolean = false;
   @Input() selectedValue: CandyDate[] = []; // Range ONLY
   @Input() hoverValue: CandyDate[] = []; // Range ONLY
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() cellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() fullCellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
-  @Input() canSelectWeek: boolean = false;
+  @Input({ transform: booleanAttribute }) canSelectWeek: boolean = false;
 
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
@@ -42,13 +52,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     }
   }
 
-  trackByBodyRow(_index: number, item: DateBodyRow): NzSafeAny {
-    return item.trackByIndex;
-  }
 
-  trackByBodyColumn(_index: number, item: DateCell): NzSafeAny {
-    return item.trackByIndex;
-  }
 
   hasRangeValue(): boolean {
     return this.selectedValue?.length > 0 || this.hoverValue?.length > 0;
@@ -111,7 +115,9 @@ export abstract class AbstractTable implements OnInit, OnChanges {
           currentValue.length !== previousValue.length ||
           currentValue.some((value, index) => {
             const previousCandyDate = previousValue[index];
-            return previousCandyDate instanceof CandyDate ? previousCandyDate.isSameDay(value) : previousCandyDate !== value;
+            return previousCandyDate instanceof CandyDate
+              ? previousCandyDate.isSameDay(value)
+              : previousCandyDate !== value;
           })
         );
       } else {

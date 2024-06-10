@@ -7,10 +7,10 @@ title: 全局配置项
 
 ## 如何使用
 
-想要为某些组件提供默认配置项，请在根注入器中根据注入令牌 `NZ_CONFIG` 提供一个符合 `NzConfig` 接口的对象，例如：
+想要为某些组件提供默认配置项, 可以使用 `provideNzConfig` 函数，传入一个符合 `NzConfig` 接口的对象。例如：
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   // 注意组件名称没有 nz 前缀
@@ -24,7 +24,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })
@@ -74,12 +74,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -96,8 +93,7 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
@@ -137,8 +133,9 @@ export class AppModule {}
     NzConfigService,
     {
       provide: NZ_CONFIG,
-      useFactory: (nzConfigService: NzConfigService) => {
-        const globalConfig = nzConfigService.getConfig();
+      useFactory: () => {
+        // 获取全局 NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
             nzBorderless: true
@@ -151,8 +148,6 @@ export class AppModule {}
         };
         return mergedConfig;
       },
-      // 获取全局 NzConfigService
-      deps: [[new SkipSelf(), NzConfigService]]
     }
   ]
 })

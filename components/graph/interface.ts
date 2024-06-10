@@ -100,8 +100,8 @@ export type NzDeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<NzDeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U>
-    ? ReadonlyArray<NzDeepPartial<U>>
-    : NzDeepPartial<T[P]>;
+      ? ReadonlyArray<NzDeepPartial<U>>
+      : NzDeepPartial<T[P]>;
 };
 
 export type NzGraphLayoutConfig = NzDeepPartial<NzGraphBaseLayout>;

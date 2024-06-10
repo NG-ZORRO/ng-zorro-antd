@@ -6,7 +6,7 @@
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { Rule } from '@angular-devkit/schematics';
-import { updateWorkspace } from '@schematics/angular/utility/workspace';
+import { updateWorkspace } from '@schematics/angular/utility';
 import { cyan, yellow } from 'chalk';
 
 import { Schema } from '../schema';
@@ -26,7 +26,6 @@ export function addIconToAssets(options: Schema): Rule {
     if (!targetOptions.assets) {
       targetOptions.assets = [{ ...iconAssetObject }];
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-types
       const assets = targetOptions.assets as Array<string | object>;
       const assetsString = JSON.stringify(assets);
       if (!assetsString.includes(iconPathSegment)) {

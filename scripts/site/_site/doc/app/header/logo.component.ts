@@ -17,4 +17,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     `
   ]
 })
-export class LogoComponent {}
+export class LogoComponent { }

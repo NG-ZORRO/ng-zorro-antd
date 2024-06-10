@@ -3,9 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyle } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  booleanAttribute
+} from '@angular/core';
 
 import {
   NzSkeletonAvatarShape,
@@ -21,12 +28,13 @@ import {
     class: 'ant-skeleton ant-skeleton-element',
     '[class.ant-skeleton-active]': 'nzActive',
     '[class.ant-skeleton-block]': 'nzBlock'
-  }
+  },
+  standalone: true
 })
 export class NzSkeletonElementDirective {
-  @Input() nzActive: boolean = false;
+  @Input({ transform: booleanAttribute }) nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
-  @Input() @InputBoolean() nzBlock: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
 
   constructor() {}
 }
@@ -37,12 +45,14 @@ export class NzSkeletonElementDirective {
   template: `
     <span
       class="ant-skeleton-button"
+      [class.ant-skeleton-button-square]="nzShape === 'square'"
       [class.ant-skeleton-button-round]="nzShape === 'round'"
       [class.ant-skeleton-button-circle]="nzShape === 'circle'"
       [class.ant-skeleton-button-lg]="nzSize === 'large'"
       [class.ant-skeleton-button-sm]="nzSize === 'small'"
     ></span>
-  `
+  `,
+  standalone: true
 })
 export class NzSkeletonElementButtonComponent {
   @Input() nzShape: NzSkeletonButtonShape = 'default';
@@ -61,7 +71,9 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
       [ngStyle]="styleMap"
     ></span>
-  `
+  `,
+  imports: [NgStyle],
+  standalone: true
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
   @Input() nzShape: NzSkeletonAvatarShape = 'circle';
@@ -88,7 +100,8 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
       [class.ant-skeleton-input-lg]="nzSize === 'large'"
       [class.ant-skeleton-input-sm]="nzSize === 'small'"
     ></span>
-  `
+  `,
+  standalone: true
 })
 export class NzSkeletonElementInputComponent {
   @Input() nzSize: NzSkeletonInputSize = 'default';
@@ -106,6 +119,7 @@ export class NzSkeletonElementInputComponent {
         />
       </svg>
     </span>
-  `
+  `,
+  standalone: true
 })
 export class NzSkeletonElementImageComponent {}

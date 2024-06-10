@@ -51,6 +51,7 @@ export class DatePickerService implements OnDestroy {
     const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
       date: 'month',
       month: 'year',
+      quarter: 'year',
       year: 'decade'
     };
     if (this.isRange) {

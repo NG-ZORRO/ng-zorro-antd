@@ -4,7 +4,8 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,10 +21,11 @@ import {
   Optional,
   Output,
   SimpleChange,
-  SkipSelf,
   TemplateRef,
   ViewChild,
-  forwardRef
+  booleanAttribute,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -43,16 +45,15 @@ import {
   NzTreeNodeOptions,
   flattenTreeData
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeService } from './tree.service';
 
-export function NzTreeServiceFactory(
-  higherOrderService: NzTreeBaseService,
-  treeService: NzTreeService
-): NzTreeBaseService {
-  return higherOrderService ? higherOrderService : treeService;
+export function NzTreeServiceFactory(): NzTreeBaseService {
+  const higherOrderService = inject(NzTreeHigherOrderServiceToken, { skipSelf: true, optional: true });
+  const treeService = inject(NzTreeService);
+  return higherOrderService ?? treeService;
 }
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
@@ -148,8 +149,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NzTreeService,
     {
       provide: NzTreeBaseService,
-      useFactory: NzTreeServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), NzTreeHigherOrderServiceToken], NzTreeService]
+      useFactory: NzTreeServiceFactory
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -168,7 +168,19 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.ant-tree-icon-hide]': `!nzSelectMode && !nzShowIcon`,
     '[class.ant-tree-block-node]': `!nzSelectMode && nzBlockNode`,
     '[class.draggable-tree]': `nzDraggable`
-  }
+  },
+  imports: [
+    NgStyle,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    NgIf,
+    CdkVirtualForOf,
+    NgTemplateOutlet,
+    NzNoAnimationDirective,
+    NgForOf,
+    NzTreeNodeBuiltinComponent
+  ],
+  standalone: true
 })
 export class NzTreeComponent
   extends NzTreeBase
@@ -176,31 +188,18 @@ export class NzTreeComponent
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
-  static ngAcceptInputType_nzBlockNode: BooleanInput;
-  static ngAcceptInputType_nzExpandAll: BooleanInput;
-  static ngAcceptInputType_nzSelectMode: BooleanInput;
-  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
-  static ngAcceptInputType_nzShowExpand: BooleanInput;
-  static ngAcceptInputType_nzShowLine: BooleanInput;
-  static ngAcceptInputType_nzCheckable: BooleanInput;
-  static ngAcceptInputType_nzAsyncData: BooleanInput;
-  static ngAcceptInputType_nzDraggable: BooleanInput;
-  static ngAcceptInputType_nzMultiple: BooleanInput;
-
-  @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzBlockNode: boolean = false;
-  @Input() @InputBoolean() nzExpandAll = false;
-  @Input() @InputBoolean() nzSelectMode = false;
-  @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() @InputBoolean() nzShowExpand: boolean = true;
-  @Input() @InputBoolean() nzShowLine = false;
-  @Input() @InputBoolean() nzCheckable = false;
-  @Input() @InputBoolean() nzAsyncData = false;
-  @Input() @InputBoolean() nzDraggable: boolean = false;
-  @Input() @InputBoolean() nzMultiple = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHideUnMatched: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBlockNode: boolean = false;
+  @Input({ transform: booleanAttribute }) nzExpandAll = false;
+  @Input({ transform: booleanAttribute }) nzSelectMode = false;
+  @Input({ transform: booleanAttribute }) nzCheckStrictly = false;
+  @Input({ transform: booleanAttribute }) nzShowExpand: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowLine = false;
+  @Input({ transform: booleanAttribute }) nzCheckable = false;
+  @Input({ transform: booleanAttribute }) nzAsyncData = false;
+  @Input({ transform: booleanAttribute }) nzDraggable: boolean = false;
+  @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
@@ -226,7 +225,7 @@ export class NzTreeComponent
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() readonly nzCheckedKeysChange: EventEmitter<NzTreeNodeKey[]> = new EventEmitter<NzTreeNodeKey[]>();
   @Output() readonly nzSearchValueChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
@@ -428,6 +427,8 @@ export class NzTreeComponent
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
         this.nzCheckBoxChange.emit(eventNext);
+        const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
+        this.nzCheckedKeysChange.emit(checkedKeys);
         break;
       case 'dragstart':
         // if node is expanded

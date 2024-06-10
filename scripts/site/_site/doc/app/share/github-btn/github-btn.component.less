@@ -5,26 +5,27 @@ nz-github-btn {
     outline: 0;
   }
 
-  .btn, .social-count {
+  .btn,
+  .social-count {
     display: inline-block;
+    box-sizing: initial;
     height: 14px;
+    margin-bottom: 2px;
     padding: 2px 5px;
-    font-size: 11px;
     font-weight: 600;
+    font-size: 11px;
     line-height: 14px;
     vertical-align: middle;
-    cursor: pointer;
     border: 1px solid #c5c9cc;
     border-radius: 0.25em;
-    box-sizing: initial;
-    margin-bottom: 2px;
+    cursor: pointer;
   }
 
   .octicon {
     display: inline-block;
-    vertical-align: text-top;
-    fill: currentColor;
     margin-right: 4px;
+    vertical-align: text-top;
+    fill: currentcolor;
   }
 
   .btn {
@@ -33,38 +34,36 @@ nz-github-btn {
     font-size: 12px;
     line-height: 16px;
     background-color: #eff3f6;
-    background-image: -webkit-linear-gradient(top, #fafbfc, #eff3f6 90%);
-    background-image: -moz-linear-gradient(top, #fafbfc, #eff3f6 90%);
     background-image: linear-gradient(180deg, #fafbfc, #eff3f6 90%);
-    background-position: -1px -1px;
     background-repeat: repeat-x;
+    background-position: -1px -1px;
     background-size: 110% 110%;
     border-color: rgba(27, 31, 35, 0.2);
-    ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5')";
+    filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5')";
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: #24292e;
       background-color: #e6ebf1;
-      background-image: -webkit-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
-      background-image: -moz-linear-gradient(top, #f0f3f6, #e6ebf1 90%);
       background-image: linear-gradient(180deg, #f0f3f6, #e6ebf1 90%);
       border-color: #a5a9ac;
-      border-color: rgba(27,31,35,0.35);
-      -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0')";
+      border-color: rgba(27, 31, 35, 0.35);
+      filter: "progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0')";
     }
   }
 
   .social-count {
-    margin-left: 6px;
+    position: relative;
     height: 16px;
+    margin-left: 6px;
     padding: 5px 10px;
     font-size: 12px;
     line-height: 16px;
-    position: relative;
     background-color: #fff;
   }
 
-  .social-count b, .social-count i {
+  .social-count b,
+  .social-count i {
     position: absolute;
     top: 50%;
     left: 0;
@@ -77,9 +76,9 @@ nz-github-btn {
   }
 
   .social-count b {
-    border-right-color: #c5c9cc;
     margin: -5px 0 0 -5px;
     border-width: 5px 5px 5px 0;
+    border-right-color: #c5c9cc;
   }
 
   .social-count i {

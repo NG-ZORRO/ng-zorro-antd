@@ -12,7 +12,8 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
+import { _getEventTarget, Platform } from '@angular/cdk/platform';
+import { NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -21,7 +22,6 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Host,
   Input,
   NgZone,
@@ -35,7 +35,9 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
@@ -43,13 +45,12 @@ import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestF
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { getPlacementName, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NzSafeAny,
   NzStatus,
@@ -57,10 +58,13 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 
+import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
+import { NzSelectArrowComponent } from './select-arrow.component';
+import { NzSelectClearComponent } from './select-clear.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import {
   NzFilterOptionType,
@@ -122,12 +126,15 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
     <nz-select-arrow
-      *ngIf="nzShowArrow || (hasFeedback && !!status)"
+      *ngIf="nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet"
       [showArrow]="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
       [feedbackIcon]="feedbackIconTpl"
+      [nzMaxMultipleCount]="nzMaxMultipleCount"
+      [listOfValue]="listOfValue"
+      [isMaxTagCountSet]="isMaxTagCountSet"
     >
       <ng-template #feedbackIconTpl>
         <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
@@ -174,6 +181,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
         [dropdownRender]="nzDropdownRender"
         [compareWith]="compareWith"
         [mode]="nzMode"
+        [isMaxLimitReached]="isMaxLimitReached"
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
@@ -195,25 +203,29 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
     '[class.ant-select-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzSelectTopControlComponent,
+    CdkOverlayOrigin,
+    NzNoAnimationDirective,
+    NzSelectArrowComponent,
+    NgIf,
+    NzFormPatchModule,
+    NzSelectClearComponent,
+    CdkConnectedOverlay,
+    NzOverlayModule,
+    NzOptionContainerComponent,
+    NgStyle
+  ],
+  standalone: true
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzShowSearch: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzAutoClearSearchValue: BooleanInput;
-  static ngAcceptInputType_nzServerSearch: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzOpen: BooleanInput;
-
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() nzOptionHeightPx = 32;
+  @Input() @WithConfig<number>() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -236,25 +248,29 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
-  @Input() @InputBoolean() nzAllowClear = false;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBorderless = false;
-  @Input() @InputBoolean() nzShowSearch = false;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzAutoClearSearchValue = true;
-  @Input() @InputBoolean() nzServerSearch = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzOpen = false;
-  @Input() @InputBoolean() nzSelectOnTab = false;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) nzShowSearch = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzAutoClearSearchValue = true;
+  @Input({ transform: booleanAttribute }) nzServerSearch = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzOpen = false;
+  @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
+  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzShowArrow(value: boolean) {
     this._nzShowArrow = value;
   }
   get nzShowArrow(): boolean {
     return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
+  }
+
+  get isMaxTagCountSet(): boolean {
+    return this.nzMaxMultipleCount !== Infinity;
   }
 
   @Output() readonly nzOnSearch = new EventEmitter<string>();
@@ -291,6 +307,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   focused = false;
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
+  isMaxLimitReached = false;
 
   // status
   prefixCls: string = 'ant-select';
@@ -404,6 +421,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.value = model;
       this.onChange(this.value);
     }
+
+    this.isMaxLimitReached =
+      this.nzMaxMultipleCount !== Infinity && this.listOfValue.length === this.nzMaxMultipleCount;
   }
 
   onTokenSeparate(listOfLabel: string[]): void {
@@ -500,7 +520,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onOpenChange(): void {
     this.updateCdkConnectedOverlayStatus();
-    this.clearInput();
+    if (this.nzAutoClearSearchValue) {
+      this.clearInput();
+    }
   }
 
   onInputValueChange(value: string): void {
@@ -515,7 +537,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.host.nativeElement.contains(event.target as HTMLElement)) {
+    const target = _getEventTarget(event);
+    if (!this.host.nativeElement.contains(target as Node)) {
       this.setOpenState(false);
     }
   }
@@ -623,6 +646,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       const listOfTransformedItem = listOfOptions.map(item => {
         return {
           template: item.label instanceof TemplateRef ? item.label : null,
+          nzTitle: this.getTitle(item.title, item.label),
           nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
           nzValue: item.value,
           nzDisabled: item.disabled || false,
@@ -630,7 +654,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           nzCustomContent: item.label instanceof TemplateRef,
           groupLabel: item.groupLabel || null,
           type: 'item',
-          key: item.value
+          key: item.key === undefined ? item.value : item.key
         };
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
@@ -757,7 +781,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         )
         .subscribe(() => {
           const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
-            const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
+            const { template, nzLabel, nzValue, nzKey, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
             return {
               template,
               nzLabel,
@@ -766,8 +790,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
               nzHide,
               nzCustomContent,
               groupLabel,
+              nzTitle: this.getTitle(item.nzTitle, item.nzLabel),
               type: 'item',
-              key: nzValue
+              key: nzKey === undefined ? nzValue : nzKey
             };
           });
           this.listOfTemplateItem$.next(listOfOptionInterface);
@@ -794,5 +819,18 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         this.renderer.removeClass(this.host.nativeElement, status);
       }
     });
+  }
+
+  private getTitle(title: NzSelectOptionInterface['title'], label: NzSelectOptionInterface['label']): string {
+    let rawTitle: string = undefined!;
+    if (title === undefined) {
+      if (typeof label === 'string' || typeof label === 'number') {
+        rawTitle = label.toString();
+      }
+    } else if (typeof title === 'string' || typeof title === 'number') {
+      rawTitle = title.toString();
+    }
+
+    return rawTitle;
   }
 }

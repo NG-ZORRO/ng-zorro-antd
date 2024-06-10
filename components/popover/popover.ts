@@ -4,12 +4,12 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
-  ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -17,22 +17,22 @@ import {
   Input,
   Optional,
   Output,
-  Renderer2,
-  ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import {
-  isTooltipEmpty,
-  NzTooltipBaseDirective,
   NzToolTipComponent,
+  NzTooltipBaseDirective,
   NzTooltipTrigger,
-  PropertyMapping
+  PropertyMapping,
+  isTooltipEmpty
 } from 'ng-zorro-antd/tooltip';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
@@ -42,14 +42,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'visible'
-  }
+  },
+  standalone: true
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
-  static ngAcceptInputType_nzPopoverArrowPointAtCenter: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  @Input('nzPopoverArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
+  @Input({ alias: 'nzPopoverArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') override title?: NzTSType;
   @Input('nzPopoverContent') override content?: NzTSType;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;
@@ -67,8 +66,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopoverVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
-  override componentRef: ComponentRef<NzPopoverComponent> = this.hostView.createComponent(NzPopoverComponent);
-
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
@@ -76,15 +73,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     };
   }
 
-  constructor(
-    elementRef: ElementRef,
-    hostView: ViewContainerRef,
-    resolver: ComponentFactoryResolver,
-    renderer: Renderer2,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective,
-    nzConfigService?: NzConfigService
-  ) {
-    super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
+  constructor() {
+    super(NzPopoverComponent);
   }
 }
 
@@ -104,7 +94,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
-      [cdkConnectedOverlayPush]="true"
+      [cdkConnectedOverlayPush]="cdkConnectedOverlayPush"
       [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
@@ -125,9 +115,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
           </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
-              <div class="ant-popover-title" *ngIf="nzTitle">
-                <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-              </div>
+              @if (nzTitle) {
+                <div class="ant-popover-title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                </div>
+              }
               <div class="ant-popover-inner-content">
                 <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
               </div>
@@ -136,7 +128,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule],
+  standalone: true
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';

@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -562,7 +562,10 @@ describe('transfer', () => {
       <p id="transfer-footer">footer</p>
     </ng-template>
   `,
-  styleUrls: ['./style/index.less'],
+  styles: `
+    @import '../style/testing.less';
+    @import './style/index.less';
+  `,
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {

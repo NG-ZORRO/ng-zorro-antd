@@ -17,7 +17,7 @@ Angular Vue and React have very similar benchmarks, which should not be a decidi
 
 ### Can I use ng-zorro-antd in other Angular version?
 
-`ng-zorro-antd` keeps the same major version with `@angular/core`, for example `ng-zorro-antd@8` supports `@angular/core@8`. In order to get the best performance, we recommend to use the latest version of angular, ref [update docs]( https://update.angular.io).
+`ng-zorro-antd` keeps the same major version with `@angular/core`, for example `ng-zorro-antd@8` supports `@angular/core@8`. In order to get the best performance, we recommend to use the latest version of angular, ref [update docs](https://angular.dev/update-guide).
 
 ### Can I use only some of the components of ng-zorro-antd?
 
@@ -34,7 +34,7 @@ All codes of ng-zorro-antd are native angular code, they won't have conflict wit
 
 ### Can't Bind to since it isn't a known property of
 
-Please make sure you have export NG-ZORRO's feature modules in `ShareModule` if you have more than one module in your angular project, [ref](https://angular.io/guide/sharing-ngmodules).
+Please make sure you have export NG-ZORRO's feature modules in `ShareModule` if you have more than one module in your angular project, [ref](https://angular.dev/guide/ngmodules/sharing).
 
 ### Expression Changed After It Has Been Checked Error
 
@@ -42,7 +42,7 @@ This [doc](https://blog.angularindepth.com/everything-you-need-to-know-about-the
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 
-Don't forget to import `ReactiveFormsModule`, [ref](https://angular.io/guide/reactive-forms).
+Don't forget to import `ReactiveFormsModule`, [ref](https://angular.dev/guide/forms/reactive-forms).
 
 ### The difference between `[nzValue]="data"` `nzValue="data"` and `nzValue="{{data}}"`
 
@@ -50,7 +50,7 @@ Don't forget to import `ReactiveFormsModule`, [ref](https://angular.io/guide/rea
 
 ### Why my page content is not updated after I change the data?
 
-In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
+In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
 
 ```typescript
     // add data
@@ -64,12 +64,12 @@ In order to get better performance, all NG-ZORRO's components are running under 
     this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience
+Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience.
 
 
 ### My Angular app is deadlock, what happened?
 
-Evaluation of a template expression should have no visible side effects. It would cause performance issue or [deadlock](https://angular.io/guide/template-syntax#avoid-side-effects) if you go against the rule. The following component will print `I will run every time` every time.
+Evaluation of a template expression should have no visible side effects. It would cause performance issue or deadlock if you go against the rule. The following component will print `I will run every time` every time.
 
 ```typescript
 @Component({
@@ -93,9 +93,9 @@ Read [https://web.dev/angular](https://web.dev/angular).
 
 `ng-zorro-antd` is an implementation of Ant Design for Angular, which means only features supported by Ant Design would be implemented by `ng-zorro-antd`.
 
-###  Browser compatibility
+### Browser compatibility
 
-Please make sure your browser is [supported by Angular](https://github.com/angular/angular) and you have imported the [polyfill](https://angular.io/guide/browser-support) file correctly. And some components' usages are not supported by some browsers (i.e `flex` property). Please submit an issue if none of these is your case.
+Please make sure your browser is [supported by Angular](https://github.com/angular/angular) and you have imported the [polyfill](https://angular.dev/reference/versions#polyfills) file correctly. And some components' usages are not supported by some browsers (i.e `flex` property). Please submit an issue if none of these is your case.
 
 ### Why my issue is closed?
 

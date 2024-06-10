@@ -7,10 +7,10 @@ We add a **global configuration** support to many components. You can define the
 
 ## How to Use?
 
-In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
+In order to provide default configurations in certain components, please use `provideNzConfig` function. object providing implements interface `NzConfig`For example:
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
@@ -23,7 +23,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })
@@ -73,12 +73,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -95,8 +92,7 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
@@ -136,8 +132,9 @@ You can also use `useFactory` to combine the global configuration with the local
     NzConfigService,
     {
       provide: NZ_CONFIG,
-      useFactory: (nzConfigService: NzConfigService) => {
-        const globalConfig = nzConfigService.getConfig();
+      useFactory: () => {
+        // get global NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
             nzBorderless: true
@@ -150,8 +147,6 @@ You can also use `useFactory` to combine the global configuration with the local
         };
         return mergedConfig;
       },
-      // get global NzConfigService
-      deps: [[new SkipSelf(), NzConfigService]]
     }
   ]
 })

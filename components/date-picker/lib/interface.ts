@@ -39,6 +39,8 @@ export interface DateCell {
   isRangeEndNearHover?: boolean;
   isFirstCellInPanel?: boolean;
   isLastCellInPanel?: boolean;
+  isTemplateRef ?: boolean;
+  isNonEmptyString ?: boolean;
 }
 
 export interface DateBodyRow {

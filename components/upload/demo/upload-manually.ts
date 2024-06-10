@@ -30,7 +30,10 @@ export class NzDemoUploadUploadManuallyComponent {
   uploading = false;
   fileList: NzUploadFile[] = [];
 
-  constructor(private http: HttpClient, private msg: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private msg: NzMessageService
+  ) {}
 
   beforeUpload = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.concat(file);

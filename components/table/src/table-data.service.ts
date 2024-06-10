@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
 
 import {
+  NzCustomColumn,
   NzTableFilterFn,
   NzTableFilterValue,
   NzTableQueryParams,
@@ -22,6 +23,7 @@ export class NzTableDataService<T> implements OnDestroy {
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
   private listOfData$ = new BehaviorSubject<readonly T[]>([]);
+  listOfCustomColumn$ = new BehaviorSubject<NzCustomColumn[]>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());
   listOfCalcOperator$ = new BehaviorSubject<
@@ -126,6 +128,9 @@ export class NzTableDataService<T> implements OnDestroy {
   }
   updateListOfData(list: readonly T[]): void {
     this.listOfData$.next(list);
+  }
+  updateListOfCustomColumn(list: NzCustomColumn[]): void {
+    this.listOfCustomColumn$.next(list);
   }
   constructor() {}
   ngOnDestroy(): void {

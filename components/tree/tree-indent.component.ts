@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
@@ -25,7 +26,9 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
     '[attr.aria-hidden]': 'true',
     '[class.ant-tree-indent]': '!nzSelectMode',
     '[class.ant-select-tree-indent]': 'nzSelectMode'
-  }
+  },
+  imports: [NgForOf],
+  standalone: true
 })
 export class NzTreeIndentComponent implements OnChanges {
   @Input() nzTreeLevel = 0;

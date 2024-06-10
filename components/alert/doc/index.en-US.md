@@ -18,7 +18,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 ## API
 
-### nz-alert
+### nz-alert:standalone
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |

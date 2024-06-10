@@ -1,35 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormRecord, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-form-item',
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item *ngFor="let control of listOfControl; let i = index">
-        <nz-form-label [nzXs]="24" [nzSm]="4" *ngIf="i === 0" [nzFor]="control.controlInstance">
-          Passengers
-        </nz-form-label>
-        <nz-form-control
-          [nzXs]="24"
-          [nzSm]="20"
-          [nzOffset]="i === 0 ? 0 : 4"
-          nzErrorTip="Please input passenger's name or delete this field."
-        >
-          <input
-            class="passenger-input"
-            nz-input
-            placeholder="placeholder"
-            [attr.id]="control.id"
-            [formControlName]="control.controlInstance"
-          />
-          <span
-            nz-icon
-            nzType="minus-circle-o"
-            class="dynamic-delete-button"
-            (click)="removeField(control, $event)"
-          ></span>
-        </nz-form-control>
-      </nz-form-item>
+      @for (control of listOfControl; track control; let i = $index) {
+        <nz-form-item>
+          @if (i === 0) {
+            <nz-form-label [nzXs]="24" [nzSm]="4" [nzFor]="control.controlInstance"> Passengers </nz-form-label>
+          }
+          <nz-form-control
+            [nzXs]="24"
+            [nzSm]="20"
+            [nzOffset]="i === 0 ? 0 : 4"
+            nzErrorTip="Please input passenger's name or delete this field."
+          >
+            <input
+              class="passenger-input"
+              nz-input
+              placeholder="placeholder"
+              [attr.id]="control.id"
+              [formControlName]="control.controlInstance"
+            />
+            <span
+              nz-icon
+              nzType="minus-circle-o"
+              class="dynamic-delete-button"
+              (click)="removeField(control, $event)"
+            ></span>
+          </nz-form-control>
+        </nz-form-item>
+      }
+
       <nz-form-item>
         <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
           <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
@@ -77,13 +80,12 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } 
   ]
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+  validateForm: FormRecord<FormControl<string>> = this.fb.record({});
   listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
   addField(e?: MouseEvent): void {
-    if (e) {
-      e.preventDefault();
-    }
+    e?.preventDefault();
+
     const id = this.listOfControl.length > 0 ? this.listOfControl[this.listOfControl.length - 1].id + 1 : 0;
 
     const control = {
@@ -94,7 +96,7 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
     console.log(this.listOfControl[this.listOfControl.length - 1]);
     this.validateForm.addControl(
       this.listOfControl[index - 1].controlInstance,
-      new UntypedFormControl(null, Validators.required)
+      this.fb.control('', Validators.required)
     );
   }
 
@@ -121,10 +123,9 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
     }
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
-    this.validateForm = this.fb.group({});
     this.addField();
   }
 }

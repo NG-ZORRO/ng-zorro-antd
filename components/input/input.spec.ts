@@ -1,7 +1,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -13,22 +13,20 @@ import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 
 describe('input', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputWithInputComponent,
-          NzTestInputWithTextAreaComponent,
-          NzTestInputFormComponent,
-          NzTestInputWithStatusComponent,
-          NzTestInputWithDirComponent,
-          NzTestInputInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
+      declarations: [
+        NzTestInputWithInputComponent,
+        NzTestInputWithTextAreaComponent,
+        NzTestInputFormComponent,
+        NzTestInputWithStatusComponent,
+        NzTestInputWithDirComponent,
+        NzTestInputInFormComponent
+      ],
+      providers: []
+    }).compileComponents();
+  }));
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;
@@ -61,6 +59,13 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
+      });
+      it('should nzStepperLess work', () => {
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
+        testComponent.stepperless = false;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
     });
 
@@ -204,11 +209,12 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" /> `
+  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" /> `
 })
 export class NzTestInputWithInputComponent {
   size = 'default';
   disabled = false;
+  stepperless = true;
 }
 
 @Component({
@@ -218,22 +224,16 @@ export class NzTestInputWithTextAreaComponent {}
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <input nz-input formControlName="input" />
+    <form>
+      <input nz-input [formControl]="formControl" />
     </form>
   `
 })
 export class NzTestInputFormComponent {
-  formGroup: UntypedFormGroup;
-
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      input: ['abc']
-    });
-  }
+  formControl = new FormControl('abc');
 
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 }
 

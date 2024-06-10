@@ -3,16 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   Inject,
+  Input,
   OnDestroy,
   OnInit,
-  ComponentFactoryResolver,
-  Input,
-  ViewChild,
+  PLATFORM_ID,
   TemplateRef,
+  ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import { of, Subscription } from 'rxjs';
@@ -350,22 +350,25 @@ declare const locale: NzSafeAny;
         </button>
       </ng-template>
     </div>
-    <ng-container *ngFor="let category of categoryNames; let i = index">
+    @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
-          <span class="anticon-class">
-            <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
-              {{ icon }}
-            </nz-badge>
-            <ng-template #notNewTpl>
-              {{ icon }}
-            </ng-template>
-          </span>
-        </li>
+        @for (icon of displayedNames[i].icons; track trackByFn) {
+          <li (click)="onIconClick($event, icon)">
+            <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
+            <span class="anticon-class">
+              @if (isNewIcon(icon)) {
+                <nz-badge nzDot>
+                  {{ icon }}
+                </nz-badge>
+              } @else {
+                {{ icon }}
+              }
+            </span>
+          </li>
+        }
       </ul>
-    </ng-container>
+    }
     <nz-modal
       [nzTitle]="localeObj.picSearcherTitle"
       [(nzVisible)]="modalVisible"
@@ -373,7 +376,7 @@ declare const locale: NzSafeAny;
       [nzFooter]="null"
     >
       <ng-container *nzModalContent>
-        <ng-container *ngIf="modelLoaded; else modelLoadingTpl">
+        @if (modelLoaded) {
           <nz-upload
             nzType="drag"
             nzAccept="image/jpeg, image/png"
@@ -390,7 +393,7 @@ declare const locale: NzSafeAny;
           </nz-upload>
           <nz-spin [nzSpinning]="loading" [nzTip]="localeObj.picSearcherMatching">
             <div class="icon-pic-search-result">
-              <ng-container *ngIf="icons.length">
+              @if (icons.length) {
                 <div class="result-tip">
                   {{ localeObj.picSearcherResultTip }}
                 </div>
@@ -404,36 +407,38 @@ declare const locale: NzSafeAny;
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let icon of icons">
-                      <td class="col-icon">
-                        <span
-                          nz-icon
-                          nz-tooltip
-                          [nzTooltipTitle]="icon.type"
-                          nzTooltipPlacement="right"
-                          [nzType]="icon.type"
-                          [nzTheme]="currentTheme"
-                          (click)="onIconClick($event, icon.type)"
-                        >
-                        </span>
-                      </td>
-                      <td>
-                        <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
-                      </td>
-                    </tr>
+                    @for (icon of icons; track icon) {
+                      <tr>
+                        <td class="col-icon">
+                          <span
+                            nz-icon
+                            nz-tooltip
+                            [nzTooltipTitle]="icon.type"
+                            nzTooltipPlacement="right"
+                            [nzType]="icon.type"
+                            [nzTheme]="currentTheme"
+                            (click)="onIconClick($event, icon.type)"
+                          >
+                          </span>
+                        </td>
+                        <td>
+                          <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
+                        </td>
+                      </tr>
+                    }
                   </tbody>
                 </table>
-              </ng-container>
-              <nz-result *ngIf="error" nzStatus="500" nzTitle="503" [nzSubTitle]="localeObj.picSearcherServerError">
-              </nz-result>
+              }
+              @if (error) {
+                <nz-result nzStatus="500" nzTitle="503" [nzSubTitle]="localeObj.picSearcherServerError" />
+              }
             </div>
           </nz-spin>
-        </ng-container>
-        <ng-template #modelLoadingTpl>
+        } @else {
           <nz-spin [nzTip]="localeObj.picSearcherModelLoading">
             <div style="height: 100px;"></div>
           </nz-spin>
-        </ng-template>
+        }
       </ng-container>
     </nz-modal>
   `,
@@ -557,8 +562,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   private getCopiedStringTemplateRef(copiedString: string): TemplateRef<void> {
     this.viewContainerRef.clear();
-    const factory = this.componentFactoryResolver.resolveComponentFactory(NzPageDemoIconCopiedCodeComponent);
-    const componentRef = this.viewContainerRef.createComponent(factory);
+    const componentRef = this.viewContainerRef.createComponent(NzPageDemoIconCopiedCodeComponent);
     componentRef.instance.copiedCode = copiedString;
 
     return componentRef.instance.templateRef;
@@ -667,10 +671,11 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @Inject(DOCUMENT) private dom: any,
+    @Inject(PLATFORM_ID) private platformId: any,
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     private _iconService: NzIconService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private message: NzMessageService,
     private viewContainerRef: ViewContainerRef
   ) {
@@ -680,8 +685,11 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
-    this.loadModel();
-    this.popoverVisible = !localStorage.getItem('disableIconTip');
+    // load model in browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadModel();
+      this.popoverVisible = !localStorage.getItem('disableIconTip');
+    }
   }
 
   ngOnDestroy(): void {

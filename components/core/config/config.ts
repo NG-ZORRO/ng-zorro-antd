@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { InjectionToken, TemplateRef, Type } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 
 import { ThemeType } from '@ant-design/icons-angular';
@@ -93,6 +93,7 @@ export interface SelectConfig {
   nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
   nzBackdrop?: boolean;
+  nzOptionHeightPx?: number;
 }
 
 export interface AffixConfig {
@@ -354,6 +355,7 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+  nzScaleStep?: number;
 }
 
 export interface ImageExperimentalConfig {
@@ -381,3 +383,7 @@ export type NzConfigKey = keyof NzConfig;
  * User should provide an object implements this interface to set global configurations.
  */
 export const NZ_CONFIG = new InjectionToken<NzConfig>('nz-config');
+
+export function provideNzConfig(config: NzConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: NZ_CONFIG, useValue: config }]);
+}

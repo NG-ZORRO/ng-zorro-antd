@@ -4,6 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -18,7 +19,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
+import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'nz-select-search',
@@ -41,7 +42,9 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
     <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
   `,
   host: { class: 'ant-select-selection-search' },
-  providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
+  providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }],
+  imports: [FormsModule, NgIf],
+  standalone: true
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() nzId: string | null = null;
@@ -91,7 +94,11 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private focusMonitor: FocusMonitor
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;

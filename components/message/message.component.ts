@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,6 +17,8 @@ import {
 } from '@angular/core';
 
 import { moveUpMotion } from 'ng-zorro-antd/core/animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMNComponent } from './base';
 import { NzMessageData } from './typings';
@@ -50,7 +53,9 @@ import { NzMessageData } from './typings';
         </div>
       </div>
     </div>
-  `
+  `,
+  imports: [NgClass, NgSwitch, NgSwitchCase, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
   @Input() override instance!: Required<NzMessageData>;

@@ -5,13 +5,18 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: '[nz-input-number-group-slot]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon [nzType]="icon" *ngIf="icon"></span>
+    @if (icon) {
+      <span nz-icon [nzType]="icon"></span>
+    }
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
     <ng-content></ng-content>
   `,
@@ -19,7 +24,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
     '[class.ant-input-number-group-addon]': `type === 'addon'`,
     '[class.ant-input-number-prefix]': `type === 'prefix'`,
     '[class.ant-input-number-suffix]': `type === 'suffix'`
-  }
+  },
+  imports: [NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzInputNumberGroupSlotComponent {
   @Input() icon?: string | null = null;

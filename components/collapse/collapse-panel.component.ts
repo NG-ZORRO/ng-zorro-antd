@@ -18,7 +18,8 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -26,9 +27,9 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCollapseComponent } from './collapse.component';
 
@@ -42,20 +43,26 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   animations: [collapseMotion],
   template: `
     <div #collapseHeader role="button" [attr.aria-expanded]="nzActive" class="ant-collapse-header">
-      <div *ngIf="nzShowArrow">
-        <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
-          <span
-            nz-icon
-            [nzType]="expandedIcon || 'right'"
-            class="ant-collapse-arrow"
-            [nzRotate]="nzActive ? 90 : 0"
-          ></span>
-        </ng-container>
-      </div>
-      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
-      <div class="ant-collapse-extra" *ngIf="nzExtra">
-        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-      </div>
+      @if (nzShowArrow) {
+        <div>
+          <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
+            <span
+              nz-icon
+              [nzType]="expandedIcon || 'right'"
+              class="ant-collapse-arrow"
+              [nzRotate]="nzActive ? 90 : 0"
+            ></span>
+          </ng-container>
+        </div>
+      }
+      <span class="ant-collapse-header-text">
+        <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      </span>
+      @if (nzExtra) {
+        <div class="ant-collapse-extra">
+          <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+        </div>
+      }
     </div>
     <div
       class="ant-collapse-content"
@@ -75,17 +82,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     '[class.ant-collapse-item-active]': 'nzActive',
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzActive: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzShowArrow: BooleanInput;
 
-  @Input() @InputBoolean() nzActive = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @WithConfig() @InputBoolean() nzShowArrow: boolean = true;
+  @Input({ transform: booleanAttribute }) nzActive = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowArrow: boolean = true;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzExpandedIcon?: string | TemplateRef<void>;

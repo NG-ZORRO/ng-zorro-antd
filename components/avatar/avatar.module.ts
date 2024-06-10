@@ -3,19 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { PlatformModule } from '@angular/cdk/platform';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
 import { NzAvatarComponent } from './avatar.component';
 
 @NgModule({
-  declarations: [NzAvatarComponent, NzAvatarGroupComponent],
   exports: [NzAvatarComponent, NzAvatarGroupComponent],
-  imports: [BidiModule, CommonModule, NzIconModule, PlatformModule]
+  imports: [NzAvatarComponent, NzAvatarGroupComponent]
 })
 export class NzAvatarModule {}

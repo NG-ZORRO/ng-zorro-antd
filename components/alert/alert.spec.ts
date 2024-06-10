@@ -10,20 +10,18 @@ import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
-        declarations: [
-          NzDemoTestBasicComponent,
-          NzDemoTestBannerComponent,
-          NzTestAlertRtlComponent,
-          NzTestAlertCustomIconComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzDemoTestBasicComponent,
+        NzDemoTestBannerComponent,
+        NzTestAlertRtlComponent,
+        NzTestAlertCustomIconComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic alert', () => {
     let fixture: ComponentFixture<NzDemoTestBasicComponent>;

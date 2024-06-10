@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -12,20 +12,18 @@ import { NzTableModule } from '../table.module';
 describe('nz-table', () => {
   let injector: Injector;
 
-  beforeEach(
-    waitForAsync(() => {
-      injector = TestBed.configureTestingModule({
-        imports: [BidiModule, NzTableModule],
-        declarations: [
-          NzTestTableBasicComponent,
-          NzTestTableScrollComponent,
-          NzTableSpecCrashComponent,
-          NzTestTableRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    injector = TestBed.configureTestingModule({
+      imports: [BidiModule, NzTableModule],
+      declarations: [
+        NzTestTableBasicComponent,
+        NzTestTableScrollComponent,
+        NzTableSpecCrashComponent,
+        NzTestTableRtlComponent
+      ]
+    });
+    TestBed.compileComponents();
+  }));
 
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;
@@ -433,7 +431,10 @@ interface ScrollTestDataItem {
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../../../style/entry.less']
+  styles: `
+    @import '../../../style/testing.less';
+    @import '../../../style/entry.less';
+  `
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<ScrollTestDataItem>;

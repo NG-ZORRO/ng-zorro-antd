@@ -28,6 +28,7 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzOkDisabled?: boolean = false;
   nzCancelDisabled?: boolean = false;
   nzCancelLoading?: boolean = false;
+  nzDraggable?: boolean = false;
   nzNoAnimation?: boolean = false;
   nzAutofocus?: 'ok' | 'cancel' | 'auto' | null = 'auto';
   nzMask?: boolean;
@@ -41,12 +42,6 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzModalType?: ModalTypes = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
-
-  /**@deprecated
-   * it's better to use nzData for the future, to respect naming convention from Angular team
-   * must be remove for the nex major version
-   */
-  nzComponentParams?: Partial<T>;
   nzData?: D;
   nzMaskStyle?: StyleObjectLike;
   nzBodyStyle?: StyleObjectLike;

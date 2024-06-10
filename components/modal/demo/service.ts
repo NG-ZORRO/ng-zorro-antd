@@ -60,7 +60,10 @@ export class NzDemoModalServiceComponent {
   tplModalButtonLoading = false;
   disabled = false;
 
-  constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   createModal(): void {
     this.modal.create({
@@ -78,9 +81,6 @@ export class NzDemoModalServiceComponent {
       nzFooter: tplFooter,
       nzMaskClosable: false,
       nzClosable: false,
-      nzComponentParams: {
-        value: 'Template Context'
-      },
       nzOnOk: () => console.log('Click ok')
     });
   }
@@ -98,10 +98,6 @@ export class NzDemoModalServiceComponent {
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzComponentParams: {
-        title: 'title in component',
-        subtitle: 'component sub title，will be changed after 2 sec'
-      },
       nzData: {
         favoriteLibrary: 'angular',
         favoriteFramework: 'angular'

@@ -4,7 +4,7 @@ import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,35 +27,33 @@ describe('tree-select component', () => {
   let overlayContainerElement: HTMLElement;
   let zone: MockNgZone;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzFormModule],
-        declarations: [
-          NzTestTreeSelectBasicComponent,
-          NzTestTreeSelectCheckableComponent,
-          NzTestTreeSelectFormComponent,
-          NzTestTreeSelectCustomizedIconComponent,
-          NzTestTreeSelectStatusComponent,
-          NzTestTreeSelectInFormComponent
-        ],
-        providers: [
-          {
-            provide: NgZone,
-            useFactory: () => {
-              zone = new MockNgZone();
-              return zone;
-            }
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzFormModule],
+      declarations: [
+        NzTestTreeSelectBasicComponent,
+        NzTestTreeSelectCheckableComponent,
+        NzTestTreeSelectFormComponent,
+        NzTestTreeSelectCustomizedIconComponent,
+        NzTestTreeSelectStatusComponent,
+        NzTestTreeSelectInFormComponent
+      ],
+      providers: [
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
           }
-        ]
-      });
-      TestBed.compileComponents();
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+        }
+      ]
+    });
+    TestBed.compileComponents();
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -351,6 +349,15 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+
+    it('should isComposing/inputValue is correct', fakeAsync(() => {
+      treeSelectComponent.inputValue = '';
+      treeSelectComponent.isComposingChange(true);
+      treeSelectComponent.setInputValue('1011');
+      flush();
+      expect(treeSelectComponent.isComposing).toBe(true);
+      expect(treeSelectComponent.inputValue).toBe('');
+    }));
   });
 
   describe('checkable', () => {
@@ -539,12 +546,12 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('select')!.value).toBe('10021');
+      expect(testComponent.formControl.value).toBe('10021');
       testComponent.setNull();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('select')!.value).toBe(null);
+      expect(testComponent.formControl.value).toBe(null);
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.value.length).toBe(0);
     }));
@@ -847,13 +854,13 @@ export class NzTestTreeSelectCheckableComponent {
 
 @Component({
   template: `
-    <form [formGroup]="formGroup">
-      <nz-tree-select formControlName="select" style="width: 250px" [nzNodes]="nodes"></nz-tree-select>
+    <form>
+      <nz-tree-select [formControl]="formControl" style="width: 250px" [nzNodes]="nodes"></nz-tree-select>
     </form>
   `
 })
 export class NzTestTreeSelectFormComponent {
-  formGroup: UntypedFormGroup;
+  formControl = new FormControl('10021');
   nodes = [
     {
       title: 'root2',
@@ -871,18 +878,12 @@ export class NzTestTreeSelectFormComponent {
     }
   ].map(item => new NzTreeNode(item));
 
-  constructor(private fb: UntypedFormBuilder) {
-    this.formGroup = this.fb.group({
-      select: '10021'
-    });
-  }
-
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 
   setNull(): void {
-    this.formGroup.get('select')!.reset(null);
+    this.formControl.reset(null);
   }
 }
 

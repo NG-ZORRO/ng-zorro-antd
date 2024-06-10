@@ -4,26 +4,34 @@
  */
 
 import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  Injector,
   Input,
   NgZone,
   OnInit,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  afterNextRender,
+  inject
 } from '@angular/core';
-import { BehaviorSubject, EMPTY, from, fromEvent, Observable } from 'rxjs';
-import { switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
+import { first, switchMap, takeUntil } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzAutosizeDirective } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzAutosizeDirective, NzInputModule } from 'ng-zorro-antd/input';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-edit',
@@ -53,7 +61,9 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgIf, NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule],
+  standalone: true
 })
 export class NzTextEditComponent implements OnInit {
   editing = false;
@@ -78,6 +88,8 @@ export class NzTextEditComponent implements OnInit {
   // but having subject makes the code more reactive and cancellable (e.g. event listeners will be
   // automatically removed and re-added through the `switchMap` below).
   private textarea$ = new BehaviorSubject<ElementRef<HTMLTextAreaElement> | null | undefined>(null);
+
+  private injector = inject(Injector);
 
   constructor(
     private ngZone: NgZone,
@@ -171,20 +183,26 @@ export class NzTextEditComponent implements OnInit {
   }
 
   focusAndSetValue(): void {
-    // Note: the zone may be nooped through `BootstrapOptions` when bootstrapping the root module. This means
-    // the `onStable` will never emit any value.
-    const onStable$ = this.ngZone.isStable ? from(Promise.resolve()) : this.ngZone.onStable.pipe(take(1));
-    // Normally this isn't in the zone, but it can cause performance regressions for apps
-    // using `zone-patch-rxjs` because it'll trigger a change detection when it unsubscribes.
-    this.ngZone.runOutsideAngular(() => {
-      onStable$.pipe(withLatestFrom(this.textarea$), takeUntil(this.destroy$)).subscribe(([, textarea]) => {
-        if (textarea) {
-          textarea.nativeElement.focus();
-          textarea.nativeElement.value = this.currentText || '';
-          this.autosizeDirective.resizeToFitContent();
-          this.cdr.markForCheck();
-        }
-      });
-    });
+    const { injector } = this;
+
+    afterNextRender(
+      () => {
+        this.textarea$
+          .pipe(
+            // It may still not be available, so we need to wait until view queries
+            // are executed during the change detection. It's safer to wait until
+            // the query runs and the textarea is set on the behavior subject.
+            first((textarea): textarea is ElementRef<HTMLTextAreaElement> => textarea != null),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(textarea => {
+            textarea.nativeElement.focus();
+            textarea.nativeElement.value = this.currentText || '';
+            this.autosizeDirective.resizeToFitContent();
+            this.cdr.markForCheck();
+          });
+      },
+      { injector }
+    );
   }
 }

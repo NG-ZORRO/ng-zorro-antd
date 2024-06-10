@@ -18,23 +18,23 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 ## API
 
-### nz-switch
+### nz-switch:standalone
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[nzId]` | button id attribute inside the component| `string` | - |
-| `[ngModel]` | determine whether the `nz-switch` is checked, double binding | `boolean` | `false` |
-| `[nzCheckedChildren]` | content to be shown when the state is checked | `string \| TemplateRef<void>` | - |
-| `[nzUnCheckedChildren]` | content to be shown when the state is unchecked | `string \| TemplateRef<void>` | - |
-| `[nzDisabled]` | Disable switch | `boolean` | `false` |
-| `[nzSize]` | the size of the `nz-switch`, options: `default` `small` | `'small' \| 'default'` | `'default'` | ✅ |
-| `[nzLoading]` | loading state of switch | `boolean` | `false` |
-| `[nzControl]` | determine whether fully control state by user  | `boolean` | `false` |
-| `(ngModelChange)` | a callback function, can be executed when the checked state is changing | `EventEmitter<boolean>` | - |
+| Property                | Description                                                             | Type                          | Default     | Global Config |
+| ----------------------- | ----------------------------------------------------------------------- | ----------------------------- | ----------- | ------------- |
+| `[nzId]`                | button id attribute inside the component                                | `string`                      | -           |
+| `[ngModel]`             | determine whether the `nz-switch` is checked, double binding            | `boolean`                     | `false`     |
+| `[nzCheckedChildren]`   | content to be shown when the state is checked                           | `string \| TemplateRef<void>` | -           |
+| `[nzUnCheckedChildren]` | content to be shown when the state is unchecked                         | `string \| TemplateRef<void>` | -           |
+| `[nzDisabled]`          | Disable switch                                                          | `boolean`                     | `false`     |
+| `[nzSize]`              | the size of the `nz-switch`, options: `default` `small`                 | `'small' \| 'default'`        | `'default'` | ✅            |
+| `[nzLoading]`           | loading state of switch                                                 | `boolean`                     | `false`     |
+| `[nzControl]`           | determine whether fully control state by user                           | `boolean`                     | `false`     |
+| `(ngModelChange)`       | a callback function, can be executed when the checked state is changing | `EventEmitter<boolean>`       | -           |
 
 #### Methods
 
-| Name | Description |
-| ---- | ----------- |
-| focus() | get focus |
-| blur() | remove focus |
+| Name    | Description  |
+| ------- | ------------ |
+| focus() | get focus    |
+| blur()  | remove focus |

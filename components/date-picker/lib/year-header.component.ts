@@ -3,7 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 
@@ -12,7 +14,9 @@ import { PanelSelector } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'year-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'yearHeader',
-  templateUrl: './abstract-panel-header.html'
+  templateUrl: './abstract-panel-header.html',
+  standalone: true,
+  imports: [NgForOf, NgIf, NgClass]
 })
 export class YearHeaderComponent extends AbstractPanelHeader {
   get startYear(): number {

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -17,14 +18,17 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
-import { NzCheckboxComponent } from 'ng-zorro-antd/checkbox';
+import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
+import { NzTransferSearchComponent } from './transfer-search.component';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -120,7 +124,9 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
   host: {
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
-  }
+  },
+  imports: [NgIf, NgForOf, NgClass, NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent],
+  standalone: true
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields
@@ -134,8 +140,8 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
-  @Input() disabled: boolean = false;
-  @Input() showSearch?: boolean;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) showSearch?: boolean;
   @Input() searchPlaceholder?: string;
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
@@ -237,7 +243,10 @@ export class NzTransferListComponent implements AfterViewInit {
 
   // #endregion
 
-  constructor(private ngZone: NgZone, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

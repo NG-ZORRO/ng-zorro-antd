@@ -15,7 +15,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       provide: CdkTreeNodeOutlet,
       useExisting: NzTreeNodeOutletDirective
     }
-  ]
+  ],
+  standalone: true
 })
 export class NzTreeNodeOutletDirective implements CdkTreeNodeOutlet {
   constructor(

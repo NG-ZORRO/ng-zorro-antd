@@ -4,9 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-collapse-accordion',
   template: `
     <nz-collapse nzAccordion>
-      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
-        <p>{{ panel.name }} content</p>
-      </nz-collapse-panel>
+      @for (panel of panels; track panel) {
+        <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active">
+          <p>{{ panel.name }} content</p>
+        </nz-collapse-panel>
+      }
     </nz-collapse>
   `
 })

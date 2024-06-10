@@ -24,18 +24,22 @@ export interface AutocompleteOptionGroups {
         <span nz-icon nzType="search"></span>
       </ng-template>
       <nz-autocomplete #auto>
-        <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
-          <ng-template #groupTitle>
-            <span>
-              {{ group.title }}
-              <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
-            </span>
-          </ng-template>
-          <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option.title" [nzValue]="option.title">
-            {{ option.title }}
-            <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
-          </nz-auto-option>
-        </nz-auto-optgroup>
+        @for (group of optionGroups; track group.title) {
+          <nz-auto-optgroup [nzLabel]="groupTitle">
+            <ng-template #groupTitle>
+              <span>
+                {{ group.title }}
+                <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
+              </span>
+            </ng-template>
+            @for (option of group.children; track option.title) {
+              <nz-auto-option [nzLabel]="option.title" [nzValue]="option.title">
+                {{ option.title }}
+                <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
+              </nz-auto-option>
+            }
+          </nz-auto-optgroup>
+        }
       </nz-autocomplete>
     </div>
   `,

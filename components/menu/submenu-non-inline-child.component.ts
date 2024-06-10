@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -58,7 +59,9 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '[@zoomBigMotion]': 'expandState',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
-  }
+  },
+  imports: [NgClass, NgTemplateOutlet],
+  standalone: true
 })
 export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';

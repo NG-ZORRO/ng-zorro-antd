@@ -12,7 +12,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  */
 @Directive({
   selector: '[nzElement], [nz-element]',
-  exportAs: 'nzElement'
+  exportAs: 'nzElement',
+  standalone: true
 })
 export class NzElementPatchDirective {
   get nativeElement(): NzSafeAny {

@@ -12,14 +12,14 @@ import {
   Optional,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzOptionGroupComponent } from './option-group.component';
 
@@ -33,23 +33,25 @@ import { NzOptionGroupComponent } from './option-group.component';
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
-  `
+  `,
+  standalone: true
 })
 export class NzOptionComponent implements OnChanges, OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzHide: BooleanInput;
-  static ngAcceptInputType_nzCustomContent: BooleanInput;
-
   changes = new Subject<void>();
   groupLabel: string | number | TemplateRef<NzSafeAny> | null = null;
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
+  @Input() nzTitle?: string | number | null;
   @Input() nzLabel: string | number | null = null;
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzHide = false;
-  @Input() @InputBoolean() nzCustomContent = false;
+  @Input() nzKey?: string | number;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzHide = false;
+  @Input({ transform: booleanAttribute }) nzCustomContent = false;
 
-  constructor(@Optional() private nzOptionGroupComponent: NzOptionGroupComponent, private destroy$: NzDestroyService) {}
+  constructor(
+    @Optional() private nzOptionGroupComponent: NzOptionGroupComponent,
+    private destroy$: NzDestroyService
+  ) {}
 
   ngOnInit(): void {
     if (this.nzOptionGroupComponent) {

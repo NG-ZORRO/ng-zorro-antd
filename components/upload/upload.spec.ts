@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ApplicationRef,
   Component,
@@ -78,7 +79,8 @@ describe('upload', () => {
   it('should be throw error when not import HttpClient module', () => {
     expect(() => {
       TestBed.configureTestingModule({
-        declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
+        declarations: [TestUploadBtnComponent],
+        imports: [NzUploadBtnComponent]
       }).createComponent(TestUploadBtnComponent);
     }).toThrow();
   });
@@ -92,17 +94,20 @@ describe('upload', () => {
     let httpMock: HttpTestingController;
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
+        declarations: [TestUploadComponent],
         imports: [
           NoopAnimationsModule,
-          HttpClientTestingModule,
           CommonModule,
           FormsModule,
           NzToolTipModule,
           NzProgressModule,
           NzI18nModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzUploadBtnComponent,
+          NzUploadComponent,
+          NzUploadListComponent
         ],
-        declarations: [NzUploadComponent, NzUploadListComponent, TestUploadComponent, NzUploadBtnComponent]
+        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
       dl = fixture.debugElement;
@@ -778,9 +783,10 @@ describe('upload', () => {
           NzProgressModule,
           NzI18nModule,
           NoopAnimationsModule,
-          NzIconTestModule
+          NzIconTestModule,
+          NzUploadListComponent
         ],
-        declarations: [NzUploadListComponent, TestUploadListComponent]
+        declarations: [TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
       dl = fixture.debugElement;
@@ -1000,8 +1006,9 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzIconTestModule],
-          declarations: [NzUploadBtnComponent, TestUploadBtnComponent]
+          declarations: [TestUploadBtnComponent],
+          imports: [NzIconTestModule, NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);
         dl = fixture.debugElement;
@@ -1257,8 +1264,8 @@ describe('upload', () => {
       let http: HttpTestingController;
       beforeEach(() => {
         injector = TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule],
-          declarations: [NzUploadBtnComponent]
+          imports: [NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         (injector as TestBed).compileComponents();
         fixture = TestBed.createComponent(NzUploadBtnComponent);

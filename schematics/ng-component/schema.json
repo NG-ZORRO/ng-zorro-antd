@@ -38,6 +38,12 @@
       "default": false,
       "alias": "t"
     },
+    "standalone": {
+      "description": "Whether the generated component is standalone.",
+      "type": "boolean",
+      "default": true,
+      "x-user-analytics": "ep.ng_standalone"
+    },
     "viewEncapsulation": {
       "description": "The view encapsulation strategy to use in the new component.",
       "enum": ["Emulated", "Native", "None", "ShadowDom"],
