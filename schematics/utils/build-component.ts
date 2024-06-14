@@ -82,7 +82,7 @@ function buildDefaultPath(project: ProjectDefinition): string {
  * List of style extensions which are CSS compatible. All supported CLI style extensions can be
  * found here: angular/angular-cli/master/packages/schematics/angular/ng-new/schema.json#L118-L122
  */
-const supportedCssExtensions = ['css', 'scss', 'sass', 'less'];
+const supportedCssExtensions = ['css', 'scss', 'sass', 'less', 'none'];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readIntoSourceFile(host: Tree, modulePath: string): any {
@@ -177,7 +177,7 @@ function buildSelector(options: ZorroComponentOptions, projectPrefix: string, mo
 
 /**
  * Indents the text content with the amount of specified spaces. The spaces will be added after
- * every line-break. This utility function can be used inside of EJS templates to properly
+ * every line-break. This utility function can be used inside EJS templates to properly
  * include the additional files.
  */
 function indentTextContent(text: string, numSpaces: number): string {
@@ -240,11 +240,12 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
 
     validateHtmlSelector(options.selector!);
 
+    const skipStyleFile = options.inlineStyle || options.style === Style.None;
     // In case the specified style extension is not part of the supported CSS supersets,
     // we generate the stylesheets with the "css" extension. This ensures that we don't
     // accidentally generate invalid stylesheets (e.g. drag-drop-comp.styl) which will
     // break the Angular CLI project. See: https://github.com/angular/components/issues/15164
-    if (!supportedCssExtensions.includes(options.style!)) {
+    if (!skipStyleFile && !supportedCssExtensions.includes(options.style!)) {
       options.style = Style.Css;
     }
 
@@ -274,7 +275,7 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
 
     const templateSource = apply(url(schematicFilesUrl), [
       options.skipTests ? filter(path => !path.endsWith('.spec.ts.template')) : noop(),
-      options.inlineStyle ? filter(path => !path.endsWith('.__style__.template')) : noop(),
+      skipStyleFile ? filter(path => !path.endsWith('.__style__.template')) : noop(),
       options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
