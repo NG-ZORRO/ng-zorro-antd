@@ -12,7 +12,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  Directive,
   ElementRef,
   Input,
   OnChanges,
@@ -35,14 +34,6 @@ import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 
 import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import { NzInputNumberComponent } from './input-number.component';
-
-@Directive({
-  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`,
-  standalone: true
-})
-export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
-  constructor(public elementRef: ElementRef) {}
-}
 
 @Component({
   selector: 'nz-input-number-group',
@@ -77,12 +68,10 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
           <span nz-input-number-group-slot type="addon" [icon]="nzAddOnAfterIcon" [template]="nzAddOnAfter"></span>
         }
       </span>
+    } @else if (isAffix) {
+      <ng-template [ngTemplateOutlet]="affixTemplate" />
     } @else {
-      @if (isAffix) {
-        <ng-template [ngTemplateOutlet]="affixTemplate" />
-      } @else {
-        <ng-template [ngTemplateOutlet]="contentTemplate" />
-      }
+      <ng-template [ngTemplateOutlet]="contentTemplate" />
     }
 
     <!-- Affix Template -->
@@ -91,11 +80,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
         <span nz-input-number-group-slot type="prefix" [icon]="nzPrefixIcon" [template]="nzPrefix"></span>
       }
       <ng-template [ngTemplateOutlet]="contentTemplate" />
-      @if (nzSuffix || nzSuffixIcon || isFeedback) {
-        <span nz-input-number-group-slot type="suffix" [icon]="nzSuffixIcon" [template]="nzSuffix">
-          @if (isFeedback) {
-            <nz-form-item-feedback-icon [status]="status" />
-          }
+      @if (isFeedback) {
+        <span nz-input-number-group-slot type="suffix">
+          <nz-form-item-feedback-icon [status]="status" />
         </span>
       }
     </ng-template>
@@ -105,9 +92,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
       <ng-content />
       @if (!isAddOn && !isAffix && isFeedback) {
         <span nz-input-number-group-slot type="suffix">
-          @if (isFeedback) {
-            <nz-form-item-feedback-icon [status]="status" />
-          }
+          <nz-form-item-feedback-icon [status]="status" />
         </span>
       }
     </ng-template>
@@ -135,12 +120,10 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
   @Input() nzPrefixIcon?: string | null = null;
-  @Input() nzSuffixIcon?: string | null = null;
   @Input() nzAddOnBefore?: string | TemplateRef<void>;
   @Input() nzAddOnAfter?: string | TemplateRef<void>;
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzStatus: NzStatus = '';
-  @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
@@ -224,10 +207,8 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   ngOnChanges(changes: SimpleChanges): void {
     const {
       nzSize,
-      nzSuffix,
       nzPrefix,
       nzPrefixIcon,
-      nzSuffixIcon,
       nzAddOnAfter,
       nzAddOnBefore,
       nzAddOnAfterIcon,
@@ -239,8 +220,8 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
       this.isLarge = this.nzSize === 'large';
       this.isSmall = this.nzSize === 'small';
     }
-    if (nzSuffix || nzPrefix || nzPrefixIcon || nzSuffixIcon) {
-      this.isAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
+    if (nzPrefix || nzPrefixIcon) {
+      this.isAffix = !!(this.nzPrefix || this.nzPrefixIcon);
     }
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
@@ -261,7 +242,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     this.status = status;
     this.hasFeedback = hasFeedback;
     this.isFeedback = !!status && hasFeedback;
-    const baseAffix = !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
+    const baseAffix = !!(this.nzPrefix || this.nzPrefixIcon);
     this.isAffix = baseAffix || (!this.isAddOn && hasFeedback);
     this.affixInGroupStatusCls =
       this.isAffix || this.isFeedback

@@ -127,24 +127,6 @@ describe('input-number-group', () => {
         expect((inputNumberGroupElement.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
       });
 
-      it('should after content string work', () => {
-        testComponent.afterContent = 'after';
-        fixture.detectChanges();
-        expect(inputNumberGroupElement.lastElementChild!.classList).toContain('ant-input-number-suffix');
-        expect(inputNumberGroupElement.children.length).toBe(2);
-        expect(inputNumberGroupElement.firstElementChild!.classList).toContain('ant-input-number');
-        expect((inputNumberGroupElement.lastElementChild as HTMLElement).innerText).toBe('after');
-      });
-
-      it('should after content template work', () => {
-        testComponent.afterContent = testComponent.afterTemplate;
-        fixture.detectChanges();
-        expect(inputNumberGroupElement.lastElementChild!.classList).toContain('ant-input-number-suffix');
-        expect(inputNumberGroupElement.children.length).toBe(2);
-        expect(inputNumberGroupElement.firstElementChild!.classList).toContain('ant-input-number');
-        expect((inputNumberGroupElement.lastElementChild as HTMLElement).innerText).toBe('afterTemplate');
-      });
-
       it('should size work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -363,18 +345,15 @@ export class NzTestInputNumberGroupAddonComponent {
 
 @Component({
   template: `
-    <nz-input-number-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
+    <nz-input-number-group [nzPrefix]="beforeContent" [nzSize]="size">
       <nz-input-number [nzDisabled]="disabled"></nz-input-number>
     </nz-input-number-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
-    <ng-template #afterTemplate>afterTemplate</ng-template>
   `
 })
 export class NzTestInputNumberGroupAffixComponent {
   @ViewChild('beforeTemplate', { static: false }) beforeTemplate!: TemplateRef<void>;
-  @ViewChild('afterTemplate', { static: false }) afterTemplate!: TemplateRef<void>;
   beforeContent?: string | TemplateRef<void>;
-  afterContent?: string | TemplateRef<void>;
   size: NzSizeLDSType = 'default';
   disabled = false;
 }

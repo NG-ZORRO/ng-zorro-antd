@@ -49,9 +49,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzAddOnAfter]`  | 带标签的 input-number，设置后置标签，可以与 `nzAddOnBefore` 配合使用 | `string \| TemplateRef<void>`     | -           |
 | `[nzAddOnBefore]` | 带标签的 input-number，设置前置标签，可以与 `nzAddOnAfter` 配合使用  | `string \| TemplateRef<void>`     | -           |
 | `[nzPrefix]`      | 带有前缀图标的 input-number，可以与 `nzSuffix` 配合使用              | `string \| TemplateRef<void>`     | -           |
-| `[nzSuffix]`      | 带有后缀图标的 input-number，可以与 `nzPrefix` 配合使用              | `string \| TemplateRef<void>`     | -           |
 | `[nzPrefixIcon]`  | 带有前缀图标的 input-number                                          | `string`                          | -           |
-| `[nzSuffixIcon]`  | 带有后缀图标的 input-number                                          | `string`                          | -           |
 | `[nzCompact]`     | 是否用紧凑模式                                                       | `boolean`                         | `false`     |
 | `[nzSize]`        | `nz-input-number-group` 中所有的 `nz-input-number` 的大小            | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]`      | 设置校验状态                                                         | `'error' \| 'warning'`            | -           |
