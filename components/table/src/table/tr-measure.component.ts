@@ -30,7 +30,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    @for (th of listOfMeasureColumn; track th) {
+    @for (th of listOfMeasureColumn; track $index) {
       <td #tdElement class="nz-disable-td" style="padding: 0; border: 0; height: 0;"></td>
     }
   `,
