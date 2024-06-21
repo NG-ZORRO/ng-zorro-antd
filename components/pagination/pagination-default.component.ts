@@ -50,7 +50,7 @@ import { PaginationItemRenderContext } from './pagination.types';
           </li>
         }
 
-        @for (page of listOfPageItem; track trackByPageItem) {
+        @for (page of listOfPageItem; track trackByPageItem($index, page)) {
           <li
             nz-pagination-item
             [locale]="locale"
