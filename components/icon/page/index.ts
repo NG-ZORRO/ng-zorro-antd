@@ -353,7 +353,7 @@ declare const locale: NzSafeAny;
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        @for (icon of displayedNames[i].icons; track trackByFn) {
+        @for (icon of displayedNames[i].icons; track trackByFn(icon)) {
           <li (click)="onIconClick($event, icon)">
             <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
             <span class="anticon-class">
@@ -482,7 +482,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   fileList: NzUploadFile[] = [];
   icons: Icon[] = [];
 
-  trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
+  trackByFn = (item: string): string => `${item}-${this.currentTheme}`;
 
   kebabCase = (str: string): string => kebabCase(str);
 
