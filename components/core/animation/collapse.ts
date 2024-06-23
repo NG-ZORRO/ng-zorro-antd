@@ -17,9 +17,9 @@ import {
 import { AnimationCurves } from './animation-consts';
 
 export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [
-  state('expanded', style({ height: '*' })),
+  state('expanded', style({ height: '*', overflow: 'hidden' })),
   state('collapsed', style({ height: 0, overflow: 'hidden' })),
-  state('hidden', style({ height: 0, overflow: 'hidden', borderTopWidth: '0' })),
+  state('hidden', style({ height: 0, borderTopWidth: '0', overflow: 'hidden' })),
   transition('expanded => collapsed', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
   transition('expanded => hidden', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
   transition('collapsed => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
@@ -31,7 +31,7 @@ export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollaps
     query(
       'nz-tree-node:leave,nz-tree-builtin-node:leave',
       [
-        style({ overflow: 'hidden' }),
+        style({ height: 0, opacity: 0, 'padding-bottom': 0 }),
         stagger(0, [
           animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, opacity: 0, 'padding-bottom': 0 }))
         ])
@@ -43,12 +43,9 @@ export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollaps
     query(
       'nz-tree-node:enter,nz-tree-builtin-node:enter',
       [
-        style({ overflow: 'hidden', height: 0, opacity: 0, 'padding-bottom': 0 }),
+        style({ height: 0, opacity: 0, 'padding-bottom': 0 }),
         stagger(0, [
-          animate(
-            `150ms ${AnimationCurves.EASE_IN_OUT}`,
-            style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' })
-          )
+          animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: '*', opacity: '*', 'padding-bottom': '*' }))
         ])
       ],
       {
