@@ -15,7 +15,7 @@ import { NzTableLayout } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    @for (width of listOfColWidth; track width) {
+    @for (width of listOfColWidth; track $index) {
       <col [style.width]="width" [style.minWidth]="width" />
     }
     @if (theadTemplate) {
