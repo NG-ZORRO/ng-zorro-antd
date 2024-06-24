@@ -90,7 +90,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun) {
+            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun(edge)) {
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -171,7 +171,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private _dataSubscription?: Subscription | null;
   private destroy$ = new Subject<void>();
 
-  edgeTrackByFun = (_: number, edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
+  edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
   subGraphTransform = (node: NzGraphGroupNode): string => {
     const x = node.x - node.coreBox.width / 2.0;
