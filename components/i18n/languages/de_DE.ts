@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: 'Woche auswählen',
       rangePlaceholder: ['Startdatum', 'Enddatum'],
       rangeYearPlaceholder: ['Startjahr', 'Endjahr'],
+      rangeQuarterPlaceholder: ['Startquartal', 'Endquartal'],
       rangeMonthPlaceholder: ['Startmonat', 'Endmonat'],
       rangeWeekPlaceholder: ['Startwoche', 'Endwoche'],
       locale: 'de_DE',
@@ -50,8 +51,8 @@ export default {
       monthBeforeYear: true,
       previousMonth: 'Vorheriger Monat (PageUp)',
       nextMonth: 'Nächster Monat (PageDown)',
-      previousYear: 'Vorheriges Jahr (Ctrl + left)',
-      nextYear: 'Nächstes Jahr (Ctrl + right)',
+      previousYear: 'Vorheriges Jahr (Strg + links)',
+      nextYear: 'Nächstes Jahr (Strg + rechts)',
       previousDecade: 'Vorheriges Jahrzehnt',
       nextDecade: 'Nächstes Jahrzehnt',
       previousCentury: 'Vorheriges Jahrhundert',
@@ -63,7 +64,8 @@ export default {
     }
   },
   TimePicker: {
-    placeholder: 'Zeit auswählen'
+    placeholder: 'Zeit auswählen',
+    rangePlaceholder: ['Startzeit', 'Endzeit']
   },
   Calendar: {
     lang: {
@@ -126,7 +128,10 @@ export default {
     collapse: 'Zeile reduzieren',
     triggerDesc: 'Klicken zur absteigenden  Sortierung',
     triggerAsc: 'Klicken zur aufsteigenden Sortierung',
-    cancelSort: 'Klicken zum Abbrechen der Sortierung'
+    cancelSort: 'Klicken zum Abbrechen der Sortierung',
+    filterCheckall: 'Alle Elemente anwählen',
+    filterSearchPlaceholder: 'In Filterung suchen',
+    selectNone: 'Alles löschen'
   },
   Modal: {
     okText: 'OK',
@@ -158,6 +163,9 @@ export default {
   },
   Empty: {
     description: 'Keine Daten'
+  },
+  Icon: {
+    icon: 'Symbol'
   },
   Text: {
     edit: 'Bearbeiten',
