@@ -121,7 +121,7 @@
     "prettier": "~3.1.0",
     "prismjs": "^1.22.0",
     "process": "^0.11.10",
-    "puppeteer": "^20.1.0",
+    "puppeteer": "^22.12.1",
     "readline-sync": "^1.4.10",
     "remark": "^13.0.0",
     "resolve-bin": "^0.4.0",
