@@ -1,3 +1,18 @@
+## [18.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.0.0...18.0.1) (2024-06-27)
+
+
+### Bug Fixes
+
+* **graph:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8587](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8587)) ([7687ff2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7687ff2c907ee5ab262ee08240bc932b6112b1ae))
+* **icon:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8588](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8588)) ([8a27bab](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8a27babf30f7726113fed5511bfbd0067c0bbd37))
+* **table:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8593](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8593)) ([b275063](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b2750630a0da3f415931cdf9ba6e6a618dd5d329))
+* **pagination:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8586](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8586)) ([6bb95c0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6bb95c0905de9da1493590da2c6f76cc1b2a23bc))
+* **i18n:** add missing german translations `de_DE` ([#8605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8605)) ([8d75378](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d75378ea612a0ab91f03ec1a709f88c2d22af21))
+* **i18n:** add scanned field to QRCode `fa_IR` ([#8597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8597)) ([9c6e4bf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9c6e4bf6b65810b0f659a366d34b54528d55cc0f))
+* **table:** missing no-result in fixed header table ([#8574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8574)) ([6cff80e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6cff80e90788ce0b84b232a0fb67516b795c88b0))
+
+
+
 # [18.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.1...18.0.0) (2024-06-06)
 
 ### ⚠ BREAKING CHANGES
