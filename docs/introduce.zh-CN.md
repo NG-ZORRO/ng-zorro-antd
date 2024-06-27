@@ -22,7 +22,7 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-- 现代浏览器，[浏览器支持](https://angular.dev/reference/versions#browser-support)
+- 现代浏览器，[浏览器支持](https://angular.cn/reference/versions#browser-support)
 - 支持服务端渲染
 - [Electron](https://www.electronjs.org/)
 
@@ -57,7 +57,7 @@ $ ng add ng-zorro-antd
 
 - [首页](https://ng.ant.design)
 - [Angular官方文档](https://angular.dev/)
-- [开发脚手架](https://angular.dev/tools/cli)
+- [开发脚手架](https://angular.cn/tools/cli)
 - [TypeScript](https://www.typescriptlang.org/)
 - [RxJS](https://github.com/ReactiveX/rxjs)
 - [VSCode Snippet 插件](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)

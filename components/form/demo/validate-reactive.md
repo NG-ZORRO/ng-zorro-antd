@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-我们在 `nz-form-control` 上 提供了 `nzValidateStatus` `nzHasFeedback` 等属性，当使用[响应式表单](https://angular.dev/guide/forms/reactive-forms)时，可以自己定义校验的时机和内容。
+我们在 `nz-form-control` 上 提供了 `nzValidateStatus` `nzHasFeedback` 等属性，当使用[响应式表单](https://angular.cn/guide/forms/reactive-forms)时，可以自己定义校验的时机和内容。
 
 1. `nzValidateStatus`: 校验状态，默认自动从 `nz-form-control` 中的 `NgControl` 获得校验状态，也可以手动指定为特定的 `NgControl`。
 2. `nzHasFeedback`：用于给输入框添加反馈图标。

@@ -28,10 +28,10 @@ title: 资源推荐
  开发工具  | [Component Dev Kit](https://material.angular.io/cdk/categories)  | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能
  开发工具  | [Spectator](https://github.com/ngneat/spectator)                 | Angular 测试工具库
  开发工具  | [Scully](https://github.com/scullyio/scully)                     | 基于 Angular 的静态博客生成器
- 开发工具  | [Angular CLI](https://angular.dev/tools/cli)                     | Angular 的配套打包工具
+ 开发工具  | [Angular CLI](https://angular.cn/tools/cli)                       | Angular 的配套打包工具
  开发工具  | [Angular Builders](https://github.com/just-jeb/angular-builders) | Angular CLI 的 Webpack 拓展工具
  开发工具  | [ngx-planet](https://github.com/worktile/ngx-planet)             | Angular 的微前端方案
- 开发工具  | [@angular/ssr](https://angular.dev/guide/ssr)                    | Angular 服务端渲染工具
+ 开发工具  | [@angular/ssr](https://angular.cn/guide/ssr)                     | Angular 服务端渲染工具
  数据流方案 | [Akita](https://datorama.github.io/akita/)                       | Akita 数据流方案
  数据流方案 | [ngxs](https://ngxs.io/)                                         | NGXS 数据流方案
  数据流方案 | [ngrx](https://ngrx.io/)                                         | NGRX 数据流方案

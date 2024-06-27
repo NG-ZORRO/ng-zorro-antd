@@ -16,7 +16,7 @@ toc: false
 
 ### 1. 升级相关依赖
 
-- 前往 [https://angular.dev/update-guide](https://angular.dev/update-guide) 将项目升级到 Angular 18
+- 前往 [https://angular.dev/update-guide](https://angular.cn/update-guide) 将项目升级到 Angular 18
 - 如果你有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
 
 ### 升级 NG-ZORRO

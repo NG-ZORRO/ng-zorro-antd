@@ -18,7 +18,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 ## API
 
-**注意：** nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.dev/guide/i18n)
+**注意：** nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.cn/guide/i18n)
 ，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
 例如：
 
@@ -111,6 +111,6 @@ registerLocaleData(zh);
 
 ### 为何在设置 `nzFormat="dd/MM/yyyy"` 后手动输入不生效
 
-需要引入 `date-fns` 。日期格式化目前同时支持两种方式：`DatePipe`（默认，[语法参考](https://angular.dev/api/common/DatePipe)）
+需要引入 `date-fns` 。日期格式化目前同时支持两种方式：`DatePipe`（默认，[语法参考](https://angular.cn/api/common/DatePipe)）
 和 `date-fns`（见[如何使用 `date-fns` 进行日期格式化](/docs/i18n/zh#如何使用Date-fns进行日期格式化)）。当你引入 `date-fns`
 后，NG-ZORRO 会使用它提供的 API 来进行反序列化。

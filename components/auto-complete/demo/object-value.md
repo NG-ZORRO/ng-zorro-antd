@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-当 `nzValue` 和 `ngModel` 类型为 `object` 时使用 `compareWith`([SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor))。
+当 `nzValue` 和 `ngModel` 类型为 `object` 时使用 `compareWith`([SelectControlValueAccessor](https://angular.cn/api/forms/SelectControlValueAccessor))。
 
 ## en-US
 
