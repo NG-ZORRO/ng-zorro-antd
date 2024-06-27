@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-当使用[模板驱动表单](https://angular.dev/guide/forms/template-driven-forms)时，模板可以根据模板设定自动进行校验。
+当使用[模板驱动表单](https://angular.cn/guide/forms/template-driven-forms)时，模板可以根据模板设定自动进行校验。
 
 1. `nzHasFeedback`：用于给输入框添加反馈图标。
 2. `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip`：设置不同状态校验文案。
