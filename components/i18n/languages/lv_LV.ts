@@ -187,6 +187,7 @@ export default {
   },
   QRCode: {
     expired: 'QR koda termiņš ir beidzies',
-    refresh: 'Atjaunot'
+    refresh: 'Atjaunot',
+    scanned: 'Skenēts'
   }
 };
