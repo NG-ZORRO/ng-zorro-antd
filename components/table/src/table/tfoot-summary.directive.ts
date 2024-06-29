@@ -9,6 +9,7 @@ import { Directive } from '@angular/core';
   selector: 'tfoot[nzSummary]',
   host: {
     class: 'ant-table-summary'
-  }
+  },
+  standalone: true
 })
 export class NzTfootSummaryDirective {}
