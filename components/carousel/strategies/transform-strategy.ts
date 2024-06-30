@@ -89,7 +89,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarous
     this.isTransitioning = true;
     this.isDragging = false;
 
-    // TODO@hullis: use transitionEnd event instead of setTimeout
+    // TODO: use transitionEnd event instead of setTimeout
     setTimeout(() => {
       this.renderer.setStyle(this.slickTrackEl, 'transition', null);
       this.contents.forEach((content: NzCarouselContentDirective) => {
