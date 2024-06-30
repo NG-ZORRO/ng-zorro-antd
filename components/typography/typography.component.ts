@@ -41,7 +41,7 @@ import { isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';
-import { NzTextEditComponent } from './text-edit.component';
+import { NzEditTriggerState, NzTextEditComponent } from './text-edit.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'typography';
 const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
@@ -58,7 +58,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   template: `
     <ng-template #contentTemplate let-content="content">
       <ng-content *ngIf="!content"></ng-content>
-      {{ content }}
+      <span (click)="onTextClickEdit()">{{ content }}</span>
     </ng-template>
     <ng-container *ngIf="!editing">
       <ng-container
@@ -91,6 +91,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
       [text]="nzContent"
       [icon]="nzEditIcon"
       [tooltip]="nzEditTooltip"
+      [nzTriggerType]="nzTriggerType"
       (endEditing)="onEndEditing($event)"
       (startEditing)="onStartEditing()"
     ></nz-text-edit>
@@ -141,6 +142,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;
+  @Input() nzTriggerType: NzEditTriggerState = 'icon';
   @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
@@ -205,6 +207,12 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   onStartEditing(): void {
     this.editing = true;
+  }
+
+  onTextClickEdit(): void {
+    if (this.nzEditable && (this.nzTriggerType === 'text' || this.nzTriggerType === 'both')) {
+      this.textEditRef?.onClick();
+    }
   }
 
   onEndEditing(text: string): void {
