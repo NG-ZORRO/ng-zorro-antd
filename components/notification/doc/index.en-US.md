@@ -36,8 +36,8 @@ The component provides a number of service methods using the following methods a
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |
-| title | Title | `string` | - |
-| content | Notification content | `string` | - |
+| title | Title | `string \| TemplateRef<void>` | - |
+| content | Notification content | `string \| TemplateRef<void>` | - |
 | options | Support setting the parameters for the current notification box, see the table below | `object` | - |
 
 The parameters that are set by the `options` support are as follows:
@@ -52,6 +52,7 @@ The parameters that are set by the `options` support are as follows:
 | nzClass | Custom CSS class | `object` |
 | nzData | Anything that would be used as template context | `any` |
 | nzCloseIcon | Custom close icon | `TemplateRef<void> \| string` |
+| nzButton | Custom button | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
 
 Methods for destruction are also provided:
 
@@ -59,7 +60,7 @@ Methods for destruction are also provided:
 
 ### Global Configuration
 
-You can use `NzConfigService` to configure this component globally.
+You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
 
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -69,7 +70,7 @@ You can use `NzConfigService` to configure this component globally.
 | nzAnimate | Whether to turn on animation | `boolean` | `true` |
 | nzTop | The top of the notification when it pops up from the top. | `string` | 24px |
 | nzBottom | The bottom of the notification when it pops up from the bottom. | `string` | 24px |
-| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
+| nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string` | `topRight` |
 | nzDirection | Direction of the text in the notification | `'ltr' \| 'rtl'` | - |
 
 ### NzNotificationRef

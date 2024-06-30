@@ -4,14 +4,12 @@
   @checkbox-inner-prefix-cls: ~'@{checkbox-prefix-cls}-inner';
   // 一般状态
   .@{checkbox-prefix-cls} {
-    .reset-component;
+    .reset-component();
 
     position: relative;
-    top: -0.09em;
-    display: inline-block;
+    top: 0.2em;
     line-height: 1;
     white-space: nowrap;
-    vertical-align: middle;
     outline: none;
     cursor: pointer;
 
@@ -28,7 +26,7 @@
       width: 100%;
       height: 100%;
       border: 1px solid @checkbox-color;
-      border-radius: @border-radius-base;
+      border-radius: @checkbox-border-radius;
       visibility: hidden;
       animation: antCheckboxEffect 0.36s ease-in-out;
       animation-fill-mode: backwards;
@@ -50,7 +48,7 @@
       direction: ltr;
       background-color: @checkbox-check-bg;
       border: @checkbox-border-width @border-style-base @border-color-base;
-      border-radius: @border-radius-base;
+      border-radius: @checkbox-border-radius;
       // Fix IE checked style
       // https://github.com/ant-design/ant-design/issues/12597
       border-collapse: separate;
@@ -62,7 +60,9 @@
 
         position: absolute;
         top: 50%;
-        left: 22%;
+        // https://github.com/ant-design/ant-design/pull/19452
+        // https://github.com/ant-design/ant-design/pull/31726
+        left: 21.5%;
         display: table;
         width: @check-width;
         height: @check-height;
@@ -122,11 +122,13 @@
 
     .@{checkbox-prefix-cls}-input {
       cursor: not-allowed;
+      pointer-events: none;
     }
 
     .@{checkbox-inner-prefix-cls} {
       background-color: @input-disabled-bg;
       border-color: @border-color-base !important;
+
       &::after {
         border-color: @input-disabled-bg;
         border-collapse: separate;
@@ -147,16 +149,32 @@
   }
 
   .@{checkbox-prefix-cls}-wrapper {
-    .reset-component;
-
-    display: inline-block;
+    .reset-component();
+    display: inline-flex;
+    align-items: baseline;
     line-height: unset;
     cursor: pointer;
+
+    &::after {
+      display: inline-block;
+      width: 0;
+      overflow: hidden;
+      content: '\a0';
+    }
+
     &.@{checkbox-prefix-cls}-wrapper-disabled {
       cursor: not-allowed;
     }
+
     & + & {
       margin-left: 8px;
+    }
+
+    &&-in-form-item {
+      input[type='checkbox'] {
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 
@@ -166,16 +184,17 @@
   }
 
   .@{checkbox-prefix-cls}-group {
-    .reset-component;
-
+    .reset-component();
     display: inline-block;
+
     &-item {
-      display: inline-block;
       margin-right: @checkbox-group-item-margin-right;
+
       &:last-child {
         margin-right: 0;
       }
     }
+
     &-item + &-item {
       margin-left: 0;
     }
@@ -214,6 +233,7 @@
     transform: scale(1);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(1.6);
     opacity: 0;

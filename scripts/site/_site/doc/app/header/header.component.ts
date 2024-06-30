@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { VERSION } from 'ng-zorro-antd/version';
 
@@ -10,7 +19,7 @@ const RESPONSIVE_SM = 1200;
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header id="header" class="clearfix">
-      <i
+      <span
         nz-icon
         class="nav-phone-icon"
         nzType="unordered-list"
@@ -19,14 +28,19 @@ const RESPONSIVE_SM = 1200;
         nzPopoverPlacement="bottomLeft"
         nz-popover
         [nzPopoverContent]="menu"
-      ></i>
+      ></span>
 
       <div nz-row style="flex-flow: nowrap">
         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
           <app-logo></app-logo>
         </div>
         <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="18" [nzLg]="18" [nzXl]="19" [nzXXl]="20" class="menu-row">
-          <div app-searchbar [language]="language" [responsive]="responsive" (focusChange)="onFocusChange($event)"></div>
+          <div
+            app-searchbar
+            [language]="language"
+            [responsive]="responsive"
+            (focusChange)="onFocusChange($event)"
+          ></div>
           <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"></ng-container>
         </div>
       </div>
@@ -78,7 +92,13 @@ const RESPONSIVE_SM = 1200;
           >
             {{ language == 'zh' ? 'English' : '中文' }}
           </button>
-          <button nz-button nzGhost nzSize="small" class="header-button header-direction-button" (click)="toggleDirection()">
+          <button
+            nz-button
+            nzGhost
+            nzSize="small"
+            class="header-button header-direction-button"
+            (click)="toggleDirection()"
+          >
             {{ nextDirection | uppercase }}
           </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
@@ -99,11 +119,27 @@ export class HeaderComponent implements OnChanges {
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['10.2.x', '9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
+  oldVersionList = [
+    '17.4.x',
+    '16.2.x',
+    '15.1.x',
+    '14.3.x',
+    '13.4.x',
+    '12.1.x',
+    '11.4.x',
+    '10.2.x',
+    '9.3.x',
+    '8.5.x',
+    '7.5.x',
+    '1.8.x',
+    '0.7.x',
+    '0.5.x'
+  ];
   currentVersion = VERSION.full;
   nextDirection: 'ltr' | 'rtl' = 'rtl';
 
-  constructor(private nzConfigService: NzConfigService) {}
+  constructor(private nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
   }
@@ -128,7 +164,9 @@ export class HeaderComponent implements OnChanges {
     } else {
       this.nextDirection = 'rtl';
     }
+    this.cdr.markForCheck();
   }
+
   updateResponsive(): void {
     this.responsive = null;
     this.isMobile = this.windowWidth <= 768;

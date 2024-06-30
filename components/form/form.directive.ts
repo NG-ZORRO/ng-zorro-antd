@@ -4,18 +4,29 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  SimpleChange,
+  SimpleChanges,
+  booleanAttribute
+} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+
 import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { InputObservable } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
+
+export type NzLabelAlignType = 'left' | 'right';
 
 export const DefaultTooltipIcon = {
   type: 'question-circle',
@@ -26,25 +37,27 @@ export const DefaultTooltipIcon = {
   selector: '[nz-form]',
   exportAs: 'nzForm',
   host: {
+    class: 'ant-form',
     '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
     '[class.ant-form-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzNoColon: BooleanInput;
-  static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
-  @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzNoColon: boolean = false;
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
-  @Input() @InputBoolean() nzDisableAutoTips = false;
+  @Input({ transform: booleanAttribute }) nzDisableAutoTips = false;
   @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
+  @Input() nzLabelAlign: NzLabelAlignType = 'right';
+  @Input({ transform: booleanAttribute }) @WithConfig() nzLabelWrap: boolean = false;
 
   dir: Direction = 'ltr';
-  destroy$ = new Subject();
+  destroy$ = new Subject<boolean>();
   private inputChanges$ = new Subject<SimpleChanges>();
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
@@ -56,12 +69,8 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
 
   constructor(
     public nzConfigService: NzConfigService,
-    elementRef: ElementRef,
-    private renderer: Renderer2,
     @Optional() private directionality: Directionality
   ) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-form');
-
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
@@ -74,7 +83,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
 
   ngOnDestroy(): void {
     this.inputChanges$.complete();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

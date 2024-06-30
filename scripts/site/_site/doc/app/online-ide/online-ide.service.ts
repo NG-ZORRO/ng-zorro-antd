@@ -7,7 +7,6 @@ import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
 import appModuleTS from './files/app.module';
-import dotAngularCliJSON from './files/dot_angular-cli.json';
 import environmentTS from './files/environment';
 import mainTS from './files/main';
 import nzModuleTS from './files/ng-zorro-antd.module';
@@ -18,27 +17,32 @@ import polyfillTS from './files/polyfill';
 })
 export class OnlineIdeService {
   document: Document;
-  template = 'angular-cli';
+  template = 'angular-cli' as const;
   dependencies = {
-    '@angular/animations': '^11.0.0',
-    '@angular/cdk': '^11.0.0',
-    '@angular/common': '^11.0.0',
-    '@angular/compiler': '^11.0.0',
-    '@angular/core': '^11.0.0',
-    '@angular/forms': '^11.0.0',
-    '@angular/platform-browser': '^11.0.0',
-    '@angular/platform-browser-dynamic': '^11.0.0',
-    '@angular/router': '^11.0.0',
-    '@ant-design/icons-angular': '^11.0.0',
-    rxjs: '~6.6.3',
+    '@angular/animations': '^18.0.0',
+    '@angular/cdk': '^18.0.0',
+    '@angular/common': '^18.0.0',
+    '@angular/compiler': '^18.0.0',
+    '@angular/core': '^18.0.0',
+    '@angular/forms': '^18.0.0',
+    '@angular/platform-browser': '^18.0.0',
+    '@angular/platform-browser-dynamic': '^18.0.0',
+    '@angular/router': '^18.0.0',
+    '@ant-design/icons-angular': '^18.0.0',
+    rxjs: '~7.8.1',
     'core-js': '~3.6.5',
-    'date-fns': '^2.0.0',
+    'date-fns': '^2.16.1',
     tslib: '^2.0.0',
     'zone.js': '~0.11.1',
-    'ng-zorro-antd': `^${VERSION.full}`
+    'ng-zorro-antd': `^${VERSION.full}`,
+    // demo needs
+    d3: '^6.3.1',
+    dagre: '^0.8.5',
+    'dagre-compound': '^0.0.8',
+    'cron-parser': '^4.6.0',
+    'monaco-editor': '^0.33.0'
   };
 
-  // tslint:disable-next-line:no-any
   constructor(@Inject(DOCUMENT) document: any) {
     this.document = document;
   }
@@ -77,8 +81,8 @@ export class OnlineIdeService {
           ),
           isBinary: false
         },
-        '.angular-cli.json': {
-          content: dotAngularCliJSON,
+        'angular.json': {
+          content: `${JSON.stringify(angularJSON, null, 2)}`,
           isBinary: false
         },
         'src/index.html': {
@@ -117,6 +121,23 @@ export class OnlineIdeService {
         },
         'environments/environment.ts': {
           content: environmentTS,
+          isBinary: false
+        },
+        'sandbox.config.json': {
+          content: JSON.stringify(
+            {
+              infiniteLoopProtection: true,
+              hardReloadOnChange: false,
+              view: 'browser',
+              template: 'node',
+              container: {
+                node: '14',
+                port: 4200
+              }
+            },
+            null,
+            2
+          ),
           isBinary: false
         }
       }

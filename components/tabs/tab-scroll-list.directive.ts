@@ -4,10 +4,14 @@
  */
 
 import { Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
-
 import { fromEvent, Observable, Subscription } from 'rxjs';
 
-import { NzTabScrollEvent, NzTabScrollEventHandlerFun, NzTabScrollListOffset, NzTabScrollListOffsetEvent } from './interfaces';
+import {
+  NzTabScrollEvent,
+  NzTabScrollEventHandlerFun,
+  NzTabScrollListOffset,
+  NzTabScrollListOffsetEvent
+} from './interfaces';
 
 const MIN_SWIPE_DISTANCE = 0.1;
 const STOP_SWIPE_DISTANCE = 0.01;
@@ -15,7 +19,8 @@ const REFRESH_INTERVAL = 20;
 const SPEED_OFF_MULTIPLE = 0.995 ** REFRESH_INTERVAL;
 
 @Directive({
-  selector: '[nzTabScrollList]'
+  selector: '[nzTabScrollList]',
+  standalone: true
 })
 export class NzTabScrollListDirective implements OnInit, OnDestroy {
   lastWheelDirection: 'x' | 'y' | null = null;
@@ -33,7 +38,10 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
   @Output() readonly offsetChange = new EventEmitter<NzTabScrollListOffsetEvent>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
 
-  constructor(private ngZone: NgZone, private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private ngZone: NgZone,
+    private elementRef: ElementRef<HTMLElement>
+  ) {}
 
   ngOnInit(): void {
     this.unsubscribe = this.ngZone.runOutsideAngular(() => {

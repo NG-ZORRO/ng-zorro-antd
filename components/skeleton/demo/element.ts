@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import {
   NzSkeletonAvatarShape,
   NzSkeletonAvatarSize,
@@ -11,25 +12,27 @@ import {
   selector: 'nz-demo-skeleton-element',
   template: `
     <nz-space nzSize="middle">
-      <nz-space-item>
-        <nz-skeleton-element
-          nzType="button"
-          [nzActive]="elementActive"
-          [nzSize]="elementSize"
-          [nzShape]="buttonShape"
-        ></nz-skeleton-element>
-      </nz-space-item>
-      <nz-space-item>
-        <nz-skeleton-element
-          nzType="avatar"
-          [nzActive]="elementActive"
-          [nzSize]="elementSize"
-          [nzShape]="avatarShape"
-        ></nz-skeleton-element>
-      </nz-space-item>
-      <nz-space-item>
-        <nz-skeleton-element nzType="input" [nzActive]="elementActive" [nzSize]="elementSize" style="width:200px"></nz-skeleton-element>
-      </nz-space-item>
+      <nz-skeleton-element
+        *nzSpaceItem
+        nzType="button"
+        [nzActive]="elementActive"
+        [nzSize]="elementSize"
+        [nzShape]="buttonShape"
+      ></nz-skeleton-element>
+      <nz-skeleton-element
+        *nzSpaceItem
+        nzType="avatar"
+        [nzActive]="elementActive"
+        [nzSize]="elementSize"
+        [nzShape]="avatarShape"
+      ></nz-skeleton-element>
+      <nz-skeleton-element
+        *nzSpaceItem
+        nzType="input"
+        [nzActive]="elementActive"
+        [nzSize]="elementSize"
+        style="width:200px"
+      ></nz-skeleton-element>
     </nz-space>
     <br />
     <br />
@@ -56,6 +59,7 @@ import {
         Button Shape:
         <nz-radio-group [(ngModel)]="buttonShape">
           <label nz-radio-button nzValue="default">Default</label>
+          <label nz-radio-button nzValue="square">Square</label>
           <label nz-radio-button nzValue="circle">Circle</label>
           <label nz-radio-button nzValue="round">Round</label>
         </nz-radio-group>

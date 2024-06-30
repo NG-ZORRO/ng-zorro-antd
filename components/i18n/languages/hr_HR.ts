@@ -15,7 +15,8 @@ export default {
     prev_5: 'Prijašnjih 5 stranica',
     next_5: 'Sljedećih 5 stranica',
     prev_3: 'Prijašnje 3 stranice',
-    next_3: 'Sljedeće 3 stranice'
+    next_3: 'Sljedeće 3 stranice',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -47,14 +48,23 @@ export default {
       previousDecade: 'Prošlo desetljeće',
       nextDecade: 'Sljedeće desetljeće',
       previousCentury: 'Prošlo stoljeće',
-      nextCentury: 'Sljedeće stoljeće'
+      nextCentury: 'Sljedeće stoljeće',
+      yearPlaceholder: 'Odaberite godinu',
+      quarterPlaceholder: 'Odaberite četvrtinu',
+      monthPlaceholder: 'Odaberite mjesec',
+      weekPlaceholder: 'Odaberite tjedan',
+      rangeYearPlaceholder: ['Početna godina', 'Završna godina'],
+      rangeMonthPlaceholder: ['Početni mjesec', 'Završni mjesec'],
+      rangeWeekPlaceholder: ['Početni tjedan', 'Završni tjedan']
     },
     timePickerLocale: {
-      placeholder: 'Odaberite vrijeme'
+      placeholder: 'Odaberite vrijeme',
+      rangePlaceholder: ['Vrijeme početka', 'Vrijeme završetka']
     }
   },
   TimePicker: {
-    placeholder: 'Odaberite vrijeme'
+    placeholder: 'Odaberite vrijeme',
+    rangePlaceholder: ['Vrijeme početka', 'Vrijeme završetka']
   },
   Calendar: {
     lang: {
@@ -86,10 +96,18 @@ export default {
       previousDecade: 'Prošlo desetljeće',
       nextDecade: 'Sljedeće desetljeće',
       previousCentury: 'Prošlo stoljeće',
-      nextCentury: 'Sljedeće stoljeće'
+      nextCentury: 'Sljedeće stoljeće',
+      yearPlaceholder: 'Odaberite godinu',
+      quarterPlaceholder: 'Odaberite četvrtinu',
+      monthPlaceholder: 'Odaberite mjesec',
+      weekPlaceholder: 'Odaberite tjedan',
+      rangeYearPlaceholder: ['Početna godina', 'Završna godina'],
+      rangeMonthPlaceholder: ['Početni mjesec', 'Završni mjesec'],
+      rangeWeekPlaceholder: ['Početni tjedan', 'Završni tjedan']
     },
     timePickerLocale: {
-      placeholder: 'Odaberite vrijeme'
+      placeholder: 'Odaberite vrijeme',
+      rangePlaceholder: ['Vrijeme početka', 'Vrijeme završetka']
     }
   },
   global: {
@@ -101,7 +119,15 @@ export default {
     filterReset: 'Reset',
     selectAll: 'Označi trenutnu stranicu',
     selectInvert: 'Invertiraj trenutnu stranicu',
-    sortTitle: 'Sortiraj'
+    sortTitle: 'Sortiraj',
+    filterEmptyText: 'Nema filtera',
+    emptyText: 'Nema podataka',
+    selectionAll: 'Odaberite sve podatke',
+    expand: 'Proširi redak',
+    collapse: 'Sažmi redak',
+    triggerDesc: 'Kliknite za sortiranje silazno',
+    triggerAsc: 'Kliknite za sortiranje uzlazno',
+    cancelSort: 'Kliknite da biste otkazali sortiranje'
   },
   Modal: {
     okText: 'OK',
@@ -116,7 +142,13 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Pretraži ovdje',
     itemUnit: 'stavka',
-    itemsUnit: 'stavke'
+    itemsUnit: 'stavke',
+    remove: 'Ukloniti',
+    selectCurrent: 'Odaberite trenutnu stranicu',
+    removeCurrent: 'Ukloni trenutnu stranicu',
+    selectAll: 'Odaberite sve podatke',
+    removeAll: 'Uklonite sve podatke',
+    selectInvert: 'Obrni trenutnu stranicu'
   },
   Upload: {
     uploading: 'Upload u tijeku...',
@@ -132,9 +164,15 @@ export default {
     icon: 'ikona'
   },
   Text: {
-    edit: 'uredi',
-    copy: 'kopiraj',
-    copied: 'kopiranje uspješno',
-    expand: 'proširi'
+    edit: 'Uredi',
+    copy: 'Kopiraj',
+    copied: 'Kopiranje uspješno',
+    expand: 'Proširi'
+  },
+  PageHeader: {
+    back: 'Natrag'
+  },
+  Image: {
+    preview: 'Pregled'
   }
 };

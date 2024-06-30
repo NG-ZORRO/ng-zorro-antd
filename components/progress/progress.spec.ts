@@ -78,7 +78,9 @@ describe('progress', () => {
       testComponent.successPercent = 50;
       testComponent.percent = 100;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress')!.classList).not.toContain('ant-progress-status-success');
+      expect(progress.nativeElement.querySelector('.ant-progress')!.classList).not.toContain(
+        'ant-progress-status-success'
+      );
     });
 
     it('should formatter work', () => {
@@ -162,12 +164,16 @@ describe('progress', () => {
       testComponent.strokeColor = { '0%': '#108ee9', '100%': '#87d068' };
       fixture.detectChanges();
       expect(progressBar.style.background).toBe('');
-      expect(progressBar.style.backgroundImage).toBe('linear-gradient(to right, rgb(16, 142, 233) 0%, rgb(135, 208, 104) 100%)');
+      expect(progressBar.style.backgroundImage).toBe(
+        'linear-gradient(to right, rgb(16, 142, 233) 0%, rgb(135, 208, 104) 100%)'
+      );
 
       testComponent.strokeColor = { '0%': '#108ee9', '100%': '#87d068' };
       fixture.detectChanges();
       expect(progressBar.style.background).toBe('');
-      expect(progressBar.style.backgroundImage).toBe('linear-gradient(to right, rgb(16, 142, 233) 0%, rgb(135, 208, 104) 100%)');
+      expect(progressBar.style.backgroundImage).toBe(
+        'linear-gradient(to right, rgb(16, 142, 233) 0%, rgb(135, 208, 104) 100%)'
+      );
     });
 
     it('should support steps mode', () => {
@@ -265,22 +271,28 @@ describe('progress', () => {
 
     it('should strokeWidth work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-trail').attributes.getNamedItem('stroke-width').value).toBe('6');
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-trail').attributes.getNamedItem('stroke-width').value
+      ).toBe('6');
       testComponent.strokeWidth = 10;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-trail').attributes.getNamedItem('stroke-width').value).toBe('10');
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-trail').attributes.getNamedItem('stroke-width').value
+      ).toBe('10');
     });
 
     it('should strokeLinecap work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap').value).toBe(
-        'round'
-      );
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap')
+          .value
+      ).toBe('round');
       testComponent.strokeLinecap = 'square';
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap').value).toBe(
-        'square'
-      );
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap')
+          .value
+      ).toBe('square');
     });
   });
 
@@ -345,14 +357,16 @@ describe('progress', () => {
 
     it('should strokeLinecap work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap').value).toBe(
-        'round'
-      );
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap')
+          .value
+      ).toBe('round');
       testComponent.strokeLinecap = 'square';
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap').value).toBe(
-        'square'
-      );
+      expect(
+        progress.nativeElement.querySelector('.ant-progress-circle-path').attributes.getNamedItem('stroke-linecap')
+          .value
+      ).toBe('square');
     });
 
     it('should strokeColor work', () => {
@@ -387,7 +401,9 @@ describe('progress', () => {
 
     it('should success percent work', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe('rgb(135, 208, 104)');
+      expect(progress.nativeElement.querySelectorAll('.ant-progress-circle-path')[1].style.stroke).toBe(
+        'rgb(135, 208, 104)'
+      );
     });
   });
 
@@ -488,9 +504,7 @@ export class NzTestProgressCircleComponent {
 }
 
 @Component({
-  template: `
-    <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
-  `
+  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress> `
 })
 export class NzTestProgressCircleSuccessComponent {}
 

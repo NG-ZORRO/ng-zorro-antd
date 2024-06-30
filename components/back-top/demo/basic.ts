@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-back-top></nz-back-top>
     Scroll down to see the bottom-right
-    <strong> gray </strong>
+    <strong>gray</strong>
     button.
   `,
   styles: [

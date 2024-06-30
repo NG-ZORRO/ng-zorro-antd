@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+
+import { NzFormLayoutType } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'nz-demo-form-layout',
   template: `
-    <form nz-form [nzLayout]="validateForm.get('formLayout')?.value" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form
+      nz-form
+      [nzLayout]="validateForm.controls.formLayout.value"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
       <nz-form-item>
         <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Form Layout</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
@@ -42,27 +49,33 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     `
   ]
 })
-export class NzDemoFormLayoutComponent implements OnInit {
-  validateForm!: FormGroup;
+export class NzDemoFormLayoutComponent {
+  validateForm: FormGroup<{
+    formLayout: FormControl<NzFormLayoutType>;
+    fieldA: FormControl<string>;
+    filedB: FormControl<string>;
+  }> = this.fb.group({
+    formLayout: 'horizontal' as NzFormLayoutType,
+    fieldA: ['', [Validators.required]],
+    filedB: ['', [Validators.required]]
+  });
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
   get isHorizontal(): boolean {
-    return this.validateForm.controls.formLayout?.value === 'horizontal';
+    return this.validateForm.controls.formLayout.value === 'horizontal';
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      formLayout: ['horizontal'],
-      fieldA: [null, [Validators.required]],
-      filedB: [null, [Validators.required]]
-    });
-  }
+  constructor(private fb: NonNullableFormBuilder) {}
 }

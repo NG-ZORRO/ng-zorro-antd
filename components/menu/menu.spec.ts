@@ -4,9 +4,12 @@ import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzMenuItemDirective } from './menu-item.directive';
+
+import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
 import { NzMenuModule } from './menu.module';
 import { NzSubMenuComponent } from './submenu.component';
@@ -14,34 +17,32 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
-        declarations: [
-          NzTestBasicMenuHorizontalComponent,
-          NzTestBasicMenuInlineComponent,
-          NzTestMenuInlineCollapsedComponent,
-          NzTestMenuSiderCurrentComponent,
-          NzTestMenuThemeComponent,
-          NzTestMenuSwitchModeComponent,
-          NzTestMenuHorizontalComponent,
-          NzTestMenuInlineComponent,
-          NzDemoMenuNgForComponent,
-          NzTestNgIfMenuComponent,
-          NzTestSubMenuSelectedComponent,
-          NzTestMenuRtlComponent
-        ]
-      });
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzTestBasicMenuHorizontalComponent,
+        NzTestBasicMenuInlineComponent,
+        NzTestMenuInlineCollapsedComponent,
+        NzTestMenuSiderCurrentComponent,
+        NzTestMenuThemeComponent,
+        NzTestMenuSwitchModeComponent,
+        NzTestMenuHorizontalComponent,
+        NzTestMenuInlineComponent,
+        NzDemoMenuNgForComponent,
+        NzTestNgIfMenuComponent,
+        NzTestSubMenuSelectedComponent,
+        NzTestMenuRtlComponent
+      ]
+    });
 
-      TestBed.compileComponents();
+    TestBed.compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    })
-  );
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
+  }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -55,7 +56,7 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuHorizontalComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -91,14 +92,16 @@ describe('menu', () => {
       let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestBasicMenuInlineComponent);
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
       it('should className correct', () => {
         fixture.detectChanges();
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu'))).toBe(true);
-        expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
+        expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          true
+        );
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
       it('should padding left work', () => {
@@ -141,7 +144,9 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.isCollapsed = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed');
+        expect(menu.nativeElement.className).toBe(
+          'ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed'
+        );
         testComponent.isCollapsed = false;
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
@@ -237,12 +242,18 @@ describe('menu', () => {
       it('should className correct', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          true
+        );
         testComponent.mode = true;
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-vertical');
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(false);
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          false
+        );
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(
+          true
+        );
       });
     });
   });
@@ -268,7 +279,7 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
@@ -280,7 +291,7 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
@@ -292,7 +303,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
@@ -306,7 +317,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
@@ -331,7 +342,7 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
         fixture.detectChanges();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
@@ -343,7 +354,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         testComponent.disableditem.nativeElement.click();
@@ -397,7 +408,9 @@ describe('menu', () => {
         fixture.detectChanges();
         testComponent.open = true;
         fixture.detectChanges();
-        expect((overlayContainerElement.querySelector('.submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
+        expect((overlayContainerElement.querySelector('.submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
       }));
       it('should nested submenu `nzMenuClassName` work', () => {
         testComponent.open = true;
@@ -405,10 +418,12 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[0].nzOpen = true;
         subs[1].nzOpen = true;
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1] as any).cdr.markForCheck();
         fixture.detectChanges();
-        expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
+        expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
       });
     });
     describe('inline submenu', () => {
@@ -473,7 +488,9 @@ describe('menu', () => {
       it('should default selected active submenu', () => {
         const fixture = TestBed.createComponent(NzTestSubMenuSelectedComponent);
         fixture.detectChanges();
-        expect(fixture.debugElement.nativeElement.querySelector('.ant-menu-submenu').classList).toContain('ant-menu-submenu-selected');
+        expect(fixture.debugElement.nativeElement.querySelector('.ant-menu-submenu').classList).toContain(
+          'ant-menu-submenu-selected'
+        );
       });
     });
   });
@@ -505,22 +522,24 @@ describe('menu', () => {
       fixture.detectChanges();
       const subs = testComponent.subs.toArray();
       subs[0].nzOpen = true;
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (subs[1] as any).cdr.markForCheck();
       fixture.detectChanges();
-      expect((overlayContainerElement.querySelector('.ant-menu-submenu') as HTMLUListElement).classList).toContain('ant-menu-submenu-rtl');
+      expect((overlayContainerElement.querySelector('.ant-menu-submenu') as HTMLUListElement).classList).toContain(
+        'ant-menu-submenu-rtl'
+      );
     });
   });
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
         <span title>
-          <i nz-icon nzType="setting"></i>
+          <span nz-icon nzType="setting"></span>
           Navigation Three - Submenu
         </span>
         <ul>
@@ -572,7 +591,7 @@ export class NzTestMenuHorizontalComponent {
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
         <span title>
-          <i nz-icon nzType="mail"></i>
+          <span nz-icon nzType="mail"></span>
           Navigation One
         </span>
         <ul>
@@ -594,20 +613,26 @@ export class NzTestMenuInlineComponent {
 @Component({
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li *ngFor="let l1 of menus" nz-submenu>
-        <span title>
-          <i nz-icon nzType="appstore"></i>
-          {{ l1.text }}
-        </span>
-        <ul>
-          <li *ngFor="let l2 of l1.children" nz-submenu>
-            <span title>{{ l2.text }}</span>
-            <ul>
-              <li *ngFor="let l3 of l2.children" nz-menu-item>{{ l3.text }}</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
+      @for (l1 of menus; track l1) {
+        <li nz-submenu>
+          <span title>
+            <span nz-icon nzType="appstore"></span>
+            {{ l1.text }}
+          </span>
+          <ul>
+            @for (l2 of l1.children; track l2) {
+              <li nz-submenu>
+                <span title>{{ l2.text }}</span>
+                <ul>
+                  @for (l3 of l2.children; track l3) {
+                    <li nz-menu-item>{{ l3.text }}</li>
+                  }
+                </ul>
+              </li>
+            }
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
@@ -629,11 +654,11 @@ export class NzDemoMenuNgForComponent {
   template: `
     <ul nz-menu nzMode="horizontal">
       <li nz-menu-item>
-        <i nz-icon nzType="mail"></i>
+        <span nz-icon nzType="mail"></span>
         Navigation One
       </li>
       <li nz-menu-item nzDisabled>
-        <i nz-icon nzType="appstore"></i>
+        <span nz-icon nzType="appstore"></span>
         Navigation Two
       </li>
       <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">
@@ -726,12 +751,14 @@ export class NzTestBasicMenuInlineComponent {}
 @Component({
   template: `
     <ul nz-menu nzMode="horizontal">
-      <li *ngIf="display" nz-submenu>
-        <span title>{{ text }}</span>
-        <ul>
-          <li nz-menu-item>item</li>
-        </ul>
-      </li>
+      @if (display) {
+        <li nz-submenu>
+          <span title>{{ text }}</span>
+          <ul>
+            <li nz-menu-item>item</li>
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
@@ -745,7 +772,7 @@ export class NzTestNgIfMenuComponent {
   template: `
     <ul nz-menu nzMode="inline" nzTheme="dark" nzInlineCollapsed>
       <li nz-menu-item>
-        <i nz-icon nzType="mail"></i>
+        <span nz-icon nzType="mail"></span>
         <span>Navigation One</span>
       </li>
       <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
@@ -763,11 +790,11 @@ export class NzTestSubMenuSelectedComponent {}
   template: `
     <div class="wrapper">
       <button nz-button nzType="primary" (click)="toggleCollapsed()">
-        <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
       </button>
       <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
         <li nz-menu-item nzSelected>
-          <i nz-icon nzType="mail"></i>
+          <span nz-icon nzType="mail"></span>
           <span>Navigation One</span>
         </li>
         <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
@@ -815,7 +842,13 @@ export class NzTestMenuInlineCollapsedComponent {
 @Component({
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
-      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')" nzTitle="Navigation One" nzIcon="mail">
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub1"
+        (nzOpenChange)="openHandler('sub1')"
+        nzTitle="Navigation One"
+        nzIcon="mail"
+      >
         <ul>
           <li nz-menu-group nzTitle="Item 1">
             <ul>
@@ -831,7 +864,13 @@ export class NzTestMenuInlineCollapsedComponent {
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')" nzTitle="Navigation Two" nzIcon="appstore">
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub2"
+        (nzOpenChange)="openHandler('sub2')"
+        nzTitle="Navigation Two"
+        nzIcon="appstore"
+      >
         <ul>
           <li nz-menu-item>Option 5</li>
           <li nz-menu-item>Option 6</li>
@@ -843,7 +882,13 @@ export class NzTestMenuInlineCollapsedComponent {
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')" nzTitle="Navigation Three" nzIcon="setting">
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub3"
+        (nzOpenChange)="openHandler('sub3')"
+        nzTitle="Navigation Three"
+        nzIcon="setting"
+      >
         <ul>
           <li nz-menu-item>Option 9</li>
           <li nz-menu-item>Option 10</li>

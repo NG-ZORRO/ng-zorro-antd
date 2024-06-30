@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +15,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { TimelineService } from './timeline.service';
 import { NzTimelineItemColor, NzTimelinePosition, TimelineTimeDefaultColors } from './typings';
@@ -36,6 +39,9 @@ function isDefaultColor(color?: string): boolean {
         [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
+        <div *ngIf="nzLabel" class="ant-timeline-item-label">
+          <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
+        </div>
         <div class="ant-timeline-item-tail"></div>
         <div
           class="ant-timeline-item-head"
@@ -53,7 +59,9 @@ function isDefaultColor(color?: string): boolean {
         </div>
       </li>
     </ng-template>
-  `
+  `,
+  imports: [NgIf, NzOutletModule],
+  standalone: true
 })
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
@@ -61,12 +69,16 @@ export class NzTimelineItemComponent implements OnChanges {
   @Input() nzPosition?: NzTimelinePosition;
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot?: string | TemplateRef<void>;
+  @Input() nzLabel?: string | TemplateRef<void>;
 
   isLast = false;
   borderColor: string | null = null;
   position?: NzTimelinePosition;
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private timelineService: TimelineService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.timelineService.markForCheck();

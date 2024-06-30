@@ -3,19 +3,18 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzTagModule, NoopAnimationsModule],
-        declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzTagModule, NoopAnimationsModule],
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
+    });
+    TestBed.compileComponents();
+  }));
   describe('basic tag', () => {
     let fixture: ComponentFixture<NzTestTagBasicComponent>;
     let testComponent: NzTestTagBasicComponent;
@@ -99,6 +98,12 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
     });
+    it('should have bordered by default', () => {
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-borderless');
+      testComponent.bordered = false;
+      fixture.detectChanges();
+      expect(tag.nativeElement.classList).toContain('ant-tag-borderless');
+    });
   });
   describe('prevent tag', () => {
     let fixture: ComponentFixture<NzTestTagPreventComponent>;
@@ -134,10 +139,17 @@ describe('tag', () => {
 });
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-test-basic-tag',
   template: `
-    <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
+    <nz-tag
+      [nzMode]="mode"
+      [(nzChecked)]="checked"
+      [nzColor]="color"
+      [nzBordered]="bordered"
+      (nzCheckedChange)="checkedChange($event)"
+      (nzOnClose)="onClose()"
+    >
       Tag 1
     </nz-tag>
   `
@@ -146,15 +158,14 @@ export class NzTestTagBasicComponent {
   mode = 'default';
   color: string | undefined;
   checked = false;
+  bordered = true;
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');
 }
 
 @Component({
-  template: `
-    <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>
-  `
+  template: ` <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {

@@ -9,7 +9,7 @@ function stripPercentToNumber(percent: string): number {
   return +percent.replace('%', '');
 }
 
-export const sortGradient = (gradients: NzProgressGradientProgress) => {
+export const sortGradient = (gradients: NzProgressGradientProgress): Array<{ key: number; value: string }> => {
   let tempArr: Array<{ key: number; value: string }> = [];
 
   Object.keys(gradients).forEach(key => {
@@ -27,11 +27,12 @@ export const sortGradient = (gradients: NzProgressGradientProgress) => {
   return tempArr;
 };
 
-export const handleCircleGradient = (strokeColor: NzProgressGradientProgress): Array<{ offset: string; color: string }> => {
-  return sortGradient(strokeColor).map(({ key, value }) => ({ offset: `${key}%`, color: value }));
-};
+export const handleCircleGradient = (
+  strokeColor: NzProgressGradientProgress
+): Array<{ offset: string; color: string }> =>
+  sortGradient(strokeColor).map(({ key, value }) => ({ offset: `${key}%`, color: value }));
 
-export const handleLinearGradient = (strokeColor: NzProgressColorGradient) => {
+export const handleLinearGradient = (strokeColor: NzProgressColorGradient): string => {
   const { from = '#1890ff', to = '#1890ff', direction = 'to right', ...rest } = strokeColor;
   if (Object.keys(rest).length !== 0) {
     const sortedGradients = sortGradient(rest as NzProgressGradientProgress)

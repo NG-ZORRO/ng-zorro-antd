@@ -3,8 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-sider-trigger]',
@@ -13,18 +24,22 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="isZeroTrigger">
-      <ng-template [ngTemplateOutlet]="nzZeroTrigger || defaultZeroTrigger"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="isNormalTrigger">
-      <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger"></ng-template>
-    </ng-container>
+    @if (isZeroTrigger) {
+      <ng-template [ngTemplateOutlet]="nzZeroTrigger || defaultZeroTrigger" />
+    }
+
+    @if (isNormalTrigger) {
+      <ng-template [ngTemplateOutlet]="nzTrigger || defaultTrigger" />
+    }
     <ng-template #defaultTrigger>
-      <i nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
-      <i nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
+      @if (nzReverseArrow) {
+        <span nz-icon [nzType]="nzCollapsed ? 'left' : 'right'"></span>
+      } @else {
+        <span nz-icon [nzType]="nzCollapsed ? 'right' : 'left'"></span>
+      }
     </ng-template>
     <ng-template #defaultZeroTrigger>
-      <i nz-icon nzType="bars"></i>
+      <span nz-icon nzType="bars"></span>
     </ng-template>
   `,
   host: {
@@ -33,7 +48,9 @@ import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
     '[class.ant-layout-sider-zero-width-trigger]': 'isZeroTrigger',
     '[class.ant-layout-sider-zero-width-trigger-right]': 'isZeroTrigger && nzReverseArrow',
     '[class.ant-layout-sider-zero-width-trigger-left]': 'isZeroTrigger && !nzReverseArrow'
-  }
+  },
+  imports: [NgTemplateOutlet, NzIconModule],
+  standalone: true
 })
 export class NzSiderTriggerComponent implements OnChanges, OnInit {
   @Input() nzCollapsed = false;
@@ -47,7 +64,8 @@ export class NzSiderTriggerComponent implements OnChanges, OnInit {
   isZeroTrigger = false;
   isNormalTrigger = false;
   updateTriggerType(): void {
-    this.isZeroTrigger = this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
+    this.isZeroTrigger =
+      this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
     this.isNormalTrigger = this.nzCollapsedWidth !== 0;
   }
   ngOnInit(): void {

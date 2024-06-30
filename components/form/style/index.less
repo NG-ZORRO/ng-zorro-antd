@@ -15,8 +15,8 @@
 @form-font-height: ceil(@font-size-base * @line-height-base);
 
 .@{form-prefix-cls} {
-  .reset-component;
-  .reset-form;
+  .reset-component();
+  .reset-form();
 
   .@{form-prefix-cls}-text {
     display: inline-block;
@@ -39,6 +39,7 @@
   &-small {
     .formSize(@input-height-sm);
   }
+
   &-large {
     .formSize(@input-height-lg);
   }
@@ -57,13 +58,13 @@
 // =                             Item                             =
 // ================================================================
 .@{form-item-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   margin-bottom: @form-item-margin-bottom;
   vertical-align: top;
 
   &-with-help {
-    margin-bottom: 0;
+    transition: none;
   }
 
   &-hidden,
@@ -87,11 +88,17 @@
       text-align: left;
     }
 
+    &-wrap {
+      overflow: unset;
+      line-height: (@line-height-base - 0.25em);
+      white-space: unset;
+    }
+
     > label {
       position: relative;
-      // display: inline;
       display: inline-flex;
       align-items: center;
+      max-width: 100%;
       height: @form-item-label-height;
       color: @label-color;
       font-size: @form-item-label-font-size;
@@ -129,9 +136,10 @@
 
       // Optional mark
       .@{form-item-prefix-cls}-tooltip {
+        color: @text-color-secondary;
+        cursor: help;
         writing-mode: horizontal-tb;
         margin-inline-start: @margin-xss;
-        color: @text-color-secondary;
       }
 
       &::after {
@@ -178,55 +186,108 @@
     }
   }
 
+  // ==============================================================
+  // =                           Explain                          =
+  // ==============================================================
   &-explain,
   &-extra {
     clear: both;
-    min-height: @form-item-margin-bottom;
-    .explainAndExtraDistance((@form-item-margin-bottom - @form-font-height) / 2);
     color: @text-color-secondary;
     font-size: @font-size-base;
     line-height: @line-height-base;
     transition: color 0.3s @ease-out; // sync input color transition
+    .explainAndExtraDistance((@form-item-margin-bottom - @form-font-height) / 2);
   }
 
-  .@{ant-prefix}-input-textarea-show-count {
-    &::after {
-      position: absolute;
-      bottom: -22px;
-      width: 100%;
+  &-explain-connected {
+    width: 100%;
+  }
+
+  &-extra {
+    min-height: @form-item-margin-bottom;
+  }
+
+  &-with-help &-explain {
+    height: auto;
+    // min-height: @form-item-margin-bottom;
+    opacity: 1;
+  }
+
+  // ==============================================================
+  // =                        Feedback Icon                       =
+  // ==============================================================
+  &-feedback-icon {
+    font-size: @font-size-base;
+    text-align: center;
+    visibility: visible;
+    animation: zoomIn 0.3s @ease-out-back;
+    pointer-events: none;
+
+    &-success {
+      color: @success-color;
+    }
+
+    &-error {
+      color: @error-color;
+    }
+
+    &-warning {
+      color: @warning-color;
+    }
+
+    &-validating {
+      color: @primary-color;
     }
   }
 }
 
-.show-help-motion(@className, @keyframeName, @duration: @animation-duration-slow) {
-  .make-motion(@className, @keyframeName, @duration);
-  .@{className}-enter,
-  .@{className}-appear {
-    opacity: 0;
-    animation-timing-function: @ease-in-out;
-  }
-  .@{className}-leave {
-    animation-timing-function: @ease-in-out;
-  }
-}
+// >>>>>>>>>> Motion <<<<<<<<<<
+// Explain holder
+.@{ant-prefix}-show-help {
+  transition: opacity @animation-duration-slow @ease-in-out;
 
-.show-help-motion(show-help, antShowHelp, 0.3s);
-
-@keyframes antShowHelpIn {
-  0% {
-    transform: translateY(-5px);
+  &-appear,
+  &-enter {
     opacity: 0;
+
+    &-active {
+      opacity: 1;
+    }
   }
-  100% {
-    transform: translateY(0);
+
+  &-leave {
     opacity: 1;
+
+    &-active {
+      opacity: 0;
+    }
   }
 }
 
-@keyframes antShowHelpOut {
-  to {
+// Explain
+.@{ant-prefix}-show-help-item {
+  overflow: hidden;
+  transition: height @animation-duration-slow @ease-in-out,
+    opacity @animation-duration-slow @ease-in-out, transform @animation-duration-slow @ease-in-out !important;
+
+  &-appear,
+  &-enter {
     transform: translateY(-5px);
     opacity: 0;
+
+    &-active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &-leave {
+    transition: height @animation-duration-base @ease-in-out,
+      opacity @animation-duration-base @ease-in-out, transform @animation-duration-base @ease-in-out !important;
+  }
+
+  &-leave-active {
+    transform: translateY(-5px);
   }
 }
 
@@ -235,27 +296,36 @@
 @keyframes diffZoomIn1 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
+
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
 @keyframes diffZoomIn2 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
+
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
 @keyframes diffZoomIn3 {
   0% {
     transform: scale(0);
+    opacity: 0;
   }
+
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 

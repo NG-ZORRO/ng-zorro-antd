@@ -4,7 +4,8 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -21,18 +22,21 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzTableData } from '../table.types';
+
+import { NzResizeService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
+import { NzTableContentComponent } from './table-content.component';
+import { NzTbodyComponent } from './tbody.component';
 
 @Component({
   selector: 'nz-table-inner-scroll',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="scrollY">
+    @if (scrollY) {
       <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
@@ -42,34 +46,38 @@ import { NzTableData } from '../table.types';
           [theadTemplate]="theadTemplate"
         ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
-        <table
-          nz-table-content
-          tableLayout="fixed"
-          [scrollX]="scrollX"
-          [listOfColWidth]="listOfColWidth"
-          [contentTemplate]="contentTemplate"
-        ></table>
-      </div>
-      <cdk-virtual-scroll-viewport
-        #tableBodyElement
-        *ngIf="virtualTemplate"
-        [itemSize]="virtualItemSize"
-        [maxBufferPx]="virtualMaxBufferPx"
-        [minBufferPx]="virtualMinBufferPx"
-        [style.height]="data.length ? scrollY : noDateVirtualHeight"
-      >
-        <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
-          <tbody>
-            <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
-              <ng-template [ngTemplateOutlet]="virtualTemplate" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-template>
-            </ng-container>
-          </tbody>
-        </table>
-      </cdk-virtual-scroll-viewport>
-    </ng-container>
-    <div class="ant-table-content" *ngIf="!scrollY">
-      <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+      @if (!virtualTemplate) {
+        <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+          <table
+            nz-table-content
+            tableLayout="fixed"
+            [scrollX]="scrollX"
+            [listOfColWidth]="listOfColWidth"
+            [contentTemplate]="contentTemplate"
+          ></table>
+        </div>
+      } @else {
+        <cdk-virtual-scroll-viewport
+          #tableBodyElement
+          [itemSize]="virtualItemSize"
+          [maxBufferPx]="virtualMaxBufferPx"
+          [minBufferPx]="virtualMinBufferPx"
+          [style.height]="data.length ? scrollY : noDataVirtualHeight"
+        >
+          <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
+            <tbody>
+              <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
+                <ng-template
+                  [ngTemplateOutlet]="virtualTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+                ></ng-template>
+              </ng-container>
+            </tbody>
+          </table>
+        </cdk-virtual-scroll-viewport>
+      }
+    } @else {
+      <div class="ant-table-content" #tableBodyElement [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -79,23 +87,26 @@ import { NzTableData } from '../table.types';
           [contentTemplate]="contentTemplate"
         ></table>
       </div>
-    </div>
-  `
+    }
+  `,
+  host: { class: 'ant-table-container' },
+  imports: [NzTableContentComponent, NgStyle, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
+  standalone: true
 })
-export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @Input() data: NzTableData[] = [];
+export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
+  @Input() data: readonly T[] = [];
   @Input() scrollX: string | null = null;
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() widthConfig: string[] = [];
-  @Input() listOfColWidth: Array<string | null> = [];
+  @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualItemSize = 0;
   @Input() virtualMaxBufferPx = 200;
   @Input() virtualMinBufferPx = 100;
   @Input() tableMainElement?: HTMLDivElement;
-  @Input() virtualForTrackBy: TrackByFunction<NzTableData> = index => index;
+  @Input() virtualForTrackBy: TrackByFunction<T> = index => index;
   @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement!: ElementRef;
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
@@ -103,7 +114,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   headerStyleMap = {};
   bodyStyleMap = {};
   @Input() verticalScrollBarWidth = 0;
-  noDateVirtualHeight = '182px';
+  @Input() noDataVirtualHeight = '182px';
   private data$ = new Subject<void>();
   private scroll$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -131,12 +142,8 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
     private renderer: Renderer2,
     private ngZone: NgZone,
     private platform: Platform,
-    private resizeService: NzResizeService,
-    private elementRef: ElementRef
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-table-container');
-  }
+    private resizeService: NzResizeService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
@@ -151,10 +158,13 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
         overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
-      this.scroll$.next();
+      // Caretaker note: we have to emit the value outside of the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
+      // event listener will be also added outside of the Angular zone.
+      this.ngZone.runOutsideAngular(() => this.scroll$.next());
     }
     if (data) {
-      this.data$.next();
+      // See the comment above.
+      this.ngZone.runOutsideAngular(() => this.data$.next());
     }
   }
   ngAfterViewInit(): void {
@@ -168,11 +178,17 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
         );
         const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
         const data$ = this.data$.pipe(takeUntil(this.destroy$));
-        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(startWith(true), delay(0), takeUntil(this.destroy$));
+        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
+          startWith(true),
+          delay(0),
+          takeUntil(this.destroy$)
+        );
         setClassName$.subscribe(() => this.setScrollPositionClassName());
         scrollEvent$
           .pipe(filter(() => !!this.scrollY))
-          .subscribe(() => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft));
+          .subscribe(
+            () => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft)
+          );
       });
     }
   }

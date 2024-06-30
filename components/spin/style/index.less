@@ -5,11 +5,12 @@
 @spin-dot-default: @text-color-secondary;
 
 .@{spin-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   position: absolute;
   display: none;
   color: @primary-color;
+  font-size: 0;
   text-align: center;
   vertical-align: middle;
   opacity: 0;
@@ -36,41 +37,42 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -@spin-dot-size / 2;
+        margin: -(@spin-dot-size / 2);
       }
       .@{spin-prefix-cls}-text {
         position: absolute;
         top: 50%;
         width: 100%;
-        padding-top: (@spin-dot-size - @font-size-base) / 2 + 2px;
+        padding-top: ((@spin-dot-size - @font-size-base) / 2) + 2px;
+        font-size: @font-size-base;
         text-shadow: 0 1px 2px @shadow-color-inverse;
       }
       &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
-        margin-top: -@spin-dot-size / 2 - 10px;
+        margin-top: -(@spin-dot-size / 2) - 10px;
       }
     }
 
     > div > .@{spin-prefix-cls}-sm {
       .@{spin-prefix-cls}-dot {
-        margin: -@spin-dot-size-sm / 2;
+        margin: -(@spin-dot-size-sm / 2);
       }
       .@{spin-prefix-cls}-text {
-        padding-top: (@spin-dot-size-sm - @font-size-base) / 2 + 2px;
+        padding-top: ((@spin-dot-size-sm - @font-size-base) / 2) + 2px;
       }
       &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
-        margin-top: -@spin-dot-size-sm / 2 - 10px;
+        margin-top: -(@spin-dot-size-sm / 2) - 10px;
       }
     }
 
     > div > .@{spin-prefix-cls}-lg {
       .@{spin-prefix-cls}-dot {
-        margin: -@spin-dot-size-lg / 2;
+        margin: -(@spin-dot-size-lg / 2);
       }
       .@{spin-prefix-cls}-text {
-        padding-top: (@spin-dot-size-lg - @font-size-base) / 2 + 2px;
+        padding-top: ((@spin-dot-size-lg - @font-size-base) / 2) + 2px;
       }
       &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
-        margin-top: -@spin-dot-size-lg / 2 - 10px;
+        margin-top: -(@spin-dot-size-lg / 2) - 10px;
       }
     }
   }
@@ -99,7 +101,6 @@
 
   &-blur {
     clear: both;
-    overflow: hidden;
     opacity: 0.5;
     user-select: none;
     pointer-events: none;
@@ -142,16 +143,19 @@
         top: 0;
         left: 0;
       }
+
       &:nth-child(2) {
         top: 0;
         right: 0;
         animation-delay: 0.4s;
       }
+
       &:nth-child(3) {
         right: 0;
         bottom: 0;
         animation-delay: 0.8s;
       }
+
       &:nth-child(4) {
         bottom: 0;
         left: 0;
@@ -160,7 +164,7 @@
     }
 
     &-spin {
-      transform: rotate(45deg);
+      transform: rotate(0deg);
       animation: antRotate 1.2s infinite linear;
     }
   }
@@ -209,7 +213,7 @@
 
 @keyframes antRotate {
   to {
-    transform: rotate(405deg);
+    transform: rotate(360deg);
   }
 }
 

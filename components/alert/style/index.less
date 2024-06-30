@@ -4,12 +4,12 @@
 @alert-prefix-cls: ~'@{ant-prefix}-alert';
 
 .@{alert-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   position: relative;
   display: flex;
   align-items: center;
-  padding: 8px 15px;
+  padding: @alert-padding-vertical @alert-padding-horizontal;
   word-wrap: break-word;
   border-radius: @border-radius-base;
 
@@ -84,6 +84,7 @@
     .@{iconfont-css-prefix}-close {
       color: @alert-close-color;
       transition: color 0.3s;
+
       &:hover {
         color: @alert-close-hover-color;
       }
@@ -93,6 +94,7 @@
   &-close-text {
     color: @alert-close-color;
     transition: color 0.3s;
+
     &:hover {
       color: @alert-close-hover-color;
     }
@@ -111,6 +113,7 @@
     margin-right: @alert-with-description-padding-vertical;
     font-size: @alert-with-description-icon-size;
   }
+
   &-with-description &-message {
     display: block;
     margin-bottom: 4px;

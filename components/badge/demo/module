@@ -3,5 +3,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ NzBadgeModule, NzButtonModule, NzSwitchModule, NzIconModule, NzCardModule ];
+export const moduleList = [NzBadgeModule, NzButtonModule, NzSwitchModule, NzIconModule, NzCardModule, NzSpaceModule];

@@ -54,8 +54,8 @@ interface DataItem {
 })
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
   listOfData: DataItem[] = [];
-  sortAgeFn = (a: DataItem, b: DataItem) => a.age - b.age;
-  nameFilterFn = (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1);
+  sortAgeFn = (a: DataItem, b: DataItem): number => a.age - b.age;
+  nameFilterFn = (list: string[], item: DataItem): boolean => list.some(name => item.name.indexOf(name) !== -1);
   filterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'John', value: 'John' }

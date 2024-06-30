@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 title:
   zh-CN: 图标
   en-US: Icon

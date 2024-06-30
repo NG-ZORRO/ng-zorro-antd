@@ -1,14 +1,17 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   findInputsOnElementWithTag,
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 export class ModalTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V11;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
     findInputsOnElementWithTag(template.content, 'nzGetContainer', ['nz-modal'])

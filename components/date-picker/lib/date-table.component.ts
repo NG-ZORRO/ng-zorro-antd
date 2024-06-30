@@ -3,11 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgSwitch, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { isNonEmptyString, isTemplateRef, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
@@ -15,13 +17,15 @@ import { transCompatFormat } from './util';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
   exportAs: 'dateTable',
-  templateUrl: './abstract-table.html'
+  templateUrl: './abstract-table.html',
+  standalone: true,
+  imports: [NgClass, NgSwitch, NgTemplateOutlet]
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() locale!: NzCalendarI18nInterface;
+  @Input() override locale!: NzCalendarI18nInterface;
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
     super();
@@ -69,7 +73,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const row: DateBodyRow = {
         isActive: false,
         dateCells: [],
-        trackByIndex: `${weekStart.getYear()}`
+        trackByIndex: week
       };
 
       for (let day = 0; day < 7; day++) {
@@ -78,18 +82,18 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
         const cell: DateCell = {
-          trackByIndex: title,
+          trackByIndex: day,
           value: date.nativeDate,
-          label: label,
+          label,
           isSelected: false,
           isDisabled: false,
           isToday: false,
-          title: title,
+          title,
           cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
-          onMouseEnter: () => this.cellHover.emit(date)
+          onMouseEnter: () => this.cellHover.emit(date),
         };
 
         this.addCellProperty(cell, date);
@@ -103,8 +107,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         row.dateCells.push(cell);
       }
       row.classMap = {
-        [`ant-picker-week-panel-row`]: this.showWeek,
-        [`ant-picker-week-panel-row-selected`]: this.showWeek && row.isActive
+        [`ant-picker-week-panel-row`]: this.canSelectWeek,
+        [`ant-picker-week-panel-row-selected`]: this.canSelectWeek && row.isActive
       };
       weekRows.push(row);
     }
@@ -112,7 +116,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   addCellProperty(cell: DateCell, date: CandyDate): void {
-    if (this.hasRangeValue() && !this.showWeek) {
+    cell.isTemplateRef = isTemplateRef(cell.cellRender);
+    cell.isNonEmptyString =  isNonEmptyString(cell.cellRender);
+    if (this.hasRangeValue() && !this.canSelectWeek) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
       // Selected
@@ -146,7 +152,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     cell.classMap = this.getClassMap(cell);
   }
 
-  getClassMap(cell: DateCell): { [key: string]: boolean } {
+  override getClassMap(cell: DateCell): { [key: string]: boolean } {
     const date = new CandyDate(cell.value);
     return {
       ...super.getClassMap(cell),

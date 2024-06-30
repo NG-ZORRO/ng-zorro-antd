@@ -3,18 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Directive, Input, booleanAttribute } from '@angular/core';
 
 @Directive({
   selector: 'th[nzEllipsis],td[nzEllipsis]',
   host: {
     '[class.ant-table-cell-ellipsis]': 'nzEllipsis'
-  }
+  },
+  standalone: true
 })
 export class NzCellEllipsisDirective {
-  static ngAcceptInputType_nzEllipsis: BooleanInput;
-
-  @Input() @InputBoolean() nzEllipsis = true;
+  @Input({ transform: booleanAttribute }) nzEllipsis = true;
 }

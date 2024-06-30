@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
     `
       nz-divider {
         color: #333;
-        fontweight: normal;
+        font-weight: normal;
       }
       .inner-box {
         background: #0092ff;

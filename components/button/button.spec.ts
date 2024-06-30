@@ -1,9 +1,11 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzButtonComponent, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
 describe('button', () => {
@@ -11,7 +13,7 @@ describe('button', () => {
     let testBed: ComponentBed<TestButtonComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonComponent, { declarations: [NzButtonComponent] });
+      testBed = createComponentBed(TestButtonComponent, { imports: [NzButtonComponent] });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 
@@ -49,15 +51,15 @@ describe('button', () => {
       expect(buttonElement.classList).toContain('ant-btn-block');
     });
     it('should apply classname based on nzType', () => {
+      testBed.component.nzType = 'default';
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-default');
       testBed.component.nzType = 'primary';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-primary');
       testBed.component.nzType = 'link';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-link');
-      testBed.component.nzType = 'danger';
-      testBed.fixture.detectChanges();
-      expect(buttonElement.classList).toContain('ant-btn-danger');
       testBed.component.nzType = 'dashed';
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-dashed');
@@ -87,7 +89,9 @@ describe('button', () => {
   });
   describe('loading icon', () => {
     it('should hide icon when loading correct', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonBindingComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonBindingComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
@@ -108,7 +112,9 @@ describe('button', () => {
   });
   describe('insert span', () => {
     it('should insert span correctly', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonWithIconComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonWithIconComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
       expect(buttonElement.firstElementChild.tagName).toBe('SPAN');
@@ -119,15 +125,48 @@ describe('button', () => {
   });
   describe('icon only', () => {
     it('should icon only works correctly', fakeAsync(() => {
-      const testBed = createComponentBed(TestButtonIconOnlyComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const testBed = createComponentBed(TestButtonIconOnlyComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
+    it('should icon only works correctly with any tag', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithAnyTagComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly with any Comment', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithCommentComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly with any text', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithTextComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+    }));
+    it('should icon only works correctly without nz-icon', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyWithoutIconComponent, {
+        imports: [NzIconTestModule, NzButtonComponent]
+      });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+    }));
     it('should icon only loading works correctly', () => {
       const testBed = createComponentBed(TestButtonIconOnlyLoadingComponent, {
-        imports: [NzIconTestModule],
-        declarations: [NzButtonComponent]
+        imports: [NzIconTestModule, NzButtonComponent]
       });
       testBed.fixture.detectChanges();
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
@@ -139,7 +178,9 @@ describe('button', () => {
     let testBed: ComponentBed<TestButtonRtlComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonRtlComponent, { declarations: [NzButtonComponent], imports: [BidiModule] });
+      testBed = createComponentBed(TestButtonRtlComponent, {
+        imports: [BidiModule, NzButtonComponent, NzButtonComponent]
+      });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 
@@ -151,6 +192,56 @@ describe('button', () => {
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).not.toContain('ant-btn-rtl');
     });
+  });
+  describe('change detection', () => {
+    let testBed: ComponentBed<TestButtonComponent>;
+    let buttonElement: HTMLButtonElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestButtonComponent, { imports: [NzButtonComponent] });
+      buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+    });
+
+    it('should not trigger change detection when the button is clicked', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      const spy = spyOn(appRef, 'tick').and.callThrough();
+      buttonElement.dispatchEvent(new MouseEvent('click'));
+      buttonElement.dispatchEvent(new MouseEvent('click'));
+      // Previously, it would've caused `tick()` to be called 2 times, because 2 click events have been triggered.
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+
+    it('prevent default and stop propagation when the button state is loading', fakeAsync(() => {
+      testBed.component.nzLoading = true;
+      testBed.fixture.detectChanges();
+      const event = new MouseEvent('click');
+      const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+      const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+      buttonElement.dispatchEvent(event);
+      expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+      expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
+    }));
+  });
+});
+
+describe('anchor', () => {
+  let testBed: ComponentBed<TestAnchorComponent>;
+  let anchorElement: HTMLAnchorElement;
+
+  beforeEach(() => {
+    testBed = createComponentBed(TestAnchorComponent, { imports: [NzButtonComponent] });
+    anchorElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+  });
+
+  it('should prevent default and stop propagation when the anchor is disabled', () => {
+    testBed.component.disabled = true;
+    testBed.fixture.detectChanges();
+    const event = new MouseEvent('click');
+    const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
+    const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+    anchorElement.dispatchEvent(event);
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+    expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -185,7 +276,7 @@ export class TestButtonComponent {
 @Component({
   template: `
     <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
-      <i nz-icon nzType="poweroff"></i>
+      <span nz-icon nzType="poweroff"></span>
       {{ 'Click me!' }}
     </button>
   `
@@ -202,7 +293,7 @@ export class TestButtonBindingComponent {
   template: `
     <button nz-button>
       {{ title }}
-      <i nz-icon nzType="caret-down"></i>
+      <span nz-icon nzType="caret-down"></span>
     </button>
   `
 })
@@ -216,7 +307,7 @@ export class TestButtonWithIconComponent implements OnInit {
 @Component({
   template: `
     <button nz-button>
-      <i nz-icon nzType="caret-down"></i>
+      <span nz-icon nzType="caret-down"></span>
     </button>
   `
 })
@@ -224,12 +315,57 @@ export class TestButtonIconOnlyComponent {}
 
 @Component({
   template: `
+    <button nz-button>
+      <u nz-icon nzType="up"></u>
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithAnyTagComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="down"></i>
+      <!-- Comment -->
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithCommentComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="down"></i>
+      text
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithTextComponent {}
+
+@Component({
+  template: `
+    <button nz-button>
+      <span>text</span>
+    </button>
+  `
+})
+export class TestButtonIconOnlyWithoutIconComponent {}
+
+@Component({
+  template: `
     <button nz-button nzLoading>
-      <i nz-icon nzType="caret-down"></i>
+      <span nz-icon nzType="caret-down"></span>
     </button>
   `
 })
 export class TestButtonIconOnlyLoadingComponent {}
+
+@Component({
+  template: `<button nz-button [nzLoading]="nzLoading" (click)="buttonClick()">click me</button> `
+})
+export class TestButtonWithLoadingComponent {
+  @Input() nzLoading: boolean = false;
+}
 
 @Component({
   template: `
@@ -253,4 +389,11 @@ export class TestButtonIconOnlyLoadingComponent {}
 export class TestButtonRtlComponent extends TestButtonComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
+}
+
+@Component({
+  template: '<a nz-button [disabled]="disabled"> anchor </a>'
+})
+export class TestAnchorComponent {
+  disabled = false;
 }

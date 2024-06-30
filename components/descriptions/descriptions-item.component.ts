@@ -3,10 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NumberInput } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
-
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+  numberAttribute
+} from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -19,14 +26,13 @@ import { Subject } from 'rxjs';
     </ng-template>
   `,
   exportAs: 'nzDescriptionsItem',
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  standalone: true
 })
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
-  static ngAcceptInputType_nzSpan: NumberInput;
-
   @ViewChild(TemplateRef, { static: true }) content!: TemplateRef<void>;
 
-  @Input() @InputNumber() nzSpan = 1;
+  @Input({ transform: numberAttribute }) nzSpan = 1;
   @Input() nzTitle: string | TemplateRef<void> = '';
 
   readonly inputChange$ = new Subject<void>();

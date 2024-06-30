@@ -5,9 +5,17 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
-      <input placeholder="input here" nz-input [(ngModel)]="inputValue" (input)="onInput($event)" [nzAutocomplete]="auto" />
+      <input
+        placeholder="input here"
+        nz-input
+        [(ngModel)]="inputValue"
+        (input)="onInput($event)"
+        [nzAutocomplete]="auto"
+      />
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option">{{ option }}</nz-auto-option>
+        @for (option of options; track $index) {
+          <nz-auto-option [nzValue]="option">{{ option }}</nz-auto-option>
+        }
       </nz-autocomplete>
     </div>
   `

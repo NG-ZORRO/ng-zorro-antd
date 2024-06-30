@@ -6,16 +6,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
+
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -24,23 +26,31 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
+  standalone: true,
+  imports: [NzNoAnimationDirective],
   template: `
-    <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
-      <span
-        *ngFor="let n of maxNumberArray; let i = index"
-        class="ant-scroll-number-only"
-        [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
-      >
-        <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-          <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
-            {{ p }}
-          </p>
-        </ng-container>
-      </span>
-    </ng-container>
-    <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
+    @if (count <= nzOverflowCount) {
+      @for (n of maxNumberArray; track n; let i = $index) {
+        <span
+          [nzNoAnimation]="noAnimation"
+          class="ant-scroll-number-only"
+          [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
+        >
+          @if (!nzDot && countArray[i] !== undefined) {
+            @for (p of countSingleArray; track p) {
+              <p class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+                {{ p }}
+              </p>
+            }
+          }
+        </span>
+      }
+    } @else {
+      {{ nzOverflowCount }}+
+    }
   `,
   host: {
+    class: 'ant-scroll-number',
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
@@ -48,6 +58,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
+    '[class.ant-badge-count-sm]': `nzSize === 'small'`,
     '[class.ant-badge-dot]': `nzDot`,
     '[class.ant-badge-multiple-words]': `countArray.length >= 2`
   }
@@ -57,18 +68,17 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzTitle?: string | null | undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;
   @Input() nzDot = false;
-  @Input() nzOverflowCount: number = 99;
+  @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
+  @Input() noAnimation = false;
+  @Input() nzSize: NzSizeDSType = 'default';
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-scroll-number');
-  }
+  constructor() {}
 
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');

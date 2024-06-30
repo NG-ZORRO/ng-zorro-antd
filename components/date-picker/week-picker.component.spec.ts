@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+
 import { NzDatePickerModule } from './date-picker.module';
 
 describe('NzWeekPickerComponent', () => {
@@ -31,6 +32,9 @@ describe('NzWeekPickerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestWeekPickerComponent);
     fixtureInstance = fixture.componentInstance;
+    // set initial mode
+    fixtureInstance.useSuite = 1;
+    fixture.detectChanges();
   });
 
   afterEach(() => {
@@ -68,6 +72,18 @@ describe('NzWeekPickerComponent', () => {
     expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
   }));
 
+  it('should show week num', fakeAsync(() => {
+    fixtureInstance.useSuite = 2;
+    fixture.whenRenderingDone().then(() => {
+      tick(500);
+      fixture.detectChanges();
+      fixtureInstance.nzFormat = undefined; // cover branch
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
+    });
+  }));
+
   ////////////
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -84,10 +100,18 @@ describe('NzWeekPickerComponent', () => {
 
 @Component({
   template: `
-    <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-date-picker>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue" />
+      }
+      @case (2) {
+        <nz-week-picker [ngModel]="nzValue" />
+      }
+    }
   `
 })
 export class NzTestWeekPickerComponent {
+  useSuite!: 1 | 2;
   nzFormat?: string;
   nzValue: Date | null = null;
 }

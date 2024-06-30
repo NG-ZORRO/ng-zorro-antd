@@ -3,15 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
 
-import { Direction } from '@angular/cdk/bidi';
-import { takeUntil } from 'rxjs/operators';
 import { NzMNContainerComponent } from './base';
-import { NzMessageData } from './typings';
+import { NzMessageComponent } from './message.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
 
@@ -32,14 +33,18 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   preserveWhitespaces: false,
   template: `
     <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
-      <nz-message *ngFor="let instance of instances" [instance]="instance" (destroyed)="remove($event.id, $event.userAction)"></nz-message>
+      <nz-message
+        *ngFor="let instance of instances"
+        [instance]="instance"
+        (destroyed)="remove($event.id, $event.userAction)"
+      ></nz-message>
     </div>
-  `
+  `,
+  imports: [NzMessageComponent, NgForOf],
+  standalone: true
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
-  readonly destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
-  instances: Array<Required<NzMessageData>> = [];
   top?: string | null;
 
   constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {

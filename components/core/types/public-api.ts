@@ -15,3 +15,5 @@ export * from './any';
 export * from './control-value-accessor';
 export * from './convert-input';
 export * from './input-observable';
+export * from './type';
+export * from './status';

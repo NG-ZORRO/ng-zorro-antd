@@ -14,7 +14,7 @@ interface DataItem {
           <th nzCustomFilter>
             Name
             <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-              <i nz-icon nzType="search"></i>
+              <span nz-icon nzType="search"></span>
             </nz-filter-trigger>
           </th>
           <th>Age</th>
@@ -33,9 +33,7 @@ interface DataItem {
       <div class="ant-table-filter-dropdown">
         <div class="search-box">
           <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-            Search
-          </button>
+          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
           <button nz-button nzSize="small" (click)="reset()">Reset</button>
         </div>
       </div>

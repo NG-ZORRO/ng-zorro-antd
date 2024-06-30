@@ -2,6 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Injector, LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { NgTimeParser, TimeResult } from './time-parser';
 
 describe('Parse time with angular format', () => {

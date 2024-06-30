@@ -3,12 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
+
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
-import { Subject } from 'rxjs';
 
 import { NzMessageData, NzMessageDataOptions } from './typings';
 
@@ -18,7 +21,11 @@ export abstract class NzMNService {
   protected abstract componentPrefix: string;
   protected container?: NzMNContainerComponent;
 
-  constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
+  constructor(
+    protected nzSingletonService: NzSingletonService,
+    protected overlay: Overlay,
+    private injector: Injector
+  ) {}
 
   remove(id?: string): void {
     if (this.container) {
@@ -47,12 +54,17 @@ export abstract class NzMNService {
     });
     const componentPortal = new ComponentPortal(ctor, null, this.injector);
     const componentRef = overlayRef.attach(componentPortal);
-    const overlayPane = overlayRef.overlayElement;
-    overlayPane.style.zIndex = '1010';
+    const overlayWrapper = overlayRef.hostElement;
+    overlayWrapper.style.zIndex = '1010';
 
     if (!containerInstance) {
       this.container = containerInstance = componentRef.instance;
       this.nzSingletonService.registerSingletonWithKey(this.componentPrefix, containerInstance);
+      this.container.afterAllInstancesRemoved.subscribe(() => {
+        this.container = undefined;
+        this.nzSingletonService.unregisterSingletonWithKey(this.componentPrefix);
+        overlayRef.dispose();
+      });
     }
 
     return containerInstance as T;
@@ -64,9 +76,16 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   config?: Required<MessageConfig>;
   instances: Array<Required<NzMessageData>> = [];
 
+  private readonly _afterAllInstancesRemoved = new Subject<void>();
+
+  readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
+
   protected readonly destroy$ = new Subject<void>();
 
-  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+  constructor(
+    protected cdr: ChangeDetectorRef,
+    protected nzConfigService: NzConfigService
+  ) {
     this.updateConfig();
   }
 
@@ -94,16 +113,19 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   }
 
   remove(id: string, userAction: boolean = false): void {
-    this.instances.some((instance, index) => {
-      if (instance.messageId === id) {
+    this.instances
+      .map((instance, index) => ({ index, instance }))
+      .filter(({ instance }) => instance.messageId === id)
+      .forEach(({ index, instance }) => {
         this.instances.splice(index, 1);
         this.instances = [...this.instances];
         this.onRemove(instance, userAction);
         this.readyInstances();
-        return true;
-      }
-      return false;
-    });
+      });
+
+    if (!this.instances.length) {
+      this.onAllInstancesRemoved();
+    }
   }
 
   removeAll(): void {
@@ -111,6 +133,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.instances = [];
 
     this.readyInstances();
+    this.onAllInstancesRemoved();
   }
 
   protected onCreate(instance: NzMessageData): Required<NzMessageData> {
@@ -122,6 +145,11 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   protected onRemove(instance: Required<NzMessageData>, userAction: boolean): void {
     instance.onClose.next(userAction);
     instance.onClose.complete();
+  }
+
+  private onAllInstancesRemoved(): void {
+    this._afterAllInstancesRemoved.next();
+    this._afterAllInstancesRemoved.complete();
   }
 
   protected readyInstances(): void {
@@ -144,10 +172,13 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   index?: number;
 
   readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
-  protected eraseTimer: number | null = null;
+  protected closeTimer?: ReturnType<typeof setTimeout>;
+  protected userAction: boolean = false;
+  protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
@@ -158,6 +189,15 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
     if (this.options.nzAnimate) {
       this.instance.state = 'enter';
+      this.animationStateChanged
+        .pipe(
+          filter(event => event.phaseName === 'done' && event.toState === 'leave'),
+          take(1)
+        )
+        .subscribe(() => {
+          clearTimeout(this.closeTimer);
+          this.destroyed.next({ id: this.instance.messageId, userAction: this.userAction });
+        });
     }
 
     this.autoClose = this.options.nzDuration > 0;
@@ -172,6 +212,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
     if (this.autoClose) {
       this.clearEraseTimeout();
     }
+    this.animationStateChanged.complete();
   }
 
   onEnter(): void {
@@ -188,14 +229,16 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   }
 
   protected destroy(userAction: boolean = false): void {
+    this.userAction = userAction;
     if (this.options.nzAnimate) {
       this.instance.state = 'leave';
       this.cdr.detectChanges();
-      setTimeout(() => {
-        this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+      this.closeTimer = setTimeout(() => {
+        this.closeTimer = undefined;
+        this.destroyed.next({ id: this.instance.messageId, userAction });
       }, 200);
     } else {
-      this.destroyed.next({ id: this.instance.messageId, userAction: userAction });
+      this.destroyed.next({ id: this.instance.messageId, userAction });
     }
   }
 
@@ -223,7 +266,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   private clearEraseTimeout(): void {
     if (this.eraseTimer !== null) {
       clearTimeout(this.eraseTimer);
-      this.eraseTimer = null;
+      this.eraseTimer = undefined;
     }
   }
 }

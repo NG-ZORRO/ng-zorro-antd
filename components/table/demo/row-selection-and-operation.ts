@@ -12,7 +12,13 @@ export interface Data {
   selector: 'nz-demo-table-row-selection-and-operation',
   template: `
     <div class="send-request">
-      <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" (click)="sendRequest()">
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="setOfCheckedId.size === 0"
+        [nzLoading]="loading"
+        (click)="sendRequest()"
+      >
         Send Request
       </button>
       <span>Selected {{ setOfCheckedId.size }} items</span>
@@ -26,7 +32,12 @@ export interface Data {
     >
       <thead>
         <tr>
-          <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+          <th
+            [nzChecked]="checked"
+            [nzIndeterminate]="indeterminate"
+            nzLabel="Select all"
+            (nzCheckedChange)="onAllChecked($event)"
+          ></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -37,6 +48,7 @@ export interface Data {
           <td
             [nzChecked]="setOfCheckedId.has(data.id)"
             [nzDisabled]="data.disabled"
+            [nzLabel]="data.name"
             (nzCheckedChange)="onItemChecked(data.id, $event)"
           ></td>
           <td>{{ data.name }}</td>
@@ -63,8 +75,8 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   checked = false;
   loading = false;
   indeterminate = false;
-  listOfData: Data[] = [];
-  listOfCurrentPageData: Data[] = [];
+  listOfData: readonly Data[] = [];
+  listOfCurrentPageData: readonly Data[] = [];
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -75,7 +87,7 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
     }
   }
 
-  onCurrentPageDataChange(listOfCurrentPageData: Data[]): void {
+  onCurrentPageDataChange(listOfCurrentPageData: readonly Data[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
   }
@@ -92,7 +104,9 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
-    this.listOfCurrentPageData.filter(({ disabled }) => !disabled).forEach(({ id }) => this.updateCheckedSet(id, checked));
+    this.listOfCurrentPageData
+      .filter(({ disabled }) => !disabled)
+      .forEach(({ id }) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
   }
 
@@ -108,14 +122,12 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listOfData = new Array(100).fill(0).map((_, index) => {
-      return {
-        id: index,
-        name: `Edward King ${index}`,
-        age: 32,
-        address: `London, Park Lane no. ${index}`,
-        disabled: index % 2 === 0
-      };
-    });
+    this.listOfData = new Array(100).fill(0).map((_, index) => ({
+      id: index,
+      name: `Edward King ${index}`,
+      age: 32,
+      address: `London, Park Lane no. ${index}`,
+      disabled: index % 2 === 0
+    }));
   }
 }

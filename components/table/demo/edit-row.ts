@@ -33,7 +33,7 @@ interface ItemData {
             <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.address" /></td>
             <td>
               <a (click)="saveEdit(data.id)" class="save">Save</a>
-              <a nz-popconfirm nzTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
             </td>
           </ng-template>
         </tr>

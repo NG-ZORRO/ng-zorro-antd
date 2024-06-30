@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <a nz-popconfirm nzPopconfirmTitle="Are you sure?" [nzIcon]="iconTpl">Delete</a>
     <ng-template #iconTpl>
-      <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+      <span nz-icon nzType="question-circle-o" style="color: red;"></span>
     </ng-template>
   `
 })

@@ -1,6 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzSkeletonModule } from './skeleton.module';
 import {
   NzSkeletonAvatar,
@@ -254,7 +255,12 @@ export class NzTestSkeletonComponent {
         [nzSize]="nzSize"
         [nzShape]="nzShape"
       ></nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+      <nz-skeleton-element
+        *ngSwitchCase="3"
+        nzType="input"
+        [nzActive]="nzActive"
+        [nzSize]="nzSize"
+      ></nz-skeleton-element>
       <nz-skeleton-element *ngSwitchCase="4" nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
     </ng-container>
   `

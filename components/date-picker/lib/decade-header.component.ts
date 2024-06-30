@@ -3,20 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'decade-header', // tslint:disable-line:component-selector
+  selector: 'decade-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'decadeHeader',
-  templateUrl: './abstract-panel-header.html'
+  templateUrl: './abstract-panel-header.html',
+  imports: [NgForOf, NgIf, NgClass],
+  standalone: true
 })
 export class DecadeHeaderComponent extends AbstractPanelHeader {
-  previous(): void {}
-  next(): void {}
+  override previous(): void {}
+  override next(): void {}
 
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 100}`, 10) * 100;
@@ -26,11 +30,11 @@ export class DecadeHeaderComponent extends AbstractPanelHeader {
     return this.startYear + 99;
   }
 
-  superPrevious(): void {
+  override superPrevious(): void {
     this.changeValue(this.value.addYears(-100));
   }
 
-  superNext(): void {
+  override superNext(): void {
     this.changeValue(this.value.addYears(100));
   }
 

@@ -4,12 +4,27 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { InjectionToken, TemplateRef, Type } from '@angular/core';
-
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
+
 import { ThemeType } from '@ant-design/icons-angular';
+
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
+import {
+  NzSafeAny,
+  NzShapeSCType,
+  NzSizeDSType,
+  NzSizeLDSType,
+  NzSizeMDSType,
+  NzTSType
+} from 'ng-zorro-antd/core/types';
+
+interface MonacoEnvironment {
+  globalAPI?: boolean;
+  baseUrl?: string;
+  getWorker?(workerId: string, label: string): Promise<Worker> | Worker;
+  getWorkerUrl?(workerId: string, label: string): string;
+}
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -29,7 +44,9 @@ export interface NzConfig {
   datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
+  dropDown?: DropDownConfig;
   empty?: EmptyConfig;
+  filterTrigger?: FilterTriggerConfig;
   form?: FormConfig;
   icon?: IconConfig;
   message?: MessageConfig;
@@ -39,6 +56,7 @@ export interface NzConfig {
   pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  segmented?: SegmentedConfig;
   space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
@@ -49,11 +67,33 @@ export interface NzConfig {
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
   image?: ImageConfig;
+  popconfirm?: PopConfirmConfig;
+  popover?: PopoverConfig;
+  imageExperimental?: ImageExperimentalConfig;
+  theme?: Theme;
+  prefixCls?: PrefixCls;
+}
+
+export interface PrefixCls {
+  prefixCls?: string;
+  iconPrefixCls?: string;
+}
+
+export interface Theme {
+  primaryColor?: string;
+  infoColor?: string;
+  successColor?: string;
+  processingColor?: string;
+  errorColor?: string;
+  warningColor?: string;
+  [key: string]: string | undefined;
 }
 
 export interface SelectConfig {
   nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
+  nzBackdrop?: boolean;
+  nzOptionHeightPx?: number;
 }
 
 export interface AffixConfig {
@@ -95,8 +135,10 @@ export interface ButtonConfig {
 
 export interface CodeEditorConfig {
   assetsRoot?: string | SafeUrl;
+  extraConfig?: NzSafeAny;
   defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
+  monacoEnvironment?: MonacoEnvironment;
 
   onLoad?(): void;
 
@@ -119,10 +161,12 @@ export interface CarouselConfig {
   nzEffect?: 'scrollx' | 'fade' | string;
   nzEnableSwipe?: boolean;
   nzVertical?: boolean;
+  nzLoop?: boolean;
 }
 
 export interface CascaderConfig {
   nzSize?: string;
+  nzBackdrop?: boolean;
 }
 
 export interface CollapseConfig {
@@ -138,10 +182,11 @@ export interface CollapsePanelConfig {
 export interface DatePickerConfig {
   nzSeparator?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+  nzBackdrop?: boolean;
 }
 
 export interface DescriptionsConfig {
-  nzBorder?: boolean;
+  nzBordered?: boolean;
   nzColumn?: { [key in NzBreakpointEnum]?: number } | number;
   nzSize?: 'default' | 'middle' | 'small';
   nzColon?: boolean;
@@ -154,8 +199,16 @@ export interface DrawerConfig {
   nzDirection?: Direction;
 }
 
+export interface DropDownConfig {
+  nzBackdrop?: boolean;
+}
+
 export interface EmptyConfig {
   nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
+}
+
+export interface FilterTriggerConfig {
+  nzBackdrop?: boolean;
 }
 
 export interface FormConfig {
@@ -188,7 +241,7 @@ export interface ModalConfig {
 export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
 }
 
 export interface PageHeaderConfig {
@@ -217,6 +270,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SegmentedConfig {
+  nzSize?: NzSizeLDSType;
 }
 
 export interface SpaceConfig {
@@ -257,6 +314,8 @@ export interface TabsConfig {
 export interface TimePickerConfig {
   nzAllowEmpty?: boolean;
   nzClearText?: string;
+  nzNowText?: string;
+  nzOkText?: string;
   nzFormat?: string;
   nzHourStep?: number;
   nzMinuteStep?: number;
@@ -264,6 +323,7 @@ export interface TimePickerConfig {
   nzPopupClassName?: string;
   nzUse12Hours?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+  nzBackdrop?: boolean;
 }
 
 export interface TreeConfig {
@@ -278,6 +338,7 @@ export interface TreeSelectConfig {
   nzDropdownMatchSelectWidth?: boolean;
   nzHideUnMatched?: boolean;
   nzSize?: 'large' | 'small' | 'default';
+  nzBackdrop?: boolean;
 }
 
 export interface TypographyConfig {
@@ -294,6 +355,26 @@ export interface ImageConfig {
   nzDisablePreview?: string;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+  nzScaleStep?: number;
+}
+
+export interface ImageExperimentalConfig {
+  nzFallback?: string;
+  nzPlaceholder?: string;
+  nzDisablePreview?: string;
+  nzCloseOnNavigation?: boolean;
+  nzDirection?: Direction;
+  nzAutoSrcset?: boolean;
+  nzSrcLoader?(params: { src: string; width: number }): string;
+}
+
+export interface PopConfirmConfig {
+  nzPopconfirmBackdrop?: boolean;
+  nzAutofocus?: null | 'ok' | 'cancel';
+}
+
+export interface PopoverConfig {
+  nzPopoverBackdrop?: boolean;
 }
 
 export type NzConfigKey = keyof NzConfig;
@@ -302,3 +383,7 @@ export type NzConfigKey = keyof NzConfig;
  * User should provide an object implements this interface to set global configurations.
  */
 export const NZ_CONFIG = new InjectionToken<NzConfig>('nz-config');
+
+export function provideNzConfig(config: NzConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: NZ_CONFIG, useValue: config }]);
+}

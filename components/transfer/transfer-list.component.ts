@@ -3,19 +3,32 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
+  QueryList,
   TemplateRef,
-  ViewEncapsulation
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
+import { Observable, fromEvent, merge } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
-import { TransferDirection, TransferItem } from './interface';
+import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+
+import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
+import { NzTransferSearchComponent } from './transfer-search.component';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -25,20 +38,24 @@ import { TransferDirection, TransferItem } from './interface';
     <ng-template #defaultRenderList>
       <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
         <li
-          *ngFor="let item of validData"
+          *ngFor="let item of validData; trackBy: trackByHide"
           (click)="onItemSelect(item)"
           class="ant-transfer-list-content-item"
           [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
         >
           <label
+            #checkboxes
             nz-checkbox
             [nzChecked]="item.checked"
             (nzCheckedChange)="onItemSelect(item)"
-            (click)="$event.stopPropagation()"
             [nzDisabled]="disabled || item.disabled"
           >
             <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-            <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+            <ng-template
+              #renderContainer
+              [ngTemplateOutlet]="render"
+              [ngTemplateOutletContext]="{ $implicit: item }"
+            ></ng-template>
           </label>
         </li>
       </ul>
@@ -49,32 +66,36 @@ import { TransferDirection, TransferItem } from './interface';
     <div class="ant-transfer-list-header">
       <label
         *ngIf="showSelectAll"
+        class="ant-transfer-list-checkbox"
         nz-checkbox
+        #headerCheckbox
         [nzChecked]="stat.checkAll"
         (nzCheckedChange)="onItemSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"
-        [nzDisabled]="stat.shownCount == 0 || disabled"
+        [nzDisabled]="stat.shownCount === 0 || disabled"
       ></label>
       <span class="ant-transfer-list-header-selected">
         <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ validData.length > 1 ? itemsUnit : itemUnit }}
+          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+          {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
-        <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
+      <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
       [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
     >
       <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
-        <div
+        <span
           nz-transfer-search
+          class="ant-input-affix-wrapper ant-transfer-list-search"
           (valueChanged)="handleFilter($event)"
           (valueClear)="handleClear()"
           [placeholder]="searchPlaceholder"
           [disabled]="disabled"
           [value]="filter"
-        ></div>
+        ></span>
       </div>
       <ng-container *ngIf="renderList; else defaultRenderList">
         <div class="ant-transfer-list-body-customize-wrapper">
@@ -101,10 +122,13 @@ import { TransferDirection, TransferItem } from './interface';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
-  }
+  },
+  imports: [NgIf, NgForOf, NgClass, NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent],
+  standalone: true
 })
-export class NzTransferListComponent {
+export class NzTransferListComponent implements AfterViewInit {
   // #region fields
 
   @Input() direction: TransferDirection = 'left';
@@ -116,22 +140,26 @@ export class NzTransferListComponent {
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
-  @Input() disabled: boolean = false;
-  @Input() showSearch?: boolean;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) showSearch?: boolean;
   @Input() searchPlaceholder?: string;
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<void> | null = null;
-  @Input() render: TemplateRef<void> | null = null;
-  @Input() footer: TemplateRef<void> | null = null;
+  @Input() renderList: TemplateRef<RenderListContext> | null = null;
+  @Input() render: TemplateRef<{ $implicit: TransferItem }> | null = null;
+  @Input() footer: TemplateRef<{ $implicit: TransferDirection }> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
-  stat = {
+  @ViewChild('headerCheckbox', { read: NzCheckboxComponent }) headerCheckbox?: NzCheckboxComponent;
+
+  @ViewChildren('checkboxes', { read: ElementRef }) checkboxes!: QueryList<ElementRef<HTMLLabelElement>>;
+
+  stat: TransferStat = {
     checkAll: false,
     checkHalf: false,
     checkCount: 0,
@@ -142,7 +170,13 @@ export class NzTransferListComponent {
     return this.dataSource.filter(w => !w.hide);
   }
 
-  onItemSelect = (item: TransferItem) => {
+  trackByHide(_index: number, item: TransferItem): boolean | undefined {
+    // The `validData` is a getter which returns new array each time the property is read.
+    // This may lead to unexpected re-renders, tho the array hasn't been updated.
+    return item.hide;
+  }
+
+  onItemSelect = (item: TransferItem): void => {
     if (this.disabled || item.disabled) {
       return;
     }
@@ -151,7 +185,7 @@ export class NzTransferListComponent {
     this.handleSelect.emit(item);
   };
 
-  onItemSelectAll = (status: boolean) => {
+  onItemSelectAll = (status: boolean): void => {
     this.dataSource.forEach(item => {
       if (!item.disabled && !item.hide) {
         item.checked = status;
@@ -168,6 +202,19 @@ export class NzTransferListComponent {
     this.stat.shownCount = this.validData.length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
+    // Note: this is done explicitly since the internal `nzChecked` value may not be updated in edge cases.
+    // Consider the following flow:
+    // 1) the initial value of `stat.checkAll` is `false`
+    // 2) the user filters items
+    // 3) the user clicks "Select All" checkbox
+    // 4) the `NzCheckboxComponent` sets `nzChecked` to `true` internally
+    // 5) the user clicks "Move to right"
+    // 6) items are moved and the `updateCheckStatus` is invoked
+    // 7) the `stat.checkAll` value has never been updated in this flow, it's always been `false`
+    // 8) the `nzChecked` is still `true` and the checkbox is not unchecked
+    // This is because Angular checks bindings and it checked that `[nzChecked]="stat.checkAll"` has
+    // never been updated, so Angular did not set new `nzChecked` value on the checkbox.
+    this.headerCheckbox && (this.headerCheckbox.nzChecked = this.stat.checkAll);
   }
 
   // #endregion
@@ -196,13 +243,36 @@ export class NzTransferListComponent {
 
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-transfer-list');
-  }
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   markForCheck(): void {
     this.updateCheckStatus();
     this.cdr.markForCheck();
+  }
+
+  ngAfterViewInit(): void {
+    this.checkboxes.changes
+      .pipe(
+        startWith(this.checkboxes),
+        switchMap(() => {
+          const checkboxes = this.checkboxes.toArray();
+          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
+          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
+          // but `addEventListener` is called when the `fromEvent` is subscribed.
+          return new Observable<MouseEvent>(subscriber =>
+            this.ngZone.runOutsideAngular(() =>
+              merge(...checkboxes.map(checkbox => fromEvent<MouseEvent>(checkbox.nativeElement, 'click'))).subscribe(
+                subscriber
+              )
+            )
+          );
+        })
+      )
+      .subscribe(event => {
+        event.stopPropagation();
+      });
   }
 }

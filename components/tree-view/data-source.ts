@@ -5,7 +5,7 @@
 
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { FlatTreeControl, TreeControl } from '@angular/cdk/tree';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, merge } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 export class NzTreeFlattener<T, F, K = F> {
@@ -86,7 +86,11 @@ export class NzTreeFlatDataSource<T, F, K = F> extends DataSource<F> {
 
   _data: BehaviorSubject<T[]>;
 
-  constructor(private _treeControl: FlatTreeControl<F, K>, private _treeFlattener: NzTreeFlattener<T, F, K>, initialData: T[] = []) {
+  constructor(
+    private _treeControl: FlatTreeControl<F, K>,
+    private _treeFlattener: NzTreeFlattener<T, F, K>,
+    initialData: T[] = []
+  ) {
     super();
     this._data = new BehaviorSubject<T[]>(initialData);
     this.flatNodes();
@@ -102,7 +106,11 @@ export class NzTreeFlatDataSource<T, F, K = F> extends DataSource<F> {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<F[]> {
-    const changes = [collectionViewer.viewChange, this._treeControl.expansionModel.changed, this._flattenedData];
+    const changes = [
+      collectionViewer.viewChange,
+      this._treeControl.expansionModel.changed.asObservable(),
+      this._flattenedData.asObservable()
+    ];
     return merge(...changes).pipe(
       map(() => {
         this._expandedData.next(this._treeFlattener.expandFlattenedNodes(this._flattenedData.value, this._treeControl));

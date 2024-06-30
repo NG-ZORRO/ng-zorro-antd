@@ -1,4 +1,5 @@
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ NzTimePickerModule, NzButtonModule ];
+export const moduleList = [ NzTimePickerModule, NzButtonModule, NzSpaceModule ];

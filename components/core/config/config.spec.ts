@@ -3,13 +3,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
-import { NZ_CONFIG } from './config';
+
+import { provideNzConfig } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
-  template: `
-    <button nz-button nzType="primary" [nzSize]="size">Global Config</button>
-  `
+  template: ` <button nz-button nzType="primary" [nzSize]="size">Global Config</button> `
 })
 export class NzGlobalConfigTestBasicComponent {
   size?: 'large' | 'default' | 'small';
@@ -24,14 +23,12 @@ describe('nz global config', () => {
   let buttonEl: HTMLButtonElement;
 
   describe('without config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent]
-        }).compileComponents();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
@@ -51,24 +48,19 @@ describe('nz global config', () => {
   });
 
   describe('with config', () => {
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzButtonModule],
-          declarations: [NzGlobalConfigTestBasicComponent],
-          providers: [
-            {
-              provide: NZ_CONFIG,
-              useValue: {
-                button: {
-                  nzSize: 'large'
-                }
-              }
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzGlobalConfigTestBasicComponent],
+        providers: [
+          provideNzConfig({
+            button: {
+              nzSize: 'large'
             }
-          ]
-        }).compileComponents();
-      })
-    );
+          })
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
@@ -100,10 +92,29 @@ describe('nz global config', () => {
       expect(buttonEl.classList).not.toContain('ant-btn-sm');
     });
 
+    it('should dynamic theme colors config work', () => {
+      fixture.detectChanges();
+      testComponent.nzConfigService.set('theme', { primaryColor: '#0000FF' });
+      fixture.detectChanges();
+      expect(getComputedStyle(document.documentElement).getPropertyValue('--ant-primary-color').trim()).toEqual(
+        'rgb(0, 0, 255)'
+      );
+    });
+
+    it('should dynamic theme colors config with custom prefix work', () => {
+      fixture.detectChanges();
+      testComponent.nzConfigService.set('prefixCls', { prefixCls: 'custom-variable' });
+      testComponent.nzConfigService.set('theme', { primaryColor: '#0000FF' });
+      fixture.detectChanges();
+      expect(
+        getComputedStyle(document.documentElement).getPropertyValue('--custom-variable-primary-color').trim()
+      ).toEqual('rgb(0, 0, 255)');
+    });
+
     // It would fail silently. User cannot input a component name wrong - TypeScript comes to help!
     // it('should raise error when the component with given name is not defined', () => {
     //   expect(() => {
-    //     testComponent.nzConfigService.set('nzNotExist' as any, {}); // tslint:disable-line no-any
+    // eslint-disable-line  @typescript-eslint/no-explicit-any
     //   }).toThrowError();
     // });
   });

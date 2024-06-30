@@ -18,17 +18,22 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzTSType } from 'ng-zorro-antd/core/types';
-
-import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
+import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-copy',
   exportAs: 'nzTextCopy',
   template: `
     <button
+      type="button"
       nz-tooltip
       nz-trans-button
       [nzTooltipTitle]="copied ? copedTooltip : copyTooltip"
@@ -37,24 +42,26 @@ import { takeUntil } from 'rxjs/operators';
       (click)="onClick()"
     >
       <ng-container *nzStringTemplateOutlet="copied ? copedIcon : copyIcon; let icon">
-        <i nz-icon [nzType]="icon"></i>
+        <span nz-icon [nzType]="icon"></span>
       </ng-container>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule],
+  standalone: true
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copied = false;
-  copyId: number = -1;
+  copyId?: ReturnType<typeof setTimeout>;
   locale!: NzTextI18nInterface;
   nativeElement = this.host.nativeElement;
   copyTooltip: NzTSType | null = null;
   copedTooltip: NzTSType | null = null;
   copyIcon: NzTSType = 'copy';
   copedIcon: NzTSType = 'check';
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   @Input() text!: string;
   @Input() tooltips?: [NzTSType, NzTSType] | null;
@@ -62,7 +69,12 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() readonly textCopy = new EventEmitter<string>();
 
-  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}
+  constructor(
+    private host: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private clipboard: Clipboard,
+    private i18n: NzI18nService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -84,7 +96,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     clearTimeout(this.copyId);
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

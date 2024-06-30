@@ -5,11 +5,17 @@ import { Component } from '@angular/core';
   template: `
     <div class="wrapper">
       <button nz-button nzType="primary" (click)="toggleCollapsed()">
-        <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
       </button>
       <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''" nzSelected>
-          <i nz-icon nzType="mail"></i>
+        <li
+          nz-menu-item
+          nz-tooltip
+          nzTooltipPlacement="right"
+          [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''"
+          nzSelected
+        >
+          <span nz-icon nzType="mail"></span>
           <span>Navigation One</span>
         </li>
         <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">

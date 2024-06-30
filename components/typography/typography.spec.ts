@@ -1,17 +1,28 @@
-import { ENTER } from '@angular/cdk/keycodes';
+import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { take } from 'rxjs';
+
+import {
+  createKeyboardEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  MockNgZone,
+  typeInElement
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzTextEditComponent } from '.';
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
-// tslint:disable-next-line no-any
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const viewport: any;
 
 describe('typography', () => {
@@ -22,6 +33,7 @@ describe('typography', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      providers: [{ provide: NgZone, useFactory: () => new MockNgZone() }],
       declarations: [
         NzTestTypographyComponent,
         NzTestTypographyCopyComponent,
@@ -248,32 +260,40 @@ describe('typography', () => {
       fixture.detectChanges();
     }));
 
-    it('should edit work', () => {
-      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
-      editButton!.click();
-      fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
-      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
-      typeInElement('test', textarea);
-      fixture.detectChanges();
-      dispatchFakeEvent(textarea, 'blur');
-      fixture.detectChanges();
-      expect(testComponent.str).toBe('test');
-    });
-
-    it('should edit focus', fakeAsync(() => {
+    it('should edit work', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
-      expect(document.activeElement === textarea).toBe(true);
-      dispatchFakeEvent(textarea, 'blur');
+
+      expect(testComponent.str).toBe('This is an editable text.');
+      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
+      typeInElement('test', textarea);
       fixture.detectChanges();
+      dispatchFakeEvent(textarea, 'blur');
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(testComponent.str).toBe('test');
     }));
 
-    it('should apply changes when Enter keydown', () => {
+    it('should edit focus', () => {
+      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+      editButton!.click();
+      fixture.detectChanges();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
+
+      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
+
+      expect(document.activeElement === textarea).toBe(true);
+    });
+
+    it('should apply changes when Enter keydown', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
@@ -282,9 +302,12 @@ describe('typography', () => {
       fixture.detectChanges();
       const event = createKeyboardEvent('keydown', ENTER, textarea);
       testComponent.nzTypographyComponent.textEditRef!.onEnter(event);
+
+      flush();
       fixture.detectChanges();
+
       expect(testComponent.str).toBe('test');
-    });
+    }));
   });
 
   describe('ellipsis', () => {
@@ -458,6 +481,67 @@ describe('typography', () => {
   });
 });
 
+// Caretaker note: this is moved to a separate `describe` block because the first `describe` block
+// mocks the `NgZone` with `MockNgZone`.
+describe('change detection behavior', () => {
+  let componentElement: HTMLElement;
+  let fixture: ComponentFixture<NzTestTypographyEditComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
+      declarations: [NzTestTypographyEditComponent]
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestTypographyEditComponent);
+    componentElement = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should not run change detection on `input` event', () => {
+    componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!.click();
+    fixture.detectChanges();
+
+    const appRef = TestBed.inject(ApplicationRef);
+    spyOn(appRef, 'tick');
+
+    const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
+    const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
+
+    textarea.value = 'some-value';
+    dispatchFakeEvent(textarea, 'input');
+
+    expect(appRef.tick).not.toHaveBeenCalled();
+    expect(nzTextEdit.componentInstance.currentText).toEqual('some-value');
+  });
+
+  it('should not run change detection on non-handled keydown events', done => {
+    componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!.click();
+    fixture.detectChanges();
+
+    const ngZone = TestBed.inject(NgZone);
+    const appRef = TestBed.inject(ApplicationRef);
+    const spy = spyOn(appRef, 'tick');
+
+    const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
+    const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
+
+    dispatchKeyboardEvent(textarea, 'keydown', TAB);
+    dispatchKeyboardEvent(textarea, 'keydown', CAPS_LOCK);
+
+    expect(spy).not.toHaveBeenCalled();
+
+    dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
+
+    ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+});
+
 @Component({
   template: `
     <h1 nz-typography>h1. Ant Design</h1>
@@ -508,7 +592,14 @@ export class NzTestTypographyCopyComponent {
 
 @Component({
   template: `
-    <p nz-paragraph nzEditable [nzEditIcon]="icon" [nzEditTooltip]="tooltip" (nzContentChange)="onChange($event)" [nzContent]="str"></p>
+    <p
+      nz-paragraph
+      nzEditable
+      [nzEditIcon]="icon"
+      [nzEditTooltip]="tooltip"
+      (nzContentChange)="onChange($event)"
+      [nzContent]="str"
+    ></p>
   `
 })
 export class NzTestTypographyEditComponent {
@@ -525,17 +616,26 @@ export class NzTestTypographyEditComponent {
 @Component({
   template: `
     <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">
-      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
-      Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team.
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
     </p>
     <br />
-    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" [nzEllipsisRows]="3" (nzExpandChange)="onExpand()" class="multiple">
-      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant
-      Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
-      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team.
+    <p
+      nz-paragraph
+      nzEllipsis
+      [nzExpandable]="expandable"
+      [nzEllipsisRows]="3"
+      (nzExpandChange)="onExpand()"
+      class="multiple"
+    >
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
     </p>
     <p
       nz-paragraph
@@ -563,5 +663,7 @@ export class NzTestTypographyEllipsisComponent {
   suffix: string | null = null;
   onEllipsis = jasmine.createSpy('ellipsis callback');
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
-  str = new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('');
+  str = new Array(5)
+    .fill('Ant Design, a design language for background applications, is refined by Ant UED Team.')
+    .join('');
 }

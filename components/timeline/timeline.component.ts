@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -18,12 +20,15 @@ import {
   SimpleChange,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
 import { NzTimelineMode, NzTimelinePosition } from './typings';
@@ -38,7 +43,8 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
   template: `
     <ul
       class="ant-timeline"
-      [class.ant-timeline-right]="nzMode === 'right'"
+      [class.ant-timeline-label]="hasLabelItem"
+      [class.ant-timeline-right]="!hasLabelItem && nzMode === 'right'"
       [class.ant-timeline-alternate]="nzMode === 'alternate' || nzMode === 'custom'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
@@ -59,7 +65,7 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
         <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
           <ng-container *nzStringTemplateOutlet="nzPendingDot">
             {{ nzPendingDot }}
-            <i *ngIf="!nzPendingDot" nz-icon nzType="loading"></i>
+            <span *ngIf="!nzPendingDot" nz-icon nzType="loading"></span>
           </ng-container>
         </div>
         <div class="ant-timeline-item-content">
@@ -71,7 +77,9 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
     </ng-template>
     <!-- Grasp items -->
     <ng-content></ng-content>
-  `
+  `,
+  imports: [NgIf, NgTemplateOutlet, NgForOf, NzOutletModule, NzIconModule],
+  standalone: true
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
@@ -79,11 +87,12 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   @Input() nzMode: NzTimelineMode = 'left';
   @Input() nzPending?: string | boolean | TemplateRef<void>;
   @Input() nzPendingDot?: string | TemplateRef<void>;
-  @Input() nzReverse: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
   dir: Direction = 'ltr';
+  hasLabelItem = false;
 
   private destroy$ = new Subject<void>();
 
@@ -134,14 +143,26 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   private updateChildren(): void {
     if (this.listOfItems && this.listOfItems.length) {
       const length = this.listOfItems.length;
+      let hasLabelItem = false;
 
-      this.listOfItems.forEach((item, index) => {
+      this.listOfItems.forEach((item: NzTimelineItemComponent, index: number) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position = getInferredTimelineItemPosition(index, this.nzMode);
+
+        if (!hasLabelItem && item.nzLabel) {
+          hasLabelItem = true;
+        }
+
         item.detectChanges();
       });
+
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
+      this.hasLabelItem = hasLabelItem;
+    } else {
+      this.timelineItems = [];
+      this.hasLabelItem = false;
     }
+
     this.cdr.markForCheck();
   }
 }
@@ -154,10 +175,10 @@ function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): N
   return mode === 'custom'
     ? undefined
     : mode === 'left'
-    ? 'left'
-    : mode === 'right'
-    ? 'right'
-    : mode === 'alternate' && index % 2 === 0
-    ? 'left'
-    : 'right';
+      ? 'left'
+      : mode === 'right'
+        ? 'right'
+        : mode === 'alternate' && index % 2 === 0
+          ? 'left'
+          : 'right';
 }

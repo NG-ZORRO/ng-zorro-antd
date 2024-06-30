@@ -1,10 +1,12 @@
 @import '../../style/mixins/index';
 
 @tree-prefix-cls: ~'@{ant-prefix}-tree';
-@tree-node-prefix-cls: ~'@{tree-prefix-cls}-treenode';
 @select-tree-prefix-cls: ~'@{ant-prefix}-select-tree';
 @tree-motion: ~'@{ant-prefix}-motion-collapse';
-@tree-node-padding: @padding-xs / 2;
+@tree-node-padding: (@padding-xs / 2);
+// @deprecated: kept for customization usages, recommend using @tree-node-highlight-color instead.
+@tree-node-hightlight-color: inherit;
+@tree-node-highlight-color: @tree-node-hightlight-color;
 
 .antTreeSwitcherIcon(@type: 'tree-default-open-icon') {
   .@{tree-prefix-cls}-switcher-icon,
@@ -12,6 +14,7 @@
     display: inline-block;
     font-size: 10px;
     vertical-align: baseline;
+
     svg {
       transition: transform 0.3s;
     }
@@ -27,6 +30,7 @@
     background-color: @primary-color;
     border-radius: 1px;
     pointer-events: none;
+
     &::after {
       position: absolute;
       top: -3px;
@@ -43,7 +47,7 @@
 
 .antTreeFn(@custom-tree-prefix-cls) {
   @custom-tree-node-prefix-cls: ~'@{custom-tree-prefix-cls}-treenode';
-  .reset-component;
+  .reset-component();
   background: @tree-bg;
   border-radius: @border-radius-base;
   transition: background-color 0.3s;
@@ -64,6 +68,26 @@
       // >>> Title
       .@{custom-tree-prefix-cls}-node-content-wrapper {
         flex: auto;
+      }
+
+      // >>> Drag
+      .@{custom-tree-node-prefix-cls}.dragging {
+        position: relative;
+
+        &::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: @tree-node-padding;
+          left: 0;
+          border: 1px solid @primary-color;
+          opacity: 0;
+          animation: ant-tree-node-fx-do-not-use 0.3s;
+          animation-play-state: running;
+          animation-fill-mode: forwards;
+          content: '';
+          pointer-events: none;
+        }
       }
     }
   }
@@ -90,6 +114,32 @@
     &-active .@{custom-tree-prefix-cls}-node-content-wrapper {
       background: @tree-node-hover-bg;
     }
+
+    &:not(&-disabled).filter-node .@{custom-tree-prefix-cls}-title {
+      color: @tree-node-highlight-color;
+      font-weight: 500;
+    }
+
+    &-draggable {
+      .@{custom-tree-prefix-cls}-draggable-icon {
+        width: @tree-title-height;
+        line-height: @tree-title-height;
+        text-align: center;
+        visibility: visible;
+        opacity: 0.2;
+        transition: opacity @animation-duration-slow;
+
+        .@{custom-tree-node-prefix-cls}:hover & {
+          opacity: 0.45;
+        }
+      }
+
+      &.@{custom-tree-node-prefix-cls}-disabled {
+        .@{custom-tree-prefix-cls}-draggable-icon {
+          visibility: hidden;
+        }
+      }
+    }
   }
 
   // >>> Indent
@@ -102,6 +152,11 @@
       display: inline-block;
       width: @tree-title-height;
     }
+  }
+
+  // >>> Drag Handler
+  &-draggable-icon {
+    visibility: hidden;
   }
 
   // >>> Switcher
@@ -139,19 +194,21 @@
       display: inline-block;
       width: 100%;
       height: 100%;
+      // https://github.com/ant-design/ant-design/issues/31884
       &::before {
         position: absolute;
         top: 0;
+        right: 12px;
         bottom: -@tree-node-padding;
         margin-left: -1px;
-        border-left: 1px solid @normal-color;
+        border-right: 1px solid @normal-color;
         content: ' ';
       }
+
       &::after {
         position: absolute;
         width: @tree-title-height - 14px;
         height: @tree-title-height - 10px;
-        margin-left: -1px;
         border-bottom: 1px solid @normal-color;
         content: ' ';
       }
@@ -194,6 +251,7 @@
       line-height: @tree-title-height;
       text-align: center;
       vertical-align: top;
+
       &:empty {
         display: none;
       }
@@ -206,7 +264,7 @@
   }
 
   // ==================== Draggable =====================
-  &-node-content-wrapper[draggable='true'] {
+  &-node-content-wrapper {
     line-height: @tree-title-height;
     user-select: none;
 
@@ -230,7 +288,7 @@
         &::before {
           position: absolute;
           top: 0;
-          right: @tree-title-height / 2;
+          right: (@tree-title-height / 2);
           bottom: -@tree-node-padding;
           border-right: 1px solid @border-color-base;
           content: '';
@@ -249,20 +307,31 @@
       background: @component-background;
 
       &-line-icon {
-        vertical-align: -0.225em;
+        // https://github.com/ant-design/ant-design/issues/32813
+        vertical-align: -0.15em;
+      }
+    }
+  }
+
+  .@{custom-tree-node-prefix-cls}-leaf-last {
+    .@{custom-tree-prefix-cls}-switcher {
+      &-leaf-line {
+        &::before {
+          top: auto !important;
+          bottom: auto !important;
+          height: @tree-title-height - 10px !important;
+        }
       }
     }
   }
 }
 
-.@{tree-node-prefix-cls}-leaf-last {
-  .@{tree-prefix-cls}-switcher {
-    &-leaf-line {
-      &::before {
-        top: auto !important;
-        bottom: auto !important;
-        height: @tree-title-height - 10px !important;
-      }
-    }
+@keyframes ant-tree-node-fx-do-not-use {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

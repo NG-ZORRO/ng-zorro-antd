@@ -4,7 +4,12 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-time-picker-use12-hours',
   template: `
     <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)"></nz-time-picker>
-    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)" nzFormat="h:mm a"></nz-time-picker>
+    <nz-time-picker
+      [(ngModel)]="time"
+      [nzUse12Hours]="true"
+      (ngModelChange)="log($event)"
+      nzFormat="h:mm a"
+    ></nz-time-picker>
   `,
   styles: [
     `

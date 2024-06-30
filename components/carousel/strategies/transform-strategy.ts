@@ -3,15 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { QueryList } from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
+import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { NzCarouselContentDirective } from '../carousel-content.directive';
-import { PointerVector } from '../typings';
-
+import { NzCarouselComponentAsSource, PointerVector } from '../typings';
 import { NzCarouselBaseStrategy } from './base-strategy';
 
-export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
+interface NzCarouselTransformStrategyOptions {
+  direction: 'left' | 'right';
+}
+
+export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy<NzCarouselTransformStrategyOptions> {
   private isDragging = false;
   private isTransitioning = false;
 
@@ -19,12 +23,22 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     return this.carouselComponent!.vertical;
   }
 
-  dispose(): void {
+  constructor(
+    carouselComponent: NzCarouselComponentAsSource,
+    cdr: ChangeDetectorRef,
+    renderer: Renderer2,
+    platform: Platform,
+    options?: NzCarouselTransformStrategyOptions
+  ) {
+    super(carouselComponent, cdr, renderer, platform, options);
+  }
+
+  override dispose(): void {
     super.dispose();
     this.renderer.setStyle(this.slickTrackEl, 'transform', null);
   }
 
-  withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
+  override withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
     super.withCarouselContents(contents);
 
     const carousel = this.carouselComponent!;
@@ -37,7 +51,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
       if (this.vertical) {
         this.renderer.setStyle(this.slickTrackEl, 'width', `${this.unitWidth}px`);
         this.renderer.setStyle(this.slickTrackEl, 'height', `${this.length * this.unitHeight}px`);
-        this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`);
+        this.renderer.setStyle(
+          this.slickTrackEl,
+          'transform',
+          `translate3d(0, ${-activeIndex * this.unitHeight}px, 0)`
+        );
       } else {
         this.renderer.setStyle(this.slickTrackEl, 'height', `${this.unitHeight}px`);
         this.renderer.setStyle(this.slickTrackEl, 'width', `${this.length * this.unitWidth}px`);
@@ -56,7 +74,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     const { to: t } = this.getFromToInBoundary(_f, _t);
     const complete$ = new Subject<void>();
 
-    this.renderer.setStyle(this.slickTrackEl, 'transition', `transform ${this.carouselComponent!.nzTransitionSpeed}ms ease`);
+    this.renderer.setStyle(
+      this.slickTrackEl,
+      'transition',
+      `transform ${this.carouselComponent!.nzTransitionSpeed}ms ease`
+    );
 
     if (this.vertical) {
       this.verticalTransform(_f, _t);
@@ -67,6 +89,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     this.isTransitioning = true;
     this.isDragging = false;
 
+    // TODO@hullis: use transitionEnd event instead of setTimeout
     setTimeout(() => {
       this.renderer.setStyle(this.slickTrackEl, 'transition', null);
       this.contents.forEach((content: NzCarouselContentDirective) => {
@@ -88,7 +111,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     return complete$.asObservable();
   }
 
-  dragging(_vector: PointerVector): void {
+  override dragging(_vector: PointerVector): void {
     if (this.isTransitioning) {
       return;
     }
@@ -103,7 +126,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
           this.prepareVerticalContext(false);
         }
       }
-      this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-activeIndex * this.unitHeight + _vector.x}px, 0)`);
+      this.renderer.setStyle(
+        this.slickTrackEl,
+        'transform',
+        `translate3d(0, ${-activeIndex * this.unitHeight + _vector.x}px, 0)`
+      );
     } else {
       if (!this.isDragging && this.length > 2) {
         if (activeIndex === this.maxIndex) {
@@ -112,7 +139,11 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
           this.prepareHorizontalContext(false);
         }
       }
-      this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(${-activeIndex * this.unitWidth + _vector.x}px, 0, 0)`);
+      this.renderer.setStyle(
+        this.slickTrackEl,
+        'transform',
+        `translate3d(${-activeIndex * this.unitWidth + _vector.x}px, 0, 0)`
+      );
     }
 
     this.isDragging = true;

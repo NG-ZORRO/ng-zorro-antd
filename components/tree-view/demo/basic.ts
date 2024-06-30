@@ -51,7 +51,7 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <i nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></i>
+          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
         </nz-tree-node-toggle>
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
@@ -65,14 +65,12 @@ interface FlatNode {
   `
 })
 export class NzDemoTreeViewBasicComponent {
-  private transformer = (node: TreeNode, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-      disabled: !!node.disabled
-    };
-  };
+  private transformer = (node: TreeNode, level: number): FlatNode => ({
+    expandable: !!node.children && node.children.length > 0,
+    name: node.name,
+    level,
+    disabled: !!node.disabled
+  });
   selectListSelection = new SelectionModel<FlatNode>(true);
 
   treeControl = new FlatTreeControl<FlatNode>(
@@ -94,5 +92,5 @@ export class NzDemoTreeViewBasicComponent {
     this.treeControl.expandAll();
   }
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

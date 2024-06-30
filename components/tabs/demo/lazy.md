@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 13
 title:
   zh-CN: 懒加载
   en-US: LazyLoad

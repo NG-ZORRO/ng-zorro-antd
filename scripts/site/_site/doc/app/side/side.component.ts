@@ -3,11 +3,10 @@ import { RouterList } from '../router';
 
 @Component({
   selector: 'app-side',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" [nzInlineIndent]="40" [class.ant-menu-rtl]="direction === 'rtl'">
       <ng-container *ngIf="page === 'docs'">
-        <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter [hidden]="intro.language !== language">
+        <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter [hidden]="intro.language !== language || intro.hidden">
           <a routerLink="{{ intro.path }}">{{ intro.label }}</a>
         </li>
       </ng-container>
@@ -24,9 +23,12 @@ import { RouterList } from '../router';
           <ul>
             <ng-container>
               <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
-                <a routerLink="{{ component.path }}">
-                  <span>{{ component.label }}</span>
-                  <span class="chinese">{{ component.zh }}</span>
+                <a class="menu-title-content-link" [routerLink]="component.path">
+                  <span>
+                    {{ component.label }}
+                    <span class="chinese">{{ component.zh }}</span>
+                  </span>
+                  <span class="ant-tag ant-tag-success ant-tag-borderless" *ngIf="!!component.tag">{{ component.tag }}</span>
                 </a>
               </li>
             </ng-container>
@@ -44,9 +46,12 @@ import { RouterList } from '../router';
           <ul>
             <ng-container>
               <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
-                <a routerLink="{{ component.path }}">
-                  <span>{{ component.label }}</span>
-                  <span class="chinese">{{ component.zh }}</span>
+                <a class="menu-title-content-link" [routerLink]="component.path">
+                  <span>
+                    {{ component.label }}
+                    <span class="chinese">{{ component.zh }}</span>
+                  </span>
+                  <span class="ant-tag ant-tag-warning ant-tag-borderless" *ngIf="!!component.tag">{{ component.tag }}</span>
                 </a>
               </li>
             </ng-container>
@@ -54,7 +59,9 @@ import { RouterList } from '../router';
         </li>
       </ng-container>
     </ul>
-  `
+  `,
+  styleUrl: './side.component.less',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideComponent {
   @Input() direction: 'ltr' | 'rtl' = 'ltr';

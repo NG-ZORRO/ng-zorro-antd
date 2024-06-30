@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-demo-select-scroll-load',
@@ -32,15 +32,14 @@ export class NzDemoSelectScrollLoadComponent implements OnInit {
   optionList: string[] = [];
   selectedUser = null;
   isLoading = false;
-  // tslint:disable:no-any
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   getRandomNameList: Observable<string[]> = this.http
     .get(`${this.randomUserUrl}`)
-    .pipe(map((res: any) => res.results))
     .pipe(
-      map((list: any) => {
-        return list.map((item: any) => `${item.name.first}`);
-      })
-    );
+      catchError(() => of({ results: [] })),
+      map((res: any) => res.results)
+    )
+    .pipe(map((list: any) => list.map((item: any) => `${item.name.first}`)));
 
   loadMore(): void {
     this.isLoading = true;

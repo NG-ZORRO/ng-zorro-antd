@@ -7,7 +7,8 @@ import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[nzModalContent]',
-  exportAs: 'nzModalContent'
+  exportAs: 'nzModalContent',
+  standalone: true
 })
 export class NzModalContentDirective {
   constructor(public templateRef: TemplateRef<{}>) {}

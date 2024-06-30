@@ -7,10 +7,10 @@ We add a **global configuration** support to many components. You can define the
 
 ## How to Use?
 
-In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
+In order to provide default configurations in certain components, please use `provideNzConfig` function. object providing implements interface `NzConfig`For example:
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
@@ -23,7 +23,7 @@ const ngZorroConfig: NzConfig = {
     CommonModule
   ],
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    provideNzConfig(ngZorroConfig)
   ],
   bootstrap: [AppComponent]
 })
@@ -62,7 +62,7 @@ To solve this, it is recommended to use a `FactoryProvider` instead of a `ValueP
   template: `
     <ng-template #nzIndicatorTpl>
       <span class="ant-spin-dot">
-        <i nz-icon [nzType]="'loading'"></i>
+        <span nz-icon [nzType]="'loading'"></span>
       </span>
     </ng-template>
   `
@@ -73,12 +73,9 @@ export class GlobalTemplatesComponent {
 }
 
 // The Factory function
-const nzConfigFactory = (
-  injector: Injector,
-  resolver: ComponentFactoryResolver
-): NzConfig => {
-  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
-  const { nzIndicator } = factory.create(injector).instance;
+const nzConfigFactory = (): NzConfig => {
+  const environmentInjector = inject(EnvironmentInjector);
+  const { nzIndicator } = createComponent(component, { environmentInjector }).instance;
   return {
     spin: {
       nzIndicator
@@ -95,12 +92,64 @@ const nzConfigFactory = (
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
-      useFactory: nzConfigFactory,
-      deps: [Injector, ComponentFactoryResolver]
+      useFactory: nzConfigFactory
     }
   ]
 })
 export class AppModule {}
+```
+
+
+## Overwrite inside Component
+
+Developers can use Dependency Injection to reset `NZ_CONFIG` within a particular component, which will not affect configurations outside it.
+
+```typescript
+@Component({
+  providers: [
+    // reset local NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useValue: {
+        button: {
+          nzSize: 'large'
+        }
+      }
+    }
+  ]
+})
+```
+
+You can also use `useFactory` to combine the global configuration with the local configuration to take effect
+
+> Note: Change global configuration after component initialization won't affect local configuration
+
+```typescript
+@Component({
+  providers: [
+    // reset local NzConfigService
+    NzConfigService,
+    {
+      provide: NZ_CONFIG,
+      useFactory: () => {
+        // get global NzConfigService
+        const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
+        const localConfig = {
+          select: {
+            nzBorderless: true
+          }
+        };
+        // merge local and global config
+        const mergedConfig = {
+          ...globalConfig,
+          ...localConfig
+        };
+        return mergedConfig;
+      },
+    }
+  ]
+})
 ```
 
 ## Dynamically Change Configurations
@@ -117,13 +166,13 @@ export class ChangeZorroConfigComponent {
   constructor(private nzConfigService: NzConfigService) {}
 
   onChangeConfig() {
-    // Grandpa: Oh, I like that!
     this.nzConfigService.set('button', { nzSize: 'large' })
   }
 }
 ```
 
 All component instances is responsive to this configuration change (as long as they are not configured independently).
+
 
 ## Priority of Global Configurations
 

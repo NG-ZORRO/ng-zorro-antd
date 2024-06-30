@@ -4,10 +4,10 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -19,10 +19,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Component({
@@ -46,6 +48,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     </div>
   `,
   host: {
+    class: 'ant-menu-submenu ant-menu-submenu-popup',
     '[class.ant-menu-light]': "theme === 'light'",
     '[class.ant-menu-dark]': "theme === 'dark'",
     '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
@@ -56,7 +59,9 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '[@zoomBigMotion]': 'expandState',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
-  }
+  },
+  imports: [NgClass, NgTemplateOutlet],
+  standalone: true
 })
 export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';
@@ -69,10 +74,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef, @Optional() private directionality: Directionality) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-menu-submenu', 'ant-menu-submenu-popup');
-  }
+  constructor(@Optional() private directionality: Directionality) {}
 
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {

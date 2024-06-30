@@ -20,7 +20,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 ## API
 
-### nz-breadcrumb
+### nz-breadcrumb:standalone
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -47,7 +47,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 ```ts
 {
   path: 'first',
-  loadChildren: './first/first.module#FirstModule',
+  loadChildren: () => import('./first/first.module').then(m => m.FirstModule),
   data: {
     breadcrumb: 'First'
   },

@@ -15,7 +15,8 @@ export default {
     prev_5: '5 Pagini Anterioare',
     next_5: '5 Pagini Următoare',
     prev_3: '3 Pagini Anterioare',
-    next_3: '3 Pagini Următoare'
+    next_3: '3 Pagini Următoare',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -103,7 +104,14 @@ export default {
     selectInvert: 'Inversează pagina curentă',
     sortTitle: 'Ordonează',
     expand: 'Extinde rândul',
-    collapse: 'Micșorează rândul'
+    collapse: 'Micșorează rândul',
+    filterEmptyText: 'Fără filtre',
+    emptyText: 'Nu există date',
+    selectNone: 'Șterge selecția',
+    selectionAll: 'Selectează toate datele',
+    triggerDesc: 'Apasă pentru ordonare descrescătoare',
+    triggerAsc: 'Apasă pentru ordonare crescătoare',
+    cancelSort: 'Apasă pentru a anula ordonarea'
   },
   Modal: {
     okText: 'OK',
@@ -118,7 +126,13 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Căutare',
     itemUnit: 'element',
-    itemsUnit: 'elemente'
+    itemsUnit: 'elemente',
+    remove: 'Șterge',
+    selectCurrent: 'Selectează pagina curentă',
+    removeCurrent: 'Șterge pagina curentă',
+    selectAll: 'Selectează toate datele',
+    removeAll: 'Șterge toate datele',
+    selectInvert: 'Inversează pagina curentă'
   },
   Upload: {
     uploading: 'Se transferă...',
@@ -141,5 +155,8 @@ export default {
   },
   PageHeader: {
     back: 'înapoi'
+  },
+  Image: {
+    preview: 'Preview'
   }
 };

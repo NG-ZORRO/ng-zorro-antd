@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
@@ -21,7 +22,8 @@ import {
 } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
-import { Directionality } from '@angular/cdk/bidi';
+import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
+
 import { NzStatisticComponent } from './statistic.component';
 
 const REFRESH_INTERVAL = 1000 / 30;
@@ -42,7 +44,9 @@ const REFRESH_INTERVAL = 1000 / 30;
     ></nz-statistic>
 
     <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
-  `
+  `,
+  imports: [NzStatisticComponent, NzPipesModule],
+  standalone: true
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFormat: string = 'HH:mm:ss';
@@ -53,7 +57,12 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number = 0;
   private updater_?: Subscription | null;
 
-  constructor(cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform, @Optional() directionality: Directionality) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private platform: Platform,
+    @Optional() directionality: Directionality
+  ) {
     super(cdr, directionality);
   }
 
@@ -66,12 +75,12 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     }
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
     this.syncTimer();
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.stopTimer();
   }
 
@@ -110,7 +119,10 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
 
     if (this.diff === 0) {
       this.stopTimer();
-      this.nzCountdownFinish.emit();
+
+      if (this.nzCountdownFinish.observers.length) {
+        this.ngZone.run(() => this.nzCountdownFinish.emit());
+      }
     }
   }
 }

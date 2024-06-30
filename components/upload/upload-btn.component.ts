@@ -5,11 +5,22 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnDestroy, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnInit,
+  OnDestroy,
+  Optional,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 
 import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
@@ -18,36 +29,29 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
   exportAs: 'nzUploadBtn',
   templateUrl: './upload-btn.component.html',
   host: {
+    class: 'ant-upload',
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
     '[class.ant-upload-disabled]': 'options.disabled',
-    '(click)': 'onClick()',
-    '(keydown)': 'onKeyDown($event)',
     '(drop)': 'onFileDrop($event)',
     '(dragover)': 'onFileDrop($event)'
   },
   preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true
 })
-export class NzUploadBtnComponent implements OnDestroy {
+export class NzUploadBtnComponent implements OnInit, OnDestroy {
   reqs: { [key: string]: Subscription } = {};
   private destroy = false;
-  @ViewChild('file', { static: false }) file!: ElementRef;
+  private destroy$ = new Subject<void>();
+  @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
   @Input() options!: ZipButtonOptions;
+
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
     }
-    (this.file.nativeElement as HTMLInputElement).click();
-  }
-
-  onKeyDown(e: KeyboardEvent): void {
-    if (this.options.disabled) {
-      return;
-    }
-    if (e.key === 'Enter' || e.keyCode === ENTER) {
-      this.onClick();
-    }
+    this.file.nativeElement.click();
   }
 
   // skip safari bug
@@ -80,7 +84,7 @@ export class NzUploadBtnComponent implements OnDestroy {
   }
 
   private traverseFileTree(files: DataTransferItemList): void {
-    const _traverseFileTree = (item: NzSafeAny, path: string) => {
+    const _traverseFileTree = (item: NzSafeAny, path: string): void => {
       if (item.isFile) {
         item.file((file: File) => {
           if (this.attrAccept(file, this.options.accept)) {
@@ -106,15 +110,17 @@ export class NzUploadBtnComponent implements OnDestroy {
   private attrAccept(file: File, acceptedFiles?: string | string[]): boolean {
     if (file && acceptedFiles) {
       const acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
-      const fileName = '' + file.name;
-      const mimeType = '' + file.type;
+      const fileName = `${file.name}`;
+      const mimeType = `${file.type}`;
       const baseMimeType = mimeType.replace(/\/.*$/, '');
 
       return acceptedFilesArray.some(type => {
         const validType = type.trim();
         if (validType.charAt(0) === '.') {
           return (
-            fileName.toLowerCase().indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
+            fileName
+              .toLowerCase()
+              .indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
           );
         } else if (/\/\*$/.test(validType)) {
           // This is something like a image/* mime type
@@ -188,6 +194,7 @@ export class NzUploadBtnComponent implements OnDestroy {
       return;
     }
     let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
+    let transformedFile: string | Blob | File | NzUploadFile | undefined;
     const opt = this.options;
     const { uid } = file;
     const { action, data, headers, transformFile } = opt;
@@ -232,7 +239,10 @@ export class NzUploadBtnComponent implements OnDestroy {
 
     if (typeof transformFile === 'function') {
       const transformResult = transformFile(file);
-      process$ = process$.pipe(switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))));
+      process$ = process$.pipe(
+        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))),
+        tap(newFile => (transformedFile = newFile))
+      );
     }
 
     if (typeof data === 'function') {
@@ -242,7 +252,7 @@ export class NzUploadBtnComponent implements OnDestroy {
           switchMap(() => dataResult),
           map(res => {
             args.data = res;
-            return file;
+            return transformedFile ?? file;
           })
         );
       } else {
@@ -257,7 +267,7 @@ export class NzUploadBtnComponent implements OnDestroy {
           switchMap(() => headersResult),
           map(res => {
             args.headers = res;
-            return file;
+            return transformedFile ?? file;
           })
         );
       } else {
@@ -334,17 +344,42 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
   }
 
-  constructor(@Optional() private http: HttpClient, private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-upload');
-
+  constructor(
+    private ngZone: NgZone,
+    @Optional() private http: HttpClient,
+    private elementRef: ElementRef
+  ) {
     if (!http) {
-      throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
+      throw new Error(
+        `Not found 'HttpClient', You can configure 'HttpClient' with 'provideHttpClient()' in your root module.`
+      );
     }
+  }
+
+  ngOnInit(): void {
+    // Caretaker note: `input[type=file].click()` will open a native OS file picker,
+    // it doesn't require Angular to run `ApplicationRef.tick()`.
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(this.elementRef.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.onClick());
+
+      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if (this.options.disabled) {
+            return;
+          }
+          if (event.key === 'Enter' || event.keyCode === ENTER) {
+            this.onClick();
+          }
+        });
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy = true;
+    this.destroy$.next();
     this.abort();
   }
 }

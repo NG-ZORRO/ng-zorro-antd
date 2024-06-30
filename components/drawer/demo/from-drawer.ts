@@ -75,7 +75,11 @@ import { Component } from '@angular/core';
             <nz-form-item>
               <nz-form-label>Description</nz-form-label>
               <nz-form-control>
-                <textarea nz-input placeholder="please enter url description" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                <textarea
+                  nz-input
+                  placeholder="please enter url description"
+                  [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+                ></textarea>
               </nz-form-control>
             </nz-form-item>
           </div>

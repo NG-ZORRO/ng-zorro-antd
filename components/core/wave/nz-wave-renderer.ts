@@ -5,6 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { NgZone } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export class NzWaveRenderer {
@@ -22,14 +23,15 @@ export class NzWaveRenderer {
     private triggerElement: HTMLElement,
     private ngZone: NgZone,
     private insertExtraNode: boolean,
-    private platformId: NzSafeAny
+    private platformId: NzSafeAny,
+    private cspNonce?: string | null
   ) {
     this.platform = new Platform(this.platformId);
     this.clickHandler = this.onClick.bind(this);
     this.bindTriggerEvent();
   }
 
-  onClick = (event: MouseEvent) => {
+  onClick = (event: MouseEvent): void => {
     if (
       !this.triggerElement ||
       !this.triggerElement.getAttribute ||
@@ -85,6 +87,9 @@ export class NzWaveRenderer {
     if (this.isValidColor(waveColor)) {
       if (!this.styleForPseudo) {
         this.styleForPseudo = document.createElement('style');
+        if (this.cspNonce) {
+          this.styleForPseudo.nonce = this.cspNonce;
+        }
       }
 
       this.styleForPseudo.innerHTML = `

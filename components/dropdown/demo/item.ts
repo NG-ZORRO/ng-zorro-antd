@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <a nz-dropdown [nzDropdownMenu]="menu">
       Hover me
-      <i nz-icon nzType="down"></i>
+      <span nz-icon nzType="down"></span>
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>

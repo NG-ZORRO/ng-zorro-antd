@@ -4,6 +4,7 @@
  */
 
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
+
 import { AnimationCurves, AnimationDuration } from './animation-consts';
 
 const ANIMATION_TRANSITION_IN = `${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_QUINT}`;

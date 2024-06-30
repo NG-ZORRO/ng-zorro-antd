@@ -1,7 +1,14 @@
-import { Rule } from '@angular-devkit/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
-import { updateWorkspace } from '@schematics/angular/utility/workspace';
+
+import { Rule } from '@angular-devkit/schematics';
+import { updateWorkspace } from '@schematics/angular/utility';
 import { cyan, yellow } from 'chalk';
+
 import { Schema } from '../schema';
 
 const iconPathSegment = '@ant-design/icons-angular';

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const provinces = [
@@ -51,7 +52,9 @@ const scenicspots: { [key: string]: Array<{ value: string; label: string; isLeaf
 
 @Component({
   selector: 'nz-demo-cascader-default-value-and-lazyload',
-  template: ` <nz-cascader [(ngModel)]="values" [nzLoadData]="loadData" (ngModelChange)="onChanges($event)"> </nz-cascader> `
+  template: `
+    <nz-cascader [(ngModel)]="values" [nzLoadData]="loadData" (ngModelChange)="onChanges($event)"></nz-cascader>
+  `
 })
 export class NzDemoCascaderDefaultValueAndLazyloadComponent {
   values: string[] = ['zhejiang', 'hangzhou', 'xihu'];

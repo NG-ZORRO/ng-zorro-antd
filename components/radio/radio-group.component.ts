@@ -8,21 +8,22 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+
 import { NzRadioService } from './radio.service';
 
 export type NzRadioButtonStyle = 'outline' | 'solid';
@@ -31,9 +32,7 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -45,20 +44,21 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     }
   ],
   host: {
+    class: 'ant-radio-group',
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
     '[class.ant-radio-group-rtl]': `dir === 'rtl'`
-  }
+  },
+  standalone: true
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   private value: NzSafeAny | null = null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
+  private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
@@ -68,21 +68,17 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   constructor(
     private cdr: ChangeDetectorRef,
     private nzRadioService: NzRadioService,
-    private elementRef: ElementRef,
     @Optional() private directionality: Directionality
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-radio-group');
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.nzRadioService.selected$.subscribe(value => {
+    this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (this.value !== value) {
         this.value = value;
         this.onChange(this.value);
       }
     });
-    this.nzRadioService.touched$.subscribe(() => {
+    this.nzRadioService.touched$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
 
@@ -105,7 +101,7 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
@@ -124,8 +120,9 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
-    this.nzRadioService.setDisabled(isDisabled);
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    this.nzRadioService.setDisabled(this.nzDisabled);
     this.cdr.markForCheck();
   }
 }

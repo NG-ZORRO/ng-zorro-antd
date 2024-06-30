@@ -4,6 +4,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
@@ -27,7 +28,7 @@ export type NzProgressColorGradient = { direction?: string } & (NzProgressGradie
 
 export type NzProgressStrokeColorType = string | NzProgressColorGradient;
 
-export type NzProgressFormatter = ((percent: number) => string) | TemplateRef<{ $implicit: number }>;
+export type NzProgressFormatter = ((percent: number) => string | null) | TemplateRef<{ $implicit: number }>;
 
 export interface NzProgressCirclePath {
   stroke: string | null;

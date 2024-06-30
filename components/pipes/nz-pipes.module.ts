@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzAggregatePipe } from './nz-aggregate.pipe';
@@ -14,11 +13,18 @@ import { NzSafeNullPipe } from './nz-safe-null.pipe';
 import { NzSanitizerPipe } from './nz-sanitizer.pipe';
 import { NzTrimPipe } from './nz-trim.pipe';
 
-const pipes = [NzToCssUnitPipe, NzSafeNullPipe, NzSanitizerPipe, NzTrimPipe, NzBytesPipe, NzAggregatePipe, NzEllipsisPipe];
+const pipes = [
+  NzToCssUnitPipe,
+  NzSafeNullPipe,
+  NzSanitizerPipe,
+  NzTrimPipe,
+  NzBytesPipe,
+  NzAggregatePipe,
+  NzEllipsisPipe
+];
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [pipes],
-  declarations: [pipes]
+  imports: [pipes],
+  exports: [pipes]
 })
 export class NzPipesModule {}

@@ -6,13 +6,13 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,29 +21,35 @@ import {
   Output,
   QueryList,
   SimpleChanges,
-  ViewChild,
+  TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
+import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import {
+  MouseTouchObserverConfig,
   arraysEqual,
   ensureNumberInRange,
   getElementOffset,
   getPercent,
   getPrecision,
-  InputBoolean,
-  InputNumber,
-  MouseTouchObserverConfig,
+  isNil,
+  numberAttributeWithZeroFallback,
   silentEvent
 } from 'ng-zorro-antd/core/util';
-import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
 import { NzSliderHandleComponent } from './handle.component';
+import { NzSliderMarksComponent } from './marks.component';
 import { NzSliderService } from './slider.service';
-
+import { NzSliderStepComponent } from './step.component';
+import { NzSliderTrackComponent } from './track.component';
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
 
 @Component({
@@ -60,92 +66,87 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     },
     NzSliderService
   ],
-  host: {
-    '(keydown)': 'onKeyDown($event)'
-  },
   template: `
-    <div
-      #slider
-      class="ant-slider"
-      [class.ant-slider-rtl]="dir === 'rtl'"
-      [class.ant-slider-disabled]="nzDisabled"
-      [class.ant-slider-vertical]="nzVertical"
-      [class.ant-slider-with-marks]="marksArray"
-    >
-      <div class="ant-slider-rail"></div>
-      <nz-slider-track
-        [vertical]="nzVertical"
-        [included]="nzIncluded"
-        [offset]="track.offset!"
-        [length]="track.length!"
-        [reverse]="nzReverse"
-        [dir]="dir"
-      ></nz-slider-track>
-      <nz-slider-step
-        *ngIf="marksArray"
-        [vertical]="nzVertical"
-        [min]="nzMin"
-        [max]="nzMax"
-        [lowerBound]="$any(bounds.lower)"
-        [upperBound]="$any(bounds.upper)"
-        [marksArray]="marksArray"
-        [included]="nzIncluded"
-        [reverse]="nzReverse"
-      ></nz-slider-step>
-      <nz-slider-handle
-        *ngFor="let handle of handles"
-        [vertical]="nzVertical"
-        [reverse]="nzReverse"
-        [offset]="handle.offset!"
-        [value]="handle.value!"
-        [active]="handle.active"
-        [tooltipFormatter]="nzTipFormatter"
-        [tooltipVisible]="nzTooltipVisible"
-        [tooltipPlacement]="nzTooltipPlacement"
-        [dir]="dir"
-      ></nz-slider-handle>
-      <nz-slider-marks
-        *ngIf="marksArray"
-        [vertical]="nzVertical"
-        [min]="nzMin"
-        [max]="nzMax"
-        [lowerBound]="$any(bounds.lower)"
-        [upperBound]="$any(bounds.upper)"
-        [marksArray]="marksArray"
-        [included]="nzIncluded"
-        [reverse]="nzReverse"
-      ></nz-slider-marks>
-    </div>
-  `
+    <div class="ant-slider-rail"></div>
+    <nz-slider-track
+      [vertical]="nzVertical"
+      [included]="nzIncluded"
+      [offset]="track.offset!"
+      [length]="track.length!"
+      [reverse]="nzReverse"
+      [dir]="dir"
+    ></nz-slider-track>
+    <nz-slider-step
+      *ngIf="marksArray"
+      [vertical]="nzVertical"
+      [min]="nzMin"
+      [max]="nzMax"
+      [lowerBound]="$any(bounds.lower)"
+      [upperBound]="$any(bounds.upper)"
+      [marksArray]="marksArray"
+      [included]="nzIncluded"
+      [reverse]="nzReverse"
+    ></nz-slider-step>
+    <nz-slider-handle
+      *ngFor="let handle of handles; index as handleIndex"
+      [vertical]="nzVertical"
+      [reverse]="nzReverse"
+      [offset]="handle.offset!"
+      [value]="handle.value!"
+      [active]="handle.active"
+      [tooltipFormatter]="nzTipFormatter"
+      [tooltipVisible]="nzTooltipVisible"
+      [tooltipPlacement]="nzTooltipPlacement"
+      [dir]="dir"
+      (focusin)="onHandleFocusIn(handleIndex)"
+    ></nz-slider-handle>
+    <nz-slider-marks
+      *ngIf="marksArray"
+      [vertical]="nzVertical"
+      [min]="nzMin"
+      [max]="nzMax"
+      [lowerBound]="$any(bounds.lower)"
+      [upperBound]="$any(bounds.upper)"
+      [marksArray]="marksArray"
+      [included]="nzIncluded"
+      [reverse]="nzReverse"
+    ></nz-slider-marks>
+  `,
+  imports: [
+    NzSliderTrackComponent,
+    NzSliderStepComponent,
+    NzSliderHandleComponent,
+    NgForOf,
+    NzSliderMarksComponent,
+    NgIf
+  ],
+  standalone: true,
+  host: {
+    class: 'ant-slider',
+    '[class.ant-slider-rtl]': `dir === 'rtl'`,
+    '[class.ant-slider-disabled]': 'nzDisabled',
+    '[class.ant-slider-vertical]': 'nzVertical',
+    '[class.ant-slider-with-marks]': 'marksArray',
+    '(keydown)': 'onKeyDown($event)'
+  }
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzDots: BooleanInput;
-  static ngAcceptInputType_nzIncluded: BooleanInput;
-  static ngAcceptInputType_nzRange: BooleanInput;
-  static ngAcceptInputType_nzVertical: BooleanInput;
-  static ngAcceptInputType_nzMax: NumberInput;
-  static ngAcceptInputType_nzMin: NumberInput;
-  static ngAcceptInputType_nzStep: NumberInput;
-  static ngAcceptInputType_nzReverse: BooleanInput;
-
-  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzDots: boolean = false;
-  @Input() @InputBoolean() nzIncluded: boolean = true;
-  @Input() @InputBoolean() nzRange: boolean = false;
-  @Input() @InputBoolean() nzVertical: boolean = false;
-  @Input() @InputBoolean() nzReverse: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDots: boolean = false;
+  @Input({ transform: booleanAttribute }) nzIncluded: boolean = true;
+  @Input({ transform: booleanAttribute }) nzRange: boolean = false;
+  @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReverse: boolean = false;
   @Input() nzDefaultValue?: NzSliderValue;
   @Input() nzMarks: NzMarks | null = null;
-  @Input() @InputNumber() nzMax = 100;
-  @Input() @InputNumber() nzMin = 0;
-  @Input() @InputNumber() nzStep = 1;
+  @Input({ transform: numberAttribute }) nzMax = 100;
+  @Input({ transform: numberAttribute }) nzMin = 0;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzStep: number = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter?: null | ((value: number) => string);
+  @Input() nzTipFormatter?: null | ((value: number) => string) | TemplateRef<void>;
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 
@@ -165,9 +166,11 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private dragStart_?: Subscription | null;
   private dragMove_?: Subscription | null;
   private dragEnd_?: Subscription | null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
+  private isNzDisableFirstChange = true;
 
   constructor(
+    public slider: ElementRef<HTMLDivElement>,
     private sliderService: NzSliderService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
@@ -201,13 +204,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     } else if (nzMarks && !nzMarks.firstChange) {
       this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
     } else if (nzRange && !nzRange.firstChange) {
+      this.handles = generateHandlers(nzRange.currentValue ? 2 : 1);
       this.setValue(this.formatValue(null));
     }
   }
 
   ngOnDestroy(): void {
     this.unsubscribeDrag();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
@@ -228,14 +232,20 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
-    this.toggleDragDisabled(isDisabled);
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
+    this.isNzDisableFirstChange = false;
+    this.toggleDragDisabled(this.nzDisabled);
+    this.cdr.markForCheck();
   }
 
   /**
    * Event handler is only triggered when a slider handler is focused.
    */
   onKeyDown(e: KeyboardEvent): void {
+    if (this.nzDisabled) {
+      return;
+    }
+
     const code = e.keyCode;
     const isIncrease = code === RIGHT_ARROW || code === UP_ARROW;
     const isDecrease = code === LEFT_ARROW || code === DOWN_ARROW;
@@ -248,8 +258,15 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     let step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
     step = this.dir === 'rtl' ? step * -1 : step;
-    const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
+    const newVal = this.nzRange
+      ? (this.value as number[])[this.activeValueIndex!] + step
+      : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
+    this.nzOnAfterChange.emit(this.getValue(true));
+  }
+
+  onHandleFocusIn(index: number): void {
+    this.activeValueIndex = index;
   }
 
   private setValue(value: NzSliderValue | null, isWriteValue: boolean = false): void {
@@ -280,7 +297,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       normalizedValue = this.getValue(true);
     }
 
-    return isValueRange(normalizedValue) ? normalizedValue.map(val => this.valueToOffset(val)) : this.valueToOffset(normalizedValue);
+    return isValueRange(normalizedValue)
+      ? normalizedValue.map(val => this.valueToOffset(val))
+      : this.valueToOffset(normalizedValue);
   }
 
   /**
@@ -325,7 +344,9 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const valueSorted = this.getValue(true);
     const offsetSorted = this.getValueToOffset(valueSorted);
     const boundParts = isValueRange(valueSorted) ? valueSorted : [0, valueSorted];
-    const trackParts = isValueRange(offsetSorted) ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]] : [0, offsetSorted];
+    const trackParts = isValueRange(offsetSorted)
+      ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]]
+      : [0, offsetSorted];
 
     this.handles.forEach((handle, index) => {
       handle.offset = isValueRange(offset) ? offset[index] : offset;
@@ -380,7 +401,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     if (!this.platform.isBrowser) {
       return;
     }
-
+    const pluckFunc: (keys: string[]) => (event: Event) => number = keys => (event: Event) =>
+      keys.reduce((acc: NzSafeAny, key: string) => acc[key] || acc, event);
     const sliderDOM = this.slider.nativeElement;
     const orientField = this.nzVertical ? 'pageY' : 'pageX';
     const mouse: MouseTouchObserverConfig = {
@@ -403,14 +425,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       source.startPlucked$ = fromEvent(sliderDOM, start).pipe(
         filter(filterFunc),
         tap(silentEvent),
-        pluck<Event, number>(...pluckKey),
+        map(pluckFunc(pluckKey)),
         map((position: number) => this.findClosestValue(position))
       );
       source.end$ = fromEvent(document, end);
       source.moveResolved$ = fromEvent(document, move).pipe(
         filter(filterFunc),
         tap(silentEvent),
-        pluck<Event, number>(...pluckKey),
+        map(pluckFunc(pluckKey)),
         distinctUntilChanged(),
         map((position: number) => this.findClosestValue(position)),
         distinctUntilChanged(),
@@ -526,7 +548,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private formatValue(value: NzSliderValue | null): NzSliderValue {
-    if (!value) {
+    if (isNil(value)) {
       return this.nzRange ? [this.nzMin, this.nzMax] : this.nzMin;
     } else if (assertValueValid(value, this.nzRange)) {
       return isValueRange(value)
@@ -553,10 +575,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private generateMarkItems(marks: NzMarks): NzExtendedMark[] | null {
     const marksArray: NzExtendedMark[] = [];
     for (const key in marks) {
-      const mark = marks[key];
-      const val = typeof key === 'number' ? key : parseFloat(key);
-      if (val >= this.nzMin && val <= this.nzMax) {
-        marksArray.push({ value: val, offset: this.valueToOffset(val), config: mark });
+      if (marks.hasOwnProperty(key)) {
+        const mark = marks[key];
+        const val = typeof key === 'number' ? key : parseFloat(key);
+        if (val >= this.nzMin && val <= this.nzMax) {
+          marksArray.push({ value: val, offset: this.valueToOffset(val), config: mark });
+        }
       }
     }
     return marksArray.length ? marksArray : null;

@@ -7,7 +7,11 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[nz-carousel-content]',
-  exportAs: 'nzCarouselContent'
+  exportAs: 'nzCarouselContent',
+  host: {
+    class: 'slick-slide'
+  },
+  standalone: true
 })
 export class NzCarouselContentDirective {
   readonly el: HTMLElement;
@@ -27,8 +31,10 @@ export class NzCarouselContentDirective {
 
   private _active = false;
 
-  constructor(elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.el = elementRef.nativeElement;
-    this.renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }
 }

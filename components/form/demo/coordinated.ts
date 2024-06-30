@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-coordinated',
@@ -40,26 +40,31 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     `
   ]
 })
-export class NzDemoFormCoordinatedComponent implements OnInit {
-  validateForm!: FormGroup;
+export class NzDemoFormCoordinatedComponent {
+  validateForm: FormGroup<{
+    note: FormControl<string | null>;
+    gender: FormControl<'male' | 'male' | null>;
+  }> = this.fb.group({
+    note: this.fb.control<string | null>(null, Validators.required),
+    gender: this.fb.control<'male' | 'male' | null>(null, Validators.required)
+  });
 
   submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
   genderChange(value: string): void {
-    this.validateForm.get('note')!.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
+    this.validateForm.controls.note.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
 
   constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      note: [null, [Validators.required]],
-      gender: [null, [Validators.required]]
-    });
-  }
 }

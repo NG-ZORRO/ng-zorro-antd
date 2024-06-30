@@ -14,23 +14,23 @@ import { Component } from '@angular/core';
     <div>
       <h4>With icon</h4>
       <nz-tag nzColor="success">
-        <i nz-icon nzType="check-circle"></i>
+        <span nz-icon nzType="check-circle"></span>
         <span>success</span>
       </nz-tag>
       <nz-tag nzColor="processing">
-        <i nz-icon nzType="sync" nzSpin></i>
+        <span nz-icon nzType="sync" nzSpin></span>
         <span>processing</span>
       </nz-tag>
       <nz-tag nzColor="error">
-        <i nz-icon nzType="close-circle"></i>
+        <span nz-icon nzType="close-circle"></span>
         <span>error</span>
       </nz-tag>
       <nz-tag nzColor="warning">
-        <i nz-icon nzType="exclamation-circle"></i>
+        <span nz-icon nzType="exclamation-circle"></span>
         <span>warning</span>
       </nz-tag>
       <nz-tag nzColor="default">
-        <i nz-icon nzType="clock-circle"></i>
+        <span nz-icon nzType="clock-circle"></span>
         <span>default</span>
       </nz-tag>
     </div>

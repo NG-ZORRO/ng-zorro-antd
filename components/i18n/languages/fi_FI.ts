@@ -9,18 +9,19 @@ export default {
     items_per_page: '/ sivu',
     jump_to: 'Mene',
     jump_to_confirm: 'Potvrdite',
-    page: '',
+    page: 'Sivu',
     prev_page: 'Edellinen sivu',
     next_page: 'Seuraava sivu',
     prev_5: 'Edelliset 5 sivua',
     next_5: 'Seuraavat 5 sivua',
     prev_3: 'Edelliset 3 sivua',
-    next_3: 'Seuraavat 3 sivua'
+    next_3: 'Seuraavat 3 sivua',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
       placeholder: 'Valitse päivä',
-      rangePlaceholder: ['Alku päivä', 'Loppu päivä'],
+      rangePlaceholder: ['Alkamispäivä', 'Päättymispäivä'],
       locale: 'fi_FI',
       today: 'Tänään',
       now: 'Nyt',
@@ -58,7 +59,7 @@ export default {
   Calendar: {
     lang: {
       placeholder: 'Valitse päivä',
-      rangePlaceholder: ['Alku päivä', 'Loppu päivä'],
+      rangePlaceholder: ['Alkamispäivä', 'Päättymispäivä'],
       locale: 'fi_FI',
       today: 'Tänään',
       now: 'Nyt',
@@ -96,7 +97,10 @@ export default {
     filterReset: 'Tyhjennä',
     selectAll: 'Valitse kaikki',
     selectInvert: 'Valitse päinvastoin',
-    sortTitle: 'Lajittele'
+    sortTitle: 'Lajittele',
+    triggerDesc: 'Lajittele laskevasti',
+    triggerAsc: 'Lajittele nousevasti',
+    cancelSort: 'Peruuta lajittelu'
   },
   Modal: {
     okText: 'OK',

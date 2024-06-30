@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 
 import { NzImageDirective } from './image.directive';
 
@@ -12,9 +13,12 @@ import { NzImageDirective } from './image.directive';
   template: '<ng-content></ng-content>',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true
 })
 export class NzImageGroupComponent {
+  @Input() nzScaleStep: number | null = null;
+
   images: NzImageDirective[] = [];
 
   addImage(image: NzImageDirective): void {

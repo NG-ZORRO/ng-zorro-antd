@@ -1,0 +1,8 @@
+.@{drawer-prefix-cls} {
+  // Fix the issue of the drawer content shadow when the drawer is closed
+  &:not(.@{drawer-prefix-cls}-open) {
+    .@{drawer-prefix-cls}-content-wrapper {
+      box-shadow: none;
+    }
+  }
+}

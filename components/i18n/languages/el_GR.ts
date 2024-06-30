@@ -15,12 +15,20 @@ export default {
     prev_5: 'Προηγούμενες 5 Σελίδες',
     next_5: 'Επόμενες 5 σελίδες',
     prev_3: 'Προηγούμενες 3 Σελίδες',
-    next_3: 'Επόμενες 3 Σελίδες'
+    next_3: 'Επόμενες 3 Σελίδες',
+    page_size: 'Μέγεθος σελίδας'
   },
   DatePicker: {
     lang: {
       placeholder: 'Επιλέξτε ημερομηνία',
+      yearPlaceholder: 'Επιλέξτε χρονιά',
+      quarterPlaceholder: 'Επιλέξτε τρίμηνο',
+      monthPlaceholder: 'Επιλέξτε μήνα',
+      weekPlaceholder: 'Επιλέξτε εβδομάδα',
       rangePlaceholder: ['Αρχική ημερομηνία', 'Τελική ημερομηνία'],
+      rangeYearPlaceholder: ['Αρχική χρονιά', 'Τελική χρονιά'],
+      rangeMonthPlaceholder: ['Αρχικός μήνας', 'Τελικός μήνας'],
+      rangeWeekPlaceholder: ['Αρχική εβδομάδα', 'Τελική εβδομάδα'],
       locale: 'el_GR',
       today: 'Σήμερα',
       now: 'Τώρα',
@@ -31,6 +39,7 @@ export default {
       year: 'Έτος',
       timeSelect: 'Επιλογή ώρας',
       dateSelect: 'Επιλογή ημερομηνίας',
+      weekSelect: 'Επιλογή εβδομάδας',
       monthSelect: 'Επιλογή μήνα',
       yearSelect: 'Επιλογή έτους',
       decadeSelect: 'Επιλογή δεκαετίας',
@@ -49,16 +58,25 @@ export default {
       nextCentury: 'Επόμενος αιώνας'
     },
     timePickerLocale: {
-      placeholder: 'Επιλέξτε ώρα'
+      placeholder: 'Επιλέξτε ώρα',
+      rangePlaceholder: ['Ώρα έναρξης', 'Ώρα λήξης']
     }
   },
   TimePicker: {
-    placeholder: 'Επιλέξτε ώρα'
+    placeholder: 'Επιλέξτε ώρα',
+    rangePlaceholder: ['Ώρα έναρξης', 'Ώρα λήξης']
   },
   Calendar: {
     lang: {
       placeholder: 'Επιλέξτε ημερομηνία',
+      yearPlaceholder: 'Επιλέξτε χρονιά',
+      quarterPlaceholder: 'Επιλέξτε τρίμηνο',
+      monthPlaceholder: 'Επιλέξτε μήνα',
+      weekPlaceholder: 'Επιλέξτε εβδομάδα',
       rangePlaceholder: ['Αρχική ημερομηνία', 'Τελική ημερομηνία'],
+      rangeYearPlaceholder: ['Αρχική χρονιά', 'Τελική χρονιά'],
+      rangeMonthPlaceholder: ['Αρχικός μήνας', 'Τελικός μήνας'],
+      rangeWeekPlaceholder: ['Αρχική εβδομάδα', 'Τελική εβδομάδα'],
       locale: 'el_GR',
       today: 'Σήμερα',
       now: 'Τώρα',
@@ -69,6 +87,7 @@ export default {
       year: 'Έτος',
       timeSelect: 'Επιλογή ώρας',
       dateSelect: 'Επιλογή ημερομηνίας',
+      weekSelect: 'Επιλογή εβδομάδας',
       monthSelect: 'Επιλογή μήνα',
       yearSelect: 'Επιλογή έτους',
       decadeSelect: 'Επιλογή δεκαετίας',
@@ -87,7 +106,8 @@ export default {
       nextCentury: 'Επόμενος αιώνας'
     },
     timePickerLocale: {
-      placeholder: 'Επιλέξτε ώρα'
+      placeholder: 'Επιλέξτε ώρα',
+      rangePlaceholder: ['Ώρα έναρξης', 'Ώρα λήξης']
     }
   },
   Table: {

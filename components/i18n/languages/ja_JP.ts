@@ -6,7 +6,7 @@
 export default {
   locale: 'ja',
   Pagination: {
-    items_per_page: '/ ページ',
+    items_per_page: '件 / ページ',
     jump_to: '移動',
     jump_to_confirm: '確認する',
     page: 'ページ',
@@ -15,12 +15,19 @@ export default {
     prev_5: '前 5ページ',
     next_5: '次 5ページ',
     prev_3: '前 3ページ',
-    next_3: '次 3ページ'
+    next_3: '次 3ページ',
+    page_size: 'ページサイズ'
   },
   DatePicker: {
     lang: {
       placeholder: '日付を選択',
+      yearPlaceholder: '年を選択',
+      monthPlaceholder: '月を選択',
+      weekPlaceholder: '週を選択',
       rangePlaceholder: ['開始日付', '終了日付'],
+      rangeYearPlaceholder: ['開始年', '終了年'],
+      rangeMonthPlaceholder: ['開始月', '終了月'],
+      rangeWeekPlaceholder: ['開始週', '終了週'],
       locale: 'ja_JP',
       today: '今日',
       now: '現在時刻',
@@ -49,11 +56,13 @@ export default {
       nextCentury: '次の世紀'
     },
     timePickerLocale: {
-      placeholder: '時刻を選択'
+      placeholder: '時間を選択',
+      rangePlaceholder: ['開始時間', '終了時間']
     }
   },
   TimePicker: {
-    placeholder: '時刻を選択'
+    placeholder: '時間を選択',
+    rangePlaceholder: ['開始時間', '終了時間']
   },
   Calendar: {
     lang: {
@@ -87,7 +96,8 @@ export default {
       nextCentury: '次の世紀'
     },
     timePickerLocale: {
-      placeholder: '時刻を選択'
+      placeholder: '時間を選択',
+      rangePlaceholder: ['開始時間', '終了時間']
     }
   },
   Table: {

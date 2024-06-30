@@ -1,7 +1,8 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 
 import { NzAffixComponent } from './affix.component';
@@ -41,28 +42,26 @@ describe('affix', () => {
   const height = 100;
   const width = 100;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzAffixModule],
-        declarations: [TestAffixComponent],
-        providers: [
-          {
-            provide: NzScrollService,
-            useClass: NzScrollService
-          }
-        ]
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NzAffixModule],
+      declarations: [TestAffixComponent],
+      providers: [
+        {
+          provide: NzScrollService,
+          useClass: NzScrollService
+        }
+      ]
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(TestAffixComponent);
-      context = fixture.componentInstance;
-      component = context.nzAffixComponent;
-      scrollService = TestBed.inject(NzScrollService);
-      componentObject = new NzAffixPageObject();
-      debugElement = fixture.debugElement;
-      componentObject.wrap().id = 'wrap';
-    })
-  );
+    fixture = TestBed.createComponent(TestAffixComponent);
+    context = fixture.componentInstance;
+    component = context.nzAffixComponent;
+    scrollService = TestBed.inject(NzScrollService);
+    componentObject = new NzAffixPageObject();
+    debugElement = fixture.debugElement;
+    componentObject.wrap().id = 'wrap';
+  }));
   afterEach(fakeAsync(() => {
     setupInitialState();
   }));
@@ -83,9 +82,11 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it('wraps content with affix', () => {
+    it('wraps content with affix', fakeAsync(() => {
       expect(componentObject.content() === null).toBe(false);
-    });
+      setupInitialState();
+      discardPeriodicTasks();
+    }));
 
     describe('when scrolled within top offset', () => {
       it('scrolls with the content', fakeAsync(() => {
@@ -137,7 +138,7 @@ describe('affix', () => {
       }
     });
 
-    it('shoule be re-adjust width when trigger resize', fakeAsync(() => {
+    it('should be re-adjust width when trigger resize', fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset - 1);
       componentObject.emitEvent(window, new Event('resize'));
@@ -218,7 +219,7 @@ describe('affix', () => {
     });
 
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', fakeAsync(() => {
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       context.newOffset = offsetTop.toString() as any;
       setupInitialState({ offsetTop: offsetTop + 1 });
       emitScroll(window, 2);
@@ -469,8 +470,16 @@ describe('affix-extra', () => {
     context = fixture.componentInstance;
     dl = fixture.debugElement;
   });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
   it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
+    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
+      fixture.debugElement.query(By.css('#affix')).nativeElement,
+      window
+    );
     expect(ret).not.toBeUndefined();
   });
   it('with window when scrolled below the bottom offset', fakeAsync(() => {
@@ -501,17 +510,15 @@ describe('affix RTL', () => {
   let context: TestAffixRtlComponent;
   let dl: DebugElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzAffixModule],
-        declarations: [TestAffixRtlComponent]
-      }).compileComponents();
-      fixture = TestBed.createComponent(TestAffixRtlComponent);
-      context = fixture.componentInstance;
-      dl = fixture.debugElement;
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzAffixModule],
+      declarations: [TestAffixRtlComponent]
+    }).compileComponents();
+    fixture = TestBed.createComponent(TestAffixRtlComponent);
+    context = fixture.componentInstance;
+    dl = fixture.debugElement;
+  }));
   it('should className correct on dir change', fakeAsync(() => {
     const value = 10;
     context.newOffsetBottom = value;
@@ -531,6 +538,7 @@ describe('affix RTL', () => {
     tick(30);
     fixture.detectChanges();
     expect(el.querySelector('.ant-affix')?.classList).toContain('ant-affix-rtl');
+    fixture.destroy();
   }));
 });
 @Component({

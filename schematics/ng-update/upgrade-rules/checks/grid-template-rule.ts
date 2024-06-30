@@ -1,15 +1,18 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   findInputsOnElementWithAttr,
   findInputsOnElementWithTag,
   Migration,
-  ResolvedResource,
-  TargetVersion,
-  UpgradeData
+  ResolvedResource, UpgradeData
 } from '@angular/cdk/schematics';
 
 export class GridTemplateRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V10;
+  enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
 

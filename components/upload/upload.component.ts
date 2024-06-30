@@ -2,13 +2,19 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -16,16 +22,20 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  numberAttribute
 } from '@angular/core';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
+  NzIconRenderTemplate,
   NzShowUploadList,
   NzUploadChangeParam,
   NzUploadFile,
@@ -48,18 +58,12 @@ import { NzUploadListComponent } from './upload-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
-  }
+  },
+  imports: [NzUploadListComponent, NgIf, NgTemplateOutlet, NgClass, NzUploadBtnComponent],
+  standalone: true
 })
-export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzLimit: NumberInput;
-  static ngAcceptInputType_nzSize: NumberInput;
-  static ngAcceptInputType_nzDirectory: BooleanInput;
-  static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzMultiple: BooleanInput;
+export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
-  static ngAcceptInputType_nzShowButton: BooleanInput;
-  static ngAcceptInputType_nzWithCredentials: BooleanInput;
 
   private destroy$ = new Subject<void>();
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
@@ -71,23 +75,23 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // #region fields
 
   @Input() nzType: NzUploadType = 'select';
-  @Input() @InputNumber() nzLimit = 0;
-  @Input() @InputNumber() nzSize = 0;
+  @Input({ transform: numberAttribute }) nzLimit = 0;
+  @Input({ transform: numberAttribute }) nzSize = 0;
 
   @Input() nzFileType?: string;
   @Input() nzAccept?: string | string[];
   @Input() nzAction?: string | ((file: NzUploadFile) => string | Observable<string>);
-  @Input() @InputBoolean() nzDirectory = false;
-  @Input() @InputBoolean() nzOpenFileDialogOnClick = true;
+  @Input({ transform: booleanAttribute }) nzDirectory = false;
+  @Input({ transform: booleanAttribute }) nzOpenFileDialogOnClick = true;
   @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => boolean | Observable<boolean>;
   @Input() nzCustomRequest?: (item: NzUploadXHRArgs) => Subscription;
   @Input() nzData?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
   @Input() nzFileList: NzUploadFile[] = [];
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzHeaders?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzListType: NzUploadListType = 'text';
-  @Input() @InputBoolean() nzMultiple = false;
+  @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzName = 'file';
 
   private _showUploadList: boolean | NzShowUploadList = true;
@@ -101,8 +105,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return this._showUploadList;
   }
 
-  @Input() @InputBoolean() nzShowButton = true;
-  @Input() @InputBoolean() nzWithCredentials = false;
+  @Input({ transform: booleanAttribute }) nzShowButton = true;
+  @Input({ transform: booleanAttribute }) nzWithCredentials = false;
 
   @Input() nzRemove?: (file: NzUploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview?: (file: NzUploadFile) => void;
@@ -110,8 +114,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
-  @Input() nzIconRender: TemplateRef<NzSafeAny> | null = null;
-  @Input() nzFileListRender: TemplateRef<void> | null = null;
+  @Input() nzIconRender: NzIconRenderTemplate | null = null;
+  @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
@@ -170,9 +174,17 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return this;
   }
 
+  private readonly platform = inject(Platform);
+
   // #endregion
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() private directionality: Directionality) {}
+  constructor(
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) private document: NzSafeAny,
+    private cdr: ChangeDetectorRef,
+    private i18n: NzI18nService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   // #region upload
 
@@ -277,7 +289,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: NzUploadFile): void => {
     this.uploadComp.abort(file);
     file.status = 'removed';
-    const fnRes = typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
+    const fnRes =
+      typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
     (fnRes instanceof Observable ? fnRes : of(fnRes)).pipe(filter((res: boolean) => res)).subscribe(() => {
       this.nzFileList = this.removeFileItem(file, this.nzFileList);
       this.nzChange.emit({
@@ -335,6 +348,20 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.platform.FIREFOX) {
+      // fix firefox drop open new tab
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<MouseEvent>(this.document.body, 'drop')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(event => {
+            event.preventDefault();
+            event.stopPropagation();
+          })
+      );
+    }
   }
 
   ngOnChanges(): void {

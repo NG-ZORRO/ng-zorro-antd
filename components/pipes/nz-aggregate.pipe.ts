@@ -4,12 +4,14 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { sum } from 'ng-zorro-antd/core/util';
 
 export type AggregateMethod = 'sum' | 'max' | 'min' | 'avg';
 
 @Pipe({
-  name: 'nzAggregate'
+  name: 'nzAggregate',
+  standalone: true
 })
 export class NzAggregatePipe implements PipeTransform {
   transform(value: number[], method: AggregateMethod): undefined | number {

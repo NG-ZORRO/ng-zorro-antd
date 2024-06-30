@@ -1,0 +1,156 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@hashcode-prefix-cls: ~'@{ant-prefix}-hashCode';
+
+.@{hashcode-prefix-cls} {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: @text-color;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  list-style: none;
+  cursor: pointer;
+}
+
+.@{hashcode-prefix-cls}-header-copy {
+  margin-left: @margin-xs;
+  cursor: pointer;
+  opacity: 0.45;
+}
+
+.@{hashcode-prefix-cls}-header {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 22px;
+  padding-bottom: @padding-xs;
+
+  .@{hashcode-prefix-cls}-header-title {
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    text-align: center;
+    opacity: 0.45;
+  }
+
+  .@{hashcode-prefix-cls}-header-logo {
+    display: flex;
+    flex: 1;
+    justify-content: right;
+  }
+}
+
+.@{hashcode-prefix-cls}-double {
+  width: 172px;
+
+  &.ant-hashCode-primary {
+    width: 220px;
+  }
+}
+
+.@{hashcode-prefix-cls}-single {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 236px;
+
+  &.ant-hashCode-primary {
+    width: 284px;
+  }
+
+  .@{hashcode-prefix-cls}-header-copy {
+    margin-top: @margin-xs;
+  }
+}
+
+.@{hashcode-prefix-cls}-strip {
+  width: 350px;
+
+  &.ant-hashCode-primary {
+    width: 398px;
+  }
+}
+
+.@{hashcode-prefix-cls}-rect {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 196px;
+
+  &.ant-hashCode-primary {
+    width: 244px;
+  }
+}
+
+.@{hashcode-prefix-cls}-primary {
+  padding: @padding-lg;
+  background-color: @primary-color;
+  border-radius: 24px;
+
+  .@{hashcode-prefix-cls}-header-copy {
+    opacity: 1;
+  }
+
+  .@{hashcode-prefix-cls}-header-title,
+  .@{hashcode-prefix-cls}-header-copy,
+  .@{hashcode-prefix-cls}-header-logo {
+    color: @text-color-dark;
+  }
+}
+
+.@{hashcode-prefix-cls}-contant {
+  width: 100%;
+  height: 100%;
+}
+
+.@{hashcode-prefix-cls}-code-value {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  justify-content: space-between;
+  height: 35px;
+  overflow: hidden;
+}
+
+.@{hashcode-prefix-cls}-code-value-block {
+  height: 16px;
+  font-size: @font-size-base;
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.@{hashcode-prefix-cls}-value-primary {
+  .ant-hashCode-code-value-block {
+    color: @text-color-inverse;
+  }
+}
+
+.@{hashcode-prefix-cls}-texaure-double {
+  width: 175px;
+  height: 36px;
+}
+
+.@{hashcode-prefix-cls}-texaure {
+  position: absolute;
+  margin-top: -35px;
+  overflow: hidden;
+}
+
+.@{hashcode-prefix-cls}-texaure-single {
+  width: 210px;
+  height: 28px;
+  margin-top: -21px;
+}
+
+.@{hashcode-prefix-cls}-texaure-strip {
+  width: 350px;
+  height: 36px;
+}
+
+.@{hashcode-prefix-cls}-texaure-rect {
+  width: 175px;
+  height: 72px;
+  margin-top: -71px;
+}

@@ -11,8 +11,7 @@ import { Component } from '@angular/core';
       nzShowSearch
       nzCheckable
       nzPlaceHolder="Please select"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   `
 })
 export class NzDemoTreeSelectCheckableComponent {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import getISOWeek from 'date-fns/getISOWeek';
+
+import { getISOWeek } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-date-picker-range-picker',
@@ -11,6 +12,8 @@ import getISOWeek from 'date-fns/getISOWeek';
     <nz-range-picker nzMode="week" [(ngModel)]="date" (ngModelChange)="getWeek($event)"></nz-range-picker>
     <br />
     <nz-range-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+    <br />
+    <nz-range-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
     <nz-range-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
   `,

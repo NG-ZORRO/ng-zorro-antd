@@ -1,0 +1,14 @@
+// Since zorro's form-item-margin-bottom doesn't currently animate, we need to fix some of the heights.
+.@{form-item-prefix-cls}{
+  &-explain-connected {
+    height: 0;
+  }
+
+  &-with-help {
+    margin-bottom: 0;
+  }
+
+  &-with-help &-explain {
+    min-height: @form-item-margin-bottom;
+  }
+}

@@ -4,27 +4,31 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzSelectModeType = 'default' | 'multiple' | 'tags';
 export interface NzSelectItemInterface {
   template?: TemplateRef<NzSafeAny> | null;
-  nzLabel: string | null;
+  nzLabel: string | number | null;
   nzValue: NzSafeAny | null;
+  nzTitle?: string | number | null;
   nzDisabled?: boolean;
   nzHide?: boolean;
   nzCustomContent?: boolean;
-  groupLabel?: string | TemplateRef<NzSafeAny> | null;
+  groupLabel?: string | number | TemplateRef<NzSafeAny> | null;
   type?: string;
   key?: NzSafeAny;
 }
 
 export interface NzSelectOptionInterface {
-  label: string | null | TemplateRef<NzSafeAny>;
+  label: string | number | null | TemplateRef<NzSafeAny>;
   value: NzSafeAny | null;
+  title?: string | number | null;
   disabled?: boolean;
   hide?: boolean;
-  groupLabel?: string | TemplateRef<NzSafeAny> | null;
+  groupLabel?: string | number | TemplateRef<NzSafeAny> | null;
+  key?: string | number;
 }
 
 export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
@@ -33,3 +37,5 @@ export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
 };
 
 export type NzFilterOptionType = (input: string, option: NzSelectItemInterface) => boolean;
+
+export type NzSelectPlacementType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';

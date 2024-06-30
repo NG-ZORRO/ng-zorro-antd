@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { TemplateRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -89,3 +90,5 @@ export interface NzUploadXHRArgs {
   onSuccess?(ret: NzSafeAny, file: NzUploadFile, xhr: NzSafeAny): void;
   onError?(err: NzSafeAny, file: NzUploadFile): void;
 }
+
+export type NzIconRenderTemplate = TemplateRef<{ $implicit: NzUploadFile }>;

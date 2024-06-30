@@ -4,6 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,27 +19,48 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
+  standalone: true,
+  imports: [NgTemplateOutlet],
   template: `
-    <a #linkTitle (click)="goToClick($event)" href="{{ nzHref }}" class="ant-anchor-link-title" title="{{ titleStr }}">
-      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+    <a
+      #linkTitle
+      class="ant-anchor-link-title"
+      [href]="nzHref"
+      [title]="titleStr"
+      [target]="nzTarget"
+      (click)="goToClick($event)"
+    >
+      @if (titleStr) {
+        <span>{{ titleStr }}</span>
+      } @else {
+        <ng-template [ngTemplateOutlet]="titleTpl || nzTemplate" />
+      }
     </a>
-    <ng-content></ng-content>
+    @if (nzDirection === 'vertical') {
+      <ng-content></ng-content>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'ant-anchor-link'
+  }
 })
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
+  @Input() nzTarget?: string;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
+  nzDirection: NzDirectionVHType = 'vertical';
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -58,12 +80,11 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     private anchorComp: NzAnchorComponent,
     private platform: Platform,
     private renderer: Renderer2
-  ) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+    this.nzDirection = this.anchorComp.nzDirection;
   }
 
   getLinkTitleElement(): HTMLAnchorElement {

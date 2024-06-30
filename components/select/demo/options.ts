@@ -4,7 +4,12 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-select-options',
   template: `
     <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption"></nz-select>
+    <nz-select
+      [(ngModel)]="selectedValue"
+      nzAllowClear
+      nzPlaceHolder="Choose"
+      [nzOptions]="listOfGroupOption"
+    ></nz-select>
   `,
   styles: [
     `

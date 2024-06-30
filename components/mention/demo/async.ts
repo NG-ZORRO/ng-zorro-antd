@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+
 import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
 
 @Component({
@@ -6,7 +7,7 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-mention [nzSuggestions]="suggestions" [nzLoading]="loading" (nzOnSearchChange)="onSearchChange($event)">
-      <input nzMentionTrigger nz-input [(ngModel)]="inputValue" />
+      <textarea rows="1" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
     </nz-mention>
   `
 })
@@ -27,8 +28,6 @@ export class NzDemoMentionAsyncComponent {
 
   fetchSuggestions(value: string, callback: (suggestions: string[]) => void): void {
     const users = ['afc163', 'benjycui', 'yiminghe', 'jljsj33', 'dqaria', 'RaoHai'];
-    setTimeout(() => {
-      return callback(users.filter(item => item.indexOf(value) !== -1));
-    }, 500);
+    setTimeout(() => callback(users.filter(item => item.indexOf(value) !== -1)), 500);
   }
 }

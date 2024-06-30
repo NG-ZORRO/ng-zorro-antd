@@ -1,11 +1,12 @@
-// tslint:disable
-// TODO remove tslint:disable @hsuanxyz
-import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
+/* eslint-disable */
+// eslint-disable
 import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NzAnchorModule } from './anchor.module';
+import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
 import { NzAnchorComponent } from './anchor.component';
+import { NzAnchorModule } from './anchor.module';
 
 const throttleTime = 51;
 
@@ -16,7 +17,7 @@ describe('anchor', () => {
   let page: PageObject;
   let srv: NzScrollService;
   beforeEach(() => {
-    const i = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [NzAnchorModule],
       declarations: [TestComponent]
     });
@@ -26,7 +27,8 @@ describe('anchor', () => {
     fixture.detectChanges();
     page = new PageObject();
     spyOn(context, '_scroll');
-    srv = i.get(NzScrollService);
+    spyOn(context, '_change');
+    srv = TestBed.inject(NzScrollService);
   });
   afterEach(() => context.comp.ngOnDestroy());
 
@@ -55,6 +57,19 @@ describe('anchor', () => {
       setTimeout(() => {
         const inkNode = page.getEl('.ant-anchor-ink-ball');
         expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
+        expect(context._scroll).toHaveBeenCalled();
+        done();
+      }, throttleTime);
+    });
+
+    it('should actived when scrolling to the anchor - horizontal', (done: () => void) => {
+      context.nzDirection = 'horizontal';
+      fixture.detectChanges();
+      expect(context._scroll).not.toHaveBeenCalled();
+      page.scrollTo();
+      setTimeout(() => {
+        const inkNode = page.getEl('.ant-anchor-ink-ball');
+        expect(+inkNode.style.left!.replace('px', '')).not.toBeNull();
         expect(context._scroll).toHaveBeenCalled();
         done();
       }, throttleTime);
@@ -131,6 +146,18 @@ describe('anchor', () => {
       });
     });
 
+    describe('[nzCurrentAnchor]', () => {
+      it('customize the anchor highlight', () => {
+        context.nzCurrentAnchor = '#basic';
+        fixture.detectChanges();
+        const linkList = dl.queryAll(By.css('.ant-anchor-link'));
+        expect(linkList.length).toBeGreaterThan(0);
+        const activeLink = linkList.find(n => (n.nativeElement as HTMLDivElement).getAttribute('nzhref') === '#basic')!;
+        expect(activeLink).toBeTruthy();
+        expect((activeLink.nativeElement as HTMLDivElement).classList).toContain('ant-anchor-link-active');
+      });
+    });
+
     describe('[nzShowInkInFixed]', () => {
       beforeEach(() => {
         context.nzAffix = false;
@@ -140,13 +167,13 @@ describe('anchor', () => {
         context.nzShowInkInFixed = false;
         fixture.detectChanges();
         scrollTo();
-        expect(dl.query(By.css('.fixed')) == null).toBe(false);
+        expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(false);
       });
       it('should be hide ink when [true]', () => {
         context.nzShowInkInFixed = true;
         fixture.detectChanges();
         scrollTo();
-        expect(dl.query(By.css('.fixed')) == null).toBe(true);
+        expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(true);
       });
     });
 
@@ -169,6 +196,30 @@ describe('anchor', () => {
       });
     });
 
+    describe('(nzChange)', () => {
+      it('should emit nzChange when click a link', fakeAsync(() => {
+        spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+          if (options.callback) {
+            options.callback();
+          }
+        });
+        expect(context._change).not.toHaveBeenCalled();
+        page.to('#basic-target');
+        expect(context._change).toHaveBeenCalled();
+      }));
+      it('should emit nzChange when scrolling to the anchor', (done: () => void) => {
+        spyOn(context, '_change');
+        expect(context._change).not.toHaveBeenCalled();
+        page.scrollTo();
+        setTimeout(() => {
+          const inkNode = page.getEl('.ant-anchor-ink-ball');
+          expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
+          expect(context._change).toHaveBeenCalled();
+          done();
+        }, throttleTime);
+      });
+    });
+
     it('(nzClick)', () => {
       spyOn(context, '_click');
       expect(context._click).not.toHaveBeenCalled();
@@ -186,6 +237,20 @@ describe('anchor', () => {
     });
     it(`should show custom template of [nzTitle]`, () => {
       expect(dl.query(By.css('.nzTitle-title')) != null).toBe(true);
+    });
+  });
+
+  describe('direction', () => {
+    it(`should have vertical direction by default`, () => {
+      const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
+      expect(wrapperEl.nativeElement.classList).not.toContain('ant-anchor-wrapper-horizontal');
+    });
+
+    it(`should have correct class name in horizontal mode`, () => {
+      context.nzDirection = 'horizontal';
+      fixture.detectChanges();
+      const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
+      expect(wrapperEl.nativeElement.classList).toContain('ant-anchor-wrapper-horizontal');
     });
   });
 
@@ -233,9 +298,13 @@ describe('anchor', () => {
       [nzBounds]="nzBounds"
       [nzShowInkInFixed]="nzShowInkInFixed"
       [nzOffsetTop]="nzOffsetTop"
+      [nzTargetOffset]="nzTargetOffset"
       [nzContainer]="nzContainer"
+      [nzCurrentAnchor]="nzCurrentAnchor"
+      [nzDirection]="nzDirection"
       (nzClick)="_click($event)"
       (nzScroll)="_scroll($event)"
+      (nzChange)="_change($event)"
     >
       <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
       <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
@@ -281,15 +350,22 @@ describe('anchor', () => {
       <h2 id="basic-target"></h2>
     </div>
   `,
-  styleUrls: ['./style/patch.less']
+  styles: `
+    @import '../style/testing.less';
+    @import './style/patch.less';
+  `
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;
   nzAffix = true;
   nzBounds = 5;
   nzOffsetTop = 0;
+  nzTargetOffset?: number;
   nzShowInkInFixed = false;
   nzContainer: any = null;
-  _click() {}
-  _scroll() {}
+  nzCurrentAnchor?: string;
+  nzDirection: NzDirectionVHType = 'vertical';
+  _click() { }
+  _change() { }
+  _scroll() { }
 }

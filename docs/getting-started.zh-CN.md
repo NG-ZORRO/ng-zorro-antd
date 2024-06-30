@@ -127,7 +127,7 @@ $ npm install ng-zorro-antd --save
 
 ### 引入组件模块
 
-最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件和[特性模块](https://angular.cn/guide/feature-modules)中。
+最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件和[特性模块](https://angular.cn/guide/ngmodules/feature-modules)中。
 
 以下面的 `NzButtonModule` 模块为例，先引入组件模块：
 
@@ -152,6 +152,10 @@ export class AppModule { }
 ```html
 <button nz-button nzType="primary">Primary</button>
 ```
+
+# 注意事项
+
+- `ng-zorro-antd` 已经包含了 `@angular/cdk/overlay-prebuilt.css` 浮层样式，无需额外导入。
 
 ## 其他
 

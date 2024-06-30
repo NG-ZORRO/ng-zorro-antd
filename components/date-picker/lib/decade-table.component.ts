@@ -3,7 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DecadeCell } from './interface';
 
@@ -13,10 +15,12 @@ const MAX_COL = 3;
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'decade-table',
   exportAs: 'decadeTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  standalone: true,
+  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault]
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {
   get startYear(): number {
@@ -42,7 +46,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
     for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
-        trackByIndex: previousYear
+        trackByIndex: rowIndex
       };
 
       for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
@@ -51,7 +55,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
         const content = `${start}-${end}`;
 
         const cell: DecadeCell = {
-          trackByIndex: content,
+          trackByIndex: colIndex,
           value: this.activeDate.setYear(start).nativeDate,
           content,
           title: content,
@@ -75,7 +79,7 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
     return decades;
   }
 
-  getClassMap(cell: DecadeCell): { [key: string]: boolean } {
+  override getClassMap(cell: DecadeCell): { [key: string]: boolean } {
     return {
       [`${this.prefixCls}-cell`]: true,
       [`${this.prefixCls}-cell-in-view`]: !cell.isBiggerThanEnd && !cell.isLowerThanStart,

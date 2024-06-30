@@ -15,7 +15,8 @@ export default {
     prev_5: '5 páxinas previas',
     next_5: '5 páxinas seguintes',
     prev_3: '3 páxinas previas',
-    next_3: '3 páxinas seguintes'
+    next_3: '3 páxinas seguintes',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {

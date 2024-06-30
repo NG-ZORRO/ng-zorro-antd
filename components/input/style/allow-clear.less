@@ -1,8 +1,10 @@
-@import './index';
+@import (reference) '../../style/themes/index';
+@input-prefix-cls: ~'@{ant-prefix}-input';
 
 // ========================= Input =========================
-.@{ant-prefix}-input-clear-icon {
-  margin: 0 @input-affix-margin;
+.@{iconfont-css-prefix}.@{input-prefix-cls}-clear-icon,
+.@{input-prefix-cls}-clear-icon {
+  margin: 0;
   color: @disabled-color;
   font-size: @font-size-sm;
   vertical-align: -1px;
@@ -23,17 +25,16 @@
     visibility: hidden;
   }
 
-  &:last-child {
-    margin-right: 0;
+  &-has-suffix {
+    margin: 0 @input-affix-margin;
   }
 }
 
 // ======================= TextArea ========================
-.@{ant-prefix}-input-affix-wrapper-textarea-with-clear-btn {
-  padding: 0 !important;
-  border: 0 !important;
+.@{input-prefix-cls}-affix-wrapper.@{input-prefix-cls}-affix-wrapper-textarea-with-clear-btn {
+  padding: 0;
 
-  .@{ant-prefix}-input-clear-icon {
+  .@{input-prefix-cls}-clear-icon {
     position: absolute;
     top: 8px;
     right: 8px;

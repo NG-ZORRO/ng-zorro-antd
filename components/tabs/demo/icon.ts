@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nz-tabset>
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
         <ng-template #titleTemplate>
-          <i nz-icon [nzType]="tab.icon"></i>
+          <span nz-icon [nzType]="tab.icon"></span>
           {{ tab.name }}
         </ng-template>
         {{ tab.name }}

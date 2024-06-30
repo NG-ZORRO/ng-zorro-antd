@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "top-nav",
+  "$id": "top-nav",
   "title": "Top Navigation Layout",
   "type": "object",
   "properties": {

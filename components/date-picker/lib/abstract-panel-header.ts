@@ -3,24 +3,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, booleanAttribute } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { NzDateMode } from '../standard-types';
 import { PanelSelector } from './interface';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
 
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showSuperPreBtn: boolean = true;
-  @Input() showSuperNextBtn: boolean = true;
-  @Input() showPreBtn: boolean = true;
-  @Input() showNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showNextBtn: boolean = true;
 
   @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
   @Output() readonly valueChange = new EventEmitter<CandyDate>();

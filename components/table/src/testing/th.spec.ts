@@ -1,15 +1,19 @@
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableModule } from '../table.module';
 
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzTableModule, NzIconTestModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, NzTableModule, NzIconTestModule, NoopAnimationsModule],
       declarations: [NzThTestNzTableComponent, NzThTestTableDefaultFilterComponent]
     });
     TestBed.compileComponents();
@@ -91,6 +95,20 @@ describe('nz-th', () => {
         }).createComponent(NzTestDisableThComponent);
       }).toThrow();
     });
+    it('should not run change detection on click events for the `nz-filter-trigger`', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      const event = new MouseEvent('click');
+
+      spyOn(appRef, 'tick');
+      spyOn(event, 'stopPropagation').and.callThrough();
+
+      fixture.debugElement.nativeElement
+        .querySelector('nz-filter-trigger .ant-table-filter-trigger')
+        .dispatchEvent(event);
+
+      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
+    });
   });
 });
 
@@ -111,7 +129,7 @@ describe('nz-th', () => {
   `
 })
 export class NzThTestNzTableComponent {
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent<NzSafeAny>;
   destroy = false;
   left?: string | number;
   right?: string | number;
@@ -196,7 +214,7 @@ export class NzThTestTableDefaultFilterComponent {
   ];
   displayData: DataItem[] = [];
 
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent<DataItem>;
 
   sort(sort: { key: keyof DataItem; value: string }): void {
     this.sortName = sort.key;
@@ -212,14 +230,20 @@ export class NzThTestTableDefaultFilterComponent {
 
   search(): void {
     /** filter data **/
-    const filterFunc = (item: { name: string; address: string; age: number }) =>
+    const filterFunc = (item: { name: string; address: string; age: number }): boolean =>
       (this.searchAddress ? item.address.indexOf(this.searchAddress) !== -1 : true) &&
       (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
     const data = this.data.filter(item => filterFunc(item));
     /** sort data **/
     if (this.sortName && this.sortValue) {
       this.displayData = data.sort((a: DataItem, b: DataItem) =>
-        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
+        this.sortValue === 'ascend'
+          ? a[this.sortName!] > b[this.sortName!]
+            ? 1
+            : -1
+          : b[this.sortName!] > a[this.sortName!]
+            ? 1
+            : -1
       );
     } else {
       this.displayData = data;
@@ -228,8 +252,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  template: `
-    <th class="nz-disable-th"></th>
-  `
+  template: ` <th class="nz-disable-th"></th> `
 })
 export class NzTestDisableThComponent {}

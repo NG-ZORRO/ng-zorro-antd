@@ -6,13 +6,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { badgePresetColors } from './preset-colors';
 
 @Component({
@@ -21,6 +23,8 @@ import { badgePresetColors } from './preset-colors';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NzOutletModule],
   template: `
     <ng-content></ng-content>
     <div
@@ -30,10 +34,13 @@ import { badgePresetColors } from './preset-colors';
       [class.ant-ribbon-placement-start]="nzPlacement === 'start'"
       [style.background-color]="!presetColor && nzColor"
     >
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      <ng-container *nzStringTemplateOutlet="nzText">
+        <span class="ant-ribbon-text">{{ nzText }}</span>
+      </ng-container>
       <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
     </div>
-  `
+  `,
+  host: { class: 'ant-ribbon-wrapper' }
 })
 export class NzRibbonComponent implements OnChanges {
   @Input() nzColor: string | undefined;
@@ -41,10 +48,7 @@ export class NzRibbonComponent implements OnChanges {
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
 
-  constructor(private elementRef: ElementRef) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-ribbon-wrapper');
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;

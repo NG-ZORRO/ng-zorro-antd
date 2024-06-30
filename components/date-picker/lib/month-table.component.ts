@@ -3,24 +3,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'month-table',
   exportAs: 'monthTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  standalone: true,
+  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
-  MAX_ROW = 4;
-  MAX_COL = 3;
+  override MAX_ROW = 4;
+  override MAX_COL = 3;
 
   constructor(private dateHelper: DateHelperService) {
     super();
@@ -37,7 +42,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
-        trackByIndex: this.activeDate.getYear()
+        trackByIndex: rowIndex
       };
 
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
@@ -45,7 +50,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
         const isDisabled = this.isDisabledMonth(month);
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
         const cell: DateCell = {
-          trackByIndex: content,
+          trackByIndex: colIndex,
           value: month.nativeDate,
           isDisabled,
           isSelected: month.isSameMonth(this.value),

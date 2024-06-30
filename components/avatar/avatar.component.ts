@@ -3,8 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { PlatformModule } from '@angular/cdk/platform';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -14,24 +15,34 @@ import {
   OnChanges,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NgStyleInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
+  standalone: true,
+  imports: [NzIconModule, PlatformModule],
   template: `
-    <i nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></i>
-    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
+    @if (nzIcon && hasIcon) {
+      <span nz-icon [nzType]="nzIcon"></span>
+    }
+    @if (nzSrc && hasSrc) {
+      <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    }
+    @if (nzText && hasText) {
+      <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
+    }
   `,
   host: {
+    class: 'ant-avatar',
     '[class.ant-avatar-lg]': `nzSize === 'large'`,
     '[class.ant-avatar-sm]': `nzSize === 'small'`,
     '[class.ant-avatar-square]': `nzShape === 'square'`,
@@ -48,13 +59,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAvatarComponent implements OnChanges {
-  static ngAcceptInputType_nzGap: NumberInput;
-
+export class NzAvatarComponent implements OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
-  @Input() @WithConfig() @InputNumber() nzGap = 4;
+  @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;
@@ -65,23 +74,18 @@ export class NzAvatarComponent implements OnChanges {
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  textStyles: NgStyleInterface = {};
   classMap: NgClassInterface = {};
   customSize: string | null = null;
 
-  @ViewChild('textEl', { static: false }) textEl?: ElementRef;
+  @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
   private el: HTMLElement = this.elementRef.nativeElement;
 
   constructor(
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform
-  ) {
-    // TODO: move to host after View Engine deprecation
-    this.elementRef.nativeElement.classList.add('ant-avatar');
-  }
+    private cdr: ChangeDetectorRef
+  ) {}
 
   imgError($event: Event): void {
     this.nzError.emit($event);
@@ -96,7 +100,7 @@ export class NzAvatarComponent implements OnChanges {
       }
       this.cdr.detectChanges();
       this.setSizeStyle();
-      this.notifyCalc();
+      this.calcStringSize();
     }
   }
 
@@ -106,37 +110,26 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setSizeStyle();
-    this.notifyCalc();
+    this.calcStringSize();
+  }
+
+  ngAfterViewInit(): void {
+    this.calcStringSize();
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) {
+    if (!this.hasText || !this.textEl) {
       return;
     }
 
-    const childrenWidth = this.textEl!.nativeElement.offsetWidth;
-    const avatarWidth = this.el.getBoundingClientRect().width;
+    const textEl = this.textEl.nativeElement;
+    const childrenWidth = textEl.offsetWidth;
+    const avatarWidth = this.el.getBoundingClientRect?.().width ?? 0;
     const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
     const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
 
-    this.textStyles = {
-      transform: `scale(${scale}) translateX(-50%)`
-    };
-    if (this.customSize) {
-      Object.assign(this.textStyles, {
-        lineHeight: this.customSize
-      });
-    }
-    this.cdr.detectChanges();
-  }
-
-  private notifyCalc(): void {
-    // If use ngAfterViewChecked, always demands more computations, so......
-    if (this.platform.isBrowser) {
-      setTimeout(() => {
-        this.calcStringSize();
-      });
-    }
+    textEl.style.transform = `scale(${scale}) translateX(-50%)`;
+    textEl.style.lineHeight = this.customSize || '';
   }
 
   private setSizeStyle(): void {
@@ -145,6 +138,7 @@ export class NzAvatarComponent implements OnChanges {
     } else {
       this.customSize = null;
     }
+
     this.cdr.markForCheck();
   }
 }

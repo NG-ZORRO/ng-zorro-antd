@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "PLACEHOLDER_SCHEMATICS_ID",
+  "$id": "PLACEHOLDER_SCHEMATICS_ID",
   "title": "PLACEHOLDER_SCHEMATICS_TITLE",
   "type": "object",
   "properties": {
@@ -37,6 +37,10 @@
       "type": "boolean",
       "default": false,
       "alias": "t"
+    },
+    "standalone": {
+      "description": "Whether the generated component is standalone.",
+      "type": "boolean"
     },
     "prefix": {
       "type": "string",

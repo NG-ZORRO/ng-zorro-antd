@@ -7,9 +7,7 @@ import { Component } from '@angular/core';
       <nz-breadcrumb-item>
         <a [routerLink]="['../../']">Home</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        Breadcrumb
-      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Breadcrumb</nz-breadcrumb-item>
     </nz-breadcrumb>
   `
 })

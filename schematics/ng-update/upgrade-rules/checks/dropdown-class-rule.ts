@@ -1,9 +1,15 @@
-import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Migration, UpgradeData } from '@angular/cdk/schematics';
+
 import * as ts from 'typescript';
 
 export class DropdownClassRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V9;
+  enabled = false;
 
   visitNode(node: ts.Node): void {
     if (ts.isIdentifier(node)) {
@@ -11,8 +17,7 @@ export class DropdownClassRule extends Migration<UpgradeData> {
     }
   }
 
-  // tslint:disable-next-line:typedef
-  private _visitIdentifier(identifier: ts.Identifier) {
+  private _visitIdentifier(identifier: ts.Identifier): void {
     if (identifier.getText() === 'NzDropdownContextComponent') {
       this.createFailureAtNode(
         identifier,

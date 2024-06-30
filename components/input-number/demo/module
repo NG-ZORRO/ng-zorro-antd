@@ -1,4 +1,10 @@
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
-export const moduleList = [ NzInputNumberModule, NzButtonModule ];
+export const moduleList = [ NzInputNumberModule, NzButtonModule, NzIconModule, NzSpaceModule, NzSelectModule, NzCascaderModule, NzGridModule, NzDatePickerModule ];

@@ -28,9 +28,7 @@ export class NzDemoTabsLazyComponent {}
 
 @Component({
   selector: 'nz-demo-tab-content-lazy',
-  template: `
-    lazy
-  `
+  template: ` lazy `
 })
 export class NzDemoTabContentLazyComponent implements OnInit {
   ngOnInit(): void {
@@ -40,9 +38,7 @@ export class NzDemoTabContentLazyComponent implements OnInit {
 
 @Component({
   selector: 'nz-demo-tab-content-eagerly',
-  template: `
-    eagerly
-  `
+  template: ` eagerly `
 })
 export class NzDemoTabContentEagerlyComponent implements OnInit {
   ngOnInit(): void {

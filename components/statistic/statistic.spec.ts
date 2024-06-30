@@ -35,6 +35,13 @@ describe('nz-statistic', () => {
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-prefix').innerText).toBe('prefix');
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-suffix').innerText).toBe('suffix');
     });
+
+    it('should render skeleton', () => {
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeFalsy();
+      testComponent.loading = true;
+      fixture.detectChanges();
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeTruthy();
+    });
   });
 
   describe('RTL', () => {
@@ -51,24 +58,31 @@ describe('nz-statistic', () => {
 
     it('should className correct on dir change', () => {
       fixture.detectChanges();
-      expect(statisticEl.nativeElement.querySelector('.ant-statistic').classList).toContain('ant-statistic-rtl');
+      expect(statisticEl.nativeElement.classList).toContain('ant-statistic-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(statisticEl.nativeElement.querySelector('.ant-statistic').classList).not.toContain('ant-statistic-rtl');
+      expect(statisticEl.nativeElement.classList).not.toContain('ant-statistic-rtl');
     });
   });
 });
 
 @Component({
   template: `
-    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix"></nz-statistic>
+    <nz-statistic
+      [nzValue]="123.45"
+      [nzTitle]="title"
+      [nzSuffix]="suffix"
+      [nzPrefix]="prefix"
+      [nzLoading]="loading"
+    ></nz-statistic>
   `
 })
 export class NzTestStatisticComponent {
   title = 'title';
   prefix = '';
   suffix = '';
+  loading = false;
 }
 
 @Component({

@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-badge-dot',
   template: `
-    <nz-badge nzDot><i nz-icon nzType="notification"></i></nz-badge>
-    <nz-badge nzDot [nzShowDot]="false"><i nz-icon nzType="notification"></i></nz-badge>
+    <nz-badge nzDot><span nz-icon nzType="notification"></span></nz-badge>
+    <nz-badge nzDot [nzShowDot]="false"><span nz-icon nzType="notification"></span></nz-badge>
     <nz-badge nzDot>
       <a>Link something</a>
     </nz-badge>

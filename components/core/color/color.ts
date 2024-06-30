@@ -5,6 +5,8 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+export const statusColors = ['success', 'processing', 'error', 'default', 'warning'] as const;
+
 export const presetColors = [
   'pink',
   'red',
@@ -21,16 +23,13 @@ export const presetColors = [
   'lime'
 ] as const;
 
-export type NzPresetColor = typeof presetColors[number];
+export type NzPresetColor = (typeof presetColors)[number];
+export type NzStatusColor = (typeof statusColors)[number];
 
 export function isPresetColor(color: string): color is NzPresetColor {
   return presetColors.indexOf(color as NzSafeAny) !== -1;
 }
 
-// export const presetStatusColors = ['success', 'processing', 'error', 'default', 'warning'];
-
-// export type NzPresetStatusColor = typeof presetStatusColors[number];
-
-// export function isPresetStatusColor(color: string): color is NzPresetStatusColor {
-//   return presetStatusColors.indexOf(color as NzSafeAny) !== -1;
-// }
+export function isStatusColor(color: string): color is NzPresetColor {
+  return statusColors.indexOf(color as NzSafeAny) !== -1;
+}

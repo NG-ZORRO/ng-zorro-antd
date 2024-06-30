@@ -15,7 +15,8 @@ export default {
     prev_5: 'Дараагийн 5 хуудас',
     next_5: 'Дараагийн 5 хуудас',
     prev_3: 'Дараагийн 3 хуудас',
-    next_3: 'Дараагийн 3 хуудас'
+    next_3: 'Дараагийн 3 хуудас',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {

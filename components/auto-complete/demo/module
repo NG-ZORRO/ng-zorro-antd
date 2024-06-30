@@ -2,5 +2,6 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ NzAutocompleteModule, NzInputModule, NzButtonModule, NzIconModule ];
+export const moduleList = [NzAutocompleteModule, NzInputModule, NzButtonModule, NzIconModule, NzSpaceModule];

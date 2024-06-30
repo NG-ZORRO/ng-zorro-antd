@@ -4,28 +4,29 @@
  */
 
 import { CdkTreeNodePadding } from '@angular/cdk/tree';
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, numberAttribute } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodePadding]',
-  providers: [{ provide: CdkTreeNodePadding, useExisting: NzTreeNodePaddingDirective }]
+  providers: [{ provide: CdkTreeNodePadding, useExisting: NzTreeNodePaddingDirective }],
+  standalone: true
 })
 export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
-  _indent = 24;
+  override _indent = 24;
 
-  @Input('nzTreeNodePadding')
-  get level(): number {
+  @Input({ alias: 'nzTreeNodePadding', transform: numberAttribute })
+  override get level(): number {
     return this._level;
   }
-  set level(value: number) {
+  override set level(value: number) {
     this._setLevelInput(value);
   }
 
   @Input('nzTreeNodePaddingIndent')
-  get indent(): number | string {
+  override get indent(): number | string {
     return this._indent;
   }
-  set indent(indent: number | string) {
+  override set indent(indent: number | string) {
     this._setIndentInput(indent);
   }
 }

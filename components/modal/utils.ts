@@ -4,27 +4,26 @@
  */
 
 import { ModalOptions } from './modal-types';
-import { NzModalComponent } from './modal.component';
 
 export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalOptions): ModalOptions {
   return { ...defaultOptions, ...config };
 }
 
-export function getValueWithConfig<T>(userValue: T | undefined, configValue: T | undefined, defaultValue: T): T | undefined {
-  return typeof userValue === 'undefined' ? (typeof configValue === 'undefined' ? defaultValue : configValue) : userValue;
+export function getValueWithConfig<T>(
+  userValue: T | undefined,
+  configValue: T | undefined,
+  defaultValue: T
+): T | undefined {
+  return typeof userValue === 'undefined'
+    ? typeof configValue === 'undefined'
+      ? defaultValue
+      : configValue
+    : userValue;
 }
 
-/**
- * Assign the params into the content component instance.
- * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 12.0.0
- */
-export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
-  Object.assign(instance, params);
-}
-
-export function getConfigFromComponent(component: NzModalComponent): ModalOptions {
+export function getConfigFromComponent<T extends ModalOptions>(component: T): ModalOptions {
   const {
+    nzCentered,
     nzMask,
     nzMaskClosable,
     nzClosable,
@@ -34,8 +33,8 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzCancelLoading,
     nzKeyboard,
     nzNoAnimation,
+    nzDraggable,
     nzContent,
-    nzComponentParams,
     nzFooter,
     nzZIndex,
     nzWidth,
@@ -60,8 +59,10 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzAutofocus
   } = component;
   return {
+    nzCentered,
     nzMask,
     nzMaskClosable,
+    nzDraggable,
     nzClosable,
     nzOkLoading,
     nzOkDisabled,
@@ -70,7 +71,6 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzKeyboard,
     nzNoAnimation,
     nzContent,
-    nzComponentParams,
     nzFooter,
     nzZIndex,
     nzWidth,

@@ -4,6 +4,7 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/c
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -13,30 +14,27 @@ import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
 import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
-
 import { NzPageHeaderComponent } from './page-header.component';
 import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [
-          NzDemoPageHeaderBasicComponent,
-          NzDemoPageHeaderBreadcrumbComponent,
-          NzDemoPageHeaderContentComponent,
-          NzDemoPageHeaderActionsComponent,
-          NzDemoPageHeaderResponsiveComponent,
-          NzDemoPageHeaderGhostComponent,
-          NzDemoPageHeaderRtlComponent
-        ]
-      }).compileComponents();
-      location = TestBed.inject(Location);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        NzDemoPageHeaderBasicComponent,
+        NzDemoPageHeaderBreadcrumbComponent,
+        NzDemoPageHeaderContentComponent,
+        NzDemoPageHeaderActionsComponent,
+        NzDemoPageHeaderResponsiveComponent,
+        NzDemoPageHeaderGhostComponent,
+        NzDemoPageHeaderRtlComponent
+      ]
+    }).compileComponents();
+    location = TestBed.inject(Location);
+  }));
 
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
@@ -112,7 +110,7 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back i.anticon-arrow-left')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back span.anticon-arrow-left')).toBeTruthy();
   });
 
   it('should does not have an default back icon', () => {
@@ -161,7 +159,7 @@ describe('NzPageHeaderComponent', () => {
 
     it('should have an default back icon', () => {
       fixture.detectChanges();
-      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back i.anticon-arrow-right')).toBeTruthy();
+      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back span.anticon-arrow-right')).toBeTruthy();
     });
   });
 });

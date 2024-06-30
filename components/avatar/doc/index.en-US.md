@@ -13,7 +13,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 ## API
 
-### nz-avatar
+### nz-avatar:standalone
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
@@ -27,7 +27,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzText]` | Letter type avatar | `string` | - |
 | `(nzError)` | Handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>` | - |
 
-### nz-avatar-group
+### nz-avatar-group:standalone
 
 ```html
  <nz-avatar-group>

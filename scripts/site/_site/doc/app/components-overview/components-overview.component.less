@@ -2,6 +2,9 @@
   padding: 0;
 
   &-group-title {
+    display: flex;
+    gap: 8px;
+    align-items: center;
     margin-top: 24px !important;
   }
 
@@ -13,8 +16,8 @@
   }
 
   &-card {
-    cursor: pointer;
     padding: 12px;
+    cursor: pointer;
   }
 }
 
@@ -32,5 +35,14 @@
 
   .anticon {
     color: #bbb;
+  }
+}
+
+.ant-affix {
+  .components-overview-search {
+    margin: -8px;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0 6px 12px -2px, rgba(0, 0, 0, 0.3) 0 3px 7px -3px;
   }
 }

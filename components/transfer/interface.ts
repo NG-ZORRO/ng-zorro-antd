@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type TransferDirection = 'left' | 'right';
@@ -36,4 +37,20 @@ export interface TransferSelectChange {
   checked: boolean;
   list: TransferItem[];
   item?: TransferItem;
+}
+
+export interface TransferStat {
+  checkAll: boolean;
+  checkHalf: boolean;
+  checkCount: number;
+  shownCount: number;
+}
+
+export interface RenderListContext {
+  $implicit: TransferItem[];
+  direction: TransferDirection;
+  disabled: boolean;
+  onItemSelectAll: (x: boolean) => void;
+  onItemSelect: (x: TransferItem) => void;
+  stat: TransferStat;
 }

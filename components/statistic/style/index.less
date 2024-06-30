@@ -4,12 +4,16 @@
 @statistic-prefix-cls: ~'@{ant-prefix}-statistic';
 
 .@{statistic-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   &-title {
     margin-bottom: @margin-xss;
     color: @text-color-secondary;
     font-size: @statistic-title-font-size;
+  }
+
+  &-skeleton {
+    padding-top: @padding-md;
   }
 
   &-content {

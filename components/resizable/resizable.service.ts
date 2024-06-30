@@ -5,10 +5,10 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isTouchEvent } from 'ng-zorro-antd/core/util';
-
-import { Subject } from 'rxjs';
 
 import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
@@ -17,12 +17,25 @@ export class NzResizableService implements OnDestroy {
   private document: Document;
   private listeners = new Map<string, (event: MouseEvent | TouchEvent) => void>();
 
-  handleMouseDown$ = new Subject<NzResizeHandleMouseDownEvent>();
-  documentMouseUp$ = new Subject<MouseEvent | TouchEvent>();
-  documentMouseMove$ = new Subject<MouseEvent | TouchEvent>();
-  mouseEntered$ = new Subject<boolean>();
+  /**
+   * The `OutsideAngular` prefix means that the subject will emit events outside of the Angular zone,
+   * so that becomes a bit more descriptive for those who'll maintain the code in the future:
+   * ```ts
+   * nzResizableService.handleMouseDownOutsideAngular$.subscribe(event => {
+   *   console.log(Zone.current); // <root>
+   *   console.log(NgZone.isInAngularZone()); // false
+   * });
+   * ```
+   */
+  handleMouseDownOutsideAngular$ = new Subject<NzResizeHandleMouseDownEvent>();
+  documentMouseUpOutsideAngular$ = new Subject<MouseEvent | TouchEvent | null>();
+  documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
+  mouseEnteredOutsideAngular$ = new Subject<boolean>();
 
-  constructor(private ngZone: NgZone, @Inject(DOCUMENT) document: NzSafeAny) {
+  constructor(
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) document: NzSafeAny
+  ) {
     this.document = document;
   }
 
@@ -31,11 +44,11 @@ export class NzResizableService implements OnDestroy {
     this.clearListeners();
     const moveEvent = _isTouchEvent ? 'touchmove' : 'mousemove';
     const upEvent = _isTouchEvent ? 'touchend' : 'mouseup';
-    const moveEventHandler = (e: MouseEvent | TouchEvent) => {
-      this.documentMouseMove$.next(e);
+    const moveEventHandler = (e: MouseEvent | TouchEvent): void => {
+      this.documentMouseMoveOutsideAngular$.next(e);
     };
-    const upEventHandler = (e: MouseEvent | TouchEvent) => {
-      this.documentMouseUp$.next(e);
+    const upEventHandler = (e: MouseEvent | TouchEvent): void => {
+      this.documentMouseUpOutsideAngular$.next(e);
       this.clearListeners();
     };
 
@@ -57,10 +70,10 @@ export class NzResizableService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.handleMouseDown$.complete();
-    this.documentMouseUp$.complete();
-    this.documentMouseMove$.complete();
-    this.mouseEntered$.complete();
+    this.handleMouseDownOutsideAngular$.complete();
+    this.documentMouseUpOutsideAngular$.complete();
+    this.documentMouseMoveOutsideAngular$.complete();
+    this.mouseEnteredOutsideAngular$.complete();
     this.clearListeners();
   }
 }

@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -17,6 +18,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -27,14 +29,17 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
+import { Subject, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -42,10 +47,10 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 import {
   FromToInterface,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselDotPosition,
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   PointerVector
 } from './typings';
 
@@ -58,12 +63,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   exportAs: 'nzCarousel',
   preserveWhitespaces: false,
   template: `
-    <div class="slick-initialized slick-slider" [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'">
+    <div
+      class="slick-initialized slick-slider"
+      [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
+    >
       <div
         #slickList
         class="slick-list"
         tabindex="-1"
-        (keydown)="onKeyDown($event)"
         (mousedown)="pointerDown($event)"
         (touchstart)="pointerDown($event)"
       >
@@ -73,18 +80,24 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
         </div>
       </div>
       <!-- Render dots. -->
-      <ul
-        class="slick-dots"
-        *ngIf="nzDots"
-        [class.slick-dots-top]="nzDotPosition === 'top'"
-        [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
-        [class.slick-dots-left]="nzDotPosition === 'left'"
-        [class.slick-dots-right]="nzDotPosition === 'right'"
-      >
-        <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
-          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
-        </li>
-      </ul>
+      @if (nzDots) {
+        <ul
+          class="slick-dots"
+          [class.slick-dots-top]="nzDotPosition === 'top'"
+          [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
+          [class.slick-dots-left]="nzDotPosition === 'left'"
+          [class.slick-dots-right]="nzDotPosition === 'right'"
+        >
+          @for (content of carouselContents; track content) {
+            <li [class.slick-active]="$index === activeIndex" (click)="onLiClick($index)">
+              <ng-template
+                [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
+                [ngTemplateOutletContext]="{ $implicit: $index }"
+              ></ng-template>
+            </li>
+          }
+        </ul>
+      }
     </div>
 
     <ng-template #renderDotTemplate let-index>
@@ -92,30 +105,34 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
+    class: 'ant-carousel',
     '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir ==='rtl'`
-  }
+    '[class.ant-carousel-rtl]': `dir === 'rtl'`
+  },
+  imports: [NgTemplateOutlet],
+  standalone: true
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzEnableSwipe: BooleanInput;
-  static ngAcceptInputType_nzDots: BooleanInput;
-  static ngAcceptInputType_nzAutoPlay: BooleanInput;
-  static ngAcceptInputType_nzAutoPlaySpeed: NumberInput;
-  static ngAcceptInputType_nzTransitionSpeed: NumberInput;
 
   @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList', { static: false }) slickList?: ElementRef;
-  @ViewChild('slickTrack', { static: false }) slickTrack?: ElementRef;
+  @ViewChild('slickList', { static: true }) slickList!: ElementRef<HTMLElement>;
+  @ViewChild('slickTrack', { static: true }) slickTrack!: ElementRef<HTMLElement>;
 
   @Input() nzDotRender?: TemplateRef<{ $implicit: number }>;
   @Input() @WithConfig() nzEffect: NzCarouselEffects = 'scrollx';
-  @Input() @WithConfig() @InputBoolean() nzEnableSwipe: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzDots: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzAutoPlay: boolean = false;
-  @Input() @WithConfig() @InputNumber() nzAutoPlaySpeed: number = 3000;
-  @Input() @InputNumber() nzTransitionSpeed = 500;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzEnableSwipe: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDots: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAutoPlay: boolean = false;
+  @Input({ transform: numberAttribute }) @WithConfig() nzAutoPlaySpeed: number = 3000;
+  @Input({ transform: numberAttribute }) nzTransitionSpeed = 500;
+  @Input() @WithConfig() nzLoop: boolean = true;
+
+  /**
+   * this property is passed directly to an NzCarouselBaseStrategy
+   */
+  @Input() nzStrategyOptions: NzSafeAny = undefined;
 
   @Input()
   // @ts-ignore
@@ -144,7 +161,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   slickTrackEl!: HTMLElement;
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
-  transitionInProgress: number | null = null;
+  transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
@@ -156,25 +173,60 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   constructor(
     elementRef: ElementRef,
     public readonly nzConfigService: NzConfigService,
+    public readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
     private readonly cdr: ChangeDetectorRef,
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
+    private nzResizeObserver: NzResizeObserver,
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
-
-    this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
   ngOnInit(): void {
+    this.slickListEl = this.slickList!.nativeElement;
+    this.slickTrackEl = this.slickTrack!.nativeElement;
+
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+
+    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
-      this.switchStrategy();
+      this.markContentActive(this.activeIndex);
+      this.cdr.detectChanges();
     });
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent<KeyboardEvent>(this.slickListEl, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          const { keyCode } = event;
+
+          if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW) {
+            return;
+          }
+
+          event.preventDefault();
+
+          this.ngZone.run(() => {
+            if (keyCode === LEFT_ARROW) {
+              this.pre();
+            } else {
+              this.next();
+            }
+            this.cdr.markForCheck();
+          });
+        });
+    });
+
+    this.nzResizeObserver
+      .observe(this.el)
+      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.layout();
+      });
   }
 
   ngAfterContentInit(): void {
@@ -182,10 +234,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit(): void {
-    this.slickListEl = this.slickList!.nativeElement;
-    this.slickTrackEl = this.slickTrack!.nativeElement;
-
-    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.carouselContents.changes.subscribe(() => {
       this.markContentActive(0);
       this.layout();
     });
@@ -241,15 +290,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.destroy$.complete();
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) {
-      e.preventDefault();
-      this.pre();
-    } else if (e.keyCode === RIGHT_ARROW) {
-      this.next();
-      e.preventDefault();
+  onLiClick = (index: number): void => {
+    if (this.dir === 'rtl') {
+      this.goTo(this.carouselContents.length - 1 - index);
+    } else {
+      this.goTo(index);
     }
-  }
+  };
 
   next(): void {
     this.goTo(this.activeIndex + 1);
@@ -260,7 +307,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   goTo(index: number): void {
-    if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
+    if (
+      this.carouselContents &&
+      this.carouselContents.length &&
+      !this.isTransiting &&
+      (this.nzLoop || (index >= 0 && index < this.carouselContents.length))
+    ) {
       const length = this.carouselContents.length;
       const from = this.activeIndex;
       const to = (index + length) % length;
@@ -268,7 +320,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.nzBeforeChange.emit({ from, to });
       this.strategy!.switch(this.activeIndex, index).subscribe(() => {
         this.scheduleNextTransition();
-        this.nzAfterChange.emit(index);
+        this.nzAfterChange.emit(to);
         this.isTransiting = false;
       });
       this.markContentActive(to);
@@ -306,7 +358,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private clearScheduledTransition(): void {
     if (this.transitionInProgress) {
       clearTimeout(this.transitionInProgress);
-      this.transitionInProgress = null;
+      this.transitionInProgress = undefined;
     }
   }
 
@@ -315,7 +367,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     if (this.carouselContents) {
       this.carouselContents.forEach((slide, i) => {
-        slide.isActive = index === i;
+        if (this.dir === 'rtl') {
+          slide.isActive = index === this.carouselContents.length - 1 - i;
+        } else {
+          slide.isActive = index === i;
+        }
       });
     }
 
@@ -325,7 +381,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   /**
    * Drag carousel.
    */
-  pointerDown = (event: TouchEvent | MouseEvent) => {
+  pointerDown = (event: TouchEvent | MouseEvent): void => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
@@ -342,7 +398,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
 
             // Switch to another slide if delta is bigger than third of the width.
-            if (Math.abs(xDelta) > this.gestureRect!.width / 3) {
+            if (
+              Math.abs(xDelta) > this.gestureRect!.width / 3 &&
+              (this.nzLoop ||
+                (xDelta <= 0 && this.activeIndex + 1 < this.carouselContents.length) ||
+                (xDelta > 0 && this.activeIndex > 0))
+            ) {
               this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
             } else {
               this.goTo(this.activeIndex);

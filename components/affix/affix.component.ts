@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -25,15 +26,15 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { map, takeUntil, throttleTime } from 'rxjs/operators';
+
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { getStyleAsText, numberAttributeWithZeroFallback, shallowEqual } from 'ng-zorro-antd/core/util';
 
-import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { auditTime, map, takeUntil } from 'rxjs/operators';
-
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
 
@@ -44,6 +45,8 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
+  standalone: true,
+  imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>
       <ng-content></ng-content>
@@ -54,21 +57,17 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzOffsetTop: NumberInput;
-  static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
   @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
   @Input() nzTarget?: string | Element | Window;
 
-  @Input()
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number | null>()
-  @InputNumber(undefined)
   nzOffsetTop?: null | number;
 
-  @Input()
+  @Input({ transform: numberAttributeWithZeroFallback })
   @WithConfig<number | null>()
-  @InputNumber(undefined)
   nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
@@ -80,9 +79,9 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
-  private offsetChanged$ = new ReplaySubject(1);
-  private destroy$ = new Subject<void>();
-  private timeout?: number;
+  private offsetChanged$ = new ReplaySubject<void>(1);
+  private destroy$ = new Subject<boolean>();
+  private timeout?: ReturnType<typeof setTimeout>;
   private document: Document;
 
   private get target(): Element | Window {
@@ -98,6 +97,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     private ngZone: NgZone,
     private platform: Platform,
     private renderer: Renderer2,
+    private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
     @Optional() private directionality: Directionality
   ) {
@@ -142,24 +142,23 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     }
 
     this.removeListeners();
-    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() => {
-      return merge(
+    const el = this.target === window ? this.document.body : (this.target as Element);
+    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
+      merge(
         ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
-        this.offsetChanged$.pipe(
-          takeUntil(this.destroy$),
-          map(() => ({}))
-        )
+        this.offsetChanged$.pipe(map(() => ({}))),
+        this.nzResizeObserver.observe(el)
       )
-        .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
-        .subscribe(e => this.updatePosition(e as Event));
-    });
+        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
+        .subscribe(e => this.updatePosition(e as Event))
+    );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
@@ -274,7 +273,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         width,
         height: elemSize.height
       });
-    } else if (scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight && offsetMode.bottom) {
+    } else if (
+      scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight &&
+      offsetMode.bottom
+    ) {
       const targetBottomOffset = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
       const width = elemOffset.width;
       this.setAffixStyle(e, {

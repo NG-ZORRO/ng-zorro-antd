@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,11 +14,17 @@ import {
   OnDestroy,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDropDownDirective, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
+import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 
 @Component({
@@ -41,7 +48,7 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       (nzVisibleChange)="menuVisChange($event)"
       (mouseenter)="showItems()"
     >
-      <i nz-icon nzType="ellipsis"></i>
+      <span nz-icon nzType="ellipsis"></span>
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu *ngIf="menuOpened">
@@ -55,7 +62,9 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
           (click)="onSelect(item)"
           (contextmenu)="onContextmenu(item, $event)"
         >
-          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">{{ item.tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">
+            {{ item.tab.label }}
+          </ng-container>
         </li>
       </ul>
     </nz-dropdown-menu>
@@ -64,20 +73,34 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
   host: {
     class: 'ant-tabs-nav-operations',
     '[class.ant-tabs-nav-operations-hidden]': 'items.length === 0'
-  }
+  },
+  imports: [
+    NzIconModule,
+    NgIf,
+    NgForOf,
+    NzOutletModule,
+    NzTabAddButtonComponent,
+    NzDropdownMenuComponent,
+    NzMenuModule,
+    NzDropDownDirective
+  ],
+  standalone: true
 })
 export class NzTabNavOperationComponent implements OnDestroy {
   @Input() items: NzTabNavItemDirective[] = [];
-  @Input() addable: boolean = false;
+  @Input({ transform: booleanAttribute }) addable: boolean = false;
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
 
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly selected = new EventEmitter<NzTabNavItemDirective>();
-  closeAnimationWaitTimeoutId = -1;
+  closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
   menuOpened = false;
 
   private readonly element: HTMLElement;
-  constructor(public cdr: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {
+  constructor(
+    public cdr: ChangeDetectorRef,
+    private elementRef: ElementRef<HTMLElement>
+  ) {
     this.element = this.elementRef.nativeElement;
   }
 

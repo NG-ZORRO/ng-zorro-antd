@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
+
 import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 @Component({
@@ -19,14 +21,14 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
       [nzEditorOption]="{ language: 'javascript' }"
     ></nz-code-editor>
     <ng-template #toolkit>
-      <i
+      <span
         nz-icon
         [class.active]="fullScreen"
         nz-tooltip
         nzTooltipTitle="Toggle Fullscreen"
         [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
-      ></i>
+      ></span>
     </ng-template>
   `,
   styles: [
@@ -76,8 +78,11 @@ export class NzDemoCodeEditorComplexComponent {
 console.log(flatten(['1', 2, [[3]]]))`;
   private document: Document;
 
-  // tslint:disable-next-line no-any
-  constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  constructor(
+    @Inject(DOCUMENT) document: NzSafeAny,
+    private renderer: Renderer2
+  ) {
     this.document = document;
   }
 

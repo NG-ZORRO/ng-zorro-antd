@@ -16,35 +16,34 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute
 } from '@angular/core';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
 import { Observable, Subject } from 'rxjs';
-
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { takeUntil } from 'rxjs/operators';
 
-@Component({ template: '' })
-// tslint:disable-next-line: component-class-suffix
-export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDirectoryTree: BooleanInput;
-  static ngAcceptInputType_nzBlockNode: BooleanInput;
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-  private destroy$ = new Subject();
+@Component({
+  template: '',
+  standalone: true
+})
+// eslint-disable-next-line @angular-eslint/component-class-suffix
+export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
+  private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
-  @Input('nzTreeControl') treeControl!: TreeControl<T, NzSafeAny>;
+  @Input('nzTreeControl') override treeControl!: TreeControl<T, NzSafeAny>;
   @Input('nzDataSource')
-  get dataSource(): DataSource<T> | Observable<T[]> | T[] {
+  override get dataSource(): DataSource<T> | Observable<T[]> | T[] {
     return super.dataSource;
   }
-  set dataSource(dataSource: DataSource<T> | Observable<T[]> | T[]) {
+  override set dataSource(dataSource: DataSource<T> | Observable<T[]> | T[]) {
     super.dataSource = dataSource;
   }
-  @Input() @InputBoolean() nzDirectoryTree = false;
-  @Input() @InputBoolean() nzBlockNode = false;
+  @Input({ transform: booleanAttribute }) nzDirectoryTree = false;
+  @Input({ transform: booleanAttribute }) nzBlockNode = false;
 
   constructor(
     protected differs: IterableDiffers,
@@ -55,7 +54,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     super(differs, changeDetectorRef);
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
 
     if (this.directionality) {
@@ -67,13 +66,18 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
-  renderNodeChanges(data: T[] | ReadonlyArray<T>, dataDiffer?: IterableDiffer<T>, viewContainer?: ViewContainerRef, parentData?: T): void {
+  override renderNodeChanges(
+    data: T[] | readonly T[],
+    dataDiffer?: IterableDiffer<T>,
+    viewContainer?: ViewContainerRef,
+    parentData?: T
+  ): void {
     super.renderNodeChanges(data, dataDiffer, viewContainer, parentData);
     this._dataSourceChanged.next();
   }

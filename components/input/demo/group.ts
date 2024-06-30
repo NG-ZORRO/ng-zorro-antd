@@ -93,6 +93,11 @@ import { Component } from '@angular/core';
         border-left-width: 0px;
       }
 
+      .ant-input.demo-input-right:hover,
+      .ant-input.demo-input-right:focus {
+        border-left-width: 1px;
+      }
+
       .ant-input.ant-input-rtl.demo-input-right {
         border-right-width: 0px;
       }

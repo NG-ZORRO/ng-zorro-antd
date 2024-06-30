@@ -1,16 +1,18 @@
 
 
 .simulate-iframe {
-  transform: translateX(0px);
   display: block;
+  transform: translateX(0);
+
   > * {
     display: block;
     height: 100%;
     overflow: auto;
-    transform: translateX(0px);
+    transform: translateX(0);
+
     > * {
-      overflow: auto;
       height: 100%;
+      overflow: auto;
     }
   }
 }

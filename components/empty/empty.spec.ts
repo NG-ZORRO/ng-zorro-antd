@@ -4,6 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 
 import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+
 import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
@@ -137,7 +138,7 @@ describe('nz-empty', () => {
       });
 
       it("should components' prop has priority", fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -174,7 +175,7 @@ describe('nz-empty', () => {
       }));
 
       it('should support string, template and component', fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -239,7 +240,7 @@ describe('nz-empty', () => {
       });
 
       it('should support injection', fakeAsync(() => {
-        const refresh = () => {
+        const refresh = (): void => {
           fixture.detectChanges();
           tick(100);
           fixture.detectChanges();
@@ -306,11 +307,9 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
-  // tslint:disable-next-line:no-selector
+  // eslint-disable-next-line
   selector: 'nz-empty-test-custom',
-  template: `
-    <div>I'm in component {{ name }}</div>
-  `
+  template: ` <div>I'm in component {{ name }}</div> `
 })
 export class NzEmptyTestCustomComponent {
   constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}

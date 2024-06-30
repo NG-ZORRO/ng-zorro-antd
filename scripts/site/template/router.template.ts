@@ -3,6 +3,7 @@ export interface RouterList {
     name: string;
     language: string;
     experimentalChildren: Array<{
+      tag: string;
       path: string;
       hidden: boolean;
       description: string;
@@ -12,6 +13,7 @@ export interface RouterList {
     }>;
     children: Array<{
       cover: string;
+      tag: string;
       path: string;
       hidden: boolean;
       description: string;
@@ -25,6 +27,7 @@ export interface RouterList {
     label: string;
     language: string;
     order: number;
+    hidden: boolean;
     description: string;
     experimental: boolean;
   }>;

@@ -5,7 +5,7 @@
 @number-prefix-cls: ~'@{ant-prefix}-scroll-number';
 
 .@{badge-prefix-cls} {
-  .reset-component;
+  .reset-component();
 
   position: relative;
   display: inline-block;
@@ -23,8 +23,9 @@
     white-space: nowrap;
     text-align: center;
     background: @badge-color;
-    border-radius: @badge-height / 2;
+    border-radius: (@badge-height / 2);
     box-shadow: 0 0 0 1px @shadow-color-inverse;
+
     a,
     a:hover {
       color: @badge-text-color;
@@ -37,7 +38,7 @@
     padding: 0;
     font-size: @badge-font-size-sm;
     line-height: @badge-height-sm;
-    border-radius: @badge-height-sm / 2;
+    border-radius: (@badge-height-sm / 2);
   }
 
   &-multiple-words {
@@ -47,10 +48,16 @@
   &-dot {
     z-index: @zindex-badge;
     width: @badge-dot-size;
+    min-width: @badge-dot-size;
     height: @badge-dot-size;
     background: @highlight-color;
     border-radius: 100%;
     box-shadow: 0 0 0 1px @shadow-color-inverse;
+  }
+
+  // Tricky way to resolve https://github.com/ant-design/ant-design/issues/30088
+  &-dot.@{number-prefix-cls} {
+    transition: background 1.5s;
   }
 
   &-count,
@@ -61,6 +68,10 @@
     right: 0;
     transform: translate(50%, -50%);
     transform-origin: 100% 0%;
+
+    &.@{iconfont-css-prefix}-spin {
+      animation: antBadgeLoadingCircle 1s infinite linear;
+    }
   }
 
   &-status {
@@ -76,12 +87,15 @@
       vertical-align: middle;
       border-radius: 50%;
     }
+
     &-success {
       background-color: @success-color;
     }
+
     &-processing {
       position: relative;
       background-color: @processing-color;
+
       &::after {
         position: absolute;
         top: 0;
@@ -94,12 +108,15 @@
         content: '';
       }
     }
+
     &-default {
       background-color: @normal-color;
     }
+
     &-error {
       background-color: @error-color;
     }
+
     &-warning {
       background-color: @warning-color;
     }
@@ -147,15 +164,17 @@
       vertical-align: middle;
     }
 
-    .@{ant-prefix}-scroll-number {
+    .@{number-prefix-cls}-custom-component,
+    .@{badge-prefix-cls}-count {
+      transform: none;
+    }
+
+    .@{number-prefix-cls}-custom-component,
+    .@{number-prefix-cls} {
       position: relative;
       top: auto;
       display: block;
       transform-origin: 50% 50%;
-    }
-
-    .@{badge-prefix-cls}-count {
-      transform: none;
     }
   }
 }
@@ -165,21 +184,36 @@
     transform: scale(0.8);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(2.4);
     opacity: 0;
   }
 }
 
+// Safari will blink with transform when inner element has absolute style.
+.safari-fix-motion() {
+  /* stylelint-disable property-no-vendor-prefix */
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  /* stylelint-enable property-no-vendor-prefix */
+}
+
 .@{number-prefix-cls} {
   overflow: hidden;
+  direction: ltr;
+
   &-only {
+    position: relative;
     display: inline-block;
     height: @badge-height;
     transition: all @animation-duration-slow @ease-in-out;
+    .safari-fix-motion;
+
     > p.@{number-prefix-cls}-only-unit {
       height: @badge-height;
       margin: 0;
+      .safari-fix-motion;
     }
   }
 
@@ -193,6 +227,7 @@
     transform: scale(0) translate(50%, -50%);
     opacity: 0;
   }
+
   100% {
     transform: scale(1) translate(50%, -50%);
   }
@@ -202,6 +237,7 @@
   0% {
     transform: scale(1) translate(50%, -50%);
   }
+
   100% {
     transform: scale(0) translate(50%, -50%);
     opacity: 0;
@@ -213,6 +249,7 @@
     transform: scale(0);
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
   }
@@ -222,9 +259,21 @@
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
     opacity: 0;
+  }
+}
+
+@keyframes antBadgeLoadingCircle {
+  0% {
+    transform-origin: 50%;
+  }
+
+  100% {
+    transform: translate(50%, -50%) rotate(360deg);
+    transform-origin: 50%;
   }
 }
 

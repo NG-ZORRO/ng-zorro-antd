@@ -53,7 +53,7 @@
 @dropdown-line-height: 18px;
 
 // Menu
-@menu-item-padding: 0 12px;
+@menu-item-padding-horizontal: 12px;
 @menu-horizontal-line-height: 38px;
 @menu-inline-toplevel-item-height: 32px;
 @menu-item-height: 32px;
@@ -84,7 +84,6 @@
 // Radio
 // ---
 @radio-size: 14px;
-@radio-top: -2px;
 @radio-wrapper-margin-right: 6px;
 
 // Switch
@@ -105,7 +104,7 @@
 // ---
 @input-padding-vertical-base: round(
   max(
-    round((@input-height-base - @font-size-base * @line-height-base) / 2 * 10) / 10 -
+    (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
       @border-width-base,
     2px
   )
@@ -182,13 +181,15 @@
 // ---
 @drawer-header-padding: 11px @padding-lg;
 @drawer-footer-padding-vertical: @padding-sm;
+@drawer-footer-padding-horizontal: @padding-sm;
 @drawer-header-close-size: 44px;
 
 // Modal
 // --
-@modal-header-padding: 11px @modal-header-padding-horizontal;
+@modal-header-padding-vertical: 11px;
+@modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
 @modal-footer-padding-vertical: @padding-sm;
-@modal-header-close-size: 44px;
+@modal-header-close-size: @modal-header-title-line-height + 2 * @modal-header-padding-vertical;
 @modal-confirm-body-padding: 24px 24px 16px;
 
 // Message
@@ -202,7 +203,6 @@
 
 // Card
 // ---
-@card-padding-base: 16px;
 @card-head-height: 36px;
 @card-head-font-size: @card-head-font-size-sm;
 @card-head-padding: 8.5px;
@@ -231,7 +231,7 @@
 // ---
 @alert-with-description-no-icon-padding-vertical: 7px;
 @alert-with-description-padding-vertical: 11px;
-@alert-icon-top: 7px + @font-size-base * @line-height-base / 2 - @font-size-base / 2;
+@alert-icon-top: 7px + @font-size-base * (@line-height-base / 2) - (@font-size-base / 2);
 @alert-with-description-icon-size: 20px;
 
 // Skeleton
@@ -269,7 +269,7 @@
 @notification-padding-vertical: 12px;
 @notification-padding-horizontal: 16px;
 
-//  Result
+// Result
 // ---
 @result-title-font-size: 20px;
 @result-icon-font-size: 64px;

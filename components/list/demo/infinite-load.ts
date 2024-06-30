@@ -1,9 +1,10 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 interface ItemData {
   gender: string;
@@ -24,16 +25,18 @@ interface Name {
       <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
         <nz-list>
           <nz-list-item *cdkVirtualFor="let item of ds">
-            <nz-skeleton *ngIf="!item" [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
-            <nz-list-item-meta
-              *ngIf="item"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              [nzDescription]="item.email"
-            >
-              <nz-list-item-meta-title>
-                <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </nz-list-item-meta-title>
-            </nz-list-item-meta>
+            @if (item) {
+              <nz-list-item-meta
+                nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                [nzDescription]="item.email"
+              >
+                <nz-list-item-meta-title>
+                  <a href="https://ng.ant.design">{{ item.name.last }}</a>
+                </nz-list-item-meta-title>
+              </nz-list-item-meta>
+            } @else {
+              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+            }
           </nz-list-item>
         </nz-list>
       </cdk-virtual-scroll-viewport>
@@ -57,8 +60,11 @@ interface Name {
 export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   ds = new MyDataSource(this.http);
 
-  private destroy$ = new Subject();
-  constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
+  private destroy$ = new Subject<boolean>();
+  constructor(
+    private http: HttpClient,
+    private nzMessage: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.ds
@@ -70,7 +76,7 @@ export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }
@@ -125,7 +131,10 @@ class MyDataSource extends DataSource<ItemData> {
     this.fetchedPages.add(page);
 
     this.http
-      .get<{ results: ItemData[] }>(`https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`)
+      .get<{ results: ItemData[] }>(
+        `https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`
+      )
+      .pipe(catchError(() => of({ results: [] })))
       .subscribe(res => {
         this.cachedData.splice(page * this.pageSize, this.pageSize, ...res.results);
         this.dataStream.next(this.cachedData);

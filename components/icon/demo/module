@@ -2,5 +2,28 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
-export const moduleList = [ NzIconModule, NzRadioModule, NzInputModule, NzBadgeModule ];
+export const moduleList = [
+  NzIconModule,
+  NzRadioModule,
+  NzInputModule,
+  NzBadgeModule,
+  NzButtonModule,
+  NzMessageModule,
+  NzModalModule,
+  NzPopoverModule,
+  NzProgressModule,
+  NzResultModule,
+  NzSpinModule,
+  NzToolTipModule,
+  NzUploadModule,
+];

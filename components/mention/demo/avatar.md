@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 6
 title:
   zh-CN: 头像
   en-US: Icon Image

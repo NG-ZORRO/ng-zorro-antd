@@ -7,6 +7,14 @@ import { Component } from '@angular/core';
       <nz-sider nzCollapsible nzWidth="200px">
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
+          <li nz-menu-item>
+            <span nz-icon nzType="pie-chart"></span>
+            <span>Option 1</span>
+          </li>
+          <li nz-menu-item>
+            <span nz-icon nzType="desktop"></span>
+            <span>Option 2</span>
+          </li>
           <li nz-submenu nzTitle="User" nzIcon="user">
             <ul>
               <li nz-menu-item>Tom</li>
@@ -21,7 +29,7 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <i nz-icon nzType="file"></i>
+            <span nz-icon nzType="file"></span>
             <span>File</span>
           </li>
         </ul>
@@ -33,9 +41,7 @@ import { Component } from '@angular/core';
             <nz-breadcrumb-item>User</nz-breadcrumb-item>
             <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <div class="inner-content">
-            Bill is a cat.
-          </div>
+          <div class="inner-content">Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>
@@ -45,8 +51,8 @@ import { Component } from '@angular/core';
     `
       .logo {
         height: 32px;
-        background: rgba(255, 255, 255, 0.2);
         margin: 16px;
+        background: rgba(255, 255, 255, 0.3);
       }
 
       nz-header {

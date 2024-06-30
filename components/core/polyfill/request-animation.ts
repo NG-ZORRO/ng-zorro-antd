@@ -2,9 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-// tslint:disable: typedef no-invalid-this
+/* eslint-disable no-invalid-this */
 const availablePrefixes = ['moz', 'ms', 'webkit'];
 
 function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
@@ -12,7 +13,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
   return function (callback: FrameRequestCallback): number {
     const currTime = new Date().getTime();
     const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    const id = setTimeout(() => {
+    const id = window.setTimeout(() => {
       callback(currTime + timeToCall);
     }, timeToCall);
     lastTime = currTime + timeToCall;
@@ -45,7 +46,10 @@ export function cancelRequestAnimationFrame(id: number): NzSafeAny {
   )[0];
 
   return prefix
-    ? ((window as NzSafeAny)[`${prefix}CancelAnimationFrame`] || (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`])
+    ? (
+        (window as NzSafeAny)[`${prefix}CancelAnimationFrame`] ||
+        (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`]
+      )
         // @ts-ignore
         .call(this, id)
     : clearTimeout(id);

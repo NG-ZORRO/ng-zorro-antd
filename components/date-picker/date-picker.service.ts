@@ -4,13 +4,15 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { ReplaySubject, Subject } from 'rxjs';
+
+import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
+
 import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
-  initialValue?: CompatibleValue;
+  initialValue!: CompatibleValue;
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
@@ -19,15 +21,14 @@ export class DatePickerService implements OnDestroy {
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
   emitValue$ = new Subject<void>();
-  inputPartChange$ = new Subject<RangePartType>();
+  inputPartChange$ = new Subject<RangePartType | null>();
 
-  initValue(): void {
-    if (this.isRange) {
-      this.setActiveDate([]);
-      this.value = this.initialValue = [];
-    } else {
-      this.value = this.initialValue = null;
+  initValue(reset: boolean = false): void {
+    if (reset) {
+      this.initialValue = this.isRange ? [] : null;
     }
+
+    this.setValue(this.initialValue);
   }
 
   hasValue(value: CompatibleValue = this.value): boolean {
@@ -46,14 +47,15 @@ export class DatePickerService implements OnDestroy {
     }
   }
 
-  setActiveDate(value: CompatibleValue, allowSameInTwoPanel: boolean = false, mode: NormalizedMode = 'month'): void {
+  setActiveDate(value: CompatibleValue, hasTimePicker: boolean = false, mode: NormalizedMode = 'month'): void {
     const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
       date: 'month',
       month: 'year',
+      quarter: 'year',
       year: 'decade'
     };
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue(value as CandyDate[], allowSameInTwoPanel, parentPanels[mode]);
+      this.activeDate = normalizeRangeValue(value as CandyDate[], hasTimePicker, parentPanels[mode], this.activeInput);
     } else {
       this.activeDate = cloneDate(value);
     }
