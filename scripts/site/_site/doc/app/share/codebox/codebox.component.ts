@@ -122,7 +122,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     }
   }
 
-  openOnlineIDE(ide: 'StackBlitz' | 'CodeSandbox' = 'StackBlitz'): void {
+  openOnlineIDE(): void {
     setTimeout(() => {
       this.onlineIDELoading = !this.codeLoaded;
       this.check();
@@ -130,11 +130,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.getDemoCode().subscribe(data => {
       this.onlineIDELoading = false;
       this.check();
-      if (ide === 'StackBlitz') {
-        this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
-      } else {
-        this.onlineIdeService.openOnCodeSandbox(this.nzComponentName, data.rawCode, this.nzSelector);
-      }
+      this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
     });
   }
 

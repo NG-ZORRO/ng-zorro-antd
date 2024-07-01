@@ -48,8 +48,6 @@
               "site/doc/styles.less"
             ],
             "allowedCommonJsDependencies": [
-              "codesandbox",
-              "codesandbox-import-utils",
               "@ant-design/colors",
               "cron-parser"
             ]

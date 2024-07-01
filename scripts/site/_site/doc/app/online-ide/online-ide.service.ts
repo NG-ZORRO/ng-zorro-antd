@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 
 import sdk from '@stackblitz/sdk';
-import { getParameters } from 'codesandbox/lib/api/define';
 import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
@@ -33,7 +32,7 @@ export class OnlineIdeService {
     'core-js': '~3.6.5',
     'date-fns': '^2.16.1',
     tslib: '^2.0.0',
-    'zone.js': '~0.11.1',
+    'zone.js': '~0.14.2',
     'ng-zorro-antd': `^${VERSION.full}`,
     // demo needs
     d3: '^6.3.1',
@@ -66,93 +65,5 @@ export class OnlineIdeService {
         'src/styles.css': `/* Add application styles & imports to this file! */;`
       }
     });
-  }
-
-  openOnCodeSandbox(componentName: string, appComponentCode: string, selector: string): void {
-    const parameters = getParameters({
-      files: {
-        'package.json': {
-          content: JSON.stringify(
-            {
-              dependencies: this.dependencies
-            },
-            null,
-            2
-          ),
-          isBinary: false
-        },
-        'angular.json': {
-          content: `${JSON.stringify(angularJSON, null, 2)}`,
-          isBinary: false
-        },
-        'src/index.html': {
-          content: `
-<!DOCTYPE html>
-<html>
-  <body>
-    <${selector}>loading</${selector}>
-   </body>
-</html>`,
-          isBinary: false
-        },
-        'src/app/app.module.ts': {
-          content: appModuleTS(componentName),
-          isBinary: false
-        },
-        'src/main.ts': {
-          content: mainTS,
-          isBinary: false
-        },
-        'src/polyfills.ts': {
-          content: polyfillTS,
-          isBinary: false
-        },
-        'src/app/app.component.ts': {
-          content: appComponentCode,
-          isBinary: false
-        },
-        'src/app/ng-zorro-antd.module.ts': {
-          content: nzModuleTS,
-          isBinary: false
-        },
-        'src/styles.css': {
-          content: '/* Add application styles & imports to this file! */;',
-          isBinary: false
-        },
-        'environments/environment.ts': {
-          content: environmentTS,
-          isBinary: false
-        },
-        'sandbox.config.json': {
-          content: JSON.stringify(
-            {
-              infiniteLoopProtection: true,
-              hardReloadOnChange: false,
-              view: 'browser',
-              template: 'node',
-              container: {
-                node: '14',
-                port: 4200
-              }
-            },
-            null,
-            2
-          ),
-          isBinary: false
-        }
-      }
-    });
-
-    const form = this.document.createElement('form');
-    const parametersInput = this.document.createElement('input');
-    form.method = 'POST';
-    form.action = 'https://codesandbox.io/api/v1/sandboxes/define?module=/src/app/app.component.ts';
-    form.target = '_blank';
-    parametersInput.name = 'parameters';
-    parametersInput.value = parameters;
-    form.appendChild(parametersInput);
-    this.document.body.append(form);
-    form.submit();
-    this.document.body.removeChild(form);
   }
 }
