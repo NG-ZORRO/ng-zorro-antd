@@ -177,7 +177,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           this.isFocused = true;
-          if (this.nzOnFocus.observers.length) {
+          if (this.nzOnFocus.observed) {
             this.ngZone.run(() => this.nzOnFocus.emit(event));
           }
         });
@@ -186,7 +186,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           this.isFocused = false;
-          if (this.nzOnBlur.observers.length) {
+          if (this.nzOnBlur.observed) {
             this.ngZone.run(() => this.nzOnBlur.emit(event));
           }
         });
