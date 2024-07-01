@@ -205,10 +205,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
-    if (nzVisible) {
+    if (nzVisible !== undefined) {
       this.inputVisible$.next(this.nzVisible);
     }
-    if (nzDisabled) {
+    if (nzDisabled !== undefined) {
       const nativeElement = this.elementRef.nativeElement;
       if (this.nzDisabled) {
         this.renderer.setAttribute(nativeElement, 'disabled', '');
