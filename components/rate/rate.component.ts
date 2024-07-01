@@ -16,7 +16,6 @@ import {
   NgZone,
   OnChanges,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -134,7 +133,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     private ngZone: NgZone,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private destroy$: NzDestroyService
   ) {}
 

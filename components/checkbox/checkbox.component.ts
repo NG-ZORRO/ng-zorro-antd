@@ -16,12 +16,12 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, fromEvent } from 'rxjs';
@@ -130,14 +130,15 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     this.inputElement.nativeElement.blur();
   }
 
+  private nzCheckboxWrapperComponent = inject(NzCheckboxWrapperComponent, { optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef<HTMLElement>,
-    @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Optional() public nzFormStatusService?: NzFormStatusService
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

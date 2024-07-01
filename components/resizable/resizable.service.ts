@@ -4,17 +4,16 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isTouchEvent } from 'ng-zorro-antd/core/util';
 
 import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 @Injectable()
 export class NzResizableService implements OnDestroy {
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
   private listeners = new Map<string, (event: MouseEvent | TouchEvent) => void>();
 
   /**
@@ -32,12 +31,7 @@ export class NzResizableService implements OnDestroy {
   documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   mouseEnteredOutsideAngular$ = new Subject<boolean>();
 
-  constructor(
-    private ngZone: NgZone,
-    @Inject(DOCUMENT) document: NzSafeAny
-  ) {
-    this.document = document;
-  }
+  constructor(private ngZone: NgZone) {}
 
   startResizing(event: MouseEvent | TouchEvent): void {
     const _isTouchEvent = isTouchEvent(event);

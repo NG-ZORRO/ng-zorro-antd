@@ -4,9 +4,9 @@
  */
 
 import { formatDate } from '@angular/common';
-import { Inject, Injectable, Optional, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, getQuarter, parse as fnsParse } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse, getQuarter } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -15,8 +15,7 @@ import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   const i18n = inject(NzI18nService);
-  const config = inject(NZ_DATE_CONFIG, { optional: true });
-  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n, config) : new DateHelperByDatePipe(i18n, config);
+  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n) : new DateHelperByDatePipe(i18n);
 }
 
 /**
@@ -28,14 +27,9 @@ export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   useFactory: DATE_HELPER_SERVICE_FACTORY
 })
 export abstract class DateHelperService {
-  protected config: NzDateConfig;
+  protected config: NzDateConfig = mergeDateConfig(inject(NZ_DATE_CONFIG, { optional: true }));
 
-  constructor(
-    protected i18n: NzI18nService,
-    @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig | null
-  ) {
-    this.config = mergeDateConfig(config);
-  }
+  constructor(protected i18n: NzI18nService) {}
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;

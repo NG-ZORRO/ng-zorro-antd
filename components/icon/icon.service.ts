@@ -6,7 +6,7 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken, OnDestroy, Optional, RendererFactory2, Self } from '@angular/core';
+import { Injectable, InjectionToken, OnDestroy, RendererFactory2, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 
@@ -14,7 +14,6 @@ import { IconDefinition, IconService } from '@ant-design/icons-angular';
 
 import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
 
@@ -22,7 +21,7 @@ export interface NzIconfontOption {
   scriptUrl: string;
 }
 
-export const NZ_ICONS = new InjectionToken('nz_icons');
+export const NZ_ICONS = new InjectionToken<IconDefinition[]>('nz_icons');
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 
@@ -81,12 +80,15 @@ export class NzIconService extends IconService implements OnDestroy {
     rendererFactory: RendererFactory2,
     sanitizer: DomSanitizer,
     protected nzConfigService: NzConfigService,
-    private platform: Platform,
-    @Optional() handler: HttpBackend,
-    @Optional() @Inject(DOCUMENT) _document: NzSafeAny,
-    @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[]
+    private platform: Platform
   ) {
-    super(rendererFactory, handler, _document, sanitizer, [...NZ_ICONS_USED_BY_ZORRO, ...(icons || [])]);
+    super(
+      rendererFactory,
+      inject(HttpBackend, { optional: true }) as HttpBackend, // TODO: fix the type
+      inject(DOCUMENT),
+      sanitizer,
+      [...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || [])]
+    );
 
     this.onConfigChange();
     this.configDefaultTwotoneColor();
@@ -128,16 +130,14 @@ export class NzIconService extends IconService implements OnDestroy {
   }
 }
 
-export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
+export const NZ_ICONS_PATCH = new InjectionToken<IconDefinition[]>('nz_icons_patch');
 
 @Injectable()
 export class NzIconPatchService {
   patched = false;
+  private extraIcons = inject(NZ_ICONS_PATCH, { self: true });
 
-  constructor(
-    @Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[],
-    private rootIconService: NzIconService
-  ) {}
+  constructor(private rootIconService: NzIconService) {}
 
   doPatch(): void {
     if (this.patched) {

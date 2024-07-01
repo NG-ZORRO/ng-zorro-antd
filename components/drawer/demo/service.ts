@@ -1,6 +1,6 @@
 /* declarations: NzDrawerCustomComponent */
 
-import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
 
 import { NZ_DRAWER_DATA, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 
@@ -91,11 +91,9 @@ export class NzDemoDrawerServiceComponent {
 })
 export class NzDrawerCustomComponent {
   // @Input() value = '';
+  nzData: { value: string } = inject(NZ_DRAWER_DATA);
 
-  constructor(
-    private drawerRef: NzDrawerRef<string>,
-    @Inject(NZ_DRAWER_DATA) public nzData: { value: string }
-  ) {}
+  constructor(private drawerRef: NzDrawerRef<string>) {}
 
   close(): void {
     this.drawerRef.close(this.nzData);

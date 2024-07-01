@@ -13,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -128,7 +127,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

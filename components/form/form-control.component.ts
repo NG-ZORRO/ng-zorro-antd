@@ -10,16 +10,15 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -82,7 +81,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private get disableAutoTips(): boolean {
     return this.nzDisableAutoTips !== undefined
       ? toBoolean(this.nzDisableAutoTips)
-      : this.nzFormDirective?.nzDisableAutoTips;
+      : !!this.nzFormDirective?.nzDisableAutoTips;
   }
 
   status: NzFormControlStatusType = '';
@@ -225,7 +224,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     }
   }
 
-  private subscribeAutoTips(observable: Observable<NzSafeAny>): void {
+  private subscribeAutoTips(observable?: Observable<NzSafeAny>): void {
     observable?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       if (!this.disableAutoTips) {
         this.updateAutoErrorTip();
@@ -235,11 +234,12 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     });
   }
 
+  private nzFormItemComponent = inject(NzFormItemComponent, { host: true, optional: true });
+  private nzFormDirective = inject(NzFormDirective, { optional: true });
+
   constructor(
-    @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     private cdr: ChangeDetectorRef,
     i18n: NzI18nService,
-    @Optional() private nzFormDirective: NzFormDirective,
     private nzFormStatusService: NzFormStatusService
   ) {
     this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));

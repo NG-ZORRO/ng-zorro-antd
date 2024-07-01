@@ -13,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -74,7 +73,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
 
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {

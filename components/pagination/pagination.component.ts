@@ -14,7 +14,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -161,7 +160,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
     protected nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

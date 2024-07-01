@@ -12,10 +12,10 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -72,11 +72,8 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
-
-  constructor(
-    protected cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
-  ) {}
+  protected cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

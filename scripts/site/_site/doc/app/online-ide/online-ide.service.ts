@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import sdk from '@stackblitz/sdk';
 import { getParameters } from 'codesandbox/lib/api/define';
@@ -16,7 +16,7 @@ import polyfillTS from './files/polyfill';
   providedIn: 'root'
 })
 export class OnlineIdeService {
-  document: Document;
+  private document: Document = inject(DOCUMENT);
   template = 'angular-cli' as const;
   dependencies = {
     '@angular/animations': '^18.0.0',
@@ -42,10 +42,6 @@ export class OnlineIdeService {
     'cron-parser': '^4.6.0',
     'monaco-editor': '^0.33.0'
   };
-
-  constructor(@Inject(DOCUMENT) document: any) {
-    this.document = document;
-  }
 
   openOnStackBlitz(componentName: string, appComponentCode: string, selector: string): void {
     sdk.openProject({

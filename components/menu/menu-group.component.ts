@@ -8,7 +8,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Inject,
   inject,
   Input,
   Renderer2,
@@ -57,11 +56,11 @@ export function MenuGroupFactory(): boolean {
 export class NzMenuGroupComponent implements AfterViewInit {
   @Input() nzTitle?: string | TemplateRef<void>;
   @ViewChild('titleElement') titleElement?: ElementRef;
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
 
   constructor(
     public elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean
+    private renderer: Renderer2
   ) {
     const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group' : 'ant-menu-item-group';
     this.renderer.addClass(elementRef.nativeElement, className);

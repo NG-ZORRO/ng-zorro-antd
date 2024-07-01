@@ -13,12 +13,10 @@ import {
   Component,
   ContentChild,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChange,
   TemplateRef,
@@ -474,12 +472,13 @@ export class NzTreeComponent
   }
   // Handle emit event end
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     nzTreeService: NzTreeBaseService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private directionality: Directionality
   ) {
     super(nzTreeService);
   }

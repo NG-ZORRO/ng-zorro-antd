@@ -10,16 +10,15 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChanges,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
@@ -59,6 +58,11 @@ import { NzSubmenuService } from './submenu.service';
 })
 export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   private destroy$ = new Subject<boolean>();
+  private nzSubmenuService = inject(NzSubmenuService, { optional: true });
+  private directionality = inject(Directionality);
+  private routerLink = inject(RouterLink, { optional: true });
+  private router = inject(Router, { optional: true });
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
@@ -124,14 +128,9 @@ export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterC
 
   constructor(
     private nzMenuService: MenuService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private nzSubmenuService: NzSubmenuService,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    @Optional() private directionality: Directionality,
-    @Optional() private routerLink?: RouterLink,
-    @Optional() private router?: Router
+    private cdr: ChangeDetectorRef
   ) {
-    if (router) {
+    if (this.router) {
       this.router!.events.pipe(
         takeUntil(this.destroy$),
         filter(e => e instanceof NavigationEnd)

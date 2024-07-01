@@ -9,17 +9,16 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -103,13 +102,14 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  private nzCollapseComponent = inject(NzCollapseComponent, { host: true });
+  noAnimation = inject(NzNoAnimationDirective, { optional: true });
+
   constructor(
     public nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService,
-    @Host() private nzCollapseComponent: NzCollapseComponent,
-    @Optional() public noAnimation?: NzNoAnimationDirective
+    private destroy$: NzDestroyService
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

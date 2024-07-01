@@ -12,7 +12,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -80,7 +79,7 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;

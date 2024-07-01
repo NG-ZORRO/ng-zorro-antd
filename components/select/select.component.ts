@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { _getEventTarget, Platform } from '@angular/cdk/platform';
+import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
@@ -22,13 +22,11 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -37,7 +35,8 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
@@ -580,6 +579,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     });
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
     private destroy$: NzDestroyService,
@@ -589,10 +592,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     private renderer: Renderer2,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {

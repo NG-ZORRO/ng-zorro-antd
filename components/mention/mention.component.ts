@@ -23,13 +23,11 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -38,7 +36,8 @@ import {
   ViewChild,
   ViewChildren,
   ViewContainerRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subscription, fromEvent, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -165,6 +164,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private portal?: TemplatePortal<void>;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
+  private document: Document = inject(DOCUMENT);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -178,19 +178,19 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     return null;
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
-    @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
@@ -462,7 +462,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
 
     subscription.add(
       this.ngZone.runOutsideAngular(() =>
-        fromEvent<TouchEvent>(this.ngDocument, 'touchend').subscribe(
+        fromEvent<TouchEvent>(this.document, 'touchend').subscribe(
           event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
         )
       )

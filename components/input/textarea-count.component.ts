@@ -55,7 +55,7 @@ export class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
       merge(valueChanges, this.configChange$)
         .pipe(
           takeUntil(this.destroy$),
-          map(() => this.nzInputDirective.ngControl.value),
+          map(() => this.nzInputDirective.ngControl!.value),
           startWith(this.nzInputDirective.ngControl.value as string)
         )
         .subscribe(value => {

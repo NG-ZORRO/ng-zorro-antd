@@ -14,7 +14,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   TemplateRef,
   ViewEncapsulation,
@@ -120,7 +119,7 @@ export class NzCardComponent implements OnDestroy, OnInit {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

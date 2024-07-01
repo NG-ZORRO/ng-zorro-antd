@@ -3,31 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusTrapFactory } from '@angular/cdk/a11y';
-import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
-  NgZone,
   OnInit,
-  Optional,
   Output,
-  Renderer2,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
@@ -35,7 +26,6 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { nzModalAnimations } from './modal-animations';
 import { NzModalCloseComponent } from './modal-close.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
-import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'nz-modal-confirm-container',
@@ -135,21 +125,10 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
+  private i18n = inject(NzI18nService);
 
-  constructor(
-    ngZone: NgZone,
-    private i18n: NzI18nService,
-    host: ElementRef<HTMLElement>,
-    focusTrapFactory: FocusTrapFactory,
-    cdr: ChangeDetectorRef,
-    render: Renderer2,
-    overlayRef: OverlayRef,
-    nzConfigService: NzConfigService,
-    public override config: ModalOptions,
-    @Optional() @Inject(DOCUMENT) document: NzSafeAny,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
-  ) {
-    super(ngZone, host, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+  constructor() {
+    super();
 
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');

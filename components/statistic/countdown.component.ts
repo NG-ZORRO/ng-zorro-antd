@@ -3,11 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -15,12 +13,11 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { interval, Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
@@ -58,12 +55,10 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private updater_?: Subscription | null;
 
   constructor(
-    cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private platform: Platform,
-    @Optional() directionality: Directionality
+    private platform: Platform
   ) {
-    super(cdr, directionality);
+    super();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

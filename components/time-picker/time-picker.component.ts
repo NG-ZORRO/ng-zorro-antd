@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
-import { _getEventTarget, Platform } from '@angular/cdk/platform';
+import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import {
   AfterViewInit,
@@ -18,14 +18,14 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, of } from 'rxjs';
@@ -354,6 +354,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.close();
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     public nzConfigService: NzConfigService,
     protected i18n: NzI18nService,
@@ -362,9 +365,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private cdr: ChangeDetectorRef,
     private dateHelper: DateHelperService,
     private platform: Platform,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

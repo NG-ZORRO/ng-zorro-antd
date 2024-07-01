@@ -17,7 +17,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation,
@@ -117,7 +116,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     public nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

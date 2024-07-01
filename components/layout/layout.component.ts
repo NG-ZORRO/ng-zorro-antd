@@ -10,7 +10,6 @@ import {
   ContentChildren,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -39,7 +38,7 @@ export class NzLayoutComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

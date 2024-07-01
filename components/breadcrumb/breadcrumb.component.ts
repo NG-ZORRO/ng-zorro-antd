@@ -13,7 +13,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   TemplateRef,
   ViewEncapsulation,
@@ -73,7 +72,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

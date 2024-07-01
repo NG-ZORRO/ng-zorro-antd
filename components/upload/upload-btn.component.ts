@@ -10,13 +10,13 @@ import {
   ElementRef,
   Input,
   NgZone,
-  OnInit,
   OnDestroy,
-  Optional,
+  OnInit,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
-import { fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -310,7 +310,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
       withCredentials: args.withCredentials,
       headers: new HttpHeaders(args.headers)
     });
-    return this.http.request(req).subscribe(
+    return this.http!.request(req).subscribe(
       (event: HttpEvent<NzSafeAny>) => {
         if (event.type === HttpEventType.UploadProgress) {
           if (event.total! > 0) {
@@ -344,12 +344,13 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     }
   }
 
+  private http = inject(HttpClient, { optional: true });
+
   constructor(
     private ngZone: NgZone,
-    @Optional() private http: HttpClient,
     private elementRef: ElementRef
   ) {
-    if (!http) {
+    if (!this.http) {
       throw new Error(
         `Not found 'HttpClient', You can configure 'HttpClient' with 'provideHttpClient()' in your root module.`
       );

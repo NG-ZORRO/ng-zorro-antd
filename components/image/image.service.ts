@@ -6,7 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector, Optional } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 
@@ -26,7 +26,7 @@ export class NzImageService {
     private overlay: Overlay,
     private injector: Injector,
     private nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   preview(

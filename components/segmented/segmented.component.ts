@@ -15,7 +15,6 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -134,7 +133,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   constructor(
     public readonly nzConfigService: NzConfigService,
     private readonly cdr: ChangeDetectorRef,
-    @Optional() private readonly directionality: Directionality
+    private readonly directionality: Directionality
   ) {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(direction => {
       this.dir = direction;

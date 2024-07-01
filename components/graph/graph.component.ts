@@ -12,19 +12,18 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
@@ -183,11 +182,12 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
 
   coreTransform = (node: NzGraphGroupNode): string => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzGraphZoom = inject(NzGraphZoomDirective, { optional: true });
+
   constructor(
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzGraphZoom?: NzGraphZoomDirective
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {

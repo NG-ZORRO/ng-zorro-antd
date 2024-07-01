@@ -8,7 +8,6 @@ import {
   Component,
   ContentChild,
   EventEmitter,
-  Inject,
   InjectionToken,
   Input,
   OnChanges,
@@ -18,7 +17,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -66,6 +66,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   isActive: boolean = false;
   position: number | null = null;
   origin: number | null = null;
+  closestTabSet = inject(NZ_TAB_SET);
   readonly stateChanges = new Subject<void>();
 
   get content(): TemplateRef<NzSafeAny> {
@@ -75,8 +76,6 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   get label(): string | TemplateRef<NzSafeAny> {
     return this.nzTitle || this.nzTabLinkTemplateDirective?.templateRef;
   }
-
-  constructor(@Inject(NZ_TAB_SET) public closestTabSet: NzSafeAny) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTitle, nzDisabled, nzForceRender } = changes;

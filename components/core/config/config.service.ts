@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CSP_NONCE, Inject, Injectable, Optional } from '@angular/core';
+import { CSP_NONCE, Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, mapTo } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
+import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
 import { registerTheme } from './css-variables';
 
 const isDefined = function (value?: NzSafeAny): boolean {
@@ -25,20 +25,14 @@ export class NzConfigService {
   private configUpdated$ = new Subject<keyof NzConfig>();
 
   /** Global config holding property. */
-  private readonly config: NzConfig;
+  private readonly config: NzConfig = inject(NZ_CONFIG, { optional: true }) || {};
 
-  private readonly cspNonce?: string | null;
+  private readonly cspNonce: string | null = inject(CSP_NONCE, { optional: true });
 
-  constructor(
-    @Optional() @Inject(NZ_CONFIG) defaultConfig?: NzConfig,
-    @Optional() @Inject(CSP_NONCE) cspNonce?: string | null
-  ) {
-    this.config = defaultConfig || {};
-    this.cspNonce = cspNonce;
-
+  constructor() {
     if (this.config.theme) {
       // If theme is set with NZ_CONFIG, register theme to make sure css variables work
-      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, cspNonce);
+      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
   }
 

@@ -12,7 +12,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -123,7 +122,7 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

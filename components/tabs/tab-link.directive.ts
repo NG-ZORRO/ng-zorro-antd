@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Host, Optional, Self, TemplateRef } from '@angular/core';
+import { Directive, ElementRef, TemplateRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { TabTemplateContext } from './interfaces';
@@ -17,7 +17,7 @@ import { TabTemplateContext } from './interfaces';
   standalone: true
 })
 export class NzTabLinkTemplateDirective {
-  constructor(@Host() public templateRef: TemplateRef<TabTemplateContext>) {}
+  templateRef: TemplateRef<TabTemplateContext> = inject(TemplateRef, { host: true });
 }
 
 /**
@@ -29,8 +29,7 @@ export class NzTabLinkTemplateDirective {
   standalone: true
 })
 export class NzTabLinkDirective {
-  constructor(
-    public elementRef: ElementRef<HTMLAnchorElement>,
-    @Optional() @Self() public routerLink?: RouterLink
-  ) {}
+  routerLink = inject(RouterLink, { self: true, optional: true });
+
+  constructor(public elementRef: ElementRef<HTMLAnchorElement>) {}
 }

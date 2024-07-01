@@ -14,14 +14,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   HostListener,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -32,6 +30,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -392,6 +391,10 @@ export class NzCascaderComponent
     return !!this.nzLabelRender;
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     public cascaderService: NzCascaderService,
     public nzConfigService: NzConfigService,
@@ -401,10 +404,7 @@ export class NzCascaderComponent
     private destroy$: NzDestroyService,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);

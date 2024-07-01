@@ -11,16 +11,15 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, fromEvent } from 'rxjs';
@@ -84,6 +83,9 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   private isNgModel = false;
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
+  private directionality = inject(Directionality);
+  private nzRadioService = inject(NzRadioService, { optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
   isChecked = false;
   name: string | null = null;
   onChange: OnChangeType = () => {};
@@ -108,10 +110,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
-    @Optional() public nzFormStatusService?: NzFormStatusService
+    private focusMonitor: FocusMonitor
   ) {}
 
   setDisabledState(disabled: boolean): void {

@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -187,7 +186,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;

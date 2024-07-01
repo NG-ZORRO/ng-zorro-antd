@@ -7,7 +7,7 @@ import { getLocaleNumberSymbol, NgIf, NgTemplateOutlet, NumberSymbol } from '@an
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Input,
   LOCALE_ID,
   OnChanges,
@@ -46,7 +46,7 @@ export class NzStatisticNumberComponent implements OnChanges {
   displayInt = '';
   displayDecimal = '';
 
-  constructor(@Inject(LOCALE_ID) private locale_id: string) {}
+  private locale_id = inject(LOCALE_ID);
 
   ngOnChanges(): void {
     this.formatNumber();

@@ -10,18 +10,17 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChange,
   TemplateRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -406,13 +405,14 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     this.cdr.markForCheck();
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     public nzTreeService: NzTreeBaseService,
     private ngZone: NgZone,
     private renderer: Renderer2,
     private elementRef: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

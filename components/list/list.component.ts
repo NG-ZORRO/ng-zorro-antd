@@ -14,7 +14,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
@@ -167,7 +166,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, 
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

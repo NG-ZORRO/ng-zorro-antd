@@ -12,7 +12,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
@@ -82,7 +81,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

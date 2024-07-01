@@ -13,10 +13,10 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -66,15 +66,14 @@ export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
 
   active = false;
   selected = false;
+  nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef<HTMLElement>,
-    @Optional()
-    public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
+    private element: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {

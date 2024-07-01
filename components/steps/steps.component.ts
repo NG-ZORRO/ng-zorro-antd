@@ -15,7 +15,6 @@ import {
   NgZone,
   OnChanges,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -93,7 +92,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   constructor(
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private destroy$: NzDestroyService
   ) {}
 

@@ -19,13 +19,12 @@ import {
   Directive,
   ElementRef,
   ExistingProvider,
-  forwardRef,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
-  Optional,
-  ViewContainerRef
+  ViewContainerRef,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
@@ -90,14 +89,14 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
   private overlayOutsideClickSubscription!: Subscription;
+  private document: Document = inject(DOCUMENT);
+  private nzInputGroupWhitSuffixOrPrefixDirective = inject(NzInputGroupWhitSuffixOrPrefixDirective, { optional: true });
 
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
-    @Optional() @Inject(DOCUMENT) private document: NzSafeAny
+    private viewContainerRef: ViewContainerRef
   ) {}
 
   ngAfterViewInit(): void {

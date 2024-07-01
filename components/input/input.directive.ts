@@ -12,12 +12,11 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
-  Self,
   SimpleChanges,
   ViewContainerRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -69,14 +68,15 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   components: Array<ComponentRef<NzFormItemFeedbackIconComponent>> = [];
   private destroy$ = new Subject<void>();
 
+  ngControl = inject(NgControl, { self: true, optional: true });
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
-    @Optional() @Self() public ngControl: NgControl,
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected hostView: ViewContainerRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -94,11 +94,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     if (this.ngControl) {
       this.ngControl.statusChanges
         ?.pipe(
-          filter(() => this.ngControl.disabled !== null),
+          filter(() => this.ngControl!.disabled !== null),
           takeUntil(this.destroy$)
         )
         .subscribe(() => {
-          this.disabled$.next(this.ngControl.disabled!);
+          this.disabled$.next(this.ngControl!.disabled!);
         });
     }
 

@@ -16,10 +16,10 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -112,13 +112,14 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
 
+  private location = inject(Location, { optional: true });
+
   constructor(
-    @Optional() private location: Location,
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

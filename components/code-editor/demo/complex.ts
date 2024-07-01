@@ -1,8 +1,7 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, Renderer2, ViewChild, inject } from '@angular/core';
 
 import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 @Component({
@@ -76,15 +75,9 @@ export class NzDemoCodeEditorComplexComponent {
 }
 
 console.log(flatten(['1', 2, [[3]]]))`;
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  constructor(
-    @Inject(DOCUMENT) document: NzSafeAny,
-    private renderer: Renderer2
-  ) {
-    this.document = document;
-  }
+  constructor(private renderer: Renderer2) {}
 
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;
