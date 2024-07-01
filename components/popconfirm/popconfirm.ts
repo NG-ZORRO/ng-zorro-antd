@@ -59,6 +59,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input({ alias: 'nzPopconfirmArrowPointAtCenter', transform: booleanAttribute })
   override arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') override title?: NzTSType;
+  @Input('nzPopconfirmTitleContext') titleContext?: Object | null = null;
   @Input('nz-popconfirm') override directiveTitle?: NzTSType | null;
   @Input('nzPopconfirmTrigger') override trigger?: NzTooltipTrigger = 'click';
   @Input('nzPopconfirmPlacement') override placement?: string | string[] = 'top';
@@ -97,6 +98,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzIcon: ['nzIcon', () => this.nzIcon],
       nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
       nzPopconfirmBackdrop: ['nzBackdrop', () => this.nzPopconfirmBackdrop],
+      nzPopconfirmContext: ['nzTitleContext', () => this.titleContext],
       nzAutoFocus: ['nzAutoFocus', () => this.nzAutofocus],
       ...super.getProxyPropertyMap()
     };
@@ -164,7 +166,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
             <div>
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
-                  <ng-container *nzStringTemplateOutlet="nzTitle">
+                  <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">
                     <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
                       <span class="ant-popover-message-icon">
                         <span nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></span>
