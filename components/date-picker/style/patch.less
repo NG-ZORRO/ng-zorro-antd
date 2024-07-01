@@ -1,0 +1,34 @@
+// inline mode
+.@{picker-prefix-cls}-inline {
+  padding: 0;
+  border: none;
+  .@{picker-prefix-cls} {
+    &-range-arrow {
+      display: none !important;
+    }
+
+    &-dropdown {
+      z-index: auto;
+    }
+  }
+}
+
+// overwrite css in index.less to make sure picker popup is in the right position
+.@{picker-prefix-cls}-dropdown {
+  top: unset;
+  left: unset;
+}
+
+// ensure table is correct width to display week numbers in date mode
+.@{picker-prefix-cls}-panel-container.@{picker-prefix-cls}-week-number .@{picker-prefix-cls}-date-panel .@{picker-prefix-cls}-content {
+  width: 100%;
+
+  th {
+    width: inherit;
+  }
+}
+
+// make arrow in the right position in right direction
+.@{picker-prefix-cls}-range-arrow {
+  margin-right: @input-padding-horizontal-base * 1.5;
+}

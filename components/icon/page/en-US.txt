@@ -1,0 +1,20 @@
+{
+  chooseTheme: 'Select the Icon Theme',
+  direction: 'Directional Icons',
+  suggestion: 'Suggested Icons',
+  edit: 'Editor Icons',
+  data: 'Data Icons',
+  other: 'Application Icons',
+  logo: 'Brand and Logos',
+  search: 'Search icon here. Click icon to copy code.',
+  picSearcherIntro: 'AI Search by image is online, you are welcome to use it! 🎉',
+  picSearcherMatching: 'Matching...',
+  picSearcherModelLoading: 'Model is loading...',
+  picSearcherResultTip: 'Matched the following icons for you:',
+  picSearcherServerError: 'Predict service is temporarily unavailable',
+  picSearcherThIcon: 'Icon',
+  picSearcherThScore: 'Probability',
+  picSearcherTitle: 'Search by image',
+  picSearcherUploadHint: 'We will find the best matching icon based on the image provided',
+  picSearcherUploadText: 'Click, drag, or paste file to this area to upload'
+}

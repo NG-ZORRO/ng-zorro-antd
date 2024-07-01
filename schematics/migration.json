@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "migration-v18": {
+      "version": "18.0.0-0",
+      "description": "Updates NG-ZORRO to v18 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/8546]",
+      "factory": "./ng-update/index#updateToV18"
+    },
+    "ng-post-update": {
+      "description": "Prints out results after ng-update.",
+      "factory": "./ng-update/index#postUpdate",
+      "private": true
+    }
+  }
+}

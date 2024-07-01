@@ -1,0 +1,30 @@
+.@{breadcrumb-prefix-cls} {
+  &-link {
+    .@{iconfont-css-prefix} + span {
+      margin-left: 4px;
+    }
+  }
+
+  // We introduced an extra layer.
+  & > nz-breadcrumb-item:last-child {
+    color: @breadcrumb-last-item-color;
+
+    a {
+      color: @breadcrumb-last-item-color;
+    }
+  }
+
+  &-rtl {
+    > nz-breadcrumb-item {
+      float: right;
+    }
+  }
+}
+
+nz-breadcrumb {
+  display: block;
+}
+
+nz-breadcrumb-item:last-child .@{breadcrumb-prefix-cls}-separator {
+  display: none;
+}

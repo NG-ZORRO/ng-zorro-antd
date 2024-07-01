@@ -1,0 +1,76 @@
+textarea.nz-textarea-autosize-measuring {
+  height: auto !important;
+  // Having 2px top and bottom padding seems to fix a bug where Chrome gets an incorrect
+  // measurement. We just have to account for it later and subtract it off the final result.
+  padding: 2px 0 !important;
+  overflow: hidden !important;
+}
+
+.@{search-prefix} {
+  &-enter-button {
+    & + .@{ant-prefix}-input-group-addon,
+    input + .@{ant-prefix}-input-group-addon {
+      .@{search-rtl-cls}& {
+        .@{search-prefix}-button.@{ant-prefix}-btn-icon-only {
+          .square(@btn-height-base);
+          &.@{ant-prefix}-btn-sm {
+            .square(@btn-height-sm);
+          }
+          &.@{ant-prefix}-btn-lg {
+            .square(@btn-height-lg);
+          }
+        }
+      }
+    }
+  }
+}
+
+.ant-input-affix-wrapper-textarea-with-clear-btn .ant-input-suffix {
+  margin-left: 0;
+}
+
+nz-form-item-feedback-icon.@{ant-prefix}-input {
+  &-suffix {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: 100%;
+    margin-right: @padding-sm;
+    margin-left: @input-affix-margin;
+    pointer-events: none;
+  }
+}
+
+.@{ant-prefix}-input {
+  &-status-error,
+  &-status-warning,
+  &-status-validating,
+  &-status-success {
+    &.@{ant-prefix}-input-has-feedback {
+      padding-right: @padding-lg + @padding-xss;
+    }
+  }
+}
+
+.@{ant-prefix}-input-textarea-show-count {
+  position: relative;
+  display: block;
+}
+
+.input() {
+  &-stepperless[type='number'] {
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      margin: 0;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-appearance: none;
+    }
+  }
+}

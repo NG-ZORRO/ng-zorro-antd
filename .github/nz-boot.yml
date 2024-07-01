@@ -1,0 +1,129 @@
+pullRequest:
+  preview:
+    replay: |
+      This [preview](https://preview-{number}-ng-zorro-antd.surge.sh/) will be available after the AzureCI is passed.
+issue:
+  labeledReplay:
+    - labels:
+        - help wanted
+      replay: |
+        Hello @{user}. We totally like your proposal/feedback, welcome to [send us a Pull Request](https://help.github.com/en/articles/creating-a-pull-request) for it. Please fill the [Pull Request Template](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/.github/PULL_REQUEST_TEMPLATE.md) here, provide documentation/test cases if needed and make sure CI passed, we will review it soon. Appreciate it advance and we are looking forward to your contribution!
+
+        你好 @{user}, 我们完全同意你的提议/反馈，欢迎直接在此仓库 [创建一个 Pull Request](https://help.github.com/en/articles/creating-a-pull-request) 来解决这个问题。请务必填写 Pull Request 内的[预设模板](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/.github/PULL_REQUEST_TEMPLATE.md)，提供改动所需相应的测试用例、文档等，并确保 CI 通过，我们会尽快进行 Review，提前感谢和期待您的贡献！
+        ![giphy](https://user-images.githubusercontent.com/507615/62342668-4735dc00-b51a-11e9-92a7-d46fbb1cc0c7.gif)
+    - labels:
+        - Upgrade Deps
+      replay: |
+        Hello @{user}.
+        - If you use npm, please try `rm -rf node_modules && npm install` to upgrade all your deps.
+        - If you use yarn, you may need `yarn upgrade`.
+
+        <img src="https://cloud.githubusercontent.com/assets/465125/26667345/4bcc8f10-46d7-11e7-8c72-32a0c68ea7ca.jpg" width="500" height="300">
+    - labels:
+        - Usage
+        - Question
+      replay: |
+        Hello @{user}, we use GitHub issues to trace bugs or discuss plans of Ant Design.
+        So, please [don't ask usage questions](https://github.com/ant-design/ant-design/issues/2320) here.
+        You can try to ask questions on [Stack Overflow](http://stackoverflow.com/questions/tagged/ng-zorro-antd) or [Segment Fault](https://segmentfault.com/t/ng-zorro), then apply tag `ng-zorro-antd` or `ng-zorro` to your question.
+
+        你好 @{user}，Ant Design Issue 板块是用于 bug 反馈与需求讨论的地方。
+        请[勿询问如何使用的问题](https://github.com/ant-design/ant-design/issues/2320)
+        你可以试着在 [Stack Overflow](http://stackoverflow.com/questions/tagged/ng-zorro-antd) 或者 [Segment Fault](https://segmentfault.com/t/ng-zorro) 中提问（记得添加 `ng-zorro-antd` 或 `ng-zorro` 标签）。
+  translate:
+    replay: |
+      Translation of this issue:
+      ---
+      ## {title}
+
+      {body}
+  needReproduce:
+    label: Need Reproduce
+    afterLabel: Need More Info
+    replay: |
+      Hello @{user}. Please provide a online reproduction by forking this link https://stackblitz.com/edit/ng-zorro-antd-start or a minimal GitHub repository.
+      Issues labeled by `Need Reproduce` will be closed if no activities in 7 days.
+
+      你好 @{user}, 我们需要你提供一个在线的重现实例以便于我们帮你排查问题。你可以通过点击 [此处](https://stackblitz.com/edit/ng-zorro-antd-start) 创建一个 stackblitz 或者提供一个最小化的 GitHub 仓库
+      被标记为 `Need Reproduce` 的 issue 7 天内未跟进将会被自动关闭。
+      ![](https://gw.alipayobjects.com/zos/antfincdn/y9kwg7DVCd/reproduce.gif)
+  invalid:
+    mark: ng-zorro-issue-helper
+    labels: Invalid
+    replay: |
+      Hello @{user}, your issue has been closed because it does not conform to our issue requirements.
+      Please use the [Issue Helper](http://ng.ant.design/issue-helper/#/en) to create an issue, thank you!
+
+
+      你好 @{user}，为了能够进行高效沟通，我们对 issue 有一定的格式要求，你的 issue 因为不符合要求而被自动关闭。
+      你可以通过 [issue 助手](http://ng.ant.design/issue-helper/#/zh) 来创建 issue 以方便我们定位错误。谢谢配合！
+  assignOwner:
+    labelTemplate: 'Component: {component}'
+    components:
+      Affix: cipchk
+      Anchor: cipchk
+      BackTop: cipchk
+      List: cipchk
+      Upload: cipchk
+      AutoComplete: hsuanxyz
+      Avatar: hsuanxyz
+      Badge: hsuanxyz
+      Comment: hsuanxyz
+      Drawer: hsuanxyz
+      Mention: hsuanxyz
+      Modal: hsuanxyz
+      Steps: hsuanxyz
+      Tag: hsuanxyz
+      TreeSelect: hsuanxyz
+      TreeView: hsuanxyz
+      Typography: hsuanxyz
+      Space: hsuanxyz
+      Resizable: hsuanxyz
+      Breadcrumb: hullis
+      Empty: hullis
+      Carousel: hullis
+      Cascader: hullis
+      Descriptions: hullis
+      Icon: hullis
+      Message: hullis
+      Notification: hullis
+      Popconfirm: hullis
+      Popover: hullis
+      Progress: hullis
+      Rate: hullis
+      Result: hullis
+      Slider: hullis
+      Statistic: hullis
+      Timeline: hullis
+      Tooltip: hullis
+      CodeEditor: hullis
+      Calendar: wenqi73
+      DatePicker: wenqi73
+      Skeleton: wenqi73
+      TimePicker: wenqi73
+      I18n: wenqi73
+      Alert: vthinkxie
+      Button: vthinkxie
+      Card: vthinkxie
+      Checkbox: vthinkxie
+      Collapse: vthinkxie
+      Divider: vthinkxie
+      Dropdown: vthinkxie
+      Grid: vthinkxie
+      Input: vthinkxie
+      InputNumber: vthinkxie
+      Layout: vthinkxie
+      Menu: vthinkxie
+      Pagination: vthinkxie
+      Radio: vthinkxie
+      Select: vthinkxie
+      Spin: vthinkxie
+      Switch: vthinkxie
+      Table: vthinkxie
+      Tabs: NearZXH
+      Tree: simplejason
+      Form: danranVm
+      PageHeader: CK110
+      Transfer: Ricbet
+      Pipes: chensimeng
+      Image: stygian-desolator

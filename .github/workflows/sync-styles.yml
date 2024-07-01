@@ -1,0 +1,16 @@
+name: styles-sync
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Which version want to synchronize (Default latest)'
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hsuanxyz/zorro-styles-sync-action@v1.1
+        with:
+          account_token: ${{ secrets.BOT_TOKEN }}
+          version: ${{ github.event.inputs.version }}

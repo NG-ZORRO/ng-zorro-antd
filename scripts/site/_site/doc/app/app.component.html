@@ -1,0 +1,95 @@
+<div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null">
+  <div class="page-wrapper" [class.page-wrapper-rtl]="direction === 'rtl'" [dir]="direction">
+    <app-header
+      [windowWidth]="windowWidth"
+      [page]="page"
+      [(language)]="language"
+      (languageChange)="switchLanguage($event)"
+      (versionChange)="navigateToVersion($event)"
+      (directionChange)="switchDirection($event)"
+    ></app-header>
+    <div class="main-wrapper">
+      <div nz-row>
+        <div
+          nz-col
+          *ngIf="!showDrawer"
+          [nzXs]="24"
+          [nzSm]="24"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="5"
+          [nzXXl]="4"
+          class="main-menu"
+        >
+          <nz-affix [nzOffsetTop]="0">
+            <section class="main-menu-inner">
+              <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
+            </section>
+          </nz-affix>
+        </div>
+        <div
+          nz-col
+          class="main-container main-container-component"
+          [nzXs]="24"
+          [nzSm]="24"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="19"
+          [nzXXl]="20"
+        >
+          <router-outlet></router-outlet>
+          <nz-contributors-list></nz-contributors-list>
+        </div>
+      </div>
+      <div nz-row>
+        <div
+          nz-col
+          [nzXs]="{ span: 24 }"
+          [nzSm]="{ span: 24 }"
+          [nzMd]="{ span: 24 }"
+          [nzLg]="{ span: 18, offset: 6 }"
+          [nzXl]="{ span: 19, offset: 5 }"
+          [nzXXl]="{ span: 20, offset: 4 }"
+        >
+          <app-fixed-widgets
+            [theme]="theme"
+            (themeChange)="onThemeChange($event)"
+            [language]="language"
+          ></app-fixed-widgets>
+          <nz-nav-bottom></nz-nav-bottom>
+          <app-footer
+            [colorHex]="color"
+            [language]="language"
+            (colorChange)="changeColor($event)"
+          ></app-footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-wrapper" *ngIf="showDrawer">
+  <div class="drawer drawer-left" [class.drawer-open]="isDrawerOpen">
+    <div class="drawer-mask" (click)="isDrawerOpen = false"></div>
+    <div
+      class="drawer-content-wrapper"
+      [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'"
+    >
+      <div class="drawer-content">
+        <ng-container [ngTemplateOutlet]="sideOrDrawerTpl"></ng-container>
+      </div>
+      <div class="drawer-handle" (click)="isDrawerOpen = !isDrawerOpen">
+        <span class="drawer-handle-icon"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #sideOrDrawerTpl>
+  <app-side
+    [direction]="direction"
+    [page]="page"
+    [routerList]="routerList"
+    [language]="language"
+  ></app-side>
+</ng-template>

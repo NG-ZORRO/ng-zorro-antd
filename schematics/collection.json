@@ -1,0 +1,44 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "add NG-ZORRO",
+      "factory": "./ng-add/index",
+      "schema": "./ng-add/schema.json"
+    },
+    "ng-add-setup-project": {
+      "description": "Sets up the specified project after the ng-add dependencies have been installed.",
+      "private": true,
+      "factory": "./ng-add/setup-project/index",
+      "schema": "./ng-add/schema.json"
+    },
+    "blank": {
+      "description": "Set up boot page",
+      "private": true,
+      "factory": "./ng-generate/blank/index",
+      "schema": "./ng-generate/blank/schema.json"
+    },
+    "sidemenu": {
+      "description": "Add Sidebar Navigation Layout in your project.",
+      "factory": "./ng-generate/side-menu/index",
+      "schema": "./ng-generate/side-menu/schema.json"
+    },
+    "topnav": {
+      "description": "Add Top Navigation Layout in your project.",
+      "factory": "./ng-generate/topnav/index",
+      "schema": "./ng-generate/topnav/schema.json"
+    },
+    "add-icon-assets": {
+      "description": "Add icon assets into CLI config",
+      "factory": "./ng-add/setup-project/add-icon-assets#addIconToAssets",
+      "schema": "./ng-generate/blank/schema.json",
+      "aliases": ["fix-icon"]
+    },
+    "component": {
+      "aliases": [ "c" ],
+      "factory": "./ng-component",
+      "description": "Create an Angular component.",
+      "schema": "./ng-component/schema.json"
+    }
+  }
+}

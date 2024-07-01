@@ -1,0 +1,44 @@
+// TypeScript config file that matches all source files in the project. This file is read by
+// IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
+// optionalChainNotNullable: https://github.com/angular/angular/issues/46918
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "downlevelIteration": true,
+    "module": "es2020",
+    "importHelpers": true,
+    "rootDir": ".",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "target": "ES2022",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "jasmine"
+    ],
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
+}

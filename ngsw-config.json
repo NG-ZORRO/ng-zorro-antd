@@ -1,0 +1,52 @@
+{
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "ignoreSearch": true,
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/*.css",
+          "/*.js",
+          "!/*-es5*.js"
+        ],
+        "urls": [
+          "https://gw.alipayobjects.com/**",
+          "https://img.alicdn.com/**"
+        ]
+      }
+    }, {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "!/assets/codes/**"
+        ]
+      }
+    }
+  ],
+  "navigationUrls": [
+    "/**",
+    "!/**/*.*",
+    "!/**/*__*",
+    "!/**/*__*/**",
+    "!/assets/codes/**",
+    "!/**/stackblitz",
+    "!/version/**",
+    "!/issue-helper/**",
+    "!/iframe/**",
+    "!/blog/**",
+    "!/docs/**/*",
+    "!/docs/?*",
+    "!/components/**/*",
+    "!/components/?*",
+    "!/experimental/**/*",
+    "!/experimental/?*"
+  ]
+}

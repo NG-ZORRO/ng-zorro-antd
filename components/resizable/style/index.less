@@ -1,0 +1,127 @@
+@resizable-prefix-cls: ~'nz-resizable';
+
+.@{resizable-prefix-cls} {
+  &-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    border: 1px dashed #d1d1d1;
+  }
+
+  &-handle {
+    position: absolute;
+    z-index: 9;
+    user-select: none;
+
+    &-top {
+      top: -5px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+    }
+
+    &-right {
+      top: 0;
+      right: -5px;
+      width: 10px;
+      height: 100%;
+    }
+
+    &-bottom {
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+    }
+
+    &-left {
+      top: 0;
+      left: -5px;
+      width: 10px;
+      height: 100%;
+    }
+
+    &-topRight {
+      top: -5px;
+      right: -5px;
+      z-index: 10;
+      width: 20px;
+      height: 20px;
+    }
+
+    &-bottomRight {
+      right: -5px;
+      bottom: -5px;
+      z-index: 10;
+      width: 20px;
+      height: 20px;
+    }
+
+    &-bottomLeft {
+      bottom: -5px;
+      left: -5px;
+      z-index: 10;
+      width: 20px;
+      height: 20px;
+    }
+
+    &-topLeft {
+      top: -5px;
+      left: -5px;
+      z-index: 10;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .@{resizable-prefix-cls}-handle {
+    &-cursor-type {
+      &-window {
+        &.@{resizable-prefix-cls}-handle {
+          &-top,
+          &-bottom {
+            cursor: ns-resize;
+          }
+
+          &-right,
+          &-left {
+            cursor: ew-resize;
+          }
+        }
+      }
+
+      &-grid {
+        &.@{resizable-prefix-cls}-handle {
+          &-top,
+          &-bottom {
+            cursor: row-resize;
+          }
+
+          &-right,
+          &-left {
+            cursor: col-resize;
+          }
+        }
+      }
+    }
+
+    &-bottomRight,
+    &-topLeft {
+      cursor: nwse-resize;
+    }
+
+    &-bottomLeft,
+    &-topRight {
+      cursor: nesw-resize;
+    }
+  }
+
+  &-disabled {
+    .@{resizable-prefix-cls} {
+      &-handle {
+        pointer-events: none;
+      }
+    }
+  }
+}

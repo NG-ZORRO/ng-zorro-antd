@@ -1,0 +1,30 @@
+.@{mention-prefix-cls} {
+  &-dropdown {
+    position: relative;
+    top: 100%;
+    left: 12px;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+
+  &:focus-within {
+    .active();
+  }
+
+  &&-status-error {
+    &:not(.@{mention-prefix-cls}-disabled):not(.@{mention-prefix-cls}-borderless).@{mention-prefix-cls} {
+      &:focus-within {
+        .active(@error-color, @error-color-hover, @error-color-outline);
+      }
+    }
+  }
+
+  &&-status-warning {
+    &:not(.@{mention-prefix-cls}-disabled):not(.@{mention-prefix-cls}-borderless).@{mention-prefix-cls} {
+      &:focus-within {
+        .active(@warning-color, @warning-color-hover, @warning-color-outline);
+      }
+    }
+  }
+}

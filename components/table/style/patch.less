@@ -1,0 +1,187 @@
+nz-table,
+nz-table-title-footer,
+nz-table-inner-scroll,
+nz-table-inner-default,
+nz-table-selection {
+  display: block;
+}
+
+nz-filter-trigger {
+  display: inline-flex;
+}
+
+.nz-table-out-bordered {
+  > .@{table-prefix-cls}-title {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-container {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-footer {
+    border: @table-border;
+    border-top: 0;
+  }
+}
+
+cdk-virtual-scroll-viewport.ant-table-body {
+  overflow-y: scroll;
+}
+
+.nz-table-hide-scrollbar {
+  scrollbar-color: @table-header-bg @table-header-bg;
+
+  &::-webkit-scrollbar {
+    background-color: @table-header-bg;
+  }
+}
+
+.@{table-prefix-cls}.@{table-prefix-cls}-small {
+  .nz-table-hide-scrollbar {
+    scrollbar-color: @table-header-bg-sm @table-header-bg-sm;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+    }
+  }
+}
+
+.ant-table-wrapper-rtl .ant-table thead > tr > th.ant-table-selection-column {
+  text-align: center;
+}
+
+// virtual scroll border
+.@{table-prefix-cls}.@{table-prefix-cls}-bordered {
+
+  > .@{table-prefix-cls}-container {
+    > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
+      > table {
+        // ============================= Cell =============================
+        > thead > tr > th,
+        > tbody > tr > td,
+        > tfoot > tr > th,
+        > tfoot > tr > td {
+          border-right: @table-border;
+        }
+        // ============================ Header ============================
+        > thead {
+          > tr:not(:last-child) > th {
+            border-bottom: @border-width-base @border-style-base @table-border-color;
+          }
+        }
+
+        // Fixed right should provides additional border
+        > thead > tr,
+        > tbody > tr,
+        > tfoot > tr {
+          > .@{table-prefix-cls}-cell-fix-right-first::after {
+            border-right: @table-border;
+          }
+        }
+      }
+
+      // ========================== Expandable ==========================
+      > table > tbody > tr > td {
+        > .@{table-prefix-cls}-expanded-row-fixed {
+          margin: -@table-padding-vertical (-@table-padding-horizontal - @border-width-base);
+
+          &::after {
+            position: absolute;
+            top: 0;
+            right: @border-width-base;
+            bottom: 0;
+            border-right: @table-border;
+            content: '';
+          }
+        }
+      }
+    }
+  }
+
+  &.@{table-prefix-cls}-scroll-horizontal {
+    > .@{table-prefix-cls}-container > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
+      > table > tbody {
+        > tr.@{table-prefix-cls}-expanded-row,
+        > tr.@{table-prefix-cls}-placeholder {
+          > td {
+            border-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Size related
+  &.@{table-prefix-cls}-middle {
+    > .@{table-prefix-cls}-container {
+      > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
+        > table > tbody > tr > td {
+          > .@{table-prefix-cls}-expanded-row-fixed {
+            margin: -@table-padding-vertical-md (-@table-padding-horizontal-md - @border-width-base);
+          }
+        }
+      }
+    }
+  }
+
+  &.@{table-prefix-cls}-small {
+    > .@{table-prefix-cls}-container {
+      > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
+        > table > tbody > tr > td {
+          > .@{table-prefix-cls}-expanded-row-fixed {
+            margin: -@table-padding-vertical-sm (-@table-padding-horizontal-sm - @border-width-base);
+          }
+        }
+      }
+    }
+  }
+}
+
+.@{table-prefix-cls}-custom-column {
+  col {
+    display: none;
+    width: auto !important;
+    min-width: auto !important;
+  }
+
+  .@{table-prefix-cls}-thead {
+    .@{table-prefix-cls}-row, tr {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      th {
+        overflow: hidden;
+      }
+    }
+  }
+
+  .@{table-prefix-cls}-tbody {
+    .@{table-prefix-cls}-row, tr {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      td {
+        overflow: hidden;
+      }
+
+      .nz-disable-td {
+        width: 100%;
+      }
+    }
+  }
+
+  .ant-table-fixed {
+    tr {
+      .ant-table-cell-fix-left-last, .ant-table-cell-fix-right-first {
+        overflow: visible;
+      }
+    }
+
+    .@{table-prefix-cls}-row {
+      width: 100%;
+    }
+  }
+}

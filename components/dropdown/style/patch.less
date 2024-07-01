@@ -1,0 +1,29 @@
+.ant-dropdown-menu {
+  & > ul {
+    margin: 0;
+    padding: 0;
+    list-style: inherit;
+  }
+}
+
+.ant-dropdown {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.@{dropdown-prefix-cls} {
+  &-menu {
+    &-item,
+    &-submenu-title {
+      .@{dropdown-prefix-cls}-menu-submenu-arrow {
+        .@{dropdown-prefix-cls}-rtl & {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}

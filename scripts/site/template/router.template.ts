@@ -1,0 +1,42 @@
+export interface RouterList {
+  components: Array<{
+    name: string;
+    language: string;
+    experimentalChildren: Array<{
+      tag: string;
+      path: string;
+      hidden: boolean;
+      description: string;
+      experimental: boolean;
+      label: string;
+      zh: string;
+    }>;
+    children: Array<{
+      cover: string;
+      tag: string;
+      path: string;
+      hidden: boolean;
+      description: string;
+      experimental: boolean;
+      label: string;
+      zh: string;
+    }>;
+  }>;
+  intro: Array<{
+    path: string;
+    label: string;
+    language: string;
+    order: number;
+    hidden: boolean;
+    description: string;
+    experimental: boolean;
+  }>;
+}
+
+export const ROUTER_LIST:RouterList = {
+  'intro'     : {{intro}},
+  'components': {{components}}
+};
+export const DEMO_ROUTES = [
+{{routes}}
+];

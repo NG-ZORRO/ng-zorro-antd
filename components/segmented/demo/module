@@ -1,0 +1,11 @@
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
+export const moduleList = [
+  NzAvatarModule,
+  NzIconModule,
+  NzButtonModule,
+  NzSegmentedModule,
+];

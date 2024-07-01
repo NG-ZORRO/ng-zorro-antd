@@ -1,0 +1,246 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ng-zorro-antd-doc": {
+      "root": "",
+      "sourceRoot": "site/doc",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist",
+            "index": "site/doc/index.html",
+            "browser": "site/doc/main.ts",
+            "server": "site/doc/main.server.ts",
+            "tsConfig": "site/doc/tsconfig.app.json",
+            "serviceWorker": "ngsw-config.json",
+            "prerender": {
+              "routesFile": "scripts/prerender/route-paths.txt"
+            },
+            "ssr": {
+              "entry": "site/doc/server.ts"
+            },
+            "polyfills": [
+              "site/doc/polyfills.ts"
+            ],
+            "assets": [
+              "site/doc/assets",
+              "site/doc/manifest.json",
+              "site/doc/favicon.ico",
+              "site/doc/404.html",
+              "site/doc/google854eb8b183564acb.html",
+              "site/doc/robots.txt",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor/min/vs",
+                "output": "/assets/vs/"
+              }
+            ],
+            "styles": [
+              "site/doc/styles.less"
+            ],
+            "allowedCommonJsDependencies": [
+              "codesandbox",
+              "codesandbox-import-utils",
+              "@ant-design/colors",
+              "cron-parser"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "site/doc/environments/environment.ts",
+                  "with": "site/doc/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "pre-production": {
+              "fileReplacements": [
+                {
+                  "replace": "site/doc/environments/environment.ts",
+                  "with": "site/doc/environments/environment.pre-prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "preview": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "ng-zorro-antd-doc:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "ng-zorro-antd-doc:build:production"
+            },
+            "development": {
+              "buildTarget": "ng-zorro-antd-doc:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
+    "ng-zorro-antd-iframe": {
+      "root": "",
+      "sourceRoot": "site/iframe",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/browser/iframe",
+              "browser": ""
+            },
+            "index": "site/iframe/index.html",
+            "browser": "site/iframe/main.ts",
+            "tsConfig": "site/iframe/tsconfig.app.json",
+            "polyfills": [
+              "site/iframe/polyfills.ts"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "components/ng-zorro-antd.less"
+            ],
+            "extractLicenses": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "site/iframe/environments/environment.ts",
+                  "with": "site/iframe/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "ng-zorro-antd-iframe:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "ng-zorro-antd-iframe:build:production"
+            }
+          }
+        }
+      }
+    },
+    "ng-zorro-antd-lib": {
+      "root": "components",
+      "sourceRoot": "components",
+      "projectType": "library",
+      "prefix": "nz",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "components/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "inlineStyleLanguage": "less",
+            "fileReplacements": [
+              {
+                "replace": "components/core/environments/environment.ts",
+                "with": "components/core/environments/environment.test.ts"
+              }
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor/min/vs",
+                "output": "/assets/vs/"
+              }
+            ],
+            "main": "components/test.ts",
+            "karmaConfig": "components/karma.conf.js",
+            "polyfills": "components/polyfills.ts",
+            "tsConfig": "components/tsconfig.spec.json",
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "fix": true,
+            "lintFilePatterns": [
+              "components/**/*.ts",
+              "components/**/*.html"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "style": "less"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

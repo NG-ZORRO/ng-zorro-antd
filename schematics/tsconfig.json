@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../publish/schematics",
+    "noEmitOnError": false,
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "es6",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "**/*.component.ts",
+    "template/**/*",
+    "**/files/**/*"
+  ]
+}

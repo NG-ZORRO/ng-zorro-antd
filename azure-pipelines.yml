@@ -1,0 +1,100 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: env
+  jobs:
+    - job: Nodes
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '20.9.0'
+        displayName: 'Install Node.js'
+
+- stage: build
+  jobs:
+    - job: build_site
+      steps:
+        - task: NodeTool@0
+          displayName: 'Install Node.js'
+          inputs:
+            versionSpec: '20.9.0' # The version we're installing
+        - task: Npm@1
+          inputs:
+            command: 'ci'
+        - script: |
+            npm run build
+            export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
+            echo 'version' >> dist/browser/.surgeignore
+            echo 'issue-helper' >> dist/browser/.surgeignore
+            npx surge --project ./dist/browser --domain $DEPLOY_DOMAIN
+            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
+
+        - task: CopyFiles@2
+          inputs:
+            contents: build.tgz
+            targetFolder: $(Build.ArtifactStagingDirectory)
+          displayName: 'Copy archives to artifacts staging directory'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            path: $(Build.ArtifactStagingDirectory)
+          displayName: 'Upload artifacts'
+
+  dependsOn: env
+
+- stage: test
+  jobs:
+    - job: test_components
+      steps:
+        - task: Npm@1
+          inputs:
+            command: 'ci'
+        - script: |
+            npm run test
+            cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
+
+        - task: PublishCodeCoverageResults@1
+          displayName: 'publish code coverage results'
+          condition: succeededOrFailed()
+          inputs:
+            codeCoverageTool: Cobertura
+            summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage-report/cobertura-coverage.xml
+            reportDirectory: $(System.DefaultWorkingDirectory)/coverage-report
+            failIfCoverageEmpty: true
+
+        - task: PublishTestResults@2
+          displayName: 'publish test results'
+          condition: succeededOrFailed()
+          inputs:
+            searchFolder: $(System.DefaultWorkingDirectory)/junit
+            failTaskOnFailedTests: true
+            testRunTitle: NG-ZORRO
+            testResultsFormat: JUnit
+            testResultsFiles: "**/TESTS*.xml"
+
+    - job: test_schematics
+      steps:
+        - task: Npm@1
+          inputs:
+            command: 'ci'
+        - script: npm run test:schematics
+
+  dependsOn: env
+
+- stage: lint
+  jobs:
+    - job: lint_components
+      steps:
+        - task: Npm@1
+          inputs:
+            command: 'ci'
+        - script: npm run lint
+  dependsOn: env

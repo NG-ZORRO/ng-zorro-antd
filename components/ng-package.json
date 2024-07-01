@@ -1,0 +1,18 @@
+{
+  "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../publish",
+  "deleteDestPath": true,
+  "lib": {
+    "entryFile": "./public_api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "tslib",
+    "angular",
+    "date-fns",
+    "@ant-design/icons-angular",
+    "monaco-editor",
+    "cron-parser",
+    "dagre-compound",
+    "d3"
+  ]
+}

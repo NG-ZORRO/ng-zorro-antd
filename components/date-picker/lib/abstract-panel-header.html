@@ -1,0 +1,60 @@
+<div class="{{ prefixCls }}">
+  <button
+    [style.visibility]="showSuperPreBtn ? 'visible' : 'hidden'"
+    class="{{ prefixCls }}-super-prev-btn"
+    role="button"
+    type="button"
+    tabindex="-1"
+    title="{{ superPreviousTitle() }}"
+    (click)="superPrevious()"
+  >
+    <span class="ant-picker-super-prev-icon"></span>
+  </button>
+  <button
+    [style.visibility]="showPreBtn ? 'visible' : 'hidden'"
+    class="{{ prefixCls }}-prev-btn"
+    role="button"
+    type="button"
+    title="{{ previousTitle() }}"
+    tabindex="-1"
+    (click)="previous()"
+  >
+    <span class="ant-picker-prev-icon"></span>
+  </button>
+
+  <div class="{{ prefixCls }}-view">
+    @for(selector of selectors; track selector) {
+      <button
+        class="{{ selector.className }}"
+        role="button"
+        type="button"
+        title="{{ selector.title || null }}"
+        (click)="selector.onClick()"
+      >
+        {{ selector.label }}
+      </button>
+    }
+  </div>
+  <button
+    [style.visibility]="showNextBtn ? 'visible' : 'hidden'"
+    class="{{ prefixCls }}-next-btn"
+    role="button"
+    type="button"
+    tabindex="-1"
+    title="{{ nextTitle() }}"
+    (click)="next()"
+  >
+    <span class="ant-picker-next-icon"></span>
+  </button>
+  <button
+    [style.visibility]="showSuperNextBtn ? 'visible' : 'hidden'"
+    class="{{ prefixCls }}-super-next-btn"
+    role="button"
+    type="button"
+    tabindex="-1"
+    title="{{ superNextTitle() }}"
+    (click)="superNext()"
+  >
+    <span class="ant-picker-super-next-icon"></span>
+  </button>
+</div>

@@ -1,0 +1,43 @@
+@import '../../style/themes/index';
+
+nz-link {
+  display: block;
+}
+
+.@{ant-prefix}-anchor {
+  &-wrapper {
+    // This is a feature of Antd 5, so we need add in the patch file.
+    &-horizontal {
+      margin-left: unset;
+      padding-left: unset;
+      margin-bottom: -4px;
+      padding-bottom: 4px;
+
+      .ant-anchor {
+        display: flex;
+
+        &-ink {
+          top: unset;
+          bottom: 0;
+          width: 100%;
+          height: unset;
+
+          &:before {
+            width: 100%;
+            height: 2px;
+          }
+
+          &-ball {
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        &-link {
+          &:first-of-type {
+            padding-inline: 0;
+          }
+        }
+      }
+    }
+  }
+}

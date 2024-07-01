@@ -1,0 +1,16 @@
+<!--
+  We explicitly bind `style.display` to avoid using an inline style
+  attribute property (which is not allowed when CSP `unsafe-inline`
+  is not specified).
+-->
+<input
+  type="file"
+  #file
+  (change)="onChange($event)"
+  [attr.accept]="options.accept"
+  [attr.directory]="options.directory ? 'directory' : null"
+  [attr.webkitdirectory]="options.directory ? 'webkitdirectory' : null"
+  [multiple]="options.multiple"
+  [style.display]="'none'"
+/>
+<ng-content></ng-content>

@@ -1,0 +1,27 @@
+@image-prefix-cls: ~'@{ant-prefix}-image';
+
+.cdk-overlay-backdrop {
+  &.ant-image-preview-mask {
+    opacity: 1;
+  }
+}
+
+.cdk-global-overlay-wrapper[dir='rtl'] {
+  .@{image-prefix-cls} {
+    &-preview {
+      &-switch-left {
+        right: 10px;
+        left: unset;
+
+        rotate: 180deg;
+      }
+
+      &-switch-right {
+        right: unset;
+        left: 10px;
+
+        rotate: 180deg;
+      }
+    }
+  }
+}

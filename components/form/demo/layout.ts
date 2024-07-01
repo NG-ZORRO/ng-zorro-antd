@@ -1,0 +1,81 @@
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+
+import { NzFormLayoutType } from 'ng-zorro-antd/form';
+
+@Component({
+  selector: 'nz-demo-form-layout',
+  template: `
+    <form
+      nz-form
+      [nzLayout]="validateForm.controls.formLayout.value"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item>
+        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Form Layout</nz-form-label>
+        <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
+          <nz-radio-group formControlName="formLayout">
+            <label nz-radio-button [nzValue]="'horizontal'">Horizontal</label>
+            <label nz-radio-button [nzValue]="'vertical'">Vertical</label>
+            <label nz-radio-button [nzValue]="'inline'">Inline</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Field A</nz-form-label>
+        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" nzErrorTip="Please input your username!">
+          <input nz-input formControlName="fieldA" placeholder="input placeholder" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Field B</nz-form-label>
+        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" nzErrorTip="Please input your Password!">
+          <input nz-input formControlName="filedB" placeholder="input placeholder" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+          <button nz-button nzType="primary">Submit</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `,
+  styles: [
+    `
+      [nz-form]:not(.ant-form-inline):not(.ant-form-vertical) {
+        max-width: 600px;
+      }
+    `
+  ]
+})
+export class NzDemoFormLayoutComponent {
+  validateForm: FormGroup<{
+    formLayout: FormControl<NzFormLayoutType>;
+    fieldA: FormControl<string>;
+    filedB: FormControl<string>;
+  }> = this.fb.group({
+    formLayout: 'horizontal' as NzFormLayoutType,
+    fieldA: ['', [Validators.required]],
+    filedB: ['', [Validators.required]]
+  });
+
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      console.log('submit', this.validateForm.value);
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
+  get isHorizontal(): boolean {
+    return this.validateForm.controls.formLayout.value === 'horizontal';
+  }
+
+  constructor(private fb: NonNullableFormBuilder) {}
+}

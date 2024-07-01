@@ -1,0 +1,4 @@
+user-agent: *
+disallow: /iframe/
+disallow: /version/
+sitemap: https://ng.ant.design/sitemap.xml
