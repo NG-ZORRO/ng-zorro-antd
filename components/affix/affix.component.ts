@@ -83,6 +83,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private destroy$ = new Subject<boolean>();
   private timeout?: ReturnType<typeof setTimeout>;
   private document: Document;
+  private lastVisibleElementOffsetSize: SimpleRect | null = null;
 
   private get target(): Element | Window {
     const el = this.nzTarget;
@@ -250,6 +251,11 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
       top: false,
       bottom: false
     };
+
+    if (elemOffset.height !== 0 && elemOffset.width !== 0) {
+      this.lastVisibleElementOffsetSize = elemOffset;
+    }
+
     // Default to `offsetTop=0`.
     if (typeof offsetTop !== 'number' && typeof this.nzOffsetBottom !== 'number') {
       offsetMode.top = true;
@@ -261,7 +267,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     const targetRect = getTargetRect(targetNode as Window);
     const targetInnerHeight = (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
     if (scrollTop >= elemOffset.top - (offsetTop as number) && offsetMode.top) {
-      const width = elemOffset.width;
+      const width = elemOffset.width || this.lastVisibleElementOffsetSize?.width;
       const top = targetRect.top + (offsetTop as number);
       this.setAffixStyle(e, {
         position: 'fixed',
@@ -278,7 +284,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
       offsetMode.bottom
     ) {
       const targetBottomOffset = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
-      const width = elemOffset.width;
+      const width = elemOffset.width || this.lastVisibleElementOffsetSize?.width;
       this.setAffixStyle(e, {
         position: 'fixed',
         bottom: targetBottomOffset + (this.nzOffsetBottom as number),
