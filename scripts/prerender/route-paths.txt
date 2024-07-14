@@ -121,6 +121,8 @@
 /components/timeline/zh
 /components/tooltip/en
 /components/tooltip/zh
+/components/tour/en
+/components/tour/zh
 /components/transfer/en
 /components/transfer/zh
 /components/tree/en
