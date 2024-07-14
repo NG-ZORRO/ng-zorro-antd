@@ -1,0 +1,6 @@
+import { NzTourModule } from 'ng-zorro-antd/tour';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+export const moduleList = [NzTourModule, NzButtonModule, NzDividerModule, NzIconModule];
