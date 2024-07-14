@@ -5,7 +5,7 @@
 
 import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input, OnDestroy } from '@angular/core';
-import { animationFrameScheduler, asapScheduler, merge, Subscription } from 'rxjs';
+import { Subscription, animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';

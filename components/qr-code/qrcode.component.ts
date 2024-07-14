@@ -6,6 +6,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -13,6 +14,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -51,6 +53,11 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
               </button>
             </div>
           }
+          @case ('scanned') {
+            <div>
+              <p class="ant-qrcode-expired">{{ locale.scanned }}</p>
+            </div>
+          }
         }
       </div>
     }
@@ -72,11 +79,11 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzPadding: number | number[] = 0;
   @Input() nzColor: string = '#000000';
   @Input() nzBgColor: string = '#FFFFFF';
-  @Input() nzSize: number = 160;
+  @Input({ transform: numberAttribute }) nzSize: number = 160;
   @Input() nzIcon: string = '';
-  @Input() nzIconSize: number = 40;
-  @Input() nzBordered: boolean = true;
-  @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
+  @Input({ transform: numberAttribute }) nzIconSize: number = 40;
+  @Input({ transform: booleanAttribute }) nzBordered: boolean = true;
+  @Input() nzStatus: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
   @Input() nzLevel: keyof typeof ERROR_LEVEL_MAP = 'M';
 
   @Output() readonly nzRefresh = new EventEmitter<string>();

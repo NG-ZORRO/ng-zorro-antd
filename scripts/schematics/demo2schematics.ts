@@ -144,5 +144,4 @@ export function generate(): void {
       console.error(e);
     }
   });
-  console.log(`success(${componentPath.length})`)
 }

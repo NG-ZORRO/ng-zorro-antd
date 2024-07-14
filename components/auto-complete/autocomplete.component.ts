@@ -28,16 +28,17 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
+  booleanAttribute,
   inject
 } from '@angular/core';
-import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, defer, merge } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
-import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
@@ -101,14 +102,11 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit, OnChanges {
-  static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
-  static ngAcceptInputType_nzBackfill: BooleanInput;
-
-  @Input() nzWidth?: number;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
-  @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
-  @Input() @InputBoolean() nzBackfill = false;
+  @Input({ transform: booleanAttribute }) nzDefaultActiveFirstOption = true;
+  @Input({ transform: booleanAttribute }) nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()

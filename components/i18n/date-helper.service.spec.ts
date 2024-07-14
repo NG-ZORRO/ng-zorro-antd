@@ -41,6 +41,16 @@ describe('DateHelperService', () => {
       expect(dateHelper.parseTime('14:00', 'HH:mm')?.toTimeString().substr(0, 5)).toBe('14:00');
       expect(dateHelper.parseTime('4:00', 'H:mm')?.toTimeString().substr(0, 5)).toBe('04:00');
     });
+
+    it('should do formatting quarter', () => {
+      const date = new Date('2024-04-08 18:18:10');
+      expect(dateHelper.format(date, 'yyyy-Q')).toBe('2024-2');
+      expect(dateHelper.format(date, 'yyyy-QQ')).toBe('2024-02');
+      expect(dateHelper.format(date, 'yyyy-QQQ')).toBe('2024-Q2');
+      expect(dateHelper.format(date, 'yyyy-QQQQ')).toBe('2024-2');
+      expect(dateHelper.format(date, 'yyyy-[Q]Q')).toBe('2024-Q2');
+      expect(dateHelper.format(date, 'yyyy-[QQ]Q')).toBe('2024-QQ2');
+    });
   });
 
   describe('Formatting with Data-fns', () => {

@@ -20,6 +20,7 @@ import { transition } from 'd3-transition';
 import { zoom, ZoomBehavior, zoomIdentity, zoomTransform } from 'd3-zoom';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithOneFallback } from 'ng-zorro-antd/core/util';
 
 import { calculateTransform } from './core/utils';
 import { NzZoomTransform, RelativePositionInfo } from './interface';
@@ -30,7 +31,7 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
   standalone: true
 })
 export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
-  @Input() nzZoom?: number;
+  @Input({ transform: numberAttributeWithOneFallback }) nzZoom?: number;
   @Input() nzMinZoom = 0.1;
   @Input() nzMaxZoom = 10;
 

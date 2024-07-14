@@ -13,7 +13,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 
 import { PickerComponent } from './components/picker.component';
@@ -76,8 +77,8 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   @Output() readonly nzOnChangeComplete = new EventEmitter<HsbaColorType>();
   @Input() panelRenderHeader: TemplateRef<void> | null = null;
   @Input() panelRenderFooter: TemplateRef<void> | null = null;
-  @Input() disabledAlpha: boolean = false;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabledAlpha: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   colorValue: Color | null = null;
   alphaColor: string = '';

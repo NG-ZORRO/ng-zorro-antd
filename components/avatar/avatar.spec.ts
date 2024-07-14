@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -297,7 +297,10 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzAlt]="nzAlt"
     ></nz-avatar>
   `,
-  styleUrls: ['./style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import './style/index.less';
+  `
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;

@@ -15,14 +15,14 @@ import {
   Optional,
   SimpleChanges,
   ViewEncapsulation,
+  booleanAttribute,
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioService } from './radio.service';
 
@@ -53,14 +53,12 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   standalone: true
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject<boolean>();
   private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;

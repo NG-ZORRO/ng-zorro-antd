@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -49,7 +49,7 @@ interface NzThItemInterface {
     <span class="ant-table-column-title">
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </span>
-    <ng-container *ngIf="!customFilter; else extraTemplate">
+    @if (!customFilter) {
       <nz-filter-trigger
         [nzVisible]="isVisible"
         [nzActive]="isChecked"
@@ -61,16 +61,16 @@ interface NzThItemInterface {
       <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">
           <ul nz-menu>
-            <li
-              nz-menu-item
-              [nzSelected]="f.checked"
-              *ngFor="let f of listOfParsedFilter; trackBy: trackByValue"
-              (click)="check(f)"
-            >
-              <label nz-radio *ngIf="!filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
-              <label nz-checkbox *ngIf="filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
-              <span>{{ f.text }}</span>
-            </li>
+            @for (f of listOfParsedFilter; track f.value) {
+              <li nz-menu-item [nzSelected]="f.checked" (click)="check(f)">
+                @if (!filterMultiple) {
+                  <label nz-radio [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                } @else {
+                  <label nz-checkbox [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                }
+                <span>{{ f.text }}</span>
+              </li>
+            }
           </ul>
           <div class="ant-table-filter-dropdown-btns">
             <button nz-button nzType="link" nzSize="small" (click)="reset()" [disabled]="!isChecked">
@@ -80,16 +80,16 @@ interface NzThItemInterface {
           </div>
         </div>
       </nz-dropdown-menu>
-    </ng-container>
+    } @else {
+      <ng-container [ngTemplateOutlet]="extraTemplate"></ng-container>
+    }
   `,
   host: { class: 'ant-table-filter-column' },
   imports: [
     NgTemplateOutlet,
-    NgIf,
     NzFilterTriggerComponent,
     NzIconModule,
     NzDropDownModule,
-    NgForOf,
     NzRadioComponent,
     NzCheckboxModule,
     FormsModule,
@@ -110,10 +110,6 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   isVisible = false;
   listOfParsedFilter: NzThItemInterface[] = [];
   listOfChecked: NzSafeAny[] = [];
-
-  trackByValue(_: number, item: NzThItemInterface): NzSafeAny {
-    return item.value;
-  }
 
   check(filter: NzThItemInterface): void {
     if (this.filterMultiple) {

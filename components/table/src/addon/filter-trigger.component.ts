@@ -14,16 +14,15 @@ import {
   OnInit,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzDropDownDirective, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropDownDirective, NzDropDownModule, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
@@ -57,13 +56,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzBackdrop: BooleanInput;
-
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
 
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 

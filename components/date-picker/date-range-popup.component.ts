@@ -6,6 +6,7 @@
 import { Direction } from '@angular/cdk/bidi';
 import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -147,14 +148,14 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   standalone: true
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isRange!: boolean;
-  @Input() inline: boolean = false;
-  @Input() showWeek!: boolean;
+  @Input({ transform: booleanAttribute }) isRange!: boolean;
+  @Input({ transform: booleanAttribute }) inline: boolean = false;
+  @Input({ transform: booleanAttribute }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() disabledDate?: DisabledDateFn;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
-  @Input() showToday!: boolean;
-  @Input() showNow!: boolean;
+  @Input({ transform: booleanAttribute }) showToday!: boolean;
+  @Input({ transform: booleanAttribute }) showNow!: boolean;
   @Input() showTime!: SupportTimeOptions | boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() ranges?: PresetRanges;

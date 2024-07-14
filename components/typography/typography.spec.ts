@@ -5,6 +5,7 @@ import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { take } from 'rxjs';
 
 import {
   createKeyboardEvent,
@@ -534,7 +535,7 @@ describe('change detection behavior', () => {
 
     dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
 
-    ngZone.onMicrotaskEmpty.subscribe(() => {
+    ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });

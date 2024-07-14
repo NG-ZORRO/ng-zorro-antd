@@ -23,17 +23,17 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
 
 import { buildGraph } from 'dagre-compound';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
@@ -90,7 +90,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun) {
+            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun(edge)) {
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -131,8 +131,6 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   standalone: true
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
-  static ngAcceptInputType_nzAutoSize: BooleanInput;
-
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
   @ViewChildren(NzGraphNodeComponent) listOfNodeComponent!: QueryList<NzGraphNodeComponent>;
 
@@ -152,7 +150,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   @Input() nzGraphData!: NzGraphData;
   @Input() nzRankDirection: NzRankDirection = 'LR';
   @Input() nzGraphLayoutConfig?: NzGraphLayoutConfig;
-  @Input() @InputBoolean() nzAutoSize = false;
+  @Input({ transform: booleanAttribute }) nzAutoSize = false;
 
   @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzGraphRendered = new EventEmitter<NzGraphComponent>();
@@ -173,7 +171,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private _dataSubscription?: Subscription | null;
   private destroy$ = new Subject<void>();
 
-  edgeTrackByFun = (_: number, edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
+  edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
   subGraphTransform = (node: NzGraphGroupNode): string => {
     const x = node.x - node.coreBox.width / 2.0;

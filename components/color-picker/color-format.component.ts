@@ -12,7 +12,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute
 } from '@angular/core';
 import {
   AbstractControl,
@@ -24,15 +25,14 @@ import {
   ValidatorFn
 } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { generateColor } from './src/util/util';
-import { NzColorPickerFormatType } from './typings';
+import { NzColorPickerFormatType, ValidFormKey } from './typings';
 
 @Component({
   selector: 'nz-color-format',
@@ -130,8 +130,8 @@ import { NzColorPickerFormatType } from './typings';
 export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
   @Input() format: NzColorPickerFormatType | null = null;
   @Input() colorValue: string = '';
-  @Input() clearColor: boolean = false;
-  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
+  @Input({ transform: booleanAttribute }) clearColor: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabledAlpha: boolean = false;
   @Output() readonly formatChange = new EventEmitter<{ color: string; format: NzColorPickerFormatType }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
 
@@ -183,6 +183,9 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
       .pipe(
         filter(() => this.validateForm.valid),
         debounceTime(200),
+        distinctUntilChanged((prev, current) =>
+          Object.keys(prev).every(key => prev[key as ValidFormKey] === current[key as ValidFormKey])
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe(value => {

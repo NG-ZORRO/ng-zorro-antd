@@ -18,7 +18,6 @@ const detectPort = require('detect-port');
 
 const siteGenerate = require('../../site/generate-site');
 const themeGenerate = require('../../site/generate-theme');
-const colorGenerate = require('../../site/generateColorLess');
 
 const docsGlob = join(buildConfig.componentsDir, `**/doc/*.+(md|txt)`);
 const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);
@@ -49,9 +48,10 @@ task('watch:site', () => {
 });
 
 /** Parse demos and docs to site directory. */
-task('init:site', done => {
+task('init:site', async done => {
   siteGenerate('init');
-  colorGenerate().then(themeGenerate).then(done);
+  await themeGenerate();
+  done();
 });
 
 /** Run `ng serve` */

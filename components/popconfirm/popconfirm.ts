@@ -23,7 +23,8 @@ import {
   QueryList,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { finalize, first, takeUntil } from 'rxjs/operators';
@@ -34,8 +35,8 @@ import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
@@ -54,12 +55,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzOkDanger: BooleanInput;
-  static ngAcceptInputType_nzCondition: BooleanInput;
-  static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
-  static ngAcceptInputType_nzPopconfirmArrowPointAtCenter: BooleanInput;
 
-  @Input('nzPopconfirmArrowPointAtCenter') @InputBoolean() override arrowPointAtCenter?: boolean;
+  @Input({ alias: 'nzPopconfirmArrowPointAtCenter', transform: booleanAttribute })
+  override arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') override title?: NzTSType;
   @Input('nz-popconfirm') override directiveTitle?: NzTSType | null;
   @Input('nzPopconfirmTrigger') override trigger?: NzTooltipTrigger = 'click';
@@ -72,12 +70,13 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmVisible') override visible?: boolean;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
-  @Input() @InputBoolean() nzOkDanger?: boolean;
+  @Input({ transform: booleanAttribute }) nzOkDisabled?: boolean;
+  @Input({ transform: booleanAttribute }) nzOkDanger?: boolean;
   @Input() nzCancelText?: string;
   @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
   @Input() nzIcon?: string | TemplateRef<void>;
-  @Input() @InputBoolean() nzCondition: boolean = false;
-  @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
+  @Input({ transform: booleanAttribute }) nzCondition: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPopconfirmShowArrow: boolean = true;
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
   @Input() @WithConfig() nzAutofocus: NzAutoFocusType = null;
 
@@ -91,6 +90,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzOkText: ['nzOkText', () => this.nzOkText],
       nzOkType: ['nzOkType', () => this.nzOkType],
       nzOkDanger: ['nzOkDanger', () => this.nzOkDanger],
+      nzOkDisabled: ['nzOkDisabled', () => this.nzOkDisabled],
       nzCancelText: ['nzCancelText', () => this.nzCancelText],
       nzBeforeConfirm: ['nzBeforeConfirm', () => this.nzBeforeConfirm],
       nzCondition: ['nzCondition', () => this.nzCondition],
@@ -194,6 +194,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
                     [nzDanger]="nzOkDanger || nzOkType === 'danger'"
                     [nzLoading]="confirmLoading"
+                    [disabled]="nzOkDisabled"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
@@ -236,6 +237,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzOkText?: string;
   nzOkType: NzButtonType | 'danger' = 'primary';
   nzOkDanger: boolean = false;
+  nzOkDisabled: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
   nzBeforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
 

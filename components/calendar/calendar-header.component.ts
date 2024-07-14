@@ -14,7 +14,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -81,7 +82,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Input() mode: 'month' | 'year' = 'month';
-  @Input() fullscreen: boolean = true;
+  @Input({ transform: booleanAttribute }) fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() nzCustomHeader?: string | TemplateRef<void>;
 

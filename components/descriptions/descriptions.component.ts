@@ -19,17 +19,16 @@ import {
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
@@ -166,18 +165,16 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzColon: BooleanInput;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig() nzBordered: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
   @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() nzExtra?: string | TemplateRef<void>;
-  @Input() @WithConfig() @InputBoolean() nzColon: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;

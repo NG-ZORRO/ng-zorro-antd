@@ -1,3 +1,75 @@
+## [18.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.0.0...18.0.1) (2024-06-27)
+
+
+### Bug Fixes
+
+* **graph:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8587](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8587)) ([7687ff2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7687ff2c907ee5ab262ee08240bc932b6112b1ae))
+* **icon:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8588](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8588)) ([8a27bab](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8a27babf30f7726113fed5511bfbd0067c0bbd37))
+* **table:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8593](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8593)) ([b275063](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b2750630a0da3f415931cdf9ba6e6a618dd5d329))
+* **pagination:** fix [@for](https://angular.dev/guide/templates/control-flow#for-block---repeaters) track function ([#8586](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8586)) ([6bb95c0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6bb95c0905de9da1493590da2c6f76cc1b2a23bc))
+* **i18n:** add missing german translations `de_DE` ([#8605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8605)) ([8d75378](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d75378ea612a0ab91f03ec1a709f88c2d22af21))
+* **i18n:** add scanned field to QRCode `fa_IR` ([#8597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8597)) ([9c6e4bf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9c6e4bf6b65810b0f659a366d34b54528d55cc0f))
+* **table:** missing no-result in fixed header table ([#8574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8574)) ([6cff80e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6cff80e90788ce0b84b232a0fb67516b795c88b0))
+
+
+
+# [18.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.1...18.0.0) (2024-06-06)
+
+### ⚠ BREAKING CHANGES
+
+* **collapse:** change nzExpandIconPosition type from `left` | `right` to `start` | `end` ([#8561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8561)) ([3ad5674](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3ad56749b0c8222b37444f27f81942fba4bc53e3))
+* no longer use inline JavaScript in Less ([#8552](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8552)) ([7e873c8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7e873c863a1c8e9c053f64aca86bf9c7c9a11a21))
+
+No need to wrap Less functions provided by antd (including `colorEasing`, `colorPalette`, `tinycolor`) with ~\`\` anymore.
+
+```diff
+- color(~`colorPalette('@{primary-color}', 5)`)
++ color(colorPalette('@{primary-color}', 5))
+```
+
+
+### Bug Fixes
+
+* **cascader,select,time-picker,tooltip,tree-select:** take in account shadow dom when getting the target of an event ([#7853](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7853)) ([843b703](https://github.com/NG-ZORRO/ng-zorro-antd/commit/843b7035225df3d3a635a5ef8926d1e80f10ae18))
+* **tooltip:** fix arrow color when custom color ([#8555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8555)) ([92c586b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/92c586b8f5e5fc0ec0e4cb2cc10b73a699b1555a))
+* **upload:** prevent drop event for firefox only ([#8551](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8551)) ([c6e7bd7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c6e7bd7682a776a7ad3f34b589c9c473430e6baa))
+* **rate:** half value when allow half is false ([#8536](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8536)) ([7742fe3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7742fe30b718aa19f2988f6354d982d439ad2c7b))
+
+
+### Features
+
+* **date-picker:** support quarter selection of date picker ([#8478](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8478)) ([3513889](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3513889367ef468b9e792698f85bb6b890edec86)), closes [#7818](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7818) [#7380](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7380)
+* **qrcode:** qrcode supports scanned state ([#8447](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8447)) ([0be6178](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0be617854d1493a342c9354ce1156fcf323acc97))
+* **rate:** emit hover change when leave ([#8448](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8448)) ([38dcc31](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38dcc3196c62369cd8061a9ead8ab20752e56a66))
+* **statistic:** support for loading state ([#8537](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8537)) ([21c8b62](https://github.com/NG-ZORRO/ng-zorro-antd/commit/21c8b621f15d642c391253ca91c3b124227ca2d9))
+* **table:** support setting virtual height when having no data ([#8457](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8457)) ([724d841](https://github.com/NG-ZORRO/ng-zorro-antd/commit/724d841ebd88a329c59e2cfeee3f9625393c8372))
+
+
+
+## [17.4.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.0...17.4.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* **card:** use skeleton instead to card-loading-content ([#8528](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8528)) ([a36ebd3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a36ebd329d042dad19733543ce96f459e4cc09d3))
+* **color-picker:** avoid emitted twice nzOnChange event ([#8530](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8530)) ([5dea059](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5dea059202947caf5ef86f802f08ba14a0867288))
+* **list:** static query list-item-action template ([#8527](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8527)) ([85301e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/85301e0267593457560c5cdcc7fb09ed38944d45))
+* **popconfirm:** fix message icon style ([#8511](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8511)) ([4f1f9bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f1f9bba03f38d9ef4ee57380d61e5ca4188648c))
+* **tooltip,popover,popconfirm:** fix hydration error ([#8512](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8512)) ([5009ec0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5009ec0b3a6ff770186681bd4eb61ec662d9896e))
+
+
+### Features
+
+* **popconfirm:** popconfirm support for nzOkDisabled ([#8542](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8542)) ([8c247db](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8c247dbda2b633d522c53113456600315192a792))
+
+
+### Performance Improvements
+
+* **back-top:** remove the redundant changeDetectorRef ([c1e39e7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c1e39e7bbc1f863c3a1d26a9cc9cc359b4054dc5))
+* **qr-code:** improved background drawing efficiency ([#8543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8543)) ([db09bf7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/db09bf73e45d03817c89bba97e1f340cc09ed5d0))
+
+
+
 # [17.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.3.0...17.4.0) (2024-04-19)
 
 

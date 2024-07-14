@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-和 [RouterLink](https://angular.io/api/router/RouterLink) 进行结合使用。
+和 [RouterLink](https://angular.cn/api/router/RouterLink) 进行结合使用。
 
 ## en-US
 
-Used together with [RouterLink](https://angular.io/api/router/RouterLink).
+Used together with [RouterLink](https://angular.dev/api/router/RouterLink).

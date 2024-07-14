@@ -79,7 +79,7 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(overlayElement, 'mouseleave');
       waitingForTooltipToggling();
-      // FIXME@hullis: the following line errors
+      // FIXME: the following line errors
       // expect(overlayContainerElement.textContent).not.toContain(title);
       // Don't know why this breaks. The website works fine.
 

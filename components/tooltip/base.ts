@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
@@ -31,7 +32,7 @@ import { delay, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
 export interface PropertyMapping {
@@ -331,9 +332,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
-  static ngAcceptInputType_nzVisible: BooleanInput;
-  static ngAcceptInputType_nzArrowPointAtCenter: BooleanInput;
-
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   nzTitle: NzTSType | null = null;
@@ -472,7 +470,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.origin.nativeElement.contains(event.target) && this.nzTrigger !== null) {
+    const target = _getEventTarget(event);
+    if (!this.origin.nativeElement.contains(target) && this.nzTrigger !== null) {
       this.hide();
     }
   }

@@ -17,18 +17,18 @@ import {
   Optional,
   QueryList,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { NzCardGridDirective } from './card-grid.directive';
-import { NzCardLoadingComponent } from './card-loading.component';
 import { NzCardTabComponent } from './card-tab.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
@@ -67,10 +67,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     }
 
     <div class="ant-card-body" [ngStyle]="nzBodyStyle">
-      @if (!nzLoading) {
-        <ng-content />
+      @if (nzLoading) {
+        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
       } @else {
-        <nz-card-loading />
+        <ng-content />
       }
     </div>
     @if (nzActions.length) {
@@ -94,20 +94,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzCardLoadingComponent],
+  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzSkeletonModule],
   standalone: true
 })
 export class NzCardComponent implements OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzHoverable: BooleanInput;
 
-  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzBorderless: boolean = false;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig() @InputBoolean() nzHoverable: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHoverable: boolean = false;
   @Input() nzBodyStyle: NgStyleInterface | null = null;
   @Input() nzCover?: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];

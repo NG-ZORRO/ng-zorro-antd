@@ -15,14 +15,15 @@ import {
   Optional,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
 import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 
@@ -66,16 +67,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzDelay: NumberInput;
-  static ngAcceptInputType_nzSimple: BooleanInput;
-  static ngAcceptInputType_nzSpinning: BooleanInput;
-
   @Input() @WithConfig() nzIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string | null = null;
-  @Input() @InputNumber() nzDelay = 0;
-  @Input() @InputBoolean() nzSimple = false;
-  @Input() @InputBoolean() nzSpinning = true;
+  @Input({ transform: numberAttribute }) nzDelay = 0;
+  @Input({ transform: booleanAttribute }) nzSimple = false;
+  @Input({ transform: booleanAttribute }) nzSpinning = true;
   private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);

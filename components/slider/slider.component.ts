@@ -24,16 +24,16 @@ import {
   TemplateRef,
   ViewChildren,
   ViewEncapsulation,
-  forwardRef
+  booleanAttribute,
+  forwardRef,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import {
-  InputBoolean,
-  InputNumber,
   MouseTouchObserverConfig,
   arraysEqual,
   ensureNumberInRange,
@@ -41,6 +41,7 @@ import {
   getPercent,
   getPrecision,
   isNil,
+  numberAttributeWithZeroFallback,
   silentEvent
 } from 'ng-zorro-antd/core/util';
 
@@ -130,29 +131,19 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   }
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzDots: BooleanInput;
-  static ngAcceptInputType_nzIncluded: BooleanInput;
-  static ngAcceptInputType_nzRange: BooleanInput;
-  static ngAcceptInputType_nzVertical: BooleanInput;
-  static ngAcceptInputType_nzMax: NumberInput;
-  static ngAcceptInputType_nzMin: NumberInput;
-  static ngAcceptInputType_nzStep: NumberInput;
-  static ngAcceptInputType_nzReverse: BooleanInput;
-
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzDots: boolean = false;
-  @Input() @InputBoolean() nzIncluded: boolean = true;
-  @Input() @InputBoolean() nzRange: boolean = false;
-  @Input() @InputBoolean() nzVertical: boolean = false;
-  @Input() @InputBoolean() nzReverse: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDots: boolean = false;
+  @Input({ transform: booleanAttribute }) nzIncluded: boolean = true;
+  @Input({ transform: booleanAttribute }) nzRange: boolean = false;
+  @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReverse: boolean = false;
   @Input() nzDefaultValue?: NzSliderValue;
   @Input() nzMarks: NzMarks | null = null;
-  @Input() @InputNumber() nzMax = 100;
-  @Input() @InputNumber() nzMin = 0;
-  @Input() @InputNumber() nzStep = 1;
+  @Input({ transform: numberAttribute }) nzMax = 100;
+  @Input({ transform: numberAttribute }) nzMin = 0;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzStep: number = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
   @Input() nzTipFormatter?: null | ((value: number) => string) | TemplateRef<void>;

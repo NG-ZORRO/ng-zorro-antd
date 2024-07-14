@@ -1,5 +1,5 @@
 import { BidiModule } from '@angular/cdk/bidi';
-import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title, provideClientHydration } from '@angular/platform-browser';
@@ -20,7 +20,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { ColorSketchModule } from 'ngx-color/sketch';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -43,9 +42,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule,
     NzNavBottomModule,
-    ColorSketchModule,
     NzIconModule.forRoot(icons),
     NzGridModule,
     NzAffixModule,
@@ -57,7 +54,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
     NzButtonModule,
     NzInputModule,
     NzBadgeModule,
-    HttpClientJsonpModule,
     HeaderModule,
     FooterModule,
     NzContributorsListModule,
@@ -87,6 +83,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
         global: { nzDirection: 'ltr' }
       }
     },
+    provideHttpClient(withJsonpSupport()),
     provideClientHydration()
   ],
   bootstrap: [AppComponent]

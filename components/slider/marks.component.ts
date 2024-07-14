@@ -4,10 +4,18 @@
  */
 
 import { NgForOf, NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
+} from '@angular/core';
 
-import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
 
@@ -33,17 +41,14 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   }
 })
 export class NzSliderMarksComponent implements OnChanges {
-  static ngAcceptInputType_vertical: BooleanInput;
-  static ngAcceptInputType_included: BooleanInput;
-
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[] = [];
-  @Input() min!: number;
-  @Input() max!: number;
-  @Input() @InputBoolean() vertical = false;
-  @Input() @InputBoolean() included = false;
-  @Input() reverse!: boolean;
+  @Input({ transform: numberAttribute }) min!: number;
+  @Input({ transform: numberAttribute }) max!: number;
+  @Input({ transform: booleanAttribute }) vertical = false;
+  @Input({ transform: booleanAttribute }) included = false;
+  @Input({ transform: booleanAttribute }) reverse!: boolean;
 
   marks: NzDisplayedMark[] = [];
 

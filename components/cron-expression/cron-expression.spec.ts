@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +19,8 @@ describe('nz-cron-expression', () => {
 
     beforeEach(() => {
       testBed = createComponentBed(NzTestCronExpressionComponent, {
-        imports: [NzCronExpressionModule, HttpClientTestingModule]
+        imports: [NzCronExpressionModule],
+        providers: [provideHttpClientTesting()]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();
@@ -86,7 +87,8 @@ describe('nz-cron-expression', () => {
 
     beforeEach(() => {
       testBed = createComponentBed(NzTestCronExpressionTypeComponent, {
-        imports: [NzCronExpressionModule, HttpClientTestingModule]
+        imports: [NzCronExpressionModule],
+        providers: [provideHttpClientTesting()]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();
@@ -113,7 +115,8 @@ describe('nz-cron-expression', () => {
 
     beforeEach(() => {
       testBed = createComponentBed(NzTestCronExpressionFormComponent, {
-        imports: [NzCronExpressionModule, HttpClientTestingModule, FormsModule, ReactiveFormsModule, NzFormModule]
+        imports: [NzCronExpressionModule, FormsModule, ReactiveFormsModule, NzFormModule],
+        providers: [provideHttpClientTesting()]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();

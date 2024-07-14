@@ -5,22 +5,15 @@
 
 import { Migration, ResolvedResource, UpgradeData } from '@angular/cdk/schematics';
 
-import { findElementWithTag } from '../../../utils/ng-update/elements';
+import { deprecatedComponent } from '../utils/deprecated-component';
 
 export class SpaceTemplateRule extends Migration<UpgradeData> {
 
   enabled = false;
 
   visitTemplate(template: ResolvedResource): void {
-
-    findElementWithTag(template.content, 'nz-space-item')
-      .forEach(offset => {
-        this.failures.push({
-          filePath: template.filePath,
-          position: template.getCharacterAndLineOfPosition(offset),
-          message: `Found deprecated component 'nz-space-item', please use 'ng-template[nzSpaceItem] instead.`
-        });
-      })
-
+    this.failures.push(
+      ...deprecatedComponent(template, 'nz-space-item', 'ng-template[nzSpaceItem]')
+    );
   }
 }
