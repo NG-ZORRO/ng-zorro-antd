@@ -56,7 +56,11 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   template: `
     <ng-template #contentTemplate let-content="content">
       <ng-content *ngIf="!content"></ng-content>
-      <span (click)="onTextClickEdit()">{{ content }}</span>
+      @if (nzEllipsis) {
+        {{ content }}
+      } @else {
+        <span (click)="onTextClickEdit()">{{ content }}</span>
+      }
     </ng-template>
     <ng-container *ngIf="!editing">
       <ng-container
