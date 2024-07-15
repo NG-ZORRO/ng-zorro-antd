@@ -205,21 +205,22 @@ const logo = [
   'Android',
   'Apple',
   'Windows',
+  'Linux',
   'Ie',
   'Chrome',
   'Github',
   'Aliwangwang',
   'Dingding',
+  'Dingtalk',
   'WeiboSquare',
   'WeiboCircle',
-  'TaobaoCircle',
-  'Html5',
   'Weibo',
+  'Taobao',
+  'TaobaoCircle',
   'Twitter',
   'Wechat',
   'Youtube',
   'AlipayCircle',
-  'Taobao',
   'Skype',
   'Qq',
   'MediumWorkmark',
@@ -229,6 +230,14 @@ const logo = [
   'GooglePlus',
   'Dropbox',
   'Facebook',
+  'Html5',
+  'Java',
+  'JavaScript',
+  'Python',
+  'Docker',
+  'Kubernetes',
+  'Ruby',
+  'DotNet',
   'Codepen',
   'CodeSandbox',
   'CodeSandboxCircle',
@@ -251,7 +260,19 @@ const logo = [
   'Alibaba',
   'Yahoo',
   'Reddit',
-  'Sketch'
+  'Discord',
+  'Sketch',
+  'Baidu',
+  'Bilibili',
+  'HarmonyOS',
+  'OpenAI',
+  'Pinterest',
+  'Spotify',
+  'TikTok',
+  'Twitch',
+  'WechatWork',
+  'WhatsApp',
+  'X'
 ];
 
 const categories: Categories = {
@@ -725,6 +746,7 @@ function upperCamelCase(value: string): string {
 function kebabCase(value: string): string {
   return value
     .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z])([A-Z])/g, '$1-$2')
     .replace(/([0-9])([a-zA-Z]+)$/g, '-$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase();
