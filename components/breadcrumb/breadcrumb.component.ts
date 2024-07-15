@@ -155,6 +155,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
           };
           breadcrumbs.push(breadcrumb);
         }
+
         return this.getBreadcrumbs(child, nextUrl, breadcrumbs);
       }
     }
