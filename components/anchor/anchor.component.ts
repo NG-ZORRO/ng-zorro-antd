@@ -25,6 +25,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
@@ -107,6 +108,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   @Input() nzContainer?: string | HTMLElement;
   @Input() nzCurrentAnchor?: string;
   @Input() nzDirection: NzDirectionVHType = 'vertical';
+  @Input() nzReplace: boolean = false;
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzChange = new EventEmitter<string>();
@@ -130,7 +132,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     private cdr: ChangeDetectorRef,
     private platform: Platform,
     private zone: NgZone,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
@@ -249,7 +253,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
-  handleScrollTo(linkComp: NzAnchorLinkComponent): void {
+  async handleScrollTo(linkComp: NzAnchorLinkComponent): Promise<void> {
     const el = this.doc.querySelector(linkComp.nzHref);
     if (!el) {
       return;
@@ -267,6 +271,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       }
     });
     this.nzClick.emit(linkComp.nzHref);
+    await this.updateUrlFragment(linkComp.nzHref, linkComp.nzReplace);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -284,5 +289,15 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (nzCurrentAnchor) {
       this.setActive();
     }
+  }
+
+  async updateUrlFragment(nzHref: string, replace?: boolean): Promise<void> {
+    let urlWithoutFragment = nzHref.split('#')[1] ?? nzHref;
+
+    await this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      fragment: urlWithoutFragment,
+      replaceUrl: replace ? replace : this.nzReplace
+    });
   }
 }

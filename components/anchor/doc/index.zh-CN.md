@@ -30,14 +30,16 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `[nzContainer]`      | 指定滚动的容器                                                                      | `string \| HTMLElement`               | `window`     |
 | `[nzCurrentAnchor]`  | 自定义高亮的锚点                                                                    | string                                | -            |          |
 | `[nzDirection]`      | 设置导航方向                                                                        | `'vertical' \| 'horizontal'`          | `'vertical'` |          |
+| `[nzReplace]`        | 替换浏览器历史记录中项目的 href 而不是推送它                                        | `boolean`                             | `false`      |          |
 | `(nzClick)`          | 点击项触发                                                                          | `EventEmitter<string>`                | -            |
 | `(nzChange)`         | 监听锚点链接改变                                                                    | `EventEmitter<string>`                | -            |          |
 | `(nzScroll)`         | 滚动至某锚点时触发                                                                  | `EventEmitter<NzAnchorLinkComponent>` | -            |
 
 ### nz-link:standalone
 
-| 成员         | 说明                             | 类型                          |
-| ------------ | -------------------------------- | ----------------------------- |
-| `[nzHref]`   | 锚点链接                         | `string`                      |
-| `[nzTarget]` | 该属性指定在何处显示链接的资源。 | `string`                      |
-| `[nzTitle]`  | 文字内容                         | `string \| TemplateRef<void>` |
+| 成员          | 说明                                         | 类型                          | Default |
+| ------------- | -------------------------------------------- | ----------------------------- | ------- |
+| `[nzHref]`    | 锚点链接                                     | `string`                      | -       |
+| `[nzTarget]`  | 该属性指定在何处显示链接的资源。             | `string`                      | -       |
+| `[nzTitle]`   | 文字内容                                     | `string \| TemplateRef<void>` | -       |
+| `[nzReplace]` | 替换浏览器历史记录中的项目 href 而不是推送它 | `boolean`                     | `false` |
