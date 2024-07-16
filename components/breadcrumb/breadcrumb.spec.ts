@@ -359,7 +359,7 @@ class NzBreadcrumbRouteLabelWithCustomFnDemoComponent {
   `
 })
 class NzBreadcrumbRouteWithCustomFnDemoComponent {
-  routeFn = (route: string): string => route + ';active=true';
+  routeFn = (route: string): string => `${route};active=true`;
 }
 
 @Component({
