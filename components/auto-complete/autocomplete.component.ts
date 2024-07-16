@@ -15,12 +15,10 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -168,10 +166,11 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   private afterNextRender$ = inject(NZ_AFTER_NEXT_RENDER$);
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

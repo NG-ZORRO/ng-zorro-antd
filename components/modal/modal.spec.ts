@@ -7,15 +7,23 @@ import {
   ChangeDetectionStrategy,
   Component,
   Directive,
-  Inject,
   Injector,
   Input,
   NgModule,
   TemplateRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  inject
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  inject as testingInject,
+  tick
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -47,11 +55,13 @@ describe('Animation', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
-    modalService = m;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
+      modalService = m;
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -101,16 +111,18 @@ describe('NzModal', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject(
-    [NzModalService, Location, OverlayContainer, NzConfigService],
-    (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
-      modalService = m;
-      configService = cs;
-      mockLocation = l as SpyLocation;
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    }
-  ));
+  beforeEach(
+    testingInject(
+      [NzModalService, Location, OverlayContainer, NzConfigService],
+      (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
+        modalService = m;
+        configService = cs;
+        mockLocation = l as SpyLocation;
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      }
+    )
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -1785,18 +1797,13 @@ class TestWithServiceComponent {
   `
 })
 class TestWithModalContentComponent {
-  @Input() value?: string;
-
-  nzModalData: string;
+  @Input() value: string = inject(NZ_MODAL_DATA);
+  nzModalData: string = inject(NZ_MODAL_DATA);
 
   constructor(
     public modalRef: NzModalRef,
-    public modalInjector: Injector,
-    @Inject(NZ_MODAL_DATA) nzData: string
-  ) {
-    this.value = nzData;
-    this.nzModalData = nzData;
-  }
+    public modalInjector: Injector
+  ) {}
 
   destroyModal(): void {
     this.modalRef.destroy();

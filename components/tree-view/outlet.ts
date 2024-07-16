@@ -3,10 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkTreeNodeOutlet, CDK_TREE_NODE_OUTLET_NODE } from '@angular/cdk/tree';
-import { Directive, Inject, Optional, ViewContainerRef } from '@angular/core';
-
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { CDK_TREE_NODE_OUTLET_NODE, CdkTreeNodeOutlet } from '@angular/cdk/tree';
+import { Directive, ViewContainerRef, inject } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodeOutlet]',
@@ -19,8 +17,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   standalone: true
 })
 export class NzTreeNodeOutletDirective implements CdkTreeNodeOutlet {
-  constructor(
-    public viewContainer: ViewContainerRef,
-    @Inject(CDK_TREE_NODE_OUTLET_NODE) @Optional() public _node?: NzSafeAny
-  ) {}
+  _node = inject(CDK_TREE_NODE_OUTLET_NODE, { optional: true });
+
+  constructor(public viewContainer: ViewContainerRef) {}
 }

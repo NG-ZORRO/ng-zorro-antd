@@ -18,11 +18,11 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   TemplateRef,
@@ -244,13 +244,13 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   private tabLabelSubscription = Subscription.EMPTY;
   private tabsSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
+  private router = inject(Router, { optional: true });
 
   constructor(
     public nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private router: Router
+    private directionality: Directionality
   ) {
     this.tabSetId = nextId++;
   }
@@ -470,7 +470,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   private updateRouterActive(): void {
-    if (this.router.navigated) {
+    if (this.router?.navigated) {
       const index = this.findShouldActiveTabIndex();
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
@@ -489,10 +489,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink) => boolean {
-    return (link?: RouterLink) =>
+  private isLinkActive(router: Router | null): (link?: RouterLink | null) => boolean {
+    return (link?: RouterLink | null) =>
       link
-        ? router.isActive(link.urlTree || '', {
+        ? !!router?.isActive(link.urlTree || '', {
             paths: this.nzLinkExact ? 'exact' : 'subset',
             queryParams: this.nzLinkExact ? 'exact' : 'subset',
             fragment: 'ignored',

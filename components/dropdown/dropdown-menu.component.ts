@@ -13,15 +13,14 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -94,14 +93,15 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
     this.cdr.markForCheck();
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     public viewContainerRef: ViewContainerRef,
     public nzMenuService: MenuService,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private directionality: Directionality
   ) {}
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

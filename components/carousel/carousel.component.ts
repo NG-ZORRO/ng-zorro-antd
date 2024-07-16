@@ -16,13 +16,11 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -31,6 +29,7 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
@@ -50,7 +49,6 @@ import {
   NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselDotPosition,
   NzCarouselEffects,
-  NzCarouselStrategyRegistryItem,
   PointerVector
 } from './typings';
 
@@ -169,6 +167,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
   private isDragging = false;
+  private directionality = inject(Directionality);
+  private customStrategies = inject(NZ_CAROUSEL_CUSTOM_STRATEGIES, { optional: true });
 
   constructor(
     elementRef: ElementRef,
@@ -179,9 +179,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
-    private nzResizeObserver: NzResizeObserver,
-    @Optional() private directionality: Directionality,
-    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
+    private nzResizeObserver: NzResizeObserver
   ) {
     this.nzDotPosition = 'bottom';
     this.el = elementRef.nativeElement;

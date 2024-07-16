@@ -6,7 +6,7 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Component,
-  Inject,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -503,6 +503,8 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   fileList: NzUploadFile[] = [];
   icons: Icon[] = [];
 
+  private document: Document = inject(DOCUMENT);
+
   trackByFn = (item: string): string => `${item}-${this.currentTheme}`;
 
   kebabCase = (str: string): string => kebabCase(str);
@@ -527,14 +529,14 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     const promise = new Promise<string>((resolve): void => {
       let copyTextArea: HTMLTextAreaElement | null = null;
       try {
-        copyTextArea = this.dom.createElement('textarea') as HTMLTextAreaElement;
+        copyTextArea = this.document.createElement('textarea') as HTMLTextAreaElement;
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
-        this.dom.body.appendChild(copyTextArea);
+        this.document.body.appendChild(copyTextArea);
         copyTextArea.value = value;
         copyTextArea.select();
-        this.dom.execCommand('copy');
+        this.document.execCommand('copy');
         resolve(value);
       } finally {
         if (copyTextArea && copyTextArea.parentNode) {
@@ -595,7 +597,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const script = this.dom.createElement('script');
+    const script = this.document.createElement('script');
     const source = 'https://cdn.jsdelivr.net/gh/lewis617/antd-icon-classifier@0.0/dist/main.js';
     script.type = 'text/javascript';
     script.src = source;
@@ -607,12 +609,12 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       throw new Error(`${PREFIX} cannot load assets of antd icon classifier from source "${source}".`);
     };
 
-    this.dom.head.appendChild(script);
+    this.document.head.appendChild(script);
   }
 
   private onLoad(): void {
     this.modelLoaded = true;
-    this.dom.addEventListener('paste', this.onPaste as EventListener);
+    this.document.addEventListener('paste', this.onPaste as EventListener);
   }
 
   private onPaste = (event: ClipboardEvent): void => {
@@ -691,11 +693,9 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    @Inject(DOCUMENT) private dom: any,
-    @Inject(PLATFORM_ID) private platformId: any,
-    /* eslint-enable @typescript-eslint/no-explicit-any */
     private _iconService: NzIconService,
     private message: NzMessageService,
     private viewContainerRef: ViewContainerRef
@@ -714,7 +714,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dom.removeEventListener('paste', this.onPaste as EventListener);
+    this.document.removeEventListener('paste', this.onPaste as EventListener);
     this.viewContainerRef.clear();
   }
 }

@@ -9,10 +9,9 @@ import {
   Component,
   Input,
   OnDestroy,
-  Optional,
-  SkipSelf,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -70,7 +69,7 @@ export class NzFormLabelComponent implements OnDestroy {
     this.noColon = value;
   }
   get nzNoColon(): boolean {
-    return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
+    return this.noColon !== 'default' ? this.noColon : !!this.nzFormDirective?.nzNoColon;
   }
 
   private noColon: boolean | 'default' = 'default';
@@ -105,17 +104,16 @@ export class NzFormLabelComponent implements OnDestroy {
   }
 
   get nzLabelWrap(): boolean {
-    return this.labelWrap !== 'default' ? this.labelWrap : this.nzFormDirective?.nzLabelWrap;
+    return this.labelWrap !== 'default' ? this.labelWrap : !!this.nzFormDirective?.nzLabelWrap;
   }
 
   private labelWrap: boolean | 'default' = 'default';
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Optional() @SkipSelf() private nzFormDirective: NzFormDirective
-  ) {
+  private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
+
+  constructor(private cdr: ChangeDetectorRef) {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')
