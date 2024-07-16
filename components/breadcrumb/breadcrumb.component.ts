@@ -62,6 +62,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
+  @Input() nzRouteFn: (route: string) => string = route => route;
 
   breadcrumbs: BreadcrumbOption[] = [];
   dir: Direction = 'ltr';
@@ -144,13 +145,13 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
         // Do not change nextUrl if routeUrl is falsy. This happens when it's a route lazy loading other modules.
         const nextUrl = routeUrl ? `${url}/${routeUrl}` : url;
         const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
-
+        const shapedUrl = this.nzRouteFn(nextUrl);
         // If have data, go to generate a breadcrumb for it.
         if (routeUrl && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {
             label: breadcrumbLabel,
             params: child.snapshot.params,
-            url: nextUrl
+            url: shapedUrl
           };
           breadcrumbs.push(breadcrumb);
         }
