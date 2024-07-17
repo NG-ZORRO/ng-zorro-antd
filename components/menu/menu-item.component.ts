@@ -18,14 +18,14 @@ import {
   Optional,
   QueryList,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
@@ -58,23 +58,17 @@ import { NzSubmenuService } from './submenu.service';
   standalone: true
 })
 export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterContentInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzSelected: BooleanInput;
-  static ngAcceptInputType_nzDanger: BooleanInput;
-  static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
-  static ngAcceptInputType_nzMatchRouter: BooleanInput;
-
   private destroy$ = new Subject<boolean>();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
   dir: Direction = 'ltr';
-  @Input() nzPaddingLeft?: number;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzSelected = false;
-  @Input() @InputBoolean() nzDanger = false;
-  @Input() @InputBoolean() nzMatchRouterExact = false;
-  @Input() @InputBoolean() nzMatchRouter = false;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzPaddingLeft?: number;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzSelected = false;
+  @Input({ transform: booleanAttribute }) nzDanger = false;
+  @Input({ transform: booleanAttribute }) nzMatchRouterExact = false;
+  @Input({ transform: booleanAttribute }) nzMatchRouter = false;
   @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;
 
   /** clear all item selected status except this */

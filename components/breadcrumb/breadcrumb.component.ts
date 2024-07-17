@@ -16,15 +16,14 @@ import {
   Optional,
   Renderer2,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzBreadcrumb } from './breadcrumb';
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
@@ -59,9 +58,7 @@ export interface BreadcrumbOption {
   }
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
-  static ngAcceptInputType_nzAutoGenerate: BooleanInput;
-
-  @Input() @InputBoolean() nzAutoGenerate = false;
+  @Input({ transform: booleanAttribute }) nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
   @Input() nzRouteLabelFn: (label: string) => string = label => label;

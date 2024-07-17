@@ -13,7 +13,7 @@ cover: https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
-```ts
+```typescript
 import { NzIconModule } from 'ng-zorro-antd/icon';
 ```
 
@@ -68,7 +68,7 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 静态加载，在 `AppModule` 里加入你需要的图标（推荐）或者是全部的图标，例如：
 
-```ts
+```typescript
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -94,7 +94,16 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
   ]
   bootstrap: [ AppComponent ]
 })
-export class AppModule {
+export class AppModule {}
+```
+
+在 standalone 模式下，你可以在 `app.config.ts` 中引入这些图标：
+
+```typescript
+import { importProvidersFrom } from '@angular/core';
+
+export const appConfig = {
+  providers: [importProvidersFrom(NzIconModule.forRoot(icons))]
 }
 ```
 
@@ -126,7 +135,7 @@ export class AppModule {
 
 有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
 
-```ts
+```typescript
 @NgModule({
   imports: [CommonModule, NzIconModule.forChild([QuestionOutline])]
 })
@@ -183,15 +192,15 @@ this._iconService.fetchFromIconfont({
 
 ### 我想静态引入全部的图标，该怎么做？
 
-实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
+尽管这是不推荐的行为，实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
 
-```ts
-// import * as AllIcons from '@ant-design/icons-angular/icons';
+```typescript
+import * as AllIcons from '@ant-design/icons-angular/icons';
 
-// const antDesignIcons = AllIcons as {
-//   [key: string]: IconDefinition;
-// };
-// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
 然后通过 forRoot 或者 `NzIconService` 的 `addIcon` 方法引入。

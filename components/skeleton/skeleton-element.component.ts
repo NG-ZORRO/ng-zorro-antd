@@ -4,9 +4,15 @@
  */
 
 import { NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  booleanAttribute
+} from '@angular/core';
 
 import {
   NzSkeletonAvatarShape,
@@ -26,9 +32,9 @@ import {
   standalone: true
 })
 export class NzSkeletonElementDirective {
-  @Input() nzActive: boolean = false;
+  @Input({ transform: booleanAttribute }) nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
-  @Input() @InputBoolean() nzBlock: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
 
   constructor() {}
 }
@@ -39,6 +45,7 @@ export class NzSkeletonElementDirective {
   template: `
     <span
       class="ant-skeleton-button"
+      [class.ant-skeleton-button-square]="nzShape === 'square'"
       [class.ant-skeleton-button-round]="nzShape === 'round'"
       [class.ant-skeleton-button-circle]="nzShape === 'circle'"
       [class.ant-skeleton-button-lg]="nzSize === 'large'"

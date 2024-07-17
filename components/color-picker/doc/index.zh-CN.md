@@ -3,7 +3,7 @@ category: Components
 subtitle: 颜色选择器
 type: 数据录入
 title: ColorPicker
-tag: New
+tag: 16.2.0
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PpY4RYNM8UcAAAAAAAAAAAAADrJ8AQ/original
 ---
 
@@ -11,17 +11,21 @@ cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PpY4RYNM8UcAAAAAAA
 
 当用户需要自定义颜色选择的时候使用。
 
+### 引入模块
+
+module:
+
 ```ts
 import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 ```
 
-## API
+standalone:
 
-别忘记先安装 ng-antd-color-picker：
-
-```sh
-npm install ng-antd-color-picker
+```ts
+import { NzColorPickerComponent } from 'ng-zorro-antd/color-picker'
 ```
+
+## API
 
 ### nz-color-picker:standalone
 

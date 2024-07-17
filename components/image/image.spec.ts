@@ -6,16 +6,7 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgModule, NgZone, ViewChild } from '@angular/core';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  flushMicrotasks,
-  inject,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
@@ -24,9 +15,9 @@ import {
   RightCircleOutline,
   RotateLeftOutline,
   RotateRightOutline,
+  SwapOutline,
   ZoomInOutline,
-  ZoomOutOutline,
-  SwapOutline
+  ZoomOutOutline
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -141,13 +132,15 @@ describe('Placeholder', () => {
     debugElement = fixture.debugElement;
   });
 
-  it('should placeholder src work', () => {
+  it('should placeholder src work', fakeAsync(() => {
     context.src = SRC;
     context.placeholder = PLACEHOLDER;
     const image = debugElement.nativeElement.querySelector('img');
     fixture.detectChanges();
+    tick(300);
+    fixture.detectChanges();
     expect(image.src).toBe(PLACEHOLDER);
-  });
+  }));
 
   it('should hide placeholder when image loaded', fakeAsync(() => {
     context.src = QUICK_SRC;
@@ -244,16 +237,12 @@ describe('Preview', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  function getOverlayBackDropElement(): HTMLDivElement {
-    return overlayContainerElement.querySelector('.ant-image-preview-mask')! as HTMLDivElement;
-  }
-
   function getPreviewWrapElement(): HTMLElement {
     return overlayContainerElement.querySelector('.ant-image-preview-wrap')! as HTMLElement;
   }
 
-  function getPreviewElement(): HTMLDivElement {
-    return overlayContainerElement.querySelector('.ant-image-preview')! as HTMLDivElement;
+  function getPreviewRootElement(): HTMLDivElement {
+    return overlayContainerElement.querySelector('.ant-image-preview-root')! as HTMLDivElement;
   }
 
   function getPreviewImageElement(): HTMLImageElement {
@@ -273,13 +262,13 @@ describe('Preview', () => {
       fixture.detectChanges();
       context.nzImage.getElement().nativeElement.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).not.toBeTruthy();
       context.disablePreview = false;
       fixture.detectChanges();
       context.nzImage.getElement().nativeElement.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).toBeTruthy();
     }));
 
@@ -290,13 +279,13 @@ describe('Preview', () => {
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).not.toBeTruthy();
       context.disablePreview = false;
       fixture.detectChanges();
       image.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).toBeTruthy();
     }));
   });
@@ -308,7 +297,7 @@ describe('Preview', () => {
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const close = operations[0];
@@ -338,7 +327,7 @@ describe('Preview', () => {
       tickChanges();
       dispatchFakeEvent(close, 'click');
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).not.toBeTruthy();
       discardPeriodicTasks();
       flush();
@@ -351,7 +340,7 @@ describe('Preview', () => {
       let image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
@@ -373,7 +362,7 @@ describe('Preview', () => {
       let image = debugElement.nativeElement.querySelector('img');
       image.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
@@ -391,7 +380,7 @@ describe('Preview', () => {
       let image = debugElement.nativeElement.querySelectorAll('img');
       image[0].click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
@@ -410,7 +399,7 @@ describe('Preview', () => {
       let image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let imageElement = getPreviewImageElement();
       let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       let zoomIn = operations[1];
@@ -429,7 +418,7 @@ describe('Preview', () => {
       let image = debugElement.nativeElement.querySelectorAll('img');
       image[3].click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let imageElement = getPreviewImageElement();
       let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       let zoomIn = operations[1];
@@ -483,7 +472,7 @@ describe('Preview', () => {
       const previewWrap = getPreviewWrapElement();
       previewWrap.click();
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       expect(previewElement).not.toBeTruthy();
       discardPeriodicTasks();
       flush();
@@ -498,7 +487,7 @@ describe('Preview', () => {
       fixture.detectChanges();
       tick(300);
       fixture.detectChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       const left = previewElement!.querySelector('.ant-image-preview-switch-left')!;
       const right = previewElement!.querySelector('.ant-image-preview-switch-right')!;
       expect(left).toBeTruthy();
@@ -540,7 +529,7 @@ describe('Preview', () => {
       context.createUsingService();
       context.previewRef?.switchTo(1);
       tickChanges();
-      previewElement = getPreviewElement();
+      previewElement = getPreviewRootElement();
       let previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
       context.previewRef?.next();
@@ -568,28 +557,6 @@ describe('Preview', () => {
       tickChanges();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
-    }));
-  });
-
-  describe('Animation', () => {
-    it('should animation work', fakeAsync(() => {
-      context.firstSrc = SRC;
-      context.secondSrc = QUICK_SRC;
-      tickChanges();
-      context.nzImageGroup.images[0].getElement().nativeElement.click();
-      fixture.detectChanges();
-      flushMicrotasks();
-      const backdropElement = getOverlayBackDropElement();
-      const previewWrapElement = getPreviewWrapElement();
-      expect(backdropElement.classList).toContain('ant-fade-enter');
-      expect(backdropElement.classList).toContain('ant-fade-enter-active');
-      tick(500);
-      previewWrapElement.click();
-      fixture.detectChanges();
-      flushMicrotasks();
-      expect(backdropElement.classList).toContain('ant-fade-leave');
-      expect(backdropElement.classList).toContain('ant-fade-leave-active');
-      flush();
     }));
   });
 

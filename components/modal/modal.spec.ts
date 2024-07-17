@@ -138,6 +138,18 @@ describe('NzModal', () => {
     modalRef.close();
   });
 
+  it('should give correct z-index value to overlay', fakeAsync(() => {
+    const Z_INDEX = 9999;
+    modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzData: 'Modal',
+      nzZIndex: Z_INDEX
+    });
+
+    const overlay = document.querySelector('.cdk-global-overlay-wrapper');
+    expect((overlay as HTMLElement).style.zIndex).toEqual(`${Z_INDEX}`);
+  }));
+
   it('should open a modal with data', () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent,
@@ -1328,6 +1340,7 @@ describe('NzModal', () => {
       fixture.detectChanges();
       expect((overlayContainerElement.querySelector('.ant-modal') as HTMLDivElement).style.width).toBe('416px');
       expect(modalRef.getConfig().nzMaskClosable).toBe(false);
+      expect(modalRef.getConfig().nzDraggable).toBe(false);
       expect(modalRef.getConfig().nzCentered).toBe(false);
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(1);
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-title')!.textContent).toBe('Test Title');
@@ -1680,6 +1693,37 @@ describe('NzModal', () => {
 
       expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
     }));
+
+    it('should be draggable when nzDraggable is set to true', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = true;
+      componentFixture.detectChanges();
+      flush();
+      expect(overlayContainerElement.querySelector('.cdk-drag')).not.toBeNull();
+
+      componentInstance.isDraggable = false;
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('.cdk-drag-disabled')).not.toBeNull();
+
+      componentFixture.destroy();
+    }));
+
+    it('should have "move" cursor on the top of modal when modal is draggable', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = true;
+      componentFixture.detectChanges();
+      flush();
+      const modalHeader = overlayContainerElement.querySelector('.ant-modal-header');
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('move');
+
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = false;
+      componentFixture.detectChanges();
+      flush();
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('auto');
+    }));
   });
 });
 
@@ -1764,6 +1808,7 @@ class TestWithModalContentComponent {
     <nz-modal
       [(nzVisible)]="isVisible"
       [nzContent]="content"
+      [nzDraggable]="isDraggable"
       nzTitle="Test Title"
       (nzOnCancel)="handleCancel()"
       (nzOnOk)="handleOk()"
@@ -1775,6 +1820,7 @@ class TestWithModalContentComponent {
 })
 class TestModalComponent {
   isVisible = false;
+  isDraggable = false;
   cancelSpy = jasmine.createSpy('cancel spy');
   okSpy = jasmine.createSpy('ok spy');
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;

@@ -630,9 +630,9 @@ describe('auto-complete', () => {
 
       let options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
-      fixture.detectChanges();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
       expect(componentOptions[0].selected).toBe(true);
@@ -655,9 +655,9 @@ describe('auto-complete', () => {
 
       let options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
-      fixture.detectChanges();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
       expect(componentOptions[0].selected).toBe(true);

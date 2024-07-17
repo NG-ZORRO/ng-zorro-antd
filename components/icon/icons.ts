@@ -42,6 +42,7 @@ import {
   RotateRightOutline,
   SearchOutline,
   StarFill,
+  SwapOutline,
   SwapRightOutline,
   UploadOutline,
   UpOutline,
@@ -92,6 +93,7 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   UploadOutline,
   VerticalAlignTopOutline,
   UpOutline,
+  SwapOutline,
   SwapRightOutline,
   ZoomInOutline,
   ZoomOutOutline

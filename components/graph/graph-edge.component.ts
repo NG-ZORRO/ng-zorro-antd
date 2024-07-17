@@ -9,14 +9,15 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Injector,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  afterNextRender,
+  inject
 } from '@angular/core';
-import { take } from 'rxjs/operators';
 
 import { curveBasis, curveLinear, line } from 'd3-shape';
 
@@ -61,9 +62,10 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
     .y(d => d.y)
     .curve(curveLinear);
 
+  private injector = inject(Injector);
+
   constructor(
     private elementRef: ElementRef<SVGGElement>,
-    private ngZone: NgZone,
     private cdr: ChangeDetectorRef
   ) {
     this.el = this.elementRef.nativeElement;
@@ -75,17 +77,22 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { edge, customTemplate, edgeType } = changes;
-    if (edge) {
-      this.ngZone.onStable.pipe(take(1)).subscribe(() => {
-        // Update path element if customTemplate set
-        if (customTemplate) {
-          this.initElementStyle();
-        }
 
-        this.setLine();
-        this.cdr.markForCheck();
-      });
+    if (edge) {
+      afterNextRender(
+        () => {
+          // Update path element if customTemplate set
+          if (customTemplate) {
+            this.initElementStyle();
+          }
+
+          this.setLine();
+          this.cdr.markForCheck();
+        },
+        { injector: this.injector }
+      );
     }
+
     if (edgeType) {
       const type = this.edgeType === NzGraphEdgeType.LINE ? curveLinear : curveBasis;
       this.line = line<{ x: number; y: number }>()

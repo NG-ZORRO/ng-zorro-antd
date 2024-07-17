@@ -6,7 +6,7 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Optional, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, getQuarter, parse as fnsParse } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -107,7 +107,8 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date | null, formatStr: string): string {
-    return date ? formatDate(date, formatStr, this.i18n.getLocaleId())! : '';
+    // angular formatDate does not support the quarter format parameter. This is to be compatible with the quarter format "Q" of date-fns.
+    return date ? this.replaceQuarter(formatDate(date, formatStr, this.i18n.getLocaleId())!, date) : '';
   }
 
   parseDate(text: string): Date {
@@ -117,5 +118,18 @@ export class DateHelperByDatePipe extends DateHelperService {
   parseTime(text: string, formatStr: string): Date {
     const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
     return parser.toDate(text);
+  }
+
+  private replaceQuarter(dateStr: string, date: Date): string {
+    const quarter = getQuarter(date).toString();
+    const record: Record<string, string> = { Q: quarter, QQ: `0${quarter}`, QQQ: `Q${quarter}` };
+    // Q Pattern format compatible with date-fns (quarter).
+    return (
+      dateStr
+        // Match Q+ outside of brackets, then replace it with the specified quarterly format
+        .replace(/Q+(?![^\[]*])/g, match => record[match] ?? quarter)
+        // Match the Q+ surrounded by bracket, then remove bracket.
+        .replace(/\[(Q+)]/g, '$1')
+    );
   }
 }

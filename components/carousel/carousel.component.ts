@@ -29,15 +29,17 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -112,11 +114,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzEnableSwipe: BooleanInput;
-  static ngAcceptInputType_nzDots: BooleanInput;
-  static ngAcceptInputType_nzAutoPlay: BooleanInput;
-  static ngAcceptInputType_nzAutoPlaySpeed: NumberInput;
-  static ngAcceptInputType_nzTransitionSpeed: NumberInput;
 
   @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
 
@@ -125,11 +122,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   @Input() nzDotRender?: TemplateRef<{ $implicit: number }>;
   @Input() @WithConfig() nzEffect: NzCarouselEffects = 'scrollx';
-  @Input() @WithConfig() @InputBoolean() nzEnableSwipe: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzDots: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzAutoPlay: boolean = false;
-  @Input() @WithConfig() @InputNumber() nzAutoPlaySpeed: number = 3000;
-  @Input() @InputNumber() nzTransitionSpeed = 500;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzEnableSwipe: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDots: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAutoPlay: boolean = false;
+  @Input({ transform: numberAttribute }) @WithConfig() nzAutoPlaySpeed: number = 3000;
+  @Input({ transform: numberAttribute }) nzTransitionSpeed = 500;
   @Input() @WithConfig() nzLoop: boolean = true;
 
   /**
@@ -164,7 +161,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   slickTrackEl!: HTMLElement;
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
-  transitionInProgress: number | null = null;
+  transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
@@ -182,6 +179,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
+    private nzResizeObserver: NzResizeObserver,
     @Optional() private directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
@@ -222,6 +220,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           });
         });
     });
+
+    this.nzResizeObserver
+      .observe(this.el)
+      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.layout();
+      });
   }
 
   ngAfterContentInit(): void {
@@ -353,7 +358,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private clearScheduledTransition(): void {
     if (this.transitionInProgress) {
       clearTimeout(this.transitionInProgress);
-      this.transitionInProgress = null;
+      this.transitionInProgress = undefined;
     }
   }
 

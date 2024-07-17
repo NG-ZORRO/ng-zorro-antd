@@ -3,8 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
@@ -343,7 +353,7 @@ declare const locale: NzSafeAny;
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        @for (icon of displayedNames[i].icons; track trackByFn) {
+        @for (icon of displayedNames[i].icons; track trackByFn(icon)) {
           <li (click)="onIconClick($event, icon)">
             <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
             <span class="anticon-class">
@@ -472,7 +482,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   fileList: NzUploadFile[] = [];
   icons: Icon[] = [];
 
-  trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
+  trackByFn = (item: string): string => `${item}-${this.currentTheme}`;
 
   kebabCase = (str: string): string => kebabCase(str);
 
@@ -661,8 +671,10 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @Inject(DOCUMENT) private dom: any,
+    @Inject(PLATFORM_ID) private platformId: any,
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     private _iconService: NzIconService,
     private message: NzMessageService,
     private viewContainerRef: ViewContainerRef
@@ -673,8 +685,11 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
-    this.loadModel();
-    this.popoverVisible = !localStorage.getItem('disableIconTip');
+    // load model in browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadModel();
+      this.popoverVisible = !localStorage.getItem('disableIconTip');
+    }
   }
 
   ngOnDestroy(): void {

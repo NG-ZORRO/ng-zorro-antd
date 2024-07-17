@@ -15,16 +15,16 @@ import {
   OnInit,
   Optional,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
-import { from, Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
 
@@ -37,16 +37,13 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   standalone: true
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
-  static ngAcceptInputType_nzSpin: BooleanInput;
-
   cacheClassName: string | null = null;
-  @Input()
-  @InputBoolean()
+  @Input({ transform: booleanAttribute })
   set nzSpin(value: boolean) {
     this.spin = value;
   }
 
-  @Input() nzRotate: number = 0;
+  @Input({ transform: numberAttribute }) nzRotate: number = 0;
 
   @Input()
   set nzType(value: string) {

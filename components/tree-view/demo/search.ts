@@ -98,7 +98,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       }
 
       ::ng-deep .highlight {
-        color: red;
+        color: #f50;
       }
     `
   ]

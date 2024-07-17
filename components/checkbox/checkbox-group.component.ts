@@ -9,19 +9,19 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
   Input,
   OnDestroy,
   OnInit,
   Optional,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzCheckboxComponent } from './checkbox.component';
 
@@ -65,12 +65,10 @@ export interface NzCheckBoxOptionInterface {
   standalone: true
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
 
   dir: Direction = 'ltr';
 

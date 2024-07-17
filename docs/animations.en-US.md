@@ -40,7 +40,6 @@ Add the `nzNoAnimation` directive to the component.
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
 <ul nz-menu nzNoAnimation></ul>
-<nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 
 ### Turn Off In Services

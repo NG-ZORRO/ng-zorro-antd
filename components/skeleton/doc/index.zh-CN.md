@@ -59,7 +59,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | ------------ | ---------------- | ---------------------------------- | ----------- |
 | `[nzActive]` | 是否展示动画效果 | `boolean`                          | `false`     |
 | `[nzSize]`   | 大小             | `'large' \| 'small' \| 'default'`  | `'default'` |
-| `[nzShape]`  | 形状             | `'circle' \| 'round' \| 'default'` | `'default'` |
+| `[nzShape]`  | 形状             | `'square' \| 'circle' \| 'round' \| 'default'` | `'default'` |
 
 ### nz-skeleton-element [nzType="avatar"]:standalone
 

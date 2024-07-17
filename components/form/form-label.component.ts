@@ -11,7 +11,8 @@ import {
   OnDestroy,
   Optional,
   SkipSelf,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -19,8 +20,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
@@ -63,15 +63,11 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   standalone: true
 })
 export class NzFormLabelComponent implements OnDestroy {
-  static ngAcceptInputType_nzRequired: BooleanInput;
-  static ngAcceptInputType_nzNoColon: BooleanInput;
-  static ngAcceptInputType_nzLabelWrap: BooleanInput;
-
   @Input() nzFor?: string;
-  @Input() @InputBoolean() nzRequired = false;
-  @Input()
+  @Input({ transform: booleanAttribute }) nzRequired = false;
+  @Input({ transform: booleanAttribute })
   set nzNoColon(value: boolean) {
-    this.noColon = toBoolean(value);
+    this.noColon = value;
   }
   get nzNoColon(): boolean {
     return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
@@ -103,9 +99,9 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private labelAlign: NzLabelAlignType | 'default' = 'default';
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzLabelWrap(value: boolean) {
-    this.labelWrap = toBoolean(value);
+    this.labelWrap = value;
   }
 
   get nzLabelWrap(): boolean {

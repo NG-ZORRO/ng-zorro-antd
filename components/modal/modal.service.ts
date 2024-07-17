@@ -12,6 +12,7 @@ import { startWith } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -97,6 +98,8 @@ export class NzModalService implements OnDestroy {
     const modalContainer = this.attachModalContainer(overlayRef, configMerged);
     const modalRef = this.attachModalContent<T, D, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
     modalContainer.modalRef = modalRef;
+
+    overlayZIndexSetter(overlayRef, config?.nzZIndex);
 
     this.openModals.push(modalRef);
     modalRef.afterClose.subscribe(() => this.removeOpenModal(modalRef));

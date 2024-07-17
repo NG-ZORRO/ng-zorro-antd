@@ -189,6 +189,7 @@ export default {
   },
   QRCode: {
     expired: 'کد QR منقضی شده است',
-    refresh: 'تازه کردن'
+    refresh: 'تازه کردن',
+    scanned: 'اسکن شده'
   }
 };

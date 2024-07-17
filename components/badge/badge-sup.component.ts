@@ -11,7 +11,8 @@ import {
   OnInit,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
@@ -67,7 +68,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzTitle?: string | null | undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;
   @Input() nzDot = false;
-  @Input() nzOverflowCount: number = 99;
+  @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;

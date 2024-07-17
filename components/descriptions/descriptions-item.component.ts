@@ -11,12 +11,10 @@ import {
   OnDestroy,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
-
-import { NumberInput } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,11 +30,9 @@ import { InputNumber } from 'ng-zorro-antd/core/util';
   standalone: true
 })
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
-  static ngAcceptInputType_nzSpan: NumberInput;
-
   @ViewChild(TemplateRef, { static: true }) content!: TemplateRef<void>;
 
-  @Input() @InputNumber() nzSpan = 1;
+  @Input({ transform: numberAttribute }) nzSpan = 1;
   @Input() nzTitle: string | TemplateRef<void> = '';
 
   readonly inputChange$ = new Subject<void>();

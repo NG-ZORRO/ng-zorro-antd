@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -25,7 +25,8 @@ describe('nz-hash-code', () => {
 
     beforeEach(fakeAsync(() => {
       testBed = createComponentBed(NzTestHashCodeBasicComponent, {
-        imports: [NzHashCodeModule, HttpClientTestingModule]
+        imports: [NzHashCodeModule],
+        providers: [provideHttpClientTesting()]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();

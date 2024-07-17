@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -21,13 +22,16 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  numberAttribute
 } from '@angular/core';
 import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
@@ -59,15 +63,7 @@ import { NzUploadListComponent } from './upload-list.component';
   standalone: true
 })
 export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzLimit: NumberInput;
-  static ngAcceptInputType_nzSize: NumberInput;
-  static ngAcceptInputType_nzDirectory: BooleanInput;
-  static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzMultiple: BooleanInput;
   static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
-  static ngAcceptInputType_nzShowButton: BooleanInput;
-  static ngAcceptInputType_nzWithCredentials: BooleanInput;
 
   private destroy$ = new Subject<void>();
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
@@ -79,23 +75,23 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // #region fields
 
   @Input() nzType: NzUploadType = 'select';
-  @Input() @InputNumber() nzLimit = 0;
-  @Input() @InputNumber() nzSize = 0;
+  @Input({ transform: numberAttribute }) nzLimit = 0;
+  @Input({ transform: numberAttribute }) nzSize = 0;
 
   @Input() nzFileType?: string;
   @Input() nzAccept?: string | string[];
   @Input() nzAction?: string | ((file: NzUploadFile) => string | Observable<string>);
-  @Input() @InputBoolean() nzDirectory = false;
-  @Input() @InputBoolean() nzOpenFileDialogOnClick = true;
+  @Input({ transform: booleanAttribute }) nzDirectory = false;
+  @Input({ transform: booleanAttribute }) nzOpenFileDialogOnClick = true;
   @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => boolean | Observable<boolean>;
   @Input() nzCustomRequest?: (item: NzUploadXHRArgs) => Subscription;
   @Input() nzData?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
   @Input() nzFileList: NzUploadFile[] = [];
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzHeaders?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzListType: NzUploadListType = 'text';
-  @Input() @InputBoolean() nzMultiple = false;
+  @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzName = 'file';
 
   private _showUploadList: boolean | NzShowUploadList = true;
@@ -109,8 +105,8 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return this._showUploadList;
   }
 
-  @Input() @InputBoolean() nzShowButton = true;
-  @Input() @InputBoolean() nzWithCredentials = false;
+  @Input({ transform: booleanAttribute }) nzShowButton = true;
+  @Input({ transform: booleanAttribute }) nzWithCredentials = false;
 
   @Input() nzRemove?: (file: NzUploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview?: (file: NzUploadFile) => void;
@@ -177,6 +173,8 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     };
     return this;
   }
+
+  private readonly platform = inject(Platform);
 
   // #endregion
 
@@ -353,15 +351,17 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngAfterViewInit(): void {
-    // fix firefox drop open new tab
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent<MouseEvent>(this.document.body, 'drop')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.preventDefault();
-          event.stopPropagation();
-        })
-    );
+    if (this.platform.FIREFOX) {
+      // fix firefox drop open new tab
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<MouseEvent>(this.document.body, 'drop')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(event => {
+            event.preventDefault();
+            event.stopPropagation();
+          })
+      );
+    }
   }
 
   ngOnChanges(): void {

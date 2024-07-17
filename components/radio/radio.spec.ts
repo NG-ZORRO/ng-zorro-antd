@@ -23,6 +23,7 @@ describe('radio', () => {
         NzTestRadioGroupDisabledComponent,
         NzTestRadioGroupDisabledFormComponent,
         NzTestRadioGroupLabelNgModelComponent,
+        NzTestRadioGroupSolidComponent,
         NzTestRadioSingleRtlComponent,
         NzTestRadioGroupRtlComponent,
         NzTestRadioButtonRtlComponent
@@ -228,14 +229,16 @@ describe('radio', () => {
   describe('radio group solid', () => {
     let fixture: ComponentFixture<NzTestRadioGroupSolidComponent>;
     let radioGroup: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioGroupSolidComponent);
       fixture.detectChanges();
       radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
-      it('should support solid css', () => {
-        fixture.detectChanges();
-        expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-solid');
-      });
+    });
+
+    it('should support solid css', () => {
+      fixture.detectChanges();
+      expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-solid');
     });
   });
   describe('radio form', () => {
@@ -427,6 +430,7 @@ describe('radio', () => {
     });
   });
 });
+
 @Component({
   // eslint-disable-next-line
   selector: 'nz-test-radio-single',
@@ -555,7 +559,9 @@ export class NzTestRadioGroupDisabledComponent {
   template: `
     <form nz-form>
       <nz-radio-group [formControl]="formControl">
-        <label nz-radio *ngFor="let val of radioValues" [nzValue]="val">{{ val }}</label>
+        @for (val of radioValues; track val) {
+          <label nz-radio [nzValue]="val">{{ val }}</label>
+        }
       </nz-radio-group>
     </form>
   `
@@ -584,9 +590,11 @@ export class NzTestRadioGroupSolidComponent {
 @Component({
   template: `
     <nz-radio-group>
-      <label nz-radio *ngFor="let item of items" [nzValue]="item.label" [(ngModel)]="item.checked">
-        {{ item.label }}
-      </label>
+      @for (item of items; track item) {
+        <label nz-radio [nzValue]="item.label" [(ngModel)]="item.checked">
+          {{ item.label }}
+        </label>
+      }
     </nz-radio-group>
   `
 })

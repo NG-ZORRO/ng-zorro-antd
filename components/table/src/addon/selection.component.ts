@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -21,40 +20,36 @@ import { NzRowSelectionType } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label
-      *ngIf="showCheckbox && nzRowSelectionType === 'checkbox'"
-      nz-checkbox
-      [class.ant-table-selection-select-all-custom]="showRowSelection"
-      [ngModel]="checked"
-      [nzDisabled]="disabled"
-      [nzIndeterminate]="indeterminate"
-      [attr.aria-label]="label"
-      (ngModelChange)="onCheckedChange($event)"
-    ></label>
-    <div class="ant-table-selection-extra" *ngIf="showRowSelection && nzRowSelectionType === 'checkbox'">
-      <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
-        <span nz-icon nzType="down"></span>
-      </span>
-      <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
-        <ul nz-menu class="ant-table-selection-menu">
-          <li nz-menu-item *ngFor="let selection of listOfSelections" (click)="selection.onSelect()">
-            {{ selection.text }}
-          </li>
-        </ul>
-      </nz-dropdown-menu>
-    </div>
+    @if (showCheckbox && nzRowSelectionType === 'checkbox') {
+      <label
+        nz-checkbox
+        [class.ant-table-selection-select-all-custom]="showRowSelection"
+        [ngModel]="checked"
+        [nzDisabled]="disabled"
+        [nzIndeterminate]="indeterminate"
+        [attr.aria-label]="label"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
+    }
+    @if (showRowSelection && nzRowSelectionType === 'checkbox') {
+      <div class="ant-table-selection-extra">
+        <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
+          <span nz-icon nzType="down"></span>
+        </span>
+        <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
+          <ul nz-menu class="ant-table-selection-menu">
+            @for (selection of listOfSelections; track selection) {
+              <li nz-menu-item (click)="selection.onSelect()">
+                {{ selection.text }}
+              </li>
+            }
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    }
   `,
   host: { class: 'ant-table-selection' },
-  imports: [
-    NgIf,
-    FormsModule,
-    NzCheckboxModule,
-    NzDropDownModule,
-    NzIconModule,
-    NgForOf,
-    NzRadioComponent,
-    NzRadioGroupComponent
-  ],
+  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule, NzRadioComponent, NzRadioGroupComponent],
   standalone: true
 })
 export class NzTableSelectionComponent {

@@ -4,7 +4,7 @@
  */
 
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, booleanAttribute } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
@@ -58,14 +58,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true
 })
 export class NzTreeNodeSwitcherComponent {
-  @Input() nzShowExpand?: boolean;
-  @Input() nzShowLine?: boolean;
+  @Input({ transform: booleanAttribute }) nzShowExpand?: boolean;
+  @Input({ transform: booleanAttribute }) nzShowLine?: boolean;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzSelectMode = false;
   @Input() context!: NzTreeNode;
-  @Input() isLeaf?: boolean;
-  @Input() isLoading?: boolean;
-  @Input() isExpanded?: boolean;
+  @Input({ transform: booleanAttribute }) isLeaf?: boolean;
+  @Input({ transform: booleanAttribute }) isLoading?: boolean;
+  @Input({ transform: booleanAttribute }) isExpanded?: boolean;
 
   get isShowLineIcon(): boolean {
     return !this.isLeaf && !!this.nzShowLine;

@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
-import { NzDemoCodeEditorBasicComponent } from './demo/basic';
-
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const monaco: any;
 
@@ -33,20 +31,20 @@ export class NzTestCodeEditorFullControlComponent {
 }
 
 describe('code editor', () => {
-  describe('basic', () => {
-    // let fixture: ComponentFixture<NzDemoCodeEditorBasicComponent>;
+  // describe('basic', () => {
+  //   // let fixture: ComponentFixture<NzDemoCodeEditorBasicComponent>;
 
-    beforeEach(waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzDemoCodeEditorBasicComponent]
-      }).compileComponents();
-    }));
+  //   beforeEach(waitForAsync(() => {
+  //     TestBed.configureTestingModule({
+  //       imports: [FormsModule, NzCodeEditorModule],
+  //       declarations: [NzDemoCodeEditorBasicComponent]
+  //     }).compileComponents();
+  //   }));
 
-    beforeEach(() => {
-      // fixture = TestBed.createComponent(NzDemoCodeEditorBasicComponent);
-    });
-  });
+  //   beforeEach(() => {
+  //     // fixture = TestBed.createComponent(NzDemoCodeEditorBasicComponent);
+  //   });
+  // });
 
   describe('full control', () => {
     let fixture: ComponentFixture<NzTestCodeEditorFullControlComponent>;

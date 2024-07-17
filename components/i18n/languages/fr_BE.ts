@@ -186,6 +186,7 @@ export default {
   },
   QRCode: {
     expired: 'QR code expiré',
-    refresh: 'Rafraîchir'
+    refresh: 'Rafraîchir',
+    scanned: 'Scanné'
   }
 };

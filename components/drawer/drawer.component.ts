@@ -30,16 +30,19 @@ import {
   TemplateRef,
   Type,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { drawerMaskMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
+import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isTemplateRef, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
@@ -76,8 +79,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [style.transition]="placementChanging ? 'none' : null"
         [style.zIndex]="nzZIndex"
       >
-        @if (nzMask) {
-          <div class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
+        @if (nzMask && isOpen) {
+          <div @drawerMaskMotion class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
         }
         <div
           class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
@@ -92,12 +95,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 <div class="ant-drawer-header" [class.ant-drawer-header-close-only]="!nzTitle">
                   <div class="ant-drawer-header-title">
                     @if (nzClosable) {
-                      <button
-                        (click)="closeClick()"
-                        aria-label="Close"
-                        class="ant-drawer-close"
-                        style="--scroll-bar: 0px;"
-                      >
+                      <button (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
                         <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
                           <span nz-icon [nzType]="closeIcon"></span>
                         </ng-container>
@@ -148,6 +146,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [drawerMaskMotion],
   imports: [NzNoAnimationDirective, NgStyle, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet],
   standalone: true
 })
@@ -156,21 +155,15 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzClosable: BooleanInput;
-  static ngAcceptInputType_nzMaskClosable: BooleanInput;
-  static ngAcceptInputType_nzMask: BooleanInput;
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
-  static ngAcceptInputType_nzKeyboard: BooleanInput;
-  static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
-  @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzMask: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzCloseOnNavigation: boolean = true;
-  @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @Input({ transform: booleanAttribute }) nzClosable: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzMaskClosable: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzMask: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzCloseOnNavigation: boolean = true;
+  @Input({ transform: booleanAttribute }) nzNoAnimation = false;
+  @Input({ transform: booleanAttribute }) nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzExtra?: string | TemplateRef<{}>;
   @Input() nzFooter?: string | TemplateRef<{}>;
@@ -187,7 +180,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private componentInstance: T | null = null;
   private componentRef: ComponentRef<T> | null = null;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzVisible(value: boolean) {
     this.isOpen = value;
   }
@@ -208,7 +201,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
-  placementChangeTimeoutId = -1;
+  placementChangeTimeoutId?: ReturnType<typeof setTimeout>;
   nzContentParams?: NzSafeAny; // only service
   nzData?: D;
   overlayRef?: OverlayRef | null;
@@ -456,6 +449,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.drawerTemplate, this.viewContainerRef);
       this.overlayRef = this.overlay.create(this.getOverlayConfig());
+
+      overlayZIndexSetter(this.overlayRef, this.nzZIndex);
     }
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
