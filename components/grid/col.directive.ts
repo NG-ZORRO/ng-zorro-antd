@@ -8,14 +8,13 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -120,11 +119,12 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     return listClassMap;
   }
 
+  nzRowDirective = inject(NzRowDirective, { host: true, optional: true });
+
   constructor(
     private elementRef: ElementRef,
-    @Optional() @Host() public nzRowDirective: NzRowDirective,
     public renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

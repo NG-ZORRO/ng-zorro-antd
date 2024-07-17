@@ -10,14 +10,14 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { Color } from '../interfaces/color';
@@ -81,6 +81,8 @@ export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
 
   offsetValue: TransformOffset = { x: 0, y: 0 };
   dragRef: boolean = false;
+  private document: Document = inject(DOCUMENT);
+
   mouseMoveRef: (e: MouseEvent | TouchEvent) => void = () => null;
   mouseUpRef: (e: MouseEvent | TouchEvent) => void = () => null;
 
@@ -92,10 +94,7 @@ export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
     return `hsl(${this.color?.toHsb().h},100%, 50%)`;
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.document.removeEventListener('mousemove', this.mouseMoveRef);

@@ -6,7 +6,7 @@
 /* eslint-disable @angular-eslint/component-selector */
 
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -51,8 +51,9 @@ export class NzTbodyComponent implements OnDestroy {
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
   listOfMeasureColumn$ = new BehaviorSubject<readonly string[]>([]);
   private destroy$ = new Subject<void>();
+  private nzTableStyleService = inject(NzTableStyleService, { optional: true });
 
-  constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
+  constructor() {
     this.isInsideTable = !!this.nzTableStyleService;
     if (this.nzTableStyleService) {
       const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
@@ -63,7 +64,7 @@ export class NzTbodyComponent implements OnDestroy {
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
-    this.nzTableStyleService.setListOfAutoWidth(listOfAutoWidth);
+    this.nzTableStyleService?.setListOfAutoWidth(listOfAutoWidth);
   }
 
   ngOnDestroy(): void {

@@ -12,13 +12,11 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef,
   ViewChild,
@@ -95,6 +93,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzName = 'file';
 
   private _showUploadList: boolean | NzShowUploadList = true;
+  private document: Document = inject(DOCUMENT);
 
   @Input()
   set nzShowUploadList(value: boolean | NzShowUploadList) {
@@ -180,10 +179,9 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   constructor(
     private ngZone: NgZone,
-    @Inject(DOCUMENT) private document: NzSafeAny,
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   // #region upload

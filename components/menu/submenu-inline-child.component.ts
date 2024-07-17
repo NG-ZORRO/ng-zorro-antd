@@ -13,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -55,7 +54,7 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   calcMotionState(): void {

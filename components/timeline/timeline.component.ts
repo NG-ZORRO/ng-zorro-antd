@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChange,
   SimpleChanges,
@@ -99,7 +98,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   constructor(
     private cdr: ChangeDetectorRef,
     private timelineService: TimelineService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

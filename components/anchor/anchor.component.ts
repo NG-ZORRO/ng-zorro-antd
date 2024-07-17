@@ -13,7 +13,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   NgZone,
   numberAttribute,
@@ -31,7 +31,7 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzDirectionVHType } from 'ng-zorro-antd/core/types';
 import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
@@ -122,9 +122,9 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private animating = false;
   private destroy$ = new Subject<boolean>();
   private handleScrollTimeoutID?: ReturnType<typeof setTimeout>;
+  private doc: Document = inject(DOCUMENT);
 
   constructor(
-    @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private cdr: ChangeDetectorRef,
@@ -250,7 +250,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
-    const el = this.doc.querySelector(linkComp.nzHref);
+    const el = this.doc.querySelector<HTMLElement>(linkComp.nzHref);
     if (!el) {
       return;
     }
@@ -278,7 +278,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
     if (nzContainer) {
       const container = this.nzContainer;
-      this.container = typeof container === 'string' ? this.doc.querySelector(container) : container;
+      this.container = typeof container === 'string' ? this.doc.querySelector<HTMLElement>(container)! : container;
       this.registerScrollEvent();
     }
     if (nzCurrentAnchor) {

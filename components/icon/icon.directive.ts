@@ -13,10 +13,10 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
   booleanAttribute,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { Subject, from } from 'rxjs';
@@ -78,11 +78,11 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     private readonly changeDetectorRef: ChangeDetectorRef,
     elementRef: ElementRef,
     public readonly iconService: NzIconService,
-    public readonly renderer: Renderer2,
-    @Optional() iconPatch: NzIconPatchService
+    public readonly renderer: Renderer2
   ) {
     super(iconService, elementRef, renderer);
 
+    const iconPatch = inject(NzIconPatchService, { optional: true });
     if (iconPatch) {
       iconPatch.doPatch();
     }

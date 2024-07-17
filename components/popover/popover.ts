@@ -3,19 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Directive,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
-  Optional,
   Output,
   ViewEncapsulation,
   booleanAttribute
@@ -134,14 +130,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';
-
-  constructor(
-    cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective
-  ) {
-    super(cdr, directionality, noAnimation);
-  }
 
   get hasBackdrop(): boolean {
     return this.nzTrigger === 'click' ? this.nzBackdrop : false;

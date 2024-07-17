@@ -10,12 +10,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  inject,
   numberAttribute
 } from '@angular/core';
 
@@ -50,6 +50,8 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   @Input() nzGap: [number, number] = [100, 100];
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
 
+  private document: Document = inject(DOCUMENT);
+
   waterMarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
 
@@ -67,7 +69,6 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
 
   constructor(
     private el: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef
   ) {}
 

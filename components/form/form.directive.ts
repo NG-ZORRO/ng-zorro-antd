@@ -4,16 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  Directive,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  SimpleChange,
-  SimpleChanges,
-  booleanAttribute
-} from '@angular/core';
+import { Directive, Input, OnChanges, OnDestroy, SimpleChange, SimpleChanges, booleanAttribute } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
@@ -69,7 +60,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
 
   constructor(
     public nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

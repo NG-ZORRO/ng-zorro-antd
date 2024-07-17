@@ -4,27 +4,23 @@
  */
 
 import { A11yModule } from '@angular/cdk/a11y';
-import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Directive,
   ElementRef,
   EventEmitter,
-  Host,
-  Inject,
   Input,
   OnDestroy,
-  Optional,
   Output,
   QueryList,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { finalize, first, takeUntil } from 'rxjs/operators';
@@ -35,7 +31,7 @@ import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -59,6 +55,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input({ alias: 'nzPopconfirmArrowPointAtCenter', transform: booleanAttribute })
   override arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') override title?: NzTSType;
+  @Input('nzPopconfirmTitleContext') titleContext?: Object | null = null;
   @Input('nz-popconfirm') override directiveTitle?: NzTSType | null;
   @Input('nzPopconfirmTrigger') override trigger?: NzTooltipTrigger = 'click';
   @Input('nzPopconfirmPlacement') override placement?: string | string[] = 'top';
@@ -97,6 +94,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       nzIcon: ['nzIcon', () => this.nzIcon],
       nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
       nzPopconfirmBackdrop: ['nzBackdrop', () => this.nzPopconfirmBackdrop],
+      nzPopconfirmContext: ['nzTitleContext', () => this.titleContext],
       nzAutoFocus: ['nzAutoFocus', () => this.nzAutofocus],
       ...super.getProxyPropertyMap()
     };
@@ -164,7 +162,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
             <div>
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
-                  <ng-container *nzStringTemplateOutlet="nzTitle">
+                  <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">
                     <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
                       <span class="ant-popover-message-icon">
                         <span nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></span>
@@ -246,21 +244,14 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
 
   protected override _trigger: NzTooltipTrigger = 'click';
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
 
   override _prefix = 'ant-popover';
 
   confirmLoading = false;
 
-  constructor(
-    cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    @Optional() directionality: Directionality,
-    @Optional() @Inject(DOCUMENT) document: NzSafeAny,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective
-  ) {
-    super(cdr, directionality, noAnimation);
-    this.document = document;
+  constructor(private elementRef: ElementRef) {
+    super();
   }
 
   override ngOnDestroy(): void {

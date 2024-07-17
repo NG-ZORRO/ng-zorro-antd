@@ -17,7 +17,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -174,7 +173,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     private sliderService: NzSliderService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

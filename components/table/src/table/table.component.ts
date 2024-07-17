@@ -18,7 +18,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -232,7 +231,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
     private nzTableDataService: NzTableDataService<T>,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

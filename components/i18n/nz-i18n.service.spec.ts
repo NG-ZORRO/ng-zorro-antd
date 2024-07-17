@@ -1,5 +1,5 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
 import { NZ_I18N, provideNzI18n } from 'ng-zorro-antd/i18n/nz-i18n.token';
@@ -33,9 +33,11 @@ describe('i18n service', () => {
       testComponent = fixture.debugElement.componentInstance;
     });
 
-    beforeEach(inject([NzI18nService], (s: NzI18nService) => {
-      srv = s;
-    }));
+    beforeEach(
+      testingInject([NzI18nService], (s: NzI18nService) => {
+        srv = s;
+      })
+    );
 
     it('should interface be right', () => {
       const i18nEN: NzI18nInterface = en_US;
@@ -88,11 +90,9 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
 })
 export class NzI18nTestComponent implements OnDestroy {
   private localeSubscription: Subscription;
+  locale = inject(NZ_I18N);
 
-  constructor(
-    private nzI18nService: NzI18nService,
-    @Inject(NZ_I18N) public locale: NzI18nInterface
-  ) {
+  constructor(private nzI18nService: NzI18nService) {
     this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
       this.updateLocale(locale);
     });
