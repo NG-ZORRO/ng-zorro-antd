@@ -30,6 +30,12 @@ import { Component } from '@angular/core';
                   <li nz-menu-item>Option 6</li>
                 </ul>
               </li>
+              <li nz-submenu nzTitle="Click me" [nzTriggerSubMenuAction]="'click'">
+                <ul>
+                  <li nz-menu-item nzDisabled>Option 5</li>
+                  <li nz-menu-item>Option 6</li>
+                </ul>
+              </li>
               <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
                 <ul>
                   <li nz-menu-item>Option 5</li>

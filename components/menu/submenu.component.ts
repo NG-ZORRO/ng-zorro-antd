@@ -103,6 +103,7 @@ const listOfHorizontalPositions = [
         [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
         [cdkConnectedOverlayTransformOriginOn]="'.ant-menu-submenu'"
+        (overlayOutsideClick)="setMouseEnterState(false)"
       >
         <div
           nz-submenu-none-inline-child
@@ -112,6 +113,7 @@ const listOfHorizontalPositions = [
           [position]="position"
           [nzDisabled]="nzDisabled"
           [isMenuInsideDropDown]="isMenuInsideDropDown"
+          [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
           [@.disabled]="!!noAnimation?.nzNoAnimation"

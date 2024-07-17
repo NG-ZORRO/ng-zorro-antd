@@ -96,7 +96,7 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   }
 
   setMouseState(state: boolean): void {
-    if ((!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') || !state) {
+    if (!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') {
       this.subMenuMouseState.next(state);
     }
   }
