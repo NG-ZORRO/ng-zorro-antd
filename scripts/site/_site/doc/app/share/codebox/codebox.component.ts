@@ -4,11 +4,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
@@ -28,6 +28,7 @@ import { OnlineIdeService } from '../../online-ide/online-ide.service';
   }
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
+  private document: Document = inject(DOCUMENT);
   highlightCode?: string;
   copied = false;
   commandCopied = false;
@@ -96,14 +97,14 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
       // @ts-ignore
       let copyTextArea = null as HTMLTextAreaElement;
       try {
-        copyTextArea = this.dom.createElement('textarea');
+        copyTextArea = this.document.createElement('textarea');
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
-        this.dom.body.appendChild(copyTextArea);
+        this.document.body.appendChild(copyTextArea);
         copyTextArea.value = value;
         copyTextArea.select();
-        this.dom.execCommand('copy');
+        this.document.execCommand('copy');
         resolve(value);
       } finally {
         if (copyTextArea && copyTextArea.parentNode) {
@@ -122,7 +123,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     }
   }
 
-  openOnlineIDE(ide: 'StackBlitz' | 'CodeSandbox' = 'StackBlitz'): void {
+  openOnlineIDE(): void {
     setTimeout(() => {
       this.onlineIDELoading = !this.codeLoaded;
       this.check();
@@ -130,11 +131,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.getDemoCode().subscribe(data => {
       this.onlineIDELoading = false;
       this.check();
-      if (ide === 'StackBlitz') {
-        this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
-      } else {
-        this.onlineIdeService.openOnCodeSandbox(this.nzComponentName, data.rawCode, this.nzSelector);
-      }
+      this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
     });
   }
 
@@ -143,7 +140,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Inject(DOCUMENT) private dom: any,
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
     private appService: AppService,

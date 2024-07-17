@@ -18,7 +18,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -26,6 +25,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -398,16 +398,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality,
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {

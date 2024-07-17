@@ -18,13 +18,13 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -159,15 +159,15 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor(
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   updateChildrenInputSize(): void {

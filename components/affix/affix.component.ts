@@ -13,13 +13,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -32,7 +31,7 @@ import { map, takeUntil, throttleTime } from 'rxjs/operators';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { getStyleAsText, numberAttributeWithZeroFallback, shallowEqual } from 'ng-zorro-antd/core/util';
 
 import { AffixRespondEvents } from './respond-events';
@@ -82,7 +81,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private offsetChanged$ = new ReplaySubject<void>(1);
   private destroy$ = new Subject<boolean>();
   private timeout?: ReturnType<typeof setTimeout>;
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
 
   private get target(): Element | Window {
     const el = this.nzTarget;
@@ -91,7 +90,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
 
   constructor(
     el: ElementRef,
-    @Inject(DOCUMENT) doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,
@@ -99,11 +97,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     private renderer: Renderer2,
     private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
-    this.document = doc;
   }
 
   ngOnInit(): void {

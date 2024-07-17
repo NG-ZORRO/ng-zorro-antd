@@ -10,7 +10,6 @@ import {
   Component,
   Input,
   OnInit,
-  Optional,
   ViewEncapsulation,
   booleanAttribute
 } from '@angular/core';
@@ -55,7 +54,7 @@ export class NzCollapseComponent implements OnInit {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private destroy$: NzDestroyService
   ) {
     this.nzConfigService

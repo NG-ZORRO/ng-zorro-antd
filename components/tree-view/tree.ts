@@ -9,15 +9,14 @@ import { CdkTree, TreeControl } from '@angular/cdk/tree';
 import {
   ChangeDetectorRef,
   Component,
-  Host,
   Input,
   IterableDiffer,
   IterableDiffers,
   OnDestroy,
   OnInit,
-  Optional,
   ViewContainerRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -45,11 +44,12 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   @Input({ transform: booleanAttribute }) nzDirectoryTree = false;
   @Input({ transform: booleanAttribute }) nzBlockNode = false;
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     protected differs: IterableDiffers,
     protected changeDetectorRef: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() private directionality?: Directionality
+    private directionality: Directionality
   ) {
     super(differs, changeDetectorRef);
   }
@@ -57,13 +57,11 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   override ngOnInit(): void {
     super.ngOnInit();
 
-    if (this.directionality) {
-      this.dir = this.directionality.value;
-      this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-        this.dir = direction;
-        this.changeDetectorRef.detectChanges();
-      });
-    }
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   override ngOnDestroy(): void {

@@ -22,7 +22,6 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -190,7 +189,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     private ngZone: NgZone,
     private viewportRuler: ViewportRuler,
     private nzResizeObserver: NzResizeObserver,
-    @Optional() private dir: Directionality
+    private dir: Directionality
   ) {}
 
   ngAfterViewInit(): void {

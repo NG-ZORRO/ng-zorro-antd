@@ -3,20 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgClass, NgStyle } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Directive,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
-  Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
@@ -127,14 +123,6 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   nzColor?: string | NzPresetColor;
 
   _contentStyleMap: NgStyleInterface = {};
-
-  constructor(
-    cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality,
-    @Host() @Optional() noAnimation?: NzNoAnimationDirective
-  ) {
-    super(cdr, directionality, noAnimation);
-  }
 
   protected isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle);

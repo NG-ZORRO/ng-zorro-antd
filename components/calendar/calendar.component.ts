@@ -14,7 +14,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -147,7 +146,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

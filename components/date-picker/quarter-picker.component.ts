@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Host, Optional } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 
 import { NzDatePickerComponent } from './date-picker.component';
 
@@ -13,7 +13,9 @@ import { NzDatePickerComponent } from './date-picker.component';
   standalone: true
 })
 export class NzQuarterPickerComponent {
-  constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
+  datePicker = inject(NzDatePickerComponent, { host: true });
+
+  constructor() {
     this.datePicker.nzMode = 'quarter';
   }
 }

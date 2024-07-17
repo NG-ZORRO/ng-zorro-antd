@@ -9,11 +9,11 @@ import {
   Input,
   OnChanges,
   OnInit,
-  Optional,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -38,7 +38,7 @@ import { NzOptionGroupComponent } from './option-group.component';
 })
 export class NzOptionComponent implements OnChanges, OnInit {
   changes = new Subject<void>();
-  groupLabel: string | number | TemplateRef<NzSafeAny> | null = null;
+  groupLabel?: string | number | TemplateRef<NzSafeAny> | null = null;
   @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzTitle?: string | number | null;
   @Input() nzLabel: string | number | null = null;
@@ -48,15 +48,14 @@ export class NzOptionComponent implements OnChanges, OnInit {
   @Input({ transform: booleanAttribute }) nzHide = false;
   @Input({ transform: booleanAttribute }) nzCustomContent = false;
 
-  constructor(
-    @Optional() private nzOptionGroupComponent: NzOptionGroupComponent,
-    private destroy$: NzDestroyService
-  ) {}
+  private nzOptionGroupComponent = inject(NzOptionGroupComponent, { optional: true });
+
+  constructor(private destroy$: NzDestroyService) {}
 
   ngOnInit(): void {
     if (this.nzOptionGroupComponent) {
       this.nzOptionGroupComponent.changes.pipe(startWith(true), takeUntil(this.destroy$)).subscribe(() => {
-        this.groupLabel = this.nzOptionGroupComponent.nzLabel;
+        this.groupLabel = this.nzOptionGroupComponent?.nzLabel;
       });
     }
   }

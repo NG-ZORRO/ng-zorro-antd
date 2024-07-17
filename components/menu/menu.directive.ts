@@ -10,12 +10,10 @@ import {
   ContentChildren,
   Directive,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -85,6 +83,7 @@ export function MenuDropDownTokenFactory(): boolean {
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
@@ -98,6 +97,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
   private destroy$ = new Subject<boolean>();
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
+  private directionality = inject(Directionality);
 
   setInlineCollapsed(inlineCollapsed: boolean): void {
     this.nzInlineCollapsed = inlineCollapsed;
@@ -118,9 +118,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
 
   constructor(
     private nzMenuService: MenuService,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

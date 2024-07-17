@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -23,7 +22,8 @@ import {
   TemplateRef,
   ViewChildren,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Observable, Subject, of as observableOf, of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -292,6 +292,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.markForCheckAllList();
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   // #endregion
 
   constructor(
@@ -299,9 +302,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private i18n: NzI18nService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   private markForCheckAllList(): void {

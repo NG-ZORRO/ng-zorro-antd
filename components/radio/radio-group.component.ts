@@ -12,7 +12,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   ViewEncapsulation,
   booleanAttribute,
@@ -68,7 +67,7 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   constructor(
     private cdr: ChangeDetectorRef,
     private nzRadioService: NzRadioService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

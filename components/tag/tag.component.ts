@@ -16,7 +16,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -80,7 +79,7 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   updateCheckedStatus(): void {

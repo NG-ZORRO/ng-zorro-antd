@@ -22,13 +22,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -38,7 +35,8 @@ import {
   ViewChildren,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -348,8 +346,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
 
+  private document: Document = inject(DOCUMENT);
   origin: CdkOverlayOrigin;
-  document: Document;
   inputSize: number = 12;
   inputWidth?: number;
   prefixCls = PREFIX_CLASS;
@@ -606,6 +604,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.nzOpen !== undefined;
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   // ------------------------------------------------------------------------
   // Input API End
   // ------------------------------------------------------------------------
@@ -622,13 +624,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     private nzResizeObserver: NzResizeObserver,
     private platform: Platform,
     private destroy$: NzDestroyService,
-    @Inject(DOCUMENT) doc: NzSafeAny,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {
-    this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
   }
 

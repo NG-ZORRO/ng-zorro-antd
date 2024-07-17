@@ -12,7 +12,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   ViewEncapsulation,
   booleanAttribute,
   forwardRef
@@ -84,7 +83,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     private elementRef: ElementRef,
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

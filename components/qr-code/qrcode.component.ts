@@ -12,7 +12,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   numberAttribute,
   OnChanges,
@@ -93,12 +93,12 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // canvas is not supported by the SSR DOM
   isBrowser = true;
   private destroy$ = new Subject<void>();
+  private platformId = inject(PLATFORM_ID);
 
   constructor(
     private i18n: NzI18nService,
     private el: ElementRef,
-    private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.cdr.markForCheck();

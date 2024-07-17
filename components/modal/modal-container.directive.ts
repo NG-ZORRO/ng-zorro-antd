@@ -8,7 +8,9 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import {
+  ANIMATION_MODULE_TYPE,
   ChangeDetectorRef,
   ComponentRef,
   Directive,
@@ -17,7 +19,8 @@ import {
   EventEmitter,
   NgZone,
   OnDestroy,
-  Renderer2
+  Renderer2,
+  inject
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -47,7 +50,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   okTriggered = new EventEmitter<void>();
 
   state: 'void' | 'enter' | 'exit' = 'enter';
-  document: Document;
+  document: Document = inject(DOCUMENT);
   modalRef!: NzModalRef;
   isStringContent: boolean = false;
   dir: Direction = 'ltr';
@@ -55,7 +58,16 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   private focusTrap!: FocusTrap;
   private mouseDown = false;
   private oldMaskStyle: { [key: string]: string } | null = null;
+  cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  config: ModalOptions = inject(ModalOptions);
   protected destroy$ = new Subject<boolean>();
+  protected ngZone: NgZone = inject(NgZone);
+  protected host: ElementRef<HTMLElement> = inject(ElementRef);
+  protected focusTrapFactory: FocusTrapFactory = inject(FocusTrapFactory);
+  protected render: Renderer2 = inject(Renderer2);
+  protected overlayRef: OverlayRef = inject(OverlayRef);
+  protected nzConfigService: NzConfigService = inject(NzConfigService);
+  protected animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
 
   get showMask(): boolean {
     const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
@@ -69,22 +81,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
   }
 
-  constructor(
-    protected ngZone: NgZone,
-    protected host: ElementRef<HTMLElement>,
-    protected focusTrapFactory: FocusTrapFactory,
-    public cdr: ChangeDetectorRef,
-    protected render: Renderer2,
-    protected overlayRef: OverlayRef,
-    protected nzConfigService: NzConfigService,
-    public config: ModalOptions,
-    document?: NzSafeAny,
-    protected animationType?: string
-  ) {
+  constructor() {
     super();
-    this.document = document;
-    this.dir = overlayRef.getDirection();
-    this.isStringContent = typeof config.nzContent === 'string';
+    this.dir = this.overlayRef.getDirection();
+    this.isStringContent = typeof this.config.nzContent === 'string';
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))

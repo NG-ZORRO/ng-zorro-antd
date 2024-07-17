@@ -14,12 +14,10 @@ import {
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -28,6 +26,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
   booleanAttribute,
+  inject,
   numberAttribute
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -36,7 +35,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 import { isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -154,7 +153,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @ViewChild('contentTemplate', { static: false }) contentTemplate?: TemplateRef<{ content: string }>;
 
   locale!: NzTextI18nInterface;
-  document: Document;
+  private document: Document = inject(DOCUMENT);
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
   ellipsisText: string | undefined;
@@ -192,12 +191,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private renderer: Renderer2,
     private platform: Platform,
     private i18n: NzI18nService,
-    @Inject(DOCUMENT) document: NzSafeAny,
     private resizeService: NzResizeService,
-    @Optional() private directionality: Directionality
-  ) {
-    this.document = document;
-  }
+    private directionality: Directionality
+  ) {}
 
   onTextCopy(text: string): void {
     this.nzCopy.emit(text);
