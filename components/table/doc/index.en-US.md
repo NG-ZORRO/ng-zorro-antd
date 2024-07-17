@@ -114,21 +114,21 @@ Checkbox property
 | `[nzIndeterminate]`    | `nz-checkbox` indeterminate status                  | `boolean`               | -            |
 | `[nzLabel]`            | ARIA label for the `nz-checkbox`                    | `string`                | -            |
 | `[nzChecked]`          | Checked status, double binding                      | `boolean`               | -            |
-| `[nzRowSelectionType]` | Checkbox or radio                                   | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio                                   | `'checkbox' \| 'radio'` | `'checkbox'` |
 | `(nzCheckedChange)`    | Callback when checked status changes                | `EventEmitter<boolean>` | -            |
 
-radio property
+Radio property
 
 | Property               | Description                                                                                              | Type                    | Default      |
 | ---------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------- | ------------ |
-| `[nzRowSelectionType]` | Checkbox or radio, should have `nzShowRowSelection = true` if trying to have a column with radio buttons | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio, should have `nzShowRowSelection = true` if trying to have a column with radio buttons | `'checkbox' \| 'radio'` | `'checkbox'` |
 
 Selection property
 
 | Property               | Description                                                         | Type                                     | Default      |
 | ---------------------- | ------------------------------------------------------------------- | ---------------------------------------- | ------------ |
 | `[nzShowRowSelection]` | Whether to show row selection options                               | `boolean`                                | -            |
-| `[nzRowSelectionType]` | Checkbox or radio                                                   | `'checkbox' \| 'radio'`                  | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio                                                   | `'checkbox' \| 'radio'`                  | `'checkbox'` |
 | `[nzSelections]`       | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | -            |
 
 Sort property
@@ -181,11 +181,11 @@ Checkbox property
 | `[nzLabel]`            | ARIA label for the `nz-checkbox`  | `string`                | -            |
 | `[nzChecked]`          | Checked status, double binding    | `boolean`               | -            |
 | `(nzCheckedChange)`    | Checked status change callback    | `EventEmitter<boolean>` | -            |
-| `[nzRowSelectionType]` | Checkbox or radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
 | `[colSpan]`            | how many columns the cell extends | `number`                | `null`       |
 | `[rowSpan]`            | how many rows the cell extends    | `number`                | `null`       |
 
-radio property
+Radio property
 
 | Property               | Description                       | Type                    | Default      |
 | ---------------------- | --------------------------------- | ----------------------- | ------------ |
@@ -193,7 +193,7 @@ radio property
 | `[nzLabel]`            | ARIA label for the `nz-checkbox`  | `string`                | -            |
 | `[nzChecked]`          | Checked status, double binding    | `boolean`               | -            |
 | `(nzCheckedChange)`    | Checked status change callback    | `EventEmitter<boolean>` | -            |
-| `[nzRowSelectionType]` | Checkbox or radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio                 | `'checkbox' \| 'radio'` | `'checkbox'` |
 | `[colSpan]`            | how many columns the cell extends | `number`                | `null`       |
 | `[rowSpan]`            | how many rows the cell extends    | `number`                | `null`       |
 
@@ -223,13 +223,11 @@ Other property
 | ---------------- | ---------------------------------- | -------- | ------- |
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
 
-
 ### thead
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | - |
-
+| Property              | Description                                                  | Type                                                                  | Default |
+| --------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------- |
+| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -       |
 
 ### tr
 

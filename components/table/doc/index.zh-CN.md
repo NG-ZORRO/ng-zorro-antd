@@ -116,7 +116,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzChecked]`       | checkbox 是否被选中，可双向绑定 | `boolean`               | -      |
 | `(nzCheckedChange)` | 选中的回调                      | `EventEmitter<boolean>` | -      |
 
-无线电财产
+单选属性
 
 | 参数                   | 说明                                                                              | 类型                    | 默认值       |
 | ---------------------- | --------------------------------------------------------------------------------- | ----------------------- | ------------ |
@@ -127,7 +127,7 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数                   | 说明                                        | 类型                                     | 默认值       |
 | ---------------------- | ------------------------------------------- | ---------------------------------------- | ------------ |
 | `[nzShowRowSelection]` | 是否显示下拉选择                            | `boolean`                                | -            |
-| `[nzRowSelectionType]` | Checkbox or radio                           | `'checkbox' \| 'radio'`                  | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio                           | `'checkbox' \| 'radio'`                  | `'checkbox'` |
 | `[nzSelections]`       | 下拉选择的内容 `text` 及回调函数 `onSelect` | `Array<{ text: string, onSelect: any }>` | -            |
 
 排序属性
@@ -193,7 +193,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzDisabled]`         | checkbox 是否禁用               | `boolean`               | -            |
 | `[nzLabel]`            | checkbox 的可访问性标签         | `string`                | -            |
 | `[nzChecked]`          | checkbox 是否被选中，可双向绑定 | `boolean`               | -            |
-| `[nzRowSelectionType]` | Checkbox or radio               | `'checkbox' \| 'radio'` | `'checkbox'` |
+| `[nzRowSelectionType]` | Checkbox or Radio               | `'checkbox' \| 'radio'` | `'checkbox'` |
 | `(nzCheckedChange)`    | 选中的回调                      | `EventEmitter<boolean>` | -            |
 | `[colSpan]`            | 单元格可横跨的列数              | `number`                | `null`       |
 | `[rowSpan]`            | 单元格可横跨的行数              | `number`                | `null`       |
@@ -226,9 +226,9 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### thead
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `(nzSortOrderChange)` | 排序状态改变回调，需要与 `th` 上的 `nzColumnKey` 同时使用 | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | - |
+| 参数                  | 说明                                                      | 类型                                                                  | 默认值 |
+| --------------------- | --------------------------------------------------------- | --------------------------------------------------------------------- | ------ |
+| `(nzSortOrderChange)` | 排序状态改变回调，需要与 `th` 上的 `nzColumnKey` 同时使用 | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -      |
 
 ### tr
 
