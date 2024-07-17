@@ -151,7 +151,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;
-  @Input() nzTriggerType: NzEditTriggerState = 'icon';
+  @Input() nzTriggerType: NzEditTriggerState = ['icon'];
   @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
@@ -219,7 +219,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   onTextClickEdit(): void {
-    if (this.nzEditable && (this.nzTriggerType === 'text' || this.nzTriggerType === 'both')) {
+    if (this.nzEditable && this.nzTriggerType.includes('text')) {
       this.textEditRef?.onClick();
     }
   }

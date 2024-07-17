@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { NzEditTriggerState } from 'ng-zorro-antd/typography/text-edit.component';
-
 @Component({
   selector: 'nz-demo-typography-interactive',
   template: `
@@ -24,7 +22,12 @@ import { NzEditTriggerState } from 'ng-zorro-antd/typography/text-edit.component
           <label nz-radio [nzValue]="'both'">both</label>
         </nz-radio-group>
       </p>
-      <p nz-typography nzEditable [nzTriggerType]="triggerState" [(nzContent)]="triggerEditStr"></p>
+      <p
+        nz-typography
+        nzEditable
+        [nzTriggerType]="triggerState !== 'both' ? [triggerState] : ['icon', 'text']"
+        [(nzContent)]="triggerEditStr"
+      ></p>
     </div>
     <p nz-typography nzCopyable nzCopyText="Hello, Ant Design!">Replace copy text.</p>
     <p
@@ -55,5 +58,6 @@ export class NzDemoTypographyInteractiveComponent {
   copyStr = 'This is a copyable text.';
   triggerEditStr = 'Text or icon as trigger - click to start editing.';
 
-  triggerState: NzEditTriggerState = 'icon';
+  nzEditTriggerStates = ['icon', 'text', 'both'] as const;
+  triggerState: (typeof this.nzEditTriggerStates)[number] = 'icon';
 }
