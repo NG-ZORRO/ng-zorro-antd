@@ -71,9 +71,15 @@ import { NzRowSelectionType } from '../table.types';
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox || nzShowRadio`
   },
-  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule,
+  imports: [
+    NzRowIndentDirective,
+    NzRowExpandButtonDirective,
+    NgTemplateOutlet,
+    NzCheckboxModule,
+    FormsModule,
     NzRadioComponent,
-    NzRadioGroupComponent],
+    NzRadioGroupComponent
+  ],
   standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
