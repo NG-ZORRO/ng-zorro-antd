@@ -275,7 +275,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzNotFoundContent?: string;
+  @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() nzNodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
