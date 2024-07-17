@@ -25,13 +25,13 @@ import { Component } from '@angular/core';
     <br />
     <span>Expand Icon Position: </span>
     <nz-select [(ngModel)]="expandIconPosition">
-      <nz-option nzValue="left" nzLabel="left"></nz-option>
-      <nz-option nzValue="right" nzLabel="right"></nz-option>
+      <nz-option nzValue="start" nzLabel="start"></nz-option>
+      <nz-option nzValue="end" nzLabel="end"></nz-option>
     </nz-select>
   `
 })
 export class NzDemoCollapseExtraComponent {
-  expandIconPosition: 'left' | 'right' = 'left';
+  expandIconPosition: 'start' | 'end' = 'start';
 
   panels = [
     {

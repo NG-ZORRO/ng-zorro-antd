@@ -4,7 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-rate-text',
   template: `
     <nz-rate [(ngModel)]="value" [nzTooltips]="tooltips"></nz-rate>
-    <span *ngIf="value" class="ant-rate-text">{{ value ? tooltips[value - 1] : '' }}</span>
+    @if (value) {
+      <span class="ant-rate-text">{{ value ? tooltips[value - 1] : '' }}</span>
+    }
   `
 })
 export class NzDemoRateTextComponent {

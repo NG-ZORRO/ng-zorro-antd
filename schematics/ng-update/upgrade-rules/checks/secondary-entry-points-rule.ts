@@ -18,12 +18,12 @@ export class SecondaryEntryPointsRule extends Migration<UpgradeData> {
 
     const importLocation = declaration.moduleSpecifier.text;
     if (importLocation === 'ng-zorro-antd/core') {
-      this.createFailureAtNode(declaration, 'The entry-point "ng-zorro-antd/core" is remove, ' +
+      this.createFailureAtNode(declaration, 'The entry-point "ng-zorro-antd/core" is removed, ' +
         'use "ng-zorro-antd/core/**" instead.');
     }
 
     if (importLocation === 'ng-zorro-antd') {
-      this.createFailureAtNode(declaration, 'The entry-point "ng-zorro-antd" is remove, ' +
+      this.createFailureAtNode(declaration, 'The entry-point "ng-zorro-antd" is removed, ' +
         'use "ng-zorro-antd/**" instead.');
     }
 

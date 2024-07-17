@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -26,12 +26,9 @@ export class NzI18nService {
     return this._change.asObservable();
   }
 
-  constructor(
-    @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
-    @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
-  ) {
-    this.setLocale(locale || zh_CN);
-    this.setDateLocale(dateLocale || null);
+  constructor() {
+    this.setLocale(inject(NZ_I18N, { optional: true }) || zh_CN);
+    this.setDateLocale(inject(NZ_DATE_LOCALE, { optional: true }) as DateLocale); // TODO: fix the type
   }
 
   // [NOTE] Performance issue: this method may called by every change detections

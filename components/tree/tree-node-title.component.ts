@@ -11,7 +11,8 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
@@ -75,18 +76,18 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
 export class NzTreeNodeTitleComponent implements OnChanges {
   @Input() searchValue!: string;
   @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
-  @Input() draggable!: boolean;
-  @Input() showIcon!: boolean;
+  @Input({ transform: booleanAttribute }) draggable!: boolean;
+  @Input({ transform: booleanAttribute }) showIcon!: boolean;
   @Input() selectMode = false;
   @Input() context!: NzTreeNode;
   @Input() icon!: string;
   @Input() title!: string;
-  @Input() isLoading!: boolean;
-  @Input() isSelected!: boolean;
-  @Input() isDisabled!: boolean;
-  @Input() isMatched!: boolean;
-  @Input() isExpanded!: boolean;
-  @Input() isLeaf!: boolean;
+  @Input({ transform: booleanAttribute }) isLoading!: boolean;
+  @Input({ transform: booleanAttribute }) isSelected!: boolean;
+  @Input({ transform: booleanAttribute }) isDisabled!: boolean;
+  @Input({ transform: booleanAttribute }) isMatched!: boolean;
+  @Input({ transform: booleanAttribute }) isExpanded!: boolean;
+  @Input({ transform: booleanAttribute }) isLeaf!: boolean;
   // Drag indicator
   @Input() showIndicator = true;
   @Input() dragPosition?: number;

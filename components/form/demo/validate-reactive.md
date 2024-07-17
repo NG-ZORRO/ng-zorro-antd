@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-我们在 `nz-form-control` 上 提供了 `nzValidateStatus` `nzHasFeedback` 等属性，当使用[响应式表单](https://angular.io/guide/reactive-forms#reactive-forms)时，可以自己定义校验的时机和内容。
+我们在 `nz-form-control` 上 提供了 `nzValidateStatus` `nzHasFeedback` 等属性，当使用[响应式表单](https://angular.cn/guide/forms/reactive-forms)时，可以自己定义校验的时机和内容。
 
 1. `nzValidateStatus`: 校验状态，默认自动从 `nz-form-control` 中的 `NgControl` 获得校验状态，也可以手动指定为特定的 `NgControl`。
 2. `nzHasFeedback`：用于给输入框添加反馈图标。
@@ -17,10 +17,10 @@ title:
 
 ## en-US
 
-We provide properties like `nzValidateStatus` `nzHasFeedback` in `nz-form-control` to customize your own validate status and message, when using [reactive forms](https://angular.io/guide/reactive-forms#reactive-forms).
+We provide properties like `nzValidateStatus` `nzHasFeedback` in `nz-form-control` to customize your own validate status and message, when using [reactive forms](https://angular.dev/guide/forms/reactive-forms).
 
 1. `nzValidateStatus`: validate status of form components, the default status comes from the `NgControl` in `nz-form-control`, you can set other `NgControl` to it.
 2. `nzHasFeedback`: display feed icon of input control
 3. `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip`：display validate message。
-> When there are multiple tips in the same state, `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` supports the passing `TemplateRef<{ $implicit: FormControl }` type, which can be used to switch tips after exporting `FormControl` via the [template syntax](https://angular.io/guide/template-syntax).
+> When there are multiple tips in the same state, `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` supports the passing `TemplateRef<{ $implicit: FormControl }` type, which can be used to switch tips after exporting `FormControl` via the [template syntax](https://angular.dev/guide/templates).
 > When the FormControl.status is `INVALID`, and the errors contains `{warning:true}` , the `nz-form-control` display with warning status.

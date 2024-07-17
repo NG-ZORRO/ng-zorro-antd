@@ -1,12 +1,13 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
@@ -61,6 +62,8 @@ describe('Calendar Header', () => {
     });
 
     it('should emit change event for mode selection', () => {
+      fixture.detectChanges();
+
       const modeNgModel = fixture.debugElement
         .queryAll(By.directive(CalendarHeader))[1]
         .query(By.directive(RadioGroup))
@@ -150,7 +153,10 @@ describe('Calendar Header', () => {
       component = fixture.componentInstance;
     }));
 
-    it('should emit yearChange when year changed', () => {
+    it('should emit yearChange when year changed', fakeAsync(() => {
+      tick(1);
+      fixture.detectChanges();
+
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
       const [yearModel] = header.queryAll(By.directive(Select)).map(x => x.injector.get(NgModel));
 
@@ -159,7 +165,7 @@ describe('Calendar Header', () => {
       fixture.detectChanges();
 
       expect(component.year).toBe(2010);
-    });
+    }));
 
     it('should emit monthChange when month changed', () => {
       fixture.detectChanges();
@@ -172,12 +178,37 @@ describe('Calendar Header', () => {
 
       expect(component.month).toBe(2);
     });
+
     it('should update years when change year', () => {
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
       const headerComponent = header.injector.get(NzCalendarHeaderComponent);
       headerComponent.updateYear(2010);
       expect(headerComponent.years[0].value).toBe(2000);
     });
+  });
+
+  describe('custom Header', () => {
+    let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
+
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
+    }));
+
+    it('should have the default header if custom header is not passed', fakeAsync(() => {
+      fixture.componentInstance.customHeader = undefined;
+      tick(1);
+      fixture.detectChanges();
+
+      const defaultHeader = fixture.debugElement.query(By.css('.ant-picker-calendar-header'));
+      expect(defaultHeader).toBeTruthy();
+
+      fixture.componentInstance.customHeader = fixture.componentInstance.customHeaderElement;
+      tick(1);
+      fixture.detectChanges();
+
+      const defaultHeader2 = fixture.debugElement.query(By.css('.ant-picker-calendar-header'));
+      expect(defaultHeader2).toBeFalsy();
+    }));
   });
 });
 
@@ -212,9 +243,22 @@ class NzTestCalendarHeaderActiveDateComponent {
 }
 
 @Component({
-  template: ` <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header> `
+  template: `
+    <nz-calendar-header
+      [nzCustomHeader]="customHeader"
+      (yearChange)="year = $event"
+      (monthChange)="month = $event"
+    ></nz-calendar-header>
+
+    <ng-template #customHeaderElement>
+      <p>custom header</p>
+    </ng-template>
+  `
 })
 class NzTestCalendarHeaderChangesComponent {
+  @ViewChild('customHeaderElement', { static: true }) customHeaderElement!: TemplateRef<NzSafeAny>;
+
   year: number | null = null;
   month: number | null = null;
+  customHeader?: TemplateRef<void>;
 }

@@ -16,6 +16,8 @@ import { Component } from '@angular/core';
     <br />
     <nz-date-picker nzMode="month" [nzSize]="size"></nz-date-picker>
     <br />
+    <nz-date-picker nzMode="quarter" [nzSize]="size"></nz-date-picker>
+    <br />
     <nz-range-picker [nzSize]="size"></nz-range-picker>
   `,
   styles: [

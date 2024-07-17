@@ -105,12 +105,8 @@ export function drawCanvasBackground(
   scale: number,
   backgroundColor: string
 ): void {
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(x * scale, y * scale, scale, scale);
-    }
-  }
+  ctx.fillStyle = backgroundColor;
+  ctx.fillRect(0, 0, width * scale, height * scale);
 }
 
 export function formatPadding(padding: number | number[]): number[] {

@@ -12,12 +12,10 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.service';
 
@@ -27,9 +25,8 @@ import { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.ser
   providers: [NzResizeObserverFactory]
 })
 export class NzResizeObserverDirective implements AfterContentInit, OnDestroy, OnChanges {
-  static ngAcceptInputType_nzResizeObserverDisabled: BooleanInput;
   @Output() readonly nzResizeObserve = new EventEmitter<ResizeObserverEntry[]>();
-  @Input() @InputBoolean() nzResizeObserverDisabled = false;
+  @Input({ transform: booleanAttribute }) nzResizeObserverDisabled = false;
   private currentSubscription: Subscription | null = null;
 
   private subscribe(): void {

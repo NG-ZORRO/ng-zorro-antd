@@ -4,8 +4,9 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -59,7 +60,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     @if (isRange) {
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [style]="arrowPosition"></div>
+        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="arrowPosition"></div>
         <div class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }}">
           <div class="{{ prefixCls }}-panels">
             @if (hasTimePicker) {
@@ -143,18 +144,18 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       }
     </ng-template>
   `,
-  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent],
+  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent, NgStyle],
   standalone: true
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isRange!: boolean;
-  @Input() inline: boolean = false;
-  @Input() showWeek!: boolean;
+  @Input({ transform: booleanAttribute }) isRange!: boolean;
+  @Input({ transform: booleanAttribute }) inline: boolean = false;
+  @Input({ transform: booleanAttribute }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() disabledDate?: DisabledDateFn;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
-  @Input() showToday!: boolean;
-  @Input() showNow!: boolean;
+  @Input({ transform: booleanAttribute }) showToday!: boolean;
+  @Input({ transform: booleanAttribute }) showNow!: boolean;
   @Input() showTime!: SupportTimeOptions | boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() ranges?: PresetRanges;

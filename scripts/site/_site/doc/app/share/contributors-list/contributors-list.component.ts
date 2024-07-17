@@ -23,7 +23,6 @@ import { filter, take } from 'rxjs/operators';
 })
 export class NzContributorsListComponent implements OnInit, OnDestroy {
   language = 'en';
-  // tslint:disable-next-line:no-any
   list: any[] = [];
   filePath = '';
   isIntersecting = false;
@@ -89,7 +88,6 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
       })
       .subscribe(data => {
         if (Array.isArray(data)) {
-          // tslint:disable-next-line:no-any
           const list: any[] = [];
           data
             .filter(e => e.author && e.author.login)

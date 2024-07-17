@@ -9,6 +9,10 @@ import { Component } from '@angular/core';
       </nz-col>
       <nz-col [nzSpan]="12">
         <nz-statistic [nzValue]="(2019.111 | number: '1.0-2')!" [nzTitle]="'Account Balance (CNY)'"></nz-statistic>
+        <button nz-button nzType="primary" [style.margin-top.px]="16">Recharge</button>
+      </nz-col>
+      <nz-col [nzSpan]="12">
+        <nz-statistic [nzValue]="(112893 | number: '1.0-2')!" nzTitle="Active Users" nzLoading></nz-statistic>
       </nz-col>
     </nz-row>
   `

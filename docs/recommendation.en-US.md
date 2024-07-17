@@ -5,45 +5,45 @@ title: Resources
 
 ## Tools
 
-`ant-zorro-antd` is essentially implementing Ant Design in Angular. We recommend you to use the following existing resources, which can hopefully serve well during your project development.
+`ng-zorro-antd` is essentially implementing Ant Design in Angular. We recommend you to use the following existing
+resources, which can hopefully serve well during your project development.
 
-Category | Recommended Components | Details
----------|-----------------------|------
-Component Lib |[NG ALAIN](https://ng-alain.com/)| Admin Template work with ng-zorro-antd
-Component Lib|[Material Design](https://material.angular.io) | Material Design
-Component Lib|[Clarity](https://github.com/vmware/clarity) | Vmware Angular Component Lib
-Component Lib|[Nebular](https://github.com/akveo/nebular/) | Nebular Angular Component Lib
-Component Lib|[Bootstrap](https://github.com/ng-bootstrap/ng-bootstrap) | Bootstrap Angular Component Lib
-Component Lib|[DevUI](https://github.com/DevCloudFE/ng-devui) | Huawei Angular Component Lib
-Component Lib|[ng-zorro-mobile](https://ng.mobile.ant.design/) | Ant Design Mobile of Angular
-Component Lib|[Jigsaw](https://github.com/rdkmaster/jigsaw) | ZTE Angular Component Lib
-Component Lib|[ag-Grid](https://www.ag-grid.com/angular-grid/) | Angular Grid Component
-Component Lib|[ngx-datatable](https://github.com/swimlane/ngx-datatable) | Swimlane Grid Component
-Component Lib|[ngx-charts](https://swimlane.github.io/ngx-charts/) | Charts based on D3
-Component Lib|[ngx-graph](https://swimlane.github.io/ngx-graph/) | Graph based on dagre.js
-Component Lib|[ngx-formly](https://github.com/ngx-formly/ngx-formly) | Form based on JSON schema
-Component Lib|[ng-ant-admin](https://github.com/huajian123/ng-ant-admin) | The Admin Template imitating Ant Design Pro
-Dev Kit |[Component Dev Kit](https://material.angular.io/cdk/categories) | Component Developer Kit
-Dev Kit |[Spectator](https://github.com/ngneat/spectator) | A Powerful Tool to Simplify Your Angular Tests
-Dev Kit |[Scully](https://github.com/scullyio/scully) | The Static Site Generator for Angular apps
-Dev Kit |[Angular CLI](https://cli.angular.io/) | Angular CLI
-Dev Kit |[Angular Builders](https://github.com/just-jeb/angular-builders) | Angular build facade extensions
-Dev Kit |[ngx-planet](https://github.com/worktile/ngx-planet) | Micro Frontend library for Angular
-Dev Kit|[Angular Universal](https://universal.angular.io/) | Server Render
-State Management|[Akita](https://datorama.github.io/akita/) | Akita state management
-State Management|[ngxs](https://ngxs.io/) | NGXS state management
-State Management|[ngrx](https://ngrx.io/) | NGRX state management
+ Category         | Recommended Components                                           | Details
+------------------|------------------------------------------------------------------|------------------------------------------------
+ Component Lib    | [NG ALAIN](https://ng-alain.com/)                                | Admin Template work with ng-zorro-antd
+ Component Lib    | [Material Design](https://material.angular.io)                   | Material Design
+ Component Lib    | [Clarity](https://github.com/vmware/clarity)                     | Vmware Angular Component Lib
+ Component Lib    | [Nebular](https://github.com/akveo/nebular/)                     | Nebular Angular Component Lib
+ Component Lib    | [Bootstrap](https://github.com/ng-bootstrap/ng-bootstrap)        | Bootstrap Angular Component Lib
+ Component Lib    | [DevUI](https://github.com/DevCloudFE/ng-devui)                  | Huawei Angular Component Lib
+ Component Lib    | [ng-zorro-mobile](https://ng.mobile.ant.design/)                 | Ant Design Mobile of Angular
+ Component Lib    | [Jigsaw](https://github.com/rdkmaster/jigsaw)                    | ZTE Angular Component Lib
+ Component Lib    | [ag-Grid](https://www.ag-grid.com/angular-grid/)                 | Angular Grid Component
+ Component Lib    | [ngx-datatable](https://github.com/swimlane/ngx-datatable)       | Swimlane Grid Component
+ Component Lib    | [ngx-charts](https://swimlane.github.io/ngx-charts/)             | Charts based on D3
+ Component Lib    | [ngx-graph](https://swimlane.github.io/ngx-graph/)               | Graph based on dagre.js
+ Component Lib    | [ngx-formly](https://github.com/ngx-formly/ngx-formly)           | Form based on JSON schema
+ Component Lib    | [ng-ant-admin](https://github.com/huajian123/ng-ant-admin)       | The Admin Template imitating Ant Design Pro
+ Dev Kit          | [Component Dev Kit](https://material.angular.io/cdk/categories)  | Component Developer Kit
+ Dev Kit          | [Spectator](https://github.com/ngneat/spectator)                 | A Powerful Tool to Simplify Your Angular Tests
+ Dev Kit          | [Scully](https://github.com/scullyio/scully)                     | The Static Site Generator for Angular apps
+ Dev Kit          | [Angular CLI](https://angular.dev/tools/cli)                     | Angular CLI
+ Dev Kit          | [Angular Builders](https://github.com/just-jeb/angular-builders) | Angular build facade extensions
+ Dev Kit          | [ngx-planet](https://github.com/worktile/ngx-planet)             | Micro Frontend library for Angular
+ Dev Kit          | [@angular/ssr](https://angular.dev/guide/ssr/)                   | Server-side Rendering
+ State Management | [Akita](https://datorama.github.io/akita/)                       | Akita state management
+ State Management | [ngxs](https://ngxs.io/)                                         | NGXS state management
+ State Management | [ngrx](https://ngrx.io/)                                         | NGRX state management
 
 ## Blog & Website
 
-- [Angular](https://angular.io/)
-- [Angular Blog](https://blog.angular.io/)
+- [Angular](https://angular.dev/)
+- [Angular Blog](https://blog.angular.dev/)
 - [Angular Weekly Meeting Notes](https://g.co/ng/weekly-notes)
 - [ThoughtRam Blog](https://blog.thoughtram.io/)
 - [Mgechev Blog](https://blog.mgechev.com/)
 - [Angular In Depth](https://indepth.dev/)
 - [Angular Fast](https://web.dev/angular/#fast)
-
 
 ## Design Resources
 

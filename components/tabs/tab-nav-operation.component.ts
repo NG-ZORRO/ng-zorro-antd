@@ -14,7 +14,8 @@ import {
   OnDestroy,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -87,12 +88,12 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
 })
 export class NzTabNavOperationComponent implements OnDestroy {
   @Input() items: NzTabNavItemDirective[] = [];
-  @Input() addable: boolean = false;
+  @Input({ transform: booleanAttribute }) addable: boolean = false;
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
 
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly selected = new EventEmitter<NzTabNavItemDirective>();
-  closeAnimationWaitTimeoutId = -1;
+  closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
   menuOpened = false;
 
   private readonly element: HTMLElement;

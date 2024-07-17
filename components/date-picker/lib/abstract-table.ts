@@ -12,7 +12,8 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
@@ -33,13 +34,13 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
   @Input() activeDate: CandyDate = new CandyDate();
-  @Input() showWeek: boolean = false;
+  @Input({ transform: booleanAttribute }) showWeek: boolean = false;
   @Input() selectedValue: CandyDate[] = []; // Range ONLY
   @Input() hoverValue: CandyDate[] = []; // Range ONLY
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() cellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() fullCellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
-  @Input() canSelectWeek: boolean = false;
+  @Input({ transform: booleanAttribute }) canSelectWeek: boolean = false;
 
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter

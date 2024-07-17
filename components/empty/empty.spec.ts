@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, NgModule, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
 
 import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
 import { NzI18nService } from '../i18n';
@@ -312,7 +312,7 @@ export class NzEmptyTestServiceComponent {
   template: ` <div>I'm in component {{ name }}</div> `
 })
 export class NzEmptyTestCustomComponent {
-  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}
+  name = inject(NZ_EMPTY_COMPONENT_NAME);
 }
 
 @NgModule({

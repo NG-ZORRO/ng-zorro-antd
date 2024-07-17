@@ -38,7 +38,6 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
 <ul nz-menu nzNoAnimation></ul>
-<nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 
 ### 在服务中关闭

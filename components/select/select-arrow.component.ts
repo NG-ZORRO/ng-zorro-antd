@@ -4,7 +4,14 @@
  */
 
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
+  numberAttribute
+} from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -15,6 +22,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <ng-container *ngIf="isMaxTagCountSet">
+      <span>{{ listOfValue.length }} / {{ nzMaxMultipleCount }}</span>
+    </ng-container>
     <span nz-icon nzType="loading" *ngIf="loading; else defaultArrow"></span>
     <ng-template #defaultArrow>
       <ng-container *ngIf="showArrow && !suffixIcon; else suffixTemplate">
@@ -37,11 +47,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true
 })
 export class NzSelectArrowComponent {
+  @Input() listOfValue: NzSafeAny[] = [];
   @Input() loading = false;
   @Input() search = false;
   @Input() showArrow = false;
+  @Input() isMaxTagCountSet = false;
   @Input() suffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() feedbackIcon: TemplateRef<NzSafeAny> | string | null = null;
+  @Input({ transform: numberAttribute }) nzMaxMultipleCount: number = Infinity;
 
   constructor() {}
 }

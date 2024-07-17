@@ -17,7 +17,6 @@ export class DropdownClassRule extends Migration<UpgradeData> {
     }
   }
 
-  // tslint:disable-next-line:typedef
   private _visitIdentifier(identifier: ts.Identifier): void {
     if (identifier.getText() === 'NzDropdownContextComponent') {
       this.createFailureAtNode(
