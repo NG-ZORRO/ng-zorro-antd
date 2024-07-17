@@ -21,14 +21,15 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 ### nz-statistic:standalone
 
-| 参数                | 说明           | 类型                                           | 默认值 |
-| ------------------- | -------------- | ---------------------------------------------- | ------ |
-| `[nzPrefix]`        | 设置数值的前缀 | `string \| TemplateRef<void>`                  | -      |
-| `[nzSuffix]`        | 设置数值的后缀 | `string \| TemplateRef<void>`                  | -      |
-| `[nzTitle]`         | 数值的标题     | `string \| TemplateRef<void>`                  | -      |
-| `[nzValue]`         | 数值内容       | `string \| number`                             | -      |
-| `[nzValueStyle]`    | 设置数值的样式 | `Object`                                       | -      |
-| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | -      |
+| 参数                | 说明           | 类型                                           | 默认值  |
+| ------------------- | -------------- | ---------------------------------------------- | ------- |
+| `[nzPrefix]`        | 设置数值的前缀 | `string \| TemplateRef<void>`                  | -       |
+| `[nzSuffix]`        | 设置数值的后缀 | `string \| TemplateRef<void>`                  | -       |
+| `[nzTitle]`         | 数值的标题     | `string \| TemplateRef<void>`                  | -       |
+| `[nzValue]`         | 数值内容       | `string \| number`                             | -       |
+| `[nzValueStyle]`    | 设置数值的样式 | `Object`                                       | -       |
+| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | -       |
+| `[nzLoading]`       | 数值是否加载中 | `boolean`                                      | `false` |
 
 ### nz-countdown:standalone
 

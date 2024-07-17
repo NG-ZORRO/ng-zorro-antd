@@ -7,6 +7,7 @@ import { Platform } from '@angular/cdk/platform';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -26,8 +27,8 @@ import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs
 import type { editor, IDisposable } from 'monaco-editor';
 
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { inNextTick } from 'ng-zorro-antd/core/util';
 import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
 import { NzCodeEditorService } from './code-editor.service';
@@ -68,13 +69,10 @@ declare const monaco: NzSafeAny;
   standalone: true
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzFullControl: BooleanInput;
-
   @Input() nzEditorMode: NzEditorMode = 'normal';
   @Input() nzOriginalText = '';
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzFullControl = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzFullControl = false;
   @Input() nzToolkit?: TemplateRef<void>;
 
   @Input() set nzEditorOption(value: JoinedEditorOptions) {

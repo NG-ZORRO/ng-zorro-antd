@@ -22,14 +22,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
-  Host,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -37,7 +33,10 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -51,7 +50,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -62,7 +61,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -95,7 +94,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
+  selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-quarter-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
     @if (!nzInline) {
@@ -232,7 +231,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         class="ant-picker-wrapper"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
         [@slideMotion]="'enter'"
-        style="position: relative;"
+        [style.position]="'relative'"
       >
         <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
       </div>
@@ -275,17 +274,9 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
-  static ngAcceptInputType_nzInline: BooleanInput;
-  static ngAcceptInputType_nzOpen: BooleanInput;
-  static ngAcceptInputType_nzShowToday: BooleanInput;
-  static ngAcceptInputType_nzShowNow: BooleanInput;
-  static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
+
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
+  static ngAcceptInputType_nzMode: NzDateMode | string;
 
   isRange: boolean = false; // Indicate whether the value is a range value
   extraFooter?: TemplateRef<NzSafeAny> | string;
@@ -302,13 +293,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private showTime: SupportTimeOptions | boolean = false;
   private isNzDisableFirstChange: boolean = true;
   // --- Common API
-  @Input() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzBorderless: boolean = false;
-  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
-  @Input() @InputBoolean() nzInline: boolean = false;
-  @Input() @InputBoolean() nzOpen?: boolean;
+  @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
+  @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
+  @Input({ transform: booleanAttribute }) nzInline: boolean = false;
+  @Input({ transform: booleanAttribute }) nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | string[] = '';
@@ -320,9 +311,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
-  @Input() @InputBoolean() nzShowToday: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowToday: boolean = true;
   @Input() nzMode: NzDateMode = 'date';
-  @Input() @InputBoolean() nzShowNow: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowNow: boolean = true;
   @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string | TemplateRef<NzSafeAny> = undefined;
@@ -330,7 +321,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
-  @Input() @InputBoolean() nzShowWeekNumber: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowWeekNumber: boolean = false;
 
   // TODO(@wenqi73) The PanelMode need named for each pickers and export
   @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();
@@ -355,8 +346,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
 
+  private document: Document = inject(DOCUMENT);
   origin: CdkOverlayOrigin;
-  document: Document;
   inputSize: number = 12;
   inputWidth?: number;
   prefixCls = PREFIX_CLASS;
@@ -613,6 +604,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.nzOpen !== undefined;
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   // ------------------------------------------------------------------------
   // Input API End
   // ------------------------------------------------------------------------
@@ -629,13 +624,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     private nzResizeObserver: NzResizeObserver,
     private platform: Platform,
     private destroy$: NzDestroyService,
-    @Inject(DOCUMENT) doc: NzSafeAny,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {
-    this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
   }
 
@@ -763,6 +753,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   setModeAndFormat(): void {
     const inputFormats: { [key in NzDateMode]?: string } = {
       year: 'yyyy',
+      quarter: 'yyyy-[Q]Q',
       month: 'yyyy-MM',
       week: 'YYYY-ww',
       date: this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'
@@ -834,6 +825,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     if (!this.isCustomPlaceHolder && this.nzLocale) {
       const defaultPlaceholder: { [key in NzDateMode]?: string } = {
         year: this.getPropertyOfLocale('yearPlaceholder'),
+        quarter: this.getPropertyOfLocale('quarterPlaceholder'),
         month: this.getPropertyOfLocale('monthPlaceholder'),
         week: this.getPropertyOfLocale('weekPlaceholder'),
         date: this.getPropertyOfLocale('placeholder')
@@ -841,6 +833,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
       const defaultRangePlaceholder: { [key in NzDateMode]?: string[] } = {
         year: this.getPropertyOfLocale('rangeYearPlaceholder'),
+        quarter: this.getPropertyOfLocale('rangeQuarterPlaceholder'),
         month: this.getPropertyOfLocale('rangeMonthPlaceholder'),
         week: this.getPropertyOfLocale('rangeWeekPlaceholder'),
         date: this.getPropertyOfLocale('rangePlaceholder')

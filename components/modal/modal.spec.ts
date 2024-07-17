@@ -7,15 +7,23 @@ import {
   ChangeDetectionStrategy,
   Component,
   Directive,
-  Inject,
   Injector,
   Input,
   NgModule,
   TemplateRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  inject
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  inject as testingInject,
+  tick
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -47,11 +55,13 @@ describe('Animation', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
-    modalService = m;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
+      modalService = m;
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -101,16 +111,18 @@ describe('NzModal', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject(
-    [NzModalService, Location, OverlayContainer, NzConfigService],
-    (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
-      modalService = m;
-      configService = cs;
-      mockLocation = l as SpyLocation;
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    }
-  ));
+  beforeEach(
+    testingInject(
+      [NzModalService, Location, OverlayContainer, NzConfigService],
+      (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
+        modalService = m;
+        configService = cs;
+        mockLocation = l as SpyLocation;
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      }
+    )
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -137,6 +149,18 @@ describe('NzModal', () => {
     expect(modalRef.getContentComponentRef()).not.toBeNull();
     modalRef.close();
   });
+
+  it('should give correct z-index value to overlay', fakeAsync(() => {
+    const Z_INDEX = 9999;
+    modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzData: 'Modal',
+      nzZIndex: Z_INDEX
+    });
+
+    const overlay = document.querySelector('.cdk-global-overlay-wrapper');
+    expect((overlay as HTMLElement).style.zIndex).toEqual(`${Z_INDEX}`);
+  }));
 
   it('should open a modal with data', () => {
     const modalRef = modalService.create({
@@ -1328,6 +1352,7 @@ describe('NzModal', () => {
       fixture.detectChanges();
       expect((overlayContainerElement.querySelector('.ant-modal') as HTMLDivElement).style.width).toBe('416px');
       expect(modalRef.getConfig().nzMaskClosable).toBe(false);
+      expect(modalRef.getConfig().nzDraggable).toBe(false);
       expect(modalRef.getConfig().nzCentered).toBe(false);
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(1);
       expect(overlayContainerElement.querySelector('.ant-modal-confirm-title')!.textContent).toBe('Test Title');
@@ -1680,6 +1705,37 @@ describe('NzModal', () => {
 
       expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
     }));
+
+    it('should be draggable when nzDraggable is set to true', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = true;
+      componentFixture.detectChanges();
+      flush();
+      expect(overlayContainerElement.querySelector('.cdk-drag')).not.toBeNull();
+
+      componentInstance.isDraggable = false;
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('.cdk-drag-disabled')).not.toBeNull();
+
+      componentFixture.destroy();
+    }));
+
+    it('should have "move" cursor on the top of modal when modal is draggable', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = true;
+      componentFixture.detectChanges();
+      flush();
+      const modalHeader = overlayContainerElement.querySelector('.ant-modal-header');
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('move');
+
+      componentInstance.isVisible = true;
+      componentInstance.isDraggable = false;
+      componentFixture.detectChanges();
+      flush();
+      expect(getComputedStyle(modalHeader!).cursor).toEqual('auto');
+    }));
   });
 });
 
@@ -1741,18 +1797,13 @@ class TestWithServiceComponent {
   `
 })
 class TestWithModalContentComponent {
-  @Input() value?: string;
-
-  nzModalData: string;
+  @Input() value: string = inject(NZ_MODAL_DATA);
+  nzModalData: string = inject(NZ_MODAL_DATA);
 
   constructor(
     public modalRef: NzModalRef,
-    public modalInjector: Injector,
-    @Inject(NZ_MODAL_DATA) nzData: string
-  ) {
-    this.value = nzData;
-    this.nzModalData = nzData;
-  }
+    public modalInjector: Injector
+  ) {}
 
   destroyModal(): void {
     this.modalRef.destroy();
@@ -1764,6 +1815,7 @@ class TestWithModalContentComponent {
     <nz-modal
       [(nzVisible)]="isVisible"
       [nzContent]="content"
+      [nzDraggable]="isDraggable"
       nzTitle="Test Title"
       (nzOnCancel)="handleCancel()"
       (nzOnOk)="handleOk()"
@@ -1775,6 +1827,7 @@ class TestWithModalContentComponent {
 })
 class TestModalComponent {
   isVisible = false;
+  isDraggable = false;
   cancelSpy = jasmine.createSpy('cancel spy');
   okSpy = jasmine.createSpy('ok spy');
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;

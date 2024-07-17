@@ -12,6 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
+import { _getEventTarget } from '@angular/cdk/platform';
 import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -19,21 +20,22 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  forwardRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  booleanAttribute,
+  forwardRef,
+  inject,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, merge, of as observableOf, Subject } from 'rxjs';
+import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -50,7 +52,6 @@ import {
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
 import {
-  BooleanInput,
   NgClassInterface,
   NgStyleInterface,
   NzSizeLDSType,
@@ -59,7 +60,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
@@ -255,40 +256,26 @@ const listOfPositions = [
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzShowExpand: BooleanInput;
-  static ngAcceptInputType_nzShowLine: BooleanInput;
-  static ngAcceptInputType_nzDropdownMatchSelectWidth: BooleanInput;
-  static ngAcceptInputType_nzCheckable: BooleanInput;
-  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-  static ngAcceptInputType_nzShowSearch: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAsyncData: BooleanInput;
-  static ngAcceptInputType_nzMultiple: BooleanInput;
-  static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
-  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
-
   @Input() nzId: string | null = null;
-  @Input() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @InputBoolean() nzShowExpand: boolean = true;
-  @Input() @InputBoolean() nzShowLine: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzDropdownMatchSelectWidth: boolean = true;
-  @Input() @InputBoolean() nzCheckable: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
-  @Input() @InputBoolean() nzShowSearch: boolean = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzAsyncData = false;
-  @Input() @InputBoolean() nzMultiple = false;
-  @Input() @InputBoolean() nzDefaultExpandAll = false;
-  @Input() @InputBoolean() nzCheckStrictly = false;
+  @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowExpand: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowLine: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDropdownMatchSelectWidth: boolean = true;
+  @Input({ transform: booleanAttribute }) nzCheckable: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHideUnMatched: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowSearch: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzAsyncData = false;
+  @Input({ transform: booleanAttribute }) nzMultiple = false;
+  @Input({ transform: booleanAttribute }) nzDefaultExpandAll = false;
+  @Input({ transform: booleanAttribute }) nzCheckStrictly = false;
   @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzNotFoundContent?: string;
+  @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() nzNodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
@@ -307,7 +294,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
-  @Input() nzMaxTagCount!: number;
+  @Input({ transform: numberAttribute }) nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
@@ -366,17 +353,18 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.nzMultiple || this.nzCheckable;
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     nzTreeService: NzTreeSelectService,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality,
-    private focusMonitor: FocusMonitor,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality,
+    private focusMonitor: FocusMonitor
   ) {
     super(nzTreeService);
 
@@ -699,7 +687,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   onClickOutside(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    const target = _getEventTarget(event);
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.closeDropDown();
     }
   }

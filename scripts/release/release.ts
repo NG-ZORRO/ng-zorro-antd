@@ -123,7 +123,7 @@ function bumpVersion(): void {
       versionNumberValid = true;
     } else {
       log.error(
-        `Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`
+        `Your input ${version} is not after the current version ${currentVersion} or is invalid. Please check it.`
       );
     }
   }

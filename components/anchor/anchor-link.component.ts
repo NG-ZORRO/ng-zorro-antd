@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzAnchorComponent } from './anchor.component';
 
@@ -44,7 +44,9 @@ import { NzAnchorComponent } from './anchor.component';
         <ng-template [ngTemplateOutlet]="titleTpl || nzTemplate" />
       }
     </a>
-    <ng-content></ng-content>
+    @if (nzDirection === 'vertical') {
+      <ng-content></ng-content>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +60,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
+  nzDirection: NzDirectionVHType = 'vertical';
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -81,6 +84,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+    this.nzDirection = this.anchorComp.nzDirection;
   }
 
   getLinkTitleElement(): HTMLAnchorElement {

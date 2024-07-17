@@ -6,11 +6,11 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector, Optional } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 
-import { IMAGE_PREVIEW_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './image-config';
+import { NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
@@ -26,7 +26,7 @@ export class NzImageService {
     private overlay: Overlay,
     private injector: Injector,
     private nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   preview(
@@ -70,11 +70,9 @@ export class NzImageService {
   private createOverlay(config: NzImagePreviewOptions): OverlayRef {
     const globalConfig = (this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) as ImageConfig) || {};
     const overLayConfig = new OverlayConfig({
-      hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
       disposeOnNavigation: config.nzCloseOnNavigation ?? globalConfig.nzCloseOnNavigation ?? true,
-      backdropClass: IMAGE_PREVIEW_MASK_CLASS_NAME,
       direction: config.nzDirection || globalConfig.nzDirection || this.directionality.value
     });
 

@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,14 +18,13 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzTableFilterComponent } from '../addon/filter.component';
 import { NzTableSortersComponent } from '../addon/sorters.component';
@@ -44,15 +43,18 @@ import {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nz-table-filter
-      *ngIf="nzShowFilter || nzCustomFilter; else notFilterTemplate"
-      [contentTemplate]="notFilterTemplate"
-      [extraTemplate]="extraTemplate"
-      [customFilter]="nzCustomFilter"
-      [filterMultiple]="nzFilterMultiple"
-      [listOfFilter]="nzFilters"
-      (filterChange)="onFilterValueChange($event)"
-    ></nz-table-filter>
+    @if (nzShowFilter || nzCustomFilter) {
+      <nz-table-filter
+        [contentTemplate]="notFilterTemplate"
+        [extraTemplate]="extraTemplate"
+        [customFilter]="nzCustomFilter"
+        [filterMultiple]="nzFilterMultiple"
+        [listOfFilter]="nzFilters"
+        (filterChange)="onFilterValueChange($event)"
+      ></nz-table-filter>
+    } @else {
+      <ng-container [ngTemplateOutlet]="notFilterTemplate"></ng-container>
+    }
     <ng-template #notFilterTemplate>
       <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
     </ng-template>
@@ -76,14 +78,10 @@ import {
     '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
   },
   providers: [NzDestroyService],
-  imports: [NzTableFilterComponent, NgIf, NgTemplateOutlet, NzTableSortersComponent],
+  imports: [NzTableFilterComponent, NgTemplateOutlet, NzTableSortersComponent],
   standalone: true
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
-  static ngAcceptInputType_nzShowSort: BooleanInput;
-  static ngAcceptInputType_nzShowFilter: BooleanInput;
-  static ngAcceptInputType_nzCustomFilter: BooleanInput;
-
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject<void>();
   nzFilterValue: NzTableFilterValue = null;
@@ -100,9 +98,9 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   @Input() nzFilters: NzTableFilterList = [];
   @Input() nzSortFn: NzTableSortFn<T> | boolean | null = null;
   @Input() nzFilterFn: NzTableFilterFn<T> | boolean | null = null;
-  @Input() @InputBoolean() nzShowSort = false;
-  @Input() @InputBoolean() nzShowFilter = false;
-  @Input() @InputBoolean() nzCustomFilter = false;
+  @Input({ transform: booleanAttribute }) nzShowSort = false;
+  @Input({ transform: booleanAttribute }) nzShowFilter = false;
+  @Input({ transform: booleanAttribute }) nzCustomFilter = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();

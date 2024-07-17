@@ -15,12 +15,12 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChange,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -86,7 +86,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   @Input() nzMode: NzTimelineMode = 'left';
   @Input() nzPending?: string | boolean | TemplateRef<void>;
   @Input() nzPendingDot?: string | TemplateRef<void>;
-  @Input() nzReverse: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
@@ -98,7 +98,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   constructor(
     private cdr: ChangeDetectorRef,
     private timelineService: TimelineService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

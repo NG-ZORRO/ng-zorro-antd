@@ -13,7 +13,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   TemplateRef,
   ViewEncapsulation
@@ -81,7 +80,7 @@ export class NzCommentComponent implements OnDestroy, OnInit {
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
   constructor(
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

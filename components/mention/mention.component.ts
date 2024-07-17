@@ -23,13 +23,11 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -37,16 +35,18 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { fromEvent, merge, Observable, of as observableOf, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getCaretCoordinates, getMentions, getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getCaretCoordinates, getMentions, getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -123,11 +123,9 @@ export type MentionPlacement = 'top' | 'bottom';
   standalone: true
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
-  static ngAcceptInputType_nzLoading: BooleanInput;
-
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
-  @Input() @InputBoolean() nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
@@ -166,6 +164,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private portal?: TemplatePortal<void>;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
+  private document: Document = inject(DOCUMENT);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -179,19 +178,19 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     return null;
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
-    @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
@@ -463,7 +462,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
 
     subscription.add(
       this.ngZone.runOutsideAngular(() =>
-        fromEvent<TouchEvent>(this.ngDocument, 'touchend').subscribe(
+        fromEvent<TouchEvent>(this.document, 'touchend').subscribe(
           event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
         )
       )

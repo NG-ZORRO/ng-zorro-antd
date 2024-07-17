@@ -31,7 +31,7 @@ The component in `nz-table` such as `th`, `td`, `thead` etc. are enhanced. Devel
 
 ### Data Processing
 
-The data passed to `[nzData]` is exported with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
+The data passed to `[nzData]` is exported with [Template Context](https://angular.dev/guide/templates/template-statements#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -96,6 +96,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzVirtualMaxBufferPx]`    | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api)                                    | `number`                                                               | `200`              |
 | `[nzVirtualMinBufferPx]`    | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api)                                           | `number`                                                               | `100`              |
 | `[nzVirtualForTrackBy]`     | The TrackByFunction to be used for tracking changes.                                                                                                                                     | `TrackByFunction<T>`                                                   | -                  |
+| `[noDataVirtualHeight]`     | Height of inner scroll when having no data, if nothing is passed the default value is used.                                                                                              | `string`                                                               | `'182px'`          |
 | `(nzPageIndexChange)`       | Callback when `pageIndex` changes                                                                                                                                                        | `EventEmitter<number>`                                                 | -                  |
 | `(nzPageSizeChange)`        | Callback when `pageSize` changes                                                                                                                                                         | `EventEmitter<number>`                                                 | -                  |
 | `(nzCurrentPageDataChange)` | Callback when current pageData changes                                                                                                                                                   | `EventEmitter<T[]>`                                                    | -                  |
@@ -201,6 +202,14 @@ Other property
 | ---------------- | ---------------------------------- | -------- | ------- |
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
 
+
+### thead
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | - |
+
+
 ### tr
 
 | Property     | Description                                              | Type      | Default |
@@ -225,7 +234,7 @@ virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit
 
 ## Note
 
-In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
+In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
 
 ```typescript
 // add data

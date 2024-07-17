@@ -22,7 +22,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzBottom: '24px',
   nzPlacement: 'topRight',
   nzDuration: 4500,
-  nzMaxStack: 7,
+  nzMaxStack: 8,
   nzPauseOnHover: true,
   nzAnimate: true,
   nzDirection: 'ltr'
@@ -215,25 +215,25 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
       const placement = m.options.nzPlacement;
       switch (placement) {
         case 'topLeft':
-          instancesMap.topLeft.push(m);
+          instancesMap.topLeft.unshift(m);
           break;
         case 'topRight':
-          instancesMap.topRight.push(m);
+          instancesMap.topRight.unshift(m);
           break;
         case 'bottomLeft':
-          instancesMap.bottomLeft.push(m);
+          instancesMap.bottomLeft.unshift(m);
           break;
         case 'bottomRight':
-          instancesMap.bottomRight.push(m);
+          instancesMap.bottomRight.unshift(m);
           break;
         case 'top':
-          instancesMap.top.push(m);
+          instancesMap.top.unshift(m);
           break;
         case 'bottom':
-          instancesMap.bottom.push(m);
+          instancesMap.bottom.unshift(m);
           break;
         default:
-          instancesMap.topRight.push(m);
+          instancesMap.topRight.unshift(m);
       }
     });
     this.topLeftInstances = instancesMap.topLeft;

@@ -11,11 +11,10 @@ import {
   Input,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -49,11 +48,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true
 })
 export class NzRateItemComponent {
-  static ngAcceptInputType_allowHalf: BooleanInput;
-
   @Input() character!: TemplateRef<{ $implicit: number }>;
   @Input() index = 0;
-  @Input() @InputBoolean() allowHalf: boolean = false;
+  @Input({ transform: booleanAttribute }) allowHalf: boolean = false;
   @Output() readonly itemHover = new EventEmitter<boolean>();
   @Output() readonly itemClick = new EventEmitter<boolean>();
 

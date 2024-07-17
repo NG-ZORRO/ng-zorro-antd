@@ -93,6 +93,7 @@ export interface SelectConfig {
   nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
   nzBackdrop?: boolean;
+  nzOptionHeightPx?: number;
 }
 
 export interface AffixConfig {

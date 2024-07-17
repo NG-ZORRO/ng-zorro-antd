@@ -14,13 +14,13 @@ import {
   Input,
   OnDestroy,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
 
 import { NzListItemActionsComponent, NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
@@ -74,12 +74,10 @@ import { NzListComponent } from './list.component';
   standalone: true
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
-  static ngAcceptInputType_nzNoFlex: BooleanInput;
-
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzContent?: string | TemplateRef<void>;
   @Input() nzExtra: TemplateRef<void> | null = null;
-  @Input() @InputBoolean() @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
+  @Input({ transform: booleanAttribute }) @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
 
   @ContentChild(NzListItemExtraComponent) listItemExtraDirective?: NzListItemExtraComponent;
 

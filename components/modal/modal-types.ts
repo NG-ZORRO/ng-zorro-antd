@@ -28,6 +28,7 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzOkDisabled?: boolean = false;
   nzCancelDisabled?: boolean = false;
   nzCancelLoading?: boolean = false;
+  nzDraggable?: boolean = false;
   nzNoAnimation?: boolean = false;
   nzAutofocus?: 'ok' | 'cancel' | 'auto' | null = 'auto';
   nzMask?: boolean;

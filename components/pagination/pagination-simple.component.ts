@@ -14,7 +14,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -42,6 +41,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul>
         <li
           nz-pagination-item
+          [locale]="locale"
           [attr.title]="locale.prev_page"
           [disabled]="isFirstIndex"
           [direction]="dir"
@@ -56,6 +56,7 @@ import { PaginationItemRenderContext } from './pagination.types';
         </li>
         <li
           nz-pagination-item
+          [locale]="locale"
           [attr.title]="locale?.next_page"
           [disabled]="isLastIndex"
           [direction]="dir"
@@ -89,7 +90,7 @@ export class NzPaginationSimpleComponent implements OnChanges, OnDestroy, OnInit
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
   }

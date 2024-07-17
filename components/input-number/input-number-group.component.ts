@@ -18,19 +18,20 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 
 import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import { NzInputNumberComponent } from './input-number.component';
@@ -129,8 +130,6 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   standalone: true
 })
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_nzCompact: BooleanInput;
-
   @ContentChildren(NzInputNumberComponent, { descendants: true })
   listOfNzInputNumberComponent!: QueryList<NzInputNumberComponent>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
@@ -143,7 +142,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   @Input() nzStatus: NzStatus = '';
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() @InputBoolean() nzCompact = false;
+  @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
   isSmall = false;
   isAffix = false;
@@ -160,15 +159,15 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor(
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   updateChildrenInputSize(): void {

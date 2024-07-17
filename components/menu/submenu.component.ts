@@ -8,6 +8,7 @@ import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from 
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,13 +16,11 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Host,
-  Inject,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -34,8 +33,6 @@ import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
@@ -157,16 +154,13 @@ const listOfHorizontalPositions = [
   standalone: true
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
-  static ngAcceptInputType_nzOpen: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;
   @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
-  @Input() @InputBoolean() nzOpen = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzOpen = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
@@ -187,6 +181,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   isSelected = false;
   isActive = false;
   dir: Direction = 'ltr';
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private directionality = inject(Directionality);
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -229,10 +226,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     public nzMenuService: MenuService,
     private cdr: ChangeDetectorRef,
     public nzSubmenuService: NzSubmenuService,
-    private platform: Platform,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private platform: Platform
   ) {}
 
   ngOnInit(): void {

@@ -21,9 +21,9 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 ### nz-rate:standalone
 
 | Property            | Description                             | type                          | Default                               | Global Config |
-| ------------------- | --------------------------------------- | ----------------------------- | ------------------------------------- | ------------- |
-| `[nzAllowClear]`    | whether to allow clear when click again | `boolean`                     | `true`                                | ✅            |
-| `[nzAllowHalf]`     | whether to allow semi selection         | `boolean`                     | `false`                               | ✅            |
+|---------------------|-----------------------------------------|-------------------------------|---------------------------------------|---------------|
+| `[nzAllowClear]`    | whether to allow clear when click again | `boolean`                     | `true`                                | ✅             |
+| `[nzAllowHalf]`     | whether to allow semi selection         | `boolean`                     | `false`                               | ✅             |
 | `[nzAutoFocus]`     | get focus when component mounted        | `boolean`                     | `false`                               |
 | `[nzCharacter]`     | custom character of rate                | `TemplateRef<void>`           | `<span nz-icon nzType="star"></span>` |
 | `[nzCount]`         | star count                              | `number`                      | `5`                                   |
@@ -33,12 +33,12 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 | `(ngModelChange)`   | callback when select value              | `EventEmitter<number>`        | -                                     |
 | `(nzOnBlur)`        | callback when component lose focus      | `EventEmitter<FocusEvent>`    | -                                     |
 | `(nzOnFocus)`       | callback when component get focus       | `EventEmitter<FocusEvent>`    | -                                     |
-| `(nzOnHoverChange)` | callback when hover item                | `EventEmitter<number>`        | -                                     |
+| `(nzOnHoverChange)` | callback when hover / leave item        | `EventEmitter<number>`        | -                                     |
 | `(nzOnKeyDown)`     | callback when keydown on component      | `EventEmitter<KeyboardEvent>` | -                                     |
 
 #### Methods
 
 | Name    | Description  |
-| ------- | ------------ |
+|---------|--------------|
 | blur()  | remove focus |
 | focus() | get focus    |

@@ -20,6 +20,14 @@ export default {
   },
   DatePicker: {
     lang: {
+      yearPlaceholder: 'Selecionar ano',
+      quarterPlaceholder: 'Selecionar trimestre',
+      monthPlaceholder: 'Selecionar mês',
+      weekPlaceholder: 'Selecionar semana',
+      rangePlaceholder: ['Data inicial', 'Data final'],
+      rangeYearPlaceholder: ['Ano inicial', 'Ano final'],
+      rangeMonthPlaceholder: ['Mês inicial', 'Mês final'],
+      rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
       locale: 'pt_PT',
       today: 'Hoje',
       now: 'Agora',
@@ -47,7 +55,6 @@ export default {
       previousCentury: 'Último século',
       nextCentury: 'Próximo século',
       placeholder: 'Data',
-      rangePlaceholder: ['Data inicial', 'Data final'],
       monthFormat: 'MMMM'
     },
     timePickerLocale: {
