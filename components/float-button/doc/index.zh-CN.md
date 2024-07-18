@@ -4,7 +4,7 @@ subtitle: 悬浮按钮
 type: 通用
 title: FloatButton
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
-tag: New
+tag: 18.1.0
 ---
 
 ## 何时使用
