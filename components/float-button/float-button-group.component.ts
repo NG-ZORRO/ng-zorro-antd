@@ -41,7 +41,7 @@ import { NzFloatButtonComponent } from './float-button.component';
     }
     @if (!!nzTrigger) {
       <nz-float-button
-        *ngIf="!isOpen"
+        *ngIf="!isOpen && !nzOpen"
         [nzType]="nzType"
         [nzIcon]="nzIcon"
         [nzShape]="nzShape"
@@ -50,7 +50,7 @@ import { NzFloatButtonComponent } from './float-button.component';
         (mouseover)="hoverOpenMenu()"
       ></nz-float-button>
       <nz-float-button
-        *ngIf="isOpen"
+        *ngIf="isOpen || nzOpen"
         [nzType]="nzType"
         [nzIcon]="close"
         [nzShape]="nzShape"
