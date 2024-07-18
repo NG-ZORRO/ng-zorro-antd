@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-设置 `nzTrigger` 属性即可开启菜单模式。提供 hover 和 click 两种触发方式。
+设置 `nzTrigger` 属性即可开启菜单模式。提供 `hover` 和 `click` 两种触发方式。
 
 ## en-US
 

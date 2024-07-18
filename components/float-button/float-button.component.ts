@@ -12,7 +12,6 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef
 } from '@angular/core';
@@ -76,13 +75,13 @@ export class NzFloatButtonComponent implements OnInit, OnDestroy {
   @Input() nzType: 'default' | 'primary' = 'default';
   @Input() nzShape: 'circle' | 'square' = 'circle';
   @Input() nzIcon: TemplateRef<void> | null = null;
-  @Input() nzDescription: TemplateRef<void> | null = null;
+  @Input() nzDescription: TemplateRef<void> | string | null = null;
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
 
   constructor(
     private destroy$: NzDestroyService,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private cdr: ChangeDetectorRef
   ) {
     this.dir = this.directionality.value;
@@ -95,10 +94,6 @@ export class NzFloatButtonComponent implements OnInit, OnDestroy {
     });
 
     this.dir = this.directionality.value;
-  }
-
-  detectChanges(): void {
-    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
