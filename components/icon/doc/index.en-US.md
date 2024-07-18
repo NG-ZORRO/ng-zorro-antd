@@ -12,7 +12,7 @@ Semantic vector graphics.
 
 We are still adding icons right now, syncing to [antd](https://ant.design/components/icon/).
 
-```ts
+```typescript
 import { NzIconModule } from 'ng-zorro-antd/icon';
 ```
 
@@ -65,9 +65,9 @@ All the icons will be rendered to `<svg>`, and styles and classes applied to `<i
 
 As for icons provided by Ant Design, there are two ways of importing them into your project.
 
-Static loading. By registering icons to `AppModule` you load icons statically.
+Static loading. By registering icons to `AppModule`, you load icons statically.
 
-```ts
+```typescript
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -93,9 +93,19 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
   ]
   bootstrap: [ AppComponent ]
 })
-export class AppModule {
+export class AppModule {}
+```
+
+For standalone mode, you register icons in `app.config.ts` like this:
+
+```typescript
+import { importProvidersFrom } from '@angular/core';
+
+export const appConfig = {
+  providers: [importProvidersFrom(NzIconModule.forRoot(icons))]
 }
 ```
+
 
 Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can.
 
@@ -125,7 +135,7 @@ Please call this in component's constructor or `AppInitService`.
 
 Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.forChild`.
 
-```ts
+```typescript
 @NgModule({
   imports: [CommonModule, NzIconModule.forChild([QuestionOutline])]
 })
@@ -144,7 +154,7 @@ We added a `fetchFromIconfont` method function to help developer using their own
 
 > This method is specified for iconfont.cn.
 
-```ts
+```typescript
 this._iconService.fetchFromIconfont({
   scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
 });
@@ -186,15 +196,15 @@ In older versions of NG-ZORRO, there was a font file which would use `:before` t
 
 ### I want to import all icons statically. What should I do?
 
-Actually we demonstrate it here <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a>:
+Although this is not recommended usage, actually we demonstrate it here <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a>:
 
-```ts
-// import * as AllIcons from '@ant-design/icons-angular/icons';
+```typescript
+import * as AllIcons from '@ant-design/icons-angular/icons';
 
-// const antDesignIcons = AllIcons as {
-//   [key: string]: IconDefinition;
-// };
-// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
 ### Does dynamic loading affect web pages' performance?

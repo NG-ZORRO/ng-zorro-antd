@@ -17,17 +17,15 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
 
 export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
@@ -50,6 +48,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   `,
   host: {
     class: 'ant-btn',
+    '[class.ant-btn-default]': `nzType === 'default'`,
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -73,20 +72,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBlock: BooleanInput;
-  static ngAcceptInputType_nzGhost: BooleanInput;
-  static ngAcceptInputType_nzSearch: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzDanger: BooleanInput;
-  static ngAcceptInputType_disabled: BooleanInput;
 
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
-  @Input() @InputBoolean() nzBlock: boolean = false;
-  @Input() @InputBoolean() nzGhost: boolean = false;
-  @Input() @InputBoolean() nzSearch: boolean = false;
-  @Input() @InputBoolean() nzLoading: boolean = false;
-  @Input() @InputBoolean() nzDanger: boolean = false;
-  @Input() @InputBoolean() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
+  @Input({ transform: booleanAttribute }) nzGhost: boolean = false;
+  @Input({ transform: booleanAttribute }) nzSearch: boolean = false;
+  @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDanger: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
   @Input() tabIndex: number | string | null = null;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
@@ -123,7 +116,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     public nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)

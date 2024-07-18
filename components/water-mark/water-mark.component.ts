@@ -10,15 +10,16 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
+  inject,
+  numberAttribute
 } from '@angular/core';
 
-import { MarkStyleType, FontType } from './typings';
+import { FontType, MarkStyleType } from './typings';
 import { getPixelRatio, getStyleStr, reRendering, rotateWatermark } from './util';
 
 /**
@@ -39,15 +40,17 @@ const FontGap = 3;
   }
 })
 export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @Input() nzWidth: number = 120;
-  @Input() nzHeight: number = 64;
-  @Input() nzRotate: number = -22;
-  @Input() nzZIndex: number = 9;
+  @Input({ transform: numberAttribute }) nzWidth: number = 120;
+  @Input({ transform: numberAttribute }) nzHeight: number = 64;
+  @Input({ transform: numberAttribute }) nzRotate: number = -22;
+  @Input({ transform: numberAttribute }) nzZIndex: number = 9;
   @Input() nzImage: string = '';
   @Input() nzContent: string | string[] = '';
   @Input() nzFont: FontType = {};
   @Input() nzGap: [number, number] = [100, 100];
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
+
+  private document: Document = inject(DOCUMENT);
 
   waterMarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
@@ -66,7 +69,6 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
 
   constructor(
     private el: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef
   ) {}
 

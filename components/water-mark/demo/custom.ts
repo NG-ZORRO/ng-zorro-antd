@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 
-import { ColorEvent } from 'ngx-color/color-wrap.component';
-
+import { NzColor } from 'ng-zorro-antd/color-picker';
 import { FontType } from 'ng-zorro-antd/water-mark';
 
 @Component({
@@ -53,18 +52,7 @@ import { FontType } from 'ng-zorro-antd/water-mark';
         <nz-form-item>
           <nz-form-label>Color</nz-form-label>
           <nz-form-control>
-            <div
-              class="theme-pick-wrap"
-              nz-popover
-              [nzPopoverTrigger]="'click'"
-              nzPopoverOverlayClassName="theme-color-content"
-              [nzPopoverContent]="colorTpl"
-            >
-              <div class="theme-pick" [ngStyle]="{ background: color }"></div>
-            </div>
-            <ng-template #colorTpl>
-              <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
-            </ng-template>
+            <nz-color-picker [nzValue]="color" (nzOnChange)="changeColor($event)"></nz-color-picker>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -121,21 +109,6 @@ import { FontType } from 'ng-zorro-antd/water-mark';
         margin-right: 12px;
         width: 40%;
       }
-
-      .theme-pick-wrap {
-        padding: 4px;
-        background: rgb(255, 255, 255);
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px;
-        display: inline-block;
-        cursor: pointer;
-      }
-
-      .theme-pick {
-        width: 80px;
-        height: 16px;
-        border-radius: 2px;
-      }
     `
   ]
 })
@@ -186,11 +159,11 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
     });
   }
 
-  changeColor(value: ColorEvent): void {
-    this.color = value.color.hex;
+  changeColor(value: { color: NzColor; format: string }): void {
+    this.color = value.color.toRgbString();
     this.font = {
       fontSize: this.validateForm.controls.fontSize.value,
-      color: value.color.hex
+      color: value.color.toRgbString()
     };
     this.cdr.markForCheck();
   }

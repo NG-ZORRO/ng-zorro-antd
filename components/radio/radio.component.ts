@@ -7,28 +7,26 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
-  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioService } from './radio.service';
 
@@ -82,20 +80,20 @@ import { NzRadioService } from './radio.service';
   standalone: true
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-
   private isNgModel = false;
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
+  private directionality = inject(Directionality);
+  private nzRadioService = inject(NzRadioService, { optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
   isChecked = false;
   name: string | null = null;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
 
   dir: Direction = 'ltr';
@@ -112,10 +110,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
-    @Optional() public nzFormStatusService?: NzFormStatusService
+    private focusMonitor: FocusMonitor
   ) {}
 
   setDisabledState(disabled: boolean): void {

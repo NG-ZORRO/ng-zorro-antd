@@ -12,7 +12,8 @@ import {
   Input,
   OnChanges,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -48,7 +49,7 @@ export class NzTransferSearchComponent implements OnChanges {
 
   @Input() placeholder?: string;
   @Input() value?: string;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
   @Output() readonly valueClear = new EventEmitter<void>();

@@ -1,6 +1,5 @@
 site/
 scripts/site/
-scripts/tslint-rules/
 lib/
 publish/
 junit/

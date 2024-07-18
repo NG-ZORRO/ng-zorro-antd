@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
@@ -25,7 +25,6 @@ import { SearchbarComponent } from './searchbar.component';
     CommonModule,
     FormsModule,
     RouterModule,
-    HttpClientModule,
     NzGridModule,
     NzIconModule,
     NzInputModule,
@@ -43,8 +42,7 @@ import { SearchbarComponent } from './searchbar.component';
     NavigationComponent,
     GithubButtonComponent
   ],
+  providers: [provideHttpClient()],
   exports: [HeaderComponent]
 })
-export class HeaderModule {
-
-}
+export class HeaderModule {}

@@ -10,20 +10,20 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject,
+  numberAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -110,7 +110,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
-  @Input() maxTagCount: number = Infinity;
+  @Input({ transform: numberAttribute }) maxTagCount: number = Infinity;
   @Input() autofocus = false;
   @Input() disabled = false;
   @Input() mode: NzSelectModeType = 'default';
@@ -206,10 +206,11 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     }
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective | null
+    private ngZone: NgZone
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

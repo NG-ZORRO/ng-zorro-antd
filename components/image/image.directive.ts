@@ -9,20 +9,18 @@ import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzImageGroupComponent } from './image-group.component';
 import { NZ_DEFAULT_SCALE_STEP } from './image-preview.component';
@@ -45,11 +43,9 @@ export type NzImageScaleStep = number;
 export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzDisablePreview: BooleanInput;
-
   @Input() nzSrc = '';
   @Input() nzSrcset = '';
-  @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDisablePreview: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
   @Input() @WithConfig() nzScaleStep: number | null = null;
@@ -59,19 +55,19 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   status: ImageStatusType = 'normal';
   private backLoadDestroy$: Subject<void> = new Subject();
   private destroy$: Subject<void> = new Subject();
+  private document: Document = inject(DOCUMENT);
+  private parentGroup = inject(NzImageGroupComponent, { optional: true });
 
   get previewable(): boolean {
     return !this.nzDisablePreview && this.status !== 'error';
   }
 
   constructor(
-    @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzImageService: NzImageService,
     protected cdr: ChangeDetectorRef,
-    @Optional() private parentGroup: NzImageGroupComponent,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -107,7 +103,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       previewAbleImages.forEach(imageDirective => {
         scaleStepMap.set(
           imageDirective.nzSrc ?? imageDirective.nzSrcset,
-          imageDirective.nzScaleStep ?? this.parentGroup.nzScaleStep ?? this.nzScaleStep ?? NZ_DEFAULT_SCALE_STEP
+          imageDirective.nzScaleStep ?? this.parentGroup!.nzScaleStep ?? this.nzScaleStep ?? NZ_DEFAULT_SCALE_STEP
         );
       });
       const previewRef = this.nzImageService.preview(

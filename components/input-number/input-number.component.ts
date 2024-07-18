@@ -13,27 +13,28 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  inject,
+  numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, merge, Subject } from 'rxjs';
+import { Subject, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
-  BooleanInput,
   NgClassInterface,
   NzSizeLDSType,
   NzStatus,
@@ -41,7 +42,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -115,12 +116,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzReadOnly: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-
-  private autoStepTimer?: number;
+  private autoStepTimer?: ReturnType<typeof setTimeout>;
   private parsedValue?: string | number;
   private value?: number;
   private isNzDisableFirstChange: boolean = true;
@@ -147,8 +143,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   /** The native `<input class="ant-input-number-input" />` element. */
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() nzMin: number = -Infinity;
-  @Input() nzMax: number = Infinity;
+  @Input({ transform: numberAttribute }) nzMin: number = -Infinity;
+  @Input({ transform: numberAttribute }) nzMax: number = Infinity;
   @Input() nzParser = (value: string): string =>
     value
       .trim()
@@ -158,13 +154,13 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
   @Input() nzStatus: NzStatus = '';
-  @Input() nzStep = 1;
+  @Input({ transform: numberAttribute }) nzStep = 1;
   @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzReadOnly = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzBorderless: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzReadOnly = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
 
   onModelChange(value: string): void {
@@ -402,16 +398,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService,
-    @Optional() public nzFormStatusService?: NzFormStatusService,
-    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality,
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {

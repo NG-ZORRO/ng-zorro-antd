@@ -6,12 +6,13 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
-import { defer, Observable, Subject } from 'rxjs';
+import { Injectable, Injector, OnDestroy, TemplateRef, inject } from '@angular/core';
+import { Observable, Subject, defer } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -43,12 +44,13 @@ export class NzModalService implements OnDestroy {
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
   ) as Observable<void>;
 
+  private parentModal = inject(NzModalService, { skipSelf: true, optional: true });
+
   constructor(
     private overlay: Overlay,
     private injector: Injector,
     private nzConfigService: NzConfigService,
-    @Optional() @SkipSelf() private parentModal: NzModalService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   create<T, D = NzSafeAny, R = NzSafeAny>(config: ModalOptions<T, D, R>): NzModalRef<T, R> {
@@ -97,6 +99,8 @@ export class NzModalService implements OnDestroy {
     const modalContainer = this.attachModalContainer(overlayRef, configMerged);
     const modalRef = this.attachModalContent<T, D, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
     modalContainer.modalRef = modalRef;
+
+    overlayZIndexSetter(overlayRef, config?.nzZIndex);
 
     this.openModals.push(modalRef);
     modalRef.afterClose.subscribe(() => this.removeOpenModal(modalRef));

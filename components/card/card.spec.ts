@@ -80,7 +80,9 @@ describe('card', () => {
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card-loading');
-    expect(card.nativeElement.querySelector('nz-card-loading').classList).toContain('ant-card-loading-content');
+    const skeleton = card.nativeElement.querySelector('nz-skeleton');
+    expect(skeleton).toBeTruthy();
+    expect(skeleton.classList).toContain('ant-skeleton-active');
   });
   it('should grid work', () => {
     const fixture = TestBed.createComponent(NzDemoCardGridCardComponent);

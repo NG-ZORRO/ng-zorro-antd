@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, OnDestroy, Optional, SkipSelf } from '@angular/core';
-import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
+import { Injectable, OnDestroy, inject } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap, takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -28,12 +28,14 @@ export class NzSubmenuService implements OnDestroy {
     })
   );
   level = 1;
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   isCurrentSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   private isChildSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   /** submenu title & overlay mouse enter status **/
   private isMouseEnterTitleOrOverlay$ = new Subject<boolean>();
   private childMenuItemClick$ = new Subject<NzSafeAny>();
   private destroy$ = new Subject<void>();
+  private nzHostSubmenuService = inject(NzSubmenuService, { optional: true, skipSelf: true });
   /**
    * menu item inside submenu clicked
    *
@@ -49,11 +51,7 @@ export class NzSubmenuService implements OnDestroy {
     this.isMouseEnterTitleOrOverlay$.next(value);
   }
 
-  constructor(
-    @SkipSelf() @Optional() private nzHostSubmenuService: NzSubmenuService,
-    public nzMenuService: MenuService,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean
-  ) {
+  constructor(public nzMenuService: MenuService) {
     if (this.nzHostSubmenuService) {
       this.level = this.nzHostSubmenuService.level + 1;
     }

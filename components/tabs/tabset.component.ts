@@ -12,16 +12,17 @@ import { NgForOf, NgIf, NgStyle } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   TemplateRef,
@@ -35,8 +36,8 @@ import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import {
   NzAnimatedInterface,
@@ -128,8 +129,6 @@ let nextId = 0;
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left]="getTabContentMarginLeft()"
-        [style.margin-right]="getTabContentMarginRight()"
       >
         <div
           role="tabpanel"
@@ -140,7 +139,7 @@ let nextId = 0;
           [active]="nzSelectedIndex === i && !nzHideAll"
           [content]="tab.content"
           [forceRender]="tab.nzForceRender"
-          [tabPaneAnimated]="tabPaneAnimated"
+          [animated]="tabPaneAnimated"
         ></div>
       </div>
     </div>
@@ -176,13 +175,6 @@ let nextId = 0;
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzHideAdd: BooleanInput;
-  static ngAcceptInputType_nzHideAll: BooleanInput;
-  static ngAcceptInputType_nzCentered: BooleanInput;
-  static ngAcceptInputType_nzLinkRouter: BooleanInput;
-  static ngAcceptInputType_nzLinkExact: BooleanInput;
-  static ngAcceptInputType_nzSelectedIndex: NumberInput;
-
   @Input()
   get nzSelectedIndex(): number | null {
     return this.selectedIndex;
@@ -199,11 +191,11 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
   @Input() @WithConfig() nzAnimated: NzAnimatedInterface | boolean = true;
   @Input() @WithConfig() nzTabBarGutter?: number = undefined;
-  @Input() @InputBoolean() nzHideAdd: boolean = false;
-  @Input() @InputBoolean() nzCentered: boolean = false;
-  @Input() @InputBoolean() nzHideAll = false;
-  @Input() @InputBoolean() nzLinkRouter = false;
-  @Input() @InputBoolean() nzLinkExact = true;
+  @Input({ transform: booleanAttribute }) nzHideAdd: boolean = false;
+  @Input({ transform: booleanAttribute }) nzCentered: boolean = false;
+  @Input({ transform: booleanAttribute }) nzHideAll = false;
+  @Input({ transform: booleanAttribute }) nzLinkRouter = false;
+  @Input({ transform: booleanAttribute }) nzLinkExact = true;
 
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
   @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();
@@ -232,11 +224,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   get tabPaneAnimated(): boolean {
-    return (
-      this.position === 'horizontal' &&
-      this.line &&
-      (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane)
-    );
+    return typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane;
   }
 
   // Pick up only direct descendants under ivy rendering engine
@@ -256,13 +244,13 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   private tabLabelSubscription = Subscription.EMPTY;
   private tabsSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
+  private router = inject(Router, { optional: true });
 
   constructor(
     public nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private router: Router
+    private directionality: Directionality
   ) {
     this.tabSetId = nextId++;
   }
@@ -482,7 +470,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   private updateRouterActive(): void {
-    if (this.router.navigated) {
+    if (this.router?.navigated) {
       const index = this.findShouldActiveTabIndex();
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
@@ -501,36 +489,15 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     });
   }
 
-  private isLinkActive(router: Router): (link?: RouterLink) => boolean {
-    return (link?: RouterLink) =>
+  private isLinkActive(router: Router | null): (link?: RouterLink | null) => boolean {
+    return (link?: RouterLink | null) =>
       link
-        ? router.isActive(link.urlTree || '', {
+        ? !!router?.isActive(link.urlTree || '', {
             paths: this.nzLinkExact ? 'exact' : 'subset',
             queryParams: this.nzLinkExact ? 'exact' : 'subset',
             fragment: 'ignored',
             matrixParams: 'ignored'
           })
         : false;
-  }
-
-  private getTabContentMarginValue(): number {
-    return -(this.nzSelectedIndex || 0) * 100;
-  }
-
-  getTabContentMarginLeft(): string {
-    if (this.tabPaneAnimated) {
-      if (this.dir !== 'rtl') {
-        return `${this.getTabContentMarginValue()}%`;
-      }
-    }
-    return '';
-  }
-  getTabContentMarginRight(): string {
-    if (this.tabPaneAnimated) {
-      if (this.dir === 'rtl') {
-        return `${this.getTabContentMarginValue()}%`;
-      }
-    }
-    return '';
   }
 }
