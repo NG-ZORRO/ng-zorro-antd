@@ -6,7 +6,7 @@ title: BackTop
 cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
 ---
 
-* 注意：改组件将在后续移除，请前往 FloatButton 组件中使用 `<nz-float-button-top></nz-float-button-top>`
+* 注意：该组件将在后续移除，请前往 FloatButton 组件中使用 `<nz-float-button-top></nz-float-button-top>`
 
 返回页面顶部的操作按钮。
 
