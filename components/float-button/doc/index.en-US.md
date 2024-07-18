@@ -3,7 +3,7 @@ category: Components
 type: General
 title: FloatButton
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
-tag: New
+tag: 18.1.0
 ---
 
 ## When To Use

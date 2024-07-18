@@ -5,6 +5,8 @@ title: BackTop
 cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
 ---
 
+* Note: This component will be removed later. Please go to the FloatButton component and use `<nz-float-button-top></nz-float-button-top>`
+
 `nz-back-top` makes it easy to go back to the top of the page.
 
 ## When To Use
