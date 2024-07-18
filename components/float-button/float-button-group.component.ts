@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CommonModule } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -32,7 +31,7 @@ import { NzFloatButtonComponent } from './float-button.component';
   standalone: true,
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
-  imports: [CommonModule, NzFloatButtonComponent, NzIconModule],
+  imports: [NzFloatButtonComponent, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeMotion],
   template: `
@@ -40,22 +39,23 @@ import { NzFloatButtonComponent } from './float-button.component';
       <div [class.ant-float-btn-group-wrap]="!!nzTrigger" @fadeMotion><ng-content></ng-content></div>
     }
     @if (!!nzTrigger) {
-      <nz-float-button
-        *ngIf="!isOpen && !nzOpen"
-        [nzType]="nzType"
-        [nzIcon]="nzIcon"
-        [nzShape]="nzShape"
-        [nzDescription]="nzDescription"
-        (nzOnClick)="clickOpenMenu()"
-        (mouseover)="hoverOpenMenu()"
-      ></nz-float-button>
-      <nz-float-button
-        *ngIf="isOpen || nzOpen"
-        [nzType]="nzType"
-        [nzIcon]="close"
-        [nzShape]="nzShape"
-        (nzOnClick)="clickCloseMenu()"
-      ></nz-float-button>
+      @if (!isOpen && !nzOpen) {
+        <nz-float-button
+          [nzType]="nzType"
+          [nzIcon]="nzIcon"
+          [nzShape]="nzShape"
+          [nzDescription]="nzDescription"
+          (nzOnClick)="clickOpenMenu()"
+          (mouseover)="hoverOpenMenu()"
+        ></nz-float-button>
+      } @else {
+        <nz-float-button
+          [nzType]="nzType"
+          [nzIcon]="close"
+          [nzShape]="nzShape"
+          (nzOnClick)="clickCloseMenu()"
+        ></nz-float-button>
+      }
     }
     <ng-template #close>
       <span nz-icon nzType="close" nzTheme="outline"></span>

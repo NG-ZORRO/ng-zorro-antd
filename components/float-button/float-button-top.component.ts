@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -45,7 +45,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   standalone: true,
   selector: 'nz-float-button-top',
   exportAs: 'nzFloatButtonTop',
-  imports: [CommonModule, NzFloatButtonComponent, NzIconModule],
+  imports: [NzFloatButtonComponent, NzIconModule],
   animations: [fadeMotion],
   template: `
     <div #backTop @fadeMotion>
