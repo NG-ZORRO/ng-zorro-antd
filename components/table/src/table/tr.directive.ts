@@ -10,12 +10,13 @@ import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
 import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';
+import { NzTfootSummaryDirective } from './tfoot-summary.directive';
 
 @Directive({
   selector:
     'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
   host: {
-    '[class.ant-table-row]': 'isInsideTable'
+    '[class.ant-table-row]': 'isInsideTable && !isInsideSummaryTfoot'
   },
   standalone: true
 })
@@ -49,7 +50,9 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
   );
 
   private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  private nzTfootSummaryDirective = inject(NzTfootSummaryDirective, { optional: true });
   isInsideTable = !!this.nzTableStyleService;
+  isInsideSummaryTfoot = !!this.nzTfootSummaryDirective;
 
   ngAfterContentInit(): void {
     if (this.nzTableStyleService) {
