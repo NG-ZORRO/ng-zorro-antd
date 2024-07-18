@@ -23,7 +23,7 @@ describe('Component:nz-float-button-top', () => {
     }
 
     clickBackTop(): void {
-      this.backTopButton().nativeElement.click();
+      this.backTopButton().nativeElement.firstElementChild.click();
     }
 
     backTopButton(): DebugElement {
@@ -56,7 +56,8 @@ describe('Component:nz-float-button-top', () => {
       componentObject.scrollTo(window, defaultVisibilityHeight - 1);
       tick();
       fixture.detectChanges();
-      expect(componentObject.backTopButton() === null).toBe(true);
+
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
     it(`should not show when scroll is at ${defaultVisibilityHeight}`, fakeAsync(() => {
@@ -64,7 +65,7 @@ describe('Component:nz-float-button-top', () => {
       tick();
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(true);
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
     describe(`when scrolled at least ${defaultVisibilityHeight + 1}`, () => {
@@ -75,7 +76,7 @@ describe('Component:nz-float-button-top', () => {
       }));
 
       it(`should show back to top button`, () => {
-        expect(componentObject.backTopButton() === null).toBe(false);
+        expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
       });
 
       it(`should show default template`, () => {
@@ -85,7 +86,6 @@ describe('Component:nz-float-button-top', () => {
       it(`should scroll to top when button is clicked`, fakeAsync(() => {
         componentObject.clickBackTop();
         tick();
-
         expect(scrollService.getScroll()).toEqual(0);
       }));
     });
@@ -103,7 +103,7 @@ describe('Component:nz-float-button-top', () => {
       tick();
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(true);
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
     it(`should not show when scroll is at ${customVisibilityHeight}`, fakeAsync(() => {
@@ -111,7 +111,7 @@ describe('Component:nz-float-button-top', () => {
       tick();
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(true);
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
     describe(`when scrolled at least ${customVisibilityHeight + 1}`, () => {
@@ -122,7 +122,7 @@ describe('Component:nz-float-button-top', () => {
       }));
 
       it(`should show back to top button`, () => {
-        expect(componentObject.backTopButton() === null).toBe(false);
+        expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
       });
     });
   });
@@ -149,7 +149,7 @@ describe('Component:nz-float-button-top', () => {
         const appRef = TestBed.inject(ApplicationRef);
         spyOn(appRef, 'tick');
 
-        const backTopButton = componentObject.backTopButton().nativeElement;
+        const backTopButton = componentObject.backTopButton().nativeElement.firstElementChild;
         backTopButton.dispatchEvent(new MouseEvent('click'));
         expect(appRef.tick).not.toHaveBeenCalled();
 
@@ -174,7 +174,7 @@ describe('Component:nz-float-button-top', () => {
       tick();
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(true);
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
     it('element scroll shows the button', fakeAsync(() => {
@@ -184,7 +184,7 @@ describe('Component:nz-float-button-top', () => {
       tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
     }));
 
     it('element (use string id) scroll shows the button', fakeAsync(() => {
@@ -196,7 +196,7 @@ describe('Component:nz-float-button-top', () => {
       tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
     }));
   });
 
@@ -223,7 +223,7 @@ class TestBackTopComponent {
   @ViewChild(NzFloatButtonTopComponent, { static: true })
   nzBackTopComponent!: NzFloatButtonTopComponent;
 
-  target: HTMLElement | null = null;
+  target!: HTMLElement | string;
 
   setTarget(target: HTMLElement): void {
     this.target = target;
