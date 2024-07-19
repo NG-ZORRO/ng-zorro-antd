@@ -23,7 +23,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 ### nz-transfer:standalone
 
 | Property                | Description                                                                                                                       | Type                                                   | Default               |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------- |
+| ----------------------- |-----------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------ |-----------------------|
 | `[nzDataSource]`        | Used for setting the data source. Except for the elements whose keys are `direction: 'right'` prop, or using `nzTargetKeys` prop. | `TransferItem[]`                                       | `[]`                  |
 | `[nzDisabled]`          | Whether the transfer is disabled                                                                                                  | `boolean`                                              | `false`               |
 | `[nzTitles]`            | A set of titles that are sorted from left to right.                                                                               | `string[]`                                             | `['', '']`            |
@@ -34,6 +34,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzRenderList]`        | Customize render list, please refer to the case.                                                                                  | `Array<TemplateRef<void> \| null>`                     | `[null, null]`        |
 | `[nzRender]`            | The function to generate the item shown on a column. please refer to the case.                                                    | `TemplateRef<void>`                                    | -                     |
 | `[nzFooter]`            | A function used for rendering the footer. please refer to the case.                                                               | `TemplateRef<void>`                                    | -                     |
+| `[nzShowSelectAll]`     | Whether to display the select all box                                                                                             | `boolean`                                              | `true`                |
 | `[nzShowSearch]`        | Whether a search box is shown on each column.                                                                                     | `boolean`                                              | `false`               |
 | `[nzFilterOption]`      | A function to determine whether an item should be shown in a search result list                                                   | `(inputValue: string, item: TransferItem) => boolean`  | -                     |
 | `[nzSearchPlaceholder]` | The hint text of the search box.                                                                                                  | `string`                                               | `'Search here'`       |
