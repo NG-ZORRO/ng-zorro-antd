@@ -69,7 +69,14 @@ import { Component, OnInit } from '@angular/core';
         </tr>
       </tfoot>
     </nz-table>
-  `
+  `,
+  styles: [
+    `
+      :host ::ng-deep tfoot.ant-table-summary {
+        background-color: #fafafa !important;
+      }
+    `
+  ]
 })
 export class NzDemoTableSummaryComponent implements OnInit {
   data = [

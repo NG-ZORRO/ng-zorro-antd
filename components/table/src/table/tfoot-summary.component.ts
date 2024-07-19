@@ -48,22 +48,16 @@ function fixedAttribute(value: NzTableSummaryFixedType | boolean | unknown): NzT
 })
 export class NzTfootSummaryComponent implements OnInit, OnChanges {
   @Input({ transform: fixedAttribute }) nzFixed: NzTableSummaryFixedType | null = null;
-  isInsideTable = false;
-
   @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
   private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  isInsideTable = !!this.nzTableStyleService;
 
   ngOnInit(): void {
-    if (this.nzTableStyleService) {
-      this.isInsideTable = true;
-      this.nzTableStyleService.setTfootTemplate(this.templateRef);
-    }
+    this.nzTableStyleService?.setTfootTemplate(this.templateRef);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzFixed } = changes;
-    if (this.nzTableStyleService) {
-      this.nzTableStyleService.setTfootFixed(nzFixed.currentValue);
-    }
+    this.nzTableStyleService?.setTfootFixed(nzFixed.currentValue);
   }
 }
