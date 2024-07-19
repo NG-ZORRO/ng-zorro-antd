@@ -151,13 +151,13 @@ describe('cascader', () => {
       fixture.detectChanges();
 
       const placeholderElement = cascader.nativeElement.querySelector('.ant-select-selection-placeholder');
-      const fakeCompositionStartEvent = createFakeEvent('compositionstart', true, true);
-      getInputEl().dispatchEvent(fakeCompositionStartEvent);
+      const fakeCompositionstartEvent = createFakeEvent('compositionstart', true, true);
+      getInputEl().dispatchEvent(fakeCompositionstartEvent);
       fixture.detectChanges();
       expect(placeholderElement.style.visibility).toBe('hidden');
 
-      const fakeCompositionEndEvent = createFakeEvent('compositionend', true, true);
-      getInputEl().dispatchEvent(fakeCompositionEndEvent);
+      const fakeCompositionendEvent = createFakeEvent('compositionend', true, true);
+      getInputEl().dispatchEvent(fakeCompositionendEvent);
       fixture.detectChanges();
       expect(placeholderElement.style.visibility).toBe('visible');
     });
