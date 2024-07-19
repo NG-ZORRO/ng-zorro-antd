@@ -28,6 +28,7 @@ import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTableSummaryFixedType } from '../table.types';
 import { NzTableContentComponent } from './table-content.component';
 import { NzTbodyComponent } from './tbody.component';
 
@@ -44,6 +45,7 @@ import { NzTbodyComponent } from './tbody.component';
           [scrollX]="scrollX"
           [listOfColWidth]="listOfColWidth"
           [theadTemplate]="theadTemplate"
+          [tfootTemplate]="tfootFixed === 'top' ? tfootTemplate : null"
         ></table>
       </div>
       @if (!virtualTemplate) {
@@ -76,6 +78,17 @@ import { NzTbodyComponent } from './tbody.component';
           </table>
         </cdk-virtual-scroll-viewport>
       }
+      @if (tfootFixed === 'bottom') {
+        <div #tableFootElement class="ant-table-summary" [ngStyle]="headerStyleMap">
+          <table
+            nz-table-content
+            tableLayout="fixed"
+            [scrollX]="scrollX"
+            [listOfColWidth]="listOfColWidth"
+            [tfootTemplate]="tfootTemplate"
+          ></table>
+        </div>
+      }
     } @else {
       <div class="ant-table-content" #tableBodyElement [ngStyle]="bodyStyleMap">
         <table
@@ -85,6 +98,7 @@ import { NzTbodyComponent } from './tbody.component';
           [listOfColWidth]="listOfColWidth"
           [theadTemplate]="theadTemplate"
           [contentTemplate]="contentTemplate"
+          [tfootTemplate]="tfootTemplate"
         ></table>
       </div>
     }
@@ -101,6 +115,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @Input() widthConfig: string[] = [];
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
+  @Input() tfootTemplate: TemplateRef<NzSafeAny> | null = null;
+  @Input() tfootFixed: NzTableSummaryFixedType | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualItemSize = 0;
   @Input() virtualMaxBufferPx = 200;
@@ -109,6 +125,7 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @Input() virtualForTrackBy: TrackByFunction<T> = index => index;
   @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement!: ElementRef;
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
+  @ViewChild('tableFootElement', { read: ElementRef }) tableFootElement?: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   headerStyleMap = {};
@@ -158,8 +175,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
         overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
-      // Caretaker note: we have to emit the value outside of the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
-      // event listener will be also added outside of the Angular zone.
+      // Caretaker note: we have to emit the value outside the Angular zone, thus DOM timer (`delay(0)`) and `scroll`
+      // event listener will be also added outside the Angular zone.
       this.ngZone.runOutsideAngular(() => this.scroll$.next());
     }
     if (data) {
@@ -167,6 +184,7 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
       this.ngZone.runOutsideAngular(() => this.data$.next());
     }
   }
+
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
       this.ngZone.runOutsideAngular(() => {
@@ -184,14 +202,16 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
           takeUntil(this.destroy$)
         );
         setClassName$.subscribe(() => this.setScrollPositionClassName());
-        scrollEvent$
-          .pipe(filter(() => !!this.scrollY))
-          .subscribe(
-            () => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft)
-          );
+        scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
+          this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+          if (this.tableFootElement) {
+            this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+          }
+        });
       });
     }
   }
+
   ngOnDestroy(): void {
     this.setScrollPositionClassName(true);
     this.destroy$.next();

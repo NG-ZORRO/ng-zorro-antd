@@ -16,7 +16,7 @@ export * from './src/table/table-virtual-scroll.directive';
 export * from './src/table/table-fixed-row.component';
 export * from './src/table/tbody.component';
 export * from './src/table/thead.component';
-export * from './src/table/tfoot-summary.directive';
+export * from './src/table/tfoot-summary.component';
 export * from './src/table/tr.directive';
 export * from './src/table/tr-expand.directive';
 export * from './src/table/title-footer.component';

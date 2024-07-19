@@ -28,7 +28,7 @@ import { NzTableInnerScrollComponent } from './table/table-inner-scroll.componen
 import { NzTableVirtualScrollDirective } from './table/table-virtual-scroll.directive';
 import { NzTableComponent } from './table/table.component';
 import { NzTbodyComponent } from './table/tbody.component';
-import { NzTfootSummaryDirective } from './table/tfoot-summary.directive';
+import { NzTfootSummaryComponent } from './table/tfoot-summary.component';
 import { NzTheadComponent } from './table/thead.component';
 import { NzTableTitleFooterComponent } from './table/title-footer.component';
 import { NzTrExpandDirective } from './table/tr-expand.directive';
@@ -46,7 +46,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzTbodyComponent,
     NzTrDirective,
     NzTrExpandDirective,
-    NzTfootSummaryDirective,
+    NzTfootSummaryComponent,
     NzTableVirtualScrollDirective,
     NzCellFixedDirective,
     NzCustomColumnDirective,
@@ -81,7 +81,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzCustomColumnDirective,
     NzFilterTriggerComponent,
     NzTrExpandDirective,
-    NzTfootSummaryDirective,
+    NzTfootSummaryComponent,
     NzCellBreakWordDirective,
     NzCellAlignDirective,
     NzCellEllipsisDirective,
