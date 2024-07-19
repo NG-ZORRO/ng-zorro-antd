@@ -146,6 +146,22 @@ describe('cascader', () => {
       expect(getPlaceholder()).toBe(placeholder);
     });
 
+    it('should show/hide placeholder when trigger compositionstart/compositionend event', () => {
+      testComponent.nzPlaceHolder = 'placeholder test';
+      fixture.detectChanges();
+
+      const placeholderElement = cascader.nativeElement.querySelector('.ant-select-selection-placeholder');
+      const fakeCompositionStartEvent = createFakeEvent('compositionstart', true, true);
+      getInputEl().dispatchEvent(fakeCompositionStartEvent);
+      fixture.detectChanges();
+      expect(placeholderElement.style.visibility).toBe('hidden');
+
+      const fakeCompositionEndEvent = createFakeEvent('compositionend', true, true);
+      getInputEl().dispatchEvent(fakeCompositionEndEvent);
+      fixture.detectChanges();
+      expect(placeholderElement.style.visibility).toBe('visible');
+    });
+
     it('should size work', () => {
       testComponent.nzSize = 'small';
       fixture.detectChanges();
