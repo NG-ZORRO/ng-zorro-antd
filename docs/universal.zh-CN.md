@@ -99,7 +99,7 @@ app.get('*.*', express.static(DIST_FOLDER, {
   maxAge: '1y'
 }));
 
-// All regular appRoutes use the Universal engine
+// All regular routes use the Universal engine
 app.get('*', (req, res) => {
   res.render('index', { req });
 });

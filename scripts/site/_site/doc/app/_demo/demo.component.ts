@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
 @Component({
   standalone: true,
   selector: 'nz-demo-COMPONENTNAME-basic',
-  template: `hello world`
+  template: ``
 })
 export class DemoComponent {}

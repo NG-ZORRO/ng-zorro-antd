@@ -29,11 +29,11 @@ describe('[standalone] top-nav schematic', () => {
         '/projects/ng-zorro-top-nav/src/app/app.component.html',
         '/projects/ng-zorro-top-nav/src/app/app.component.css',
         '/projects/ng-zorro-top-nav/src/app/app.component.ts',
-        '/projects/ng-zorro-top-nav/src/app/app.app.routes.ts',
+        '/projects/ng-zorro-top-nav/src/app/app.routes.ts',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.css',
         '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.html',
-        '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.appRoutes.ts'
+        '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.routes.ts'
       ])
     );
   });
