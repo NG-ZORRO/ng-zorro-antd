@@ -4,7 +4,8 @@
 import { Component } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-COMPONENTNAME-basic',
-  template: ``
+  template: `hello world`
 })
-export class DEMOComponent {}
+export class DemoComponent {}

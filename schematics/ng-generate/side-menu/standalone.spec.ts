@@ -28,12 +28,12 @@ describe('[standalone] side-menu schematic', () => {
         '/projects/ng-zorro/src/app/app.component.html',
         '/projects/ng-zorro/src/app/app.component.css',
         '/projects/ng-zorro/src/app/app.component.ts',
-        '/projects/ng-zorro/src/app/app.routes.ts',
+        '/projects/ng-zorro/src/app/app.appRoutes.ts',
         '/projects/ng-zorro/src/app/icons-provider.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.routes.ts'
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.app.routes.ts'
       ])
     );
   });
@@ -42,7 +42,7 @@ describe('[standalone] side-menu schematic', () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-    
+
     expect(tree.exists('/projects/material/src/app/app.module.ts')).toBe(false);
 
     expect(appContent).toContain('standalone: true');

@@ -13,14 +13,21 @@ import {
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { AppService, DemoCode } from '../../app.service';
-import { OnlineIdeService } from '../../online-ide/online-ide.service';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+import { environment } from '../../environments/environment';
+import { AppService, DemoCode } from '../app.service';
+import { OnlineIdeService } from '../online-ide/online-ide.service';
+import { NzHighlightComponent } from './highlight.component';
 
 @Component({
+  standalone: true,
   selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzIconModule, NzToolTipModule, NzHighlightComponent],
   templateUrl: './codebox.component.html',
   styleUrls: ['./codebox.component.less'],
   host: {
@@ -37,7 +44,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   iframe?: SafeUrl;
   language = 'zh';
   theme = 'default';
-  destroy$ = new Subject<boolean>();
+  destroy$ = new Subject<void>();
   codeLoaded = false;
   onlineIDELoading = false;
   copyLoading = false;
@@ -67,16 +74,16 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   copyCode(): void {
     setTimeout(() => {
       this.copyLoading = !this.codeLoaded;
-      this.check();
+      this.cdr.markForCheck();
     }, 120);
     this.getDemoCode().subscribe(data => {
       this.copyLoading = false;
-      this.check();
+      this.cdr.markForCheck();
       this.copy(data.rawCode).then(() => {
         this.copied = true;
         setTimeout(() => {
           this.copied = false;
-          this.check();
+          this.cdr.markForCheck();
         }, 1000);
       });
     });
@@ -87,13 +94,13 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
       this.commandCopied = true;
       setTimeout(() => {
         this.commandCopied = false;
-        this.check();
+        this.cdr.markForCheck();
       }, 1000);
     });
   }
 
   copy(value: string): Promise<string> {
-    const promise = new Promise<string>((resolve): void => {
+    return new Promise<string>((resolve): void => {
       // @ts-ignore
       let copyTextArea = null as HTMLTextAreaElement;
       try {
@@ -112,8 +119,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    return promise;
   }
 
   expandCode(expanded: boolean): void {
@@ -121,22 +126,19 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     if (expanded) {
       this.getDemoCode().subscribe();
     }
+    this.cdr.markForCheck();
   }
 
   openOnlineIDE(): void {
     setTimeout(() => {
       this.onlineIDELoading = !this.codeLoaded;
-      this.check();
+      this.cdr.markForCheck();
     }, 120);
     this.getDemoCode().subscribe(data => {
       this.onlineIDELoading = false;
-      this.check();
+      this.cdr.markForCheck();
       this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
     });
-  }
-
-  check(): void {
-    this.cdr.markForCheck();
   }
 
   constructor(
@@ -145,16 +147,16 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private platform: Platform,
     private onlineIdeService: OnlineIdeService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.theme = data;
-      this.check();
+      this.cdr.markForCheck();
     });
     this.appService.language$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.language = data;
-      this.check();
+      this.cdr.markForCheck();
     });
   }
 
@@ -165,14 +167,14 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
         if (data) {
           this.highlightCode = data.highlightCode;
           this.codeLoaded = true;
-          this.check();
+          this.cdr.markForCheck();
         }
       })
     );
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 }
