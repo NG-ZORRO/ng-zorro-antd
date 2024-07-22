@@ -95,6 +95,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [(ngModel)]="inputValue"
               (blur)="handleInputBlur()"
               (focus)="handleInputFocus()"
+              (compositionstart)="handleInputCompositionstart()"
+              (compositionend)="handleInputCompositionend()"
             />
           </span>
           @if (showLabelRender) {
@@ -109,9 +111,11 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               }
             </span>
           } @else {
-            <span class="ant-select-selection-placeholder" [style.visibility]="!inputValue ? 'visible' : 'hidden'">{{
-              showPlaceholder ? nzPlaceHolder || locale?.placeholder : null
-            }}</span>
+            <span
+              class="ant-select-selection-placeholder"
+              [style.visibility]="isComposing || inputValue ? 'hidden' : 'visible'"
+              >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
+            >
           }
         </div>
         @if (nzShowArrow) {
@@ -339,6 +343,8 @@ export class NzCascaderComponent
 
   locale!: NzCascaderI18nInterface;
   dir: Direction = 'ltr';
+
+  isComposing = false;
 
   private inputString = '';
   private isOpening = false;
@@ -594,6 +600,14 @@ export class NzCascaderComponent
 
   handleInputFocus(): void {
     this.focus();
+  }
+
+  handleInputCompositionstart(): void {
+    this.isComposing = true;
+  }
+
+  handleInputCompositionend(): void {
+    this.isComposing = false;
   }
 
   @HostListener('click')
