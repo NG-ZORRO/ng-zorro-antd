@@ -1,21 +1,32 @@
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { ROUTER_LIST } from '../../router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { ROUTER_LIST } from '../router';
 
 @Component({
+  standalone: true,
   selector: 'nz-nav-bottom',
+  imports: [RouterLink, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="prev-next-nav">
-      <a class="prev-page" *ngIf="index - 1 >= 0" [routerLink]="list[index - 1]?.path">
-        <span nz-icon nzType="left" class="footer-nav-icon-before"></span>{{ list[index - 1]?.label
-        }}<span nz-icon nzType="right" class="footer-nav-icon-after"></span>
-      </a>
-      <a class="next-page" *ngIf="index + 1 < list.length" [routerLink]="list[index + 1]?.path">
-        <span nz-icon nzType="left" class="footer-nav-icon-before"></span>{{ list[index + 1]?.label
-        }}<span nz-icon nzType="right" class="footer-nav-icon-after"></span>
-      </a>
+      @if (index > 1) {
+        <a class="prev-page" [routerLink]="list[index - 1]?.path">
+          <span nz-icon nzType="left" class="footer-nav-icon-before"></span>
+          {{ list[index - 1]?.label }}
+          <span nz-icon nzType="right" class="footer-nav-icon-after"></span>
+        </a>
+      }
+      @if (index < list.length - 1) {
+        <a class="next-page" [routerLink]="list[index + 1]?.path">
+          <span nz-icon nzType="left" class="footer-nav-icon-before"></span>
+          {{ list[index + 1]?.label }}
+          <span nz-icon nzType="right" class="footer-nav-icon-after"></span>
+        </a>
+      }
     </section>
   `
 })

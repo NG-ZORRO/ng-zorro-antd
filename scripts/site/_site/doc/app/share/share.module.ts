@@ -4,14 +4,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzCodeBoxModule } from './codebox/codebox.module';
-import { NzGithubBtnModule } from './github-btn/github-btn.module';
-import { NzHighlightModule } from './highlight/highlight.module';
+
+import { NzCodeBoxComponent } from '../codebox/codebox.component';
 
 @NgModule({
   imports: [
@@ -19,9 +19,7 @@ import { NzHighlightModule } from './highlight/highlight.module';
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    NzCodeBoxModule,
-    NzHighlightModule,
-    NzGithubBtnModule,
+    NzCodeBoxComponent,
     NzToolTipModule,
     NzAnchorModule,
     NzAffixModule,
@@ -35,11 +33,9 @@ import { NzHighlightModule } from './highlight/highlight.module';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NzCodeBoxModule,
-    NzHighlightModule,
+    NzCodeBoxComponent,
     NzAnchorModule,
     NzAffixModule,
-    NzGithubBtnModule,
     NzGridModule,
     NzToolTipModule,
     NzIconModule,

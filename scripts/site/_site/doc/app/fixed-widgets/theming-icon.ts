@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'theming-icon',
   template: `
     <svg width="21" height="21" viewBox="0 0 21 21" fill="currentColor">
@@ -17,5 +18,5 @@ import { Component } from '@angular/core';
     role: 'img'
   }
 })
-export class ThemingIcon {
-}
+export class ThemingIcon {}
+

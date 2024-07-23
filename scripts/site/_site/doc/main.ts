@@ -1,9 +1,10 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
 import { environment } from './environments/environment';
 
 registerLocaleData(zh);
@@ -12,6 +13,4 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule, { ngZoneEventCoalescing: true })
-  .catch(err => console.log(err));
+bootstrapApplication(AppComponent, appConfig).catch(err => console.log(err));
