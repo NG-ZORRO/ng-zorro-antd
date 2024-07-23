@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: 'docs', loadChildren: () => import('./docs/index.module').then(m => m.NzDocsModule) },
   {
     path: 'components/overview',
-    loadChildren: () => import('./components-overview/routes').then(m => m.COMPONENTS_OVERVIEW_ROUTES)
+    loadChildren: () => import('./components-overview/routes')
   },
   { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];
