@@ -181,18 +181,12 @@ export default {
     preview: 'Pré-visualização'
   },
   CronExpression: {
-    cronError: 'Erro verifique as informações.',
-    second:'Segundo',
+    cronError: 'Erro verifique as informações',
+    second: 'Segundo',
     minute: 'Minuto',
     hour: 'Hora',
     day: 'Dia',
     month: 'Mês',
-    week: 'Semana',
-    secondError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><p><span>0-59</span>Intervalo permitido</p>',
-    minuteError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><p><span>0-59</span>Intervalo permitido</p>',
-    hourError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><p><span>0-23</span>Intervalo permitido</p>',
-    dayError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><p><span>1-31</span>Intervalo permitido</p>',
-    monthError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><p><span>1-12</span>Intervalo permitido</p>',
-    weekError: '<p><span>*</span>Qualquer valor</p><p><span>,</span>Separador entre vários valores</p><p><span>-</span>Conector para valores de intervalo</p><p><span>/</span>Igualmente distribuídos</p><span>?</span> Não especificar</p><p><p><span>0-7</span>Intervalo permitido (0 representa domingo, 1-7 são de segunda a domingo)</p>'
-}
+    week: 'Semana'
+  }
 };
