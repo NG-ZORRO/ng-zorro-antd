@@ -10,10 +10,13 @@ import { map } from 'rxjs/operators';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzThMeasureDirective } from './cell/th-measure.directive';
+import { NzTableSummaryFixedType } from './table.types';
 
 @Injectable()
 export class NzTableStyleService {
   theadTemplate$ = new ReplaySubject<TemplateRef<NzSafeAny>>(1);
+  tfootTemplate$ = new ReplaySubject<TemplateRef<NzSafeAny>>(1);
+  tfootFixed$ = new ReplaySubject<NzTableSummaryFixedType | null>(1);
   hasFixLeft$ = new ReplaySubject<boolean>(1);
   hasFixRight$ = new ReplaySubject<boolean>(1);
   hostWidth$ = new ReplaySubject<number>(1);
@@ -52,6 +55,14 @@ export class NzTableStyleService {
 
   setTheadTemplate(template: TemplateRef<NzSafeAny>): void {
     this.theadTemplate$.next(template);
+  }
+
+  setTfootTemplate(template: TemplateRef<NzSafeAny>): void {
+    this.tfootTemplate$.next(template);
+  }
+
+  setTfootFixed(fixed: NzTableSummaryFixedType | null): void {
+    this.tfootFixed$.next(fixed);
   }
 
   setHasFixLeft(hasFixLeft: boolean): void {
@@ -106,6 +117,4 @@ export class NzTableStyleService {
     }
     this.enableAutoMeasure$.next(enableAutoMeasure);
   }
-
-  constructor() {}
 }

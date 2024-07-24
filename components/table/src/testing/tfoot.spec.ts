@@ -1,11 +1,10 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 
 import { NzTableModule } from '../table.module';
-import { NzTfootSummaryDirective } from '../table/tfoot-summary.directive';
+import { NzTableSummaryFixedType } from '../table.types';
 
-describe('nz-foot', () => {
+describe('tfoot', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzTableModule],
@@ -16,24 +15,52 @@ describe('nz-foot', () => {
 
   describe('nz-foot in nz-table', () => {
     let fixture: ComponentFixture<TestComponent>;
-    let tfoot: DebugElement;
+    let component: TestComponent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      tfoot = fixture.debugElement.query(By.directive(NzTfootSummaryDirective));
+      component = fixture.componentInstance;
     });
 
     it('should nzSummary work ', () => {
       fixture.detectChanges();
-      expect(tfoot.nativeElement.classList).toContain('ant-table-summary');
+      const tfoot = component.elementRef.nativeElement.querySelector('tfoot.ant-table-summary') as HTMLElement;
+      expect(tfoot.textContent).toContain('summary');
+    });
+
+    it('should fixed work', () => {
+      component.scrollY = '100px';
+      component.fixed = true;
+      fixture.detectChanges();
+
+      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
+      expect(tfoot).toBeTruthy();
+    });
+
+    it('should fixed not work when scrollY is not set', () => {
+      component.scrollY = null;
+      component.fixed = true;
+      fixture.detectChanges();
+
+      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
+      expect(tfoot).not.toBeTruthy();
+    });
+
+    it('should fixed at top work', () => {
+      component.scrollY = '100px';
+      component.fixed = 'top';
+      fixture.detectChanges();
+
+      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-header tfoot.ant-table-summary');
+      expect(tfoot).toBeTruthy();
     });
   });
 });
 
 @Component({
   template: `
-    <nz-table>
+    <nz-table [nzScroll]="{ x: scrollX, y: scrollY }">
       <thead>
         <th></th>
         <th></th>
@@ -44,10 +71,16 @@ describe('nz-foot', () => {
           <td>2</td>
         </tr>
       </tbody>
-      <tfoot nzSummary>
+      <tfoot nzSummary [nzFixed]="fixed">
         <td colspan="2">summary</td>
-        <tfoot> </tfoot></tfoot
-    ></nz-table>
+      </tfoot>
+    </nz-table>
   `
 })
-export class TestComponent {}
+export class TestComponent {
+  scrollX: string | null = null;
+  scrollY: string | null = null;
+  fixed: NzTableSummaryFixedType | boolean = false;
+
+  constructor(public elementRef: ElementRef) {}
+}
