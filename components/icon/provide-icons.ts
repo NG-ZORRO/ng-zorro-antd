@@ -14,7 +14,7 @@ import { NZ_ICONS, NZ_ICONS_PATCH, NzIconPatchService } from './icon.service';
  *
  * @param icons Icon definitions
  */
-export const provideNzIcon = (icons: IconDefinition[]): EnvironmentProviders => {
+export const provideNzIcons = (icons: IconDefinition[]): EnvironmentProviders => {
   return makeEnvironmentProviders([
     {
       provide: NZ_ICONS,
@@ -25,9 +25,10 @@ export const provideNzIcon = (icons: IconDefinition[]): EnvironmentProviders => 
 
 /**
  * Provide icon definitions for NzIcon in feature module or standalone component
+ *
  * @param icons Icon definitions
  */
-export const provideNzIconPatch = (icons: IconDefinition[]): Provider[] => {
+export const provideNzIconsPatch = (icons: IconDefinition[]): Provider[] => {
   return [
     NzIconPatchService,
     {

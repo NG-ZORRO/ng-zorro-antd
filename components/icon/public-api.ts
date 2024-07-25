@@ -7,4 +7,4 @@ export * from './icon.module';
 export * from './icon.directive';
 export * from './icon.service';
 export * from './icons';
-export * from './provide-icon';
+export * from './provide-icons';

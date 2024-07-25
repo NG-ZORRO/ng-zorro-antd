@@ -92,13 +92,13 @@ const icons: IconDefinition[] = [AccountBookFill, AlertOutline, AlertFill];
 export class AppModule {}
 ```
 
-For standalone mode, you can register icons in `app.config.ts` with `provideNzIcon` API:
+For standalone mode, you can register icons in `app.config.ts` with `provideNzIcons` API:
 
 ```typescript
-import { provideNzIcon } from 'ng-zorro-antd/icon';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
 
 export const appConfig = {
-  providers: [provideNzIcon(icons)]
+  providers: [provideNzIcons(icons)]
 }
 ```
 
@@ -141,23 +141,23 @@ class ChildModule {}
 
 When `ChildModule` get loaded, the icon QuestionOutline would be usable across the application.
 
-For standalone mode, you can import icons in `providers` of the standalone component or router with `provideNzIconPatch` API.
+For standalone mode, you can import icons in `providers` of the standalone component or router with `provideNzIconsPatch` API.
 
 ```typescript
-import { NzIconModule, provideNzIconPatch } from 'ng-zorro-antd/icon';
+import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
 
 // in xxx.component.ts
 @Component({
   standalone: true,
   imports: [NzIconModule],
-  providers: [provideNzIconPatch([QuestionOutline])]
+  providers: [provideNzIconsPatch([QuestionOutline])]
 })
 class ChildComponent {}
 
 // or in xxx.routes.ts
 const routes: Routes = [{
   path: '',
-  providers: [provideNzIconPatch([QuestionOutline])],
+  providers: [provideNzIconsPatch([QuestionOutline])],
 }]
 ```
 

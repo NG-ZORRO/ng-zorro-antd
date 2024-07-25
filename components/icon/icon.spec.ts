@@ -14,11 +14,11 @@ import {
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { provideNzIcon, provideNzIconPatch } from 'ng-zorro-antd/icon';
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
 import { NzIconService, NZ_ICONS } from './icon.service';
+import { provideNzIcons, provideNzIconsPatch } from './provide-icons';
 
 describe('nz-icon', () => {
   describe('basics', () => {
@@ -245,7 +245,7 @@ describe('nz-icon', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [NzTestIconMultiInjectionStandaloneComponent],
-        providers: [provideNzIcon([HomeOutline])]
+        providers: [provideNzIcons([HomeOutline])]
       }).compileComponents();
     });
 
@@ -325,7 +325,7 @@ class NzTestIconMultiInjectionComponent {}
 @Component({
   standalone: true,
   imports: [NzIconModule],
-  providers: [provideNzIconPatch([QuestionOutline])],
+  providers: [provideNzIconsPatch([QuestionOutline])],
   template: `
     <span nz-icon nzType="home"></span>
     <span nz-icon nzType="question"></span>

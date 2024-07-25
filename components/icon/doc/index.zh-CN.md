@@ -93,13 +93,13 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
 export class AppModule {}
 ```
 
-在 standalone 模式下，你可以在 `app.config.ts` 中使用 `provideNzIcon` 引入这些图标：
+在 standalone 模式下，你可以在 `app.config.ts` 中使用 `provideNzIcons` 引入这些图标：
 
 ```typescript
-import { provideNzIcon } from 'ng-zorro-antd/icon';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
 
 export const appConfig = {
-  providers: [provideNzIcon(icons)]
+  providers: [provideNzIcons(icons)]
 }
 ```
 
@@ -142,23 +142,23 @@ class ChildModule {}
 
 当然，不要忘记在 `NZ_ICONS` 中删除该图标。
 
-在 Standalone 模式下，你可以在懒加载的组件中或路由的 `providers` 中使用 `provideNzIconPatch` 来补充图标：
+在 Standalone 模式下，你可以在懒加载的组件中或路由的 `providers` 中使用 `provideNzIconsPatch` 来补充图标：
 
 ```typescript
-import { NzIconModule, provideNzIconPatch } from 'ng-zorro-antd/icon';
+import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
 
 // 在 xxx.component.ts 中
 @Component({
   standalone: true,
   imports: [NzIconModule],
-  providers: [provideNzIconPatch([QuestionOutline])]
+  providers: [provideNzIconsPatch([QuestionOutline])]
 })
 class ChildComponent {}
 
 // 或 在 xxx.routes.ts 中
 const routes: Routes = [{
   path: '',
-  providers: [provideNzIconPatch([QuestionOutline])],
+  providers: [provideNzIconsPatch([QuestionOutline])],
 }]
 ```
 
