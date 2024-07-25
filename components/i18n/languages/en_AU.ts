@@ -16,7 +16,7 @@ export default {
     next_5: 'Next 5 Pages',
     prev_3: 'Previous 3 Pages',
     next_3: 'Next 3 Pages',
-    page_size: 'Page Size',
+    page_size: 'Page Size'
   },
   DatePicker: {
     lang: {
@@ -55,16 +55,16 @@ export default {
       previousDecade: 'Last decade',
       nextDecade: 'Next decade',
       previousCentury: 'Last century',
-      nextCentury: 'Next century',
+      nextCentury: 'Next century'
     },
     timePickerLocale: {
       placeholder: 'Select time',
-      rangePlaceholder: ['Start time', 'End time'],
-    },
+      rangePlaceholder: ['Start time', 'End time']
+    }
   },
   TimePicker: {
     placeholder: 'Select time',
-    rangePlaceholder: ['Start time', 'End time'],
+    rangePlaceholder: ['Start time', 'End time']
   },
   Calendar: {
     lang: {
@@ -103,15 +103,15 @@ export default {
       previousDecade: 'Last decade',
       nextDecade: 'Next decade',
       previousCentury: 'Last century',
-      nextCentury: 'Next century',
+      nextCentury: 'Next century'
     },
     timePickerLocale: {
       placeholder: 'Select time',
-      rangePlaceholder: ['Start time', 'End time'],
-    },
+      rangePlaceholder: ['Start time', 'End time']
+    }
   },
   global: {
-    placeholder: 'Please select',
+    placeholder: 'Please select'
   },
   Table: {
     filterTitle: 'Filter menu',
@@ -130,16 +130,16 @@ export default {
     cancelSort: 'Click to cancel sorting',
     filterCheckall: 'Select all items',
     filterSearchPlaceholder: 'Search in filters',
-    selectNone: 'Clear all data',
+    selectNone: 'Clear all data'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Cancel',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Cancel',
+    cancelText: 'Cancel'
   },
   Transfer: {
     titles: ['', ''],
@@ -151,32 +151,32 @@ export default {
     removeCurrent: 'Remove current page',
     selectAll: 'Select all data',
     removeAll: 'Remove all data',
-    selectInvert: 'Invert current page',
+    selectInvert: 'Invert current page'
   },
   Upload: {
     uploading: 'Uploading...',
     removeFile: 'Remove file',
     uploadError: 'Upload error',
     previewFile: 'Preview file',
-    downloadFile: 'Download file',
+    downloadFile: 'Download file'
   },
   Empty: {
-    description: 'No Data',
+    description: 'No Data'
   },
   Icon: {
-    icon: 'icon',
+    icon: 'icon'
   },
   Text: {
     edit: 'Edit',
     copy: 'Copy',
     copied: 'Copied',
-    expand: 'Expand',
+    expand: 'Expand'
   },
   PageHeader: {
-    back: 'Back',
+    back: 'Back'
   },
   Image: {
-    preview: 'Preview',
+    preview: 'Preview'
   },
   CronExpression: {
     cronError: 'Invalid cron expression',
@@ -191,5 +191,5 @@ export default {
     expired: 'QR code expired',
     refresh: 'Refresh',
     scanned: 'Scanned'
-  },
+  }
 };
