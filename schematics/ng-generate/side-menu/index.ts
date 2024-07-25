@@ -62,7 +62,7 @@ export default function (options: Schema): Rule {
         ]),
         MergeStrategy.Overwrite
       ),
-      isStandalone ? addRootProviders(options.project, mainFile) : addModules(options.project)
+      isStandalone ? addIconsProvider(options.project, mainFile) : addModules(options.project)
     ]);
   };
 }
@@ -76,7 +76,7 @@ function addModules(project: string): Rule {
   ]);
 }
 
-function addRootProviders(project: string, mainFile: string): Rule {
+function addIconsProvider(project: string, mainFile: string): Rule {
   return chain([
     importIconDefinitions(mainFile),
     addRootProvider(project, ({ code, external }) => {
