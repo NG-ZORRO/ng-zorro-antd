@@ -9,7 +9,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { EditOutline, LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
@@ -25,17 +25,17 @@ const nzConfig: NzConfig = {
   icon: { nzTwotoneColor: '#1890ff' }
 };
 
-const environmentProviders: EnvironmentProviders[] =  [
+const environmentProviders: EnvironmentProviders =  importProvidersFrom(
   BidiModule,
-  NzIconModule.forRoot(icons),
   NzMessageModule,
   QuicklinkModule
-].map(module => importProvidersFrom(module));
+);
 
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: APP_ID, useValue: 'docs' },
     provideNzConfig(nzConfig),
+    provideNzIcons(icons),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
@@ -46,6 +46,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withJsonpSupport(), withFetch()),
     provideServiceWorker('ngsw-worker.js', { enabled: environment.production && !environment.preProduction }),
     provideAnimationsAsync(),
-    ...environmentProviders
+    environmentProviders
   ]
 };
