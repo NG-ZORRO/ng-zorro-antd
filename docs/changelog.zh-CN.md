@@ -22,7 +22,7 @@ timeline: true
 * **cascader:** `compositionstart` 事件触发时隐藏 placeholder ([#8641](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8641)) ([17b0ea3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/17b0ea362021a458c18204f73c34c08695300e2a))
 * **i18n:** 更新 `pt_BR` 国际化文案 ([#7790](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7790)) ([6fc1c78](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6fc1c78b4ca0d37bf5eb6e9e52f0fd150ca5855d))
 * **i18n:** 更新 `fr_BE`, `fr_CA`, `fr_FR`, `lv_LV` 国际化文案 ([#8614](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8614)) ([9b69410](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9b69410ce8f84fbd65e2f0dc627189403888d8f1))
-* **schematics:** 修复模板中 RouterLink 引入缺失问题 ([#8621](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8621)) ([032a0c2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/032a0c2384434fc042674a60b005a5a479f6626a))
+* **schematics:** 修复模板中 `RouterLink` 引入缺失问题 ([#8621](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8621)) ([032a0c2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/032a0c2384434fc042674a60b005a5a479f6626a))
 * **transfer:** 修复选项全部禁用后全选按钮仍可点击 ([#8633](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8633)) ([75d8c7b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/75d8c7b93310cd54677ac75f470b2967ebd092cb))
 
 
@@ -30,7 +30,7 @@ timeline: true
 
 * **breadcrumb:** 新增 `nzRouteFn` 以格式化面包屑路由 ([#6313](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6313)) ([6d805c4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d805c44073297ea17742d43066c6b95e4af5ffe))
 * **i18n:** 添加国际化文案 `en_AU` ([#7919](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7919)) ([c4e6c8d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c4e6c8df3fe48ced3097f0f1347ddbbfde3fda9c))
-* **icon:** 新增 `provideNzIcon` 和 `provideNzIconPatch` API ([#8650](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8650)) ([b22672d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b22672db7cbce362b14a3dad1ff3b3c45abed27f))
+* **icon:** 新增 `provideNzIcons` 和 `provideNzIconsPatch` API ([#8650](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8650)) ([b22672d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b22672db7cbce362b14a3dad1ff3b3c45abed27f))
 * **popconfirm:** 新增支持 `nzPopconfirmTitleContext` 上下文 ([#7989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7989)) ([6d27073](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d27073a52a96d17d8625a9d5d7b820984aa5000))
 * **table:** 新增支持 `nzSummary` 总结栏 ([#8639](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8639)) ([20bb5b2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/20bb5b24c7d01d87f0d50c37248ddd862d9bf341))
 * **table:** 总结栏支持 `nzFixed` 固定 ([#8642](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8642)) ([bef12e6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bef12e6218c53028f8907f2e917945ddc8283db5))
