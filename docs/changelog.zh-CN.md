@@ -34,7 +34,7 @@ timeline: true
 * **popconfirm:** 新增支持 `nzPopconfirmTitleContext` 上下文 ([#7989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7989)) ([6d27073](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d27073a52a96d17d8625a9d5d7b820984aa5000))
 * **table:** 新增支持 `nzSummary` 总结栏 ([#8639](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8639)) ([20bb5b2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/20bb5b24c7d01d87f0d50c37248ddd862d9bf341))
 * **table:** 总结栏支持 `nzFixed` 固定 ([#8642](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8642)) ([bef12e6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bef12e6218c53028f8907f2e917945ddc8283db5))
-* **tree-select:** `nzNotFoundContent` 支持 TemplateRef 类型 ([#8638](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8638)) ([13e8a45](https://github.com/NG-ZORRO/ng-zorro-antd/commit/13e8a452c4a96f78d6cf900830ba4b585ed36735)), closes [#8631](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8631)
+* **tree-select:** `nzNotFoundContent` 支持 TemplateRef 类型 ([#8638](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8638)) ([13e8a45](https://github.com/NG-ZORRO/ng-zorro-antd/commit/13e8a452c4a96f78d6cf900830ba4b585ed36735))
 
 
 ## 18.0.1
