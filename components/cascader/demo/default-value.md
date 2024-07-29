@@ -1,8 +1,8 @@
 ---
 order: 1
 title:
-  zh-CN: 默认值
-  en-US: Default value
+  zh-CN: "公司"
+  en-US: "公司-组长"
 ---
 
 ## zh-CN
