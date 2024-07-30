@@ -32,6 +32,15 @@ describe('nz-countdown', () => {
       testComponent.countdown.stopTimer();
     }));
 
+    it('should render time by dayjs format style', fakeAsync(() => {
+      testComponent.resetTimerWithFormat('HH[H]:mm[m]:ss[s]');
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+      expect(countdownEl.nativeElement.querySelector('.ant-statistic-content-value').innerText).toBe('48H:00m:29s');
+      testComponent.countdown.stopTimer();
+    }));
+
     it('should stop timer when nzValue is earlier than current', fakeAsync(() => {
       const beforeTime = new Date().getTime() - 1000 * 1000;
       const spyOnStop = spyOn(testComponent.countdown, 'stopTimer');
