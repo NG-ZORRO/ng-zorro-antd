@@ -26,6 +26,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -102,6 +103,7 @@ import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
     NzDrawerModule,
     NzDropDownModule,
     NzEmptyModule,
+    NzFlexModule,
     NzFormModule,
     NzGridModule,
     NzI18nModule,
