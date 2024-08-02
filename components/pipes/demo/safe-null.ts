@@ -12,11 +12,13 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address | nzSafeNull: '-' }}</td>
-        </tr>
+        @for (data of basicTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address | nzSafeNull: '-' }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `
