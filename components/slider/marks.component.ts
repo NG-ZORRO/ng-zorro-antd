@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -26,15 +26,16 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   selector: 'nz-slider-marks',
   exportAs: 'nzSliderMarks',
   template: `
-    <span
-      class="ant-slider-mark-text"
-      *ngFor="let attr of marks; trackBy: trackById"
-      [class.ant-slider-mark-active]="attr.active"
-      [ngStyle]="attr.style!"
-      [innerHTML]="attr.label"
-    ></span>
+    @for (attr of marks; track attr.value) {
+      <span
+        class="ant-slider-mark-text"
+        [class.ant-slider-mark-active]="attr.active"
+        [ngStyle]="attr.style!"
+        [innerHTML]="attr.label"
+      ></span>
+    }
   `,
-  imports: [NgStyle, NgForOf],
+  imports: [NgStyle],
   standalone: true,
   host: {
     class: 'ant-slider-mark'
@@ -62,10 +63,6 @@ export class NzSliderMarksComponent implements OnChanges {
     if (marksArray || lowerBound || upperBound || reverse) {
       this.togglePointActive();
     }
-  }
-
-  trackById(_index: number, mark: NzDisplayedMark): number {
-    return mark.value;
   }
 
   private buildMarks(): void {
