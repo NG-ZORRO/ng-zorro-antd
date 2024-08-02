@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -41,7 +41,7 @@ const SPACE_SIZE: {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content></ng-content>
-    <ng-template ngFor let-item let-last="last" let-index="index" [ngForOf]="items">
+    @for (item of items; track item; let last = $last; let index = $index) {
       <div
         class="ant-space-item"
         [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
@@ -49,15 +49,16 @@ const SPACE_SIZE: {
       >
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
-      <span
-        *ngIf="nzSplit && !last"
-        class="ant-space-split"
-        [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
-      >
-        <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
-      </span>
-    </ng-template>
+      @if (nzSplit && !last) {
+        <span
+          class="ant-space-split"
+          [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+          [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        >
+          <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
+        </span>
+      }
+    }
   `,
   host: {
     class: 'ant-space',
@@ -69,7 +70,7 @@ const SPACE_SIZE: {
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
   },
-  imports: [NgTemplateOutlet, NgIf, NgForOf],
+  imports: [NgTemplateOutlet],
   standalone: true
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
