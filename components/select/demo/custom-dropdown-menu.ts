@@ -4,7 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-select-custom-dropdown-menu',
   template: `
     <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="custom dropdown render">
-      <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
+      @for (item of listOfItem; track item) {
+        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+      }
     </nz-select>
     <ng-template #renderTemplate>
       <nz-divider></nz-divider>

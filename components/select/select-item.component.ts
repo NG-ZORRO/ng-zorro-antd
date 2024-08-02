@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,19 +24,28 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: { $implicit: contentTemplateOutletContext }">
-      <div class="ant-select-selection-item-content" *ngIf="deletable; else labelTemplate">{{ label }}</div>
-      <ng-template #labelTemplate>{{ label }}</ng-template>
+      @if (deletable) {
+        <div class="ant-select-selection-item-content">{{ label }}</div>
+      } @else {
+        {{ label }}
+      }
     </ng-container>
-    <span *ngIf="deletable && !disabled" class="ant-select-selection-item-remove" (click)="onDelete($event)">
-      <span nz-icon nzType="close" *ngIf="!removeIcon; else removeIcon"></span>
-    </span>
+    @if (deletable && !disabled) {
+      <span class="ant-select-selection-item-remove" (click)="onDelete($event)">
+        @if (!removeIcon) {
+          <span nz-icon nzType="close"></span>
+        } @else {
+          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+        }
+      </span>
+    }
   `,
   host: {
     class: 'ant-select-selection-item',
     '[attr.title]': 'label',
     '[class.ant-select-selection-item-disabled]': 'disabled'
   },
-  imports: [NzOutletModule, NgIf, NzIconModule],
+  imports: [NgTemplateOutlet, NzOutletModule, NzIconModule],
   standalone: true
 })
 export class NzSelectItemComponent {

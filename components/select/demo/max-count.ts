@@ -11,7 +11,9 @@ import { Component, OnInit } from '@angular/core';
       [nzShowArrow]="true"
       [(ngModel)]="listOfSelectedValue"
     >
-      <nz-option *ngFor="let item of listOfOption" [nzLabel]="item" [nzValue]="item"></nz-option>
+      @for (item of listOfOption; track item) {
+        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+      }
     </nz-select>
   `,
   styles: [
