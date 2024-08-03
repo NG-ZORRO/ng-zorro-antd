@@ -5,7 +5,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgFor, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -66,7 +66,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgClass, NgFor, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
+  imports: [NgClass, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `
     <ng-template>
       <div
@@ -91,9 +91,11 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of normalizedDataSource" [nzValue]="option.value" [nzLabel]="option.label">
-          {{ option.label }}
-        </nz-auto-option>
+        @for (option of normalizedDataSource; track option.value) {
+          <nz-auto-option [nzValue]="option.value" [nzLabel]="option.label">
+            {{ option.label }}
+          </nz-auto-option>
+        }
       </ng-template>
     </ng-template>
   `,
