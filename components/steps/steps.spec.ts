@@ -8,7 +8,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -593,17 +593,14 @@ export class NzTestInnerStepTemplateComponent {}
 @Component({
   template: `
     <nz-steps>
-      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
+      @for (step of steps; track step) {
+        <nz-step></nz-step>
+      }
     </nz-steps>
   `
 })
 export class NzTestStepForComponent {
   steps = [1, 2, 3];
-
-  trackById(index: number): number {
-    return index;
-  }
-
   updateSteps(): void {
     this.steps.push(4);
   }
@@ -612,16 +609,14 @@ export class NzTestStepForComponent {
 @Component({
   template: `
     <nz-steps [nzCurrent]="1">
-      <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
+      @for (step of steps; track step) {
+        <nz-step></nz-step>
+      }
     </nz-steps>
   `
 })
 export class NzTestStepAsyncComponent implements OnInit {
   steps: number[] = [];
-
-  trackById(index: number): number {
-    return index;
-  }
 
   ngOnInit(): void {
     setTimeout(() => {
