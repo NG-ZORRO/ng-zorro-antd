@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 @Component({
+  standalone: true,
   selector: 'nz-highlight',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <pre class="language-angular"><code [innerHTML]="code"></code></pre>
+    <pre class="language-angular">
+      <code [innerHTML]="code"></code>
+    </pre>
   `
 })
-export class NzHighlightComponent implements OnInit {
+export class NzHighlightComponent {
   code: SafeHtml | string = '';
   @ViewChild('code', { static: true }) codeElement!: ElementRef;
   @Input() nzLanguage?: string;
@@ -22,6 +26,4 @@ export class NzHighlightComponent implements OnInit {
   }
 
   constructor(private sanitizer: DomSanitizer) {}
-
-  ngOnInit(): void {}
 }

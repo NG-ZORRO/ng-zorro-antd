@@ -234,6 +234,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);
+    if (list.every(i => i.disabled)) {
+      return;
+    }
     this.updateOperationStatus(direction, list.length);
     this.nzSelectChange.emit({ direction, checked, list, item });
   }
@@ -330,6 +333,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
         e.checked = true;
       }
     });
+
     const term = (ld: TransferItem): boolean => ld.disabled === false && ld.checked === true;
     this.rightActive = this.leftDataSource.some(term);
     this.leftActive = this.rightDataSource.some(term);

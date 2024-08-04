@@ -44,7 +44,8 @@ import {
   NzTablePaginationPosition,
   NzTablePaginationType,
   NzTableQueryParams,
-  NzTableSize
+  NzTableSize,
+  NzTableSummaryFixedType
 } from '../table.types';
 import { NzTableInnerDefaultComponent } from './table-inner-default.component';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
@@ -89,6 +90,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
             [contentTemplate]="contentTemplate"
             [listOfColWidth]="listOfAutoColWidth"
             [theadTemplate]="theadTemplate"
+            [tfootTemplate]="tfootTemplate"
+            [tfootFixed]="tfootFixed"
             [verticalScrollBarWidth]="verticalScrollBarWidth"
             [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
             [virtualItemSize]="nzVirtualItemSize"
@@ -104,6 +107,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
             [listOfColWidth]="listOfManualColWidth"
             [theadTemplate]="theadTemplate"
             [contentTemplate]="contentTemplate"
+            [tfootTemplate]="tfootTemplate"
           ></nz-table-inner-default>
         }
         @if (nzFooter) {
@@ -204,6 +208,8 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
+  tfootTemplate: TemplateRef<NzSafeAny> | null = null;
+  tfootFixed: NzTableSummaryFixedType | null = null;
   listOfAutoColWidth: ReadonlyArray<string | null> = [];
   listOfManualColWidth: ReadonlyArray<string | null> = [];
   hasFixLeft = false;
@@ -244,7 +250,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   ngOnInit(): void {
     const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$, listOfCustomColumn$ } =
       this.nzTableDataService;
-    const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+    const { theadTemplate$, tfootTemplate$, tfootFixed$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -292,6 +298,14 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       this.theadTemplate = theadTemplate;
       this.cdr.markForCheck();
     });
+
+    combineLatest([tfootTemplate$, tfootFixed$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([tfootTemplate, tfootFixed]) => {
+        this.tfootTemplate = tfootTemplate;
+        this.tfootFixed = tfootFixed;
+        this.cdr.markForCheck();
+      });
 
     hasFixLeft$.pipe(takeUntil(this.destroy$)).subscribe(hasFixLeft => {
       this.hasFixLeft = hasFixLeft;

@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+
+import { ThemingIcon } from './theming-icon';
+
 @Component({
+  standalone: true,
   selector: 'app-fixed-widgets',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzAvatarModule, NzDropDownModule, ThemingIcon],
   template: `
     <div class="fixed-widgets">
       <div

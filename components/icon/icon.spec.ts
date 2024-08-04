@@ -1,5 +1,5 @@
 import { Component, DebugElement, NgModule } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -18,6 +18,7 @@ import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/com
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
 import { NzIconService, NZ_ICONS } from './icon.service';
+import { provideNzIcons, provideNzIconsPatch } from './provide-icons';
 
 describe('nz-icon', () => {
   describe('basics', () => {
@@ -210,7 +211,7 @@ describe('nz-icon', () => {
       nzConfigService!.set('icon', { nzTwotoneColor: '#234567' });
       expect(icons[0].componentInstance.iconService.twoToneColor.primaryColor).toBe('#234567');
 
-      // Should ignore falsy value.
+      // Should ignore invalid value.
       nzConfigService!.set('icon', { nzTwotoneColor: '234567' });
       expect(icons[0].componentInstance.iconService.twoToneColor.primaryColor).not.toBe('234567');
       expect(icons[0].componentInstance.iconService.twoToneColor.primaryColor).toBe('#1890ff');
@@ -231,6 +232,29 @@ describe('nz-icon', () => {
 
     it('should support forRoot and forChild', () => {
       fixture.detectChanges();
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      expect(icons[0].nativeElement.classList.contains('anticon-home')).toBe(true);
+      expect(icons[1].nativeElement.classList.contains('anticon-question')).toBe(true);
+    });
+  });
+
+  describe('[standalone] injection on multi places with provideNzIcon', () => {
+    let fixture: ComponentFixture<NzTestIconMultiInjectionStandaloneComponent>;
+    let icons: DebugElement[];
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [NzTestIconMultiInjectionStandaloneComponent],
+        providers: [provideNzIcons([HomeOutline])]
+      }).compileComponents();
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestIconMultiInjectionStandaloneComponent);
+      fixture.detectChanges();
+    });
+
+    it('should support forRoot and forChild', () => {
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
       expect(icons[0].nativeElement.classList.contains('anticon-home')).toBe(true);
       expect(icons[1].nativeElement.classList.contains('anticon-question')).toBe(true);
@@ -297,3 +321,14 @@ class ChildModule {}
   `
 })
 class NzTestIconMultiInjectionComponent {}
+
+@Component({
+  standalone: true,
+  imports: [NzIconModule],
+  providers: [provideNzIconsPatch([QuestionOutline])],
+  template: `
+    <span nz-icon nzType="home"></span>
+    <span nz-icon nzType="question"></span>
+  `
+})
+class NzTestIconMultiInjectionStandaloneComponent {}
