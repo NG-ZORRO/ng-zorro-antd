@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -40,27 +40,33 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
         <i class="ant-spin-dot-item"></i>
       </span>
     </ng-template>
-    <div *ngIf="isLoading">
-      <div
-        class="ant-spin"
-        [class.ant-spin-rtl]="dir === 'rtl'"
-        [class.ant-spin-spinning]="isLoading"
-        [class.ant-spin-lg]="nzSize === 'large'"
-        [class.ant-spin-sm]="nzSize === 'small'"
-        [class.ant-spin-show-text]="nzTip"
-      >
-        <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate"></ng-template>
-        <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
+    @if (isLoading) {
+      <div>
+        <div
+          class="ant-spin"
+          [class.ant-spin-rtl]="dir === 'rtl'"
+          [class.ant-spin-spinning]="isLoading"
+          [class.ant-spin-lg]="nzSize === 'large'"
+          [class.ant-spin-sm]="nzSize === 'small'"
+          [class.ant-spin-show-text]="nzTip"
+        >
+          <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate"></ng-template>
+          @if (nzTip) {
+            <div class="ant-spin-text">{{ nzTip }}</div>
+          }
+        </div>
       </div>
-    </div>
-    <div *ngIf="!nzSimple" class="ant-spin-container" [class.ant-spin-blur]="isLoading">
-      <ng-content></ng-content>
-    </div>
+    }
+    @if (!nzSimple) {
+      <div class="ant-spin-container" [class.ant-spin-blur]="isLoading">
+        <ng-content></ng-content>
+      </div>
+    }
   `,
   host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
   },
-  imports: [NgIf, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   standalone: true
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {

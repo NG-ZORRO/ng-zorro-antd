@@ -257,17 +257,18 @@ describe('nz-wave disable/enable', () => {
 
 @Component({
   template: `
-    <button
-      #trigger
-      nz-wave
-      *ngIf="!isDestroyed"
-      [disabled]="disabled"
-      [class.disabled]="disabledClass"
-      [style.border-color]="borderColor"
-      [style.background-color]="backgroundColor"
-    >
-      Button
-    </button>
+    @if (!isDestroyed) {
+      <button
+        #trigger
+        nz-wave
+        [disabled]="disabled"
+        [class.disabled]="disabledClass"
+        [style.border-color]="borderColor"
+        [style.background-color]="backgroundColor"
+      >
+        Button
+      </button>
+    }
   `
 })
 class WaveContainerWithButtonComponent {
@@ -282,17 +283,18 @@ class WaveContainerWithButtonComponent {
 
 @Component({
   template: `
-    <div
-      #trigger
-      nz-wave
-      *ngIf="!isDestroyed"
-      [nzWaveExtraNode]="true"
-      [class.disabled]="disabledClass"
-      [style.border-color]="borderColor"
-      [style.background-color]="backgroundColor"
-    >
-      <button>Button</button>
-    </div>
+    @if (!isDestroyed) {
+      <div
+        #trigger
+        nz-wave
+        [nzWaveExtraNode]="true"
+        [class.disabled]="disabledClass"
+        [style.border-color]="borderColor"
+        [style.background-color]="backgroundColor"
+      >
+        <button>Button</button>
+      </div>
+    }
   `
 })
 class WaveContainerWithExtraNodeComponent {

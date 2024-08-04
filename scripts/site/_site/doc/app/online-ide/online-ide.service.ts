@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import sdk from '@stackblitz/sdk';
 import { VERSION } from 'ng-zorro-antd/version';
@@ -15,7 +14,6 @@ import polyfillTS from './files/polyfill';
   providedIn: 'root'
 })
 export class OnlineIdeService {
-  private document: Document = inject(DOCUMENT);
   template = 'angular-cli' as const;
   dependencies = {
     '@angular/animations': '^18.0.0',

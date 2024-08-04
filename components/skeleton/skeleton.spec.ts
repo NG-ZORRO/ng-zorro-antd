@@ -240,29 +240,30 @@ export class NzTestSkeletonComponent {
 
 @Component({
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <nz-skeleton-element
-        *ngSwitchCase="1"
-        nzType="avatar"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-        [nzShape]="nzShape"
-      ></nz-skeleton-element>
-      <nz-skeleton-element
-        *ngSwitchCase="2"
-        nzType="button"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-        [nzShape]="nzShape"
-      ></nz-skeleton-element>
-      <nz-skeleton-element
-        *ngSwitchCase="3"
-        nzType="input"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-      ></nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="4" nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
-    </ng-container>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-skeleton-element
+          nzType="avatar"
+          [nzActive]="nzActive"
+          [nzSize]="nzSize"
+          [nzShape]="nzShape"
+        ></nz-skeleton-element>
+      }
+      @case (2) {
+        <nz-skeleton-element
+          nzType="button"
+          [nzActive]="nzActive"
+          [nzSize]="nzSize"
+          [nzShape]="nzShape"
+        ></nz-skeleton-element>
+      }
+      @case (3) {
+        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+      }
+      @case (4) {
+        <nz-skeleton-element nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
+      }
+    }
   `
 })
 export class NzTestSkeletonElementComponent {

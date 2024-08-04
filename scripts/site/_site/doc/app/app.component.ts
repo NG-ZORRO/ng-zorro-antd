@@ -1,8 +1,8 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
 import { NzColor } from 'ng-zorro-antd/color-picker';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzI18nService, en_US, zh_CN } from 'ng-zorro-antd/i18n';
@@ -13,6 +13,23 @@ import { debounceTime } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppService } from './app.service';
 import { ROUTER_LIST } from './router';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { SideComponent } from './side/side.component';
+import { FixedWidgetsComponent } from './fixed-widgets/fixed-widgets.component';
+import { NzNavBottomComponent } from './nav-bottom/nav-bottom.component';
+import { NzContributorsListComponent } from './contributors-list/contributors-list.component';
+
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 interface DocPageMeta {
   path: string;
@@ -27,7 +44,28 @@ const defaultKeywords =
   'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架';
 
 @Component({
+  standalone: true,
   selector: 'app-root',
+  imports: [
+    CommonModule,
+    RouterModule,
+    NzGridModule,
+    NzAffixModule,
+    NzMenuModule,
+    NzIconModule,
+    NzSelectModule,
+    NzMessageModule,
+    NzPopoverModule,
+    NzButtonModule,
+    NzInputModule,
+    NzBadgeModule,
+    NzNavBottomComponent,
+    NzContributorsListComponent,
+    HeaderComponent,
+    FooterComponent,
+    SideComponent,
+    FixedWidgetsComponent
+  ],
   templateUrl: './app.component.html',
   styles: [
     `
@@ -41,7 +79,7 @@ const defaultKeywords =
 })
 export class AppComponent implements OnInit {
   /**
-   * When the screen size is smaller that 768 pixel, show the drawer and hide
+   * When the screen size is smaller than 768 pixel, show the drawer and hide
    * the navigation on the side.
    **/
   showDrawer = false;
@@ -150,13 +188,7 @@ export class AppComponent implements OnInit {
     private meta: Meta,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef
-  ) { }
-
-  navigateToPage(url: string): void {
-    if (url) {
-      this.router.navigateByUrl(url).then();
-    }
-  }
+  ) {}
 
   setPage(url: string): void {
     const match = url.match(/\/(\w+)/);
@@ -213,9 +245,9 @@ export class AppComponent implements OnInit {
         if (currentDemoComponent) {
           const path = currentDemoComponent.path.replace(/\/(en|zh)/, '');
           if (this.language === 'en') {
-            this.updateMateTitle(`${currentDemoComponent.label} | NG-ZORRO`);
+            this.updateMetaTitle(`${currentDemoComponent.label} | NG-ZORRO`);
           } else {
-            this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+            this.updateMetaTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
           }
           this.updateDocMetaAndLocale(
             currentDemoComponent.description,
@@ -229,12 +261,12 @@ export class AppComponent implements OnInit {
           const path = currentIntroComponent.path.replace(/\/(en|zh)/, '');
           if (/docs\/introduce/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
+              this.updateMetaTitle(`NG-ZORRO - Angular UI component library`);
             } else {
-              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
+              this.updateMetaTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
             }
           } else {
-            this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
+            this.updateMetaTitle(`${currentIntroComponent.label} | NG-ZORRO`);
           }
           this.updateDocMetaAndLocale(currentIntroComponent.description, currentIntroComponent.label, path);
         }
@@ -242,14 +274,14 @@ export class AppComponent implements OnInit {
         if (!currentIntroComponent && !currentDemoComponent) {
           if (/components\/overview/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle('Components | NG-ZORRO');
+              this.updateMetaTitle('Components | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO provides plenty of UI components to enrich your web applications, and we will improve components experience consistently.',
                 'overview',
                 'components/overview'
               );
             } else {
-              this.updateMateTitle('组件(Components) | NG-ZORRO');
+              this.updateMetaTitle('组件(Components) | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践。',
                 'overview, 预览',
@@ -257,7 +289,7 @@ export class AppComponent implements OnInit {
               );
             }
           } else {
-            this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
+            this.updateMetaTitle(`NG-ZORRO - Angular UI component library`);
             this.updateDocMetaAndLocale();
           }
         }
@@ -285,7 +317,7 @@ export class AppComponent implements OnInit {
     this.detectLanguage();
   }
 
-  updateMateTitle(title: string = 'NG-ZORRO | Angular UI component library'): void {
+  updateMetaTitle(title: string = 'NG-ZORRO | Angular UI component library'): void {
     this.title.setTitle(title);
     this.meta.updateTag({
       property: 'og:title',
@@ -403,7 +435,7 @@ export class AppComponent implements OnInit {
     const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
     if (language === 'zh-cn' && !hasLanguage) {
       this.nzI18nService.setLocale(zh_CN);
-      this.router.navigate(['docs', 'introduce', 'zh']);
+      this.router.navigate(['docs', 'introduce', 'zh']).then();
     }
   }
 }

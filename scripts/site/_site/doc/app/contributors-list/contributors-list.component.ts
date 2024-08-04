@@ -4,22 +4,29 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDe
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 @Component({
+  standalone: true,
   selector: 'nz-contributors-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzAvatarModule, NzAvatarModule, NzToolTipModule],
   template: `
-    <ul class="contributors-list" style="display: flex; list-style: none; margin: 0px; padding: 0px;">
-      <a
-        *ngFor="let item of list"
-        nz-tooltip
-        [nzTooltipTitle]="(language === 'en' ? 'Contributors: ' : '文档贡献者: ') + item.name"
-        [attr.href]="item.url"
-        target="_blank"
-      >
-        <nz-avatar [nzText]="item.name" [nzSrc]="item.avatar"></nz-avatar>
-      </a>
+    <ul class="contributors-list">
+      @for (item of list; track $index) {
+        <a
+          nz-tooltip
+          [nzTooltipTitle]="(language === 'en' ? 'Contributors: ' : '文档贡献者: ') + item.name"
+          [attr.href]="item.url"
+          target="_blank"
+        >
+          <nz-avatar [nzText]="item.name" [nzSrc]="item.avatar"></nz-avatar>
+        </a>
+      }
     </ul>
-  `
+  `,
+  styleUrl: './contributors-list.component.less'
 })
 export class NzContributorsListComponent implements OnInit, OnDestroy {
   language = 'en';

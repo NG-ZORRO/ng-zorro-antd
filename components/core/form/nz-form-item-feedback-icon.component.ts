@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 
 import { NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const iconTypeMap = {
   error: 'close-circle-fill',
@@ -25,10 +26,16 @@ const iconTypeMap = {
 @Component({
   selector: 'nz-form-item-feedback-icon',
   exportAs: 'nzFormFeedbackIcon',
+  standalone: true,
+  imports: [NzIconModule],
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <span *ngIf="iconType" nz-icon [nzType]="iconType"></span> `,
+  template: `
+    @if (iconType) {
+      <span nz-icon [nzType]="iconType"></span>
+    }
+  `,
   host: {
     class: 'ant-form-item-feedback-icon',
     '[class.ant-form-item-feedback-icon-error]': 'status==="error"',

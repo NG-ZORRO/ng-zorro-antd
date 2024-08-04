@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'div[app-footer-col]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2>
-      <span *ngIf="imgSrc" class="rc-footer-column-icon">
-        <img [src]="imgSrc" [attr.alt]="imgAlt" />
-      </span>
+      @if (imgSrc) {
+        <span class="rc-footer-column-icon">
+          <img [src]="imgSrc" [attr.alt]="imgAlt" />
+        </span>
+      }
       {{ title }}
     </h2>
     <ng-content></ng-content>
