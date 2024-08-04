@@ -86,24 +86,20 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    NzIconModule.forRoot(icons)
-  ]
-  bootstrap: [ AppComponent ]
+  declarations: [AppComponent],
+  imports: [NzIconModule.forRoot(icons)],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
 
-在 standalone 模式下，你可以在 `app.config.ts` 中引入这些图标：
+在 standalone 模式下，你可以在 `app.config.ts` 中使用 `provideNzIcons` 引入这些图标：
 
 ```typescript
-import { importProvidersFrom } from '@angular/core';
+import { provideNzIcons } from 'ng-zorro-antd/icon';
 
 export const appConfig = {
-  providers: [importProvidersFrom(NzIconModule.forRoot(icons))]
+  providers: [provideNzIcons(icons)]
 }
 ```
 
@@ -146,13 +142,33 @@ class ChildModule {}
 
 当然，不要忘记在 `NZ_ICONS` 中删除该图标。
 
+在 Standalone 模式下，你可以在懒加载的组件中或路由的 `providers` 中使用 `provideNzIconsPatch` 来补充图标：
+
+```typescript
+import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
+
+// 在 xxx.component.ts 中
+@Component({
+  standalone: true,
+  imports: [NzIconModule],
+  providers: [provideNzIconsPatch([QuestionOutline])]
+})
+class ChildComponent {}
+
+// 或 在 xxx.routes.ts 中
+const routes: Routes = [{
+  path: '',
+  providers: [provideNzIconsPatch([QuestionOutline])],
+}]
+```
+
 ### 双色图标主色
 
 对于双色图标，可以通过提供全局配置 `{ nzIcon: { nzTwotoneColor: 'xxx' } }` 或 `NzConfigService` 的对应方法修改来全局设置图标主色。
 
 ### 自定义 font 图标
 
-我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
+我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 [iconfont.cn](http://iconfont.cn/) 上自行管理的图标。
 
 ```typescript
 this._iconService.fetchFromIconfont({

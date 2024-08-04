@@ -13,13 +13,19 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
 import { loadScript } from '../utils/load-script';
 
 declare const docsearch: any;
 
 @Component({
+  standalone: true,
   selector: 'div[app-searchbar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzIconModule, NzInputModule],
   template: `
     <span nz-icon nzType="search"></span>
     <input

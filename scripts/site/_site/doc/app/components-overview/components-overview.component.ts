@@ -7,14 +7,37 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { ROUTER_LIST } from '../router';
 
 @Component({
+  standalone: true,
   selector: 'app-components-overview',
+  imports: [
+    RouterLink,
+    NzAffixModule,
+    NzCardModule,
+    NzButtonModule,
+    NzTagModule,
+    NzGridModule,
+    NzTypographyModule,
+    NzDividerModule,
+    NzIconModule,
+    NzInputModule
+  ],
   templateUrl: './components-overview.component.html',
   styleUrls: ['./components-overview.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

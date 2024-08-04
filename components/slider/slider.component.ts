@@ -6,7 +6,6 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
-import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -75,50 +74,46 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [reverse]="nzReverse"
       [dir]="dir"
     ></nz-slider-track>
-    <nz-slider-step
-      *ngIf="marksArray"
-      [vertical]="nzVertical"
-      [min]="nzMin"
-      [max]="nzMax"
-      [lowerBound]="$any(bounds.lower)"
-      [upperBound]="$any(bounds.upper)"
-      [marksArray]="marksArray"
-      [included]="nzIncluded"
-      [reverse]="nzReverse"
-    ></nz-slider-step>
-    <nz-slider-handle
-      *ngFor="let handle of handles; index as handleIndex"
-      [vertical]="nzVertical"
-      [reverse]="nzReverse"
-      [offset]="handle.offset!"
-      [value]="handle.value!"
-      [active]="handle.active"
-      [tooltipFormatter]="nzTipFormatter"
-      [tooltipVisible]="nzTooltipVisible"
-      [tooltipPlacement]="nzTooltipPlacement"
-      [dir]="dir"
-      (focusin)="onHandleFocusIn(handleIndex)"
-    ></nz-slider-handle>
-    <nz-slider-marks
-      *ngIf="marksArray"
-      [vertical]="nzVertical"
-      [min]="nzMin"
-      [max]="nzMax"
-      [lowerBound]="$any(bounds.lower)"
-      [upperBound]="$any(bounds.upper)"
-      [marksArray]="marksArray"
-      [included]="nzIncluded"
-      [reverse]="nzReverse"
-    ></nz-slider-marks>
+    @if (marksArray) {
+      <nz-slider-step
+        [vertical]="nzVertical"
+        [min]="nzMin"
+        [max]="nzMax"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
+        [marksArray]="marksArray"
+        [included]="nzIncluded"
+        [reverse]="nzReverse"
+      ></nz-slider-step>
+    }
+    @for (handle of handles; track handle.value; let handleIndex = $index) {
+      <nz-slider-handle
+        [vertical]="nzVertical"
+        [reverse]="nzReverse"
+        [offset]="handle.offset!"
+        [value]="handle.value!"
+        [active]="handle.active"
+        [tooltipFormatter]="nzTipFormatter"
+        [tooltipVisible]="nzTooltipVisible"
+        [tooltipPlacement]="nzTooltipPlacement"
+        [dir]="dir"
+        (focusin)="onHandleFocusIn(handleIndex)"
+      ></nz-slider-handle>
+    }
+    @if (marksArray) {
+      <nz-slider-marks
+        [vertical]="nzVertical"
+        [min]="nzMin"
+        [max]="nzMax"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
+        [marksArray]="marksArray"
+        [included]="nzIncluded"
+        [reverse]="nzReverse"
+      ></nz-slider-marks>
+    }
   `,
-  imports: [
-    NzSliderTrackComponent,
-    NzSliderStepComponent,
-    NzSliderHandleComponent,
-    NgForOf,
-    NzSliderMarksComponent,
-    NgIf
-  ],
+  imports: [NzSliderTrackComponent, NzSliderStepComponent, NzSliderHandleComponent, NzSliderMarksComponent],
   standalone: true,
   host: {
     class: 'ant-slider',

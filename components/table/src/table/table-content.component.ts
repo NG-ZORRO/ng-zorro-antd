@@ -25,6 +25,11 @@ import { NzTableLayout } from '../table.types';
     }
     <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     <ng-content></ng-content>
+    @if (tfootTemplate) {
+      <tfoot class="ant-table-summary">
+        <ng-template [ngTemplateOutlet]="tfootTemplate"></ng-template>
+      </tfoot>
+    }
   `,
   host: {
     '[style.table-layout]': 'tableLayout',
@@ -39,6 +44,7 @@ export class NzTableContentComponent {
   @Input() tableLayout: NzTableLayout = 'auto';
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
+  @Input() tfootTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() scrollX: string | null = null;
 }

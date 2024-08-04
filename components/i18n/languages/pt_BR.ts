@@ -179,5 +179,14 @@ export default {
   },
   Image: {
     preview: 'Pré-visualização'
+  },
+  CronExpression: {
+    cronError: 'Erro verifique as informações',
+    second: 'Segundo',
+    minute: 'Minuto',
+    hour: 'Hora',
+    day: 'Dia',
+    month: 'Mês',
+    week: 'Semana'
   }
 };
