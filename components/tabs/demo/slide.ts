@@ -17,17 +17,18 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
       [(nzSelectedIndex)]="selectedIndex"
       (nzSelectChange)="log([$event])"
     >
-      <nz-tab
-        *ngFor="let tab of tabs"
-        [nzTitle]="tab.name"
-        [nzDisabled]="tab.disabled"
-        (nzSelect)="log(['select', tab])"
-        (nzClick)="log(['click', tab])"
-        (nzContextmenu)="log(['contextmenu', tab])"
-        (nzDeselect)="log(['deselect', tab])"
-      >
-        {{ tab.content }}
-      </nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab
+          [nzTitle]="tab.name"
+          [nzDisabled]="tab.disabled"
+          (nzSelect)="log(['select', tab])"
+          (nzClick)="log(['click', tab])"
+          (nzContextmenu)="log(['contextmenu', tab])"
+          (nzDeselect)="log(['deselect', tab])"
+        >
+          {{ tab.content }}
+        </nz-tab>
+      }
     </nz-tabset>
   `
 })

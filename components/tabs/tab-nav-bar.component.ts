@@ -8,7 +8,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW, hasModifierKey } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -71,14 +71,15 @@ const CSS_TRANSFORM_TIME = 150;
         role="tablist"
       >
         <ng-content></ng-content>
-        <button
-          role="tab"
-          [attr.tabindex]="-1"
-          *ngIf="showAddButton"
-          nz-tab-add-button
-          [addIcon]="addIcon"
-          (click)="addClicked.emit()"
-        ></button>
+        @if (showAddButton) {
+          <button
+            role="tab"
+            [attr.tabindex]="-1"
+            nz-tab-add-button
+            [addIcon]="addIcon"
+            (click)="addClicked.emit()"
+          ></button>
+        }
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
       </div>
     </div>
@@ -89,9 +90,11 @@ const CSS_TRANSFORM_TIME = 150;
       [addable]="addable"
       [items]="hiddenItems"
     ></nz-tab-nav-operation>
-    <div class="ant-tabs-extra-content" *ngIf="extraTemplate">
-      <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
-    </div>
+    @if (extraTemplate) {
+      <div class="ant-tabs-extra-content">
+        <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
+      </div>
+    }
   `,
   host: {
     class: 'ant-tabs-nav',
@@ -99,7 +102,6 @@ const CSS_TRANSFORM_TIME = 150;
   },
   imports: [
     NzTabScrollListDirective,
-    NgIf,
     NzTabAddButtonComponent,
     NzTabsInkBarDirective,
     NzTabNavOperationComponent,
