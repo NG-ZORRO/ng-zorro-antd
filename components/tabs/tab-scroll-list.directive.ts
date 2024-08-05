@@ -121,7 +121,6 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
       return;
     }
 
-    e.preventDefault();
     const { screenX, screenY } = e.touches[0];
 
     const offsetX = screenX - this.touchPosition.x;
