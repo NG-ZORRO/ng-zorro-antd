@@ -5,9 +5,9 @@ import { presetColors } from 'ng-zorro-antd/core/color';
 @Component({
   selector: 'nz-demo-tag-borderless',
   template: `
-    <ng-container *ngFor="let color of tagColors">
+    @for (color of tagColors; track color) {
       <nz-tag [nzColor]="color" [nzBordered]="false">{{ color }}</nz-tag>
-    </ng-container>
+    }
   `
 })
 export class NzDemoTagBorderlessComponent {
