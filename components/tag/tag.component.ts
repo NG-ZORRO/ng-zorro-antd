@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -40,14 +39,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
-    <span
-      nz-icon
-      nzType="close"
-      class="ant-tag-close-icon"
-      *ngIf="nzMode === 'closeable'"
-      tabindex="-1"
-      (click)="closeTag($event)"
-    ></span>
+    @if (nzMode === 'closeable') {
+      <span nz-icon nzType="close" class="ant-tag-close-icon" tabindex="-1" (click)="closeTag($event)"></span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -61,7 +55,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-tag-borderless]': `!nzBordered`,
     '(click)': 'updateCheckedStatus()'
   },
-  imports: [NzIconModule, NgIf],
+  imports: [NzIconModule],
   standalone: true
 })
 export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
