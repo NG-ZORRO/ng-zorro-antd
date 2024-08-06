@@ -28,6 +28,7 @@ import { NzFormModule } from '../form';
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
+import { NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
 
@@ -1129,6 +1130,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzOnPanelChange', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-12-01');
       spyOn(fixtureInstance, 'nzOnPanelChange');
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -1138,7 +1140,58 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith('month');
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'month', date: new Date('2020-12-01') });
+    }));
+
+    it('should support nzOnPanelChange when next button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getNextBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2020-12-01') });
+    }));
+    it('should support nzOnPanelChange when super next button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperNextBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2021-11-01') });
+    }));
+    it('should support nzOnPanelChange when previous button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01 11:22:33');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getPreBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: 'date',
+        date: new Date('2020-10-01 11:22:33')
+      });
+    }));
+    it('should support nzOnPanelChange when super previous button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01 11:22:33');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperPreBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: 'date',
+        date: new Date('2019-11-01 11:22:33')
+      });
     }));
 
     it('should support nzOnOk', fakeAsync(() => {
@@ -1487,7 +1540,9 @@ class NzTestDatePickerComponent {
   nzSize!: string;
 
   nzOnChange(_: Date | null): void {}
+
   nzOnCalendarChange(): void {}
+
   nzOnOpenChange(_: boolean): void {}
 
   nzValue: Date | null = null;
@@ -1507,7 +1562,7 @@ class NzTestDatePickerComponent {
   nzShowWeekNumber = false;
 
   // nzRanges;
-  nzOnPanelChange(_: string): void {}
+  nzOnPanelChange(_: NzPanelChangeType): void {}
 
   nzOnOk(_: Date): void {}
 
@@ -1547,5 +1602,6 @@ class NzTestDatePickerInFormComponent {
   validateForm = this.fb.group({
     demo: this.fb.control<Date | null>(null, Validators.required)
   });
+
   constructor(private fb: FormBuilder) {}
 }

@@ -17,7 +17,7 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
-import { NzDateMode } from '../standard-types';
+import { NzDateMode, NzPanelChangeType } from '../standard-types';
 import { PanelSelector } from './interface';
 
 @Directive()
@@ -25,6 +25,7 @@ import { PanelSelector } from './interface';
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
+  mode!: NzDateMode;
 
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
@@ -33,7 +34,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   @Input({transform: booleanAttribute}) showPreBtn: boolean = true;
   @Input({transform: booleanAttribute}) showNextBtn: boolean = true;
 
-  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
+  @Output() readonly panelChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   abstract getSelectors(): PanelSelector[];
@@ -74,12 +75,13 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
     if (this.value !== value) {
       this.value = value;
       this.valueChange.emit(this.value);
+      this.changeMode(this.mode);
       this.render();
     }
   }
 
   changeMode(mode: NzDateMode): void {
-    this.panelModeChange.emit(mode);
+    this.panelChange.emit({mode, date: this.value.nativeDate});
   }
 
   private render(): void {
