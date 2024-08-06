@@ -4,7 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tabs-card',
   template: `
     <nz-tabset nzType="card">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab">Content of Tab Pane {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="'Tab' + tab">Content of Tab Pane {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `
 })
