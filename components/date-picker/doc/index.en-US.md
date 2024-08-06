@@ -23,8 +23,9 @@ provided in the file of `app.module.ts`.
 For example:
 
 ```typescript
-import {registerLocaleData} from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+
 registerLocaleData(en);
 ```
 
@@ -60,6 +61,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzBorderless]`         | remove the border                                                                                                                  | `boolean`                                                  | `false`                                                                                                    | -             |
 | `[nzInline]`             | inline mode                                                                                                                        | `boolean`                                                  | `false`                                                                                                    | -             |
 | `(nzOnOpenChange)`       | a callback emitter, can be executed whether the popup calendar is popped up or closed                                              | `EventEmitter<boolean>`                                    | -                                                                                                          | -             |
+| `(nzOnPanelChange)`      | a callback emitter, can be executed when the panel changes                                                                         | `EventEmitter<NzPanelChangeType>`                          | -                                                                                                          | -             |
 
 ### Common Methods
 
@@ -104,8 +106,9 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean`                                                                                                 | `false`                                              |
 | `(nzOnOk)`           | click ok callback                                                                                                  | `EventEmitter<Date[]>`                                                                                    | -                                                    |
 
-> Currently, supported `nz-time-picker` parameters in `nzShowTime`
-> are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
+> Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`,
+`nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`,
+`nzDefaultOpenValue`, `nzAddOn`
 
 ## FAQ
 
