@@ -4,7 +4,6 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
-import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -42,8 +41,8 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   encapsulation: ViewEncapsulation.None,
   template: `
     <!--single mode-->
-    <ng-container [ngSwitch]="mode">
-      <ng-container *ngSwitchCase="'default'">
+    @switch (mode) {
+      @case ('default') {
         <nz-select-search
           [nzId]="nzId"
           [disabled]="disabled"
@@ -55,28 +54,30 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
-        <nz-select-item
-          *ngIf="isShowSingleLabel"
-          [deletable]="false"
-          [disabled]="false"
-          [removeIcon]="removeIcon"
-          [label]="listOfTopItem[0].nzLabel"
-          [contentTemplateOutlet]="customTemplate"
-          [contentTemplateOutletContext]="listOfTopItem[0]"
-        ></nz-select-item>
-      </ng-container>
-      <ng-container *ngSwitchDefault>
+        @if (isShowSingleLabel) {
+          <nz-select-item
+            [deletable]="false"
+            [disabled]="false"
+            [removeIcon]="removeIcon"
+            [label]="listOfTopItem[0].nzLabel"
+            [contentTemplateOutlet]="customTemplate"
+            [contentTemplateOutletContext]="listOfTopItem[0]"
+          ></nz-select-item>
+        }
+      }
+      @default {
         <!--multiple or tags mode-->
-        <nz-select-item
-          *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
-          [removeIcon]="removeIcon"
-          [label]="item.nzLabel"
-          [disabled]="item.nzDisabled || disabled"
-          [contentTemplateOutlet]="item.contentTemplateOutlet"
-          [deletable]="true"
-          [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-          (delete)="onDeleteItem(item.contentTemplateOutletContext)"
-        ></nz-select-item>
+        @for (item of listOfSlicedItem; track item.nzValue) {
+          <nz-select-item
+            [removeIcon]="removeIcon"
+            [label]="item.nzLabel"
+            [disabled]="item.nzDisabled || disabled"
+            [contentTemplateOutlet]="item.contentTemplateOutlet"
+            [deletable]="true"
+            [contentTemplateOutletContext]="item.contentTemplateOutletContext"
+            (delete)="onDeleteItem(item.contentTemplateOutletContext)"
+          ></nz-select-item>
+        }
         <nz-select-search
           [nzId]="nzId"
           [disabled]="disabled"
@@ -88,21 +89,14 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
-      </ng-container>
-    </ng-container>
-    <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
+      }
+    }
+    @if (isShowPlaceholder) {
+      <nz-select-placeholder [placeholder]="placeHolder"></nz-select-placeholder>
+    }
   `,
   host: { class: 'ant-select-selector' },
-  imports: [
-    NgSwitch,
-    NzSelectSearchComponent,
-    NgSwitchCase,
-    NzSelectItemComponent,
-    NgIf,
-    NgSwitchDefault,
-    NgFor,
-    NzSelectPlaceholderComponent
-  ],
+  imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent],
   standalone: true
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
@@ -194,10 +188,6 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     if (this.nzSelectSearchComponent) {
       this.nzSelectSearchComponent.blur();
     }
-  }
-
-  trackValue(_index: number, option: NzSelectTopControlItemType): NzSafeAny {
-    return option.nzValue;
   }
 
   onDeleteItem(item: NzSelectItemInterface): void {
