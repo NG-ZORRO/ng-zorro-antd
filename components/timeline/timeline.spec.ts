@@ -276,7 +276,9 @@ describe('nz-timeline', () => {
       <nz-timeline-item [nzDot]="dotTemplate">Solve initial network problems 2015-09-01</nz-timeline-item>
       <nz-timeline-item>Technical testing 2015-09-01</nz-timeline-item>
       <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
-      <nz-timeline-item *ngIf="last">Network problems being solved 2015-09-01</nz-timeline-item>
+      @if (last) {
+        <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
+      }
     </nz-timeline>
   `
 })
@@ -337,7 +339,9 @@ export class NzTestTimelineRtlComponent {
 @Component({
   template: `
     <nz-timeline nzMode="custom">
-      <nz-timeline-item *ngFor="let item of data">{{ item }}</nz-timeline-item>
+      @for (item of data; track item) {
+        <nz-timeline-item>{{ item }}</nz-timeline-item>
+      }
     </nz-timeline>
     <span (click)="reset()">reset</span>
   `
