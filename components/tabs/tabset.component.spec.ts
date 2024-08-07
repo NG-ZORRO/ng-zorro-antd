@@ -1108,12 +1108,16 @@ class NestedTabsTestComponent {
 @Component({
   template: `
     <nz-tabset>
-      <ng-container [ngSwitch]="true">
-        <nz-tab nzTitle="Tab 0">Tab one content</nz-tab>
-        <ng-container *ngIf="true">
-          <nz-tab nzTitle="Tab 1">Tab two content</nz-tab>
+      @if (true) {
+        <ng-container>
+          <nz-tab nzTitle="Tab 0">Tab one content</nz-tab>
+          @if (true) {
+            <ng-container>
+              <nz-tab nzTitle="Tab 1">Tab two content</nz-tab>
+            </ng-container>
+          }
         </ng-container>
-      </ng-container>
+      }
     </nz-tabset>
   `
 })
