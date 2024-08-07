@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -70,32 +70,38 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
       </div>
     </div>
     <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode" style="position: relative">
-      <cdk-virtual-scroll-viewport
-        *ngIf="nzVirtualHeight"
-        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-        [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [itemSize]="nzVirtualItemSize"
-        [minBufferPx]="nzVirtualMinBufferPx"
-        [maxBufferPx]="nzVirtualMaxBufferPx"
-        [style.height]="nzVirtualHeight"
-      >
-        <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-        </ng-container>
-      </cdk-virtual-scroll-viewport>
-
-      <div
-        *ngIf="!nzVirtualHeight"
-        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-        [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [@treeCollapseMotion]="nzFlattenNodes.length"
-      >
-        <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-        </ng-container>
-      </div>
+      @if (nzVirtualHeight) {
+        <cdk-virtual-scroll-viewport
+          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
+          [itemSize]="nzVirtualItemSize"
+          [minBufferPx]="nzVirtualMinBufferPx"
+          [maxBufferPx]="nzVirtualMaxBufferPx"
+          [style.height]="nzVirtualHeight"
+        >
+          <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
+          </ng-container>
+        </cdk-virtual-scroll-viewport>
+      } @else {
+        <div
+          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
+          [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [@treeCollapseMotion]="nzFlattenNodes.length"
+        >
+          @for (node of nzFlattenNodes; track trackByFlattenNode($index, node)) {
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
+          }
+        </div>
+      }
     </div>
     <ng-template #nodeTemplate let-treeNode>
       <nz-tree-node
@@ -171,11 +177,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NgStyle,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    NgIf,
     CdkVirtualForOf,
     NgTemplateOutlet,
     NzNoAnimationDirective,
-    NgForOf,
     NzTreeNodeBuiltinComponent
   ],
   standalone: true
