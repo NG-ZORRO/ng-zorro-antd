@@ -17,10 +17,12 @@ export type CompatibleDate = Date | Date[];
 
 export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig | undefined;
 
-export interface NzPanelChangeType {
-  mode: NzDateMode | [startMode: NzDateMode, endMode: NzDateMode];
-  date: Date | [startDate: Date, endDate: Date];
-}
+export type NzPanelChangeType =
+  | { mode: NzDateMode; date: Date }
+  | {
+      mode: [starMode: NzDateMode, endMode: NzDateMode];
+      date: [startDat: Date, endDate: Date];
+    };
 
 export interface DisabledTimeConfig {
   nzDisabledHours(): number[];

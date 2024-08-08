@@ -285,7 +285,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       });
     } else {
       this.panelMode = panelChangeEvent.mode as NzDateMode;
-      this.panelModeChange.emit({ mode: this.panelMode as NzDateMode, date: panelChangeEvent.date });
+      this.panelModeChange.emit({ mode: this.panelMode as NzDateMode, date: panelChangeEvent.date as Date });
     }
   }
 
