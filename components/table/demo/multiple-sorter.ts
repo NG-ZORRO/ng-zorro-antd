@@ -13,18 +13,22 @@ interface DataItem {
     <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
-            {{ column.title }}
-          </th>
+          @for (column of listOfColumn; track column) {
+            <th [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of sortTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.chinese }}</td>
-          <td>{{ data.math }}</td>
-          <td>{{ data.english }}</td>
-        </tr>
+        @for (data of sortTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.chinese }}</td>
+            <td>{{ data.math }}</td>
+            <td>{{ data.english }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

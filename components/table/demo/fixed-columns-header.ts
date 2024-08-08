@@ -26,21 +26,23 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of fixedTable.data">
-          <td nzLeft>{{ data.name }}</td>
-          <td nzLeft>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td nzRight>
-            <a>action</a>
-          </td>
-        </tr>
+        @for (data of fixedTable.data; track data) {
+          <tr>
+            <td nzLeft>{{ data.name }}</td>
+            <td nzLeft>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td nzRight>
+              <a>action</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

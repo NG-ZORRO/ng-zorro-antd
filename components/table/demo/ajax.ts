@@ -65,11 +65,13 @@ export class RandomUserService {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of listOfRandomUser">
-          <td>{{ data.name.first }} {{ data.name.last }}</td>
-          <td>{{ data.gender }}</td>
-          <td>{{ data.email }}</td>
-        </tr>
+        @for (data of listOfRandomUser; track data) {
+          <tr>
+            <td>{{ data.name.first }} {{ data.name.last }}</td>
+            <td>{{ data.gender }}</td>
+            <td>{{ data.email }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

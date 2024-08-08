@@ -38,16 +38,18 @@ interface DataItem {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of groupingTable.data">
-          <td nzLeft>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.street }}</td>
-          <td>{{ data.building }}</td>
-          <td>{{ data.number }}</td>
-          <td>{{ data.companyAddress }}</td>
-          <td>{{ data.companyName }}</td>
-          <td nzRight>{{ data.gender }}</td>
-        </tr>
+        @for (data of groupingTable.data; track data) {
+          <tr>
+            <td nzLeft>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.street }}</td>
+            <td>{{ data.building }}</td>
+            <td>{{ data.number }}</td>
+            <td>{{ data.companyAddress }}</td>
+            <td>{{ data.companyName }}</td>
+            <td nzRight>{{ data.gender }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

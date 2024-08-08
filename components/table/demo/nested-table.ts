@@ -35,7 +35,7 @@ interface ChildrenItemData {
         </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+        @for (data of nestedTable.data; track data) {
           <tr>
             <td [(nzExpand)]="data.expand"></td>
             <td>{{ data.name }}</td>
@@ -60,40 +60,42 @@ interface ChildrenItemData {
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of innerTable.data">
-                  <td>{{ data.date }}</td>
-                  <td>{{ data.name }}</td>
-                  <td>
-                    <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
-                  </td>
-                  <td>{{ data.upgradeNum }}</td>
-                  <td>
-                    <span class="table-operation">
-                      <a nz-dropdown class="operation" [nzDropdownMenu]="menu">
-                        Pause
-                        <span nz-icon nzType="down"></span>
-                      </a>
-                      <nz-dropdown-menu #menu="nzDropdownMenu">
-                        <ul nz-menu>
-                          <li nz-menu-item>
-                            <a>Action 1</a>
-                          </li>
-                          <li nz-menu-item>
-                            <a>Action 2</a>
-                          </li>
-                        </ul>
-                      </nz-dropdown-menu>
-                      <nz-divider nzType="vertical"></nz-divider>
-                      <a class="operation">Stop</a>
-                      <nz-divider nzType="vertical"></nz-divider>
-                      <a>More</a>
-                    </span>
-                  </td>
-                </tr>
+                @for (data of innerTable.data; track data) {
+                  <tr>
+                    <td>{{ data.date }}</td>
+                    <td>{{ data.name }}</td>
+                    <td>
+                      <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
+                    </td>
+                    <td>{{ data.upgradeNum }}</td>
+                    <td>
+                      <span class="table-operation">
+                        <a nz-dropdown class="operation" [nzDropdownMenu]="menu">
+                          Pause
+                          <span nz-icon nzType="down"></span>
+                        </a>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                          <ul nz-menu>
+                            <li nz-menu-item>
+                              <a>Action 1</a>
+                            </li>
+                            <li nz-menu-item>
+                              <a>Action 2</a>
+                            </li>
+                          </ul>
+                        </nz-dropdown-menu>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a class="operation">Stop</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a>More</a>
+                      </span>
+                    </td>
+                  </tr>
+                }
               </tbody>
             </nz-table>
           </tr>
-        </ng-template>
+        }
       </tbody>
     </nz-table>
   `

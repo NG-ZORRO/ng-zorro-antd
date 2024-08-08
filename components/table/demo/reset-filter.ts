@@ -27,23 +27,26 @@ interface ColumnItem {
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th
-            *ngFor="let column of listOfColumns; trackBy: trackByName"
-            [(nzSortOrder)]="column.sortOrder"
-            [nzSortFn]="column.sortFn"
-            [nzFilters]="column.listOfFilter"
-            [nzFilterFn]="column.filterFn"
-          >
-            {{ column.name }}
-          </th>
+          @for (column of listOfColumns; track column.name) {
+            <th
+              [(nzSortOrder)]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of filterTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,
@@ -111,10 +114,6 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-
-  trackByName(_: number, item: ColumnItem): string {
-    return item.name;
-  }
 
   sortByAge(): void {
     this.listOfColumns.forEach(item => {

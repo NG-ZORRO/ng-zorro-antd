@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let data of nzTable.data">
+        @for (data of nzTable.data; track data) {
           <tr>
             <td [nzExpand]="expandSet.has(data.id)" [nzExpandIcon]="expandIcon"></td>
             <td>{{ data.name }}</td>
@@ -24,22 +24,13 @@ import { Component } from '@angular/core';
             <span>{{ data.description }}</span>
           </tr>
           <ng-template #expandIcon>
-            <span
-              nz-icon
-              *ngIf="!expandSet.has(data.id)"
-              nzType="plus-circle"
-              nzTheme="outline"
-              (click)="onExpandChange(data.id, true)"
-            ></span>
-            <span
-              nz-icon
-              *ngIf="expandSet.has(data.id)"
-              nzType="minus-circle"
-              nzTheme="outline"
-              (click)="onExpandChange(data.id, false)"
-            ></span>
+            @if (!expandSet.has(data.id)) {
+              <span nz-icon nzType="plus-circle" nzTheme="outline" (click)="onExpandChange(data.id, true)"></span>
+            } @else {
+              <span nz-icon nzType="minus-circle" nzTheme="outline" (click)="onExpandChange(data.id, false)"></span>
+            }
           </ng-template>
-        </ng-container>
+        }
       </tbody>
     </nz-table>
   `

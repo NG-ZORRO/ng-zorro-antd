@@ -114,18 +114,20 @@ describe('nz-th', () => {
 
 @Component({
   template: `
-    <nz-table *ngIf="!destroy">
-      <th
-        [nzLeft]="left"
-        [nzRight]="right"
-        [nzWidth]="width"
-        [(nzSortOrder)]="sort"
-        (nzSortOrderChange)="sortChange($event)"
-        [nzFilters]="filters"
-        (nzFilterChange)="filterChange($event)"
-        [nzFilterMultiple]="filterMultiple"
-      ></th>
-    </nz-table>
+    @if (!destroy) {
+      <nz-table>
+        <th
+          [nzLeft]="left"
+          [nzRight]="right"
+          [nzWidth]="width"
+          [(nzSortOrder)]="sort"
+          (nzSortOrderChange)="sortChange($event)"
+          [nzFilters]="filters"
+          (nzFilterChange)="filterChange($event)"
+          [nzFilterMultiple]="filterMultiple"
+        ></th>
+      </nz-table>
+    }
   `
 })
 export class NzThTestNzTableComponent {
@@ -168,11 +170,13 @@ interface DataItem {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of filterTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `
