@@ -12,7 +12,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -1366,43 +1366,44 @@ describe('upload', () => {
 
 @Component({
   template: `
-    <nz-upload
-      #upload
-      *ngIf="show"
-      [nzType]="nzType"
-      [nzLimit]="nzLimit"
-      [nzSize]="nzSize"
-      [nzFileType]="nzFileType"
-      [nzAccept]="nzAccept"
-      [nzAction]="nzAction"
-      [nzBeforeUpload]="beforeUpload"
-      [nzCustomRequest]="nzCustomRequest"
-      [nzData]="nzData"
-      [nzFilter]="nzFilter"
-      [(nzFileList)]="nzFileList"
-      [nzDisabled]="nzDisabled"
-      [nzHeaders]="nzHeaders"
-      [nzListType]="nzListType"
-      [nzMultiple]="nzMultiple"
-      [nzName]="nzName"
-      [nzShowUploadList]="nzShowUploadList"
-      [nzShowButton]="nzShowButton"
-      [nzWithCredentials]="nzWithCredentials"
-      [nzPreview]="onPreview"
-      [nzPreviewFile]="previewFile"
-      [nzRemove]="onRemove"
-      [nzDirectory]="directory"
-      [nzTransformFile]="nzTransformFile"
-      [nzIconRender]="nzIconRender"
-      [nzFileListRender]="nzFileListRender"
-      (nzFileListChange)="nzFileListChange($event)"
-      (nzChange)="nzChange($event)"
-    >
-      <button nz-button>
-        <span nz-icon nzType="upload"></span>
-        <span>Click to Upload</span>
-      </button>
-    </nz-upload>
+    @if (show) {
+      <nz-upload
+        #upload
+        [nzType]="nzType"
+        [nzLimit]="nzLimit"
+        [nzSize]="nzSize"
+        [nzFileType]="nzFileType"
+        [nzAccept]="nzAccept"
+        [nzAction]="nzAction"
+        [nzBeforeUpload]="beforeUpload"
+        [nzCustomRequest]="nzCustomRequest"
+        [nzData]="nzData"
+        [nzFilter]="nzFilter"
+        [(nzFileList)]="nzFileList"
+        [nzDisabled]="nzDisabled"
+        [nzHeaders]="nzHeaders"
+        [nzListType]="nzListType"
+        [nzMultiple]="nzMultiple"
+        [nzName]="nzName"
+        [nzShowUploadList]="nzShowUploadList"
+        [nzShowButton]="nzShowButton"
+        [nzWithCredentials]="nzWithCredentials"
+        [nzPreview]="onPreview"
+        [nzPreviewFile]="previewFile"
+        [nzRemove]="onRemove"
+        [nzDirectory]="directory"
+        [nzTransformFile]="nzTransformFile"
+        [nzIconRender]="nzIconRender"
+        [nzFileListRender]="nzFileListRender"
+        (nzFileListChange)="nzFileListChange($event)"
+        (nzChange)="nzChange($event)"
+      >
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          <span>Click to Upload</span>
+        </button>
+      </nz-upload>
+    }
     <ng-template #customnzIconRender>
       <span class="customnzIconRender">asdf</span>
     </ng-template>
