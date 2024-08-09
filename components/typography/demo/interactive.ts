@@ -13,6 +13,22 @@ import { Component } from '@angular/core';
     ></p>
     <p nz-typography nzEditable [nzEditTooltip]="null" [(nzContent)]="hideEditTooltipStr"></p>
     <p nz-typography nzCopyable nzEditable [(nzContent)]="copyStr"></p>
+    <div>
+      <p>
+        <span>Trigger edit with: </span>
+        <nz-radio-group [(ngModel)]="triggerState" nzName="triggerEdit">
+          <label nz-radio [nzValue]="'icon'">icon</label>
+          <label nz-radio [nzValue]="'text'">text</label>
+          <label nz-radio [nzValue]="'both'">both</label>
+        </nz-radio-group>
+      </p>
+      <p
+        nz-typography
+        nzEditable
+        [nzTriggerType]="triggerState !== 'both' ? [triggerState] : ['icon', 'text']"
+        [(nzContent)]="triggerEditStr"
+      ></p>
+    </div>
     <p nz-typography nzCopyable nzCopyText="Hello, Ant Design!">Replace copy text.</p>
     <p
       nz-typography
@@ -40,4 +56,8 @@ export class NzDemoTypographyInteractiveComponent {
   customEditIconStr = 'Custom edit icon and tooltip text.';
   hideEditTooltipStr = 'Hide edit tooltip.';
   copyStr = 'This is a copyable text.';
+  triggerEditStr = 'Text or icon as trigger - click to start editing.';
+
+  nzEditTriggerStates = ['icon', 'text', 'both'] as const;
+  triggerState: (typeof this.nzEditTriggerStates)[number] = 'icon';
 }

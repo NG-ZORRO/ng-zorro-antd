@@ -33,6 +33,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAutosizeDirective, NzInputModule } from 'ng-zorro-antd/input';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
+const nzEditTriggerStates = ['icon', 'text'] as const;
+export type NzEditTriggerState = Array<(typeof nzEditTriggerStates)[number]>;
+
 @Component({
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
@@ -45,17 +48,21 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     </ng-template>
 
     <ng-template #notEditing>
-      <button
-        nz-tooltip
-        nz-trans-button
-        class="ant-typography-edit"
-        [nzTooltipTitle]="tooltip === null ? null : tooltip || locale?.edit"
-        (click)="onClick()"
-      >
-        <ng-container *nzStringTemplateOutlet="icon; let icon">
-          <span nz-icon [nzType]="icon"></span>
+      @if (nzTriggerType.includes('icon')) {
+        <ng-container>
+          <button
+            nz-tooltip
+            nz-trans-button
+            class="ant-typography-edit"
+            [nzTooltipTitle]="tooltip === null ? null : tooltip || locale?.edit"
+            (click)="onClick()"
+          >
+            <ng-container *nzStringTemplateOutlet="icon; let icon">
+              <span nz-icon [nzType]="icon"></span>
+            </ng-container>
+          </button>
         </ng-container>
-      </button>
+      }
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +78,7 @@ export class NzTextEditComponent implements OnInit {
 
   @Input() text?: string;
   @Input() icon: NzTSType = 'edit';
+  @Input() nzTriggerType: NzEditTriggerState = ['icon'];
   @Input() tooltip?: null | NzTSType;
   @Output() readonly startEditing = new EventEmitter<void>();
   @Output() readonly endEditing = new EventEmitter<string>(true);

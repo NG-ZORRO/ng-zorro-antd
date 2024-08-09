@@ -26,6 +26,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 | `[nzContent]`       | Component content                                                              | `string`                                                             | -                   |               |
 | `[nzCopyable]`      | Can copy, require use `[nzContent]`                                            | `boolean`                                                            | `false`             |               |
 | `[nzEditable]`      | Editable, require use `[nzContent]`                                            | `boolean`                                                            | `false`             |               |
+| `[nzTriggerType]`   | Edit mode trigger, require use `[nzContent]`                                   | `icon \| text \| both`                                               | `icon`              |               |
 | `[nzCopyIcons]`     | Custom copy icons                                                              | `[string \| TemplateRef<void>, string \| TemplateRef<void>]`         | `['copy', 'check']` | ✅            |
 | `[nzCopyTooltips]`  | Custom tooltips text, hide when it is `null`                                   | `null \| [string \| TemplateRef<void>, string \| TemplateRef<void>]` | -                   | ✅            |
 | `[nzEditIcon]`      | Custom edit icon                                                               | `string \| TemplateRef<void>`                                        | `'edit'`            | ✅            |

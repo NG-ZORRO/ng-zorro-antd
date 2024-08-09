@@ -19,6 +19,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTextEditComponent } from '.';
+import { NzEditTriggerState } from './text-edit.component';
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
@@ -540,6 +541,57 @@ describe('change detection behavior', () => {
       done();
     });
   });
+
+  it('should have default edit trigger option', () => {
+    expect(fixture.componentInstance.nzTrigger).toEqual(['icon']);
+  });
+
+  it('should have edit button in "both" and "icon" trigger state', () => {
+    fixture.componentInstance.nzTrigger = ['text', 'icon'];
+    fixture.detectChanges();
+    let editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+    expect(editButton).not.toBeNull();
+
+    fixture.componentInstance.nzTrigger = ['icon'];
+    fixture.detectChanges();
+    editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+    expect(editButton).not.toBeNull();
+
+    fixture.componentInstance.nzTrigger = ['text'];
+    fixture.detectChanges();
+    editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+    expect(editButton).toBeNull();
+  });
+
+  it('in "both" trigger state, should start editing when text is clicked', () => {
+    fixture.componentInstance.nzTrigger = ['text', 'icon'];
+    fixture.detectChanges();
+    let text = componentElement.querySelector<HTMLButtonElement>('span');
+    text!.click();
+    fixture.detectChanges();
+    let editingTextArea = componentElement.querySelector<HTMLButtonElement>('textarea');
+    expect(editingTextArea).not.toBeNull();
+  });
+
+  it('in "text" trigger state, should start editing when text is clicked', () => {
+    fixture.componentInstance.nzTrigger = ['text'];
+    fixture.detectChanges();
+    let text = componentElement.querySelector<HTMLButtonElement>('span');
+    text!.click();
+    fixture.detectChanges();
+    let editingTextArea = componentElement.querySelector<HTMLButtonElement>('textarea');
+    expect(editingTextArea).not.toBeNull();
+  });
+
+  it('in "icon" trigger state, should not start editing when text is clicked', () => {
+    fixture.componentInstance.nzTrigger = ['icon'];
+    fixture.detectChanges();
+    let text = componentElement.querySelector<HTMLButtonElement>('span');
+    text!.click();
+    fixture.detectChanges();
+    let editingTextArea = componentElement.querySelector<HTMLButtonElement>('textarea');
+    expect(editingTextArea).toBeNull();
+  });
 });
 
 @Component({
@@ -597,6 +649,7 @@ export class NzTestTypographyCopyComponent {
       nzEditable
       [nzEditIcon]="icon"
       [nzEditTooltip]="tooltip"
+      [nzTriggerType]="nzTrigger"
       (nzContentChange)="onChange($event)"
       [nzContent]="str"
     ></p>
@@ -607,6 +660,7 @@ export class NzTestTypographyEditComponent {
   str = 'This is an editable text.';
   icon = 'edit';
   tooltip?: string | null;
+  nzTrigger: NzEditTriggerState = ['icon'];
 
   onChange = (text: string): void => {
     this.str = text;
