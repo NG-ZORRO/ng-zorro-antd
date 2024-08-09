@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -49,28 +48,30 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
       [nzIsStart]="isStart"
       [nzIsEnd]="isEnd"
     ></nz-tree-indent>
-    <nz-tree-node-switcher
-      *ngIf="nzShowExpand"
-      [nzShowExpand]="nzShowExpand"
-      [nzShowLine]="nzShowLine"
-      [nzExpandedIcon]="nzExpandedIcon"
-      [nzSelectMode]="nzSelectMode"
-      [context]="nzTreeNode"
-      [isLeaf]="isLeaf"
-      [isExpanded]="isExpanded"
-      [isLoading]="isLoading"
-      (click)="clickExpand($event)"
-    ></nz-tree-node-switcher>
-    <nz-tree-node-checkbox
-      builtin
-      *ngIf="nzCheckable"
-      (click)="clickCheckBox($event)"
-      [nzSelectMode]="nzSelectMode"
-      [isChecked]="isChecked"
-      [isHalfChecked]="isHalfChecked"
-      [isDisabled]="isDisabled"
-      [isDisableCheckbox]="isDisableCheckbox"
-    ></nz-tree-node-checkbox>
+    @if (nzShowExpand) {
+      <nz-tree-node-switcher
+        [nzShowExpand]="nzShowExpand"
+        [nzShowLine]="nzShowLine"
+        [nzExpandedIcon]="nzExpandedIcon"
+        [nzSelectMode]="nzSelectMode"
+        [context]="nzTreeNode"
+        [isLeaf]="isLeaf"
+        [isExpanded]="isExpanded"
+        [isLoading]="isLoading"
+        (click)="clickExpand($event)"
+      ></nz-tree-node-switcher>
+    }
+    @if (nzCheckable) {
+      <nz-tree-node-checkbox
+        builtin
+        (click)="clickCheckBox($event)"
+        [nzSelectMode]="nzSelectMode"
+        [isChecked]="isChecked"
+        [isHalfChecked]="isHalfChecked"
+        [isDisabled]="isDisabled"
+        [isDisableCheckbox]="isDisableCheckbox"
+      ></nz-tree-node-checkbox>
+    }
     <nz-tree-node-title
       [icon]="icon"
       [title]="title"
@@ -118,7 +119,6 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
   imports: [
     NzTreeIndentComponent,
     NzTreeNodeSwitcherComponent,
-    NgIf,
     NzTreeNodeBuiltinCheckboxComponent,
     NzTreeNodeTitleComponent
   ],
