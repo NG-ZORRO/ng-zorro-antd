@@ -35,7 +35,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 | 参数                  | 说明                   | 类型                                 | 默认值       |
 | --------------------- | ---------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | 格式化倒计时展示       | `string`                             | `"HH:mm:ss"` |
+| `[nzFormat]`          | 格式化倒计时展示，参考 [dayjs](https://day.js.org/) | `string` | `"HH:mm:ss"` |
 | `[nzPrefix]`          | 设置数值的前缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | 设置数值的后缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | 数值的标题             | `string \| TemplateRef<void>`        | -            |
