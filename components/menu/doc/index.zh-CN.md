@@ -71,15 +71,16 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 <ng-template #titleTpl><span nz-icon nzType="appstore"></span><span>SubTitle</span></ng-template>
 ```
 
-| 参数                | 说明                 | 类型                                                                                        | 默认值         |
-| ------------------- | -------------------- | ------------------------------------------------------------------------------------------- | -------------- |
-| `[nzPlacement]`     | 菜单弹出位置         | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
-| `[nzOpen]`          | 是否展开，可双向绑定 | `boolean`                                                                                   | `false`        |
-| `[nzDisabled]`      | 是否禁用             | `boolean`                                                                                   | `false`        |
-| `[nzTitle]`         | 标题内容             | `string \| TemplateRef<void>`                                                               | -              |
-| `[nzIcon]`          | 标题中 `icon` 类型   | `string`                                                                                    | -              |
-| `[nzMenuClassName]` | 自定义子菜单容器类名 | `string`                                                                                    | -              |
-| `(nzOpenChange)`    | 展开回调             | `EventEmitter<boolean>`                                                                     | -              |
+| 参数                       | 说明                        | 类型                                                                                        | 默认值         |
+| -------------------------- | --------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| `[nzPlacement]`            | 菜单弹出位置                | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
+| `[nzOpen]`                 | 是否展开，可双向绑定        | `boolean`                                                                                   | `false`        |
+| `[nzDisabled]`             | 是否禁用                    | `boolean`                                                                                   | `false`        |
+| `[nzTitle]`                | 标题内容                    | `string \| TemplateRef<void>`                                                               | -              |
+| `[nzIcon]`                 | 标题中 `icon` 类型          | `string`                                                                                    | -              |
+| `[nzMenuClassName]`        | 自定义子菜单容器类名        | `string`                                                                                    | -              |
+| `[nzTriggerSubMenuAction]` | SubMenu 展开/关闭的触发行为 | `'hover' \| 'click'`                                                                        | `'hover'`      |
+| `(nzOpenChange)`           | 展开回调                    | `EventEmitter<boolean>`                                                                     | -              |
 
 ### [nz-menu-group]:standalone
 

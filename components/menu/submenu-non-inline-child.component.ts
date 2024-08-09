@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 
 @Component({
   selector: '[nz-submenu-none-inline-child]',
@@ -68,6 +68,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() isMenuInsideDropDown = false;
   @Input() mode: NzMenuModeType = 'vertical';
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input() position = 'right';
   @Input() nzDisabled = false;
   @Input() nzOpen = false;
@@ -76,7 +77,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   constructor(private directionality: Directionality) {}
 
   setMouseState(state: boolean): void {
-    if (!this.nzDisabled) {
+    if (!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') {
       this.subMenuMouseState.next(state);
     }
   }

@@ -37,7 +37,7 @@ import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zor
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
-import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
 import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
 import { NzSubMenuTitleComponent } from './submenu-title.component';
@@ -76,6 +76,7 @@ const listOfHorizontalPositions = [
       [nzDisabled]="nzDisabled"
       [isMenuInsideDropDown]="isMenuInsideDropDown"
       [paddingLeft]="nzPaddingLeft || inlinePaddingLeft"
+      [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
     >
@@ -102,6 +103,7 @@ const listOfHorizontalPositions = [
         [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
         [cdkConnectedOverlayTransformOriginOn]="'.ant-menu-submenu'"
+        (overlayOutsideClick)="setMouseEnterState(false)"
       >
         <div
           nz-submenu-none-inline-child
@@ -111,6 +113,7 @@ const listOfHorizontalPositions = [
           [position]="position"
           [nzDisabled]="nzDisabled"
           [isMenuInsideDropDown]="isMenuInsideDropDown"
+          [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
           [@.disabled]="!!noAnimation?.nzNoAnimation"
@@ -157,6 +160,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input({ transform: booleanAttribute }) nzOpen = false;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
