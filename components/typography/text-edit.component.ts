@@ -4,7 +4,6 @@
  */
 
 import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,7 +20,7 @@ import {
   afterNextRender,
   inject
 } from '@angular/core';
-import { BehaviorSubject, EMPTY, fromEvent, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, fromEvent } from 'rxjs';
 import { first, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -37,14 +36,12 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
   template: `
-    <ng-template [ngIf]="editing" [ngIfElse]="notEditing">
+    @if (editing) {
       <textarea #textarea nz-input nzAutosize (blur)="confirm()"></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
         <span nz-icon nzType="enter"></span>
       </button>
-    </ng-template>
-
-    <ng-template #notEditing>
+    } @else {
       <button
         nz-tooltip
         nz-trans-button
@@ -56,13 +53,13 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
           <span nz-icon [nzType]="icon"></span>
         </ng-container>
       </button>
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   providers: [NzDestroyService],
-  imports: [NgIf, NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule],
+  imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule],
   standalone: true
 })
 export class NzTextEditComponent implements OnInit {
