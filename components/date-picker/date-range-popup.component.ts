@@ -45,6 +45,7 @@ import {
   DisabledTimeFn,
   DisabledTimePartial,
   NzDateMode,
+  NzPanelChangeType,
   PresetRanges,
   RangePartType,
   SupportTimeOptions
@@ -98,7 +99,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           [showTimePicker]="hasTimePicker"
           [timeOptions]="getTimeOptions(partType)"
           [panelMode]="getPanelMode(panelMode, partType)"
-          (panelModeChange)="onPanelModeChange($event, partType)"
+          (panelChange)="onPanelModeChange($event, partType)"
           [activeDate]="getActiveDate(partType)"
           [value]="getValue(partType)"
           [disabledDate]="disabledDate"
@@ -164,7 +165,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() defaultPickerValue!: CompatibleDate | undefined | null;
   @Input() dir: Direction = 'ltr';
 
-  @Output() readonly panelModeChange = new EventEmitter<NzDateMode | NzDateMode[]>();
+  @Output() readonly panelModeChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
 
@@ -270,18 +271,22 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onPanelModeChange(mode: NzDateMode, partType?: RangePartType): void {
+  onPanelModeChange(panelChangeEvent: NzPanelChangeType, partType?: RangePartType): void {
     if (this.isRange) {
       const index = this.datePickerService.getActiveIndex(partType);
       if (index === 0) {
-        this.panelMode = [mode, this.panelMode[1]] as NzDateMode[];
+        this.panelMode = [panelChangeEvent.mode, this.panelMode[1]] as [NzDateMode, NzDateMode];
       } else {
-        this.panelMode = [this.panelMode[0], mode] as NzDateMode[];
+        this.panelMode = [this.panelMode[0], panelChangeEvent.mode] as [NzDateMode, NzDateMode];
       }
+      this.panelModeChange.emit({
+        mode: this.panelMode as [NzDateMode, NzDateMode],
+        date: (this.datePickerService.activeDate as SingleValue[]).map(d => d!.nativeDate) as [Date, Date]
+      });
     } else {
-      this.panelMode = mode;
+      this.panelMode = panelChangeEvent.mode as NzDateMode;
+      this.panelModeChange.emit({ mode: this.panelMode as NzDateMode, date: panelChangeEvent.date as Date });
     }
-    this.panelModeChange.emit(this.panelMode);
   }
 
   onActiveDateChange(value: CandyDate, partType: RangePartType): void {

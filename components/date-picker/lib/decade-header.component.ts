@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
+import { NzDateMode } from '../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -19,8 +20,13 @@ import { PanelSelector } from './interface';
   standalone: true
 })
 export class DecadeHeaderComponent extends AbstractPanelHeader {
-  override previous(): void {}
-  override next(): void {}
+  override previous(): void {
+  }
+
+  override next(): void {
+  }
+
+  override mode: NzDateMode = 'decade';
 
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 100}`, 10) * 100;

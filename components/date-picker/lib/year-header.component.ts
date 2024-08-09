@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
+import { NzDateMode } from '../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -19,6 +20,8 @@ import { PanelSelector } from './interface';
   imports: [NgForOf, NgIf, NgClass]
 })
 export class YearHeaderComponent extends AbstractPanelHeader {
+  override mode: NzDateMode = 'year';
+
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 10}`, 10) * 10;
   }
@@ -40,7 +43,10 @@ export class YearHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-year-btn`,
         title: '',
-        onClick: () => this.changeMode('decade'),
+        onClick: () => {
+          this.mode = 'decade';
+          this.changeMode('decade');
+        },
         label: `${this.startYear}-${this.endYear}`
       }
     ];

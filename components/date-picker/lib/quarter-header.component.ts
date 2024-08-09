@@ -11,6 +11,7 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
+import { NzDateMode } from '../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -22,6 +23,8 @@ import { transCompatFormat } from './util';
   imports: [NgForOf, NgIf, NgClass]
 })
 export class QuarterHeaderComponent extends AbstractPanelHeader {
+  override mode: NzDateMode = 'quarter';
+
   constructor(private dateHelper: DateHelperService) {
     super();
   }
@@ -31,7 +34,10 @@ export class QuarterHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-quarter-btn`,
         title: this.locale.yearSelect,
-        onClick: () => this.changeMode('year'),
+        onClick: () => {
+          this.mode = 'year';
+          this.changeMode('year');
+        },
         label: this.dateHelper.format(this.value.nativeDate, transCompatFormat(this.locale.yearFormat))
       }
     ];
