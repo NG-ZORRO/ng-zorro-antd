@@ -6,13 +6,17 @@ import { presetColors } from 'ng-zorro-antd/core/color';
   selector: 'nz-demo-tooltip-color',
   template: `
     <nz-divider nzText="Preset" nzOrientation="left"></nz-divider>
-    <button *ngFor="let color of presetColors" nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
-      {{ color }}
-    </button>
+    @for (color of presetColors; track color) {
+      <button nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
+        {{ color }}
+      </button>
+    }
     <nz-divider nzText="Custom" nzOrientation="left"></nz-divider>
-    <button *ngFor="let color of customColors" nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
-      {{ color }}
-    </button>
+    @for (color of customColors; track color) {
+      <button nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
+        {{ color }}
+      </button>
+    }
   `,
   styles: [
     `

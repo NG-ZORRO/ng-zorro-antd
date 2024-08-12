@@ -1,16 +1,16 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import {
+  ɵComponentBed as ComponentBed,
+  ɵcreateComponentBed as createComponentBed,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
-  dispatchMouseEvent,
-  ɵComponentBed as ComponentBed,
-  ɵcreateComponentBed as createComponentBed
+  dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
@@ -64,7 +64,9 @@ describe('select', () => {
       expect(selectElement.querySelector('.ant-select-selection-placeholder')!.textContent!.trim()).toBe('');
       component.nzPlaceHolder = 'placeholder';
       fixture.detectChanges();
-      expect(selectElement.querySelector('.ant-select-selection-placeholder')!.textContent).toContain('placeholder');
+      expect(selectElement.querySelector('.ant-select-selection-placeholder')!.textContent?.trim()).toContain(
+        'placeholder'
+      );
     });
     it('should nzDropdownRender work', () => {
       component.nzOpen = true;
@@ -72,7 +74,7 @@ describe('select', () => {
       expect(document.getElementsByClassName('dropdown-render').length).toBe(0);
       component.nzDropdownRender = component.dropdownTemplate;
       fixture.detectChanges();
-      expect(document.getElementsByClassName('dropdown-render')[0]!.textContent).toBe('dropdownRender');
+      expect(document.getElementsByClassName('dropdown-render')[0]!.textContent?.trim()).toBe('dropdownRender');
     });
     it('should ngModel match nzLabel', fakeAsync(() => {
       component.listOfOption = [{ nzValue: 'test_value', nzLabel: 'test_label' }];
@@ -82,10 +84,10 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
       component.listOfOption = [];
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should ngModelChange trigger when click option', fakeAsync(() => {
@@ -157,7 +159,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('selected: label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('selected: label');
     }));
     it('should nzShowArrow works', () => {
       expect(selectElement.querySelector('nz-select-arrow')).toBeTruthy();
@@ -169,7 +171,7 @@ describe('select', () => {
       expect(selectElement.querySelector('.anticon-down')).toBeTruthy();
       component.nzSuffixIcon = component.suffixIconTemplate;
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-arrow')!.textContent).toBe('icon');
+      expect(selectElement.querySelector('nz-select-arrow')!.textContent?.trim()).toBe('icon');
     });
     it('should nzClearIcon works', fakeAsync(() => {
       component.nzAllowClear = true;
@@ -181,7 +183,7 @@ describe('select', () => {
       expect(selectElement.querySelector('.anticon-close-circle')).toBeTruthy();
       component.nzClearIcon = component.suffixIconTemplate;
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-clear')!.textContent).toBe('icon');
+      expect(selectElement.querySelector('nz-select-clear')!.textContent?.trim()).toBe('icon');
     }));
     it('should nzShowSearch works', fakeAsync(() => {
       component.listOfOption = [
@@ -233,7 +235,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
     }));
     it('should nzBorderless works', () => {
       expect(selectElement.classList).not.toContain('ant-select-borderless');
@@ -468,13 +470,13 @@ describe('select', () => {
       fixture.detectChanges();
       expect(document.querySelectorAll('nz-option-item')!.length).toBe(3);
       expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(2);
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('group-1');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('label_01');
+      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent?.trim()).toBe('group-1');
+      expect(document.querySelectorAll('nz-option-item')[0].textContent?.trim()).toBe('label_01');
       component.listOfGroup[0].nzLabel = 'change-group';
       component.listOfGroup[0].children[0].nzLabel = 'change-label';
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('change-group');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('change-label');
+      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent?.trim()).toBe('change-group');
+      expect(document.querySelectorAll('nz-option-item')[0].textContent?.trim()).toBe('change-label');
     }));
 
     it('should group item sort be right', fakeAsync(() => {
@@ -499,8 +501,10 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
-          .nextElementSibling!.textContent
+        document
+          .querySelectorAll('nz-option-item')[0]
+          .parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent?.trim()
       ).toBe('label_02');
     }));
 
@@ -521,13 +525,13 @@ describe('select', () => {
       component.value = 0;
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent?.trim()).toBe(
         'Falsy value'
       );
       component.value = 'Truthy value';
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
-      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe(
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent?.trim()).toBe(
         'Truthy value'
       );
       ['disabled', undefined, null].forEach(value => {
@@ -611,14 +615,14 @@ describe('select', () => {
       fixture.detectChanges();
       let listOfSelectItem = selectElement.querySelectorAll('nz-select-item')!;
       expect(listOfSelectItem.length).toBe(2);
-      expect(listOfSelectItem[0].textContent).toBe('label_01');
-      expect(listOfSelectItem[1].textContent).toBe('label_02');
+      expect(listOfSelectItem[0].textContent?.trim()).toBe('label_01');
+      expect(listOfSelectItem[1].textContent?.trim()).toBe('label_02');
       component.listOfOption = [{ nzValue: 'value_01', nzLabel: 'label_01' }];
       fixture.detectChanges();
       listOfSelectItem = selectElement.querySelectorAll('nz-select-item')!;
       expect(listOfSelectItem.length).toBe(2);
-      expect(listOfSelectItem[0].textContent).toBe('label_01');
-      expect(listOfSelectItem[1].textContent).toBe('label_02');
+      expect(listOfSelectItem[0].textContent?.trim()).toBe('label_01');
+      expect(listOfSelectItem[1].textContent?.trim()).toBe('label_02');
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
@@ -656,7 +660,7 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(selectElement.querySelectorAll('nz-select-item').length).toBe(1);
-      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent).toBe('label');
+      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent?.trim()).toBe('label');
     }));
     it('should nzMenuItemSelectedIcon works', fakeAsync(() => {
       component.listOfOption = [{ nzValue: 'value', nzLabel: 'label' }];
@@ -669,7 +673,7 @@ describe('select', () => {
       component.nzMenuItemSelectedIcon = component.iconTemplate;
       fixture.detectChanges();
       expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(0);
-      expect(document.querySelector('.ant-select-item-option-state')!.textContent).toBe('icon');
+      expect(document.querySelector('.ant-select-item-option-state')!.textContent?.trim()).toBe('icon');
     }));
     it('should removeIcon works', fakeAsync(() => {
       component.listOfOption = [{ nzValue: 'value', nzLabel: 'label' }];
@@ -680,7 +684,7 @@ describe('select', () => {
       expect(selectElement.querySelector('.anticon-close')).toBeTruthy();
       component.nzRemoveIcon = component.iconTemplate;
       fixture.detectChanges();
-      expect(selectElement.querySelector('.ant-select-selection-item-remove')!.textContent).toBe('icon');
+      expect(selectElement.querySelector('.ant-select-selection-item-remove')!.textContent?.trim()).toBe('icon');
     }));
     it('should removeIcon click works', fakeAsync(() => {
       component.listOfOption = [{ nzValue: 'value', nzLabel: 'label' }];
@@ -856,10 +860,10 @@ describe('select', () => {
       fixture.detectChanges();
       const listOfItem = selectElement.querySelectorAll('nz-select-item');
       expect(listOfItem.length).toBe(3);
-      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 2 ...');
+      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent?.trim()).toBe('+ 2 ...');
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
-      expect(listOfItem[2].textContent).toBe('and 2 more selected');
+      expect(listOfItem[2].textContent?.trim()).toBe('and 2 more selected');
     }));
   });
   describe('default reactive mode', () => {
@@ -883,10 +887,10 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
       component.listOfOption = [];
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should ngModelChange trigger when click option', fakeAsync(() => {
@@ -932,7 +936,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('selected: label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('selected: label');
     }));
     it('should nzShowSearch works', fakeAsync(() => {
       component.listOfOption = [
@@ -984,7 +988,7 @@ describe('select', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(selectElement.querySelector('nz-select-item')!.textContent).toBe('test_label');
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
     }));
     it('should nzServerSearch works', fakeAsync(() => {
       component.listOfOption = [
@@ -1080,13 +1084,13 @@ describe('select', () => {
       fixture.detectChanges();
       expect(document.querySelectorAll('nz-option-item')!.length).toBe(3);
       expect(document.querySelectorAll('nz-option-item-group')!.length).toBe(2);
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('group-1');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('label_01');
+      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent?.trim()).toBe('group-1');
+      expect(document.querySelectorAll('nz-option-item')[0].textContent?.trim()).toBe('label_01');
       component.listOfOption = [{ groupLabel: 'change-group', value: 'value_01', label: 'change-label' }];
 
       fixture.detectChanges();
-      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('change-group');
-      expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('change-label');
+      expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent?.trim()).toBe('change-group');
+      expect(document.querySelectorAll('nz-option-item')[0].textContent?.trim()).toBe('change-label');
     }));
 
     it('should group item sort be right', fakeAsync(() => {
@@ -1101,8 +1105,10 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!
-          .nextElementSibling!.textContent
+        document
+          .querySelectorAll('nz-option-item')[0]
+          .parentElement!.querySelector('nz-option-item')!
+          .nextElementSibling!.textContent?.trim()
       ).toBe('label_02');
     }));
   });
@@ -1133,14 +1139,14 @@ describe('select', () => {
       fixture.detectChanges();
       let listOfSelectItem = selectElement.querySelectorAll('nz-select-item')!;
       expect(listOfSelectItem.length).toBe(2);
-      expect(listOfSelectItem[0].textContent).toBe('label_01');
-      expect(listOfSelectItem[1].textContent).toBe('label_02');
+      expect(listOfSelectItem[0].textContent?.trim()).toBe('label_01');
+      expect(listOfSelectItem[1].textContent?.trim()).toBe('label_02');
       component.listOfOption = [{ value: 'value_01', label: 'label_01' }];
       fixture.detectChanges();
       listOfSelectItem = selectElement.querySelectorAll('nz-select-item')!;
       expect(listOfSelectItem.length).toBe(2);
-      expect(listOfSelectItem[0].textContent).toBe('label_01');
-      expect(listOfSelectItem[1].textContent).toBe('label_02');
+      expect(listOfSelectItem[0].textContent?.trim()).toBe('label_01');
+      expect(listOfSelectItem[1].textContent?.trim()).toBe('label_02');
       expect(component.valueChange).not.toHaveBeenCalled();
     }));
     it('should click option work', fakeAsync(() => {
@@ -1178,7 +1184,7 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(selectElement.querySelectorAll('nz-select-item').length).toBe(1);
-      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent).toBe('label');
+      expect(selectElement.querySelectorAll('nz-select-item')[0].textContent?.trim()).toBe('label');
     }));
     it('should nzMenuItemSelectedIcon works', fakeAsync(() => {
       component.listOfOption = [{ value: 'value', label: 'label' }];
@@ -1191,7 +1197,7 @@ describe('select', () => {
       component.nzMenuItemSelectedIcon = component.iconTemplate;
       fixture.detectChanges();
       expect(document.querySelectorAll('.ant-select-selected-icon').length).toBe(0);
-      expect(document.querySelector('.ant-select-item-option-state')!.textContent).toBe('icon');
+      expect(document.querySelector('.ant-select-item-option-state')!.textContent?.trim()).toBe('icon');
     }));
     it('should removeIcon works', fakeAsync(() => {
       component.listOfOption = [{ value: 'value', label: 'label' }];
@@ -1202,7 +1208,7 @@ describe('select', () => {
       expect(selectElement.querySelector('.anticon-close')).toBeTruthy();
       component.nzRemoveIcon = component.iconTemplate;
       fixture.detectChanges();
-      expect(selectElement.querySelector('.ant-select-selection-item-remove')!.textContent).toBe('icon');
+      expect(selectElement.querySelector('.ant-select-selection-item-remove')!.textContent?.trim()).toBe('icon');
     }));
     it('should removeIcon click works', fakeAsync(() => {
       component.listOfOption = [{ value: 'value', label: 'label' }];
@@ -1383,10 +1389,10 @@ describe('select', () => {
       fixture.detectChanges();
       const listOfItem = selectElement.querySelectorAll('nz-select-item');
       expect(listOfItem.length).toBe(3);
-      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 2 ...');
+      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent?.trim()).toBe('+ 2 ...');
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
-      expect(listOfItem[2].textContent).toBe('and 2 more selected');
+      expect(listOfItem[2].textContent?.trim()).toBe('and 2 more selected');
     }));
   });
   describe('change detection', () => {
@@ -1665,24 +1671,28 @@ describe('select', () => {
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzTitle]="o.nzTitle"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
-      <nz-option-group *ngFor="let group of listOfGroup" [nzLabel]="group.nzLabel">
+      @for (o of listOfOption; track o) {
         <nz-option
-          *ngFor="let o of group.children"
           [nzValue]="o.nzValue"
           [nzLabel]="o.nzLabel"
           [nzTitle]="o.nzTitle"
           [nzDisabled]="o.nzDisabled"
           [nzHide]="o.nzHide"
         ></nz-option>
-      </nz-option-group>
+      }
+      @for (group of listOfGroup; track group) {
+        <nz-option-group [nzLabel]="group.nzLabel">
+          @for (o of group.children; track o) {
+            <nz-option
+              [nzValue]="o.nzValue"
+              [nzLabel]="o.nzLabel"
+              [nzTitle]="o.nzTitle"
+              [nzDisabled]="o.nzDisabled"
+              [nzHide]="o.nzHide"
+            ></nz-option>
+          }
+        </nz-option-group>
+      }
     </nz-select>
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
@@ -1744,13 +1754,14 @@ export class TestSelectTemplateDefaultComponent {
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
+      @for (o of listOfOption; track o) {
+        <nz-option
+          [nzValue]="o.nzValue"
+          [nzLabel]="o.nzLabel"
+          [nzDisabled]="o.nzDisabled"
+          [nzHide]="o.nzHide"
+        ></nz-option>
+      }
     </nz-select>
     <ng-template #iconTemplate>icon</ng-template>
   `
@@ -1781,13 +1792,14 @@ export class TestSelectTemplateMultipleComponent {
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
     >
-      <nz-option
-        *ngFor="let o of listOfOption"
-        [nzValue]="o.nzValue"
-        [nzLabel]="o.nzLabel"
-        [nzDisabled]="o.nzDisabled"
-        [nzHide]="o.nzHide"
-      ></nz-option>
+      @for (o of listOfOption; track o) {
+        <nz-option
+          [nzValue]="o.nzValue"
+          [nzLabel]="o.nzLabel"
+          [nzDisabled]="o.nzDisabled"
+          [nzHide]="o.nzHide"
+        ></nz-option>
+      }
     </nz-select>
     <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `

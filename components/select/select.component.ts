@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -124,27 +124,28 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    <nz-select-arrow
-      *ngIf="nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet"
-      [showArrow]="nzShowArrow"
-      [loading]="nzLoading"
-      [search]="nzOpen && nzShowSearch"
-      [suffixIcon]="nzSuffixIcon"
-      [feedbackIcon]="feedbackIconTpl"
-      [nzMaxMultipleCount]="nzMaxMultipleCount"
-      [listOfValue]="listOfValue"
-      [isMaxTagCountSet]="isMaxTagCountSet"
-    >
-      <ng-template #feedbackIconTpl>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-      </ng-template>
-    </nz-select-arrow>
+    @if (nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet) {
+      <nz-select-arrow
+        [showArrow]="nzShowArrow"
+        [loading]="nzLoading"
+        [search]="nzOpen && nzShowSearch"
+        [suffixIcon]="nzSuffixIcon"
+        [feedbackIcon]="feedbackIconTpl"
+        [nzMaxMultipleCount]="nzMaxMultipleCount"
+        [listOfValue]="listOfValue"
+        [isMaxTagCountSet]="isMaxTagCountSet"
+      >
+        <ng-template #feedbackIconTpl>
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </ng-template>
+      </nz-select-arrow>
+    }
 
-    <nz-select-clear
-      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
-      [clearIcon]="nzClearIcon"
-      (clear)="onClearSelection()"
-    ></nz-select-clear>
+    @if (nzAllowClear && !nzDisabled && listOfValue.length) {
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+    }
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
@@ -208,7 +209,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     CdkOverlayOrigin,
     NzNoAnimationDirective,
     NzSelectArrowComponent,
-    NgIf,
     NzFormPatchModule,
     NzSelectClearComponent,
     CdkConnectedOverlay,

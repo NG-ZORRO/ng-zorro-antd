@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,9 +23,9 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="hasBeenActive || forceRender">
+    @if (hasBeenActive || forceRender) {
       <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </ng-container>
+    }
   `,
   host: {
     class: 'ant-tabs-tabpane',
@@ -37,7 +37,7 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
     '[@tabSwitchMotion]': `active ? 'enter' : 'leave'`,
     '[@.disabled]': `!animated`
   },
-  imports: [NgIf, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   standalone: true,
   animations: [tabSwitchMotion]
 })
