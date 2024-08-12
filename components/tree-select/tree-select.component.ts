@@ -483,12 +483,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       } else {
         this.value = [value as string];
       }
+      // need clear selected nodes when user set value before updating
+      this.clearSelectedNodes();
       this.updateSelectedNodes(true);
     } else {
       this.value = [];
-      this.selectedNodes.forEach(node => {
-        this.removeSelected(node, false);
-      });
+      this.clearSelectedNodes();
       this.selectedNodes = [];
     }
     this.cdr.markForCheck();
@@ -707,5 +707,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   trackValue(_index: number, option: NzTreeNode): string {
     return option.key!;
+  }
+
+  clearSelectedNodes(): void {
+    this.selectedNodes.forEach(node => {
+      this.removeSelected(node, false);
+    });
   }
 }
