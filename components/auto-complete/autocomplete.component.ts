@@ -5,7 +5,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgFor, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -15,28 +15,28 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { defer, merge, Observable, Subject, Subscription } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, Subscription, defer, merge } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
+import { CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
@@ -66,7 +66,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgClass, NgFor, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
+  imports: [NgClass, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `
     <ng-template>
       <div
@@ -91,23 +91,22 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of normalizedDataSource" [nzValue]="option.value" [nzLabel]="option.label">
-          {{ option.label }}
-        </nz-auto-option>
+        @for (option of normalizedDataSource; track option.value) {
+          <nz-auto-option [nzValue]="option.value" [nzLabel]="option.label">
+            {{ option.label }}
+          </nz-auto-option>
+        }
       </ng-template>
     </ng-template>
   `,
   animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit, OnChanges {
-  static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
-  static ngAcceptInputType_nzBackfill: BooleanInput;
-
-  @Input() nzWidth?: number;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
-  @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
-  @Input() @InputBoolean() nzBackfill = false;
+  @Input({ transform: booleanAttribute }) nzDefaultActiveFirstOption = true;
+  @Input({ transform: booleanAttribute }) nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
@@ -149,31 +148,31 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   private selectionChangeSubscription: Subscription | null = Subscription.EMPTY;
   private optionMouseEnterSubscription: Subscription | null = Subscription.EMPTY;
   private dataSourceChangeSubscription: Subscription | null = Subscription.EMPTY;
+
   /** Options changes listener */
-  readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
+  private readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
       return merge<NzOptionSelectionChange[]>(...this.options.map(option => option.selectionChange));
     }
-    return this.ngZone.onStable.asObservable().pipe(
-      take(1),
-      switchMap(() => this.optionSelectionChanges)
-    );
+
+    return this.afterNextRender$.pipe(switchMap(() => this.optionSelectionChanges));
   });
-  readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
+
+  private readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
     if (this.options) {
       return merge<NzAutocompleteOptionComponent[]>(...this.options.map(option => option.mouseEntered));
     }
-    return this.ngZone.onStable.asObservable().pipe(
-      take(1),
-      switchMap(() => this.optionMouseEnter)
-    );
+
+    return this.afterNextRender$.pipe(switchMap(() => this.optionMouseEnter));
   });
+
+  private afterNextRender$ = inject(NZ_AFTER_NEXT_RENDER$);
+
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

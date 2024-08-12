@@ -12,11 +12,9 @@ title:
 需要注意的是，通常只需要为首屏图片设置 `nzPriority` 因此在循环生成的模版中只需要为靠前的子项添加即可，例如：
 
 ```html
-<ng-container *ngFor="let product of products; index as i">
-  <nz-image
-    [nzPriority]="i <= 8"
-  ></nz-image>
-</ng-container>
+@for (product of products; track product)
+  <nz-image [nzPriority]="$index <= 8"></nz-image>
+}
 ```
 
 ## en-US
@@ -26,7 +24,7 @@ Setting `nzPriority` will add the `<link rel="preload">` tag when rendering serv
 Note: usually we only need to set `nzPriority` for the first screen images, so you only need to add it for the first few items in the cyclically generated template, e.g.
 
 ```html
-<ng-container *ngFor="let product of products; index as i">
-  <nz-image ... [nzPriority]="i <= 8"></nz-image>
-</ng-container>
+@for (product of products; track product)
+  <nz-image [nzPriority]="$index <= 8"></nz-image>
+}
 ```

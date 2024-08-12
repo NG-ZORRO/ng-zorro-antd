@@ -1,8 +1,15 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Inject, Input, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  inject as testingInject,
+  tick,
+  waitForAsync
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -34,15 +41,17 @@ describe('NzDrawerComponent', () => {
       fixture.detectChanges();
     });
 
-    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-      forceScrollElement = document.createElement('div');
-      document.body.appendChild(forceScrollElement);
-      forceScrollElement.style.width = '100px';
-      forceScrollElement.style.height = '3000px';
-      forceScrollElement.style.background = 'rebeccapurple';
-    }));
+    beforeEach(
+      testingInject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        forceScrollElement = document.createElement('div');
+        document.body.appendChild(forceScrollElement);
+        forceScrollElement.style.width = '100px';
+        forceScrollElement.style.height = '3000px';
+        forceScrollElement.style.background = 'rebeccapurple';
+      })
+    );
 
     afterEach(fakeAsync(() => {
       component.close();
@@ -642,9 +651,11 @@ describe('NzDrawerComponent', () => {
       fixture.detectChanges();
     });
 
-    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainerElement = oc.getContainerElement();
-    }));
+    beforeEach(
+      testingInject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainerElement = oc.getContainerElement();
+      })
+    );
 
     it('should className correct on dir change', () => {
       component.open();
@@ -682,11 +693,13 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
   }));
 
-  beforeEach(inject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
-    overlayContainer = oc;
-    drawerService = ds;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
+      overlayContainer = oc;
+      drawerService = ds;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -902,11 +915,9 @@ class NzTestDrawerWithServiceComponent {
 })
 export class NzDrawerCustomComponent {
   @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  nzData: { value: string } = inject(NZ_DRAWER_DATA);
 
-  constructor(
-    @Inject(NZ_DRAWER_DATA) public nzData: { value: string },
-    private drawerRef: NzDrawerRef
-  ) {}
+  constructor(private drawerRef: NzDrawerRef) {}
 
   close(): void {
     this.drawerRef.close(this.value);

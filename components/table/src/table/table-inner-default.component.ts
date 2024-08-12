@@ -22,6 +22,7 @@ import { NzTableContentComponent } from './table-content.component';
         [tableLayout]="tableLayout"
         [listOfColWidth]="listOfColWidth"
         [theadTemplate]="theadTemplate"
+        [tfootTemplate]="tfootTemplate"
       ></table>
     </div>
   `,
@@ -34,6 +35,5 @@ export class NzTableInnerDefaultComponent {
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
+  @Input() tfootTemplate: TemplateRef<NzSafeAny> | null = null;
 }

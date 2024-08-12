@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +12,8 @@ import {
   Input,
   OnChanges,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -34,13 +35,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       class="ant-input"
       [ngClass]="{ 'ant-input-disabled': disabled }"
     />
-    <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"></span>
-    </span>
+    @if (value && value.length > 0) {
+      <span class="ant-input-suffix" (click)="_clear()">
+        <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"></span>
+      </span>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NzIconModule, NgClass, NgIf],
+  imports: [FormsModule, NzIconModule, NgClass],
   standalone: true
 })
 export class NzTransferSearchComponent implements OnChanges {
@@ -48,7 +51,7 @@ export class NzTransferSearchComponent implements OnChanges {
 
   @Input() placeholder?: string;
   @Input() value?: string;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
   @Output() readonly valueClear = new EventEmitter<void>();

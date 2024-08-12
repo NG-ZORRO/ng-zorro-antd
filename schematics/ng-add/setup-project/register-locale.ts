@@ -6,17 +6,17 @@
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
+  getAppModulePath,
   getDecoratorMetadata,
   getProjectFromWorkspace,
   getProjectMainFile,
-  getAppModulePath,
   insertAfterLastOccurrence,
   insertImport,
   isStandaloneApp,
   parseSourceFile
 } from '@angular/cdk/schematics';
 
-import { Rule, Tree, chain } from '@angular-devkit/schematics';
+import { chain, Rule, Tree } from '@angular-devkit/schematics';
 import { addRootProvider } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
@@ -25,6 +25,7 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
+import { applyChangesToFile } from '../../utils/apply-changes';
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
@@ -80,7 +81,7 @@ function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule 
         insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
         registerLocaleData(appConfigSource, appConfigFile, localePrefix)
       ]);
-    }, 
+    },
     addRootProvider(options.project, ({code, external}) => {
       return code`${external('provideNzI18n', 'ng-zorro-antd/i18n')}(${locale})`;
     })
@@ -164,17 +165,4 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   } else {
     return addProvide;
   }
-
-}
-
-function applyChangesToFile(host: Tree, filePath: string, changes: Change[]): void {
-  const recorder = host.beginUpdate(filePath);
-
-  changes.forEach((change) => {
-    if (change instanceof InsertChange) {
-      recorder.insertLeft(change.pos, change.toAdd);
-    }
-  });
-
-  host.commitUpdate(recorder);
 }

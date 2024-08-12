@@ -3,8 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
@@ -195,21 +205,22 @@ const logo = [
   'Android',
   'Apple',
   'Windows',
+  'Linux',
   'Ie',
   'Chrome',
   'Github',
   'Aliwangwang',
   'Dingding',
+  'Dingtalk',
   'WeiboSquare',
   'WeiboCircle',
-  'TaobaoCircle',
-  'Html5',
   'Weibo',
+  'Taobao',
+  'TaobaoCircle',
   'Twitter',
   'Wechat',
   'Youtube',
   'AlipayCircle',
-  'Taobao',
   'Skype',
   'Qq',
   'MediumWorkmark',
@@ -219,6 +230,14 @@ const logo = [
   'GooglePlus',
   'Dropbox',
   'Facebook',
+  'Html5',
+  'Java',
+  'JavaScript',
+  'Python',
+  'Docker',
+  'Kubernetes',
+  'Ruby',
+  'DotNet',
   'Codepen',
   'CodeSandbox',
   'CodeSandboxCircle',
@@ -241,7 +260,19 @@ const logo = [
   'Alibaba',
   'Yahoo',
   'Reddit',
-  'Sketch'
+  'Discord',
+  'Sketch',
+  'Baidu',
+  'Bilibili',
+  'HarmonyOS',
+  'OpenAI',
+  'Pinterest',
+  'Spotify',
+  'TikTok',
+  'Twitch',
+  'WechatWork',
+  'WhatsApp',
+  'X'
 ];
 
 const categories: Categories = {
@@ -343,7 +374,7 @@ declare const locale: NzSafeAny;
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        @for (icon of displayedNames[i].icons; track trackByFn) {
+        @for (icon of displayedNames[i].icons; track trackByFn(icon)) {
           <li (click)="onIconClick($event, icon)">
             <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
             <span class="anticon-class">
@@ -472,7 +503,9 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   fileList: NzUploadFile[] = [];
   icons: Icon[] = [];
 
-  trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
+  private document: Document = inject(DOCUMENT);
+
+  trackByFn = (item: string): string => `${item}-${this.currentTheme}`;
 
   kebabCase = (str: string): string => kebabCase(str);
 
@@ -496,14 +529,14 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     const promise = new Promise<string>((resolve): void => {
       let copyTextArea: HTMLTextAreaElement | null = null;
       try {
-        copyTextArea = this.dom.createElement('textarea') as HTMLTextAreaElement;
+        copyTextArea = this.document.createElement('textarea') as HTMLTextAreaElement;
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
-        this.dom.body.appendChild(copyTextArea);
+        this.document.body.appendChild(copyTextArea);
         copyTextArea.value = value;
         copyTextArea.select();
-        this.dom.execCommand('copy');
+        this.document.execCommand('copy');
         resolve(value);
       } finally {
         if (copyTextArea && copyTextArea.parentNode) {
@@ -564,7 +597,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const script = this.dom.createElement('script');
+    const script = this.document.createElement('script');
     const source = 'https://cdn.jsdelivr.net/gh/lewis617/antd-icon-classifier@0.0/dist/main.js';
     script.type = 'text/javascript';
     script.src = source;
@@ -576,12 +609,12 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       throw new Error(`${PREFIX} cannot load assets of antd icon classifier from source "${source}".`);
     };
 
-    this.dom.head.appendChild(script);
+    this.document.head.appendChild(script);
   }
 
   private onLoad(): void {
     this.modelLoaded = true;
-    this.dom.addEventListener('paste', this.onPaste as EventListener);
+    this.document.addEventListener('paste', this.onPaste as EventListener);
   }
 
   private onPaste = (event: ClipboardEvent): void => {
@@ -660,9 +693,9 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @Inject(DOCUMENT) private dom: any,
     private _iconService: NzIconService,
     private message: NzMessageService,
     private viewContainerRef: ViewContainerRef
@@ -673,12 +706,15 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
-    this.loadModel();
-    this.popoverVisible = !localStorage.getItem('disableIconTip');
+    // load model in browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadModel();
+      this.popoverVisible = !localStorage.getItem('disableIconTip');
+    }
   }
 
   ngOnDestroy(): void {
-    this.dom.removeEventListener('paste', this.onPaste as EventListener);
+    this.document.removeEventListener('paste', this.onPaste as EventListener);
     this.viewContainerRef.clear();
   }
 }
@@ -710,6 +746,7 @@ function upperCamelCase(value: string): string {
 function kebabCase(value: string): string {
   return value
     .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z])([A-Z])/g, '$1-$2')
     .replace(/([0-9])([a-zA-Z]+)$/g, '-$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase();

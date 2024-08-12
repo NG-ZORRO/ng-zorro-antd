@@ -13,6 +13,8 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
     <br />
     <nz-date-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
     <br />
+    <nz-date-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <br />
     <nz-date-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
     <br />
     <button nz-button nzType="default" (click)="changeLanguage()">Switch language for all pickers</button>

@@ -10,24 +10,22 @@ import {
   Component,
   ContentChild,
   EventEmitter,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 
 import {
@@ -96,8 +94,6 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
   standalone: true
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_nzFullscreen: BooleanInput;
-
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
   private destroy$ = new Subject<void>();
@@ -145,13 +141,12 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input() nzCustomHeader?: string | TemplateRef<void>;
 
-  @Input()
-  @InputBoolean()
+  @Input({ transform: booleanAttribute })
   nzFullscreen: boolean = true;
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

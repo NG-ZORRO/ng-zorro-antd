@@ -5,6 +5,7 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -22,8 +23,8 @@ import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 
 import { NzColorBlockComponent } from './color-block.component';
@@ -118,12 +119,6 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
   ]
 })
 export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAccessor, OnDestroy {
-  static ngAcceptInputType_nzShowText: BooleanInput;
-  static ngAcceptInputType_nzOpen: BooleanInput;
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzDisabledAlpha: BooleanInput;
-
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -131,11 +126,11 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Input() nzTrigger: NzColorPickerTriggerType = 'click';
   @Input() nzTitle: TemplateRef<void> | string = '';
   @Input() nzFlipFlop: TemplateRef<void> | null = null;
-  @Input() @InputBoolean() nzShowText: boolean = false;
-  @Input() @InputBoolean() nzOpen: boolean = false;
-  @Input() @InputBoolean() nzAllowClear: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowText: boolean = false;
+  @Input({ transform: booleanAttribute }) nzOpen: boolean = false;
+  @Input({ transform: booleanAttribute }) nzAllowClear: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabledAlpha: boolean = false;
   @Output() readonly nzOnChange = new EventEmitter<{ color: NzColor; format: string }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
   @Output() readonly nzOnClear = new EventEmitter<boolean>();

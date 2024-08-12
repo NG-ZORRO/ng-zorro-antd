@@ -12,7 +12,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -104,6 +105,31 @@ import { PREFIX_CLASS } from './util';
               />
             </div>
           }
+          @case ('quarter') {
+            <quarter-header
+              [(value)]="activeDate"
+              [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'month')"
+              [showSuperNextBtn]="enablePrevNext('next', 'month')"
+              [showNextBtn]="false"
+              [showPreBtn]="false"
+              (panelModeChange)="panelModeChange.emit($event)"
+              (valueChange)="headerChange.emit($event)"
+            />
+            <div class="{{ prefixCls }}-body">
+              <quarter-table
+                [value]="value"
+                [activeDate]="activeDate"
+                [locale]="locale"
+                [disabledDate]="disabledDate"
+                [selectedValue]="selectedValue"
+                [hoverValue]="hoverValue"
+                (valueChange)="onChooseQuarter($event)"
+                (cellHover)="cellHover.emit($event)"
+                [cellRender]="dateRender"
+              />
+            </div>
+          }
           @default {
             <date-header
               [(value)]="activeDate"
@@ -162,9 +188,9 @@ export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
   @Input() endPanelMode!: NzDateMode;
   @Input() panelMode!: NzDateMode;
-  @Input() showWeek!: boolean;
+  @Input({ transform: booleanAttribute }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showTimePicker!: boolean;
+  @Input({ transform: booleanAttribute }) showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
@@ -223,6 +249,12 @@ export class InnerPopupComponent implements OnChanges {
       this.headerChange.emit(value);
       this.panelModeChange.emit(this.endPanelMode);
     }
+  }
+
+  onChooseQuarter(value: CandyDate): void {
+    this.activeDate = this.activeDate.setQuarter(value.getQuarter());
+    this.value = value;
+    this.selectDate.emit(value);
   }
 
   onChooseYear(value: CandyDate): void {

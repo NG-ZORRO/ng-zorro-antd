@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,15 +14,15 @@ import {
   OnInit,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
 
@@ -39,32 +39,42 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
     >
-      <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
+      @if (last !== true) {
+        <div class="ant-steps-item-tail"></div>
+      }
       <div class="ant-steps-item-icon">
-        <ng-template [ngIf]="!showProcessDot">
-          <div *ngIf="showProgress" class="ant-steps-progress-icon">
-            <nz-progress
-              [nzPercent]="nzPercentage"
-              nzType="circle"
-              [nzWidth]="nzSize === 'small' ? 32 : 40"
-              [nzFormat]="nullProcessFormat"
-              [nzStrokeWidth]="4"
-            ></nz-progress>
-          </div>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"
-            ><span nz-icon nzType="check"></span
-          ></span>
-          <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><span nz-icon nzType="close"></span></span>
-          <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">
-            {{ index + 1 }}
-          </span>
-          <span class="ant-steps-icon" *ngIf="nzIcon">
-            <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-              <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
-            </ng-container>
-          </span>
-        </ng-template>
-        <ng-template [ngIf]="showProcessDot">
+        @if (!showProcessDot) {
+          @if (showProgress) {
+            <div class="ant-steps-progress-icon">
+              <nz-progress
+                [nzPercent]="nzPercentage"
+                nzType="circle"
+                [nzWidth]="nzSize === 'small' ? 32 : 40"
+                [nzFormat]="nullProcessFormat"
+                [nzStrokeWidth]="4"
+              ></nz-progress>
+            </div>
+          }
+          @if (nzStatus === 'finish' && !nzIcon) {
+            <span class="ant-steps-icon"><span nz-icon nzType="check"></span></span>
+          }
+          @if (nzStatus === 'error') {
+            <span class="ant-steps-icon"><span nz-icon nzType="close"></span></span>
+          }
+          @if ((nzStatus === 'process' || nzStatus === 'wait') && !nzIcon) {
+            <span class="ant-steps-icon">
+              {{ index + 1 }}
+            </span>
+          }
+          @if (nzIcon) {
+            <span class="ant-steps-icon">
+              <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
+                <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
+              </ng-container>
+            </span>
+          }
+        }
+        @if (showProcessDot) {
           <span class="ant-steps-icon">
             <ng-template #processDotTemplate>
               <span class="ant-steps-icon-dot"></span>
@@ -78,14 +88,16 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
               }"
             ></ng-template>
           </span>
-        </ng-template>
+        }
       </div>
       <div class="ant-steps-item-content">
         <div class="ant-steps-item-title">
           <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-          <div *ngIf="nzSubtitle" class="ant-steps-item-subtitle">
-            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-          </div>
+          @if (nzSubtitle) {
+            <div class="ant-steps-item-subtitle">
+              <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+            </div>
+          }
         </div>
         <div class="ant-steps-item-description">
           <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
@@ -105,19 +117,17 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
   },
   providers: [NzDestroyService],
-  imports: [NgIf, NzProgressModule, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet],
+  imports: [NzProgressModule, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet],
   standalone: true
 })
 export class NzStepComponent implements OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
   @ViewChild('itemContainer', { static: true }) itemContainer!: ElementRef<HTMLElement>;
 
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
   @Input() nzDescription?: string | TemplateRef<void>;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzPercentage: number | null = null;
   @Input() nzSize: NzSizeDSType = 'default';
 

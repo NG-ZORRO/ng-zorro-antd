@@ -23,7 +23,7 @@
   </button>
 
   <div class="{{ prefixCls }}-view">
-    @for(selector of selectors; track selector) {
+    @for (selector of selectors; track trackBySelector(selector)) {
       <button
         class="{{ selector.className }}"
         role="button"

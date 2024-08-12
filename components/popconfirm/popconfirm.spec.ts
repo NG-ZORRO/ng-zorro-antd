@@ -42,8 +42,8 @@ describe('NzPopconfirm', () => {
     return overlayContainerElement.querySelector('.ant-popover-message-title');
   }
 
-  function getTooltipTrigger(index: number): Element {
-    return overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[index];
+  function getTooltipTrigger(index: number): HTMLButtonElement {
+    return overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[index] as HTMLButtonElement;
   }
 
   function waitingForTooltipToggling(): void {
@@ -79,6 +79,17 @@ describe('NzPopconfirm', () => {
 
     expect(getTooltipTrigger(1).classList).toContain('ant-btn-dangerous');
     expect(getTooltipTrigger(1).classList).toContain('ant-btn-primary');
+  });
+
+  it('should support nzOkDisabled case', () => {
+    component.nzOkDisabled = true;
+    fixture.detectChanges();
+
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+
+    expect(getTooltipTrigger(1).disabled).toBeTrue();
   });
 
   it('should cancel work', fakeAsync(() => {
@@ -244,6 +255,7 @@ describe('NzPopconfirm', () => {
       nzPopconfirmTitle="title-string"
       nzOkText="ok-text"
       [nzOkType]="nzOkType"
+      [nzOkDisabled]="nzOkDisabled"
       nzCancelText="cancel-text"
       [nzAutofocus]="autoFocus"
       [nzCondition]="condition"
@@ -276,6 +288,7 @@ export class NzPopconfirmTestNewComponent {
   cancel = jasmine.createSpy('cancel');
   condition = false;
   nzOkType: NzButtonType | 'danger' = 'default';
+  nzOkDisabled: boolean = false;
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;

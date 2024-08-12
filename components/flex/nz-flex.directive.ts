@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, booleanAttribute } from '@angular/core';
 
 import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
 
@@ -46,7 +46,7 @@ import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
   }
 })
 export class NzFlexDirective {
-  @Input() nzVertical: boolean = false;
+  @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
   @Input() nzJustify: NzJustify = 'normal';
   @Input() nzAlign: NzAlign = 'normal';
   @Input() nzGap: NzGap = 0;

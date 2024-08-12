@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -13,7 +13,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 
 import { PickerComponent } from './components/picker.component';
@@ -27,12 +28,12 @@ import { defaultColor, generateColor } from './util/util';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-picker',
   standalone: true,
-  imports: [NgIf, PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet],
+  imports: [PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet],
   template: `
     <div class="ant-color-picker-panel" [class.ant-color-picker-panel-disabled]="disabled">
-      <ng-container *ngIf="panelRenderHeader">
+      @if (panelRenderHeader) {
         <ng-template [ngTemplateOutlet]="panelRenderHeader"></ng-template>
-      </ng-container>
+      }
       <color-picker
         [color]="colorValue"
         (nzOnChange)="handleChange($event)"
@@ -49,7 +50,7 @@ import { defaultColor, generateColor } from './util/util';
             [disabled]="disabled"
             (nzOnChangeComplete)="nzOnChangeComplete.emit($event)"
           ></color-slider>
-          <ng-container *ngIf="!disabledAlpha">
+          @if (!disabledAlpha) {
             <color-slider
               type="alpha"
               [color]="colorValue"
@@ -59,13 +60,13 @@ import { defaultColor, generateColor } from './util/util';
               [disabled]="disabled"
               (nzOnChangeComplete)="nzOnChangeComplete.emit($event)"
             ></color-slider>
-          </ng-container>
+          }
         </div>
         <ng-antd-color-block [color]="toRgbString"></ng-antd-color-block>
       </div>
-      <ng-container *ngIf="panelRenderFooter">
+      @if (panelRenderFooter) {
         <ng-template [ngTemplateOutlet]="panelRenderFooter"></ng-template>
-      </ng-container>
+      }
     </div>
   `
 })
@@ -76,8 +77,8 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   @Output() readonly nzOnChangeComplete = new EventEmitter<HsbaColorType>();
   @Input() panelRenderHeader: TemplateRef<void> | null = null;
   @Input() panelRenderFooter: TemplateRef<void> | null = null;
-  @Input() disabledAlpha: boolean = false;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabledAlpha: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   colorValue: Color | null = null;
   alphaColor: string = '';

@@ -31,7 +31,7 @@ The component in `nz-table` such as `th`, `td`, `thead` etc. are enhanced. Devel
 
 ### Data Processing
 
-The data passed to `[nzData]` is exported with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
+The data passed to `[nzData]` is exported with [Template Context](https://angular.dev/guide/templates/template-statements#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -63,7 +63,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 ### nz-table:standalone
 
 | Property                    | Description                                                                                                                                                                              | Type                                                                   | Default            | Global Config |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ | ------------- |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------------|---------------|
 | `[nzData]`                  | Data record array to be rendered                                                                                                                                                         | `T[]`                                                                  | -                  |
 | `[nzFrontPagination]`       | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean`                                                              | `true`             |
 | `[nzTotal]`                 | Total data count. Should set when `nzFrontPagination` is `false`                                                                                                                         | `number`                                                               | -                  |
@@ -73,29 +73,30 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzShowPagination]`        | Whether to show pagination component at bottom of the table                                                                                                                              | `boolean`                                                              | `true`             |
 | `[nzPaginationPosition]`    | Specify the position of pagination                                                                                                                                                       | `'top' \| 'bottom' \| 'both'`                                          | `bottom`           |
 | `[nzPaginationType]`        | Specify the size of pagination                                                                                                                                                           | `'default' \| 'small'`                                                 | `default`          |
-| `[nzBordered]`              | Whether to show all table borders                                                                                                                                                        | `boolean`                                                              | `false`            | ✅            |
+| `[nzBordered]`              | Whether to show all table borders                                                                                                                                                        | `boolean`                                                              | `false`            | ✅             |
 | `[nzOuterBordered]`         | Whether to show table outer borders                                                                                                                                                      | `boolean`                                                              | `false`            | -             |
 | `[nzWidthConfig]`           | Set col width can not used with `[nzWidth]` of `th`                                                                                                                                      | `string[]`                                                             | `[]`               |
-| `[nzSize]`                  | Size of table                                                                                                                                                                            | `'middle' \| 'small' \| 'default'`                                     | `'default'`        | ✅            |
+| `[nzSize]`                  | Size of table                                                                                                                                                                            | `'middle' \| 'small' \| 'default'`                                     | `'default'`        | ✅             |
 | `[nzLoading]`               | Loading status of table                                                                                                                                                                  | `boolean`                                                              | `false`            |
-| `[nzLoadingIndicator]`      | The loading indicator                                                                                                                                                                    | `TemplateRef<void>`                                                    | -                  | ✅            |
+| `[nzLoadingIndicator]`      | The loading indicator                                                                                                                                                                    | `TemplateRef<void>`                                                    | -                  | ✅             |
 | `[nzLoadingDelay]`          | Specifies a delay in milliseconds for loading state (prevents flush)                                                                                                                     | `number`                                                               | `0`                |
 | `[nzScroll]`                | Whether table can be scrolled in x/y direction. `x` or `y` can be a string that indicates the width and height of table body                                                             | `object`                                                               | -                  |
 | `[nzTitle]`                 | Table title renderer                                                                                                                                                                     | `string \| TemplateRef<void>`                                          | -                  |
 | `[nzFooter]`                | Table footer renderer                                                                                                                                                                    | `string \| TemplateRef<void>`                                          | -                  |
 | `[nzNoResult]`              | Custom no result content                                                                                                                                                                 | `string \| TemplateRef<void>`                                          | -                  |
 | `[nzPageSizeOptions]`       | Specify the sizeChanger options                                                                                                                                                          | `number[]`                                                             | `[10, 20, 30, 40]` |
-| `[nzShowQuickJumper]`       | Determine whether you can jump to pages directly                                                                                                                                         | `boolean`                                                              | `false`            | ✅            |
-| `[nzShowSizeChanger]`       | Determine whether `nzPageSize` can be changed                                                                                                                                            | `boolean`                                                              | `false`            | ✅            |
+| `[nzShowQuickJumper]`       | Determine whether you can jump to pages directly                                                                                                                                         | `boolean`                                                              | `false`            | ✅             |
+| `[nzShowSizeChanger]`       | Determine whether `nzPageSize` can be changed                                                                                                                                            | `boolean`                                                              | `false`            | ✅             |
 | `[nzShowTotal]`             | To display Pagination total number and range, same as Pagination                                                                                                                         | `TemplateRef<{ $implicit: number, range: [ number, number ] }>`        | -                  |
 | `[nzItemRender]`            | To customize Pagination item, same as Pagination                                                                                                                                         | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | -                  |
 | `[nzHideOnSinglePage]`      | Whether to hide pagination on single page                                                                                                                                                | `boolean`                                                              | `false`            |
-| `[nzSimple]`                | Whether to use simple mode                                                                                                                                                               | `boolean`                                                              | -                  | ✅            |
-| `[nzTemplateMode]`          | Template mode，no need to pass data to `nzData`                                                                                                                                          | `boolean`                                                              | `false`            |
+| `[nzSimple]`                | Whether to use simple mode                                                                                                                                                               | `boolean`                                                              | -                  | ✅             |
+| `[nzTemplateMode]`          | Template mode，no need to pass data to `nzData`                                                                                                                                           | `boolean`                                                              | `false`            |
 | `[nzVirtualItemSize]`       | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api)                                                                                 | `number`                                                               | `0`                |
 | `[nzVirtualMaxBufferPx]`    | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api)                                    | `number`                                                               | `200`              |
 | `[nzVirtualMinBufferPx]`    | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api)                                           | `number`                                                               | `100`              |
 | `[nzVirtualForTrackBy]`     | The TrackByFunction to be used for tracking changes.                                                                                                                                     | `TrackByFunction<T>`                                                   | -                  |
+| `[noDataVirtualHeight]`     | Height of inner scroll when having no data, if nothing is passed the default value is used.                                                                                              | `string`                                                               | `'182px'`          |
 | `(nzPageIndexChange)`       | Callback when `pageIndex` changes                                                                                                                                                        | `EventEmitter<number>`                                                 | -                  |
 | `(nzPageSizeChange)`        | Callback when `pageSize` changes                                                                                                                                                         | `EventEmitter<number>`                                                 | -                  |
 | `(nzCurrentPageDataChange)` | Callback when current pageData changes                                                                                                                                                   | `EventEmitter<T[]>`                                                    | -                  |
@@ -107,7 +108,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 Checkbox property
 
 | Property            | Description                                         | Type                    | Default |
-| ------------------- | --------------------------------------------------- | ----------------------- | ------- |
+|---------------------|-----------------------------------------------------|-------------------------|---------|
 | `[nzShowCheckbox]`  | Whether `nz-checkbox` should be shown in the header | `boolean`               | -       |
 | `[nzDisabled]`      | Whether the `nz-checkbox` is disabled               | `boolean`               | -       |
 | `[nzIndeterminate]` | `nz-checkbox` indeterminate status                  | `boolean`               | -       |
@@ -118,14 +119,14 @@ Checkbox property
 Selection property
 
 | Property               | Description                                                         | Type                                     | Default |
-| ---------------------- | ------------------------------------------------------------------- | ---------------------------------------- | ------- |
+|------------------------|---------------------------------------------------------------------|------------------------------------------|---------|
 | `[nzShowRowSelection]` | Whether to show row selection options                               | `boolean`                                | -       |
 | `[nzSelections]`       | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | -       |
 
 Sort property
 
 | Property              | Description                                                                                                                                    | Type                                          | Default                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------- |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|-------------------------------|
 | `[nzShowSort]`        | Whether to display sorting                                                                                                                     | `boolean`                                     | -                             |
 | `[nzSortFn]`          | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting | `NzTableSortFn<T> \| boolean`                 | -                             |
 | `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'ascend' \| 'descend' \| null`               | -                             |
@@ -135,7 +136,7 @@ Sort property
 Filter property
 
 | Property             | Description                                                                                            | Type                                                       | Default |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | ------- |
+|----------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------|---------|
 | `[nzShowFilter]`     | Whether to show filter                                                                                 | `boolean`                                                  | -       |
 | `[nzFilterFn]`       | Filter function used to filter the data on client side. Set to `true` when using server side filtering | `NzTableFilterFn<T> \| boolean`                            | -       |
 | `[nzFilters]`        | Filter options, `text`, and `value` for callback, `byDefault` to enable filter by default              | `Array<{ text: string; value: any; byDefault?: boolean }>` | -       |
@@ -145,7 +146,7 @@ Filter property
 Style property
 
 | Property          | Description                                                                                                  | Type                            | Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------- |
+|-------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------|---------|
 | `[nzWidth]`       | Specify the column width (in pixels), can not used when grouping columns                                     | `string`                        | -       |
 | `[nzLeft]`        | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false`       | `string \| boolean`             | -       |
 | `[nzRight]`       | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false`     | `string \| boolean`             | -       |
@@ -157,7 +158,7 @@ Style property
 Other
 
 | Property        | Description                                  | Type     | Default |
-| --------------- | -------------------------------------------- | -------- | ------- |
+|-----------------|----------------------------------------------|----------|---------|
 | `[nzColumnKey]` | column key, work with server sort and filter | `string` | -       |
 
 ### td
@@ -165,7 +166,7 @@ Other
 Checkbox property
 
 | Property            | Description                       | Type                    | Default |
-| ------------------- | --------------------------------- | ----------------------- | ------- |
+|---------------------|-----------------------------------|-------------------------|---------|
 | `[nzShowCheckbox]`  | Whether add nz-checkbox           | `boolean`               | -       |
 | `[nzDisabled]`      | Whether disable checkbox          | `boolean`               | -       |
 | `[nzIndeterminate]` | Indeterminate status              | `boolean`               | -       |
@@ -178,7 +179,7 @@ Checkbox property
 Expand property
 
 | Property           | Description                           | Type                    | Default |
-| ------------------ | ------------------------------------- | ----------------------- | ------- |
+|--------------------|---------------------------------------|-------------------------|---------|
 | `[nzShowExpand]`   | Whether show expand icon              | `boolean`               | -       |
 | `[nzExpand]`       | Current expand status, double binding | `boolean`               | -       |
 | `[nzExpandIcon]`   | Custom expand icon                    | `TemplateRef<void>`     | -       |
@@ -187,7 +188,7 @@ Expand property
 Style property
 
 | Property          | Description                                                                                                  | Type                            | Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------- |
+|-------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------|---------|
 | `[nzLeft]`        | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false`       | `string \| boolean`             | -       |
 | `[nzRight]`       | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false`     | `string \| boolean`             | -       |
 | `[nzAlign]`       | Specify how content is aligned                                                                               | `'left' \| 'right' \| 'center'` | -       |
@@ -198,21 +199,34 @@ Style property
 Other property
 
 | Property         | Description                        | Type     | Default |
-| ---------------- | ---------------------------------- | -------- | ------- |
+|------------------|------------------------------------|----------|---------|
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
+
+### thead
+
+| Property              | Description                                                 | Type                                                                  | Default |
+|-----------------------|-------------------------------------------------------------|-----------------------------------------------------------------------|---------|
+| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -       |
 
 ### tr
 
-| Property     | Description                                              | Type      | Default |
-| ------------ | -------------------------------------------------------- | --------- | ------- |
+| Property     | Description                                             | Type      | Default |
+|--------------|---------------------------------------------------------|-----------|---------|
 | `[nzExpand]` | Whether expand current row，used with `nzExpand` of `td` | `boolean` | -       |
+
+### tfoot
+
+| Property      | Description                         | Type                           | Default |
+|---------------|-------------------------------------|--------------------------------|---------|
+| `[nzSummary]` | Summary content                     | `boolean`                      | -       |
+| `[nzFixed]`   | Fixed summary, used with `nzScroll` | `boolean \| 'top' \| 'bottom'` | `false` |
 
 ### nz-filter-trigger:standalone
 
 Customized filter panel
 
 | Property            | Description                                                                                       | Type                      | Default |
-| ------------------- | ------------------------------------------------------------------------------------------------- | ------------------------- | ------- |
+|---------------------|---------------------------------------------------------------------------------------------------|---------------------------|---------|
 | `[nzDropdownMenu]`  | Dropdown menu                                                                                     | `NzDropdownMenuComponent` | -       |
 | `[nzVisible]`       | whether the dropdown menu is visible, double binding                                              | `boolean`                 | -       |
 | `[nzActive]`        | whether the icon status is activated                                                              | `boolean`                 | `false` |
@@ -225,7 +239,7 @@ virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit
 
 ## Note
 
-In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
+In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
 
 ```typescript
 // add data
@@ -242,4 +256,4 @@ this.dataSet = [
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience
+Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience.

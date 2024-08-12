@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -39,11 +38,13 @@ import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
       (compositionstart)="setCompositionState(true)"
       (compositionend)="setCompositionState(false)"
     />
-    <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
+    @if (mirrorSync) {
+      <span #mirrorElement class="ant-select-selection-search-mirror"></span>
+    }
   `,
   host: { class: 'ant-select-selection-search' },
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }],
-  imports: [FormsModule, NgIf],
+  imports: [FormsModule],
   standalone: true
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {

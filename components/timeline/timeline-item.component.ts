@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,9 +38,11 @@ function isDefaultColor(color?: string): boolean {
         [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
-        <div *ngIf="nzLabel" class="ant-timeline-item-label">
-          <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
-        </div>
+        @if (nzLabel) {
+          <div class="ant-timeline-item-label">
+            <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
+          </div>
+        }
         <div class="ant-timeline-item-tail"></div>
         <div
           class="ant-timeline-item-head"
@@ -60,7 +61,7 @@ function isDefaultColor(color?: string): boolean {
       </li>
     </ng-template>
   `,
-  imports: [NgIf, NzOutletModule],
+  imports: [NzOutletModule],
   standalone: true
 })
 export class NzTimelineItemComponent implements OnChanges {

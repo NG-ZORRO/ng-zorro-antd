@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'app-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="/" id="logo">
-      <img width="32" height="28.27" alt="logo" src="./assets/img/logo.svg" />
+      <img width="32" height="28.27" alt="logo" src="./assets/img/logo.svg"/>
       <strong>NG-ZORRO</strong>
     </a>
   `,
@@ -17,4 +18,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     `
   ]
 })
-export class LogoComponent { }
+export class LogoComponent {}

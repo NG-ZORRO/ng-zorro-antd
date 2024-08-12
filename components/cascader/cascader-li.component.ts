@@ -13,7 +13,8 @@ import {
   Input,
   OnInit,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  numberAttribute
 } from '@angular/core';
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
@@ -68,7 +69,7 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input() activated = false;
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
-  @Input() columnIndex!: number;
+  @Input({ transform: numberAttribute }) columnIndex!: number;
   @Input() expandIcon: string | TemplateRef<void> = '';
   @Input() dir: Direction = 'ltr';
 

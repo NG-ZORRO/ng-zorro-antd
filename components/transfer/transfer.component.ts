@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,29 +15,23 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { Observable, of as observableOf, of, Subject } from 'rxjs';
+import { Observable, Subject, of as observableOf, of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import {
-  BooleanInput,
-  NgClassInterface,
-  NgStyleInterface,
-  NzSafeAny,
-  NzStatus,
-  NzValidateStatus
-} from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -79,54 +73,65 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
-    <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        type="button"
-        (click)="moveToLeft()"
-        [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="left"></span>
-        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-      <button
-        nz-button
-        type="button"
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="right"></span>
-        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-    </div>
-    <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
-      <button
-        nz-button
-        type="button"
-        (click)="moveToRight()"
-        [disabled]="nzDisabled || !rightActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="left"></span>
-        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
-      </button>
-      <button
-        nz-button
-        type="button"
-        (click)="moveToLeft()"
-        [disabled]="nzDisabled || !leftActive"
-        [nzType]="'primary'"
-        [nzSize]="'small'"
-      >
-        <span nz-icon nzType="right"></span>
-        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
-      </button>
-    </div>
+    @if (dir !== 'rtl') {
+      <div class="ant-transfer-operation">
+        <button
+          nz-button
+          type="button"
+          (click)="moveToLeft()"
+          [disabled]="nzDisabled || !leftActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="left"></span>
+          @if (nzOperations[1]) {
+            <span>{{ nzOperations[1] }}</span>
+          }
+        </button>
+        <button
+          nz-button
+          type="button"
+          (click)="moveToRight()"
+          [disabled]="nzDisabled || !rightActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="right"></span>
+          @if (nzOperations[0]) {
+            <span>{{ nzOperations[0] }}</span>
+          }
+        </button>
+      </div>
+    } @else {
+      <div class="ant-transfer-operation">
+        <button
+          nz-button
+          type="button"
+          (click)="moveToRight()"
+          [disabled]="nzDisabled || !rightActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="left"></span>
+          @if (nzOperations[0]) {
+            <span>{{ nzOperations[0] }}</span>
+          }
+        </button>
+        <button
+          nz-button
+          type="button"
+          (click)="moveToLeft()"
+          [disabled]="nzDisabled || !leftActive"
+          [nzType]="'primary'"
+          [nzSize]="'small'"
+        >
+          <span nz-icon nzType="right"></span>
+          @if (nzOperations[1]) {
+            <span>{{ nzOperations[1] }}</span>
+          }
+        </button>
+      </div>
+    }
     <nz-transfer-list
       class="ant-transfer-list"
       [ngStyle]="nzListStyle"
@@ -159,14 +164,10 @@ import { NzTransferListComponent } from './transfer-list.component';
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzTransferListComponent, NgStyle, NzIconModule, NzButtonModule, NgIf],
+  imports: [NzTransferListComponent, NgStyle, NzIconModule, NzButtonModule],
   standalone: true
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzShowSelectAll: BooleanInput;
-  static ngAcceptInputType_nzShowSearch: BooleanInput;
-
   private unsubscribe$ = new Subject<void>();
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
@@ -183,19 +184,19 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region fields
 
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
   @Input() nzListStyle: NgStyleInterface = {};
-  @Input() @InputBoolean() nzShowSelectAll = true;
+  @Input({ transform: booleanAttribute }) nzShowSelectAll = true;
   @Input() nzItemUnit?: string;
   @Input() nzItemsUnit?: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
   @Input() nzRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzFooter: TemplateRef<NzSafeAny> | null = null;
-  @Input() @InputBoolean() nzShowSearch = false;
+  @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input() nzFilterOption?: (inputValue: string, item: TransferItem) => boolean;
   @Input() nzSearchPlaceholder?: string;
   @Input() nzNotFoundContent?: string;
@@ -244,6 +245,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);
+    if (list.every(i => i.disabled)) {
+      return;
+    }
     this.updateOperationStatus(direction, list.length);
     this.nzSelectChange.emit({ direction, checked, list, item });
   }
@@ -302,6 +306,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.markForCheckAllList();
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   // #endregion
 
   constructor(
@@ -309,9 +316,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private i18n: NzI18nService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   private markForCheckAllList(): void {
@@ -339,6 +344,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
         e.checked = true;
       }
     });
+
     const term = (ld: TransferItem): boolean => ld.disabled === false && ld.checked === true;
     this.rightActive = this.leftDataSource.some(term);
     this.leftActive = this.rightDataSource.some(term);

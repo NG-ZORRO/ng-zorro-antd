@@ -3,19 +3,28 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
+import { coerceBooleanProperty, coerceCssPixelValue, coerceNumberProperty } from '@angular/cdk/coercion';
+import { numberAttribute } from '@angular/core';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export function toBoolean(value: boolean | string): boolean {
+export function toBoolean(value: unknown): boolean {
   return coerceBooleanProperty(value);
+}
+
+export function numberAttributeWithZeroFallback(value: unknown): number {
+  return numberAttribute(value, 0);
+}
+
+export function numberAttributeWithOneFallback(value: unknown): number {
+  return numberAttribute(value, 1);
 }
 
 export function toNumber(value: number | string): number;
 export function toNumber<D>(value: number | string, fallback: D): number | D;
 export function toNumber(value: number | string, fallbackValue: number = 0): number {
-  return _isNumberValue(value) ? Number(value) : fallbackValue;
+  return coerceNumberProperty(value, fallbackValue);
 }
 
 export function toCssPixel(value: number | string): string {
@@ -70,6 +79,8 @@ function propDecoratorFactory<T, D>(
 }
 
 /**
+ * @deprecated Use input transform instead: `@Input({ transform })`
+ *
  * Input decorator that handle a prop to do get/set automatically with toBoolean
  *
  * Why not using @InputBoolean alone without @Input? AOT needs @Input to be visible
@@ -89,10 +100,16 @@ export function InputBoolean(): NzSafeAny {
   return propDecoratorFactory('InputBoolean', toBoolean);
 }
 
+/**
+ * @deprecated Use input transform instead: `@Input({ transform })`
+ */
 export function InputCssPixel(): NzSafeAny {
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
+/**
+ * @deprecated Use input transform instead: `@Input({ transform })`
+ */
 export function InputNumber(fallbackValue?: NzSafeAny): NzSafeAny {
   return propDecoratorFactory('InputNumber', (value: string | number) => toNumber(value, fallbackValue));
 }

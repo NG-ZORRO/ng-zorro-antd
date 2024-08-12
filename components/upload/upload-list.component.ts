@@ -6,29 +6,20 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import {
-  DOCUMENT,
-  NgForOf,
-  NgIf,
-  NgStyle,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet
-} from '@angular/common';
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
-import { fromEvent, Observable, of, Subject } from 'rxjs';
-import { takeUntil, map } from 'rxjs/operators';
+import { Observable, Subject, fromEvent, of } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -74,19 +65,7 @@ interface UploadListFile extends NzUploadFile {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgForOf,
-    NzToolTipModule,
-    NgSwitch,
-    NgTemplateOutlet,
-    NgIf,
-    NgSwitchDefault,
-    NgSwitchCase,
-    NzIconModule,
-    NzButtonModule,
-    NgStyle,
-    NzProgressModule
-  ],
+  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NgStyle, NzProgressModule],
   standalone: true
 })
 export class NzUploadListComponent implements OnChanges, OnDestroy {
@@ -111,6 +90,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
   @Input() iconRender: NzIconRenderTemplate | null = null;
   @Input() dir: Direction = 'ltr';
 
+  private document: Document = inject(DOCUMENT);
   private destroy$ = new Subject<void>();
 
   private genErr(file: NzUploadFile): string {
@@ -164,11 +144,11 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
       return of('');
     }
 
-    const canvas = this.doc.createElement('canvas');
+    const canvas = this.document.createElement('canvas');
     canvas.width = MEASURE_SIZE;
     canvas.height = MEASURE_SIZE;
     canvas.style.cssText = `position: fixed; left: 0; top: 0; width: ${MEASURE_SIZE}px; height: ${MEASURE_SIZE}px; z-index: 9999; display: none;`;
-    this.doc.body.appendChild(canvas);
+    this.document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
@@ -194,7 +174,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
           ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         } catch {}
         const dataURL = canvas.toDataURL();
-        this.doc.body.removeChild(canvas);
+        this.document.body.removeChild(canvas);
 
         URL.revokeObjectURL(objectUrl);
         return dataURL;
@@ -282,7 +262,6 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private doc: NzSafeAny,
     private ngZone: NgZone,
     private platform: Platform
   ) {}

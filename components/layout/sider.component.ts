@@ -18,14 +18,14 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { inNextTick, InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 
 import { NzSiderTriggerComponent } from './sider-trigger.component';
@@ -71,10 +71,6 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
   standalone: true
 })
 export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
-  static ngAcceptInputType_nzReverseArrow: BooleanInput;
-  static ngAcceptInputType_nzCollapsible: BooleanInput;
-  static ngAcceptInputType_nzCollapsed: BooleanInput;
-
   private destroy$ = new Subject<boolean>();
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
@@ -84,9 +80,9 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   @Input() nzBreakpoint: NzBreakpointKey | null = null;
   @Input() nzZeroTrigger: TemplateRef<void> | null = null;
   @Input() nzTrigger: TemplateRef<void> | undefined | null = undefined;
-  @Input() @InputBoolean() nzReverseArrow = false;
-  @Input() @InputBoolean() nzCollapsible = false;
-  @Input() @InputBoolean() nzCollapsed = false;
+  @Input({ transform: booleanAttribute }) nzReverseArrow = false;
+  @Input({ transform: booleanAttribute }) nzCollapsible = false;
+  @Input({ transform: booleanAttribute }) nzCollapsed = false;
   matchBreakPoint = false;
   flexSetting: string | null = null;
   widthSetting: string | null = null;

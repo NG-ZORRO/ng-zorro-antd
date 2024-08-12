@@ -4,33 +4,32 @@
  */
 
 import {
+  ElementSelectorUpgradeData,
   Migration,
   ResolvedResource,
   UpgradeData
 } from '@angular/cdk/schematics';
 
-import { findElementWithTag } from '../../../utils/ng-update/elements';
+import { deprecatedComponent } from '../utils/deprecated-component';
 
 export class TooltipLikeTemplateRule extends Migration<UpgradeData> {
 
   enabled = true;
 
+  deprecatedComponents: ElementSelectorUpgradeData[] = [{
+    replace: 'nz-tooltip',
+    replaceWith: '[nz-tooltip]'
+  }, {
+    replace: 'nz-popover',
+    replaceWith: '[nz-popover]'
+  }, {
+    replace: 'nz-popconfirm',
+    replaceWith: '[nz-popconfirm]'
+  }];
+
   visitTemplate(template: ResolvedResource): void {
-
-    const deprecatedComponent = (deprecated: string, instead: string): void => {
-      findElementWithTag(template.content, deprecated)
-      .forEach(offset => {
-        this.failures.push({
-          filePath: template.filePath,
-          position: template.getCharacterAndLineOfPosition(offset),
-          message: `Found deprecated "<${deprecated}>" component. Use "${instead}" to instead please.`
-        });
-      })
-    };
-
-    deprecatedComponent('nz-tooltip', '[nz-tooltip]');
-    deprecatedComponent('nz-popover', '[nz-popover]');
-    deprecatedComponent('nz-popconfirm', '[nz-popconfirm]');
-
+    this.deprecatedComponents.forEach(data => {
+      this.failures.push(...deprecatedComponent(template, data.replace, data.replaceWith));
+    });
   }
 }

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ApplicationRef,
   Component,
@@ -11,7 +12,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,9 +94,9 @@ describe('upload', () => {
     let httpMock: HttpTestingController;
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
+        declarations: [TestUploadComponent],
         imports: [
           NoopAnimationsModule,
-          HttpClientTestingModule,
           CommonModule,
           FormsModule,
           NzToolTipModule,
@@ -106,7 +107,7 @@ describe('upload', () => {
           NzUploadComponent,
           NzUploadListComponent
         ],
-        declarations: [TestUploadComponent]
+        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
       });
       fixture = TestBed.createComponent(TestUploadComponent);
       dl = fixture.debugElement;
@@ -1005,8 +1006,9 @@ describe('upload', () => {
       let instance: TestUploadBtnComponent;
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzIconTestModule, NzUploadBtnComponent],
-          declarations: [TestUploadBtnComponent]
+          declarations: [TestUploadBtnComponent],
+          imports: [NzIconTestModule, NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         fixture = TestBed.createComponent(TestUploadBtnComponent);
         dl = fixture.debugElement;
@@ -1262,7 +1264,8 @@ describe('upload', () => {
       let http: HttpTestingController;
       beforeEach(() => {
         injector = TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule, NzUploadBtnComponent]
+          imports: [NzUploadBtnComponent],
+          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
         (injector as TestBed).compileComponents();
         fixture = TestBed.createComponent(NzUploadBtnComponent);
@@ -1363,43 +1366,44 @@ describe('upload', () => {
 
 @Component({
   template: `
-    <nz-upload
-      #upload
-      *ngIf="show"
-      [nzType]="nzType"
-      [nzLimit]="nzLimit"
-      [nzSize]="nzSize"
-      [nzFileType]="nzFileType"
-      [nzAccept]="nzAccept"
-      [nzAction]="nzAction"
-      [nzBeforeUpload]="beforeUpload"
-      [nzCustomRequest]="nzCustomRequest"
-      [nzData]="nzData"
-      [nzFilter]="nzFilter"
-      [(nzFileList)]="nzFileList"
-      [nzDisabled]="nzDisabled"
-      [nzHeaders]="nzHeaders"
-      [nzListType]="nzListType"
-      [nzMultiple]="nzMultiple"
-      [nzName]="nzName"
-      [nzShowUploadList]="nzShowUploadList"
-      [nzShowButton]="nzShowButton"
-      [nzWithCredentials]="nzWithCredentials"
-      [nzPreview]="onPreview"
-      [nzPreviewFile]="previewFile"
-      [nzRemove]="onRemove"
-      [nzDirectory]="directory"
-      [nzTransformFile]="nzTransformFile"
-      [nzIconRender]="nzIconRender"
-      [nzFileListRender]="nzFileListRender"
-      (nzFileListChange)="nzFileListChange($event)"
-      (nzChange)="nzChange($event)"
-    >
-      <button nz-button>
-        <span nz-icon nzType="upload"></span>
-        <span>Click to Upload</span>
-      </button>
-    </nz-upload>
+    @if (show) {
+      <nz-upload
+        #upload
+        [nzType]="nzType"
+        [nzLimit]="nzLimit"
+        [nzSize]="nzSize"
+        [nzFileType]="nzFileType"
+        [nzAccept]="nzAccept"
+        [nzAction]="nzAction"
+        [nzBeforeUpload]="beforeUpload"
+        [nzCustomRequest]="nzCustomRequest"
+        [nzData]="nzData"
+        [nzFilter]="nzFilter"
+        [(nzFileList)]="nzFileList"
+        [nzDisabled]="nzDisabled"
+        [nzHeaders]="nzHeaders"
+        [nzListType]="nzListType"
+        [nzMultiple]="nzMultiple"
+        [nzName]="nzName"
+        [nzShowUploadList]="nzShowUploadList"
+        [nzShowButton]="nzShowButton"
+        [nzWithCredentials]="nzWithCredentials"
+        [nzPreview]="onPreview"
+        [nzPreviewFile]="previewFile"
+        [nzRemove]="onRemove"
+        [nzDirectory]="directory"
+        [nzTransformFile]="nzTransformFile"
+        [nzIconRender]="nzIconRender"
+        [nzFileListRender]="nzFileListRender"
+        (nzFileListChange)="nzFileListChange($event)"
+        (nzChange)="nzChange($event)"
+      >
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          <span>Click to Upload</span>
+        </button>
+      </nz-upload>
+    }
     <ng-template #customnzIconRender>
       <span class="customnzIconRender">asdf</span>
     </ng-template>

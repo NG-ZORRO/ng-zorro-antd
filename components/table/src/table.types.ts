@@ -28,3 +28,5 @@ export interface NzCustomColumn {
   width: number;
   fixWidth?: boolean;
 }
+
+export type NzTableSummaryFixedType = 'top' | 'bottom';

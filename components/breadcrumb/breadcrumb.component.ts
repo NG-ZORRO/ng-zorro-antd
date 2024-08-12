@@ -13,18 +13,16 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzBreadcrumb } from './breadcrumb';
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
@@ -59,12 +57,11 @@ export interface BreadcrumbOption {
   }
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
-  static ngAcceptInputType_nzAutoGenerate: BooleanInput;
-
-  @Input() @InputBoolean() nzAutoGenerate = false;
+  @Input({ transform: booleanAttribute }) nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
+  @Input() nzRouteFn: (route: string) => string = route => route;
 
   breadcrumbs: BreadcrumbOption[] = [];
   dir: Direction = 'ltr';
@@ -76,7 +73,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -147,13 +144,13 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
         // Do not change nextUrl if routeUrl is falsy. This happens when it's a route lazy loading other modules.
         const nextUrl = routeUrl ? `${url}/${routeUrl}` : url;
         const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
-
+        const shapedUrl = this.nzRouteFn(nextUrl);
         // If have data, go to generate a breadcrumb for it.
         if (routeUrl && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {
             label: breadcrumbLabel,
             params: child.snapshot.params,
-            url: nextUrl
+            url: shapedUrl
           };
           breadcrumbs.push(breadcrumb);
         }

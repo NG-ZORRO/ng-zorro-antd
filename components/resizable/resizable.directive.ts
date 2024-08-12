@@ -6,11 +6,13 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
+  booleanAttribute,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
   NgZone,
+  numberAttribute,
   OnDestroy,
   Output,
   Renderer2
@@ -19,8 +21,7 @@ import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
+import { ensureInBounds } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
@@ -46,21 +47,17 @@ export interface NzResizeEvent {
   standalone: true
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
-  static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
-  static ngAcceptInputType_nzPreview: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight?: number;
   @Input() nzMaxWidth?: number;
-  @Input() nzMinHeight: number = 40;
-  @Input() nzMinWidth: number = 40;
-  @Input() nzGridColumnCount: number = -1;
-  @Input() nzMaxColumn: number = -1;
-  @Input() nzMinColumn: number = -1;
-  @Input() @InputBoolean() nzLockAspectRatio: boolean = false;
-  @Input() @InputBoolean() nzPreview: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input({ transform: numberAttribute }) nzMinHeight: number = 40;
+  @Input({ transform: numberAttribute }) nzMinWidth: number = 40;
+  @Input({ transform: numberAttribute }) nzGridColumnCount: number = -1;
+  @Input({ transform: numberAttribute }) nzMaxColumn: number = -1;
+  @Input({ transform: numberAttribute }) nzMinColumn: number = -1;
+  @Input({ transform: booleanAttribute }) nzLockAspectRatio: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPreview: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   @Output() readonly nzResize = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeEnd = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();

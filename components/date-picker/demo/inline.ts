@@ -15,6 +15,14 @@ import { getISOWeek } from 'date-fns';
       <nz-tab nzTitle="Month">
         <nz-date-picker nzInline nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
       </nz-tab>
+      <nz-tab nzTitle="Quarter">
+        <nz-date-picker
+          nzInline
+          nzMode="quarter"
+          [(ngModel)]="date"
+          (ngModelChange)="onChange($event)"
+        ></nz-date-picker>
+      </nz-tab>
       <nz-tab nzTitle="Year">
         <nz-date-picker nzInline nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
       </nz-tab>
@@ -41,6 +49,14 @@ import { getISOWeek } from 'date-fns';
         <nz-range-picker
           nzInline
           nzMode="month"
+          [(ngModel)]="rangeDate"
+          (ngModelChange)="onChange($event)"
+        ></nz-range-picker>
+      </nz-tab>
+      <nz-tab nzTitle="Range Quarter">
+        <nz-range-picker
+          nzInline
+          nzMode="quarter"
           [(ngModel)]="rangeDate"
           (ngModelChange)="onChange($event)"
         ></nz-range-picker>

@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
@@ -98,7 +97,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public ngZone: NgZone,
     public platform: Platform,
     private breakpointService: NzBreakpointService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

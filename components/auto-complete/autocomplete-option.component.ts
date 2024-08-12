@@ -13,15 +13,16 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
@@ -57,25 +58,22 @@ export class NzOptionSelectionChange {
   }
 })
 export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzValue: NzSafeAny;
   @Input() nzLabel?: string;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
   @Output() readonly mouseEntered = new EventEmitter<NzAutocompleteOptionComponent>();
 
   active = false;
   selected = false;
+  nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef<HTMLElement>,
-    @Optional()
-    public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
+    private element: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {

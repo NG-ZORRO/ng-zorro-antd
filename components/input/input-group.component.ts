@@ -18,19 +18,20 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputDirective } from './input.directive';
@@ -134,9 +135,6 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   standalone: true
 })
 export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_nzSearch: BooleanInput;
-  static ngAcceptInputType_nzCompact: BooleanInput;
-
   @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
@@ -148,8 +146,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   @Input() nzStatus: NzStatus = '';
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() @InputBoolean() nzSearch = false;
-  @Input() @InputBoolean() nzCompact = false;
+  @Input({ transform: booleanAttribute }) nzSearch = false;
+  @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
   isSmall = false;
   isAffix = false;
@@ -166,15 +164,15 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
   private destroy$ = new Subject<void>();
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor(
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private directionality: Directionality
   ) {}
 
   updateChildrenInputSize(): void {
