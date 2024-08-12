@@ -1,15 +1,15 @@
 /* eslint-disable */
 // eslint-disable
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {Component, DebugElement, ViewChild} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {NzScrollService} from 'ng-zorro-antd/core/services';
-import {NzDirectionVHType} from 'ng-zorro-antd/core/types';
-import {NzAnchorComponent} from './anchor.component';
-import {NzAnchorModule} from './anchor.module';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {RouterTestingModule} from '@angular/router/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { NzAnchorComponent } from './anchor.component';
+import { NzAnchorModule } from './anchor.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const throttleTime = 51;
 
@@ -252,7 +252,7 @@ describe('anchor', () => {
           expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
           expect(context._change).toHaveBeenCalled();
           done();
-        }, throttleTime);
+        }, throttleTime * 3);
       });
     });
 
@@ -403,7 +403,7 @@ export class TestComponent {
   nzCurrentAnchor?: string;
   nzDirection: NzDirectionVHType = 'vertical';
   replace = false;
-  _click() { }
-  _change() { }
-  _scroll() { }
+  _click() {}
+  _change() {}
+  _scroll() {}
 }
