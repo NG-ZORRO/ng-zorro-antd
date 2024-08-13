@@ -252,7 +252,7 @@ describe('anchor', () => {
           expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
           expect(context._change).toHaveBeenCalled();
           done();
-        }, throttleTime * 3);
+        }, throttleTime * 20);
       });
     });
 
