@@ -1,14 +1,15 @@
 <header id="header" class="clearfix">
-  <span
-    nz-icon
-    class="nav-phone-icon"
-    nzType="unordered-list"
-    *ngIf="isMobile"
-    nzPopoverOverlayClassName="popover-menu"
-    nzPopoverPlacement="bottomLeft"
-    nz-popover
-    [nzPopoverContent]="menu"
-  ></span>
+  @if (isMobile) {
+    <span
+      nz-icon
+      class="nav-phone-icon"
+      nzType="unordered-list"
+      nzPopoverOverlayClassName="popover-menu"
+      nzPopoverPlacement="bottomLeft"
+      nz-popover
+      [nzPopoverContent]="menu"
+    ></span>
+  }
 
   <div nz-row style="flex-flow: nowrap">
     <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
@@ -21,13 +22,15 @@
         [responsive]="responsive"
         (focusChange)="onFocusChange($event)"
       ></div>
-      <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"></ng-container>
+      @if (!isMobile) {
+        <ng-container [ngTemplateOutlet]="menu"></ng-container>
+      }
     </div>
   </div>
 </header>
 <ng-template #menu>
-  <ng-container *ngIf="!searching || windowWidth > 1200">
-    <ng-container *ngIf="windowWidth < 1120; else narrowNavigation">
+  @if (!searching || windowWidth > 1200) {
+    @if (windowWidth < 1120) {
       <ul
         nz-menu
         app-navigation
@@ -40,8 +43,7 @@
         [(language)]="language"
         (languageChange)="onChangeLanguage($event)"
       ></ul>
-    </ng-container>
-    <ng-template #narrowNavigation>
+    } @else {
       <ul
         nz-menu
         app-navigation
@@ -60,16 +62,18 @@
         style="max-width: 126px;"
         [ngModel]="currentVersion"
         (ngModelChange)="onChangeVersion($event)"
-      >
+        >
         <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
-        <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
+        @for (version of oldVersionList; track version) {
+          <nz-option [nzLabel]="version" [nzValue]="version"></nz-option>
+        }
       </nz-select>
       <button
         nz-button
         nzSize="small"
         class="header-button header-lang-butto"
         (click)="onChangeLanguage(language === 'zh' ? 'en' : 'zh')"
-      >
+        >
         {{ language == 'zh' ? 'English' : '中文' }}
       </button>
       <button
@@ -78,10 +82,10 @@
         nzSize="small"
         class="header-button header-direction-button"
         (click)="toggleDirection()"
-      >
+        >
         {{ nextDirection | uppercase }}
       </button>
       <app-github-btn [responsive]="responsive"></app-github-btn>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </ng-template>
