@@ -62,7 +62,7 @@
         style="max-width: 126px;"
         [ngModel]="currentVersion"
         (ngModelChange)="onChangeVersion($event)"
-        >
+      >
         <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
         @for (version of oldVersionList; track version) {
           <nz-option [nzLabel]="version" [nzValue]="version"></nz-option>
@@ -73,7 +73,7 @@
         nzSize="small"
         class="header-button header-lang-butto"
         (click)="onChangeLanguage(language === 'zh' ? 'en' : 'zh')"
-        >
+      >
         {{ language == 'zh' ? 'English' : '中文' }}
       </button>
       <button
@@ -82,7 +82,7 @@
         nzSize="small"
         class="header-button header-direction-button"
         (click)="toggleDirection()"
-        >
+      >
         {{ nextDirection | uppercase }}
       </button>
       <app-github-btn [responsive]="responsive"></app-github-btn>
