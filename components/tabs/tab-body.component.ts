@@ -23,7 +23,7 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (hasBeenActive || forceRender) {
+    @if ((hasBeenActive || forceRender) && !hasBeenDestroy) {
       <ng-template [ngTemplateOutlet]="content"></ng-template>
     }
   `,
@@ -46,16 +46,29 @@ export class NzTabBodyComponent implements OnChanges {
   @Input() active = false;
   @Input() animated = true;
   @Input() forceRender = false;
+  @Input() destroyInactive = false;
 
   /**
    * If this tab is ever activated, then the content should always be rendered.
    */
   protected hasBeenActive = false;
+  /**
+   * When the destroy property is true, this tab will be destroyed when active property change
+   */
+  protected hasBeenDestroy = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     const { active } = changes;
-    if (active?.currentValue) {
-      this.hasBeenActive = true;
+    if (typeof active.currentValue === 'boolean') {
+      if (active.currentValue) {
+        this.hasBeenActive = true;
+        this.hasBeenDestroy = false;
+      }
+
+      // value must change from true to false, avoid previousValue is undefined
+      if (active.previousValue && !active.currentValue && this.destroyInactive) {
+        this.hasBeenDestroy = true;
+      }
     }
   }
 }

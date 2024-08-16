@@ -32,6 +32,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarExtraContent]`  | Extra content in tab bar                                                                  | `TemplateRef<void>`                                 | -                                  |
 | `[nzTabBarStyle]`         | Tab bar style object                                                                      | `object`                                            | -                                  |
 | `[nzTabPosition]`         | Position of tabs                                                                          | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                            |               |
+| `[nzDestroyInactiveTabPane]` | Whether destroy inactive TabPane when change tab | `boolean` | `false`                  |
 | `[nzType]`                | Basic style of tabs                                                                       | `'line' \| 'card' \| 'editable-card'`               | `'line'`                           | ✅            |
 | `[nzTabBarGutter]`        | The gap between tabs                                                                      | `number`                                            | -                                  | ✅            |
 | `[nzHideAll]`             | Whether hide all tabs                                                                     | `boolean`                                           | `false`                            |
@@ -56,6 +57,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | Property          | Description                                                              | Type                          | Default |
 | ----------------- | ------------------------------------------------------------------------ | ----------------------------- | ------- |
 | `[nzTitle]`       | Show text in tab's head                                                  | `string \| TemplateRef<void>` | -       |
+| `[nzDestroyInactiveTabPane]` | Whether destroy inactive TabPane when change tab | `boolean` | `false`                  |
 | `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | `boolean`                     | `false` |
 | `[nzDisabled]`    | tab disable                                                              | `boolean`                     | -       |
 | `(nzClick)`       | title click callback                                                     | `EventEmitter<void>`          | -       |

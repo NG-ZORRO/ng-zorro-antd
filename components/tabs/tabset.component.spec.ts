@@ -31,7 +31,8 @@ describe('NzTabSet', () => {
         AsyncTabsTestComponent,
         NestedTabsTestComponent,
         TabSetWithIndirectDescendantTabsTestComponent,
-        ScrollableTabsTestComponent
+        ScrollableTabsTestComponent,
+        DestroyInactiveTabPaneTestComponent
       ]
     });
 
@@ -786,6 +787,50 @@ describe('NzTabSet', () => {
     }));
   });
 
+  describe('destroyInactiveTabPane tabs', () => {
+    let fixture: ComponentFixture<DestroyInactiveTabPaneTestComponent>;
+    let element: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(DestroyInactiveTabPaneTestComponent);
+      element = fixture.nativeElement;
+    });
+
+    it('should destroy every tab pane when tabs changed', () => {
+      const DEFAULT_INDEX = 0;
+      const component = fixture.debugElement.componentInstance;
+      component.isDestroyInactiveTabs = true;
+      component.selectedIndex = DEFAULT_INDEX;
+
+      fixture.detectChanges();
+
+      component.selectedIndex = DEFAULT_INDEX + 1;
+
+      fixture.detectChanges();
+
+      const tabElements = element.querySelectorAll('.ant-tabs-tabpane');
+      const tabElement = tabElements[DEFAULT_INDEX] as HTMLElement;
+      expect(tabElement.innerText).toEqual('');
+    });
+
+    it('should destroy tab3 pane when active tab is not tab3', () => {
+      const DEFAULT_INDEX = 2;
+      const component = fixture.debugElement.componentInstance;
+      component.isDestroyInactiveTab3 = true;
+      component.selectedIndex = DEFAULT_INDEX;
+
+      fixture.detectChanges();
+
+      component.selectedIndex = DEFAULT_INDEX - 1;
+
+      fixture.detectChanges();
+
+      const tabElements = element.querySelectorAll('.ant-tabs-tabpane');
+      const tabElement = tabElements[DEFAULT_INDEX] as HTMLElement;
+      expect(tabElement.innerText).toEqual('');
+    });
+  });
+
   function checkSelectedIndex(expectedIndex: number, fixture: ComponentFixture<NzSafeAny>): void {
     fixture.detectChanges();
     const tabComponent: NzTabSetComponent = fixture.debugElement.query(By.css('nz-tabset'))!.componentInstance;
@@ -1162,6 +1207,21 @@ const routes: Routes = [
     }
   }
 ];
+
+@Component({
+  template: `
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="isDestroyInactiveTabs">
+      <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
+      <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
+      <nz-tab nzTitle="Tab 3" [nzDestroyInactiveTabPane]="isDestroyInactiveTab3">Content of Tab Pane 3</nz-tab>
+    </nz-tabset>
+  `
+})
+class DestroyInactiveTabPaneTestComponent {
+  selectedIndex: number | null = null;
+  isDestroyInactiveTabs = false;
+  isDestroyInactiveTab3 = false;
+}
 
 function getTranslate(transformValue: string): { x: number; y: number } {
   const match = transformValue.match(/translate\(((?:-)*[0-9]+px), ((?:-)*[0-9]+px)\)/);

@@ -53,6 +53,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzForceRender = false;
+  @Input({ transform: booleanAttribute }) nzDestroyInactiveTabPane = false;
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
   @Output() readonly nzClick = new EventEmitter<void>();

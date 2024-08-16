@@ -35,6 +35,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarExtraContent]`  | tab bar 上额外的元素                                               | `TemplateRef<void>`                                 | -                                     |
 | `[nzTabBarStyle]`         | tab bar 的样式对象                                                 | `object`                                            | -                                     |
 | `[nzTabPosition]`         | 页签位置，可选值有 `top` `right` `bottom` `left`                   | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                               |          |
+| `[nzDestroyInactiveTabPane]` | 被隐藏时是否销毁 DOM 结构 | `boolean` | `false`                  |
 | `[nzType]`                | 页签的基本样式                                                     | `'line' \| 'card' \| 'editable-card'`               | `'line'`                              | ✅       |
 | `[nzTabBarGutter]`        | tabs 之间的间隙                                                    | `number`                                            | -                                     | ✅       |
 | `[nzHideAll]`             | 是否隐藏所有 tab 内容                                              | `boolean`                                           | `false`                               |
@@ -59,6 +60,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | 参数              | 说明                      | 类型                                        | 默认值  |
 | ----------------- | ------------------------- | ------------------------------------------- | ------- |
 | `[nzTitle]`       | 选项卡头显示文字          | `string \| TemplateRef<TabTemplateContext>` | -       |
+| `[nzDestroyInactiveTabPane]` | 被隐藏时是否销毁 DOM 结构 | `boolean`                         | `false` |
 | `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | `boolean`                                   | `false` |
 | `[nzDisabled]`    | 是否禁用                  | `boolean`                                   | -       |
 | `(nzClick)`       | 单击 title 的回调函数     | `EventEmitter<void>`                        | -       |
