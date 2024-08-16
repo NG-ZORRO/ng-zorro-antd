@@ -20,7 +20,7 @@
             [nzXl]="5"
             [nzXXl]="4"
             class="main-menu"
-            >
+          >
             <nz-affix [nzOffsetTop]="0">
               <section class="main-menu-inner">
                 <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
@@ -37,7 +37,7 @@
           [nzLg]="18"
           [nzXl]="19"
           [nzXXl]="20"
-          >
+        >
           <router-outlet></router-outlet>
           <nz-contributors-list></nz-contributors-list>
         </div>
@@ -51,7 +51,7 @@
           [nzLg]="{ span: 18, offset: 6 }"
           [nzXl]="{ span: 19, offset: 5 }"
           [nzXXl]="{ span: 20, offset: 4 }"
-          >
+        >
           <app-fixed-widgets
             [theme]="theme"
             (themeChange)="onThemeChange($event)"
@@ -76,7 +76,7 @@
       <div
         class="drawer-content-wrapper"
         [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'"
-        >
+      >
         <div class="drawer-content">
           <ng-container [ngTemplateOutlet]="sideOrDrawerTpl"></ng-container>
         </div>
