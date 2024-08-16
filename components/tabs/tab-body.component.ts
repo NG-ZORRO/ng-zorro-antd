@@ -53,7 +53,7 @@ export class NzTabBodyComponent implements OnChanges {
    */
   protected hasBeenActive = false;
   /**
-   * When the destroy property is true, this tab will be destroyed when active property change
+   * When the destroyInactive property is true, this tab will be destroyed when active property change
    */
   protected hasBeenDestroy = false;
 
