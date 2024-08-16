@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input, OnDestroy } from '@angular/core';
 import { Subscription, animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
@@ -24,13 +23,14 @@ const BUILD_INDENTS_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? a
 @Component({
   selector: 'nz-tree-node-indents',
   template: `
-    <span class="ant-tree-indent-unit" [class.ant-tree-indent-unit-end]="!isEnd" *ngFor="let isEnd of indents"></span>
+    @for (isEnd of indents; track isEnd) {
+      <span class="ant-tree-indent-unit" [class.ant-tree-indent-unit-end]="!isEnd"></span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-indent'
   },
-  imports: [NgForOf],
   standalone: true
 })
 export class NzTreeNodeIndentsComponent {
