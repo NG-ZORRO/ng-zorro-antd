@@ -487,12 +487,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       } else {
         this.value = [value as string];
       }
+      // need clear selected nodes when user set value before updating
+      this.clearSelectedNodes();
       this.updateSelectedNodes(true);
     } else {
       this.value = [];
-      this.selectedNodes.forEach(node => {
-        this.removeSelected(node, false);
-      });
+      this.clearSelectedNodes();
       this.selectedNodes = [];
     }
     this.cdr.markForCheck();
@@ -707,5 +707,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     if (!this.nzPlacement || !listOfPositions.includes(POSITION_MAP[this.nzPlacement])) {
       this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
     }
+  }
+
+  clearSelectedNodes(): void {
+    this.selectedNodes.forEach(node => {
+      this.removeSelected(node, false);
+    });
   }
 }
