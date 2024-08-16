@@ -23,19 +23,21 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of editRowTable.data" class="editable-row">
-          <td>
-            <div class="editable-cell" [hidden]="editId === data.id" (click)="startEdit(data.id)">
-              {{ data.name }}
-            </div>
-            <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" (blur)="stopEdit()" />
-          </td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-          <td>
-            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
-          </td>
-        </tr>
+        @for (data of editRowTable.data; track data) {
+          <tr class="editable-row">
+            <td>
+              <div class="editable-cell" [hidden]="editId === data.id" (click)="startEdit(data.id)">
+                {{ data.name }}
+              </div>
+              <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" (blur)="stopEdit()" />
+            </td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>
+              <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,

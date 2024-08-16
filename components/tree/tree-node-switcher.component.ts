@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, booleanAttribute } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -13,8 +12,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'nz-tree-node-switcher',
   template: `
-    <ng-container *ngIf="isShowSwitchIcon">
-      <ng-container *ngIf="!isLoading; else loadingTemplate">
+    @if (isShowSwitchIcon) {
+      @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
           <span
             nz-icon
@@ -23,24 +22,27 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
             [class.ant-tree-switcher-icon]="!nzSelectMode"
           ></span>
         </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="nzShowLine">
-      <ng-container *ngIf="!isLoading; else loadingTemplate">
+      } @else {
+        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+      }
+    }
+    @if (nzShowLine) {
+      @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
-          <span
-            *ngIf="isShowLineIcon"
-            nz-icon
-            [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
-            class="ant-tree-switcher-line-icon"
-          ></span>
-          <span *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+          @if (isShowLineIcon) {
+            <span
+              nz-icon
+              [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
+              class="ant-tree-switcher-line-icon"
+            ></span>
+          } @else {
+            <span nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+          }
         </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-template #loadingTemplate>
-      <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
-    </ng-template>
+      } @else {
+        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+      }
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
@@ -54,7 +56,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-tree-switcher_open]': '!nzSelectMode && isSwitcherOpen',
     '[class.ant-tree-switcher_close]': '!nzSelectMode && isSwitcherClose'
   },
-  imports: [NzIconModule, NgIf, NzOutletModule],
+  imports: [NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzTreeNodeSwitcherComponent {
