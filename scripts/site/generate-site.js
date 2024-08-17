@@ -32,7 +32,9 @@ function generate(target) {
   // read components folder
   const rootPath = path.resolve(__dirname, '../../components');
   const rootDir = fs.readdirSync(rootPath);
+  /** @type {ComponentIndexDocMap} */
   const componentsDocMap = {};
+  /** @type {Record.<string, Record.<string, ComponentDemoDoc>>} */
   const componentsMap = {};
   rootDir.forEach(componentName => {
     if (isSyncSpecific) {

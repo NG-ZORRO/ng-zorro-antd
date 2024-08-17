@@ -29,7 +29,10 @@ function findNodeByName(fragment, name, result = []) {
  * @property {string} cover - cover image url
  * @property {string} [subtitle] - subtitle of the component
  * @property {string} [description] - description of the component
- * @property {boolean} [hasDemoPage] - whether the demo page exists
+ * @property {number} [order] - order of the component
+ * @property {boolean} [hidden=false] - whether the documentation is hidden
+ * @property {boolean} [experimental=false] - whether the component is experimental
+ * @property {boolean} [hasDemoPage=false] - whether the demo page exists
  */
 
 /**
