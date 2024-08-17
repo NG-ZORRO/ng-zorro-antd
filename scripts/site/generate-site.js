@@ -52,6 +52,7 @@ function generate(target) {
 
       // handle components->${component}->demo folder
       const demoDirPath = path.join(componentDirPath, 'demo');
+      /** @type {Record.<string, ComponentDemoDoc>} */
       const demoMap = {};
       const debugDemos = new Set();
 
@@ -108,14 +109,23 @@ function generate(target) {
         });
       }
 
+      /**
+       * @typedef ComponentDemoPage
+       * @type {object}
+       * @property {string} raw - raw content of demo page
+       * @property {string} zhCode - chinese code content
+       * @property {string} enCode - english code content
+       */
       // handle components->${component}->page folder, parent component of demo page
-      let pageDemo = '';
+      /** @type {ComponentDemoPage} */
+      let pageDemo;
       const pageDirPath = path.join(componentDirPath, 'page');
       if (fs.existsSync(pageDirPath)) {
         const pageDir = fs.readdirSync(pageDirPath);
         let zhLocale = '';
         let enLocale = '';
         pageDemo = {};
+
         pageDir.forEach(file => {
           if (/.ts$/.test(file)) {
             pageDemo.raw = String(fs.readFileSync(path.join(pageDirPath, file)));
@@ -131,7 +141,18 @@ function generate(target) {
         pageDemo.zhCode = pageDemo.raw.replace(/locale;/g, zhLocale);
       }
 
+      /**
+       *  @typedef ComponentDemo
+       *  @type {object}
+       *  @property {string} name - demo name
+       *  @property {ComponentIndexDoc} docZh - chinese doc content metadata
+       *  @property {ComponentIndexDoc} docEn - english doc content
+       *  @property {Record.<string, ComponentDemoDoc>} demoMap - demo content
+       *  @property {ComponentDemoPage} pageDemo - demo page content
+       */
+
       // handle components->${component}->doc folder
+      /** @type ComponentDemo */
       const result = {
         name: componentName,
         docZh: parseDocMdUtil(

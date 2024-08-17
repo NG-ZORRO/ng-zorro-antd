@@ -2,6 +2,20 @@ const { parse } = require('./marked');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 
+/**
+ * @typedef ComponentIndexDoc
+ * @type {object}
+ * @property {string} path
+ * @property {string} whenToUse
+ * @property {ComponentIndexDocMeta} meta
+ * @property {string} api
+ */
+/**
+ * Parse doc markdown file
+ * @param {string} file
+ * @param {string} path
+ * @return {ComponentIndexDoc} metadata
+ */
 module.exports = function parseDocMd(file, path) {
   // 获取meta信息
   const meta = getMeta(file);

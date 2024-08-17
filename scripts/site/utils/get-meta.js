@@ -20,14 +20,34 @@ function findNodeByName(fragment, name, result = []) {
   }
 }
 
+/**
+ * @typedef ComponentIndexDocMeta
+ * @type {object}
+ * @property {string} category - category of the component
+ * @property {string} type - type of the component
+ * @property {string} title - title of the component
+ * @property {string} cover - cover image url
+ * @property {string} [subtitle] - subtitle of the component
+ * @property {string} [description] - description of the component
+ * @property {boolean} [hasDemoPage] - whether the demo page exists
+ */
+
+/**
+ * Get metadata from markdown file
+ * @param {string} file
+ * @return {ComponentIndexDocMeta}
+ */
 module.exports = function getMeta(file) {
+  /** @type ComponentIndexDocMeta */
   const meta = YFM.loadFront(file);
   const content = parse(meta.__content);
   const fragment = parse5.parseFragment(content);
+  /** @type DocumentFragment[] */
   const paragraphs = [];
   findNodeByName(fragment, ['p', 'li'], paragraphs);
   const contents = paragraphs
     .map(f => {
+      /** @type DocumentFragment[] */
       const c = [];
       findNodeByName(f, ['#text'], c);
       return c;

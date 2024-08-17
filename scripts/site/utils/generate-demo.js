@@ -3,6 +3,11 @@ const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
 
+/**
+ * Generate demos for the component
+ * @param {string} showCaseComponentPath The path of the component
+ * @param {ComponentDemo} result The result of the component
+ */
 module.exports = function (showCaseComponentPath, result) {
   if (result.pageDemo) {
     const pageDemoComponent = generatePageDemoComponent(result);
@@ -19,6 +24,10 @@ module.exports = function (showCaseComponentPath, result) {
   fs.writeFileSync(path.join(showCaseComponentPath, `index.module.ts`), demoModule);
 };
 
+/**
+ * @param {ComponentDemo} content
+ * @return {string}
+ */
 function generateDemoModule(content) {
   const demoModuleTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-module.template.ts')));
   const component = content.name;
@@ -56,6 +65,10 @@ function generateComponentName(component, language) {
   return `NzDemo${componentName(component)}${capitalizeFirstLetter(language)}Component`;
 }
 
+/**
+ * @param {ComponentDemo} content
+ * @return {{zh: string, en: string}}
+ */
 function generatePageDemoComponent(content) {
   const component = content.name;
   let zhOutput = content.pageDemo.zhCode;
@@ -72,6 +85,10 @@ function generatePageDemoComponent(content) {
   };
 }
 
+/**
+ * @param {ComponentDemo} content
+ * @return {{zh: string, en: string}}
+ */
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(
     fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts'))
@@ -95,6 +112,10 @@ function generateDemoComponent(content) {
   };
 }
 
+/**
+ * @param {ComponentDemo} result
+ * @return {{zh: string, en: string}}
+ */
 function generateTemplate(result) {
   const generateTitle = require('./generate.title');
   const innerMap = generateExample(result);
@@ -154,6 +175,13 @@ function wrapperAll(toc, content) {
   return `<article>${toc}${content}</article>`;
 }
 
+/**
+ *
+ * @param {string} language
+ * @param {string }name
+ * @param {Record.<string, ComponentDemoDoc>} demoMap
+ * @return {string}
+ */
 function generateToc(language, name, demoMap) {
   let linkArray = [];
   for (const key in demoMap) {
@@ -173,6 +201,10 @@ function generateToc(language, name, demoMap) {
 </nz-affix>`;
 }
 
+/**
+ * @param {ComponentDemo} result
+ * @return {{zh: string, en: string}}
+ */
 function generateExample(result) {
   const demoMap = result.demoMap;
   const isZhUnion = result.docZh.meta.cols;
@@ -211,6 +243,11 @@ function generateExample(result) {
   };
 }
 
+/**
+ *
+ * @param {string} plainCode - plain code content
+ * @return {Array.<string>}
+ */
 function retrieveEntryComponents(plainCode) {
   const matches = (plainCode + '').match(/^\/\*\s*?declarations:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
