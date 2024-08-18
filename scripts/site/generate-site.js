@@ -188,7 +188,9 @@ function generate(target) {
     // read docs folder
     const docsPath = path.resolve(__dirname, '../../docs');
     const docsDir = fs.readdirSync(docsPath);
+    /** @type {Record.<string, {zh: Buffer, en: Buffer}>} */
     let docsMap = {};
+    /** @type {ComponentIndexDocMap} */
     let docsMeta = {};
     docsDir.forEach(doc => {
       const name = nameWithoutSuffixUtil(doc);
