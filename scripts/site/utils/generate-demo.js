@@ -36,7 +36,13 @@ module.exports = function (showCaseComponentPath, result) {
 function generateDemoModule(content) {
   const demoModuleTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-module.template.ts')));
   const component = content.name;
-  const { imports, declarations } = generateDemoImports(content);
+  let { imports, declarations } = generateDemoImports(content);
+  if (content.pageDemo) {
+    imports += `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
+    imports += `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
+    declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
+    declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
+  }
   return demoModuleTemplate
     .replace(/{{imports}}/g, imports)
     .replace(/{{declarations}}/g, declarations)
@@ -64,12 +70,6 @@ function generateDemoImports(content) {
     imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
     declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
     declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
-  }
-  if (content.pageDemo) {
-    imports += `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
-    imports += `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
-    declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
-    declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
   }
   return { imports, declarations };
 }
@@ -122,17 +122,31 @@ function generateDemoComponent(content) {
   );
   const component = content.name;
 
-  let output = demoComponentTemplate;
-  output = output.replace(/{{component}}/g, component);
-
-  if (content.standalone) {
-    const { imports, declarations } = generateDemoImports(content);
-    output = output.replace(/{{imports}}/g, imports);
-    output = output.replace(/{{declarations}}/g, declarations);
-  }
-
+  let output = demoComponentTemplate.replace(/{{component}}/g, component);
   let zhOutput = output;
   let enOutput = output;
+
+  if (content.standalone) {
+    let { imports, declarations } = generateDemoImports(content);
+
+    if (content.pageDemo) {
+      // zh
+      let zhImports = imports + `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
+      let zhDeclarations = declarations + `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
+      zhOutput = zhOutput.replace(/{{imports}}/g, zhImports);
+      zhOutput = zhOutput.replace(/{{declarations}}/g, zhDeclarations);
+      // en
+      let enImports = imports + `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
+      let enDeclarations = declarations + `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
+      enOutput = enOutput.replace(/{{imports}}/g, enImports);
+      enOutput = enOutput.replace(/{{declarations}}/g, enDeclarations);
+    } else {
+      output = output.replace(/{{imports}}/g, imports);
+      output = output.replace(/{{declarations}}/g, declarations);
+      zhOutput = output;
+      enOutput = output;
+    }
+  }
 
   enOutput = enOutput.replace(/{{componentName}}/g, generateComponentName(component, 'en'));
   enOutput = enOutput.replace(/{{language}}/g, 'en');
@@ -194,13 +208,15 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
       language === 'zh' ? '展开全部代码' : 'Expand All Code'
     }" (click)="expandAllCode()"></span>
 	</h2>
-</section>${example}`;
+</section>
+${example}`;
   } else {
     return `<section class="markdown">
 	${title}
 	<section class="markdown">
 		${whenToUse}
-	</section></section>`;
+	</section>
+</section>`;
   }
 }
 
