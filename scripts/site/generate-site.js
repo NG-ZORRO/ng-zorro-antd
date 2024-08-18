@@ -151,6 +151,7 @@ function generate(target) {
        *  @property {ComponentIndexDoc} docEn - english doc content
        *  @property {Record.<string, ComponentDemoDoc>} demoMap - demo content
        *  @property {ComponentDemoPage} pageDemo - demo page content
+       *  @property {boolean} [standalone] - standalone mode
        */
 
       // handle components->${component}->doc folder
@@ -165,10 +166,15 @@ function generate(target) {
           fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')),
           `components/${componentName}/doc/index.en-US.md`
         ),
+        standalone: !fs.existsSync(path.join(componentDirPath, 'demo/module')),
         demoMap,
         pageDemo
       };
-      componentsDocMap[componentName] = { zh: result.docZh.meta, en: result.docEn.meta };
+      componentsDocMap[componentName] = {
+        zh: result.docZh.meta,
+        en: result.docEn.meta,
+        standalone: result.standalone
+      };
       componentsMap[componentName] = demoMap;
       generateDemo(showCaseComponentPath, result);
       generateDemoCodeFiles(result, showCasePath);

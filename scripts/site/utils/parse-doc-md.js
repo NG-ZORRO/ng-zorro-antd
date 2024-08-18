@@ -12,7 +12,7 @@ const angularNonBindAble = require('./angular-nonbindable');
  */
 /**
  * Parse doc markdown file
- * @param {string} file
+ * @param {Buffer} file
  * @param {string} path
  * @return {ComponentIndexDoc} metadata
  */

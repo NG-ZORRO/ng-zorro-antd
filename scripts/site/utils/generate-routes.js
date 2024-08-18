@@ -20,7 +20,7 @@ function generateLanguageData(itemData, language, reverseMap, key) {
   const experimental = itemData[language].experimental;
   const description = itemData[language].description;
   const hidden = itemData[language].hidden;
-  const content = {
+  const content /** @type {ComponentChildRouter} */ = {
     label: title,
     path: `${experimental ? 'experimental' : 'components'}/${key}/${language}`,
     zh: subtitle,
@@ -50,9 +50,11 @@ function generateNav(componentsDocMap) {
     generateLanguageData(componentsDocMap[key], 'en', reverseMap, key);
     const moduleName = capitalizeFirstLetter(camelCase(key));
     const experimental = componentsDocMap[key]['zh'].experimental || componentsDocMap[key]['en'].experimental;
-    routes += `  {'path': '${
-      experimental ? 'experimental' : 'components'
-    }/${key}', 'loadChildren': () => import('./${key}/index.module').then(m => m.NzDemo${moduleName}Module)},\n`;
+    const routePath = `${experimental ? 'experimental' : 'components'}/${key}`;
+    const loadChildren = componentsDocMap[key].standalone ?
+      `import('./${key}/routes')` :
+      `import('./${key}/index.module').then(m => m.NzDemo${moduleName}Module)`;
+    routes += `  {'path': '${routePath}', 'loadChildren': () => ${loadChildren}},\n`;
   }
   return { reverseMap, routes };
 }

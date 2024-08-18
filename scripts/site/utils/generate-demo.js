@@ -20,8 +20,13 @@ module.exports = function (showCaseComponentPath, result) {
   const demoComponent = generateDemoComponent(result);
   fs.writeFileSync(path.join(showCaseComponentPath, `zh.component.ts`), demoComponent.zh);
   fs.writeFileSync(path.join(showCaseComponentPath, `en.component.ts`), demoComponent.en);
-  const demoModule = generateDemoModule(result);
-  fs.writeFileSync(path.join(showCaseComponentPath, `index.module.ts`), demoModule);
+  if (result.standalone) {
+    const demoRoutes = generateDemoRoutes(result);
+    fs.writeFileSync(path.join(showCaseComponentPath, `routes.ts`), demoRoutes);
+  } else {
+    const demoModule = generateDemoModule(result);
+    fs.writeFileSync(path.join(showCaseComponentPath, `index.module.ts`), demoModule);
+  }
 };
 
 /**
@@ -30,6 +35,19 @@ module.exports = function (showCaseComponentPath, result) {
  */
 function generateDemoModule(content) {
   const demoModuleTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-module.template.ts')));
+  const component = content.name;
+  const { imports, declarations } = generateDemoImports(content);
+  return demoModuleTemplate
+    .replace(/{{imports}}/g, imports)
+    .replace(/{{declarations}}/g, declarations)
+    .replace(/{{component}}/g, componentName(component));
+}
+
+/**
+ * @param {ComponentDemo} content
+ * @return {{imports: string, declarations: string}}
+ */
+function generateDemoImports(content) {
   const component = content.name;
   const demoMap = content.demoMap;
   let imports = '';
@@ -41,20 +59,29 @@ function generateDemoModule(content) {
     imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
     declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
   }
-  imports += `import { NzDemo${componentName(component)}ZhComponent } from './zh.component';\n`;
-  imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
-  declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
-  declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
+  if (!content.standalone) {
+    imports += `import { NzDemo${componentName(component)}ZhComponent } from './zh.component';\n`;
+    imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
+    declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
+    declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
+  }
   if (content.pageDemo) {
     imports += `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
     imports += `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
     declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
     declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
   }
-  return demoModuleTemplate
-    .replace(/{{imports}}/g, imports)
-    .replace(/{{declarations}}/g, declarations)
-    .replace(/{{component}}/g, componentName(component));
+  return { imports, declarations };
+}
+
+/**
+ * @param {ComponentDemo} content
+ * @return {string}
+ */
+function generateDemoRoutes(content) {
+  const demoRoutesTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-routes.template.ts')));
+  const component = content.name;
+  return demoRoutesTemplate.replace(/{{component}}/g, componentName(component));
 }
 
 function componentName(component) {
@@ -91,12 +118,18 @@ function generatePageDemoComponent(content) {
  */
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(
-    fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts'))
+    fs.readFileSync(path.resolve(__dirname, `../template/demo-component${content.standalone ? '.standalone' : ''}.template.ts`))
   );
   const component = content.name;
 
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);
+
+  if (content.standalone) {
+    const { imports, declarations } = generateDemoImports(content);
+    output = output.replace(/{{imports}}/g, imports);
+    output = output.replace(/{{declarations}}/g, declarations);
+  }
 
   let zhOutput = output;
   let enOutput = output;

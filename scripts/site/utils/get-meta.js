@@ -37,7 +37,7 @@ function findNodeByName(fragment, name, result = []) {
 
 /**
  * Get metadata from markdown file
- * @param {string} file
+ * @param {Buffer} file
  * @return {ComponentIndexDocMeta}
  */
 module.exports = function getMeta(file) {
