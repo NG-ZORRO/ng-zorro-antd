@@ -2,8 +2,15 @@ import { Component } from '@angular/core';
 
 import { formatDistance } from 'date-fns';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 @Component({
   selector: 'nz-demo-comment-basic',
+  standalone: true,
+  imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzToolTipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
       <nz-avatar
