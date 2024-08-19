@@ -787,7 +787,7 @@ describe('NzTabSet', () => {
     }));
   });
 
-  describe('destroyInactiveTabPane tabs', () => {
+  describe('destroy inactive tab', () => {
     let fixture: ComponentFixture<DestroyInactiveTabPaneTestComponent>;
     let element: HTMLElement;
 
@@ -813,10 +813,10 @@ describe('NzTabSet', () => {
       expect(tabElement.innerText).toEqual('');
     });
 
-    it('should destroy tab3 pane when active tab is not tab3', () => {
+    it('should destroy single tab pane when tabs changed', () => {
       const DEFAULT_INDEX = 2;
       const component = fixture.debugElement.componentInstance;
-      component.isDestroyInactiveTab3 = true;
+      component.isDestroyInactiveSingleTab = true;
       component.selectedIndex = DEFAULT_INDEX;
 
       fixture.detectChanges();
@@ -1213,14 +1213,14 @@ const routes: Routes = [
     <nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="isDestroyInactiveTabs">
       <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
-      <nz-tab nzTitle="Tab 3" [nzDestroyInactiveTabPane]="isDestroyInactiveTab3">Content of Tab Pane 3</nz-tab>
+      <nz-tab nzTitle="Tab 3" [nzDestroyInactiveTabPane]="isDestroyInactiveSingleTab">Content of Tab Pane 3</nz-tab>
     </nz-tabset>
   `
 })
 class DestroyInactiveTabPaneTestComponent {
   selectedIndex: number | null = null;
   isDestroyInactiveTabs = false;
-  isDestroyInactiveTab3 = false;
+  isDestroyInactiveSingleTab = false;
 }
 
 function getTranslate(transformValue: string): { x: number; y: number } {
