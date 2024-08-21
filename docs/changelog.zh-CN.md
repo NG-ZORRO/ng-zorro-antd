@@ -13,6 +13,18 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 18.1.1
+
+`2024-08-20`
+
+### Bug Fixes
+
+* 修复 [@angular/compiler-cli#56945](https://github.com/angular/angular/issues/56945) 导致的 ngtypecheck reference 问题 ([#8699](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8699)) ([8e459c1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8e459c192cf5c4b1903a744c0548df800aa64bfc))
+* **date-picker:** 修复重新渲染时的 NG0956 警告 ([#8658](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8658)) ([70a0817](https://github.com/NG-ZORRO/ng-zorro-antd/commit/70a0817cd8db49234726f160d9c2ae36f5c650b7))
+* **grid:** 修复示例中的 NG0955 警告 ([#8679](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8679)) ([6414c92](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6414c924cdb013c0ffb96436dd89354e275fa544))
+* **tree-select:** 修改值时清空选中节点 ([#8693](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8693)) ([91927bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91927bcede24a89ffc5ec4c814503547c86ad09e))
+
+
 ## 18.1.0
 
 `2024-07-25`
