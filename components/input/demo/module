@@ -9,6 +9,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { FormsModule } from '@angular/forms';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 export const moduleList = [
   FormsModule,
@@ -21,5 +23,7 @@ export const moduleList = [
   NzIconModule,
   NzToolTipModule,
   NzButtonModule,
-  NzSpaceModule
+  NzSpaceModule,
+  NzTypographyModule,
+  NzFlexModule
  ];
