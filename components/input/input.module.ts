@@ -5,11 +5,10 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzInputOtpComponent } from 'ng-zorro-antd/input/input-otp.component';
-
 import { NzAutosizeDirective } from './autosize.directive';
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputGroupComponent, NzInputGroupWhitSuffixOrPrefixDirective } from './input-group.component';
+import { NzInputOtpComponent } from './input-otp.component';
 import { NzInputDirective } from './input.directive';
 import { NzTextareaCountComponent } from './textarea-count.component';
 
