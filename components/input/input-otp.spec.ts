@@ -1,6 +1,6 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzInputOtpComponent } from 'ng-zorro-antd/input/input-otp.component';
@@ -122,5 +122,102 @@ describe('NzInputOtpComponent', () => {
     inputElements.forEach(input => {
       expect(input.nativeElement.disabled).toBe(true);
     });
+  });
+
+  it('should recreate form group when nzLength changes', () => {
+    component.nzLength = 6;
+    component['createFormGroup']();
+    const initialFormGroup = component.formGroup;
+
+    component.nzLength = 8;
+    component.ngOnChanges({
+      nzLength: {
+        currentValue: 8,
+        previousValue: 6,
+        firstChange: false,
+        isFirstChange: () => false
+      }
+    });
+
+    expect(component.formGroup).not.toBe(initialFormGroup);
+    expect(Object.keys(component.formGroup.controls).length).toBe(8);
+  });
+
+  it('should set disabled state correctly when disabled input changes', () => {
+    component.formGroup = new FormGroup({});
+    const spy = spyOn(component.formGroup, 'disable').and.callThrough();
+    const enableSpy = spyOn(component.formGroup, 'enable').and.callThrough();
+
+    component.disabled = true;
+    component.ngOnChanges({
+      disabled: {
+        currentValue: true,
+        previousValue: false,
+        firstChange: false,
+        isFirstChange: () => false
+      }
+    });
+
+    expect(spy).toHaveBeenCalled();
+    expect(enableSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not set any values if the provided value is empty', () => {
+    const spy = spyOn(component.formGroup.controls[0], 'setValue').and.callThrough();
+
+    component.writeValue('');
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should set formatted values correctly in the form group', () => {
+    component.nzFormatter = value => value.toUpperCase();
+    component['createFormGroup']();
+
+    component.writeValue('abcd');
+
+    expect(component.formGroup.controls[0].value).toBe('A');
+    expect(component.formGroup.controls[1].value).toBe('B');
+    expect(component.formGroup.controls[2].value).toBe('C');
+    expect(component.formGroup.controls[3].value).toBe('D');
+  });
+
+  it('should register onChange callback', () => {
+    const callback = jasmine.createSpy('onChangeCallback');
+    component.registerOnChange(callback);
+
+    component['onChangeCallback']?.('test value');
+
+    expect(callback).toHaveBeenCalledWith('test value');
+  });
+
+  it('should register onTouched callback', () => {
+    const callback = jasmine.createSpy('onTouched');
+    component.registerOnTouched(callback);
+
+    component.onTouched();
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('should enable form group when setDisabledState is called with false', () => {
+    component.formGroup = new FormGroup({});
+    const spy = spyOn(component.formGroup, 'enable').and.callThrough();
+    const disableSpy = spyOn(component.formGroup, 'disable').and.callThrough();
+
+    component.setDisabledState(false);
+
+    expect(spy).toHaveBeenCalled();
+    expect(disableSpy).not.toHaveBeenCalled();
+  });
+
+  it('should call onChangeCallback with the joined internalValue', () => {
+    component['internalValue'] = ['1', '2', '3', '4', '5', '6'];
+    const callback = jasmine.createSpy('onChangeCallback');
+    component['onChangeCallback'] = callback;
+
+    component['emitValue']();
+
+    expect(callback).toHaveBeenCalledWith('123456');
   });
 });
