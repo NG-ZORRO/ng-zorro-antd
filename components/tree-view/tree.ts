@@ -51,7 +51,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
     protected changeDetectorRef: ChangeDetectorRef,
     private directionality: Directionality
   ) {
-    super(differs, changeDetectorRef);
+    super(differs, changeDetectorRef, directionality);
   }
 
   override ngOnInit(): void {
