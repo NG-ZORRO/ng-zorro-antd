@@ -40,7 +40,7 @@ import { NzInputDirective } from 'ng-zorro-antd/input/input.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-otp">
-      @for (item of (!nzMask ? formGroup.controls : maskFormGroup.controls) | keyvalue; track $index) {
+      @for (item of formGroup.controls | keyvalue; track $index) {
         <input
           nz-input
           class="ant-otp-input"
@@ -73,19 +73,15 @@ import { NzInputDirective } from 'ng-zorro-antd/input/input.directive';
 export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
 
-  log(a: NzSafeAny): void {
-    console.log(a);
-  }
-
   @Input() nzLength: number = 6;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) disabled = false;
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormatter: (value: string) => string = value => value;
   @Input() nzMask: string | null = null;
-  formGroup!: FormGroup;
-  maskFormGroup!: FormGroup;
 
+  public formGroup!: FormGroup;
+  private internalValue: string[] = [];
   private onChangeCallback?: (_: NzSafeAny) => void;
   onTouched: OnTouchedType = () => {};
 
@@ -98,10 +94,6 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['nzLength']?.currentValue && changes['nzLength'].currentValue !== changes['nzLength'].previousValue) {
-      this.createFormGroup();
-    }
-
-    if (changes['nzMask']?.currentValue && changes['nzMask'].currentValue !== changes['nzMask'].previousValue) {
       this.createFormGroup();
     }
 
@@ -129,11 +121,17 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   onKeyDown(index: number, event: KeyboardEvent): void {
     const previousInput = this.otpInputs.toArray()[index - 1];
 
-    if (event.key === 'Backspace' && previousInput) {
+    if (event.key === 'Backspace') {
       event.preventDefault();
-      if (!this.nzMask) this.formGroup.controls[index].patchValue('');
-      else this.maskFormGroup.controls[index].patchValue('');
-      this.selectInputBox(index - 1);
+
+      this.internalValue[index] = '';
+      this.formGroup.controls[index.toString()].setValue('', { emitEvent: false });
+
+      if (previousInput) {
+        this.selectInputBox(index - 1);
+      }
+
+      this.emitValue();
     }
   }
 
@@ -141,11 +139,13 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     if (!value) return;
 
     const controlValues = value.split('');
-    for (let i = 0; i < controlValues.length; i++) {
-      const val = this.nzFormatter(controlValues[i]);
-      this.formGroup?.patchValue({ [i.toString()]: val });
-      if (this.nzMask) this.maskFormGroup?.patchValue({ [i.toString()]: this.nzMask }, { emitEvent: false });
-    }
+    this.internalValue = controlValues;
+
+    controlValues.forEach((val, i) => {
+      const formattedValue = this.nzFormatter(val);
+      const value = this.nzMask ? this.nzMask : formattedValue;
+      this.formGroup.controls[i.toString()].setValue(value, { emitEvent: false });
+    });
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -172,60 +172,50 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     for (const char of pastedText.split('')) {
       if (currentIndex < this.nzLength) {
         const formattedChar = this.nzFormatter(char);
-        if (!this.nzMask)
-          this.formGroup.controls[currentIndex.toString()].setValue(formattedChar, { emitEvent: false });
-        else this.maskFormGroup.controls[currentIndex.toString()].setValue(formattedChar);
+        this.internalValue[currentIndex] = char;
+        const maskedValue = this.nzMask ? this.nzMask : formattedChar;
+        this.formGroup.controls[currentIndex.toString()].setValue(maskedValue, { emitEvent: false });
         currentIndex++;
       } else {
         break;
       }
     }
 
-    event.preventDefault(); // this line is needed, otherwise the last index that is going to be selected(next line) will also be filled.
+    event.preventDefault(); // this line is needed, otherwise the last index that is going to be selected will also be filled (in the next line).
     this.selectInputBox(currentIndex);
+    this.emitValue();
   }
 
   private createFormGroup(): void {
     this.formGroup = new FormGroup({});
-    this.maskFormGroup = new FormGroup({});
+    this.internalValue = new Array(this.nzLength).fill('');
 
     for (let i = 0; i < this.nzLength; i++) {
-      this.formGroup.addControl(i.toString(), this.formBuilder.nonNullable.control('', [Validators.required]));
+      const control = this.formBuilder.nonNullable.control('', [Validators.required]);
 
-      if (this.nzMask) {
-        const control = this.formBuilder.nonNullable.control('', [Validators.required]);
-        this.maskFormGroup.addControl(i.toString(), control);
-        control.valueChanges
-          .pipe(
-            tap(value => {
-              this.formGroup.controls[i].patchValue(value);
-              control.patchValue(value ? this.nzMask! : '', { emitEvent: false });
-            }),
-            takeUntil(this.nzDestroyService)
-          )
-          .subscribe();
-      }
+      control.valueChanges
+        .pipe(
+          tap(value => {
+            const unmaskedValue = this.nzFormatter(value);
+            this.internalValue[i] = unmaskedValue;
+
+            control.setValue(this.nzMask ?? unmaskedValue, { emitEvent: false });
+
+            this.emitValue();
+          }),
+          takeUntil(this.nzDestroyService)
+        )
+        .subscribe();
+
+      this.formGroup.addControl(i.toString(), control);
     }
+  }
 
-    this.formGroup.valueChanges
-      .pipe(
-        tap(() => {
-          let result = '';
-          for (const controlName in this.formGroup?.controls) {
-            const control = this.formGroup.controls[controlName];
-            const formatted = this.nzFormatter(control.value);
-
-            result += formatted;
-            control.patchValue(formatted, { emitEvent: false });
-          }
-
-          if (this.onChangeCallback) {
-            this.onChangeCallback(result);
-          }
-        }),
-        takeUntil(this.nzDestroyService)
-      )
-      .subscribe();
+  private emitValue(): void {
+    const result = this.internalValue.join('');
+    if (this.onChangeCallback) {
+      this.onChangeCallback(result);
+    }
   }
 
   private selectInputBox(index: number): void {

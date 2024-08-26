@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nz-flex nzVertical [nzGap]="16">
       <nz-flex nzVertical>
         <h5 nz-typography>With Formatter (Uppercase)</h5>
-        <nz-input-otp [ngModel]="'parsa'" (ngModelChange)="log($event)" [nzFormatter]="formatter"></nz-input-otp>
+        <nz-input-otp [nzFormatter]="formatter"></nz-input-otp>
       </nz-flex>
 
       <nz-flex nzVertical>
@@ -21,17 +21,11 @@ import { Component } from '@angular/core';
 
       <nz-flex nzVertical>
         <h5 nz-typography>With custom display character</h5>
-        <nz-input-otp [ngModel]="'test'" [nzMask]="'🔒'" (ngModelChange)="log($event)"></nz-input-otp>
+        <nz-input-otp [nzMask]="'🔒'"></nz-input-otp>
       </nz-flex>
     </nz-flex>
   `
 })
 export class NzDemoInputOtpComponent {
-  value?: string;
-
   formatter: (value: string) => string = value => value.toUpperCase();
-
-  log(value: string): void {
-    console.log(value);
-  }
 }
