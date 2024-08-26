@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
 
       <nz-flex nzVertical>
         <h5 nz-typography>With custom display character</h5>
-        <nz-input-otp></nz-input-otp>
+        <nz-input-otp [ngModel]="'test'" [nzMask]="'🔒'" (ngModelChange)="log($event)"></nz-input-otp>
       </nz-flex>
     </nz-flex>
   `

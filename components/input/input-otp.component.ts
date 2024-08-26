@@ -40,7 +40,7 @@ import { NzInputDirective } from 'ng-zorro-antd/input/input.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-otp">
-      @for (item of formGroup.controls | keyvalue; track $index) {
+      @for (item of (!nzMask ? formGroup.controls : maskFormGroup.controls) | keyvalue; track $index) {
         <input
           nz-input
           class="ant-otp-input"
@@ -73,12 +73,18 @@ import { NzInputDirective } from 'ng-zorro-antd/input/input.directive';
 export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
 
+  log(a: NzSafeAny): void {
+    console.log(a);
+  }
+
   @Input() nzLength: number = 6;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) disabled = false;
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormatter: (value: string) => string = value => value;
+  @Input() nzMask: string | null = null;
   formGroup!: FormGroup;
+  maskFormGroup!: FormGroup;
 
   private onChangeCallback?: (_: NzSafeAny) => void;
   onTouched: OnTouchedType = () => {};
@@ -95,6 +101,10 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
       this.createFormGroup();
     }
 
+    if (changes['nzMask']?.currentValue && changes['nzMask'].currentValue !== changes['nzMask'].previousValue) {
+      this.createFormGroup();
+    }
+
     if (changes['disabled']) {
       this.setDisabledState(this.disabled);
     }
@@ -107,7 +117,6 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     if (inputElement.value && nextInput) {
       nextInput.nativeElement.focus();
     } else if (!nextInput) {
-      // this.otpInputs.toArray()[index].nativeElement.select();
       this.selectInputBox(index);
     }
   }
@@ -122,8 +131,8 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
     if (event.key === 'Backspace' && previousInput) {
       event.preventDefault();
-      this.formGroup.controls[index].patchValue('');
-      // previousInput.nativeElement.select();
+      if (!this.nzMask) this.formGroup.controls[index].patchValue('');
+      else this.maskFormGroup.controls[index].patchValue('');
       this.selectInputBox(index - 1);
     }
   }
@@ -135,6 +144,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     for (let i = 0; i < controlValues.length; i++) {
       const val = this.nzFormatter(controlValues[i]);
       this.formGroup?.patchValue({ [i.toString()]: val });
+      if (this.nzMask) this.maskFormGroup?.patchValue({ [i.toString()]: this.nzMask }, { emitEvent: false });
     }
   }
 
@@ -162,7 +172,9 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     for (const char of pastedText.split('')) {
       if (currentIndex < this.nzLength) {
         const formattedChar = this.nzFormatter(char);
-        this.formGroup.controls[currentIndex.toString()].setValue(formattedChar, { emitEvent: false });
+        if (!this.nzMask)
+          this.formGroup.controls[currentIndex.toString()].setValue(formattedChar, { emitEvent: false });
+        else this.maskFormGroup.controls[currentIndex.toString()].setValue(formattedChar);
         currentIndex++;
       } else {
         break;
@@ -175,9 +187,24 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
   private createFormGroup(): void {
     this.formGroup = new FormGroup({});
+    this.maskFormGroup = new FormGroup({});
 
     for (let i = 0; i < this.nzLength; i++) {
       this.formGroup.addControl(i.toString(), this.formBuilder.nonNullable.control('', [Validators.required]));
+
+      if (this.nzMask) {
+        const control = this.formBuilder.nonNullable.control('', [Validators.required]);
+        this.maskFormGroup.addControl(i.toString(), control);
+        control.valueChanges
+          .pipe(
+            tap(value => {
+              this.formGroup.controls[i].patchValue(value);
+              control.patchValue(value ? this.nzMask! : '', { emitEvent: false });
+            }),
+            takeUntil(this.nzDestroyService)
+          )
+          .subscribe();
+      }
     }
 
     this.formGroup.valueChanges
