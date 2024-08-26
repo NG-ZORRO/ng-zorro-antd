@@ -1,5 +1,6 @@
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
-export const moduleList = [NzQRCodeModule, NzButtonModule, NzSegmentedModule];
+export const moduleList = [NzQRCodeModule, NzButtonModule, NzIconModule, NzSegmentedModule];
