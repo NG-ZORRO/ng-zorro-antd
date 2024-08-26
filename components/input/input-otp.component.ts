@@ -30,7 +30,8 @@ import { takeUntil, tap } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny, NzSizeLDSType, NzStatus, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { NzInputDirective } from 'ng-zorro-antd/input/input.directive';
+
+import { NzInputDirective } from './input.directive';
 
 @Component({
   selector: 'nz-input-otp',

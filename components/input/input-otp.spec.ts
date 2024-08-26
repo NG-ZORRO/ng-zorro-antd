@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzInputOtpComponent } from './input-otp.component';
+import { NzInputOtpComponent } from 'ng-zorro-antd/input/input-otp.component';
 
 describe('NzInputOtpComponent', () => {
   let component: NzInputOtpComponent;
