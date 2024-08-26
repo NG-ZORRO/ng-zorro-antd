@@ -178,5 +178,19 @@ export default {
   },
   Image: {
     preview: 'Forhåndsvis'
+  },
+  CronExpression: {
+    cronError: 'Ugyldig cron-uttrykk',
+    second: 'sekund',
+    minute: 'minutt',
+    hour: 'time',
+    day: 'dag',
+    month: 'måned',
+    week: 'uke'
+  },
+  QRCode: {
+    expired: 'QR-koden er utløpt',
+    refresh: 'Oppdater',
+    scanned: 'Skannet'
   }
 };
