@@ -40,26 +40,27 @@ import { NzInputDirective } from './input.directive';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="ant-otp">
-      @for (item of formGroup.controls | keyvalue; track $index) {
-        <input
-          nz-input
-          class="ant-otp-input"
-          type="text"
-          maxlength="1"
-          size="1"
-          [nzSize]="nzSize"
-          [formControl]="$any(item.value)"
-          [nzStatus]="nzStatus"
-          (input)="onInput($index, $event)"
-          (focus)="onFocus($event)"
-          (keydown)="onKeyDown($index, $event)"
-          (paste)="onPaste($index, $event)"
-          #otpInput
-        />
-      }
-    </div>
+    @for (item of formGroup.controls | keyvalue; track $index) {
+      <input
+        nz-input
+        class="ant-otp-input"
+        type="text"
+        maxlength="1"
+        size="1"
+        [nzSize]="nzSize"
+        [formControl]="$any(item.value)"
+        [nzStatus]="nzStatus"
+        (input)="onInput($index, $event)"
+        (focus)="onFocus($event)"
+        (keydown)="onKeyDown($index, $event)"
+        (paste)="onPaste($index, $event)"
+        #otpInput
+      />
+    }
   `,
+  host: {
+    class: 'ant-otp'
+  },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
