@@ -20,7 +20,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
       ></nz-avatar>
       <nz-comment-content>
         <p>
-          We supply a series of design principles, practical patterns and high quality design resources (Sketch and
+          We supply a series of design principles, practical patterns and high quality design resources(Sketch and
           Axure), to help people create their product prototypes beautifully and efficiently.
         </p>
       </nz-comment-content>
