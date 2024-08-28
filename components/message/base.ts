@@ -17,9 +17,9 @@ import { NzMessageData, NzMessageDataOptions } from './typings';
 
 let globalCounter = 0;
 
-export abstract class NzMNService {
+export abstract class NzMNService<T extends NzMNContainerComponent> {
   protected abstract componentPrefix: string;
-  protected container?: NzMNContainerComponent;
+  protected container?: T;
 
   constructor(
     protected nzSingletonService: NzSingletonService,
@@ -41,7 +41,7 @@ export abstract class NzMNService {
     return `${this.componentPrefix}-${globalCounter++}`;
   }
 
-  protected withContainer<T extends NzMNContainerComponent>(ctor: ComponentType<T>): T {
+  protected withContainer(ctor: ComponentType<T>): T {
     let containerInstance = this.nzSingletonService.getSingletonWithKey(this.componentPrefix);
     if (containerInstance) {
       return containerInstance as T;
@@ -72,9 +72,14 @@ export abstract class NzMNService {
 }
 
 @Directive()
-export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
-  config?: Required<MessageConfig>;
-  instances: Array<Required<NzMessageData>> = [];
+export abstract class NzMNContainerComponent<
+    C extends MessageConfig = MessageConfig,
+    D extends NzMessageData = NzMessageData
+  >
+  implements OnInit, OnDestroy
+{
+  config?: Required<C>;
+  instances: Array<Required<D>> = [];
 
   private readonly _afterAllInstancesRemoved = new Subject<void>();
 
@@ -98,10 +103,10 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  create(data: NzMessageData): Required<NzMessageData> {
+  create(data: D): Required<D> {
     const instance = this.onCreate(data);
 
-    if (this.instances.length >= this.config!.nzMaxStack) {
+    if (this.instances.length >= this.config!.nzMaxStack!) {
       this.instances = this.instances.slice(1);
     }
 
@@ -136,15 +141,15 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.onAllInstancesRemoved();
   }
 
-  protected onCreate(instance: NzMessageData): Required<NzMessageData> {
+  protected onCreate(instance: D): Required<D> {
     instance.options = this.mergeOptions(instance.options);
     instance.onClose = new Subject<boolean>();
-    return instance as Required<NzMessageData>;
+    return instance as Required<D>;
   }
 
-  protected onRemove(instance: Required<NzMessageData>, userAction: boolean): void {
-    instance.onClose.next(userAction);
-    instance.onClose.complete();
+  protected onRemove(instance: Required<D>, userAction: boolean): void {
+    instance.onClose?.next(userAction);
+    instance.onClose?.complete();
   }
 
   private onAllInstancesRemoved(): void {
@@ -168,8 +173,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
 
 @Directive()
 export abstract class NzMNComponent implements OnInit, OnDestroy {
-  instance!: Required<NzMessageData>;
-  index?: number;
+  abstract instance: Required<NzMessageData>;
 
   readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
   readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();

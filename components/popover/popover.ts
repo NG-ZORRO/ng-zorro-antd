@@ -57,6 +57,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverOverlayClassName') override overlayClassName?: string;
   @Input('nzPopoverOverlayStyle') override overlayStyle?: NgStyleInterface;
 
+  override directiveContent?: NzTSType | null = null;
+
   @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
   // eslint-disable-next-line @angular-eslint/no-output-rename

@@ -56,6 +56,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = true;
   @Input() nzTooltipColor?: string;
 
+  override directiveContent?: NzTSType | null = null;
+  override content?: NzTSType | null = null;
+
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 

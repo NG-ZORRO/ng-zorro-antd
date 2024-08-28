@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -16,11 +16,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   `
 })
 export class NzDemoInputTextareaWithCharacterCountComponent {
+  private formBuilder = inject(FormBuilder);
   form: FormGroup<{
     comment: FormControl<string | null>;
   }> = this.formBuilder.group({
     comment: ['', [Validators.maxLength(100)]]
   });
-
-  constructor(private formBuilder: FormBuilder) {}
 }

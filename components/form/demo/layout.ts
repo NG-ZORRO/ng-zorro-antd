@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 import { NzFormLayoutType } from 'ng-zorro-antd/form';
@@ -50,6 +50,7 @@ import { NzFormLayoutType } from 'ng-zorro-antd/form';
   ]
 })
 export class NzDemoFormLayoutComponent {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormGroup<{
     formLayout: FormControl<NzFormLayoutType>;
     fieldA: FormControl<string>;
@@ -76,6 +77,4 @@ export class NzDemoFormLayoutComponent {
   get isHorizontal(): boolean {
     return this.validateForm.controls.formLayout.value === 'horizontal';
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

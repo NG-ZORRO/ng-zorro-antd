@@ -4,7 +4,7 @@
  */
 
 import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
@@ -26,10 +26,7 @@ import { DateBodyRow, DateCell } from './interface';
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 4;
   override MAX_COL = 3;
-
-  constructor(private dateHelper: DateHelperService) {
-    super();
-  }
+  private dateHelper = inject(DateHelperService);
 
   makeHeadRow(): DateCell[] {
     return [];

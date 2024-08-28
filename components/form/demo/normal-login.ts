@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -55,6 +55,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
   ]
 })
 export class NzDemoFormNormalLoginComponent {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormGroup<{
     userName: FormControl<string>;
     password: FormControl<string>;
@@ -77,6 +78,4 @@ export class NzDemoFormNormalLoginComponent {
       });
     }
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

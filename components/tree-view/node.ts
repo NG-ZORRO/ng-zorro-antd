@@ -131,7 +131,7 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
   standalone: true
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') declare when: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({

@@ -58,13 +58,16 @@ interface Name {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
-  ds = new MyDataSource(this.http);
+  ds!: MyDataSource;
 
   private destroy$ = new Subject<boolean>();
+
   constructor(
     private http: HttpClient,
     private nzMessage: NzMessageService
-  ) {}
+  ) {
+    this.ds = new MyDataSource(this.http);
+  }
 
   ngOnInit(): void {
     this.ds

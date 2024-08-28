@@ -16,7 +16,8 @@ import {
   Output,
   ViewChild,
   ViewEncapsulation,
-  numberAttribute
+  numberAttribute,
+  inject
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -79,11 +80,10 @@ export class NzAvatarComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
-  private el: HTMLElement = this.elementRef.nativeElement;
+  private el: HTMLElement = inject(ElementRef).nativeElement;
 
   constructor(
     public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) {}
 

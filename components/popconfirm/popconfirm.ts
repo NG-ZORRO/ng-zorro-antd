@@ -77,6 +77,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
   @Input() @WithConfig() nzAutofocus: NzAutoFocusType = null;
 
+  override directiveContent?: NzTSType | null = null;
+  override content?: NzTSType | null = null;
+
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopconfirmVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();

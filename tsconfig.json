@@ -31,8 +31,7 @@
     "skipLibCheck": true,
     "types": [
       "jasmine"
-    ],
-    "useDefineForClassFields": false
+    ]
   },
   "angularCompilerOptions": {
     "extendedDiagnostics": {

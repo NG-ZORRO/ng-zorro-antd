@@ -52,8 +52,6 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     }
   }
 
-
-
   hasRangeValue(): boolean {
     return this.selectedValue?.length > 0 || this.hoverValue?.length > 0;
   }

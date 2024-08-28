@@ -1599,9 +1599,11 @@ class NzTestDatePickerStatusComponent {
   `
 })
 class NzTestDatePickerInFormComponent {
-  validateForm = this.fb.group({
-    demo: this.fb.control<Date | null>(null, Validators.required)
-  });
+  validateForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.validateForm = this.fb.group({
+      demo: this.fb.control<Date | null>(null, Validators.required)
+    });
+  }
 }

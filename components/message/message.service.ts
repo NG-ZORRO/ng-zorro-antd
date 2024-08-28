@@ -15,8 +15,7 @@ import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
 @Injectable({
   providedIn: 'root'
 })
-export class NzMessageService extends NzMNService {
-  protected override container?: NzMessageContainerComponent;
+export class NzMessageService extends NzMNService<NzMessageContainerComponent> {
   protected componentPrefix = 'message-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {
