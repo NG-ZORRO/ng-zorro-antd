@@ -106,7 +106,7 @@ import { NzNotificationData } from './typings';
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
   @Input() instance!: Required<NzNotificationData>;
-  @Input() index!: number; // todo: does this used?
+  @Input() index!: number; // todo: does it used anywhere?
   @Input() placement?: string;
 
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
