@@ -10,13 +10,24 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
 
+interface User {
+  author: string;
+  avatar: string;
+}
+
+interface Data extends User {
+  content: string;
+  datetime: Date;
+  displayTime: string;
+}
+
 @Component({
   selector: 'nz-demo-comment-editor',
   standalone: true,
   imports: [FormsModule, NzAvatarModule, NzButtonModule, NzCommentModule, NzFormModule, NzInputModule, NzListModule],
   template: `
     @if (data.length) {
-      <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
         <ng-template #item let-item>
           <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
@@ -44,10 +55,9 @@ import { NzListModule } from 'ng-zorro-antd/list';
   `
 })
 export class NzDemoCommentEditorComponent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[] = [];
+  data: Data[] = [];
   submitting = false;
-  user = {
+  user: User = {
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
   };
