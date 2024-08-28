@@ -3,6 +3,10 @@ import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { DislikeOutline, DislikeTwoTone, LikeOutline, LikeTwoTone } from '@ant-design/icons-angular/icons';
+
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+
 import { NzCommentComponent } from './comment.component';
 import { NzDemoCommentBasicComponent } from './demo/basic';
 import { NzDemoCommentEditorComponent } from './demo/editor';
@@ -12,6 +16,7 @@ import { NzDemoCommentNestedComponent } from './demo/nested';
 describe('NzCommentComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      providers: [provideNzIcons([LikeOutline, DislikeOutline, LikeTwoTone, DislikeTwoTone])],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
