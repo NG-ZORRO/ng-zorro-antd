@@ -18,6 +18,7 @@ import {
   NzSizeMDSType,
   NzTSType
 } from 'ng-zorro-antd/core/types';
+import { NzTableSortOrder } from 'ng-zorro-antd/table';
 
 interface MonacoEnvironment {
   globalAPI?: boolean;
@@ -296,6 +297,7 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  nzSortDirections?: NzTableSortOrder[];
 }
 
 export interface TabsConfig {
