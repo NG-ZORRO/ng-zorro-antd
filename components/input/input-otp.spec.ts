@@ -1,8 +1,9 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzInputOtpComponent } from 'ng-zorro-antd/input/input-otp.component';
 
 describe('NzInputOtpComponent', () => {
@@ -30,8 +31,8 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should initialize form controls based on nzLength', () => {
-    expect(component.formGroup.controls).toBeTruthy();
-    expect(Object.keys(component.formGroup.controls).length).toBe(6);
+    expect(component['otpArray'].controls).toBeTruthy();
+    expect(component['otpArray'].length).toBe(6);
   });
 
   it('should format the value on input using nzFormatter', () => {
@@ -40,7 +41,7 @@ describe('NzInputOtpComponent', () => {
     inputElements[0].triggerEventHandler('input', { target: inputElements[0].nativeElement });
 
     fixture.detectChanges();
-    expect(component.formGroup.controls['0'].value).toBe('A');
+    expect(component['otpArray'].at(0).value).toBe('A');
   });
 
   it('should apply nzMask if defined', () => {
@@ -49,7 +50,7 @@ describe('NzInputOtpComponent', () => {
     inputElements[0].triggerEventHandler('input', { target: inputElements[0].nativeElement });
 
     fixture.detectChanges();
-    expect(component.formGroup.controls['0'].value).toBe('*');
+    expect(component['otpArray'].at(0).value).toBe('*');
     expect(component['internalValue'][0]).toBe('1');
   });
 
@@ -73,7 +74,7 @@ describe('NzInputOtpComponent', () => {
 
     fixture.detectChanges();
     expect(inputElements[0].nativeElement.select).toHaveBeenCalled();
-    expect(component.formGroup.controls['1'].value).toBe('');
+    expect(component['otpArray'].at(1).value).toBe('');
   });
 
   it('should handle paste event and correctly distribute characters', () => {
@@ -87,12 +88,12 @@ describe('NzInputOtpComponent', () => {
     fixture.detectChanges();
 
     expect(event.preventDefault).toHaveBeenCalled();
-    expect(component.formGroup.controls['0'].value).toBe('1');
-    expect(component.formGroup.controls['1'].value).toBe('2');
-    expect(component.formGroup.controls['2'].value).toBe('3');
-    expect(component.formGroup.controls['3'].value).toBe('4');
-    expect(component.formGroup.controls['4'].value).toBe('5');
-    expect(component.formGroup.controls['5'].value).toBe('6');
+    expect(component['otpArray'].at(0).value).toBe('1');
+    expect(component['otpArray'].at(1).value).toBe('2');
+    expect(component['otpArray'].at(2).value).toBe('3');
+    expect(component['otpArray'].at(3).value).toBe('4');
+    expect(component['otpArray'].at(4).value).toBe('5');
+    expect(component['otpArray'].at(5).value).toBe('6');
   });
 
   it('should update internal value correctly on paste event with nzMask', () => {
@@ -107,11 +108,11 @@ describe('NzInputOtpComponent', () => {
     fixture.detectChanges();
 
     expect(event.preventDefault).toHaveBeenCalled();
-    expect(component.formGroup.controls['0'].value).toBe('*');
+    expect(component['otpArray'].at(0).value).toBe('*');
     expect(component['internalValue'][0]).toBe('7');
-    expect(component.formGroup.controls['1'].value).toBe('*');
+    expect(component['otpArray'].at(1).value).toBe('*');
     expect(component['internalValue'][1]).toBe('8');
-    expect(component.formGroup.controls['2'].value).toBe('*');
+    expect(component['otpArray'].at(2).value).toBe('*');
     expect(component['internalValue'][2]).toBe('9');
   });
 
@@ -124,10 +125,10 @@ describe('NzInputOtpComponent', () => {
     });
   });
 
-  it('should recreate form group when nzLength changes', () => {
+  it('should recreate form array when nzLength changes', () => {
     component.nzLength = 6;
-    component['createFormGroup']();
-    const initialFormGroup = component.formGroup;
+    component['createFormArray']();
+    const initialFormArray = component['otpArray'];
 
     component.nzLength = 8;
     component.ngOnChanges({
@@ -139,14 +140,14 @@ describe('NzInputOtpComponent', () => {
       }
     });
 
-    expect(component.formGroup).not.toBe(initialFormGroup);
-    expect(Object.keys(component.formGroup.controls).length).toBe(8);
+    expect(component['otpArray']).not.toBe(initialFormArray);
+    expect(component['otpArray'].length).toBe(8);
   });
 
   it('should set disabled state correctly when disabled input changes', () => {
-    component.formGroup = new FormGroup({});
-    const spy = spyOn(component.formGroup, 'disable').and.callThrough();
-    const enableSpy = spyOn(component.formGroup, 'enable').and.callThrough();
+    (component as NzSafeAny)['otpArray'] = new FormArray([]);
+    const spy = spyOn(component['otpArray'], 'disable').and.callThrough();
+    const enableSpy = spyOn(component['otpArray'], 'enable').and.callThrough();
 
     component.disabled = true;
     component.ngOnChanges({
@@ -163,23 +164,23 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should not set any values if the provided value is empty', () => {
-    const spy = spyOn(component.formGroup.controls[0], 'setValue').and.callThrough();
+    const spy = spyOn(component['otpArray'].at(0), 'setValue').and.callThrough();
 
     component.writeValue('');
 
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('should set formatted values correctly in the form group', () => {
+  it('should set formatted values correctly in the form array', () => {
     component.nzFormatter = value => value.toUpperCase();
-    component['createFormGroup']();
+    component['createFormArray']();
 
     component.writeValue('abcd');
 
-    expect(component.formGroup.controls[0].value).toBe('A');
-    expect(component.formGroup.controls[1].value).toBe('B');
-    expect(component.formGroup.controls[2].value).toBe('C');
-    expect(component.formGroup.controls[3].value).toBe('D');
+    expect(component['otpArray'].at(0).value).toBe('A');
+    expect(component['otpArray'].at(1).value).toBe('B');
+    expect(component['otpArray'].at(2).value).toBe('C');
+    expect(component['otpArray'].at(3).value).toBe('D');
   });
 
   it('should register onChange callback', () => {
@@ -200,10 +201,18 @@ describe('NzInputOtpComponent', () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it('should enable form group when setDisabledState is called with false', () => {
-    component.formGroup = new FormGroup({});
-    const spy = spyOn(component.formGroup, 'enable').and.callThrough();
-    const disableSpy = spyOn(component.formGroup, 'disable').and.callThrough();
+  it('should enable form array when setDisabledState is called with false', () => {
+    component['otpArray'] = new FormArray([
+      new FormControl(''),
+      new FormControl(''),
+      new FormControl(''),
+      new FormControl(''),
+      new FormControl(''),
+      new FormControl('')
+    ]);
+
+    const spy = spyOn(component['otpArray'], 'enable').and.callThrough();
+    const disableSpy = spyOn(component['otpArray'], 'disable').and.callThrough();
 
     component.setDisabledState(false);
 
