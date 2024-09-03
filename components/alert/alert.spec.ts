@@ -253,20 +253,8 @@ describe('NzAlertComponent', () => {
     component = fixture.componentInstance;
     cdr = TestBed.inject(ChangeDetectorRef);
     fixture.detectChanges();
+    cdr.markForCheck();
   });
-
-  it('should call cdr.markForCheck on config change event', fakeAsync(() => {
-    fixture.detectChanges();
-    tick(500);
-
-    spyOn(cdr, 'markForCheck');
-
-    configChangeEvent$.next('alert');
-    tick(500);
-    console.log('before1');
-    expect(cdr.markForCheck).toHaveBeenCalled();
-    console.log('after1');
-  }));
 
   it('should set iconTheme based on nzDescription', () => {
     component.nzDescription = 'Test Description';
@@ -294,4 +282,13 @@ describe('NzAlertComponent', () => {
 
     expect(component.iconTheme).toBe('fill');
   });
+
+  it('should call cdr.markForCheck on config change event', fakeAsync(() => {
+    fixture.detectChanges();
+    spyOn(cdr, 'markForCheck');
+
+    configChangeEvent$.next('alert');
+    tick();
+    expect(cdr.markForCheck).toHaveBeenCalled();
+  }));
 });
