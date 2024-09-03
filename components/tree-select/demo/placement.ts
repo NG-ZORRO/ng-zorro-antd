@@ -6,7 +6,9 @@ export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRig
   template: `
     <nz-space nzDirection="vertical" style="width:100%;">
       <nz-radio-group *nzSpaceItem [(ngModel)]="placement">
-        <label *ngFor="let item of list" nz-radio-button [nzValue]="item">{{ item }}</label>
+        @for (item of list; track item) {
+          <label nz-radio-button [nzValue]="item">{{ item }}</label>
+        }
       </nz-radio-group>
       <nz-tree-select
         *nzSpaceItem

@@ -20,7 +20,7 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzRangePickerComponent } from 'ng-zorro-antd/date-picker/range-picker.component';
-import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
+import { NzPanelChangeType, RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
 import {
   ENTER_EVENT,
   getPickerAbstract,
@@ -795,7 +795,8 @@ describe('NzRangePickerComponent', () => {
     }));
 
     it('should support nzOnPanelChange', fakeAsync(() => {
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      const spy = spyOn(fixtureInstance, 'nzOnPanelChange');
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -806,13 +807,73 @@ describe('NzRangePickerComponent', () => {
         'click'
       );
       fixture.detectChanges();
+
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['month', 'date'],
+        date: [new Date('2018-10-11 11:22:34'), new Date('2018-11-11 11:22:34')]
+      });
+
+      spy.calls.reset();
+
       // Right
       dispatchMouseEvent(
         overlayContainerElement.querySelector('.ant-picker-panel:last-child .ant-picker-header-year-btn')!,
         'click'
       );
       fixture.detectChanges();
-      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith(['month', 'year']);
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['month', 'year'],
+        date: [new Date('2018-10-11 11:22:34'), new Date('2018-11-11 11:22:34')]
+      });
+    }));
+
+    it('should support nzOnPanelChange when click on prev button', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getPreBtn('left'), 'click');
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['date', 'date'],
+        date: [new Date('2018-09-11 11:22:34'), new Date('2018-10-11 11:22:34')]
+      });
+    }));
+    it('should support nzOnPanelChange when click on next button', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getNextBtn('right'), 'click');
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['date', 'date'],
+        date: [new Date('2018-11-11 11:22:34'), new Date('2018-12-11 11:22:34')]
+      });
+    }));
+    it('should support nzOnPanelChange when click on super prev button', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperPreBtn('left'), 'click');
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['date', 'date'],
+        date: [new Date('2017-10-11 11:22:34'), new Date('2017-11-11 11:22:34')]
+      });
+    }));
+    it('should support nzOnPanelChange when click on super next button', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperNextBtn('left'), 'click');
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: ['date', 'date'],
+        date: [new Date('2019-10-11 11:22:34'), new Date('2019-11-11 11:22:34')]
+      });
     }));
 
     it('should support nzOnOk', fakeAsync(() => {
@@ -1268,9 +1329,13 @@ class NzTestRangePickerComponent {
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
   nzSize!: string;
+
   nzOnOpenChange(_: boolean): void {}
+
   modelValue: Array<Date | null> = [];
+
   modelValueChange(_: Date[]): void {}
+
   nzDefaultPickerValue!: Array<Date | null>;
   nzSeparator!: string;
   nzInline: boolean = false;
@@ -1284,8 +1349,10 @@ class NzTestRangePickerComponent {
   nzMode = 'date';
 
   nzRanges: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  nzOnPanelChange(_: string[]): void {}
+  nzOnPanelChange(_: NzPanelChangeType): void {}
+
   nzOnCalendarChange(): void {}
+
   nzOnOk(_: Array<null | Date>): void {}
 
   // --- Suite 2

@@ -1,12 +1,33 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { formatDistance } from 'date-fns';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzListModule } from 'ng-zorro-antd/list';
+
+interface User {
+  author: string;
+  avatar: string;
+}
+
+interface Data extends User {
+  content: string;
+  datetime: Date;
+  displayTime: string;
+}
+
 @Component({
   selector: 'nz-demo-comment-editor',
+  standalone: true,
+  imports: [FormsModule, NzAvatarModule, NzButtonModule, NzCommentModule, NzFormModule, NzInputModule, NzListModule],
   template: `
     @if (data.length) {
-      <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
         <ng-template #item let-item>
           <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
@@ -34,10 +55,9 @@ import { formatDistance } from 'date-fns';
   `
 })
 export class NzDemoCommentEditorComponent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[] = [];
+  data: Data[] = [];
   submitting = false;
-  user = {
+  user: User = {
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
   };

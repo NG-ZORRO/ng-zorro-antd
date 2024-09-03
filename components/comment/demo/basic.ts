@@ -2,8 +2,15 @@ import { Component } from '@angular/core';
 
 import { formatDistance } from 'date-fns';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 @Component({
   selector: 'nz-demo-comment-basic',
+  standalone: true,
+  imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzToolTipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
       <nz-avatar
@@ -13,14 +20,14 @@ import { formatDistance } from 'date-fns';
       ></nz-avatar>
       <nz-comment-content>
         <p>
-          We supply a series of design principles, practical patterns and high quality design resources (Sketch and
+          We supply a series of design principles, practical patterns and high quality design resources(Sketch and
           Axure), to help people create their product prototypes beautifully and efficiently.
         </p>
       </nz-comment-content>
       <nz-comment-action>
         <span
           nz-tooltip
-          nzTitle="Like"
+          nzTooltipTitle="Like"
           nz-icon
           nzType="like"
           [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
@@ -31,7 +38,7 @@ import { formatDistance } from 'date-fns';
       <nz-comment-action>
         <span
           nz-tooltip
-          nzTitle="Dislike"
+          nzTooltipTitle="Dislike"
           nz-icon
           nzType="dislike"
           [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
