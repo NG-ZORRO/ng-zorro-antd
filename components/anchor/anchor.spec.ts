@@ -1,5 +1,4 @@
 /* eslint-disable */
-// eslint-disable
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -33,7 +32,7 @@ describe('anchor', () => {
   afterEach(() => context.comp.ngOnDestroy());
 
   describe('[default]', () => {
-    it(`should scolling to target via click a link`, () => {
+    it(`should scrolling to target via click a link`, () => {
       spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
         if (options.callback) {
           options.callback();
@@ -51,7 +50,7 @@ describe('anchor', () => {
       expect(context.comp['destroy$']!.isStopped).toBeTruthy();
     });
 
-    it('should actived when scrolling to the anchor', (done: () => void) => {
+    it('should activated when scrolling to the anchor', (done: () => void) => {
       expect(context._scroll).not.toHaveBeenCalled();
       page.scrollTo();
       setTimeout(() => {
@@ -62,7 +61,7 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
-    it('should actived when scrolling to the anchor - horizontal', (done: () => void) => {
+    it('should activated when scrolling to the anchor - horizontal', (done: () => void) => {
       context.nzDirection = 'horizontal';
       fixture.detectChanges();
       expect(context._scroll).not.toHaveBeenCalled();
@@ -75,7 +74,7 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
-    it('should clean actived when leave all anchor', fakeAsync(() => {
+    it('should clean activated when leave all anchor', fakeAsync(() => {
       spyOn(context.comp, 'clearActive' as any);
       page.scrollTo();
       tick(throttleTime);
@@ -88,7 +87,7 @@ describe('anchor', () => {
       expect(context.comp['clearActive']!).toHaveBeenCalled();
     }));
 
-    it(`won't scolling when is not exists link`, () => {
+    it(`won't scrolling when is not exists link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
@@ -96,7 +95,7 @@ describe('anchor', () => {
       expect(srv.getScroll).not.toHaveBeenCalled();
     });
 
-    it(`won't scolling when is invalid link`, () => {
+    it(`won't scrolling when is invalid link`, () => {
       spyOn(srv, 'getScroll');
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
@@ -302,9 +301,9 @@ describe('anchor', () => {
       [nzContainer]="nzContainer"
       [nzCurrentAnchor]="nzCurrentAnchor"
       [nzDirection]="nzDirection"
-      (nzClick)="_click($event)"
-      (nzScroll)="_scroll($event)"
-      (nzChange)="_change($event)"
+      (nzClick)="_click()"
+      (nzScroll)="_scroll()"
+      (nzChange)="_change()"
     >
       <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
       <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
