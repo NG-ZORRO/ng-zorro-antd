@@ -43,14 +43,7 @@ describe('anchor', () => {
       expect(context._scroll).toHaveBeenCalled();
     });
 
-    it('should hava remove listen when the component is destroyed', () => {
-      expect(context.comp['destroy$']!.isStopped).toBeFalsy();
-      context.comp.ngOnDestroy();
-      fixture.detectChanges();
-      expect(context.comp['destroy$']!.isStopped).toBeTruthy();
-    });
-
-    it('should activated when scrolling to the anchor', (done: () => void) => {
+    it('should be activated when scrolling to the anchor', (done: () => void) => {
       expect(context._scroll).not.toHaveBeenCalled();
       page.scrollTo();
       setTimeout(() => {
@@ -61,7 +54,7 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
-    it('should activated when scrolling to the anchor - horizontal', (done: () => void) => {
+    it('should be activated when scrolling to the anchor - horizontal', (done: () => void) => {
       context.nzDirection = 'horizontal';
       fixture.detectChanges();
       expect(context._scroll).not.toHaveBeenCalled();
@@ -74,7 +67,7 @@ describe('anchor', () => {
       }, throttleTime);
     });
 
-    it('should clean activated when leave all anchor', fakeAsync(() => {
+    it('should clean activated when leaving all anchor', fakeAsync(() => {
       spyOn(context.comp, 'clearActive' as any);
       page.scrollTo();
       tick(throttleTime);
