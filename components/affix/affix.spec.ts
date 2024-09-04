@@ -1,4 +1,4 @@
-import { BidiModule, Dir, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { Component, DebugElement, ElementRef, Renderer2, ViewChild } from '@angular/core';
@@ -358,7 +358,7 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it(`emit false when is unaffixed`, fakeAsync(() => {
+    it(`emit false when isn't affixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
       emitScroll(window, defaultOffsetTop + startOffset - 1);
@@ -524,8 +524,7 @@ describe('affix RTL', () => {
     dl = fixture.debugElement;
   }));
   it('should className correct on dir change', fakeAsync(() => {
-    const value = 10;
-    context.newOffsetBottom = value;
+    context.newOffsetBottom = 10;
     context.fakeTarget = window;
     fixture.detectChanges();
     const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
@@ -555,7 +554,7 @@ describe('affix RTL', () => {
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget: string | Element | Window | null = null;
+  fakeTarget?: string | Element | Window;
   newOffset!: number;
   newOffsetBottom!: number;
 }
@@ -572,10 +571,10 @@ class TestAffixComponent {
 })
 export class TestAffixRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget: string | Element | Window | null = null;
+  fakeTarget?: string | Element | Window;
   newOffset!: number;
   newOffsetBottom!: number;
 }
