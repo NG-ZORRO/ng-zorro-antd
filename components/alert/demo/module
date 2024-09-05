@@ -1,5 +1,0 @@
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-
-export const moduleList = [ NzAlertModule, NzButtonModule, NzSpaceModule ];
