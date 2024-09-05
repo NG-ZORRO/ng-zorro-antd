@@ -244,7 +244,7 @@ function generateToc(language, name, demoMap) {
   const links = linkArray.map(link => link.content).join('');
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
-    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed>
         ${links}
     </nz-anchor>
 </nz-affix>`;
