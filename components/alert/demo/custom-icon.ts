@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-alert-custom-icon',
+  imports: [NzAlertModule],
   template: `
     <nz-alert
       nzType="success"
@@ -14,13 +18,6 @@ import { Component } from '@angular/core';
     <ng-template #customIconTemplate>
       <div> S </div>
     </ng-template>
-  `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoAlertCustomIconComponent {}

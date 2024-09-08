@@ -1,9 +1,11 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
 
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzAlertComponent } from './alert.component';
@@ -202,7 +204,7 @@ export class NzDemoTestBannerComponent {}
 })
 export class NzTestAlertRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
@@ -221,3 +223,72 @@ export class NzTestAlertRtlComponent {
   `
 })
 export class NzTestAlertCustomIconComponent {}
+
+describe('NzAlertComponent', () => {
+  let component: NzAlertComponent;
+  let fixture: ComponentFixture<NzAlertComponent>;
+  let cdr: ChangeDetectorRef;
+  let configChangeEvent$: Subject<string>;
+
+  beforeEach(() => {
+    configChangeEvent$ = new Subject<string>();
+    const nzConfigServiceSpy = jasmine.createSpyObj('NzConfigService', {
+      getConfigChangeEventForComponent: configChangeEvent$.asObservable(),
+      getConfigForComponent: {}
+    });
+
+    TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule],
+      providers: [
+        NzAlertComponent,
+        { provide: NzConfigService, useValue: nzConfigServiceSpy },
+        {
+          provide: ChangeDetectorRef,
+          useValue: jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck', 'detectChanges'])
+        }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzAlertComponent);
+    component = fixture.componentInstance;
+    cdr = TestBed.inject(ChangeDetectorRef);
+    fixture.detectChanges();
+    cdr.markForCheck();
+  });
+
+  it('should set iconTheme based on nzDescription', () => {
+    component.nzDescription = 'Test Description';
+
+    component.ngOnChanges({
+      nzDescription: {
+        currentValue: 'Test Description',
+        firstChange: true,
+        isFirstChange: () => true,
+        previousValue: undefined
+      }
+    });
+
+    expect(component.iconTheme).toBe('outline');
+
+    component.nzDescription = null;
+    component.ngOnChanges({
+      nzDescription: {
+        currentValue: null,
+        firstChange: false,
+        isFirstChange: () => false,
+        previousValue: 'Test Description'
+      }
+    });
+
+    expect(component.iconTheme).toBe('fill');
+  });
+
+  it('should call cdr.markForCheck on config change event', fakeAsync(() => {
+    fixture.detectChanges();
+    spyOn(cdr, 'markForCheck');
+
+    configChangeEvent$.next('alert');
+    tick();
+    expect(cdr.markForCheck).toHaveBeenCalled();
+  }));
+});
