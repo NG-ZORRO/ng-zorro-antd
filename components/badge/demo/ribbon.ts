@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzCardModule } from 'ng-zorro-antd/card';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-badge-ribbon',
+  imports: [NzBadgeModule, NzCardModule],
   template: `
     <nz-ribbon nzText="Hippies">
       <nz-card nzTitle="Pushes open the window" nzSize="small"> And raises the spyglass. </nz-card>

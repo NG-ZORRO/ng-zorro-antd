@@ -1,10 +1,19 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-badge-dot',
+  imports: [NzBadgeModule, NzIconModule],
   template: `
-    <nz-badge nzDot><span nz-icon nzType="notification"></span></nz-badge>
-    <nz-badge nzDot [nzShowDot]="false"><span nz-icon nzType="notification"></span></nz-badge>
+    <nz-badge nzDot>
+      <span nz-icon nzType="notification"></span>
+    </nz-badge>
+    <nz-badge nzDot [nzShowDot]="false">
+      <span nz-icon nzType="notification"></span>
+    </nz-badge>
     <nz-badge nzDot>
       <a>Link something</a>
     </nz-badge>
