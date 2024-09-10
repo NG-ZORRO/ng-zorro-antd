@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzButtonSize } from 'ng-zorro-antd/button';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-button-size',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzIconModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="large">Large</label>
@@ -17,9 +22,15 @@ import { NzButtonSize } from 'ng-zorro-antd/button';
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <a nz-button [nzSize]="size" nzType="link">Link</a>
     <br />
-    <button nz-button nzType="primary" [nzSize]="size"><span nz-icon nzType="download"></span></button>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><span nz-icon nzType="download"></span></button>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><span nz-icon nzType="download"></span></button>
+    <button nz-button nzType="primary" [nzSize]="size">
+      <span nz-icon nzType="download"></span>
+    </button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle">
+      <span nz-icon nzType="download"></span>
+    </button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="round">
+      <span nz-icon nzType="download"></span>
+    </button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="round">
       <span nz-icon nzType="download"></span>
       Download
