@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-badge-link',
+  imports: [NzBadgeModule],
   template: `
     <a>
       <nz-badge [nzCount]="5">
