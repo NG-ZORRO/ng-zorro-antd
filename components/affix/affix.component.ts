@@ -62,11 +62,11 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   @Input() nzTarget?: string | Element | Window;
 
   @Input({ transform: numberAttributeWithZeroFallback })
-  @WithConfig<number | null>()
+  @WithConfig()
   nzOffsetTop?: null | number;
 
   @Input({ transform: numberAttributeWithZeroFallback })
-  @WithConfig<number | null>()
+  @WithConfig()
   nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();

@@ -23,6 +23,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
   booleanAttribute,
+  forwardRef,
   inject
 } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
@@ -72,7 +73,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-graph',
   exportAs: 'nzGraph',
-  providers: [{ provide: NzGraph, useExisting: NzGraphComponent }],
+  providers: [{ provide: NzGraph, useExisting: forwardRef(() => NzGraphComponent) }],
   template: `
     <ng-content></ng-content>
     <svg width="100%" height="100%">

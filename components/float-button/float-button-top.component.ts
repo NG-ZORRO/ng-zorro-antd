@@ -12,13 +12,13 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -31,8 +31,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
-import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzFloatButtonComponent } from './float-button.component';
@@ -75,11 +73,9 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
 })
 export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzVisibilityHeight: NumberInput;
-  static ngAcceptInputType_nzDuration: NumberInput;
 
   private scrollListenerDestroy$ = new Subject<void>();
-  private target: HTMLElement | null = null;
+  private target?: HTMLElement | null = null;
 
   visible: boolean = false;
   dir: Direction = 'ltr';
@@ -91,9 +87,9 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzDescription: TemplateRef<void> | null = null;
 
   @Input() nzTemplate?: TemplateRef<void>;
-  @Input() @WithConfig() @InputNumber() nzVisibilityHeight: number = 400;
+  @Input({ transform: numberAttribute }) @WithConfig() nzVisibilityHeight: number = 400;
   @Input() nzTarget?: string | HTMLElement;
-  @Input() @InputNumber() nzDuration: number = 450;
+  @Input({ transform: numberAttribute }) nzDuration: number = 450;
   @Output() readonly nzOnClick: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild('backTop', { static: false })
@@ -114,10 +110,10 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  private doc = inject(DOCUMENT);
   private backTopClickSubscription = Subscription.EMPTY;
 
   constructor(
-    @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private platform: Platform,
@@ -125,7 +121,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
     private zone: NgZone,
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.dir = this.directionality.value;
   }
