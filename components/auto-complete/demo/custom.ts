@@ -1,14 +1,20 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-auto-complete-custom',
+  imports: [FormsModule, NzAutocompleteModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
       <textarea
         placeholder="input here"
         nz-input
-        row="4"
+        rows="4"
         [(ngModel)]="inputValue"
         (input)="onInput($event)"
         [nzAutocomplete]="auto"
