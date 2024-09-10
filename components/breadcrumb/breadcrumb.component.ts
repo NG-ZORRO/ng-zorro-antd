@@ -16,7 +16,8 @@ import {
   Renderer2,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  forwardRef
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -39,7 +40,7 @@ export interface BreadcrumbOption {
   selector: 'nz-breadcrumb',
   exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
-  providers: [{ provide: NzBreadcrumb, useExisting: NzBreadCrumbComponent }],
+  providers: [{ provide: NzBreadcrumb, useExisting: forwardRef(() => NzBreadCrumbComponent) }],
   standalone: true,
   imports: [NzBreadCrumbItemComponent],
   template: `

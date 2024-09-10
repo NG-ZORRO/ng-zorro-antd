@@ -18,6 +18,7 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  forwardRef,
   inject,
   Input,
   NgZone,
@@ -67,7 +68,7 @@ let nextId = 0;
   providers: [
     {
       provide: NZ_TAB_SET,
-      useExisting: NzTabSetComponent
+      useExisting: forwardRef(() => NzTabSetComponent)
     }
   ],
   template: `

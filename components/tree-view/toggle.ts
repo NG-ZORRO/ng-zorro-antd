@@ -4,7 +4,7 @@
  */
 
 import { CdkTreeNodeToggle } from '@angular/cdk/tree';
-import { booleanAttribute, Directive, Input } from '@angular/core';
+import { booleanAttribute, Directive, forwardRef, Input } from '@angular/core';
 
 @Directive({
   selector: 'nz-tree-node-toggle[nzTreeNodeNoopToggle], [nzTreeNodeNoopToggle]',
@@ -17,7 +17,7 @@ export class NzTreeNodeNoopToggleDirective {}
 
 @Directive({
   selector: 'nz-tree-node-toggle:not([nzTreeNodeNoopToggle]), [nzTreeNodeToggle]',
-  providers: [{ provide: CdkTreeNodeToggle, useExisting: NzTreeNodeToggleDirective }],
+  providers: [{ provide: CdkTreeNodeToggle, useExisting: forwardRef(() => NzTreeNodeToggleDirective) }],
   host: {
     class: 'ant-tree-switcher',
     '[class.ant-tree-switcher_open]': 'isExpanded',

@@ -25,6 +25,7 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  forwardRef,
   inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -144,7 +145,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '(click)': 'open()'
   },
   animations: [slideMotion],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerComponent), multi: true }],
   imports: [
     AsyncPipe,
     FormsModule,
