@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-anchor-horizontal-anchor',
+  imports: [NzAnchorModule],
   template: `
     <nz-anchor [nzDirection]="'horizontal'">
       <nz-link nzHref="#components-anchor-demo-basic" nzTitle="Basic demo"></nz-link>
