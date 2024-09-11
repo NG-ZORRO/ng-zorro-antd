@@ -1,7 +1,9 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzCardComponent } from './card.component';
 import { NzCardModule } from './card.module';
@@ -147,7 +149,7 @@ describe('card', () => {
   `
 })
 class TestCardSizeComponent {
-  size = 'default';
+  size: NzSizeDSType = 'default';
 }
 
 @Component({
@@ -163,5 +165,5 @@ class TestCardSizeComponent {
 })
 export class NzTestCardRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
