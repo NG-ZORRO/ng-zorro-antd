@@ -106,6 +106,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           [dateRender]="dateRender"
           [selectedValue]="$any(datePickerService?.value)"
           [hoverValue]="$any(hoverValue)"
+          [format]="format"
           (cellHover)="onCellHover($event)"
           (selectDate)="changeValueFromSelect($event, !showTime)"
           (selectTime)="onSelectTime($event, partType)"
@@ -164,6 +165,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() panelMode!: NzDateMode | NzDateMode[];
   @Input() defaultPickerValue!: CompatibleDate | undefined | null;
   @Input() dir: Direction = 'ltr';
+  @Input() format?: string;
 
   @Output() readonly panelModeChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
