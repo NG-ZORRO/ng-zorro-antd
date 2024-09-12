@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -15,14 +15,6 @@ import { NzCarouselTransformNoLoopStrategy } from './strategies/experimental/tra
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
 
 describe('carousel', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent, NzTestCarouselRtlComponent, NzTestCarouselActiveIndexComponent]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('carousel basic', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
@@ -332,9 +324,6 @@ describe('carousel', () => {
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
       }));
     });
-
-    // already covered in components specs.
-    // describe('opacity strategy', () => {});
   });
 
   describe('carousel nzAfterChange return value', () => {
@@ -366,8 +355,6 @@ describe('carousel custom strategies', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent],
       providers: [
         {
           provide: NZ_CAROUSEL_CUSTOM_STRATEGIES,
@@ -448,8 +435,9 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 }
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-carousel',
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel
       [nzEffect]="effect"
@@ -487,6 +475,8 @@ export class NzTestCarouselBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestCarouselBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-carousel></nz-test-carousel>
@@ -495,10 +485,12 @@ export class NzTestCarouselBasicComponent {
 })
 export class NzTestCarouselRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel (nzAfterChange)="afterChange($event)">
       @for (index of array; track index) {
