@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -160,7 +160,7 @@ describe('checkbox', () => {
     let fixture: ComponentFixture<NzTestCheckboxGroupComponent>;
     let testComponent: NzTestCheckboxGroupComponent;
     let checkboxGroup: DebugElement;
-    let checkboxs: HTMLElement[];
+    let checkboxes: HTMLElement[];
 
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestCheckboxGroupComponent);
@@ -169,42 +169,42 @@ describe('checkbox', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       checkboxGroup = fixture.debugElement.query(By.directive(NzCheckboxGroupComponent));
-      checkboxs = checkboxGroup.nativeElement.children;
+      checkboxes = checkboxGroup.nativeElement.children;
     }));
     it('should className correct', fakeAsync(() => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(checkboxGroup.nativeElement.classList).toContain('ant-checkbox-group');
-      expect(checkboxs[0].firstElementChild!.classList).toContain('ant-checkbox-checked');
-      expect(checkboxs[1].firstElementChild!.classList).toContain('ant-checkbox-disabled');
-      expect(checkboxs[1].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
-      expect(checkboxs[2].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[0].firstElementChild!.classList).toContain('ant-checkbox-checked');
+      expect(checkboxes[1].firstElementChild!.classList).toContain('ant-checkbox-disabled');
+      expect(checkboxes[1].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[2].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     }));
     it('should click correct', () => {
       fixture.detectChanges();
       fixture.detectChanges();
-      checkboxs[0].click();
+      checkboxes[0].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      expect(checkboxs[0].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[0].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should sub disabled work', () => {
       fixture.detectChanges();
       fixture.detectChanges();
-      checkboxs[1].click();
+      checkboxes[1].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      expect(checkboxs[1].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[1].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should all disabled work', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       fixture.detectChanges();
-      checkboxs[2].click();
+      checkboxes[2].click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      expect(checkboxs[2].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[2].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
     });
     it('should ngModel work', fakeAsync(() => {
       fixture.detectChanges();
@@ -212,7 +212,7 @@ describe('checkbox', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(checkboxs[0].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
+      expect(checkboxes[0].firstElementChild!.classList).not.toContain('ant-checkbox-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
   });
@@ -518,7 +518,7 @@ export class NzTestCheckboxGroupFormComponent {
 })
 export class NzTestCheckboxSingleRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
@@ -530,5 +530,5 @@ export class NzTestCheckboxSingleRtlComponent {
 })
 export class NzTestCheckboxGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
