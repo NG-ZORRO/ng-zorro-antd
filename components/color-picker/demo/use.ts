@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-color-picker-use',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzColorPickerModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
