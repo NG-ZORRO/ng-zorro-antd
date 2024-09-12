@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -35,6 +35,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
   `
 })
 export class NzDemoFormDynamicRuleComponent {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormGroup<{
     name: FormControl<string>;
     nickname: FormControl<string>;
@@ -68,6 +69,4 @@ export class NzDemoFormDynamicRuleComponent {
     }
     this.validateForm.controls.nickname.updateValueAndValidity();
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

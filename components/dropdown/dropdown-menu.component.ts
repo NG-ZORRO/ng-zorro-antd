@@ -70,6 +70,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
 })
 export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
   mouseState$ = new BehaviorSubject<boolean>(false);
+  public nzMenuService = inject(MenuService);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   animationStateChange$ = new EventEmitter<AnimationEvent>();
@@ -100,7 +101,6 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
     private elementRef: ElementRef,
     private renderer: Renderer2,
     public viewContainerRef: ViewContainerRef,
-    public nzMenuService: MenuService,
     private directionality: Directionality
   ) {}
   ngOnInit(): void {

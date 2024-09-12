@@ -2279,9 +2279,11 @@ export class NzDemoCascaderStatusComponent {
   `
 })
 export class NzDemoCascaderInFormComponent {
-  validateForm = this.fb.group({
-    demo: this.fb.control<string[] | null>(null, Validators.required)
-  });
+  validateForm: FormGroup;
   public nzOptions: any[] | null = options1;
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.validateForm = this.fb.group({
+      demo: this.fb.control<string[] | null>(null, Validators.required)
+    });
+  }
 }

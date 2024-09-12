@@ -1,20 +1,13 @@
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { DateTableComponent } from './date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month-table.component';
 
-registerLocaleData(zh);
-
 describe('Coverage supplements', () => {
   let componentInstance: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  let dateHelper: DateHelperService;
-  let i18n: NzI18nService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -23,14 +16,6 @@ describe('Coverage supplements', () => {
 
     TestBed.compileComponents();
   }));
-
-  beforeEach(inject(
-    [NzI18nService, DateHelperService],
-    (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
-      dateHelper = dateHelperService;
-      i18n = i18nService;
-    }
-  ));
 
   // describe('CalendarHeader', () => {
   //   beforeEach(() => {
@@ -81,7 +66,7 @@ describe('Coverage supplements', () => {
   // TODO: Unit test of date-table and month-table
   describe('DateTable', () => {
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n, dateHelper);
+      componentInstance = new DateTableComponent();
     });
 
     it('should cover untouched branches', () => {
@@ -94,7 +79,7 @@ describe('Coverage supplements', () => {
 
   describe('MonthTable', () => {
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(dateHelper);
+      componentInstance = new MonthTableComponent();
     });
 
     it('should cover untouched branches', () => {

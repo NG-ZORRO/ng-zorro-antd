@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormRecord, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -80,6 +80,7 @@ import { FormControl, FormRecord, NonNullableFormBuilder, Validators } from '@an
   ]
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormRecord<FormControl<string>> = this.fb.record({});
   listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
@@ -122,8 +123,6 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
       });
     }
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
     this.addField();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -57,6 +57,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   ]
 })
 export class NzDemoFormTimeRelatedControlsComponent {
+  private fb = inject(FormBuilder);
   validateForm: FormGroup<{
     datePicker: FormControl<Date | null>;
     datePickerTime: FormControl<Date | null>;
@@ -76,6 +77,4 @@ export class NzDemoFormTimeRelatedControlsComponent {
   submitForm(): void {
     console.log(this.validateForm.value);
   }
-
-  constructor(private fb: FormBuilder) {}
 }

@@ -5,7 +5,7 @@
 
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap, takeUntil } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -15,6 +15,7 @@ import { NzMenuModeType } from './menu.types';
 
 @Injectable()
 export class NzSubmenuService implements OnDestroy {
+  public nzMenuService = inject(MenuService);
   mode$: Observable<NzMenuModeType> = this.nzMenuService.mode$.pipe(
     map(mode => {
       if (mode === 'inline') {
@@ -51,7 +52,7 @@ export class NzSubmenuService implements OnDestroy {
     this.isMouseEnterTitleOrOverlay$.next(value);
   }
 
-  constructor(public nzMenuService: MenuService) {
+  constructor() {
     if (this.nzHostSubmenuService) {
       this.level = this.nzHostSubmenuService.level + 1;
     }
@@ -59,7 +60,7 @@ export class NzSubmenuService implements OnDestroy {
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
       mergeMap(() => this.mode$),
       filter(mode => mode !== 'inline' || this.isMenuInsideDropDown),
-      mapTo(false)
+      map(() => false)
     );
     const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick);
     /** combine the child submenu status with current submenu status to calculate host submenu open **/

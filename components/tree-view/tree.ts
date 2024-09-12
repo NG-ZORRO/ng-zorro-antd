@@ -33,7 +33,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
-  @Input('nzTreeControl') override treeControl!: TreeControl<T, NzSafeAny>;
+  @Input('nzTreeControl') declare treeControl: TreeControl<T, NzSafeAny>;
   @Input('nzDataSource')
   override get dataSource(): DataSource<T> | Observable<T[]> | T[] {
     return super.dataSource;

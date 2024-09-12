@@ -121,12 +121,10 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   imports: [NzNotificationComponent],
   standalone: true
 })
-export class NzNotificationContainerComponent extends NzMNContainerComponent {
+export class NzNotificationContainerComponent extends NzMNContainerComponent<NotificationConfig, NzNotificationData> {
   dir: Direction = 'ltr';
   bottom?: string | null;
   top?: string | null;
-  override config!: Required<NotificationConfig>; // initialized by parent class constructor
-  override instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
   bottomLeftInstances: Array<Required<NzNotificationData>> = [];
@@ -149,7 +147,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     if (key && notificationWithSameKey) {
       this.replaceNotification(notificationWithSameKey, noti);
     } else {
-      if (this.instances.length >= this.config.nzMaxStack) {
+      if (this.instances.length >= this.config!.nzMaxStack) {
         this.instances = this.instances.slice(1);
       }
       this.instances = [...this.instances, noti];
@@ -247,7 +245,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected override mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
+    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config ?? {};
     return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement, ...options };
   }
 }

@@ -17,8 +17,7 @@ let notificationId = 0;
 @Injectable({
   providedIn: 'root'
 })
-export class NzNotificationService extends NzMNService {
-  protected override container!: NzNotificationContainerComponent;
+export class NzNotificationService extends NzMNService<NzNotificationContainerComponent> {
   protected componentPrefix = 'notification-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {

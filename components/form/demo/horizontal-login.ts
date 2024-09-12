@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your username!">
           <nz-input-group nzPrefixIcon="user">
-            <input formControlName="userName" nz-input placeholder="Username" />
+            <input formControlName="username" nz-input placeholder="username" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
@@ -28,12 +28,13 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
   `
 })
 export class NzDemoFormHorizontalLoginComponent {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormGroup<{
-    userName: FormControl<string>;
+    username: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    userName: ['', [Validators.required]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required]],
     remember: [true]
   });
@@ -41,6 +42,4 @@ export class NzDemoFormHorizontalLoginComponent {
   submitForm(): void {
     console.log('submit', this.validateForm.value);
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

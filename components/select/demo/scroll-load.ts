@@ -36,18 +36,21 @@ export class NzDemoSelectScrollLoadComponent implements OnInit {
   optionList: string[] = [];
   selectedUser = null;
   isLoading = false;
+
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  getRandomNameList: Observable<string[]> = this.http
-    .get(`${this.randomUserUrl}`)
-    .pipe(
-      catchError(() => of({ results: [] })),
-      map((res: any) => res.results)
-    )
-    .pipe(map((list: any) => list.map((item: any) => `${item.name.first}`)));
+  getRandomNameList(): Observable<string[]> {
+    return this.http
+      .get(`${this.randomUserUrl}`)
+      .pipe(
+        catchError(() => of({ results: [] })),
+        map((res: any) => res.results)
+      )
+      .pipe(map((list: any) => list.map((item: any) => `${item.name.first}`)));
+  }
 
   loadMore(): void {
     this.isLoading = true;
-    this.getRandomNameList.subscribe(data => {
+    this.getRandomNameList().subscribe(data => {
       this.isLoading = false;
       this.optionList = [...this.optionList, ...data];
     });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -41,12 +41,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   ]
 })
 export class NzDemoFormCoordinatedComponent {
+  private fb = inject(FormBuilder);
   validateForm: FormGroup<{
     note: FormControl<string | null>;
-    gender: FormControl<'male' | 'male' | null>;
+    gender: FormControl<'male' | 'female' | null>;
   }> = this.fb.group({
     note: this.fb.control<string | null>(null, Validators.required),
-    gender: this.fb.control<'male' | 'male' | null>(null, Validators.required)
+    gender: this.fb.control<'male' | 'female' | null>(null, Validators.required)
   });
 
   submitForm(): void {
@@ -65,6 +66,4 @@ export class NzDemoFormCoordinatedComponent {
   genderChange(value: string): void {
     this.validateForm.controls.note.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
-
-  constructor(private fb: FormBuilder) {}
 }

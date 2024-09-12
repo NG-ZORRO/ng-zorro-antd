@@ -120,22 +120,18 @@ import { BaseModalContainerComponent } from './modal-container.directive';
   standalone: true
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
-  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) declare portalOutlet: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) declare modalElementRef: ElementRef<HTMLDivElement>;
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
   private i18n = inject(NzI18nService);
 
-  constructor() {
-    super();
-
+  ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
-  }
 
-  ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);
   }
 
