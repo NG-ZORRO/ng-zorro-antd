@@ -198,10 +198,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (isNaN(val)) {
       return value;
     }
-    if (val < this.nzMin) {
+    if (isNotNil(this.nzMin) && val < this.nzMin) {
       val = this.nzMin;
     }
-    if (val > this.nzMax) {
+    if (isNotNil(this.nzMax) && val > this.nzMax) {
       val = this.nzMax;
     }
     return val;
@@ -291,7 +291,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (typeof val === 'number') {
       result = ((precisionFactor * val + precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
-      result = this.nzMin === -Infinity ? this.nzStep : this.nzMin;
+      result = this.nzMin === -Infinity || !isNotNil(this.nzMin) ? this.nzStep : this.nzMin;
     }
     return this.toNumber(result);
   }
@@ -303,7 +303,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (typeof val === 'number') {
       result = ((precisionFactor * val - precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
-      result = this.nzMin === -Infinity ? -this.nzStep : this.nzMin;
+      result = this.nzMin === -Infinity || !isNotNil(this.nzMin) ? -this.nzStep : this.nzMin;
     }
     return this.toNumber(result);
   }
@@ -321,10 +321,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     } else if (type === 'down') {
       val = this.downStep(value, ratio);
     }
-    const outOfRange = val > this.nzMax || val < this.nzMin;
-    if (val > this.nzMax) {
+    const outOfRange = isNotNil(this.nzMax) && isNotNil(this.nzMin) && (val > this.nzMax || val < this.nzMin);
+    if (isNotNil(this.nzMax) && val > this.nzMax) {
       val = this.nzMax;
-    } else if (val < this.nzMin) {
+    } else if (isNotNil(this.nzMin) && val < this.nzMin) {
       val = this.nzMin;
     }
     this.setValue(val);
@@ -353,10 +353,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.disabledUp = this.disabledDown = false;
     if (value || value === 0) {
       const val = Number(value);
-      if (val >= this.nzMax) {
+      if (isNotNil(this.nzMax) && val >= this.nzMax) {
         this.disabledUp = true;
       }
-      if (val <= this.nzMin) {
+      if (isNotNil(this.nzMin) && val <= this.nzMin) {
         this.disabledDown = true;
       }
     }
