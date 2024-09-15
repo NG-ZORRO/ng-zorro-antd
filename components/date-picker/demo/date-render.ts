@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
 @Component({
   selector: 'nz-demo-date-picker-date-render',
+  standalone: true,
+  imports: [NzDatePickerModule],
   template: `
     <nz-date-picker [nzDateRender]="tplRender"></nz-date-picker>
     <nz-range-picker [nzDateRender]="tplRender"></nz-range-picker>
