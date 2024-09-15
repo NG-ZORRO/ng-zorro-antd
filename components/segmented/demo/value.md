@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-通过 ngModel 指定选中的 index
+通过 ngModel 指定选中的 value
 
 ## en-US
 
