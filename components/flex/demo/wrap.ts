@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzWrap } from 'ng-zorro-antd/flex';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFlexModule, NzWrap } from 'ng-zorro-antd/flex';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-flex-wrap',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzFlexModule, NzSegmentedModule],
   template: `
     <div class="segment-wrapper">
       <span>Select wrap:</span>

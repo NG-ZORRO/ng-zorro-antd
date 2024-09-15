@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-flex-gap',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzFlexModule, NzSegmentedModule, NzSliderModule],
   template: `
     <div class="segment-wrapper">
       <span>Select gap:</span>
