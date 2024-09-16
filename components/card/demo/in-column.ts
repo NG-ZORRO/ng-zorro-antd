@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-card-in-column',
+  standalone: true,
+  imports: [NzCardModule, NzGridModule],
   template: `
-    <div style="background: #ECECEC;padding:30px;">
+    <div style="background: #ECECEC; padding:30px;">
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="8">
           <nz-card nzTitle="Card title">

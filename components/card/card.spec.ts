@@ -1,7 +1,13 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { EditOutline, EllipsisOutline, SettingOutline } from '@ant-design/icons-angular/icons';
+
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCardComponent } from './card.component';
 import { NzCardModule } from './card.module';
@@ -19,22 +25,13 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 describe('card', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzCardModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoCardBasicComponent,
-        NzDemoCardBorderLessComponent,
-        NzDemoCardFlexibleContentComponent,
-        NzDemoCardGridCardComponent,
-        NzDemoCardInColumnComponent,
-        NzDemoCardInnerComponent,
-        NzDemoCardLoadingComponent,
-        NzDemoCardMetaComponent,
-        NzDemoCardSimpleComponent,
-        NzDemoCardTabsComponent,
-        TestCardSizeComponent,
-        NzTestCardRtlComponent
-      ]
+      imports: [
+        BidiModule,
+        NzCardModule,
+        NoopAnimationsModule,
+        NzIconModule.forRoot([SettingOutline, EditOutline, EllipsisOutline])
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     TestBed.compileComponents();
   }));
@@ -138,6 +135,8 @@ describe('card', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzCardModule],
   template: `
     <nz-card [nzSize]="size">
       <p>Card content</p>
@@ -147,10 +146,12 @@ describe('card', () => {
   `
 })
 class TestCardSizeComponent {
-  size = 'default';
+  size: NzSizeDSType = 'default';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzCardModule],
   template: `
     <div [dir]="direction">
       <nz-card>
@@ -163,5 +164,5 @@ class TestCardSizeComponent {
 })
 export class NzTestCardRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

@@ -226,7 +226,7 @@ const listOfPositions = [
     }
   ],
   host: {
-    class: 'ant-select',
+    class: 'ant-select ant-tree-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
@@ -371,9 +371,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private focusMonitor: FocusMonitor
   ) {
     super(nzTreeService);
-
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
   }
 
   ngOnInit(): void {

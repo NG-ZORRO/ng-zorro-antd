@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -361,13 +361,6 @@ export class TestButtonIconOnlyWithoutIconComponent {}
 export class TestButtonIconOnlyLoadingComponent {}
 
 @Component({
-  template: `<button nz-button [nzLoading]="nzLoading" (click)="buttonClick()">click me</button> `
-})
-export class TestButtonWithLoadingComponent {
-  @Input() nzLoading: boolean = false;
-}
-
-@Component({
   template: `
     <div [dir]="direction">
       <button
@@ -388,7 +381,7 @@ export class TestButtonWithLoadingComponent {
 })
 export class TestButtonRtlComponent extends TestButtonComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
