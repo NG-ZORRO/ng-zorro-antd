@@ -24,9 +24,11 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
   inject,
-  numberAttribute
+  numberAttribute,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, fromEvent, merge } from 'rxjs';
@@ -44,6 +46,7 @@ import {
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-input-number',
@@ -97,6 +100,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       useExisting: forwardRef(() => NzInputNumberComponent),
       multi: true
     },
+    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' },
     NzDestroyService
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -105,21 +109,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     class: 'ant-input-number',
     '[class.ant-input-number-in-form-item]': '!!nzFormStatusService',
     '[class.ant-input-number-focused]': 'isFocused',
-    '[class.ant-input-number-lg]': `nzSize === 'large'`,
-    '[class.ant-input-number-sm]': `nzSize === 'small'`,
+    '[class.ant-input-number-lg]': `finalSize() === 'large'`,
+    '[class.ant-input-number-sm]': `finalSize() === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled',
     '[class.ant-input-number-readonly]': 'nzReadOnly',
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
   imports: [NzIconModule, FormsModule, NzFormPatchModule],
-  standalone: true
+  standalone: true,
+  hostDirectives: [NzSpaceCompactItemDirective]
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
-  private autoStepTimer?: ReturnType<typeof setTimeout>;
-  private parsedValue?: string | number;
-  private value?: number;
-  private isNzDisableFirstChange: boolean = true;
   displayValue?: string | number;
   isFocused = false;
   disabled$ = new Subject<boolean>();
@@ -162,6 +163,20 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
+
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private autoStepTimer?: ReturnType<typeof setTimeout>;
+  private parsedValue?: string | number;
+  private value?: number;
+  private isNzDisableFirstChange: boolean = true;
 
   onModelChange(value: string): void {
     this.parsedValue = this.nzParser(value);
@@ -478,9 +493,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzDisabled } = changes;
-    if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
+  ngOnChanges({ nzStatus, nzDisabled, nzFormatter, nzSize }: SimpleChanges): void {
+    if (nzFormatter && !nzFormatter.isFirstChange()) {
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
@@ -490,6 +504,9 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 

@@ -10,6 +10,9 @@ import { takeUntil } from 'rxjs/operators';
 
 export type NzButtonGroupSize = 'large' | 'default' | 'small';
 
+/**
+ * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
+ */
 @Component({
   selector: 'nz-button-group',
   exportAs: 'nzButtonGroup',

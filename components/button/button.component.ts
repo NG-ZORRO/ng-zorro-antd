@@ -15,28 +15,35 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  computed,
+  inject,
+  signal
 } from '@angular/core';
 import { Subject, fromEvent } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
-export type NzButtonSize = 'large' | 'default' | 'small';
+export type NzButtonSize = NzSizeLDSType;
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
 
 @Component({
   selector: 'button[nz-button], a[nz-button]',
   exportAs: 'nzButton',
+  standalone: true,
+  imports: [NzIconModule],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -55,8 +62,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-text]': `nzType === 'text'`,
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
-    '[class.ant-btn-lg]': `nzSize === 'large'`,
-    '[class.ant-btn-sm]': `nzSize === 'small'`,
+    '[class.ant-btn-lg]': `finalSize() === 'large'`,
+    '[class.ant-btn-sm]': `finalSize() === 'small'`,
     '[class.ant-btn-dangerous]': `nzDanger`,
     '[class.ant-btn-loading]': `nzLoading`,
     '[class.ant-btn-background-ghost]': `nzGhost`,
@@ -67,10 +74,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   },
-  imports: [NzIconModule],
-  standalone: true
+  hostDirectives: [NzSpaceCompactItemDirective],
+  providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
-export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
+export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
@@ -85,7 +92,17 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
+
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private destroy$ = inject(NzDestroyService);
   private loading$ = new Subject<boolean>();
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
@@ -117,16 +134,18 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private renderer: Renderer2,
     public nzConfigService: NzConfigService,
     private directionality: Directionality
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    this.size.set(this.nzSize);
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
+        this.size.set(this.nzSize);
         this.cdr.markForCheck();
       });
-  }
 
-  ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
@@ -150,10 +169,12 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzLoading } = changes;
+  ngOnChanges({ nzLoading, nzSize }: SimpleChanges): void {
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 
@@ -176,10 +197,5 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
           this.renderer.removeStyle(nativeElement, 'display');
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
