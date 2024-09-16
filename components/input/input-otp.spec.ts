@@ -163,12 +163,12 @@ describe('NzInputOtpComponent', () => {
     expect(enableSpy).not.toHaveBeenCalled();
   });
 
-  it('should not set any values if the provided value is empty', () => {
-    const spy = spyOn(component['otpArray'].at(0), 'setValue').and.callThrough();
+  it('should reset form array if the provided value is empty', () => {
+    const spy = spyOn(component['otpArray'], 'reset');
 
     component.writeValue('');
 
-    expect(spy).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should set formatted values correctly in the form array', () => {
@@ -202,13 +202,13 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should enable form array when setDisabledState is called with false', () => {
-    component['otpArray'] = new FormArray([
-      new FormControl(''),
-      new FormControl(''),
-      new FormControl(''),
-      new FormControl(''),
-      new FormControl(''),
-      new FormControl('')
+    component['otpArray'] = new FormArray<FormControl<string>>([
+      new FormControl<string>('', { nonNullable: true }),
+      new FormControl<string>('', { nonNullable: true }),
+      new FormControl<string>('', { nonNullable: true }),
+      new FormControl<string>('', { nonNullable: true }),
+      new FormControl<string>('', { nonNullable: true }),
+      new FormControl<string>('', { nonNullable: true })
     ]);
 
     const spy = spyOn(component['otpArray'], 'enable').and.callThrough();

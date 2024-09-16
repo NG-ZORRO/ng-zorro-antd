@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { KeyValuePipe, NgForOf } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -22,7 +21,7 @@ import {
   ControlValueAccessor,
   FormArray,
   FormBuilder,
-  FormsModule,
+  FormControl,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
   Validators
@@ -41,7 +40,7 @@ import { NzInputDirective } from './input.directive';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @for (item of otpArray.controls | keyvalue; track $index) {
+    @for (item of otpArray.controls; track $index) {
       <input
         nz-input
         class="ant-otp-input"
@@ -49,7 +48,7 @@ import { NzInputDirective } from './input.directive';
         maxlength="1"
         size="1"
         [nzSize]="nzSize"
-        [formControl]="$any(otpArray.at($index))"
+        [formControl]="item"
         [nzStatus]="nzStatus"
         (input)="onInput($index, $event)"
         (focus)="onFocus($event)"
@@ -70,7 +69,7 @@ import { NzInputDirective } from './input.directive';
     },
     NzDestroyService
   ],
-  imports: [FormsModule, NgForOf, NzInputDirective, ReactiveFormsModule, KeyValuePipe],
+  imports: [NzInputDirective, ReactiveFormsModule],
   standalone: true
 })
 export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
@@ -83,7 +82,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   @Input() nzFormatter: (value: string) => string = value => value;
   @Input() nzMask: string | null = null;
 
-  protected otpArray!: FormArray;
+  protected otpArray!: FormArray<FormControl<string>>;
   private internalValue: string[] = [];
   private onChangeCallback?: (_: NzSafeAny) => void;
   onTouched: OnTouchedType = () => {};
@@ -96,7 +95,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['nzLength']?.currentValue && changes['nzLength'].currentValue !== changes['nzLength'].previousValue) {
+    if (changes['nzLength']?.currentValue) {
       this.createFormArray();
     }
 
@@ -139,7 +138,10 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   }
 
   writeValue(value: string): void {
-    if (!value) return;
+    if (!value) {
+      this.otpArray.reset();
+      return;
+    }
 
     const controlValues = value.split('');
     this.internalValue = controlValues;
@@ -190,7 +192,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   }
 
   private createFormArray(): void {
-    this.otpArray = this.formBuilder.array([]);
+    this.otpArray = this.formBuilder.array<FormControl<string>>([]);
     this.internalValue = new Array(this.nzLength).fill('');
 
     for (let i = 0; i < this.nzLength; i++) {
@@ -222,8 +224,9 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   }
 
   private selectInputBox(index: number): void {
-    if (index >= this.otpInputs.toArray().length) index = this.otpInputs.toArray().length - 1;
+    const otpInputArray = this.otpInputs.toArray();
+    if (index >= otpInputArray.length) index = otpInputArray.length - 1;
 
-    this.otpInputs.toArray()[index].nativeElement.select();
+    otpInputArray[index].nativeElement.select();
   }
 }

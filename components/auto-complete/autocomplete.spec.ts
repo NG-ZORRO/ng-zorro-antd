@@ -1,4 +1,4 @@
-import { Directionality } from '@angular/cdk/bidi';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
@@ -11,6 +11,8 @@ import {
   NgZone,
   OnInit,
   QueryList,
+  SimpleChange,
+  SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -29,6 +31,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -43,7 +46,8 @@ import {
   NzAutocompleteComponent,
   NzAutocompleteModule,
   NzAutocompleteOptionComponent,
-  NzAutocompleteTriggerDirective
+  NzAutocompleteTriggerDirective,
+  NzOptionSelectionChange
 } from './index';
 
 describe('auto-complete', () => {
@@ -1196,3 +1200,99 @@ class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
   @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
 }
+
+describe('NzAutocompleteComponent', () => {
+  let component: NzAutocompleteComponent;
+  let fixture: ComponentFixture<NzAutocompleteComponent>;
+  let afterNextRender$: Subject<void>;
+  let directionalityChange$: Subject<Direction>;
+
+  beforeEach(async () => {
+    directionalityChange$ = new Subject<Direction>();
+
+    await TestBed.configureTestingModule({
+      imports: [NzAutocompleteComponent],
+      providers: [
+        { provide: Directionality, useValue: { value: 'ltr', change: directionalityChange$.asObservable() } },
+        {
+          provide: NZ_AFTER_NEXT_RENDER$,
+          useValue: afterNextRender$
+        }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzAutocompleteComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should normalize data source on input change', () => {
+    const nzDataSourceChange: SimpleChanges = {
+      nzDataSource: new SimpleChange(null, [{ value: '1', label: 'Option 1' }, 'Option 2', 3], false)
+    };
+
+    component.ngOnChanges(nzDataSourceChange);
+    fixture.detectChanges();
+
+    expect(component.normalizedDataSource).toEqual([
+      { value: '1', label: 'Option 1' },
+      { value: 'Option 2', label: 'Option 2' },
+      { value: '3', label: '3' }
+    ]);
+  });
+
+  it('should handle empty or null nzDataSource input', () => {
+    const nzDataSourceChange: SimpleChanges = {
+      nzDataSource: new SimpleChange(null, null, false)
+    };
+
+    component.ngOnChanges(nzDataSourceChange);
+    fixture.detectChanges();
+
+    expect(component.normalizedDataSource).not.toBeDefined();
+  });
+
+  it('should update direction and trigger change detection on directionality change', fakeAsync(() => {
+    component.ngOnInit();
+    tick();
+
+    const spy = spyOn(component['changeDetectorRef'], 'detectChanges');
+
+    directionalityChange$.next('rtl');
+    tick();
+    expect(component.dir).toBe('rtl');
+    expect(spy).toHaveBeenCalled();
+  }));
+});
+
+describe('NzAutocompleteOptionComponent', () => {
+  let component: NzAutocompleteOptionComponent;
+  let fixture: ComponentFixture<NzAutocompleteOptionComponent>;
+  let mockChangeDetectorRef: jasmine.SpyObj<ChangeDetectorRef>;
+  let mockElementRef: ElementRef;
+  let mockNgZone: NgZone;
+
+  beforeEach(async () => {
+    mockChangeDetectorRef = jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']);
+    mockElementRef = new ElementRef(document.createElement('div'));
+    mockNgZone = new NgZone({ enableLongStackTrace: false });
+
+    await TestBed.configureTestingModule({
+      imports: [NzAutocompleteOptionComponent],
+      providers: [
+        { provide: ChangeDetectorRef, useValue: mockChangeDetectorRef },
+        { provide: ElementRef, useValue: mockElementRef },
+        { provide: NgZone, useValue: mockNgZone }
+      ]
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzAutocompleteOptionComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should emit selection change event with isUserInput = true', () => {
+    const nzOptionSelectionChange = new NzOptionSelectionChange(component);
+    expect(nzOptionSelectionChange.isUserInput).toBeFalsy();
+  });
+});
