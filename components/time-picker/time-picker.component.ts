@@ -16,7 +16,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -25,11 +24,13 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
@@ -40,10 +41,12 @@ import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'n
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NgClassInterface, NzSafeAny, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
@@ -136,16 +139,21 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   `,
   host: {
     class: 'ant-picker',
-    '[class.ant-picker-large]': `nzSize === 'large'`,
-    '[class.ant-picker-small]': `nzSize === 'small'`,
+    '[class.ant-picker-large]': `finalSize() === 'large'`,
+    '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
     '[class.ant-picker-borderless]': `nzBorderless`,
     '(click)': 'open()'
   },
+  hostDirectives: [NzSpaceCompactItemDirective],
   animations: [slideMotion],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerComponent), multi: true }],
+  providers: [
+    NzDestroyService,
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerComponent), multi: true },
+    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'picker' }
+  ],
   imports: [
     AsyncPipe,
     FormsModule,
@@ -159,12 +167,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   ],
   standalone: true
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
-  private destroy$ = new Subject<void>();
+  private destroy$ = inject(NzDestroyService);
   private isNzDisableFirstChange: boolean = true;
   isInit = false;
   focused = false;
@@ -213,7 +221,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzId: string | null = null;
-  @Input() nzSize: string | null = null;
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzStatus: NzStatus = '';
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;
@@ -358,6 +366,15 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.close();
   }
 
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
@@ -399,13 +416,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus } = changes;
+  ngOnChanges({ nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus, nzSize }: SimpleChanges): void {
     if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
       this.nzFormat = 'h:mm:ss a';
     }
@@ -423,6 +434,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 
