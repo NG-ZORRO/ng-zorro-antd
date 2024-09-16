@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
+import { NgClass, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -140,31 +140,34 @@ const listOfPositions = [
           (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
         ></nz-tree>
-        <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
-          <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
-        </span>
+        @if (nzNodes.length === 0 || isNotFound) {
+          <span class="ant-select-not-found">
+            <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+          </span>
+        }
       </div>
     </ng-template>
 
     <div cdkOverlayOrigin class="ant-select-selector">
-      <ng-container *ngIf="isMultiple">
-        <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
-          [deletable]="true"
-          [disabled]="node.isDisabled || nzDisabled"
-          [label]="nzDisplayWith(node)"
-          (delete)="removeSelected(node, true)"
-        ></nz-select-item>
-
-        <nz-select-item
-          *ngIf="selectedNodes.length > nzMaxTagCount"
-          [contentTemplateOutlet]="nzMaxTagPlaceholder"
-          [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
-          [deletable]="false"
-          [disabled]="false"
-          [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-        ></nz-select-item>
-      </ng-container>
+      @if (isMultiple) {
+        @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node.key) {
+          <nz-select-item
+            [deletable]="true"
+            [disabled]="node.isDisabled || nzDisabled"
+            [label]="nzDisplayWith(node)"
+            (delete)="removeSelected(node, true)"
+          ></nz-select-item>
+        }
+        @if (selectedNodes.length > nzMaxTagCount) {
+          <nz-select-item
+            [contentTemplateOutlet]="nzMaxTagPlaceholder"
+            [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
+            [deletable]="false"
+            [disabled]="false"
+            [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
+          ></nz-select-item>
+        }
+      }
 
       <nz-select-search
         [nzId]="nzId"
@@ -178,33 +181,36 @@ const listOfPositions = [
         [focusTrigger]="nzOpen"
       ></nz-select-search>
 
-      <nz-select-placeholder
-        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
-        [placeholder]="nzPlaceHolder"
-        [style.display]="placeHolderDisplay"
-      ></nz-select-placeholder>
+      @if (nzPlaceHolder && selectedNodes.length === 0) {
+        <nz-select-placeholder
+          [placeholder]="nzPlaceHolder"
+          [style.display]="placeHolderDisplay"
+        ></nz-select-placeholder>
+      }
 
-      <nz-select-item
-        *ngIf="!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === ''"
-        [deletable]="false"
-        [disabled]="false"
-        [label]="nzDisplayWith(selectedNodes[0])"
-      ></nz-select-item>
+      @if (!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === '') {
+        <nz-select-item
+          [deletable]="false"
+          [disabled]="false"
+          [label]="nzDisplayWith(selectedNodes[0])"
+        ></nz-select-item>
+      }
 
-      <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
-      <nz-select-arrow
-        *ngIf="!isMultiple || (hasFeedback && !!status)"
-        [showArrow]="!isMultiple"
-        [feedbackIcon]="feedbackIconTpl"
-      >
-        <ng-template #feedbackIconTpl>
-          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-        </ng-template>
-      </nz-select-arrow>
-      <nz-select-clear
-        *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length"
-        (clear)="onClearSelection()"
-      ></nz-select-clear>
+      @if (!isMultiple) {
+        <nz-select-arrow></nz-select-arrow>
+      }
+      @if (!isMultiple || (hasFeedback && !!status)) {
+        <nz-select-arrow [showArrow]="!isMultiple" [feedbackIcon]="feedbackIconTpl">
+          <ng-template #feedbackIconTpl>
+            @if (hasFeedback && !!status) {
+              <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            }
+          </ng-template>
+        </nz-select-arrow>
+      }
+      @if (nzAllowClear && !nzDisabled && selectedNodes.length) {
+        <nz-select-clear (clear)="onClearSelection()"></nz-select-clear>
+      }
     </div>
   `,
   providers: [
@@ -220,7 +226,7 @@ const listOfPositions = [
     }
   ],
   host: {
-    class: 'ant-select',
+    class: 'ant-select ant-tree-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
@@ -243,12 +249,10 @@ const listOfPositions = [
     NzNoAnimationDirective,
     NgStyle,
     NzTreeModule,
-    NgIf,
     NzEmptyModule,
     CdkOverlayOrigin,
     SlicePipe,
     NzSelectModule,
-    NgFor,
     NzFormPatchModule
   ],
   standalone: true
@@ -367,9 +371,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private focusMonitor: FocusMonitor
   ) {
     super(nzTreeService);
-
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
   }
 
   ngOnInit(): void {
@@ -483,12 +484,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       } else {
         this.value = [value as string];
       }
+      // need clear selected nodes when user set value before updating
+      this.clearSelectedNodes();
       this.updateSelectedNodes(true);
     } else {
       this.value = [];
-      this.selectedNodes.forEach(node => {
-        this.removeSelected(node, false);
-      });
+      this.clearSelectedNodes();
       this.selectedNodes = [];
     }
     this.cdr.markForCheck();
@@ -705,7 +706,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
   }
 
-  trackValue(_index: number, option: NzTreeNode): string {
-    return option.key!;
+  clearSelectedNodes(): void {
+    this.selectedNodes.forEach(node => {
+      this.removeSelected(node, false);
+    });
   }
 }

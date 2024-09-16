@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+
 @Component({
   selector: 'nz-demo-calendar-notice-calendar',
+  standalone: true,
+  imports: [NzBadgeModule, NzCalendarModule],
   template: `
     <nz-calendar>
       <ul *nzDateCell="let date" class="events">
@@ -54,20 +59,11 @@ import { Component } from '@angular/core';
         text-overflow: ellipsis;
         font-size: 12px;
       }
-
-      .notes-month {
-        text-align: center;
-        font-size: 28px;
-      }
-
-      .notes-month section {
-        font-size: 28px;
-      }
     `
   ]
 })
 export class NzDemoCalendarNoticeCalendarComponent {
-  listDataMap = {
+  readonly listDataMap = {
     eight: [
       { type: 'warning', content: 'This is warning event.' },
       { type: 'success', content: 'This is usual event.' }

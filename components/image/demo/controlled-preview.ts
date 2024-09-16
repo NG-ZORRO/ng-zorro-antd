@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzImageService } from 'ng-zorro-antd/image';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzImageModule, NzImageService } from 'ng-zorro-antd/image';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-image-controlled-preview',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzImageModule, NzInputNumberModule],
   template: `
     <div>
       <label>
@@ -32,17 +37,16 @@ import { NzImageService } from 'ng-zorro-antd/image';
   ]
 })
 export class NzDemoImageControlledPreviewComponent {
-  scaleStep: number = 0.5;
-
-  constructor(private nzImageService: NzImageService) {}
+  private nzImageService = inject(NzImageService);
+  scaleStep = 0.5;
+  readonly images = [
+    {
+      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      alt: ''
+    }
+  ];
 
   onClick(): void {
-    const images = [
-      {
-        src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        alt: ''
-      }
-    ];
-    this.nzImageService.preview(images, { nzZoom: 1, nzRotate: 0, nzScaleStep: this.scaleStep });
+    this.nzImageService.preview(this.images, { nzZoom: 1, nzRotate: 0, nzScaleStep: this.scaleStep });
   }
 }

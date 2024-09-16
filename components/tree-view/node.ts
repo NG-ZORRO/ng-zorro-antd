@@ -4,7 +4,6 @@
  */
 
 import { CdkTreeNode, CdkTreeNodeDef, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -44,11 +43,15 @@ export interface NzTreeVirtualNodeData<T> {
     { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
   ],
   template: `
-    <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
+    @if (indents.length) {
+      <nz-tree-node-indents [indents]="indents"></nz-tree-node-indents>
+    }
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
-    <nz-tree-node-toggle class="nz-tree-leaf-line-icon" *ngIf="indents.length && isLeaf" nzTreeNodeNoopToggle>
-      <span class="ant-tree-switcher-leaf-line"></span>
-    </nz-tree-node-toggle>
+    @if (indents.length && isLeaf) {
+      <nz-tree-node-toggle class="nz-tree-leaf-line-icon" nzTreeNodeNoopToggle>
+        <span class="ant-tree-switcher-leaf-line"></span>
+      </nz-tree-node-toggle>
+    }
     <ng-content select="nz-tree-node-checkbox"></ng-content>
     <ng-content select="nz-tree-node-option"></ng-content>
     <ng-content></ng-content>
@@ -57,7 +60,7 @@ export interface NzTreeVirtualNodeData<T> {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
   },
-  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective, NgIf],
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective],
   standalone: true
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {

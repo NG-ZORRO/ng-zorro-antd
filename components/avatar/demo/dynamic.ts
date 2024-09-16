@@ -1,10 +1,18 @@
+import { NgStyle } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 const userList = ['Lucy', 'U', 'Tom', 'Edward'];
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-avatar-dynamic',
+  imports: [FormsModule, NgStyle, NzAvatarModule, NzButtonModule, NzInputNumberModule],
   template: `
     <div>
       <label>

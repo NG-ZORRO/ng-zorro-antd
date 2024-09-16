@@ -15,16 +15,27 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzIconService } from 'ng-zorro-antd/icon';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadFile, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzUploadFile, NzUploadModule, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
 
 export interface Categories {
   direction: string[];
@@ -303,6 +314,22 @@ declare const locale: NzSafeAny;
 
 @Component({
   selector: 'nz-page-demo-icon',
+  standalone: true,
+  imports: [
+    FormsModule,
+    NzBadgeModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzModalModule,
+    NzPopoverModule,
+    NzRadioModule,
+    NzResultModule,
+    NzSpinModule,
+    NzToolTipModule,
+    NzProgressModule,
+    NzUploadModule
+  ],
   template: `
     <h3>{{ localeObj.chooseTheme }}</h3>
     <div class="icon-selector">
@@ -469,13 +496,11 @@ declare const locale: NzSafeAny;
         margin: 1.6em 0 0.6em;
         font-size: 18px;
       }
-    `,
-    `
+
       ul.anticons-list li .anticon {
         font-size: 24px;
       }
-    `,
-    `
+
       .icon-selector {
         display: flex;
         justify-content: space-between;
@@ -483,7 +508,7 @@ declare const locale: NzSafeAny;
 
       nz-input-group {
         margin-left: 10px;
-        flex: 1 1 0%;
+        flex: 1 1 0;
       }
     `
   ]
@@ -526,7 +551,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   private _copy(value: string): Promise<string> {
-    const promise = new Promise<string>((resolve): void => {
+    return new Promise<string>((resolve): void => {
       let copyTextArea: HTMLTextAreaElement | null = null;
       try {
         copyTextArea = this.document.createElement('textarea') as HTMLTextAreaElement;
@@ -544,8 +569,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    return promise;
   }
 
   prepareIcons(): void {
@@ -685,14 +708,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    if (file.status === 'uploading' || file.status === 'error') {
-      this.fileList = fileList;
-    } else if (file.status === 'done') {
-      this.uploadFile(file.originFileObj!);
-    }
-  }
-
   private platformId = inject(PLATFORM_ID);
 
   constructor(
@@ -721,6 +736,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
 @Component({
   selector: 'nz-page-demo-icon-copied-code',
+  standalone: true,
   template: `
     <ng-template #templateRef>
       <span>

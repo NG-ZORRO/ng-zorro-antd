@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -221,7 +221,7 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
-  size?: NzSizeDSType = 'default';
+  size: NzSizeDSType = 'default';
   noAnimation = true;
 }
 
@@ -234,6 +234,6 @@ export class NzTestBadgeBasicComponent {
 })
 export class NzTestBadgeRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   count = 5;
 }

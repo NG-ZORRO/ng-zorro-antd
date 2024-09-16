@@ -32,7 +32,9 @@ function generate(target) {
   // read components folder
   const rootPath = path.resolve(__dirname, '../../components');
   const rootDir = fs.readdirSync(rootPath);
+  /** @type {ComponentIndexDocMap} */
   const componentsDocMap = {};
+  /** @type {Record.<string, Record.<string, ComponentDemoDoc>>} */
   const componentsMap = {};
   rootDir.forEach(componentName => {
     if (isSyncSpecific) {
@@ -52,6 +54,7 @@ function generate(target) {
 
       // handle components->${component}->demo folder
       const demoDirPath = path.join(componentDirPath, 'demo');
+      /** @type {Record.<string, ComponentDemoDoc>} */
       const demoMap = {};
       const debugDemos = new Set();
 
@@ -108,14 +111,23 @@ function generate(target) {
         });
       }
 
+      /**
+       * @typedef ComponentDemoPage
+       * @type {object}
+       * @property {string} raw - raw content of demo page
+       * @property {string} zhCode - chinese code content
+       * @property {string} enCode - english code content
+       */
       // handle components->${component}->page folder, parent component of demo page
-      let pageDemo = '';
+      /** @type {ComponentDemoPage} */
+      let pageDemo;
       const pageDirPath = path.join(componentDirPath, 'page');
       if (fs.existsSync(pageDirPath)) {
         const pageDir = fs.readdirSync(pageDirPath);
         let zhLocale = '';
         let enLocale = '';
         pageDemo = {};
+
         pageDir.forEach(file => {
           if (/.ts$/.test(file)) {
             pageDemo.raw = String(fs.readFileSync(path.join(pageDirPath, file)));
@@ -131,7 +143,19 @@ function generate(target) {
         pageDemo.zhCode = pageDemo.raw.replace(/locale;/g, zhLocale);
       }
 
+      /**
+       *  @typedef ComponentDemo
+       *  @type {object}
+       *  @property {string} name - demo name
+       *  @property {ComponentIndexDoc} docZh - chinese doc content metadata
+       *  @property {ComponentIndexDoc} docEn - english doc content
+       *  @property {Record.<string, ComponentDemoDoc>} demoMap - demo content
+       *  @property {ComponentDemoPage} pageDemo - demo page content
+       *  @property {boolean} [standalone] - standalone mode
+       */
+
       // handle components->${component}->doc folder
+      /** @type ComponentDemo */
       const result = {
         name: componentName,
         docZh: parseDocMdUtil(
@@ -142,10 +166,15 @@ function generate(target) {
           fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')),
           `components/${componentName}/doc/index.en-US.md`
         ),
+        standalone: !fs.existsSync(path.join(componentDirPath, 'demo/module')),
         demoMap,
         pageDemo
       };
-      componentsDocMap[componentName] = { zh: result.docZh.meta, en: result.docEn.meta };
+      componentsDocMap[componentName] = {
+        zh: result.docZh.meta,
+        en: result.docEn.meta,
+        standalone: result.standalone
+      };
       componentsMap[componentName] = demoMap;
       generateDemo(showCaseComponentPath, result);
       generateDemoCodeFiles(result, showCasePath);
@@ -159,7 +188,9 @@ function generate(target) {
     // read docs folder
     const docsPath = path.resolve(__dirname, '../../docs');
     const docsDir = fs.readdirSync(docsPath);
+    /** @type {Record.<string, {zh: Buffer, en: Buffer}>} */
     let docsMap = {};
+    /** @type {ComponentIndexDocMap} */
     let docsMeta = {};
     docsDir.forEach(doc => {
       const name = nameWithoutSuffixUtil(doc);

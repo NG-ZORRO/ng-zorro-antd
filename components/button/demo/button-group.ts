@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-button-button-group',
+  standalone: true,
+  imports: [NzButtonModule, NzIconModule],
   template: `
     <h4>Basic</h4>
     <nz-button-group>
@@ -55,6 +60,7 @@ import { Component } from '@angular/core';
       nz-button-group {
         margin-bottom: 8px;
         margin-right: 8px;
+        vertical-align: bottom;
       }
     `
   ]

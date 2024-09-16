@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, Input, ViewChild } from '@angular/core';
 import { fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -48,5 +48,5 @@ export class TestButtonGroupComponent {
 })
 export class NzTestButtonGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
