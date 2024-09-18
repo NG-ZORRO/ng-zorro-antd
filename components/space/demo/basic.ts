@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 @Component({
   selector: 'nz-demo-space-basic',
+  standalone: true,
+  imports: [NzButtonModule, NzIconModule, NzSpaceModule],
   template: `
     <nz-space>
       <button *nzSpaceItem nz-button nzType="primary">Button</button>
