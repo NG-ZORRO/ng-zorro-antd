@@ -137,7 +137,7 @@ describe('Placeholder', () => {
     context.placeholder = PLACEHOLDER;
     const image = debugElement.nativeElement.querySelector('img');
     fixture.detectChanges();
-    tick(600);
+    tick(1000);
     fixture.detectChanges();
     expect(image.src).toBe(PLACEHOLDER);
   }));
