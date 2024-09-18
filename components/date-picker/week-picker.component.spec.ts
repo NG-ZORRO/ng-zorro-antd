@@ -102,7 +102,7 @@ describe('NzWeekPickerComponent', () => {
   template: `
     @switch (useSuite) {
       @case (1) {
-        <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue" />
+        <nz-date-picker nzMode="week" [nzFormat]="nzFormat!" [ngModel]="nzValue" />
       }
       @case (2) {
         <nz-week-picker [ngModel]="nzValue" />
