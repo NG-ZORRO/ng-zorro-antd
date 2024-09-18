@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { getISOWeek } from 'date-fns';
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-date-picker-inline',
+  standalone: true,
+  imports: [FormsModule, NzDatePickerModule, NzTabsModule],
   template: `
     <nz-tabset>
       <nz-tab nzTitle="Default">
