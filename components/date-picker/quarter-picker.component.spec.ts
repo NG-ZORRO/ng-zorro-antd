@@ -65,7 +65,7 @@ describe('NzQuarterPickerComponent', () => {
     expect(getPickerInput(fixture.debugElement).value).toBe('2024-Q1');
   }));
 
-  it('should specified date provide by "value" be choosed', fakeAsync(() => {
+  it('should specified date provide by "value" be chosen', fakeAsync(() => {
     fixtureInstance.useSuite = 3;
     fixtureInstance.nzValue = new Date('2024-04-30');
     fixture.detectChanges();

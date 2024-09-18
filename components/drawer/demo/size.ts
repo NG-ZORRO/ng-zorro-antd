@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 @Component({
   selector: 'nz-demo-drawer-size',
+  standalone: true,
+  imports: [NzButtonModule, NzDrawerModule, NzSpaceModule],
   template: `
     <nz-space>
       <button *nzSpaceItem nz-button nzType="primary" (click)="showDefault()">Open Default Size (378px)</button>

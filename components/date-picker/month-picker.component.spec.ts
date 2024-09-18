@@ -11,6 +11,7 @@ import isBefore from 'date-fns/isBefore';
 
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -354,10 +355,10 @@ describe('NzMonthPickerComponent', () => {
     }));
   }); // /specified date picker testing
 
-  describe('ngModel value accesors', () => {
+  describe('ngModel value accessors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
-    it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
+    it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11');
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
@@ -463,7 +464,7 @@ class NzTestMonthPickerComponent {
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
-  nzSize!: string;
+  nzSize!: NzDatePickerSizeType;
 
   nzOnOpenChange(_: boolean): void {}
 
