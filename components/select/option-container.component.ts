@@ -134,7 +134,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
 
   onScrolledIndexChange(index: number): void {
     this.scrolledIndex = index;
-    if (index === this.listOfContainerItem.length - this.maxItemLength - 1) {
+    if (this.listOfContainerItem.length - index <= this.maxItemLength) {
       this.scrollToBottom.emit();
     }
   }
