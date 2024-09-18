@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzDatePickerModule, NzDatePickerSizeType } from 'ng-zorro-antd/date-picker';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-date-picker-size',
+  standalone: true,
+  imports: [FormsModule, NzDatePickerModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="large">large</label>
@@ -30,5 +36,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoDatePickerSizeComponent {
-  size: 'large' | 'small' | 'default' = 'default';
+  size: NzDatePickerSizeType = 'default';
 }

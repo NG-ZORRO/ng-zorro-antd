@@ -1,9 +1,34 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-empty-config',
+  standalone: true,
+  imports: [
+    FormsModule,
+    NzCascaderModule,
+    NzDividerModule,
+    NzEmptyModule,
+    NzIconModule,
+    NzListModule,
+    NzSelectModule,
+    NzSwitchModule,
+    NzTableModule,
+    NzTransferModule,
+    NzTreeSelectModule
+  ],
   template: `
     <nz-switch
       [nzUnCheckedChildren]="'default'"

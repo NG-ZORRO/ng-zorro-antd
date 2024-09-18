@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-date-picker-switch',
+  standalone: true,
+  imports: [FormsModule, NzDatePickerModule, NzSelectModule, NzSpaceModule],
   template: `
     <nz-space>
       <nz-select *nzSpaceItem [(ngModel)]="mode">
