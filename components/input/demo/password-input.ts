@@ -14,18 +14,12 @@ import { Component } from '@angular/core';
     <ng-template #suffixTemplate>
       <span
         nz-icon
+        class="ant-input-password-icon"
         [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
         (click)="passwordVisible = !passwordVisible"
       ></span>
     </ng-template>
-  `,
-  styles: [
-    `
-      i {
-        cursor: pointer;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoInputPasswordInputComponent {
   passwordVisible = false;
