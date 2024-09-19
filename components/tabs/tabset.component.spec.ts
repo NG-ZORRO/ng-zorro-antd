@@ -32,7 +32,7 @@ describe('NzTabSet', () => {
         NestedTabsTestComponent,
         TabSetWithIndirectDescendantTabsTestComponent,
         ScrollableTabsTestComponent,
-        DestroyInactiveTabPaneTestComponent
+        DestroyInactiveLazyTabTestComponent
       ]
     });
 
@@ -787,36 +787,18 @@ describe('NzTabSet', () => {
     }));
   });
 
-  describe('destroy inactive tab', () => {
-    let fixture: ComponentFixture<DestroyInactiveTabPaneTestComponent>;
+  describe('destroy inactive lazy loaded tab', () => {
+    let fixture: ComponentFixture<DestroyInactiveLazyTabTestComponent>;
     let element: HTMLElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(DestroyInactiveTabPaneTestComponent);
+      fixture = TestBed.createComponent(DestroyInactiveLazyTabTestComponent);
       element = fixture.nativeElement;
     });
 
-    it('should destroy every tab pane when tabs changed', () => {
-      const DEFAULT_INDEX = 0;
-      const component = fixture.debugElement.componentInstance;
-      component.isDestroyInactiveTabs = true;
-      component.selectedIndex = DEFAULT_INDEX;
-
-      fixture.detectChanges();
-
-      component.selectedIndex = DEFAULT_INDEX + 1;
-
-      fixture.detectChanges();
-
-      const tabElements = element.querySelectorAll('.ant-tabs-tabpane');
-      const tabElement = tabElements[DEFAULT_INDEX] as HTMLElement;
-      expect(tabElement.innerText).toEqual('');
-    });
-
-    it('should destroy single tab pane when tabs changed', () => {
+    it('should destroy lazy loaded tab when tabs changed', () => {
       const DEFAULT_INDEX = 2;
       const component = fixture.debugElement.componentInstance;
-      component.isDestroyInactiveSingleTab = true;
       component.selectedIndex = DEFAULT_INDEX;
 
       fixture.detectChanges();
@@ -1210,17 +1192,15 @@ const routes: Routes = [
 
 @Component({
   template: `
-    <nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="isDestroyInactiveTabs">
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex">
       <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
-      <nz-tab nzTitle="Tab 3" [nzDestroyInactiveTabPane]="isDestroyInactiveSingleTab">Content of Tab Pane 3</nz-tab>
+      <nz-tab nzTitle="Tab 3" nzDestroyInactiveLazyTab>Content of Tab Pane 3</nz-tab>
     </nz-tabset>
   `
 })
-class DestroyInactiveTabPaneTestComponent {
+class DestroyInactiveLazyTabTestComponent {
   selectedIndex: number | null = null;
-  isDestroyInactiveTabs = false;
-  isDestroyInactiveSingleTab = false;
 }
 
 function getTranslate(transformValue: string): { x: number; y: number } {
