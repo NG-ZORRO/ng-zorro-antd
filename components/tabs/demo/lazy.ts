@@ -1,5 +1,5 @@
 /* declarations: NzDemoTabContentLazyComponent,NzDemoTabContentEagerlyComponent */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tabs-lazy',
@@ -16,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
           <nz-demo-tab-content-lazy></nz-demo-tab-content-lazy>
         </ng-template>
       </nz-tab>
-      <nz-tab nzTitle="Tab Lazy 2">
+      <nz-tab nzTitle="Tab Lazy 2" nzDestroyInactiveLazyTab>
         <ng-template nz-tab>
           <nz-demo-tab-content-lazy></nz-demo-tab-content-lazy>
         </ng-template>
@@ -30,9 +30,12 @@ export class NzDemoTabsLazyComponent {}
   selector: 'nz-demo-tab-content-lazy',
   template: ` lazy `
 })
-export class NzDemoTabContentLazyComponent implements OnInit {
+export class NzDemoTabContentLazyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log(`I will init when tab active`);
+  }
+  ngOnDestroy(): void {
+    console.log(`I will destroy when tab change`);
   }
 }
 

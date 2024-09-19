@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-默认情况下，`nz-tab` 中的组件的 `ngOnInit` 会提前触发，如果希望当 Tab 被激活时再触发 `ngOnInit`，可以使用该示例中的懒加载方式。
+默认情况下，`nz-tab` 中的组件的 `ngOnInit` 会提前触发，如果希望当 Tab 被激活时再触发 `ngOnInit`，可以使用该示例中的懒加载方式。如果需要在切换时销毁懒加载的 `nz-tab`，可以定义`nzDestroyInactiveLazyTab`属性。
 
 ## en-US
 
-By default, the contents in `nz-tab` are eagerly loaded. Tab contents can be lazy loaded by declaring the body in a `ng-template` with the `[nz-tab]` attribute.
+By default, the contents in `nz-tab` are eagerly loaded. Tab contents can be lazy loaded by declaring the body in a `ng-template` with the `[nz-tab]` attribute. If you need to destroy the lazy loaded 'nz-tab' when switching, you can define the 'nzDestroyInactiveLazyTab' property
