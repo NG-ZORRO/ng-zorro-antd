@@ -59,7 +59,7 @@ export class NzTabBodyComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { active } = changes;
-    if (typeof active.currentValue === 'boolean') {
+    if (typeof active?.currentValue === 'boolean') {
       if (active.currentValue) {
         this.hasBeenActive = true;
         this.hasBeenDestroy = false;

@@ -145,7 +145,7 @@ let nextId = 0;
             [content]="tab.content"
             [forceRender]="tab.nzForceRender"
             [animated]="tabPaneAnimated"
-            [destroyInactive]="nzDestroyInactiveTabPane || tab.nzDestroyInactiveTabPane"
+            [destroyInactive]="tab.nzDestroyInactiveLazyTab"
           ></div>
         }
       </div>
@@ -201,7 +201,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input({ transform: booleanAttribute }) nzHideAll = false;
   @Input({ transform: booleanAttribute }) nzLinkRouter = false;
   @Input({ transform: booleanAttribute }) nzLinkExact = true;
-  @Input({ transform: booleanAttribute }) nzDestroyInactiveTabPane = false;
 
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
   @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();
