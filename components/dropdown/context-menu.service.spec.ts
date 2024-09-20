@@ -3,7 +3,6 @@ import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 
 import { createKeyboardEvent, createMouseEvent, dispatchEvent } from 'ng-zorro-antd/core/testing';
@@ -16,19 +15,11 @@ import { NzDropDownModule } from './dropdown.module';
 describe('context-menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  function createComponent<T>(
-    component: Type<T>,
-    providers: Provider[] = [],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    declarations: any[] = []
-  ): ComponentFixture<T> {
+  function createComponent<T>(component: Type<T>, providers: Provider[] = []): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
-      declarations: [component, ...declarations],
+      imports: [NoopAnimationsModule],
       providers
-    })
-      .compileComponents()
-      .then();
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -37,12 +28,13 @@ describe('context-menu', () => {
 
     return TestBed.createComponent<T>(component);
   }
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
   it('should create dropdown', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
@@ -58,7 +50,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should only one dropdown exist', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
@@ -80,11 +72,9 @@ describe('context-menu', () => {
   }));
   it('should dropdown close when scroll', fakeAsync(() => {
     const scrolledSubject = new Subject<void>();
-    const fixture = createComponent(
-      NzTestDropdownContextMenuComponent,
-      [{ provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }],
-      []
-    );
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [
+      { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
+    ]);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     expect(() => {
@@ -103,7 +93,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should backdrop work with click', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
@@ -123,7 +113,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should backdrop work with keyboard event ESCAPE', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     const keyboardEvent = createKeyboardEvent('keydown', ESCAPE, undefined, 'Escape');
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -144,7 +134,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should not run change detection if the overlay is clicked inside', async () => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     const fakeEvent = createMouseEvent('contextmenu', 300, 300);
     const component = fixture.componentInstance;
@@ -162,6 +152,8 @@ describe('context-menu', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzDropDownModule, NzMenuModule],
   template: `
     <nz-dropdown-menu>
       <ul nz-menu>

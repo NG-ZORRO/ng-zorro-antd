@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NzPlacementType } from 'ng-zorro-antd/dropdown';
+import { NzDropDownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-placement',
+  standalone: true,
+  imports: [NzDropDownModule],
   template: `
     <div>
       @for (position of listOfPosition; track position) {
