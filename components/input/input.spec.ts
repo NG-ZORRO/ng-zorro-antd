@@ -1,11 +1,11 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
@@ -15,16 +15,7 @@ import { NzInputModule } from './input.module';
 describe('input', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-      declarations: [
-        NzTestInputWithInputComponent,
-        NzTestInputWithTextAreaComponent,
-        NzTestInputFormComponent,
-        NzTestInputWithStatusComponent,
-        NzTestInputWithDirComponent,
-        NzTestInputInFormComponent
-      ],
-      providers: []
+      providers: [provideNzIconsTesting()]
     }).compileComponents();
   }));
   describe('single input', () => {
@@ -195,6 +186,8 @@ describe('input', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzInputModule],
   template: `
     <div [dir]="dir">
       <input nz-input />
@@ -209,20 +202,26 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" /> `
+  standalone: true,
+  imports: [NzInputModule],
+  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" />`
 })
 export class NzTestInputWithInputComponent {
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   disabled = false;
   stepperless = true;
 }
 
 @Component({
-  template: ` <textarea nz-input></textarea> `
+  standalone: true,
+  imports: [NzInputModule],
+  template: `<textarea nz-input></textarea>`
 })
 export class NzTestInputWithTextAreaComponent {}
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzInputModule],
   template: `
     <form>
       <input nz-input [formControl]="formControl" />
@@ -239,13 +238,17 @@ export class NzTestInputFormComponent {
 
 // status
 @Component({
-  template: ` <input nz-input [nzStatus]="status" /> `
+  standalone: true,
+  imports: [NzInputModule],
+  template: `<input nz-input [nzStatus]="status" />`
 })
 export class NzTestInputWithStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFormModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>
