@@ -7,8 +7,12 @@ title:
 
 ## zh-CN
 
-使用 `<span ></span>` 标签声明组件，指定图标对应的 `nzType` 属性。可以通过 `nzTheme` 属性来设置不同的主题风格的图标，也可以通过设置 `nzSpin` 属性来实现动画旋转效果。对旧的 API `<i class="anticon"></i>` 兼容。
+推荐使用 `<nz-icon>` 而不是 `<span>` 标签来声明组件。
+
+使用 `nzType` 属性指定对应的图标。可以通过 `nzTheme` 属性来设置不同的主题风格的图标，也可以通过设置 `nzSpin` 属性来实现动画旋转效果。
 
 ## en-US
 
-Use `<span ></span>` to create an icon and set its type in the `nzType` prop. Specific the `nzSpin` prop to show spinning animation and the theme property to switch different themes. Old API `<i class="anticon"></i>`
+It is recommended to use `<nz-icon>` instead of `<span>` to declare the component.
+
+Use the `nzType` property to specify the corresponding icon. You can set different theme styles of icons through the `nzTheme` property, and you can achieve the animation rotation effect by setting the `nzSpin` property.

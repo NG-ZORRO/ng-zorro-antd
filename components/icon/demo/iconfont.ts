@@ -7,13 +7,13 @@ import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
   standalone: true,
   imports: [NzIconModule],
   template: `
-    <span nz-icon nzIconfont="icon-tuichu"></span>
-    <span nz-icon nzIconfont="icon-facebook"></span>
-    <span nz-icon nzIconfont="icon-twitter"></span>
+    <nz-icon nzIconfont="icon-tuichu" />
+    <nz-icon nzIconfont="icon-facebook" />
+    <nz-icon nzIconfont="icon-twitter" />
   `,
   styles: [
     `
-      [nz-icon] {
+      nz-icon {
         margin-right: 6px;
         font-size: 24px;
       }
