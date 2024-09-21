@@ -23,12 +23,6 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### **nzSafeNull**:standalone
-
-| 参数      | 说明     | 类型     | 默认值 |
-| --------- | -------- | -------- | ------ |
-| `replace` | 替换字符 | `string` | ''     |
-
 ### **nzBytes**:standalone
 
 | 参数      | 说明               | 类型     | 默认值 |
