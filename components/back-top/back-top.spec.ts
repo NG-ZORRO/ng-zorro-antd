@@ -280,7 +280,7 @@ describe('back-to-top', () => {
           useClass: MockDirectionality
         },
         { provide: Platform, useValue: { isBrowser: false } },
-        { provide: Document, useValue: document } // Mock Document
+        { provide: Document, useValue: document }
       ]
     }).compileComponents();
 
