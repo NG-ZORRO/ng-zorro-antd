@@ -1,11 +1,13 @@
 /* eslint-disable */
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Component, DebugElement, ElementRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzAnchorComponent } from './anchor.component';
 import { NzAnchorModule } from './anchor.module';
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 
 const throttleTime = 51;
 
@@ -357,7 +359,72 @@ export class TestComponent {
   nzContainer: any = null;
   nzCurrentAnchor?: string;
   nzDirection: NzDirectionVHType = 'vertical';
-  _click() { }
-  _change() { }
-  _scroll() { }
+  _click() {}
+  _change() {}
+  _scroll() {}
 }
+
+describe('NzAnchor', () => {
+  let component: NzAnchorComponent;
+  let fixture: ComponentFixture<NzAnchorComponent>;
+  let mockPlatform: Platform;
+  let scrollService: NzScrollService;
+  let mockDocument: Document;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        NzAnchorComponent,
+        { provide: DOCUMENT, useValue: document },
+        NzScrollService,
+        { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzAnchorComponent);
+    component = fixture.componentInstance;
+    mockPlatform = TestBed.inject(Platform);
+    scrollService = TestBed.inject(NzScrollService);
+    mockDocument = TestBed.inject(DOCUMENT);
+  });
+
+  it('should not register listeners if platform is not browser', () => {
+    mockPlatform.isBrowser = false;
+
+    component.ngAfterViewInit();
+    expect(component['handleScrollTimeoutID']).toBeFalsy();
+  });
+
+  it('should calculate the correct offsetTop in handleScroll method', () => {
+    component.nzTargetOffset = 50;
+    component.nzOffsetTop = 20;
+    component.nzBounds = 5;
+
+    component.handleScroll();
+
+    expect(component.nzTargetOffset).toBe(50);
+    expect(component.nzOffsetTop).toBe(20);
+  });
+
+  it('should calculate target scroll top correctly and call scrollTo', fakeAsync(() => {
+    const mockElement = document.createElement('div');
+    spyOn(mockDocument, 'querySelector').and.returnValue(mockElement);
+    spyOn(scrollService, 'getScroll').and.returnValue(100);
+    spyOn<NzSafeAny>(component, 'getContainer').and.returnValue(window);
+
+    component.nzTargetOffset = undefined;
+    component.nzOffsetTop = undefined;
+
+    const mockLinkComponent = {
+      nzHref: '#test',
+      setActive: jasmine.createSpy('setActive'),
+      getLinkTitleElement: () => document.createElement('a')
+    } as any;
+
+    const scrollToSpy = spyOn(scrollService, 'scrollTo').and.callThrough();
+
+    component.handleScrollTo(mockLinkComponent);
+
+    expect(scrollToSpy).toHaveBeenCalledWith(component['getContainer'](), 100, jasmine.any(Object));
+  }));
+});

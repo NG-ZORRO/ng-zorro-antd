@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+
 @Component({
   selector: 'nz-demo-descriptions-basic',
+  standalone: true,
+  imports: [NzDescriptionsModule],
   template: `
     <nz-descriptions nzTitle="User Info">
       <nz-descriptions-item nzTitle="UserName">Zhou Maomao</nz-descriptions-item>

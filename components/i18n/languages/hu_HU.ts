@@ -55,7 +55,8 @@ export default {
       previousDecade: 'Előző évtized',
       nextDecade: 'Következő évtized',
       previousCentury: 'Múlt évszázad',
-      nextCentury: 'Jövő évszázad'
+      nextCentury: 'Jövő évszázad',
+      rangeQuarterPlaceholder: ['Kezdő negyedév', 'Befejezés negyedéve']
     },
     timePickerLocale: {
       placeholder: 'Válasszon időt',

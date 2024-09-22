@@ -1,8 +1,19 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
+type Gender = 'male' | 'female';
 
 @Component({
   selector: 'nz-demo-form-coordinated',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule, NzSelectModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -14,12 +25,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
       <nz-form-item>
         <nz-form-label [nzSpan]="5" nzFor="gender" nzRequired>Gender</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="Please select your gender!">
-          <nz-select
-            id="gender"
-            formControlName="gender"
-            nzPlaceHolder="Select a option and change input text above"
-            (ngModelChange)="genderChange($event)"
-          >
+          <nz-select id="gender" formControlName="gender" nzPlaceHolder="Select a option and change input text above">
             <nz-option nzValue="male" nzLabel="male"></nz-option>
             <nz-option nzValue="female" nzLabel="female"></nz-option>
           </nz-select>
@@ -40,14 +46,25 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
     `
   ]
 })
-export class NzDemoFormCoordinatedComponent {
-  validateForm: FormGroup<{
-    note: FormControl<string | null>;
-    gender: FormControl<'male' | 'male' | null>;
-  }> = this.fb.group({
+export class NzDemoFormCoordinatedComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  validateForm = this.fb.group({
     note: this.fb.control<string | null>(null, Validators.required),
-    gender: this.fb.control<'male' | 'male' | null>(null, Validators.required)
+    gender: this.fb.control<Gender | null>(null, Validators.required)
   });
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.validateForm.controls.gender.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      this.genderChange(value);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -62,9 +79,7 @@ export class NzDemoFormCoordinatedComponent {
     }
   }
 
-  genderChange(value: string): void {
+  genderChange(value: Gender | null): void {
     this.validateForm.controls.note.setValue(value === 'male' ? 'Hi, man!' : 'Hi, lady!');
   }
-
-  constructor(private fb: FormBuilder) {}
 }
