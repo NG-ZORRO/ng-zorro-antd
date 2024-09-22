@@ -265,7 +265,7 @@ describe('carousel', () => {
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
 
-    it('should call goTo function on slick item click', () => {
+    it('should call goTo function on slick dot click', () => {
       spyOn(testComponent.nzCarouselComponent, 'goTo');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       expect(testComponent.nzCarouselComponent.goTo).toHaveBeenCalledWith(3);
