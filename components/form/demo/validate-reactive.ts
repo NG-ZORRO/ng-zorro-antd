@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidatorFn,
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
+  ReactiveFormsModule,
   ValidationErrors,
-  ValidatorFn,
   Validators
 } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-validate-reactive',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -46,7 +50,7 @@ import { Observable, Observer } from 'rxjs';
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your password!">
-          <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
+          <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -92,14 +96,28 @@ import { Observable, Observer } from 'rxjs';
     `
   ]
 })
-export class NzDemoFormValidateReactiveComponent {
-  validateForm: FormGroup<{
-    userName: FormControl<string>;
-    email: FormControl<string>;
-    password: FormControl<string>;
-    confirm: FormControl<string>;
-    comment: FormControl<string>;
-  }>;
+export class NzDemoFormValidateReactiveComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  validateForm = this.fb.group({
+    userName: this.fb.control('', [Validators.required], [this.userNameAsyncValidator]),
+    email: this.fb.control('', [Validators.email, Validators.required]),
+    password: this.fb.control('', [Validators.required]),
+    confirm: this.fb.control('', [this.confirmValidator]),
+    comment: this.fb.control('', [Validators.required])
+  });
+
+  constructor(private fb: NonNullableFormBuilder) {}
+
+  ngOnInit(): void {
+    this.validateForm.controls.password.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.validateForm.controls.confirm.updateValueAndValidity();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
@@ -110,12 +128,8 @@ export class NzDemoFormValidateReactiveComponent {
     this.validateForm.reset();
   }
 
-  validateConfirmPassword(): void {
-    setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
-  }
-
-  userNameAsyncValidator: AsyncValidatorFn = (control: AbstractControl) =>
-    new Observable((observer: Observer<ValidationErrors | null>) => {
+  userNameAsyncValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return new Observable((observer: Observer<ValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
           // you have to return `{error: true}` to mark it as an error event
@@ -126,23 +140,14 @@ export class NzDemoFormValidateReactiveComponent {
         observer.complete();
       }, 1000);
     });
+  }
 
-  confirmValidator: ValidatorFn = (control: AbstractControl) => {
+  confirmValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return { error: true, required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
+    } else if (control.value !== this.validateForm.value.password) {
       return { confirm: true, error: true };
     }
     return {};
-  };
-
-  constructor(private fb: NonNullableFormBuilder) {
-    this.validateForm = this.fb.group({
-      userName: ['', [Validators.required], [this.userNameAsyncValidator]],
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
-      confirm: ['', [this.confirmValidator]],
-      comment: ['', [Validators.required]]
-    });
   }
 }

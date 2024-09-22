@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormRecord, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormRecord, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-dynamic-form-item',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzIconModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       @for (control of listOfControl; track control; let i = $index) {

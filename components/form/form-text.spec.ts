@@ -1,20 +1,23 @@
 import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
 import { NzFormTextComponent } from './form-text.component';
 
-const testBedOptions = { imports: [NoopAnimationsModule, NzFormTextComponent] };
+const testBedOptions = { imports: [NoopAnimationsModule] };
 
 describe('nz-form-text', () => {
   describe('default', () => {
-    let testBed: ComponentBed<NzTestFormTextComponent>;
+    let fixture: ComponentFixture<NzTestFormTextComponent>;
     let text: DebugElement;
     beforeEach(() => {
-      testBed = createComponentBed(NzTestFormTextComponent, testBedOptions);
-      text = testBed.fixture.debugElement.query(By.directive(NzFormTextComponent));
+      TestBed.configureTestingModule(testBedOptions);
+      fixture = TestBed.createComponent(NzTestFormTextComponent);
+      fixture.detectChanges();
+      text = fixture.debugElement.query(By.directive(NzFormTextComponent));
     });
     it('should className correct', () => {
       expect(text.nativeElement.classList).toContain('ant-form-text');
@@ -23,6 +26,8 @@ describe('nz-form-text', () => {
 });
 
 @Component({
-  template: ` <nz-form-text></nz-form-text> `
+  standalone: true,
+  imports: [NzFormModule],
+  template: `<nz-form-text></nz-form-text>`
 })
 export class NzTestFormTextComponent {}

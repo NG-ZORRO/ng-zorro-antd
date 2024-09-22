@@ -25,7 +25,7 @@ interface IModalData {
     <ng-template #tplContent let-params>
       <p>some contents...</p>
       <p>some contents...</p>
-      <p>{{ params.value }}</p>
+      <p>{{ params?.value }}</p>
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
