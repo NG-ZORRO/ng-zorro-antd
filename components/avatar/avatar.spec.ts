@@ -1,8 +1,9 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
@@ -236,10 +237,42 @@ describe('avatar', () => {
       fixture.detectChanges();
       flush();
       const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      console.log(textEl);
       context.comp.ngAfterViewInit();
       const scale = getScaleFromCSSTransform(textEl.style.transform);
       expect(scale).toBeLessThan(1);
       expect(textEl.style.lineHeight).toEqual(`${size}px`);
+    }));
+
+    it('should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
+      const size = 64;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      context.nzSize = size;
+      context.nzText = 'LongUsername';
+      context.comp.hasText = true;
+
+      fixture.detectChanges();
+      flush();
+      const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      (context.comp as NzSafeAny)['el'] = {
+        getBoundingClientRect: function () {
+          return {
+            width: null
+          };
+        }
+      };
+
+      context.comp['calcStringSize']();
+
+      const scale = getScaleFromCSSTransform(textEl.style.transform);
+
+      // avatarWidth = 0
+      // childrenWidth = 86
+      // offset = 8
+      // avatarWidth = 0
+      // scale = (0 - 8) / 86
+      expect(scale).toBe(-0.0930233);
     }));
   });
 
