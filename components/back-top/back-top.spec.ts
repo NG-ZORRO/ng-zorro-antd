@@ -1,9 +1,13 @@
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
+import { ApplicationRef, Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzBackTopComponent } from './back-top.component';
 import { NzBackTopModule } from './back-top.module';
@@ -256,3 +260,75 @@ class MockNzScrollService {
     this.mockTopOffset = targetTopValue;
   }
 }
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
+
+describe('back-to-top', () => {
+  let component: NzBackTopComponent;
+  let fixture: ComponentFixture<NzBackTopComponent>;
+  let mockDirectionality: MockDirectionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzBackTopModule],
+      providers: [
+        {
+          provide: Directionality,
+          useClass: MockDirectionality
+        },
+        { provide: Platform, useValue: { isBrowser: false } },
+        { provide: Document, useValue: document } // Mock Document
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzBackTopComponent);
+    component = fixture.componentInstance;
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  it('dir change should work properly', fakeAsync(() => {
+    spyOn<NzSafeAny>(component['cdr'], 'detectChanges');
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+    expect(component.dir).toEqual('ltr');
+
+    mockDirectionality.change.next('rtl');
+    tick();
+    expect(component.dir).toEqual('rtl');
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  }));
+
+  it('should return if platform is not browser', () => {
+    spyOn<NzSafeAny>(component, 'handleScroll');
+    component['registerScrollEvent']();
+
+    expect(component['handleScroll']).not.toHaveBeenCalled();
+  });
+
+  it('should set correct value for target', fakeAsync(() => {
+    spyOn<NzSafeAny>(component, 'registerScrollEvent');
+    spyOn(document, 'querySelector').and.returnValue({} as HTMLElement);
+    let mockTarget: NzSafeAny = 'mockTarget';
+    component.nzTarget = mockTarget;
+    let change: SimpleChanges;
+    change = {
+      nzTarget: {
+        currentValue: mockTarget,
+        previousValue: undefined,
+        firstChange: false,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(change);
+    tick();
+
+    expect(document.querySelector).toHaveBeenCalledWith(mockTarget);
+    expect(component['target']).toBeTruthy();
+    expect(component['registerScrollEvent']).toHaveBeenCalled();
+  }));
+});
