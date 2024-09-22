@@ -237,7 +237,6 @@ describe('avatar', () => {
       fixture.detectChanges();
       flush();
       const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
-      console.log(textEl);
       context.comp.ngAfterViewInit();
       const scale = getScaleFromCSSTransform(textEl.style.transform);
       expect(scale).toBeLessThan(1);
