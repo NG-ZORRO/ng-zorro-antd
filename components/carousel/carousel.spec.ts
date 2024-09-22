@@ -264,6 +264,12 @@ describe('carousel', () => {
       tick(1000 + 10);
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
+
+    it('should call goTo function on slick item click', () => {
+      spyOn(testComponent.nzCarouselComponent, 'goTo');
+      carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
+      expect(testComponent.nzCarouselComponent.goTo).toHaveBeenCalledWith(3);
+    });
   });
 
   describe('strategies', () => {
