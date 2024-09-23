@@ -11,6 +11,7 @@ import {
   NgZone,
   OnInit,
   QueryList,
+  SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -36,6 +37,7 @@ import {
   MockNgZone,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
@@ -43,7 +45,8 @@ import {
   NzAutocompleteComponent,
   NzAutocompleteModule,
   NzAutocompleteOptionComponent,
-  NzAutocompleteTriggerDirective
+  NzAutocompleteTriggerDirective,
+  NzOptionSelectionChange
 } from './index';
 
 describe('auto-complete', () => {
@@ -874,6 +877,25 @@ describe('auto-complete', () => {
       tick(500);
       expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeFalsy();
     }));
+
+    it('should call closePanel on correct circumstances', () => {
+      const trigger = fixture.componentInstance.trigger;
+
+      trigger.panelOpen = true;
+      trigger.nzAutocomplete.showPanel = true;
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        code: 'Enter',
+        which: 13,
+        keyCode: 13
+      });
+      spyOnProperty(trigger, 'activeOption', 'get').and.returnValue(null);
+      spyOn(trigger, 'closePanel');
+
+      trigger.handleKeydown(event);
+
+      expect(trigger.closePanel).toHaveBeenCalled();
+    });
   });
 
   // TODO: Implement this test case
@@ -1196,3 +1218,118 @@ class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
   @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
 }
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
+
+describe('auto-complete', () => {
+  let component: NzAutocompleteComponent;
+  let fixture: ComponentFixture<NzAutocompleteComponent>;
+  let mockDirectionality: MockDirectionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzAutocompleteModule],
+      providers: [{ provide: Directionality, useClass: MockDirectionality }]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzAutocompleteComponent);
+    component = fixture.componentInstance;
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  it('should change dir', fakeAsync(() => {
+    spyOn(component['changeDetectorRef'], 'detectChanges');
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+    expect(component.dir).toEqual('ltr');
+    mockDirectionality.change.next('rtl');
+    tick();
+    expect(component.dir).toEqual('rtl');
+    expect(component['changeDetectorRef'].detectChanges).toHaveBeenCalled();
+  }));
+
+  it('should normalizeDataSource return correct value', () => {
+    let changes: SimpleChanges = {
+      nzDataSource: {
+        currentValue: [1, 2],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+
+    changes = {
+      nzDataSource: {
+        currentValue: ['1', '2'],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+
+    changes = {
+      nzDataSource: {
+        currentValue: [
+          {
+            label: '1',
+            value: '1'
+          },
+          {
+            label: '2',
+            value: '2'
+          }
+        ],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+  });
+
+  it('NzOptionSelectionChange should have correct initial value for isUserInput', () => {
+    const nzOptionSelectionChange = new NzOptionSelectionChange({} as NzSafeAny);
+    expect(nzOptionSelectionChange.isUserInput).toBeFalsy();
+  });
+});
