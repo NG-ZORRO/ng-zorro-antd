@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-space-basic',
   standalone: true,
-  imports: [NzButtonModule, NzIconModule, NzSpaceModule],
+  imports: [NzButtonModule, NzIconModule, NzSpaceModule, NzPopconfirmModule, NzUploadModule],
   template: `
     <nz-space>
       <button *nzSpaceItem nz-button nzType="primary">Button</button>
