@@ -4,7 +4,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputModule } from '../input';
@@ -34,24 +34,9 @@ describe('mention', () => {
   beforeEach(waitForAsync(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports: [
-        BidiModule,
-        NzMentionModule,
-        NzInputModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NzIconTestModule,
-        NzFormModule
-      ],
-      declarations: [
-        NzTestSimpleMentionComponent,
-        NzTestPropertyMentionComponent,
-        NzTestDirMentionComponent,
-        NzTestStatusMentionComponent,
-        NzTestMentionInFormComponent
-      ],
+      imports: [NoopAnimationsModule],
       providers: [
+        provideNzIconsTesting(),
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
@@ -62,9 +47,7 @@ describe('mention', () => {
           }
         }
       ]
-    });
-
-    TestBed.compileComponents();
+    }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -582,6 +565,8 @@ describe('mention', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions">
       @if (!inputTrigger) {
@@ -606,6 +591,8 @@ class NzTestSimpleMentionComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention
       [nzSuggestions]="webFrameworks"
@@ -662,6 +649,8 @@ class NzTestPropertyMentionComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzInputModule, NzMentionModule],
   template: `
     <div [dir]="direction">
       <nz-mention [nzSuggestions]="[]">
@@ -675,6 +664,8 @@ class NzTestDirMentionComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
       <textarea rows="1" nz-input nzMentionTrigger></textarea>
@@ -686,6 +677,8 @@ class NzTestStatusMentionComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFormModule, NzMentionModule],
   template: `
     <form nz-form>
       <nz-form-item>

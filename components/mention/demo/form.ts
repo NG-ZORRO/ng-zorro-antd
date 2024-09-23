@@ -1,11 +1,22 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 
-import { NzMentionComponent } from 'ng-zorro-antd/mention';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMentionComponent, NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-form',
-  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule, NzMentionModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -44,27 +55,25 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
 })
 export class NzDemoMentionFormComponent {
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
-  validateForm: FormGroup<{ mention: FormControl<string | null> }>;
+  validateForm = this.fb.group({
+    mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
+  });
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
   get mention(): FormControl<string | null> {
     return this.validateForm.controls.mention;
   }
 
-  constructor(private fb: FormBuilder) {
-    this.validateForm = this.fb.group({
-      mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
-  mentionValidator: ValidatorFn = (control: AbstractControl) => {
+  mentionValidator(control: AbstractControl): ValidationErrors {
     if (!control.value) {
       return { required: true };
     } else if (this.mentionChild?.getMentions().length < 2) {
       return { confirm: true, error: true };
     }
     return {};
-  };
+  }
 
   submitForm(): void {
     this.mention.markAsDirty();
