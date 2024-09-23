@@ -1,9 +1,35 @@
 import { Component } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-page-header-content',
+  standalone: true,
+  imports: [
+    NzAvatarModule,
+    NzBreadCrumbModule,
+    NzButtonModule,
+    NzDropDownModule,
+    NzGridModule,
+    NzIconModule,
+    NzNoAnimationModule,
+    NzPageHeaderModule,
+    NzSpaceModule,
+    NzTagModule,
+    NzTypographyModule
+  ],
   template: `
-    <nz-page-header class="site-page-header">
+    <nz-page-header>
       <!--breadcrumb-->
       <nz-breadcrumb nz-page-header-breadcrumb>
         <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>

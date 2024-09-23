@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSpaceModule, NzSpaceSize } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-size',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzRadioModule, NzSpaceModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio nzValue="small">Small</label>
@@ -17,5 +24,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoSpaceSizeComponent {
-  size: 'small' | 'middle' | 'large' | number = 'small';
+  size: NzSpaceSize = 'small';
 }

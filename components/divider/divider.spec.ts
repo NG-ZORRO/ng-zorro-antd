@@ -2,6 +2,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDividerComponent } from './divider.component';
@@ -11,10 +12,10 @@ describe('divider', () => {
   let fixture: ComponentFixture<TestDividerComponent>;
   let context: TestDividerComponent;
   let dl: DebugElement;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzDividerModule, NzIconTestModule],
-      declarations: [TestDividerComponent, TestDividerTextTemplateComponent]
+      imports: [NzIconTestModule]
     }).compileComponents();
     fixture = TestBed.createComponent(TestDividerComponent);
     context = fixture.componentInstance;
@@ -33,7 +34,7 @@ describe('divider', () => {
   });
 
   describe('#nzType', () => {
-    for (const value of ['horizontal', 'vertical']) {
+    for (const value of ['horizontal', 'vertical'] as const) {
       it(`[${value}]`, () => {
         context.nzType = value;
         fixture.detectChanges();
@@ -63,7 +64,7 @@ describe('divider', () => {
   });
 
   describe('#nzOrientation', () => {
-    ['center', 'left', 'right'].forEach(type => {
+    (['center', 'left', 'right'] as const).forEach(type => {
       it(`with ${type}`, () => {
         context.nzOrientation = type;
         fixture.detectChanges();
@@ -74,6 +75,8 @@ describe('divider', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzDividerModule],
   template: `
     <nz-divider
       #comp
@@ -87,12 +90,14 @@ describe('divider', () => {
 class TestDividerComponent {
   @ViewChild('comp', { static: false }) comp!: NzDividerComponent;
   nzDashed = false;
-  nzType = 'horizontal';
+  nzType: 'vertical' | 'horizontal' = 'horizontal';
   nzText?: string = 'with text';
-  nzOrientation: string = '';
+  nzOrientation!: 'left' | 'right' | 'center';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzDividerModule, NzIconModule],
   template: `
     <nz-divider nzDashed [nzText]="text">
       <ng-template #text>

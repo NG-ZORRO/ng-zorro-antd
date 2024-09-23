@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-divider-horizontal',
+  standalone: true,
+  imports: [NzDividerModule, NzIconModule],
   template: `
     <div>
       <p>

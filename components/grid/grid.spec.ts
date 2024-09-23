@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -6,9 +6,9 @@ import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzColDirective } from './col.directive';
+import { EmbeddedProperty, NzColDirective } from './col.directive';
 import { NzGridModule } from './grid.module';
-import { NzRowDirective } from './row.directive';
+import { NzAlign, NzJustify, NzRowDirective } from './row.directive';
 
 declare const viewport: NzSafeAny;
 const setWindowWidth = (width: number): void => {
@@ -31,7 +31,7 @@ describe('grid', () => {
       expect(rowElement.className).toBe('ant-row');
     });
     it('should apply className according to align', () => {
-      const listOfAlign = ['top', 'middle', 'bottom'];
+      const listOfAlign: NzAlign[] = ['top', 'middle', 'bottom'];
       listOfAlign.forEach(align => {
         testBed.component.align = align;
         testBed.fixture.detectChanges();
@@ -39,7 +39,7 @@ describe('grid', () => {
       });
     });
     it('should apply className according to justify', () => {
-      const listOfJustify = ['start', 'end', 'center', 'space-around', 'space-between'];
+      const listOfJustify: NzJustify[] = ['start', 'end', 'center', 'space-around', 'space-between'];
       listOfJustify.forEach(justify => {
         testBed.component.justify = justify;
         testBed.fixture.detectChanges();
@@ -219,8 +219,8 @@ export class TestGridComponent {
     | { [key: string]: number }
     | [{ [key: string]: number }, { [key: string]: number }] = null;
   flex: string | null = null;
-  justify: string | null = null;
-  align: string | null = null;
+  justify: NzJustify | null = null;
+  align: NzAlign | null = null;
 }
 
 @Component({
@@ -251,12 +251,12 @@ export class TestColComponent {
   order: number | null = null;
   pull: number | null = null;
   push: number | null = null;
-  xs: number | null | { [key: string]: number } = null;
-  sm: number | null | { [key: string]: number } = null;
-  md: number | null | { [key: string]: number } = null;
-  lg: number | null | { [key: string]: number } = null;
-  xl: number | null | { [key: string]: number } = null;
-  xxl: number | null | { [key: string]: number } = null;
+  xs: string | number | EmbeddedProperty | null = null;
+  sm: string | number | EmbeddedProperty | null = null;
+  md: string | number | EmbeddedProperty | null = null;
+  lg: string | number | EmbeddedProperty | null = null;
+  xl: string | number | EmbeddedProperty | null = null;
+  xxl: string | number | EmbeddedProperty | null = null;
 }
 
 @Component({
@@ -270,5 +270,5 @@ export class TestColComponent {
 })
 export class NzTestGridRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
