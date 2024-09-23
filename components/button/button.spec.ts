@@ -1,12 +1,12 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzButtonComponent, NzButtonShape, NzButtonSize, NzButtonType } from './index';
+import { NzButtonComponent, NzButtonModule, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
 describe('button', () => {
   describe('className', () => {
@@ -390,3 +390,24 @@ export class TestButtonRtlComponent extends TestButtonComponent {
 export class TestAnchorComponent {
   disabled = false;
 }
+
+describe('button', () => {
+  let fixture: ComponentFixture<NzButtonComponent>;
+  let component: NzButtonComponent;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzButtonModule]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzButtonComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('correct value for listOfNode', () => {
+    component['elementRef'] = {
+      nativeElement: {}
+    };
+    expect(component.iconOnly).toBeFalsy();
+  });
+});
