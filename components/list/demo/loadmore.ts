@@ -4,13 +4,18 @@ import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 const count = 5;
 const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
 
 @Component({
   selector: 'nz-demo-list-loadmore',
+  standalone: true,
+  imports: [NzButtonModule, NzListModule, NzSkeletonModule],
   template: `
     <nz-list class="demo-loadmore-list" [nzLoading]="initLoading">
       @for (item of list; track item) {

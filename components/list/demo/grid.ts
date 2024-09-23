@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
   selector: 'nz-demo-list-grid',
+  standalone: true,
+  imports: [NzCardModule, NzGridModule, NzListModule],
   template: `
     <nz-list nzGrid>
       <div nz-row [nzGutter]="16">

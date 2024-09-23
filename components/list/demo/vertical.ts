@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 interface ItemData {
   href: string;
   title: string;
@@ -10,6 +13,8 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-list-vertical',
+  standalone: true,
+  imports: [NzIconModule, NzListModule],
   template: `
     <nz-list nzItemLayout="vertical">
       @for (item of data; track item) {
@@ -55,7 +60,7 @@ export class NzDemoListVerticalComponent implements OnInit {
 
   loadData(pi: number): void {
     this.data = new Array(5).fill({}).map((_, index) => ({
-      href: 'http://ant.design',
+      href: 'https://ant.design',
       title: `ant design part ${index} (page: ${pi})`,
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
