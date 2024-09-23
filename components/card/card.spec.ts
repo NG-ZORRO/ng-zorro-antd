@@ -1,11 +1,13 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
 
 import { EditOutline, EllipsisOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -166,3 +168,33 @@ export class NzTestCardRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }
+
+describe('card', () => {
+  let fixture: ComponentFixture<NzCardComponent>;
+  let component: NzCardComponent;
+  let configChangeEvent$: Subject<void>;
+
+  beforeEach(() => {
+    configChangeEvent$ = new Subject<void>();
+    const nzConfigServiceSpy = jasmine.createSpyObj('NzConfigService', {
+      getConfigChangeEventForComponent: configChangeEvent$.asObservable(),
+      getConfigForComponent: {}
+    });
+
+    TestBed.configureTestingModule({
+      imports: [NzCardModule, NzCardModule],
+      providers: [{ provide: NzConfigService, useValue: nzConfigServiceSpy }]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzCardComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should call markForCheck when changing nzConfig', fakeAsync(() => {
+    spyOn(component['cdr'], 'markForCheck');
+    fixture.detectChanges();
+    configChangeEvent$.next();
+    tick();
+    expect(component['cdr'].markForCheck).toHaveBeenCalled();
+  }));
+});
