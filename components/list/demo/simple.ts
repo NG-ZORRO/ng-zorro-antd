@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 
+import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-list-simple',
+  standalone: true,
+  imports: [NzListModule, NzTypographyModule],
   template: `
-    <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Default Size</h3>
+    <h3>Default Size</h3>
     <nz-list nzBordered nzHeader="Header" nzFooter="Footer">
       @for (item of data; track item) {
         <nz-list-item>
@@ -15,7 +19,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       }
     </nz-list>
 
-    <h3 [ngStyle]="{ margin: '16px 0' }">Small Size</h3>
+    <h3>Small Size</h3>
     <nz-list nzBordered nzSize="small">
       <nz-list-header>Header</nz-list-header>
       @for (item of data; track item) {
@@ -25,7 +29,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       <nz-list-footer>Footer</nz-list-footer>
     </nz-list>
 
-    <h3 [ngStyle]="{ margin: '16px 0' }">Large Size</h3>
+    <h3>Large Size</h3>
     <ul nz-list [nzDataSource]="data" nzBordered nzSize="large">
       <nz-list-header>Header</nz-list-header>
       @for (item of data; track item) {
@@ -40,7 +44,20 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       }
       <nz-list-footer>Footer</nz-list-footer>
     </ul>
-  `
+  `,
+  styles: [
+    `
+      h3 {
+        margin: 16px 0;
+      }
+      h3:first-child {
+        margin-top: 0;
+      }
+      h3:last-child {
+        margin-bottom: 0;
+      }
+    `
+  ]
 })
 export class NzDemoListSimpleComponent {
   data = [

@@ -1,9 +1,16 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
   selector: 'nz-demo-list-basic',
+  standalone: true,
+  imports: [NzButtonModule, NzListModule],
   template: `
-    <div style="margin-bottom: 8px;"><button nz-button (click)="change()">Switch Data</button></div>
+    <div style="margin-bottom: 8px;">
+      <button nz-button (click)="change()">Switch Data</button>
+    </div>
     <nz-list nzItemLayout="horizontal" [nzLoading]="loading">
       @for (item of data; track item) {
         <nz-list-item>
