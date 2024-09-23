@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router, Routes } from '@angular/router';
+import { PRIMARY_OUTLET, Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -475,3 +476,39 @@ export class NzTestBreadcrumbRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 }
+
+describe('breadcrumb', () => {
+  let fixture: ComponentFixture<NzBreadCrumbComponent>;
+  let component: NzBreadCrumbComponent;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzBreadCrumbModule]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzBreadCrumbComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should have correct value for nextUrl', () => {
+    spyOn(component, 'nzRouteFn');
+    const mockRout = {
+      children: [
+        {
+          outlet: PRIMARY_OUTLET,
+          snapshot: {
+            url: [],
+            data: {
+              breadcrumb: 'breadcrumb'
+            }
+          },
+          children: []
+        }
+      ]
+    };
+
+    component['getBreadcrumbs'](mockRout as NzSafeAny, 'mockUrl', []);
+
+    expect(component.nzRouteFn).toHaveBeenCalledWith('mockUrl');
+  });
+});
