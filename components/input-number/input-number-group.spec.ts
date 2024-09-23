@@ -1,12 +1,14 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputNumberGroupComponent } from 'ng-zorro-antd/input-number/input-number-group.component';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number/input-number.module';
 
@@ -15,18 +17,7 @@ import { NzFormControlStatusType, NzFormModule } from '../form';
 describe('input-number-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzInputNumberModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-      declarations: [
-        NzTestInputNumberGroupAddonComponent,
-        NzTestInputNumberGroupAffixComponent,
-        NzTestInputNumberGroupMultipleComponent,
-        NzTestInputNumberGroupColComponent,
-        NzTestInputNumberGroupMixComponent,
-        NzTestInputNumberGroupWithStatusComponent,
-        NzTestInputNumberGroupWithDirComponent,
-        NzTestInputNumberGroupInFormComponent
-      ],
-      providers: []
+      providers: [provideNzIconsTesting()]
     }).compileComponents();
   }));
   describe('input number group', () => {
@@ -345,6 +336,8 @@ describe('input-number-group', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzInputNumberModule],
   template: `
     <nz-input-number-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
       <nz-input-number></nz-input-number>
@@ -362,6 +355,8 @@ export class NzTestInputNumberGroupAddonComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzInputNumberModule],
   template: `
     <nz-input-number-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
       <nz-input-number [nzDisabled]="disabled"></nz-input-number>
@@ -380,6 +375,8 @@ export class NzTestInputNumberGroupAffixComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzInputNumberModule],
   template: `
     <nz-input-number-group [nzCompact]="compact" [nzSize]="size">
       <nz-input-number></nz-input-number>
@@ -393,6 +390,8 @@ export class NzTestInputNumberGroupMultipleComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzGridModule, NzInputNumberModule],
   template: `
     <nz-input-number-group nz-row nzSize="large">
       <div nz-col nzSpan="8">
@@ -407,6 +406,8 @@ export class NzTestInputNumberGroupMultipleComponent {
 export class NzTestInputNumberGroupColComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzInputNumberModule],
   template: `
     <nz-input-number-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
       <nz-input-number></nz-input-number>
@@ -416,12 +417,16 @@ export class NzTestInputNumberGroupColComponent {}
 export class NzTestInputNumberGroupMixComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule, NzInputNumberModule],
   template: `
     @if (!isAddon) {
       <nz-input-number-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
         <nz-input-number />
       </nz-input-number-group>
-      <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
+      <ng-template #prefixTemplateClock>
+        <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+      </ng-template>
     } @else {
       <nz-input-number-group nzAddOnAfterIcon="setting" [nzStatus]="status">
         <nz-input-number />
@@ -435,6 +440,8 @@ export class NzTestInputNumberGroupWithStatusComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzInputNumberModule],
   template: `
     <div [dir]="dir">
       <nz-input-number-group nzAddOnAfterIcon="setting">
@@ -448,6 +455,8 @@ export class NzTestInputNumberGroupWithDirComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFormModule, NzInputNumberModule],
   template: `
     <form nz-form>
       <nz-form-item>
