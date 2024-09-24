@@ -1,7 +1,13 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-menu-recursive',
+  standalone: true,
+  imports: [NgTemplateOutlet, NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
       <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
