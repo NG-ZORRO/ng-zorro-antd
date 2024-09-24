@@ -1,8 +1,13 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-placement',
-  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention nzPlacement="top" [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)">
       <textarea
