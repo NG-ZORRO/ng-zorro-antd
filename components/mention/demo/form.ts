@@ -5,6 +5,7 @@ import {
   FormControl,
   ReactiveFormsModule,
   ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 
@@ -54,26 +55,27 @@ import { NzMentionComponent, NzMentionModule } from 'ng-zorro-antd/mention';
   ]
 })
 export class NzDemoMentionFormComponent {
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
-  validateForm = this.fb.group({
-    mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
-  });
+  readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
-  get mention(): FormControl<string | null> {
-    return this.validateForm.controls.mention;
-  }
-
-  constructor(private fb: FormBuilder) {}
-
-  mentionValidator(control: AbstractControl): ValidationErrors {
+  mentionValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
     if (!control.value) {
       return { required: true };
     } else if (this.mentionChild?.getMentions().length < 2) {
       return { confirm: true, error: true };
     }
     return {};
+  };
+
+  validateForm = this.fb.group({
+    mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
+  });
+
+  get mention(): FormControl<string | null> {
+    return this.validateForm.controls.mention;
   }
+
+  constructor(private fb: FormBuilder) {}
 
   submitForm(): void {
     this.mention.markAsDirty();
