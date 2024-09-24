@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-step-next',
+  standalone: true,
+  imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step nzTitle="Finished"></nz-step>
