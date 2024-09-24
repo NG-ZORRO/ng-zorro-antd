@@ -2,7 +2,11 @@ import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 import { NzCollapseComponent } from './collapse.component';
@@ -11,15 +15,8 @@ import { NzCollapseModule } from './collapse.module';
 describe('collapse', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
-      declarations: [
-        NzTestCollapseBasicComponent,
-        NzTestCollapseTemplateComponent,
-        NzTestCollapseIconComponent,
-        NzTestCollapseRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+    }).compileComponents();
   }));
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
@@ -191,8 +188,9 @@ describe('collapse', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-basic-collapse',
+  standalone: true,
+  imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
@@ -221,11 +219,13 @@ export class NzTestCollapseBasicComponent {
   showArrow = true;
   showExtra = '';
   header = 'string';
-  active01Change = jasmine.createSpy('active01 callback');
-  active02Change = jasmine.createSpy('active02 callback');
+  active01Change = jasmine.createSpy<NzSafeAny>('active01 callback');
+  active02Change = jasmine.createSpy<NzSafeAny>('active02 callback');
 }
 
 @Component({
+  standalone: true,
+  imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse>
@@ -238,6 +238,8 @@ export class NzTestCollapseBasicComponent {
 export class NzTestCollapseTemplateComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule, NzCollapseModule],
   template: `
     <nz-collapse>
       <nz-collapse-panel>
@@ -258,6 +260,8 @@ export class NzTestCollapseTemplateComponent {}
 export class NzTestCollapseIconComponent {}
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestCollapseBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-collapse></nz-test-basic-collapse>
