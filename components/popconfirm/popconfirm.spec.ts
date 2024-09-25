@@ -1,31 +1,27 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs';
 
-import { NzButtonType } from 'ng-zorro-antd/button';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
-
-import { NzPopconfirmModule } from './popconfirm.module';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm/popconfirm.module';
 
 describe('NzPopconfirm', () => {
-  let testBed: ComponentBed<NzPopconfirmTestNewComponent>;
   let fixture: ComponentFixture<NzPopconfirmTestNewComponent>;
   let component: NzPopconfirmTestNewComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzPopconfirmTestNewComponent, {
-      imports: [NzPopconfirmModule, NoopAnimationsModule, NzIconTestModule]
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
-    fixture = testBed.fixture;
-    component = testBed.component;
+    fixture = TestBed.createComponent(NzPopconfirmTestNewComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
@@ -248,6 +244,8 @@ describe('NzPopconfirm', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzPopconfirmModule],
   template: `
     <a
       nz-popconfirm
@@ -287,7 +285,7 @@ export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
-  nzOkType: NzButtonType | 'danger' = 'default';
+  nzOkType: string = 'default';
   nzOkDisabled: boolean = false;
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
@@ -300,9 +298,4 @@ export class NzPopconfirmTestNewComponent {
   @ViewChild('iconTemplate', { static: false }) iconTemplate!: ElementRef;
 
   visible = false;
-  visibilityTogglingCount = 0;
-
-  onVisibleChange(): void {
-    this.visibilityTogglingCount += 1;
-  }
 }
