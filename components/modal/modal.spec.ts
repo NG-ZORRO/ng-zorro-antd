@@ -9,7 +9,6 @@ import {
   Directive,
   Injector,
   Input,
-  NgModule,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -24,8 +23,7 @@ import {
   inject as testingInject,
   tick
 } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
@@ -102,11 +100,8 @@ describe('NzModal', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzModalModule, TestModalModule, NoopAnimationsModule, FormsModule],
-      providers: [{ provide: Location, useClass: SpyLocation }]
-    });
-
-    TestBed.compileComponents();
+      providers: [NzModalService, provideNoopAnimations(), { provide: Location, useClass: SpyLocation }]
+    }).compileComponents();
   }));
 
   beforeEach(
@@ -1735,12 +1730,17 @@ describe('NzModal', () => {
   });
 });
 
-@Directive({ selector: 'test-with-view-container' })
+@Directive({
+  standalone: true,
+  selector: 'test-with-view-container'
+})
 class TestWithViewContainerDirective {
   constructor(public viewContainerRef: ViewContainerRef) {}
 }
 
 @Component({
+  standalone: true,
+  imports: [TestWithViewContainerDirective],
   template: ` <test-with-view-container></test-with-view-container> `
 })
 class TestWithChildViewContainerComponent {
@@ -1752,6 +1752,7 @@ class TestWithChildViewContainerComponent {
 }
 
 @Component({
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: 'hello'
 })
@@ -1760,6 +1761,7 @@ class TestWithOnPushViewContainerComponent {
 }
 
 @Component({
+  standalone: true,
   template: `
     <ng-template let-modalRef="modalRef" let-data>
       <span class="modal-template-content">Hello {{ value }}</span>
@@ -1785,6 +1787,8 @@ class TestWithServiceComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzModalModule],
   template: `
     <div class="modal-content">Hello {{ value }}</div>
     <div class="modal-data">My favorite UI Library is {{ nzModalData }}</div>
@@ -1795,11 +1799,8 @@ class TestWithServiceComponent {
 class TestWithModalContentComponent {
   @Input() value: string = inject(NZ_MODAL_DATA);
   nzModalData: string = inject(NZ_MODAL_DATA);
-
-  constructor(
-    public modalRef: NzModalRef,
-    public modalInjector: Injector
-  ) {}
+  modalRef = inject(NzModalRef);
+  modalInjector = inject(Injector);
 
   destroyModal(): void {
     this.modalRef.destroy();
@@ -1807,6 +1808,8 @@ class TestWithModalContentComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzModalModule],
   template: `
     <nz-modal
       [(nzVisible)]="isVisible"
@@ -1830,8 +1833,6 @@ class TestModalComponent {
   @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
   content: TemplateRef<{}> = this.templateRef;
 
-  constructor() {}
-
   handleCancel(): void {
     this.isVisible = false;
     this.cancelSpy();
@@ -1843,22 +1844,8 @@ class TestModalComponent {
   }
 }
 
-@Component({ template: '<p>Modal</p>' })
-class TestModalWithoutFocusableElementsComponent {}
-
-const TEST_DIRECTIVES = [
-  TestWithServiceComponent,
-  TestWithModalContentComponent,
-  TestWithChildViewContainerComponent,
-  TestWithViewContainerDirective,
-  TestWithOnPushViewContainerComponent,
-  TestModalWithoutFocusableElementsComponent,
-  TestModalComponent
-];
-
-@NgModule({
-  imports: [NzModalModule],
-  exports: TEST_DIRECTIVES,
-  declarations: TEST_DIRECTIVES
+@Component({
+  standalone: true,
+  template: '<p>Modal</p>'
 })
-class TestModalModule {}
+class TestModalWithoutFocusableElementsComponent {}
