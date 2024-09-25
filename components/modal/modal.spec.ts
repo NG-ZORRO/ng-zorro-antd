@@ -25,7 +25,7 @@ import {
   tick
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
@@ -49,10 +49,8 @@ describe('Animation', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzModalModule, TestModalModule, BrowserAnimationsModule]
-    });
-
-    TestBed.compileComponents();
+      providers: [NzModalService, provideAnimations()]
+    }).compileComponents();
   }));
 
   beforeEach(
@@ -488,22 +486,22 @@ describe('NzModal', () => {
 
     fixture.detectChanges();
 
-    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask', 'should use global config');
+    expect(modalRef.getBackdropElement()?.classList)
+      .withContext('should use global config')
+      .not.toContain('ant-modal-mask');
 
     configService.set('modal', { nzMask: true });
     fixture.detectChanges();
 
-    expect(modalRef.getBackdropElement()?.classList).toContain(
-      'ant-modal-mask',
-      'should add class when global config changed'
-    );
+    expect(modalRef.getBackdropElement()?.classList)
+      .withContext('should add class when global config changed')
+      .toContain('ant-modal-mask');
 
     configService.set('modal', { nzMask: false });
     fixture.detectChanges();
-    expect(modalRef.getBackdropElement()?.classList).not.toContain(
-      'ant-modal-mask',
-      'should remove class when global config changed'
-    );
+    expect(modalRef.getBackdropElement()?.classList)
+      .withContext('should remove class when global config changed')
+      .not.toContain('ant-modal-mask');
 
     configService.set('modal', { nzMask: true }); // reset
     modalRef.close();
@@ -1084,7 +1082,7 @@ describe('NzModal', () => {
   });
 
   describe('focus management', () => {
-    // When testing focus, all of the elements must be in the DOM.
+    // When testing focus, all the elements must be in the DOM.
     beforeEach(() => document.body.appendChild(overlayContainerElement));
     afterEach(() => document.body.removeChild(overlayContainerElement));
 
@@ -1098,10 +1096,9 @@ describe('NzModal', () => {
       fixture.detectChanges();
       flushMicrotasks();
 
-      expect(document.activeElement!.tagName).toBe(
-        'INPUT',
-        'Expected first tabbable element (input) in the modal to be focused.'
-      );
+      expect(document.activeElement!.tagName)
+        .withContext('Expected first tabbable element (input) in the modal to be focused.')
+        .toBe('INPUT');
     }));
 
     it('should focus the first tabbable element when content is string type', fakeAsync(() => {
@@ -1130,7 +1127,7 @@ describe('NzModal', () => {
     }));
 
     it('should re-focus trigger element when modal closes', fakeAsync(() => {
-      // Create a element that has focus before the modal is opened.
+      // Create an element that has focus before the modal is opened.
       const button = document.createElement('button');
       button.id = 'modal-trigger';
       document.body.appendChild(button);
@@ -1144,25 +1141,22 @@ describe('NzModal', () => {
       fixture.detectChanges();
       flushMicrotasks();
 
-      expect(document.activeElement!.id).not.toBe(
-        'modal-trigger',
-        'Expected the focus to change when modal was opened.'
-      );
+      expect(document.activeElement!.id)
+        .withContext('Expected the focus to change when modal was opened.')
+        .not.toBe('modal-trigger');
 
       modalRef.close();
-      expect(document.activeElement!.id).not.toBe(
-        'modal-trigger',
-        'Expcted the focus not to have changed before the animation finishes.'
-      );
+      expect(document.activeElement!.id)
+        .withContext('Expected the focus not to have changed before the animation finishes.')
+        .not.toBe('modal-trigger');
 
       flushMicrotasks();
       fixture.detectChanges();
       tick(500);
 
-      expect(document.activeElement!.id).toBe(
-        'modal-trigger',
-        'Expected that the trigger was refocused after the modal is closed.'
-      );
+      expect(document.activeElement!.id)
+        .withContext('Expected that the trigger was refocused after the modal is closed.')
+        .toBe('modal-trigger');
 
       document.body.removeChild(button);
     }));
@@ -1177,7 +1171,9 @@ describe('NzModal', () => {
       fixture.detectChanges();
       tick(16);
 
-      expect(document.activeElement!.tagName).toBe('NZ-MODAL-CONTAINER', 'Expected modal container to be focused.');
+      expect(document.activeElement!.tagName)
+        .withContext('Expected modal container to be focused.')
+        .toBe('NZ-MODAL-CONTAINER');
     }));
   });
 
