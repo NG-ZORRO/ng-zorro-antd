@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-small-size',
+  standalone: true,
+  imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current" nzSize="small">
       <nz-step nzTitle="Finished"></nz-step>

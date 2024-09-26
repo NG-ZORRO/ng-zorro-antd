@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { merge, Observable, timer } from 'rxjs';
 import { delay, finalize, map, scan } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 interface SyncStep {
   id: number;
   title: string;
@@ -30,6 +33,8 @@ function mockAsyncStep(): Observable<number> {
 
 @Component({
   selector: 'nz-demo-steps-progress',
+  standalone: true,
+  imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
       @for (step of this.steps; track step.id) {
