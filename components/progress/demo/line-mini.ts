@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+
 @Component({
   selector: 'nz-demo-progress-line-mini',
+  standalone: true,
+  imports: [NzProgressModule],
   template: `
     <div style="width: 170px;">
       <nz-progress [nzPercent]="30" nzSize="small"></nz-progress>

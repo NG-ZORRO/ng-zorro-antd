@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+
 @Component({
   selector: 'nz-demo-progress-circle-dynamic',
+  standalone: true,
+  imports: [NzButtonModule, NzIconModule, NzProgressModule],
   template: `
     <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
     <nz-button-group>
