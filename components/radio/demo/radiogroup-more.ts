@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-radio-radiogroup-more',
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="radioValue">
       <label nz-radio nzValue="A">Option A</label>

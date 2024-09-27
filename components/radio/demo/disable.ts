@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-radio-disable',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzRadioModule],
   template: `
     <div>
       <label nz-radio [nzDisabled]="disabled">Disabled</label>
