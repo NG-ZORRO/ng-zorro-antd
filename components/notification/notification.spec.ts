@@ -1,27 +1,23 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { HomeOutline } from '@ant-design/icons-angular/icons';
-
-import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
-import { NzNotificationModule } from './notification.module';
 import { NzNotificationService } from './notification.service';
 
 @Component({
-  template: ` <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template> `
+  standalone: true,
+  template: `<ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>`
 })
 export class NzTestNotificationComponent {
   @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
 }
 
 describe('NzNotification', () => {
-  let testBed: ComponentBed<NzTestNotificationComponent>;
   let notificationService: NzNotificationService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
@@ -35,25 +31,16 @@ describe('NzNotification', () => {
   }
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestNotificationComponent, {
-      imports: [NzNotificationModule, NoopAnimationsModule],
+    TestBed.configureTestingModule({
       providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [HomeOutline]
-        },
-        {
-          provide: NZ_CONFIG,
-          useValue: {
-            notification: {
-              nzMaxStack: 2
-            }
-          }
-        }
+        provideNzConfig({ notification: { nzMaxStack: 2 } }),
+        provideNzIconsTesting(),
+        provideNoopAnimations(),
+        NzNotificationService
       ]
-    });
+    }).compileComponents();
 
-    fixture = testBed.fixture;
+    fixture = TestBed.createComponent(NzTestNotificationComponent);
   }));
 
   beforeEach(inject(
@@ -199,6 +186,7 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
+
   it('should show with placement of top', () => {
     configService.set('notification', { nzPlacement: 'top' });
     notificationService.create('', '', 'EXISTS');
@@ -207,6 +195,7 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-top')).not.toBeNull();
   });
+
   it('should show with placement of bottom', () => {
     configService.set('notification', { nzPlacement: 'bottom' });
     notificationService.create('', '', 'EXISTS');
@@ -215,6 +204,7 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-bottom')).not.toBeNull();
   });
+
   // Should support nzData as context.
   it('should open a message box with template ref', () => {
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'data' });
@@ -232,7 +222,7 @@ describe('NzNotification', () => {
   });
 
   it('should update an existing notification when keys are matched', () => {
-    let messageId: string | null = null;
+    let messageId: string | null;
     messageId = notificationService.create('', '', 'EXISTS', { nzKey: 'exists' }).messageId;
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
