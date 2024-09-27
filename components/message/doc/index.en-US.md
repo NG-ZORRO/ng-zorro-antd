@@ -14,7 +14,9 @@ Display global messages as feedback in response to user operations.
 - A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
 
 ```ts
-import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
+private readonly message = inject(NzMessageService);
 ```
 
 ## API
@@ -29,18 +31,18 @@ This components provides some service methods, with usage and arguments as follo
 - `NzMessageService.warning(content, [options])`
 - `NzMessageService.loading(content, [options])`
 
-| Argument | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| content | The content of message | `string \| TemplateRef<void>` | - |
-| options | Support setting the parameters for the current message box, see the table below | `object` | - |
+| Argument | Description                                                                     | Type                          | Default |
+| -------- | ------------------------------------------------------------------------------- | ----------------------------- | ------- |
+| content  | The content of message                                                          | `string \| TemplateRef<void>` | -       |
+| options  | Support setting the parameters for the current message box, see the table below | `object`                      | -       |
 
 The parameters that are set by the `options` support are as follows:
 
-| Argument | Description | Type |
-| --- | --- | --- |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`  | `boolean` |
-| nzAnimate | Whether to turn on animation | `boolean` |
+| Argument       | Description                                                            | Type      |
+| -------------- | ---------------------------------------------------------------------- | --------- |
+| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`  |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` |
+| nzAnimate      | Whether to turn on animation                                           | `boolean` |
 
 Methods for destruction are also provided:
 
@@ -50,14 +52,14 @@ Methods for destruction are also provided:
 
 You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
 
-| Argument | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` | `3000` |
-| nzMaxStack | The maximum number of messages that can be displayed at the same time | `number` | `7` |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean` | `true` |
-| nzAnimate | Whether to turn on animation | `boolean` | `true` |
-| nzTop | Distance from top | `number \| string` | `24` |
-| nzDirection | Direction of the text in the messages | `'ltr' \| 'rtl'` | - |
+| Argument       | Description                                                            | Type               | Default |
+| -------------- | ---------------------------------------------------------------------- | ------------------ | ------- |
+| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`           | `3000`  |
+| nzMaxStack     | The maximum number of messages that can be displayed at the same time  | `number`           | `7`     |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`          | `true`  |
+| nzAnimate      | Whether to turn on animation                                           | `boolean`          | `true`  |
+| nzTop          | Distance from top                                                      | `number \| string` | `24`    |
+| nzDirection    | Direction of the text in the messages                                  | `'ltr' \| 'rtl'`   | -       |
 
 ### NzMessageRef
 

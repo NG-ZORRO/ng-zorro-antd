@@ -15,7 +15,9 @@ cover: https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg
 - 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
 
 ```ts
-import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
+private readonly message = inject(NzMessageService);
 ```
 
 ## API
@@ -30,18 +32,18 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 - `NzMessageService.warning(content, [options])`
 - `NzMessageService.loading(content, [options])`
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| content | 提示内容 | `string \| TemplateRef<void>` | - |
-| options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
+| 参数    | 说明                                     | 类型                          | 默认值 |
+| ------- | ---------------------------------------- | ----------------------------- | ------ |
+| content | 提示内容                                 | `string \| TemplateRef<void>` | -      |
+| options | 支持设置针对当前提示框的参数，见下方表格 | `object`                      | -      |
 
 `options` 支持设置的参数如下：
 
-| 参数 | 说明 | 类型 |
-| --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | `number` |
-| nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` |
-| nzAnimate | 开关动画效果 | `boolean` |
+| 参数           | 说明                              | 类型      |
+| -------------- | --------------------------------- | --------- |
+| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`  |
+| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean` |
+| nzAnimate      | 开关动画效果                      | `boolean` |
 
 还提供了全局销毁方法：
 
@@ -51,14 +53,14 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 可以通过 `NzConfigService` 进行全局配置，详情请见文档中 [全局配置项](/docs/global-config/zh) 章节。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为 0 时不消失 | `number` | `3000` |
-| nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `7` |
-| nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
-| nzAnimate | 开关动画效果 | `boolean` | `true` |
-| nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
-| nzDirection | 消息文字方向 | `'ltr' \| 'rtl'` | - |
+| 参数           | 说明                                | 类型               | 默认值 |
+| -------------- | ----------------------------------- | ------------------ | ------ |
+| nzDuration     | 持续时间(毫秒)，当设置为 0 时不消失 | `number`           | `3000` |
+| nzMaxStack     | 同一时间可展示的最大提示数量        | `number`           | `7`    |
+| nzPauseOnHover | 鼠标移上时禁止自动移除              | `boolean`          | `true` |
+| nzAnimate      | 开关动画效果                        | `boolean`          | `true` |
+| nzTop          | 消息距离顶部的位置                  | `number \| string` | `24`   |
+| nzDirection    | 消息文字方向                        | `'ltr' \| 'rtl'`   | -      |
 
 ### NzMessageRef
 
