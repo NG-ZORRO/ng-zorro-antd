@@ -5,5 +5,8 @@
 
 import { NgModule } from '@angular/core';
 
+/**
+ * @deprecated This module is no longer needed, will be removed in v20, please remove its import.
+ */
 @NgModule()
 export class NzNotificationServiceModule {}
