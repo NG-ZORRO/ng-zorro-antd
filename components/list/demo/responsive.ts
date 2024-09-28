@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
-  selector: 'nz-demo-list-resposive',
+  selector: 'nz-demo-list-responsive',
+  standalone: true,
+  imports: [NzCardModule, NzGridModule, NzListModule],
   template: `
     <nz-list nzGrid>
       <div nz-row [nzGutter]="16">
@@ -16,7 +22,7 @@ import { Component } from '@angular/core';
     </nz-list>
   `
 })
-export class NzDemoListResposiveComponent {
+export class NzDemoListResponsiveComponent {
   data = [
     {
       title: 'Title 1'

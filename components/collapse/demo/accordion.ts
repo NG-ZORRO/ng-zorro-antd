@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+
 @Component({
   selector: 'nz-demo-collapse-accordion',
+  standalone: true,
+  imports: [NzCollapseModule],
   template: `
     <nz-collapse nzAccordion>
       @for (panel of panels; track panel) {

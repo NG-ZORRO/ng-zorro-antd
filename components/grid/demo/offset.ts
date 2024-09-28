@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-offset',
+  standalone: true,
+  imports: [NzGridModule],
   template: `
     <div nz-row>
       <div nz-col nzSpan="8">col-8</div>

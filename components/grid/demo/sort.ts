@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-sort',
+  standalone: true,
+  imports: [NzGridModule],
   template: `
     <div nz-row>
       <div nz-col [nzSpan]="18" [nzPush]="6">col-18 col-push-6</div>

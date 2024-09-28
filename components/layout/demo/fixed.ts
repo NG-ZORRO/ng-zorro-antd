@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-fixed',
+  standalone: true,
+  imports: [NzBreadCrumbModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">
       <nz-header>
