@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 
+import { NzFlexDirective } from 'ng-zorro-antd/flex';
+import { NzInputOtpComponent } from 'ng-zorro-antd/input';
+import { NzTypographyComponent } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-input-otp',
   template: `
@@ -24,7 +28,9 @@ import { Component } from '@angular/core';
         <nz-input-otp [nzMask]="'🔒'"></nz-input-otp>
       </nz-flex>
     </nz-flex>
-  `
+  `,
+  imports: [NzFlexDirective, NzTypographyComponent, NzInputOtpComponent],
+  standalone: true
 })
 export class NzDemoInputOtpComponent {
   formatter: (value: string) => string = value => value.toUpperCase();

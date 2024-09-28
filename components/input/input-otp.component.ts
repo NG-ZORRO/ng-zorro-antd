@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BACKSPACE } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -123,7 +124,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   onKeyDown(index: number, event: KeyboardEvent): void {
     const previousInput = this.otpInputs.toArray()[index - 1];
 
-    if (event.key === 'Backspace') {
+    if (event.keyCode === BACKSPACE) {
       event.preventDefault();
 
       this.internalValue[index] = '';
