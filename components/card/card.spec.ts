@@ -5,11 +5,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { EditOutline, EllipsisOutline, SettingOutline } from '@ant-design/icons-angular/icons';
-
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSizeDSType } from 'ng-zorro-antd/core/types';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCardComponent } from './card.component';
 import { NzCardModule } from './card.module';
@@ -27,12 +25,8 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 describe('card', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BidiModule,
-        NzCardModule,
-        NoopAnimationsModule,
-        NzIconModule.forRoot([SettingOutline, EditOutline, EllipsisOutline])
-      ],
+      providers: [provideNzIconsTesting()],
+      imports: [BidiModule, NzCardModule, NoopAnimationsModule],
       schemas: [NO_ERRORS_SCHEMA]
     });
     TestBed.compileComponents();
@@ -169,7 +163,7 @@ export class NzTestCardRtlComponent {
   direction: Direction = 'rtl';
 }
 
-describe('card', () => {
+describe('card component', () => {
   let fixture: ComponentFixture<NzCardComponent>;
   let component: NzCardComponent;
   let configChangeEvent$: Subject<void>;
