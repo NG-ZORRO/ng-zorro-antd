@@ -1,3 +1,4 @@
+import { BACKSPACE } from '@angular/cdk/keycodes';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -69,7 +70,7 @@ describe('NzInputOtpComponent', () => {
     fixture.detectChanges();
 
     spyOn(inputElements[0].nativeElement, 'select');
-    const event = new KeyboardEvent('keydown', { key: 'Backspace' });
+    const event = new KeyboardEvent('keydown', { keyCode: BACKSPACE });
     inputElements[1].triggerEventHandler('keydown', event);
 
     fixture.detectChanges();
