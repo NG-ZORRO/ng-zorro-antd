@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 @Component({
   selector: 'nz-demo-spin-size',
+  standalone: true,
+  imports: [NzSpinModule],
   template: `
-    <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
+    <nz-spin nzSimple nzSize="small"></nz-spin>
     <nz-spin nzSimple></nz-spin>
-    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+    <nz-spin nzSimple nzSize="large"></nz-spin>
   `,
   styles: [
     `
