@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
+
 @Component({
   selector: 'nz-demo-qr-code-color',
+  standalone: true,
+  imports: [NzQRCodeModule],
   template: `
     <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#ff6600"></nz-qrcode>
     <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#1677ff"></nz-qrcode>
