@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
+
 @Component({
   selector: 'nz-demo-hash-code-single',
+  standalone: true,
+  imports: [NzHashCodeModule],
   template: `
     <nz-hash-code [nzValue]="value" nzMode="single"></nz-hash-code>
     <br />
