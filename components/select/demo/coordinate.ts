@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-coordinate',
+  standalone: true,
+  imports: [FormsModule, NzSelectModule],
   template: `
-    <div>
-      <nz-select [(ngModel)]="selectedProvince" (ngModelChange)="provinceChange($event)">
-        @for (p of provinceData; track p) {
-          <nz-option [nzValue]="p" [nzLabel]="p"></nz-option>
-        }
-      </nz-select>
-      <nz-select [(ngModel)]="selectedCity">
-        @for (c of cityData[selectedProvince]; track c) {
-          <nz-option [nzValue]="c" [nzLabel]="c"></nz-option>
-        }
-      </nz-select>
-    </div>
+    <nz-select [(ngModel)]="selectedProvince" (ngModelChange)="provinceChange($event)">
+      @for (p of provinceData; track p) {
+        <nz-option [nzValue]="p" [nzLabel]="p"></nz-option>
+      }
+    </nz-select>
+    <nz-select [(ngModel)]="selectedCity">
+      @for (c of cityData[selectedProvince]; track c) {
+        <nz-option [nzValue]="c" [nzLabel]="c"></nz-option>
+      }
+    </nz-select>
   `,
   styles: [
     `
