@@ -174,8 +174,8 @@ describe('tree', () => {
           title,
           fakeAsync(() => {
             // Given
-            component.searchValue = when.searchValue;
-            component.virtualHeight = when.virtualHeight;
+            component.searchValue = when.searchValue ?? '';
+            component.virtualHeight = when.virtualHeight ?? null;
             component.hideUnMatched = when.hideUnMatched;
             // When
             fixture.detectChanges();
@@ -647,7 +647,7 @@ describe('tree', () => {
 })
 export class NzTestTreeBasicControlledComponent {
   @ViewChild('treeComponent', { static: true }) treeComponent!: NzTreeComponent;
-  searchValue?: string;
+  searchValue: string = '';
   multiple = true;
   expandAll = false;
   asyncData = false;
@@ -659,7 +659,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultExpandedKeys: string[] = [];
   expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   searchFunc?: (node: NzTreeNodeOptions) => boolean;
-  virtualHeight?: string | boolean = false;
+  virtualHeight: string | null = null;
   hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
