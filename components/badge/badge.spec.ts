@@ -245,10 +245,6 @@ describe('badge', () => {
   let component: NzBadgeComponent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzBadgeModule]
-    }).compileComponents();
-
     fixture = TestBed.createComponent(NzBadgeComponent);
     component = fixture.componentInstance;
   });
@@ -289,67 +285,63 @@ describe('badge', () => {
     tick();
     expect(component.presetColor).toEqual(null);
   }));
-});
 
-describe('ribbon', () => {
-  let fixture: ComponentFixture<NzRibbonComponent>;
-  let component: NzRibbonComponent;
+  describe('ribbon', () => {
+    let fixture: ComponentFixture<NzRibbonComponent>;
+    let component: NzRibbonComponent;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzBadgeModule]
-    }).compileComponents();
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzRibbonComponent);
+      component = fixture.componentInstance;
+    });
 
-    fixture = TestBed.createComponent(NzRibbonComponent);
-    component = fixture.componentInstance;
-  });
+    it('default value for nzPlacement', () => {
+      expect(component.nzPlacement).toEqual('end');
+    });
 
-  it('default value for nzPlacement', () => {
-    expect(component.nzPlacement).toEqual('end');
-  });
+    it('default value for nzText', () => {
+      expect(component.nzText).toEqual(null);
+    });
 
-  it('default value for nzText', () => {
-    expect(component.nzText).toEqual(null);
-  });
+    it('default value for presetColor', () => {
+      expect(component.presetColor).toEqual(null);
+    });
 
-  it('default value for presetColor', () => {
-    expect(component.presetColor).toEqual(null);
-  });
+    it('should set presetColor on nzColor change', fakeAsync(() => {
+      let change: SimpleChanges;
+      let color: string | undefined;
 
-  it('should set presetColor on nzColor change', fakeAsync(() => {
-    let change: SimpleChanges;
-    let color: string | undefined;
-
-    color = badgePresetColors[1];
-    change = {
-      nzColor: {
-        currentValue: color,
-        previousValue: undefined,
-        firstChange: false,
-        isFirstChange: function (): boolean {
-          throw new Error('Function not implemented.');
+      color = badgePresetColors[1];
+      change = {
+        nzColor: {
+          currentValue: color,
+          previousValue: undefined,
+          firstChange: false,
+          isFirstChange: function (): boolean {
+            throw new Error('Function not implemented.');
+          }
         }
-      }
-    };
-    component.nzColor = color;
-    component.ngOnChanges(change);
-    tick();
-    expect(component.presetColor).toEqual(color);
+      };
+      component.nzColor = color;
+      component.ngOnChanges(change);
+      tick();
+      expect(component.presetColor).toEqual(color);
 
-    color = undefined;
-    change = {
-      nzColor: {
-        currentValue: color,
-        previousValue: undefined,
-        firstChange: false,
-        isFirstChange: function (): boolean {
-          throw new Error('Function not implemented.');
+      color = undefined;
+      change = {
+        nzColor: {
+          currentValue: color,
+          previousValue: undefined,
+          firstChange: false,
+          isFirstChange: function (): boolean {
+            throw new Error('Function not implemented.');
+          }
         }
-      }
-    };
-    component.nzColor = color;
-    component.ngOnChanges(change);
-    tick();
-    expect(component.presetColor).toEqual(null);
-  }));
+      };
+      component.nzColor = color;
+      component.ngOnChanges(change);
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
+  });
 });
