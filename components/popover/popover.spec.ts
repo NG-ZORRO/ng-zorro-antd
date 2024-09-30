@@ -17,7 +17,7 @@ describe('NzPopover', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(NzPopoverTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
