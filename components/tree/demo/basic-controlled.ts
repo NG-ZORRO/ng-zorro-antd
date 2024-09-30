@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-basic-controlled',
+  standalone: true,
+  imports: [NzTreeModule],
   template: `
     <nz-tree
       [nzData]="nodes"
@@ -23,7 +25,7 @@ export class NzDemoTreeBasicControlledComponent {
   defaultSelectedKeys = ['0-0-0'];
   defaultExpandedKeys = ['0-0', '0-0-0', '0-0-1'];
 
-  nodes = [
+  readonly nodes = [
     {
       title: '0-0',
       key: '0-0',

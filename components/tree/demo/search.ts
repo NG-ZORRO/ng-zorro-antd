@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-search',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzInputModule, NzTreeModule],
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">
       <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
@@ -11,6 +16,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
     <ng-template #suffixIcon>
       <span nz-icon nzType="search"></span>
     </ng-template>
+    <br />
     <nz-tree
       [nzData]="nodes"
       [nzSearchValue]="searchValue"
@@ -18,19 +24,12 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
       (nzExpandChange)="nzEvent($event)"
       (nzSearchValueChange)="nzEvent($event)"
     ></nz-tree>
-  `,
-  styles: [
-    `
-      nz-input-group {
-        margin-bottom: 12px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoTreeSearchComponent {
   searchValue = '';
 
-  nodes = [
+  readonly nodes = [
     {
       title: '0-0',
       key: '0-0',
