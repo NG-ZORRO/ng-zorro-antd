@@ -163,6 +163,7 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   animationStateChanged = new EventEmitter<AnimationEvent>();
   scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
+  private initialPinchDistance: number | null = null;
 
   previewImageTransform = '';
   previewImageWrapperTransform = '';
@@ -272,6 +273,24 @@ export class NzImagePreviewComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           this.ngZone.run(() => this.wheelZoomEventHandler(event));
+        });
+
+      fromEvent<TouchEvent>(this.imagePreviewWrapper.nativeElement, 'touchstart')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => this.onTouchStart(event));
+        });
+
+      fromEvent<TouchEvent>(this.imagePreviewWrapper.nativeElement, 'touchmove')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => this.onTouchMove(event));
+        });
+
+      fromEvent<TouchEvent>(this.imagePreviewWrapper.nativeElement, 'touchend')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.ngZone.run(() => this.onTouchEnd());
         });
     });
   }
@@ -421,6 +440,37 @@ export class NzImagePreviewComponent implements OnInit {
 
   sanitizerResourceUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  onTouchStart(event: TouchEvent): void {
+    if (event.touches.length === 2) {
+      this.initialPinchDistance = this.getPinchDistance(event);
+    }
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (event.touches.length === 2 && this.initialPinchDistance !== null) {
+      const currentPinchDistance = this.getPinchDistance(event);
+      const scaleFactor = currentPinchDistance / this.initialPinchDistance;
+
+      this.zoom = Math.max(1, this.zoom * scaleFactor);
+      this.updatePreviewImageTransform();
+      this.updateZoomOutDisabled();
+      this.markForCheck();
+    }
+  }
+
+  onTouchEnd(): void {
+    // this.zoom = this.zoom;
+    this.initialPinchDistance = null;
+  }
+
+  private getPinchDistance(event: TouchEvent): number {
+    // @ts-ignore
+    const [touch1, touch2] = event.touches;
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 
   private updatePreviewImageTransform(): void {
