@@ -5,12 +5,15 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   NgZone,
   OnInit,
   ViewChild,
@@ -248,7 +251,8 @@ export class NzImagePreviewComponent implements OnInit {
     public nzConfigService: NzConfigService,
     public config: NzImagePreviewOptions,
     private destroy$: NzDestroyService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
@@ -272,6 +276,17 @@ export class NzImagePreviewComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           this.ngZone.run(() => this.wheelZoomEventHandler(event));
+        });
+
+      fromEvent<KeyboardEvent>(this.document, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => {
+            if (event.keyCode === ESCAPE) {
+              this.onClose();
+              this.markForCheck();
+            }
+          });
         });
     });
   }
