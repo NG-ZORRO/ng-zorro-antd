@@ -1,8 +1,8 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, DebugElement, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { badgePresetColors } from 'ng-zorro-antd/badge/preset-colors';
 import { NzRibbonComponent } from 'ng-zorro-antd/badge/ribbon.component';
@@ -12,16 +12,14 @@ import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 
-describe('badge', () => {
-  beforeEach(fakeAsync(() => {
+describe('nz-badge', () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzBadgeModule, NzNoAnimationDirective, BrowserAnimationsModule],
-      declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
+      providers: [provideAnimationsAsync()]
     });
-    TestBed.compileComponents();
-  }));
+  });
 
-  describe('basic badge', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
     let testComponent: NzTestBadgeBasicComponent;
     let badgeElement: DebugElement;
@@ -165,6 +163,72 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
     });
+
+    it('should set presetColor of nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+      let fixture = TestBed.createComponent(NzBadgeComponent);
+      let component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      color = badgePresetColors[0];
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
+  });
+
+  describe('ribbon', () => {
+    let fixture: ComponentFixture<NzRibbonComponent>;
+    let component: NzRibbonComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzRibbonComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('default value for nzPlacement', () => {
+      expect(component.nzPlacement).toEqual('end');
+    });
+
+    it('default value for nzText', () => {
+      expect(component.nzText).toEqual(null);
+    });
+
+    it('default value for presetColor', () => {
+      expect(component.presetColor).toEqual(null);
+    });
+
+    it('should set presetColor on nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+
+      color = badgePresetColors[1];
+
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
   });
 
   describe('RTL', () => {
@@ -191,6 +255,8 @@ describe('badge', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzNoAnimationDirective, NzBadgeModule],
   template: `
     <nz-badge
       [nzCount]="count"
@@ -228,6 +294,8 @@ export class NzTestBadgeBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzBadgeModule],
   template: `
     <div [dir]="direction">
       <nz-badge [nzCount]="count"></nz-badge>
@@ -239,109 +307,3 @@ export class NzTestBadgeRtlComponent {
   direction: Direction = 'rtl';
   count = 5;
 }
-
-describe('badge', () => {
-  let fixture: ComponentFixture<NzBadgeComponent>;
-  let component: NzBadgeComponent;
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzBadgeComponent);
-    component = fixture.componentInstance;
-  });
-
-  it('should set presetColor of nzColor change', fakeAsync(() => {
-    let color: string | undefined;
-    let change: SimpleChanges;
-
-    color = badgePresetColors[0];
-    change = {
-      nzColor: {
-        currentValue: color,
-        previousValue: undefined,
-        firstChange: false,
-        isFirstChange: function (): boolean {
-          throw new Error('Function not implemented.');
-        }
-      }
-    };
-    component.nzColor = color;
-    component.ngOnChanges(change);
-    tick();
-    expect(component.presetColor).toEqual(color);
-
-    color = undefined;
-    change = {
-      nzColor: {
-        currentValue: color,
-        previousValue: undefined,
-        firstChange: false,
-        isFirstChange: function (): boolean {
-          throw new Error('Function not implemented.');
-        }
-      }
-    };
-    component.nzColor = color;
-    component.ngOnChanges(change);
-    tick();
-    expect(component.presetColor).toEqual(null);
-  }));
-
-  describe('ribbon', () => {
-    let fixture: ComponentFixture<NzRibbonComponent>;
-    let component: NzRibbonComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzRibbonComponent);
-      component = fixture.componentInstance;
-    });
-
-    it('default value for nzPlacement', () => {
-      expect(component.nzPlacement).toEqual('end');
-    });
-
-    it('default value for nzText', () => {
-      expect(component.nzText).toEqual(null);
-    });
-
-    it('default value for presetColor', () => {
-      expect(component.presetColor).toEqual(null);
-    });
-
-    it('should set presetColor on nzColor change', fakeAsync(() => {
-      let change: SimpleChanges;
-      let color: string | undefined;
-
-      color = badgePresetColors[1];
-      change = {
-        nzColor: {
-          currentValue: color,
-          previousValue: undefined,
-          firstChange: false,
-          isFirstChange: function (): boolean {
-            throw new Error('Function not implemented.');
-          }
-        }
-      };
-      component.nzColor = color;
-      component.ngOnChanges(change);
-      tick();
-      expect(component.presetColor).toEqual(color);
-
-      color = undefined;
-      change = {
-        nzColor: {
-          currentValue: color,
-          previousValue: undefined,
-          firstChange: false,
-          isFirstChange: function (): boolean {
-            throw new Error('Function not implemented.');
-          }
-        }
-      };
-      component.nzColor = color;
-      component.ngOnChanges(change);
-      tick();
-      expect(component.presetColor).toEqual(null);
-    }));
-  });
-});
