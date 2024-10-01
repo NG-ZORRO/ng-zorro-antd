@@ -571,6 +571,10 @@ describe('checkbox component', () => {
         {
           nzChecked: true,
           nzValue: 'value 2'
+        },
+        {
+          nzChecked: false,
+          nzValue: 'value 3'
         }
       ];
       spyOn(component.nzOnChange, 'emit');
