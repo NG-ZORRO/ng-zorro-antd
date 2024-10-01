@@ -9,6 +9,7 @@ import {
   NzSkeletonAvatarSize,
   NzSkeletonButtonShape,
   NzSkeletonButtonSize,
+  NzSkeletonInputSize,
   NzSkeletonParagraph,
   NzSkeletonTitle
 } from './skeleton.type';
@@ -19,10 +20,6 @@ describe('skeleton', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSkeletonModule],
-      declarations: [NzTestSkeletonComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(NzTestSkeletonComponent);
     testComp = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -158,10 +155,6 @@ describe('skeleton element', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSkeletonModule],
-      declarations: [NzTestSkeletonElementComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(NzTestSkeletonElementComponent);
     testComp = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -220,6 +213,8 @@ describe('skeleton element', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzSkeletonModule],
   template: `
     <nz-skeleton
       [nzActive]="nzActive"
@@ -239,6 +234,8 @@ export class NzTestSkeletonComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzSkeletonModule],
   template: `
     @switch (useSuite) {
       @case (1) {
@@ -269,6 +266,6 @@ export class NzTestSkeletonComponent {
 export class NzTestSkeletonElementComponent {
   useSuite = 1;
   nzActive: boolean = false;
-  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize = 'default';
+  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize | NzSkeletonInputSize = 'default';
   nzShape: NzSkeletonAvatarShape | NzSkeletonButtonShape = 'default';
 }
