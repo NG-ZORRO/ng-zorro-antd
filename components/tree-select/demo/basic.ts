@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-basic',
+  standalone: true,
+  imports: [FormsModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
       style="width: 250px"
@@ -17,7 +22,7 @@ import { Component, OnInit } from '@angular/core';
 export class NzDemoTreeSelectBasicComponent implements OnInit {
   expandKeys = ['100', '1001'];
   value?: string;
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 1',
       key: '100',
