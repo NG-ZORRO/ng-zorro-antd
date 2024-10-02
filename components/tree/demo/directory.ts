@@ -1,10 +1,14 @@
+import { LowerCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
+import { NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-directory',
+  standalone: true,
+  imports: [NzDropDownModule, NzIconModule, NzTreeModule, LowerCasePipe],
   template: `
     <nz-tree
       nzBlockNode
@@ -70,9 +74,8 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
   ]
 })
 export class NzDemoTreeDirectoryComponent {
-  // activated node
   activatedNode?: NzTreeNode;
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 0',
       key: '100',
@@ -93,6 +96,8 @@ export class NzDemoTreeDirectoryComponent {
       ]
     }
   ];
+
+  constructor(private nzContextMenuService: NzContextMenuService) {}
 
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
@@ -117,6 +122,4 @@ export class NzDemoTreeDirectoryComponent {
   selectDropdown(): void {
     // do something
   }
-
-  constructor(private nzContextMenuService: NzContextMenuService) {}
 }

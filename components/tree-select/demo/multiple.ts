@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-multiple',
+  standalone: true,
+  imports: [FormsModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
       style="width: 250px"
@@ -20,7 +25,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTreeSelectMultipleComponent {
   value: string[] = [];
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 1',
       key: '100',
