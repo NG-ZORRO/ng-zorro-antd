@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+
 @Component({
   selector: 'nz-demo-timeline-color',
+  standalone: true,
+  imports: [NzTimelineModule],
   template: `
     <nz-timeline>
       <nz-timeline-item nzColor="green">Create a services site 2015-09-01</nz-timeline-item>

@@ -1,6 +1,0 @@
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzRadioModule } from 'ng-zorro-antd/radio'
-
-export const moduleList = [ NzRadioModule, NzIconModule, NzTimelineModule, NzButtonModule ];
