@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
 @Component({
   selector: 'nz-demo-tag-status',
+  standalone: true,
+  imports: [NzIconModule, NzTagModule],
   template: `
     <div>
       <h4>Without icon</h4>
