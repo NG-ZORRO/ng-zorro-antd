@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -21,12 +21,14 @@ import {
   Output,
   PLATFORM_ID,
   SimpleChanges,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzI18nService, NzQRCodeI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -38,7 +40,11 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
   selector: 'nz-qrcode',
   exportAs: 'nzQRCode',
   template: `
-    @if (nzStatus !== 'active') {
+    @if (!!nzStatusRender) {
+      <div class="ant-qrcode-mask">
+        <ng-container *nzStringTemplateOutlet="nzStatusRender">{{ nzStatusRender }}</ng-container>
+      </div>
+    } @else if (nzStatus !== 'active') {
       <div class="ant-qrcode-mask">
         @switch (nzStatus) {
           @case ('loading') {
@@ -70,7 +76,7 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
     class: 'ant-qrcode',
     '[class.ant-qrcode-border]': `nzBordered`
   },
-  imports: [NzSpinModule, NzButtonModule, NzIconModule],
+  imports: [NzSpinModule, NzButtonModule, NzIconModule, NgTemplateOutlet, NzStringTemplateOutletDirective],
   standalone: true
 })
 export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
@@ -85,6 +91,7 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input({ transform: booleanAttribute }) nzBordered: boolean = true;
   @Input() nzStatus: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
   @Input() nzLevel: keyof typeof ERROR_LEVEL_MAP = 'M';
+  @Input() nzStatusRender?: TemplateRef<void> | string | null = null;
 
   @Output() readonly nzRefresh = new EventEmitter<string>();
 
