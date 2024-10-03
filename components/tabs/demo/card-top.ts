@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-card-top',
+  standalone: true,
+  imports: [NzTabsModule],
   template: `
     <div class="card-container">
       <nz-tabset nzType="card">
