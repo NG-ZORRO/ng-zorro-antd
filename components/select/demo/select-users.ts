@@ -80,7 +80,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   getRandomNameList(name: string): Observable<string[]> {
     return this.http.get<{ results: MockUser[] }>(`${this.randomUserUrl}`).pipe(
       map(res => res.results),
-      catchError(() => of([] as MockUser[])),
+      catchError(() => of<MockUser[]>([])),
       map(list => list.map(item => `${item.name.first} ${name}`))
     );
   }

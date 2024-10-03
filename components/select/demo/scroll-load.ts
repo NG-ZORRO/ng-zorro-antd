@@ -60,7 +60,7 @@ export class NzDemoSelectScrollLoadComponent implements OnInit {
       .get<{ results: MockUser[] }>(`${this.randomUserUrl}`)
       .pipe(
         map(res => res.results),
-        catchError(() => of([] as MockUser[]))
+        catchError(() => of<MockUser[]>([]))
       )
       .pipe(map(list => list.map(item => `${item.name.first}`)));
   }
