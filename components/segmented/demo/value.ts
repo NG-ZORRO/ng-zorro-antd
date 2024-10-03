@@ -1,30 +1,29 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-value',
-  template: `<nz-segmented
+  standalone: true,
+  imports: [FormsModule, NzSegmentedModule],
+  template: `
+    <nz-segmented
       [nzOptions]="options"
       [(ngModel)]="selectedIndex"
       (ngModelChange)="handleModelChange($event)"
-    ></nz-segmented
-    ><br /><nz-segmented
+    ></nz-segmented>
+    <br />
+    <br />
+    <nz-segmented
       [nzOptions]="options"
       [(ngModel)]="selectedIndex"
       (ngModelChange)="handleModelChange($event)"
-    ></nz-segmented
-    ><br />
-    Selected index: {{ selectedIndex }}`,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+    ></nz-segmented>
+    <br />
+    <br />
+    Selected index: {{ selectedIndex }}
+  `
 })
 export class NzDemoSegmentedValueComponent {
   selectedIndex = 1;
