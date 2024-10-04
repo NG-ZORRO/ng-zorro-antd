@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzSafeNullPipe } from 'ng-zorro-antd/pipes';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-pipes-safe-null',
+  standalone: true,
+  imports: [NzTableModule, NzSafeNullPipe],
   template: `
     <nz-table #basicTable [nzData]="listOfData">
       <thead>
@@ -16,7 +21,7 @@ import { Component } from '@angular/core';
           <tr>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>
-            <td>{{ data.address | nzSafeNull: '-' }}</td>
+            <td>{{ data?.['address'] | nzSafeNull: '-' }}</td>
           </tr>
         }
       </tbody>
