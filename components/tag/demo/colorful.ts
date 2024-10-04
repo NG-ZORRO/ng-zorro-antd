@@ -1,10 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { presetColors } from 'ng-zorro-antd/core/color';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-colorful',
-  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [NzTagModule],
   template: `
     <h4 style="margin-bottom: 16px">Presets:</h4>
     <div>
