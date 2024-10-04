@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { TransferItem } from 'ng-zorro-antd/transfer';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-basic',
+  standalone: true,
+  imports: [FormsModule, NzSwitchModule, NzTransferModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"
@@ -13,10 +17,8 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       [nzSelectedKeys]="['0', '2', '3']"
       (nzChange)="change($event)"
     ></nz-transfer>
-    <div style="margin-top: 8px;">
-      <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
-      <div></div>
-    </div>
+    <br />
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
   `
 })
 export class NzDemoTransferBasicComponent implements OnInit {
