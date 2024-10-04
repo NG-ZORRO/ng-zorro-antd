@@ -1,5 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   COMMA,
   DELETE,
@@ -20,10 +19,10 @@ import {
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import {
   createFakeEvent,
@@ -31,13 +30,19 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
-import { NzFormModule } from '../form';
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
-import { NzCascaderOption, NzShowSearchOptions } from './typings';
+import {
+  NzCascaderExpandTrigger,
+  NzCascaderOption,
+  NzCascaderSize,
+  NzCascaderTriggerType,
+  NzShowSearchOptions
+} from './typings';
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
@@ -59,30 +64,15 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BidiModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        NzCascaderModule,
-        NzIconTestModule,
-        NzFormModule
-      ],
-      declarations: [
-        NzDemoCascaderDefaultComponent,
-        NzDemoCascaderLoadDataComponent,
-        NzDemoCascaderRtlComponent,
-        NzDemoCascaderStatusComponent,
-        NzDemoCascaderInFormComponent
-      ]
-    }).compileComponents();
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+    });
+  });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+    overlayContainer = currentOverlayContainer;
+    overlayContainerElement = currentOverlayContainer.getContainerElement();
   }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
@@ -189,8 +179,8 @@ describe('cascader', () => {
     }));
 
     it('should no value and label property work', fakeAsync(() => {
-      testComponent.nzValueProperty = null;
-      testComponent.nzLabelProperty = null;
+      testComponent.nzValueProperty = null!;
+      testComponent.nzLabelProperty = null!;
       fixture.detectChanges();
       const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
       expect(label).toBeNull();
@@ -630,7 +620,7 @@ describe('cascader', () => {
       expect(control.labelRenderText).toBe('ZJ / HZ / XH');
     }));
 
-    it('should write value work on setting `nzOptions` asyn', fakeAsync(() => {
+    it('should write value work on setting `nzOptions` async', fakeAsync(() => {
       const control = testComponent.cascader;
       testComponent.nzOptions = null;
       fixture.detectChanges();
@@ -655,7 +645,7 @@ describe('cascader', () => {
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
       expect(control.labelRenderText).toBe('zhejiang');
-      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      testComponent.nzOptions = options1; // update the nzOptions like async
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
@@ -667,11 +657,11 @@ describe('cascader', () => {
       testComponent.nzOptions = null;
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
-      flush(); // force value to be write
+      flush(); // force value to be written
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
-      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      testComponent.nzOptions = options1; // update the nzOptions like async
       fixture.detectChanges();
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang');
@@ -685,11 +675,11 @@ describe('cascader', () => {
       testComponent.nzOptions = null;
       testComponent.values = ['zhejiang2', 'hangzhou2', 'xihu2'];
       fixture.detectChanges();
-      flush(); // force value to be write
+      flush(); // force value to be written
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
       expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
-      testComponent.nzOptions = options1; // update the nzOptions like asyn
+      testComponent.nzOptions = options1; // update the nzOptions like async
       fixture.detectChanges(); // but still the values is not match
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang2');
@@ -1832,6 +1822,7 @@ describe('cascader', () => {
       expect(cascader.nativeElement.className).not.toContain('ant-select-status-warning');
     });
   });
+
   describe('In form', () => {
     let fixture: ComponentFixture<NzDemoCascaderInFormComponent>;
     let formGroup: FormGroup<{
@@ -1895,7 +1886,7 @@ const ID_NAME_LIST = [
   }
 ];
 
-const options1 = [
+const options1: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -2083,10 +2074,11 @@ const options4 = [
   }
 ];
 
-const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
+const options5: NzSafeAny[] = [];
 
 @Component({
-  // eslint-disable-next-line
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
   selector: 'nz-test-cascader-default',
   template: `
     <nz-cascader
@@ -2122,44 +2114,37 @@ const options5: any[] = []; // eslint-disable-line @typescript-eslint/no-explici
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      @for (label of labels; track label) {
+      @for (label of labels; track labels) {
         {{ label }}{{ $last ? '' : ' | ' }}
       }
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderDefaultComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
-  @ViewChild('renderTpl', { static: true }) renderTpl!: TemplateRef<any>;
+  @ViewChild('renderTpl', { static: true }) renderTpl!: TemplateRef<NzSafeAny>;
 
-  public nzOptions: any[] | null = options1;
-  public values: string[] | number[] | null = null;
+  nzOptions: NzSafeAny[] | null = options1;
+  values: string[] | number[] | null = null;
 
   nzAllowClear = true;
   nzAutoFocus = false;
   nzMenuClassName = 'menu-classA menu-classB';
   nzColumnClassName = 'column-classA column-classB';
   nzMenuStyle = { height: '120px' };
-  nzExpandTrigger = 'click';
+  nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   nzDisabled = false;
-  nzLabelProperty: string | null = 'label';
-  nzValueProperty: string | null = 'value';
+  nzLabelProperty: string = 'label';
+  nzValueProperty: string = 'value';
   nzPlaceHolder = 'please select';
   nzShowArrow = true;
   nzShowInput = true;
   nzShowSearch: boolean | NzShowSearchOptions = false;
-  nzSize = 'default';
-  nzLabelRender: TemplateRef<any> | null = null;
-  nzChangeOn: any = null;
+  nzSize: NzCascaderSize = 'default';
+  nzLabelRender: TemplateRef<NzSafeAny> | null = null;
+  nzChangeOn: NzSafeAny = null;
   nzChangeOnSelect = false;
-  nzTriggerAction: string | string[] = 'click';
+  nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = 'click';
   nzMouseEnterDelay = 150; // ms
   nzMouseLeaveDelay = 150; // ms
   nzSuffixIcon = 'down';
@@ -2169,17 +2154,19 @@ export class NzDemoCascaderDefaultComponent {
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 
-  fakeChangeOn = (node: any, _index: number): boolean => node.value === 'zhejiang';
+  fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
 
   clearSelection(): void {
     this.cascader.clearSelection();
   }
 
-  onSelect(_d: { option: NzCascaderOption; index: number }): void {}
+  onSelect(_d: { option: NzCascaderOption; index: number } | null): void {}
   onClear(): void {}
 }
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"
@@ -2200,10 +2187,10 @@ export class NzDemoCascaderDefaultComponent {
 export class NzDemoCascaderLoadDataComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
 
-  public nzOptions: any[] | null = null;
-  public values: string[] | null = null;
+  nzOptions: NzSafeAny[] | null = null;
+  values: string[] | null = null;
 
-  public nzLoadData = (node: any, index: number): PromiseLike<any> => {
+  nzLoadData = (node: NzSafeAny, index: number): PromiseLike<NzSafeAny> => {
     this.addCallTimes();
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -2239,13 +2226,15 @@ export class NzDemoCascaderLoadDataComponent {
     });
   };
 
-  public addCallTimes(): void {}
+  addCallTimes(): void {}
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzCascaderModule],
   template: `
     <div [dir]="direction">
       <nz-cascader [nzOptions]="nzOptions"></nz-cascader>
@@ -2254,20 +2243,24 @@ export class NzDemoCascaderLoadDataComponent {
 })
 export class NzDemoCascaderRtlComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
-  public nzOptions: any[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1;
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
-  template: ` <nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader> `
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
+  template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader>`
 })
 export class NzDemoCascaderStatusComponent {
-  public nzOptions: any[] | null = options1;
-  public status: NzStatus = 'error';
+  nzOptions: NzSafeAny[] | null = options1;
+  status: NzStatus = 'error';
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzFormModule, NzCascaderModule],
   template: `
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>
@@ -2282,6 +2275,6 @@ export class NzDemoCascaderInFormComponent {
   validateForm = this.fb.group({
     demo: this.fb.control<string[] | null>(null, Validators.required)
   });
-  public nzOptions: any[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1;
   constructor(private fb: FormBuilder) {}
 }

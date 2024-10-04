@@ -2,7 +2,7 @@
 order: 14
 title:
   zh-CN: 默认值与异步列表
-  en-US: Default value and asyc options
+  en-US: Default value and async options
 ---
 
 ## zh-CN
