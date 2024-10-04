@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 interface ItemData {
   id: string;
@@ -9,6 +14,8 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-edit-row',
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzPopconfirmModule, NzTableModule],
   template: `
     <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
@@ -81,11 +88,11 @@ export class NzDemoTableEditRowComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const data = [];
+    const data: ItemData[] = [];
     for (let i = 0; i < 100; i++) {
       data.push({
         id: `${i}`,
-        name: `Edrward ${i}`,
+        name: `Edward ${i}`,
         age: 32,
         address: `London Park no. ${i}`
       });

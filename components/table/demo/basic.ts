@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface Person {
   key: string;
   name: string;
@@ -9,6 +11,8 @@ interface Person {
 
 @Component({
   selector: 'nz-demo-table-basic',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #basicTable [nzData]="listOfData">
       <thead>

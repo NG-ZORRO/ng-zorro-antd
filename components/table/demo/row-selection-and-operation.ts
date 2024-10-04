@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 export interface Data {
   id: number;
   name: string;
@@ -10,6 +13,8 @@ export interface Data {
 
 @Component({
   selector: 'nz-demo-table-row-selection-and-operation',
+  standalone: true,
+  imports: [NzButtonModule, NzTableModule],
   template: `
     <div class="send-request">
       <button

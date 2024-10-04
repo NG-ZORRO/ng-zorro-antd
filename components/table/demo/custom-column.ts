@@ -1,7 +1,12 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
-import { NzCustomColumn } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzCustomColumn, NzTableModule } from 'ng-zorro-antd/table';
 
 interface Person {
   key: string;
@@ -19,6 +24,17 @@ interface CustomColumn extends NzCustomColumn {
 
 @Component({
   selector: 'nz-demo-table-custom-column',
+  standalone: true,
+  imports: [
+    NzButtonModule,
+    NzDividerModule,
+    NzGridModule,
+    NzIconModule,
+    NzModalModule,
+    NzTableModule,
+    CdkDrag,
+    CdkDropList
+  ],
   template: `
     <button nz-button nzType="primary" nzSize="small" (click)="showModal()" style="margin-bottom: 8px;">
       <span nz-icon nzType="setting" nzTheme="outline"></span>

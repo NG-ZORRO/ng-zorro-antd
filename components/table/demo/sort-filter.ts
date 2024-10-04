@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
 
-import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import {
+  NzTableFilterFn,
+  NzTableFilterList,
+  NzTableModule,
+  NzTableSortFn,
+  NzTableSortOrder
+} from 'ng-zorro-antd/table';
 
-interface DataItem {
+interface ItemData {
   name: string;
   age: number;
   address: string;
@@ -11,15 +17,17 @@ interface DataItem {
 interface ColumnItem {
   name: string;
   sortOrder: NzTableSortOrder | null;
-  sortFn: NzTableSortFn<DataItem> | null;
+  sortFn: NzTableSortFn<ItemData> | null;
   listOfFilter: NzTableFilterList;
-  filterFn: NzTableFilterFn<DataItem> | null;
+  filterFn: NzTableFilterFn<ItemData> | null;
   filterMultiple: boolean;
   sortDirections: NzTableSortOrder[];
 }
 
 @Component({
   selector: 'nz-demo-table-sort-filter',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
@@ -55,19 +63,19 @@ export class NzDemoTableSortFilterComponent {
     {
       name: 'Name',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      sortFn: (a: ItemData, b: ItemData) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [
         { text: 'Joe', value: 'Joe' },
         { text: 'Jim', value: 'Jim', byDefault: true }
       ],
-      filterFn: (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1)
+      filterFn: (list: string[], item: ItemData) => list.some(name => item.name.indexOf(name) !== -1)
     },
     {
       name: 'Age',
       sortOrder: 'descend',
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortFn: (a: ItemData, b: ItemData) => a.age - b.age,
       sortDirections: ['descend', null],
       listOfFilter: [],
       filterFn: null,
@@ -77,16 +85,16 @@ export class NzDemoTableSortFilterComponent {
       name: 'Address',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,
+      sortFn: (a: ItemData, b: ItemData) => a.address.length - b.address.length,
       filterMultiple: false,
       listOfFilter: [
         { text: 'London', value: 'London' },
         { text: 'Sidney', value: 'Sidney' }
       ],
-      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+      filterFn: (address: string, item: ItemData) => item.address.indexOf(address) !== -1
     }
   ];
-  listOfData: DataItem[] = [
+  listOfData: ItemData[] = [
     {
       name: 'John Brown',
       age: 32,

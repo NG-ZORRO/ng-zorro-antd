@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-size',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <h4>Middle size table</h4>
     <nz-table #middleTable nzSize="middle" [nzData]="data">

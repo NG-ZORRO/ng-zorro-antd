@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-fixed-columns',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{ x: '1100px' }">
       <thead>

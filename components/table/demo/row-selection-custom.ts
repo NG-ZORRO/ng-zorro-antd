@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface ItemData {
   id: number;
   name: string;
@@ -9,6 +11,8 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table
       #rowSelectionTable
