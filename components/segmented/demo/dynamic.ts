@@ -1,23 +1,19 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+
 const defaultOptions = ['Daily', 'Weekly', 'Monthly'];
 
 @Component({
   selector: 'nz-demo-segmented-dynamic',
-  template: `<nz-segmented [nzOptions]="options"></nz-segmented>
+  standalone: true,
+  imports: [NzButtonModule, NzSegmentedModule],
+  template: `
+    <nz-segmented [nzOptions]="options"></nz-segmented>
     <br />
-    <button nz-button nzType="primary" [disabled]="moreLoaded" (click)="handleLoadMore()"> Load more options </button>`,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+    <button nz-button nzType="primary" [disabled]="moreLoaded" (click)="handleLoadMore()"> Load more options </button>
+  `
 })
 export class NzDemoSegmentedDynamicComponent {
   options = [...defaultOptions];
