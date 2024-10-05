@@ -4,13 +4,19 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-select-default-value',
   template: `
     <nz-select nzMode="multiple" nzPlaceHolder="Inserted are removed" [(ngModel)]="listOfSelectedValue">
-      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
-      <nz-option *ngFor="let option of defaultOption" [nzLabel]="option" [nzValue]="option" nzHide></nz-option>
+      @for (option of listOfOption; track option) {
+        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+      }
+      @for (option of defaultOption; track option) {
+        <nz-option [nzLabel]="option" [nzValue]="option" nzHide></nz-option>
+      }
     </nz-select>
     <br />
     <br />
     <nz-select [(ngModel)]="selectedValue">
-      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+      @for (option of listOfOption; track option) {
+        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+      }
       <nz-option nzLabel="Default Value" nzValue="Default" nzHide></nz-option>
     </nz-select>
   `,

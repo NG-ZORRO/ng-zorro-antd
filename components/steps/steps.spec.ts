@@ -1,4 +1,5 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,31 +12,21 @@ import {
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { BooleanInput, NzDirectionVHType, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoStepsClickableComponent } from './demo/clickable';
 import { NzDemoStepsNavComponent } from './demo/nav';
 import { NzStepComponent } from './step.component';
-import { NzStepsComponent } from './steps.component';
+import { NzProgressDotTemplate, NzStatusType, NzStepsComponent } from './steps.component';
 import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
-      declarations: [
-        NzTestOuterStepsComponent,
-        NzDemoStepsClickableComponent,
-        NzTestInnerStepStringComponent,
-        NzTestInnerStepTemplateComponent,
-        NzTestStepForComponent,
-        NzTestStepAsyncComponent,
-        NzDemoStepsNavComponent,
-        NzTestOuterStepsRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
+      providers: [provideNzIconsTesting()]
+    }).compileComponents();
   }));
   describe('outer steps', () => {
     let fixture: ComponentFixture<NzTestOuterStepsComponent>;
@@ -45,7 +36,7 @@ describe('steps', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestOuterStepsComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testComponent = fixture.componentInstance;
       outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
@@ -96,7 +87,7 @@ describe('steps', () => {
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-subtitle').innerText.trim()).toBe('0subtitle');
       expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-subtitle')).toBeFalsy();
       expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-subtitle')).toBeFalsy();
-      testComponent.subtitle = null;
+      testComponent.subtitle = undefined;
       fixture.detectChanges();
     });
 
@@ -517,8 +508,9 @@ describe('steps', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-outer-steps',
+  standalone: true,
+  imports: [NgTemplateOutlet, NzStepsModule],
   template: `
     <nz-steps
       [nzCurrent]="current"
@@ -541,19 +533,21 @@ describe('steps', () => {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestOuterStepsComponent {
-  @ViewChild('progressTemplate', { static: false }) progressTemplate?: TemplateRef<void>;
+  @ViewChild('progressTemplate', { static: false }) progressTemplate?: NzProgressDotTemplate;
   current = 0;
-  direction = 'horizontal';
-  labelPlacement = 'horizontal';
-  size = 'default';
-  status = 'process';
-  subtitle: string | null = null;
-  progressDot: boolean | TemplateRef<void> = false;
+  direction: NzDirectionVHType = 'horizontal';
+  labelPlacement: NzDirectionVHType = 'horizontal';
+  size: NzSizeDSType = 'default';
+  status: NzStatusType = 'process';
+  subtitle?: string | TemplateRef<void>;
+  progressDot: BooleanInput | NzProgressDotTemplate | undefined | null = false;
   startIndex = 0;
   constructor(public cdr: ChangeDetectorRef) {}
 }
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
@@ -577,6 +571,8 @@ export class NzTestInnerStepStringComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
       <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate"></nz-step>
@@ -591,6 +587,8 @@ export class NzTestInnerStepStringComponent {
 export class NzTestInnerStepTemplateComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzStepsModule],
   template: `
     <nz-steps>
       @for (step of steps; track step) {
@@ -607,6 +605,8 @@ export class NzTestStepForComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
       @for (step of steps; track step) {
@@ -626,9 +626,11 @@ export class NzTestStepAsyncComponent implements OnInit {
 }
 
 @Component({
-  template: ` <nz-test-outer-steps [dir]="direction"></nz-test-outer-steps> `
+  standalone: true,
+  imports: [BidiModule, NzTestOuterStepsComponent],
+  template: `<nz-test-outer-steps [dir]="direction"></nz-test-outer-steps>`
 })
 export class NzTestOuterStepsRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

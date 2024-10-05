@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-cron-expression-shortcuts',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzCronExpressionModule, NzDropDownModule, NzIconModule],
   template: `
     <nz-cron-expression
       [nzExtra]="shortcuts"

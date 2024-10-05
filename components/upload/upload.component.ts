@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -57,7 +57,7 @@ import { NzUploadListComponent } from './upload-list.component';
   host: {
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
   },
-  imports: [NzUploadListComponent, NgIf, NgTemplateOutlet, NgClass, NzUploadBtnComponent],
+  imports: [NzUploadListComponent, NgTemplateOutlet, NgClass, NzUploadBtnComponent],
   standalone: true
 })
 export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {

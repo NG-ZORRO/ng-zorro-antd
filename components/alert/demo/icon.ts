@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-alert-icon',
+  imports: [NzAlertModule],
   template: `
     <nz-alert nzType="success" nzMessage="Success Tips" nzShowIcon></nz-alert>
     <nz-alert nzType="info" nzMessage="Informational Notes" nzShowIcon></nz-alert>

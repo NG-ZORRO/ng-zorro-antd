@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
@@ -12,9 +12,12 @@ import {
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NZ_DRAWER_DATA } from 'ng-zorro-antd/drawer/drawer-options';
+import { NZ_DRAWER_DATA, NzDrawerPlacement } from 'ng-zorro-antd/drawer/drawer-options';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
@@ -24,8 +27,7 @@ import { NzDrawerService } from './drawer.service';
 describe('NzDrawerComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationDirective],
-      declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
+      imports: [NoopAnimationsModule, NzIconTestModule]
     }).compileComponents();
   }));
   describe('default', () => {
@@ -526,7 +528,7 @@ describe('NzDrawerComponent', () => {
       ).toBe(false);
       component.close();
       fixture.detectChanges();
-      component.placement = 'Invalid';
+      component.placement = 'Invalid' as unknown as NzDrawerPlacement;
       fixture.detectChanges();
       component.open();
       expect(
@@ -681,9 +683,8 @@ describe('NzDrawerService', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzDrawerModule, NoopAnimationsModule],
-      providers: [NzDrawerService],
-      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
+      imports: [NoopAnimationsModule],
+      providers: [NzDrawerService]
     });
   }));
 
@@ -801,9 +802,13 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzDrawerModule, NzIconModule, NzNoAnimationDirective],
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #closeIconTemplate><span nz-icon nzType="close-circle" nzTheme="outline"></span></ng-template>
+    <ng-template #closeIconTemplate>
+      <span nz-icon nzType="close-square" nzTheme="outline"></span>
+    </ng-template>
     <ng-template #titleTemplate>
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
@@ -848,23 +853,23 @@ class NzTestDrawerComponent {
   closable = true;
   maskClosable = true;
   showMask = true;
-  title: string | TemplateRef<void> = '';
-  extra: string | TemplateRef<void> = '';
-  footer: string | TemplateRef<void> = '';
+  title: string | TemplateRef<{}> = '';
+  extra: string | TemplateRef<{}> = '';
+  footer: string | TemplateRef<{}> = '';
   stringTitle = 'test';
   size: 'large' | 'default' = 'default';
   width?: string | number;
   height?: string | number;
-  placement = 'left';
+  placement: NzDrawerPlacement = 'left';
   noAnimation = false;
-  closeIcon?: TemplateRef<void> | string;
+  closeIcon!: TemplateRef<void> | string;
   offsetX = 0;
   offsetY = 0;
   triggerVisible = jasmine.createSpy('visibleChange');
 
-  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<void>;
+  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<{}>;
   @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
-  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
+  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<{}>;
   @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
@@ -877,6 +882,7 @@ class NzTestDrawerComponent {
 }
 
 @Component({
+  standalone: true,
   template: `
     <ng-template #drawerTemplate>
       <span>Template</span>
@@ -906,6 +912,8 @@ class NzTestDrawerWithServiceComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzButtonModule],
   template: `
     <div>
       <p>Custom Component</p>
@@ -925,6 +933,8 @@ export class NzDrawerCustomComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzDrawerModule],
   template: `
     <div [dir]="direction">
       <nz-drawer [nzVisible]="visible" (nzOnClose)="close()">
@@ -939,7 +949,7 @@ export class NzDrawerCustomComponent {
 })
 export class NzTestDrawerRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   visible = false;
 
   open(): void {

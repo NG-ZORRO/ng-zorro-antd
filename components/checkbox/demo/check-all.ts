@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'nz-demo-checkbox-check-all',
+  standalone: true,
+  imports: [FormsModule, NzCheckboxModule],
   template: `
-    <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+    <div style="border-bottom: 1px solid rgb(233, 233, 233); padding-bottom: 16px">
       <label
         nz-checkbox
         [(ngModel)]="allChecked"

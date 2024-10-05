@@ -4,8 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputGroupComponent } from './input-group.component';
@@ -14,17 +16,7 @@ import { NzInputModule } from './input.module';
 describe('input-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-      declarations: [
-        NzTestInputGroupAddonComponent,
-        NzTestInputGroupAffixComponent,
-        NzTestInputGroupMultipleComponent,
-        NzTestInputGroupColComponent,
-        NzTestInputGroupMixComponent,
-        NzTestInputGroupWithStatusComponent,
-        NzTestInputGroupInFormComponent
-      ],
-      providers: []
+      providers: [provideNzIconsTesting()]
     }).compileComponents();
   }));
   describe('input group', () => {
@@ -321,6 +313,8 @@ describe('input-group', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzInputModule],
   template: `
     <nz-input-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
       <input type="text" nz-input />
@@ -334,10 +328,12 @@ export class NzTestInputGroupAddonComponent {
   @ViewChild('afterTemplate', { static: false }) afterTemplate!: TemplateRef<void>;
   beforeContent?: string | TemplateRef<void>;
   afterContent?: string | TemplateRef<void>;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzInputModule],
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
       <input type="text" nz-input [disabled]="disabled" />
@@ -351,11 +347,13 @@ export class NzTestInputGroupAffixComponent {
   @ViewChild('afterTemplate', { static: false }) afterTemplate!: TemplateRef<void>;
   beforeContent?: string | TemplateRef<void>;
   afterContent?: string | TemplateRef<void>;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   disabled = false;
 }
 
 @Component({
+  standalone: true,
+  imports: [NzInputModule],
   template: `
     <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
       <input type="text" nz-input />
@@ -366,11 +364,13 @@ export class NzTestInputGroupAffixComponent {
 export class NzTestInputGroupMultipleComponent {
   compact = false;
   search = false;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
 @Component({
+  standalone: true,
+  imports: [NzInputModule],
   template: `
     <nz-input-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
       <input type="text" nz-input placeholder="邮箱地址" />
@@ -380,6 +380,8 @@ export class NzTestInputGroupMultipleComponent {
 export class NzTestInputGroupMixComponent {}
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzGridModule, NzInputModule],
   template: `
     <nz-input-group>
       <div nz-col nzSpan="4">
@@ -394,12 +396,16 @@ export class NzTestInputGroupMixComponent {}
 export class NzTestInputGroupColComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzInputModule, NzIconModule],
   template: `
     @if (!isAddon) {
       <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
         <input type="text" nz-input />
       </nz-input-group>
-      <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
+      <ng-template #prefixTemplateClock>
+        <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+      </ng-template>
     } @else {
       <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
         <input type="text" nz-input />
@@ -413,6 +419,8 @@ export class NzTestInputGroupWithStatusComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>

@@ -1,30 +1,23 @@
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCronExpressionComponent } from 'ng-zorro-antd/cron-expression/cron-expression.component';
 import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression/cron-expression.module';
 import { NzCronExpressionSize } from 'ng-zorro-antd/cron-expression/typings';
-import { NzFormModule } from 'ng-zorro-antd/form';
 
-describe('nz-cron-expression', () => {
+describe('cron-expression', () => {
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestCronExpressionComponent>;
     let fixture: ComponentFixture<NzTestCronExpressionComponent>;
     let testComponent: NzTestCronExpressionComponent;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestCronExpressionComponent, {
-        imports: [NzCronExpressionModule],
-        providers: [provideHttpClientTesting()]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestCronExpressionComponent);
       fixture.detectChanges();
-      testComponent = testBed.component;
+      testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
@@ -81,16 +74,11 @@ describe('nz-cron-expression', () => {
   });
 
   describe('type', () => {
-    let testBed: ComponentBed<NzTestCronExpressionTypeComponent>;
     let fixture: ComponentFixture<NzTestCronExpressionTypeComponent>;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestCronExpressionTypeComponent, {
-        imports: [NzCronExpressionModule],
-        providers: [provideHttpClientTesting()]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestCronExpressionTypeComponent);
       fixture.detectChanges();
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
@@ -108,19 +96,14 @@ describe('nz-cron-expression', () => {
   });
 
   describe('form', () => {
-    let testBed: ComponentBed<NzTestCronExpressionFormComponent>;
     let fixture: ComponentFixture<NzTestCronExpressionFormComponent>;
     let testComponent: NzTestCronExpressionFormComponent;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestCronExpressionFormComponent, {
-        imports: [NzCronExpressionModule, FormsModule, ReactiveFormsModule, NzFormModule],
-        providers: [provideHttpClientTesting()]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestCronExpressionFormComponent);
       fixture.detectChanges();
-      testComponent = testBed.component;
+      testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
@@ -140,6 +123,8 @@ describe('nz-cron-expression', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzButtonModule, NzCronExpressionModule],
   template: `
     <nz-cron-expression
       [nzSize]="nzSize"
@@ -163,13 +148,17 @@ export class NzTestCronExpressionComponent {
 }
 
 @Component({
-  template: ` <nz-cron-expression [nzType]="nzType"></nz-cron-expression> `
+  standalone: true,
+  imports: [NzCronExpressionModule],
+  template: `<nz-cron-expression [nzType]="nzType"></nz-cron-expression>`
 })
 export class NzTestCronExpressionTypeComponent {
   nzType: 'linux' | 'spring' = 'spring';
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzCronExpressionModule],
   template: `<nz-cron-expression [formControl]="formControl"></nz-cron-expression>`
 })
 export class NzTestCronExpressionFormComponent {

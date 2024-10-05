@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-gutter',
+  standalone: true,
+  imports: [NzDividerModule, NzGridModule],
   template: `
     <nz-divider nzOrientation="left" nzText="Horizontal"></nz-divider>
     <div nz-row [nzGutter]="16">

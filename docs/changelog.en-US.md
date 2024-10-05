@@ -13,6 +13,18 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 18.1.1
+
+`2024-08-20`
+
+### Bug Fixes
+
+* fix ngtypecheck reference issue caused by [@angular/compiler-cli#56945](https://github.com/angular/angular/issues/56945) ([#8699](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8699)) ([8e459c1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8e459c192cf5c4b1903a744c0548df800aa64bfc))
+* **date-picker:** fix the NG0956 warning when recreating entire collection ([#8658](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8658)) ([70a0817](https://github.com/NG-ZORRO/ng-zorro-antd/commit/70a0817cd8db49234726f160d9c2ae36f5c650b7))
+* **grid:** fix the NG0955 warning in showcase ([#8679](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8679)) ([6414c92](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6414c924cdb013c0ffb96436dd89354e275fa544))
+* **tree-select:** clear selected nodes when user set value ([#8693](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8693)) ([91927bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91927bcede24a89ffc5ec4c814503547c86ad09e))
+
+
 ## 18.1.0
 
 `2024-07-25`

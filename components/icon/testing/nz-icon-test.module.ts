@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, NgModule } from '@angular/core';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule, NZ_ICONS, provideNzIcons } from 'ng-zorro-antd/icon';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -33,3 +33,5 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
   ]
 })
 export class NzIconTestModule {}
+
+export const provideNzIconsTesting = (): EnvironmentProviders => provideNzIcons(icons);

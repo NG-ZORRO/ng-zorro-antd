@@ -9,7 +9,9 @@ import { Component } from '@angular/core';
       (nzAdd)="newTab()"
       (nzClose)="closeTab($event)"
     >
-      <nz-tab *ngFor="let tab of tabs" nzClosable [nzTitle]="tab">Content of {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab nzClosable [nzTitle]="tab">Content of {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `
 })

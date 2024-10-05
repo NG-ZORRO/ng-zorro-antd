@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-textarea-with-character-count',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="form" nzLayout="vertical">
       <nz-form-item>
@@ -16,11 +21,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   `
 })
 export class NzDemoInputTextareaWithCharacterCountComponent {
-  form: FormGroup<{
-    comment: FormControl<string | null>;
-  }> = this.formBuilder.group({
-    comment: ['', [Validators.maxLength(100)]]
-  });
+  form = this.fb.group({ comment: this.fb.control('', [Validators.maxLength(100)]) });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 }

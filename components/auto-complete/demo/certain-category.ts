@@ -1,13 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-export interface AutocompleteOptionGroups {
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
+interface AutocompleteOptionGroups {
   title: string;
   count?: number;
   children?: AutocompleteOptionGroups[];
 }
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-auto-complete-certain-category',
+  imports: [FormsModule, NzAutocompleteModule, NzIconModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
@@ -60,8 +67,6 @@ export interface AutocompleteOptionGroups {
 export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
   inputValue?: string;
   optionGroups: AutocompleteOptionGroups[] = [];
-
-  constructor() {}
 
   onChange(value: string): void {
     console.log(value);

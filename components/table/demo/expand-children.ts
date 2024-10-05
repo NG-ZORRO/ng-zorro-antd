@@ -23,22 +23,24 @@ export interface TreeNodeInterface {
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let data of expandTable.data">
-          <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
-            <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
-              <td
-                [nzIndentSize]="item.level! * 20"
-                [nzShowExpand]="!!item.children"
-                [(nzExpand)]="item.expand"
-                (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
-              >
-                {{ item.name }}
-              </td>
-              <td>{{ item.age }}</td>
-              <td>{{ item.address }}</td>
-            </tr>
-          </ng-container>
-        </ng-container>
+        @for (data of expandTable.data; track data) {
+          @for (item of mapOfExpandedData[data.key]; track item) {
+            @if ((item.parent && item.parent.expand) || !item.parent) {
+              <tr>
+                <td
+                  [nzIndentSize]="item.level! * 20"
+                  [nzShowExpand]="!!item.children"
+                  [(nzExpand)]="item.expand"
+                  (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
+                >
+                  {{ item.name }}
+                </td>
+                <td>{{ item.age }}</td>
+                <td>{{ item.address }}</td>
+              </tr>
+            }
+          }
+        }
       </tbody>
     </nz-table>
   `

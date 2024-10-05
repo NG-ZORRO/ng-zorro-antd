@@ -1,11 +1,13 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
+import { ENTER, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselComponent } from './carousel.component';
@@ -15,14 +17,6 @@ import { NzCarouselTransformNoLoopStrategy } from './strategies/experimental/tra
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
 
 describe('carousel', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent, NzTestCarouselRtlComponent, NzTestCarouselActiveIndexComponent]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('carousel basic', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
@@ -332,9 +326,6 @@ describe('carousel', () => {
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
       }));
     });
-
-    // already covered in components specs.
-    // describe('opacity strategy', () => {});
   });
 
   describe('carousel nzAfterChange return value', () => {
@@ -366,8 +357,6 @@ describe('carousel custom strategies', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent],
       providers: [
         {
           provide: NZ_CAROUSEL_CUSTOM_STRATEGIES,
@@ -448,8 +437,9 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 }
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-carousel',
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel
       [nzEffect]="effect"
@@ -487,6 +477,8 @@ export class NzTestCarouselBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestCarouselBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-carousel></nz-test-carousel>
@@ -495,10 +487,12 @@ export class NzTestCarouselBasicComponent {
 })
 export class NzTestCarouselRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel (nzAfterChange)="afterChange($event)">
       @for (index of array; track index) {
@@ -518,3 +512,114 @@ export class NzTestCarouselActiveIndexComponent {
     this.index = index;
   }
 }
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
+
+describe('carousel', () => {
+  let fixture: ComponentFixture<NzCarouselComponent>;
+  let component: NzCarouselComponent;
+  let mockDirectionality: MockDirectionality;
+  let mockObserve$: Subject<void>;
+
+  beforeEach(() => {
+    mockObserve$ = new Subject();
+    const nzResizeObserverSpy = jasmine.createSpyObj('NzResizeObserver', {
+      observe: mockObserve$.asObservable()
+    });
+
+    TestBed.configureTestingModule({
+      imports: [NzCarouselModule],
+      providers: [
+        {
+          provide: Directionality,
+          useClass: MockDirectionality
+        },
+        {
+          provide: NzResizeObserver,
+          useValue: nzResizeObserverSpy
+        }
+      ]
+    });
+
+    fixture = TestBed.createComponent(NzCarouselComponent);
+    component = fixture.componentInstance;
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  it('directionality change detection', fakeAsync(() => {
+    spyOn<NzSafeAny>(component, 'markContentActive');
+    spyOn<NzSafeAny>(component['cdr'], 'detectChanges');
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+    expect(component.dir).toEqual('ltr');
+
+    mockDirectionality.change.next('rtl');
+    tick();
+    expect(component.dir).toEqual('rtl');
+    expect(component['markContentActive']).toHaveBeenCalled();
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  }));
+
+  it('should not execute if keyCode is not of type LEFT_ARROW  or RIGHT_ARROW', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1);
+    let event: KeyboardEvent;
+
+    event = new KeyboardEvent('keydown', { keyCode: LEFT_ARROW });
+    spyOn(event, 'preventDefault');
+    component.slickListEl.dispatchEvent(event);
+    expect(event.preventDefault).toHaveBeenCalled();
+
+    event = new KeyboardEvent('keydown', { keyCode: RIGHT_ARROW });
+    spyOn(event, 'preventDefault');
+    component.slickListEl.dispatchEvent(event);
+    expect(event.preventDefault).toHaveBeenCalled();
+
+    event = new KeyboardEvent('keydown', { keyCode: ENTER });
+    spyOn(event, 'preventDefault');
+    component.slickListEl.dispatchEvent(event);
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  }));
+
+  it('should call layout method when resizing', fakeAsync(() => {
+    spyOn(component, 'layout');
+    component.ngOnInit();
+    tick(1);
+    mockObserve$.next();
+    tick(101);
+    expect(component.layout).toHaveBeenCalled();
+  }));
+
+  it('should set correct index as active in ltr mode', () => {
+    component.dir = 'ltr';
+    component.carouselContents = [
+      {
+        isActive: false
+      },
+      {
+        isActive: false
+      }
+    ] as NzSafeAny;
+    component['markContentActive'](0);
+
+    expect((component.carouselContents as NzSafeAny)[0].isActive).toBeTruthy();
+  });
+
+  it('should set correct index as active in rtl mode', () => {
+    component.dir = 'rtl';
+    component.carouselContents = [
+      {
+        isActive: false
+      },
+      {
+        isActive: false
+      }
+    ] as NzSafeAny;
+    component['markContentActive'](0);
+
+    expect((component.carouselContents as NzSafeAny)[1].isActive).toBeTruthy();
+  });
+});

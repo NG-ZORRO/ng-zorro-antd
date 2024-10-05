@@ -17,11 +17,14 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -33,10 +36,7 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  booleanAttribute,
-  forwardRef,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, of as observableOf } from 'rxjs';
@@ -50,7 +50,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { CandyDate, CompatibleValue, cloneDate, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -76,6 +76,7 @@ import {
   CompatibleDate,
   DisabledTimeFn,
   NzDateMode,
+  NzPanelChangeType,
   PresetRanges,
   RangePartType,
   SupportTimeOptions
@@ -86,7 +87,7 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
 
 export type NzDatePickerSizeType = 'large' | 'default' | 'small';
-export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'; // todo: export it in public API
 
 /**
  * The base picker for all common APIs
@@ -323,8 +324,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
   @Input({ transform: booleanAttribute }) nzShowWeekNumber: boolean = false;
 
-  // TODO(@wenqi73) The PanelMode need named for each pickers and export
-  @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();
+  @Output() readonly nzOnPanelChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
   @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
@@ -868,8 +868,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     }
   }
 
-  onPanelModeChange(panelMode: NzDateMode | NzDateMode[]): void {
-    this.nzOnPanelChange.emit(panelMode);
+  onPanelModeChange(panelChange: NzPanelChangeType): void {
+    this.nzOnPanelChange.emit(panelChange);
   }
 
   // Emit nzOnCalendarChange when select date by nz-range-picker

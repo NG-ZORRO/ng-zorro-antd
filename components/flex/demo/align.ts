@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzAlign, NzJustify } from 'ng-zorro-antd/flex';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAlign, NzFlexModule, NzJustify } from 'ng-zorro-antd/flex';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-flex-align',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzFlexModule, NzSegmentedModule],
   template: `
     <div class="segment-wrapper">
       <span>Select justify:</span>

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzFlexModule } from 'ng-zorro-antd/flex';
+
 @Component({
   selector: 'nz-demo-flex-combination',
+  standalone: true,
+  imports: [NzFlexModule],
   template: `
     <div class="combination-wrapper" nz-flex [nzGap]="80">
       <img
