@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-When multiple buttons are used together, `nz-float-button-group` is recommended. By setting `nzShape` of FloatButtonGroup, you can change the shape of group.
+When multiple buttons are used together, `nz-float-button-group` is recommended. By setting `nzShape` of `nz-float-button-group`, you can change the shape of group.
