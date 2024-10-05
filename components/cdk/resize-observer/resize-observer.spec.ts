@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
 import { NzResizeObserverDirective } from 'ng-zorro-antd/cdk/resize-observer/resize-observer.directive';
-import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer/resize-observer.module';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 describe('resize observer', () => {
@@ -11,13 +10,7 @@ describe('resize observer', () => {
   let directive: NzResizeObserverDirective;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestHostComponent],
-      imports: [NzResizeObserverModule]
-    }).compileComponents();
-
     fixture = TestBed.createComponent(TestHostComponent);
-    // const divElement = fixture.nativeElement.querySelector('div');
     directive = fixture.debugElement.children[0].injector.get(NzResizeObserverDirective);
   });
 
@@ -97,6 +90,8 @@ describe('resize observer', () => {
 });
 
 @Component({
-  template: `<div nzResizeObserver></div>`
+  template: ` <div nzResizeObserver></div>`,
+  imports: [NzResizeObserverDirective],
+  standalone: true
 })
 class TestHostComponent {}
