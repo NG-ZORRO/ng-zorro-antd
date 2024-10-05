@@ -17,7 +17,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -130,6 +130,16 @@ describe('transfer', () => {
       pageObject.rightBtn.click();
       fixture.detectChanges();
       expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFTCOUNT + 1);
+    });
+
+    it('should have correct disable state on moving buttons', () => {
+      const transferOperationButtons: DebugElement[] = dl.queryAll(By.css('.ant-transfer-operation > button'));
+      const transferToRightButton: HTMLElement = transferOperationButtons[1].nativeNode;
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(false);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
     });
 
     it('should be custom filter option', () => {
