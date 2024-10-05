@@ -1,7 +1,10 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { AfterViewInit, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -43,6 +46,8 @@ interface FlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-line',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzSwitchModule, NzTreeViewModule],
   template: `
     Show Leaf Icon:
     <nz-switch [(ngModel)]="showLeafIcon"></nz-switch>
@@ -96,6 +101,7 @@ export class NzDemoTreeViewLineComponent implements AfterViewInit {
   dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   showLeafIcon = false;
+
   constructor() {
     this.dataSource.setData(TREE_DATA);
   }
@@ -104,9 +110,5 @@ export class NzDemoTreeViewLineComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.treeControl.expandAll();
-  }
-
-  getNode(name: string): FlatNode | null {
-    return this.treeControl.dataNodes.find(n => n.name === name) || null;
   }
 }

@@ -1,9 +1,12 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 
-import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzSegmentedModule, NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-custom',
+  standalone: true,
+  imports: [NzAvatarModule, NzSegmentedModule],
   template: `
     <nz-segmented [nzLabelTemplate]="templateRef" [nzOptions]="options"></nz-segmented>
     <ng-template #temp let-index="index">
@@ -22,18 +25,7 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
         }
       }
     </ng-template>
-  `,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoSegmentedCustomComponent {
   @ViewChild('temp', { static: true, read: TemplateRef }) templateRef!: TemplateRef<{

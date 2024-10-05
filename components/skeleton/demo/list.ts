@@ -1,10 +1,18 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-skeleton-list',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzListModule, NzSkeletonModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="loading"></nz-switch>
-    <nz-list [nzDataSource]="listData" [nzRenderItem]="item" [nzItemLayout]="'vertical'">
+    <nz-list [nzDataSource]="listData" [nzRenderItem]="item" nzItemLayout="vertical">
       <ng-template #item let-item>
         <nz-list-item
           [nzContent]="loading ? ' ' : item.content"
@@ -41,7 +49,7 @@ import { Component } from '@angular/core';
 export class NzDemoSkeletonListComponent {
   loading = true;
   listData = new Array(3).fill({}).map((_i, index) => ({
-    href: 'http://ng.ant.design',
+    href: 'https://ng.ant.design',
     title: `ant design part ${index}`,
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',

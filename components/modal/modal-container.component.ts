@@ -4,6 +4,7 @@
  */
 
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -19,6 +20,7 @@ import { NzModalTitleComponent } from './modal-title.component';
 @Component({
   selector: 'nz-modal-container',
   exportAs: 'nzModalContainer',
+  hostDirectives: [CdkScrollable],
   template: `
     <div
       #modalElement

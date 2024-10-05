@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-typography-interactive',
+  standalone: true,
+  imports: [NzIconModule, NzTypographyModule],
   template: `
     <p nz-typography nzEditable [(nzContent)]="editStr"></p>
     <p
