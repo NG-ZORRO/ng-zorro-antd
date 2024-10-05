@@ -470,10 +470,6 @@ describe('breadcrumb', () => {
   let component: NzBreadCrumbComponent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzBreadCrumbModule]
-    }).compileComponents();
-
     fixture = TestBed.createComponent(NzBreadCrumbComponent);
     component = fixture.componentInstance;
   });
