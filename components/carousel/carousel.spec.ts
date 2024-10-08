@@ -71,6 +71,34 @@ describe('carousel', () => {
       ).toBe('A');
     });
 
+    it('should have correct initial value for nzArrows', () => {
+      expect(testComponent.nzCarouselComponent.nzArrows).toBe(false);
+    });
+
+    it('should correctly render next and previous arrows if nzArrows is set', () => {
+      testComponent.nzArrows = true;
+      fixture.detectChanges();
+      expect(carouselWrapper.nativeElement.querySelectorAll('.slick-arrow').length).toBe(2);
+    });
+
+    it('should call correct method on next arrow click', () => {
+      spyOn(testComponent.nzCarouselComponent, 'next');
+      testComponent.nzArrows = true;
+      fixture.detectChanges();
+      const nextBtn = carouselWrapper.nativeElement.querySelectorAll('.slick-arrow')[1];
+      nextBtn!.click();
+      expect(testComponent.nzCarouselComponent.next).toHaveBeenCalled();
+    });
+
+    it('should call correct method on previous arrow click', () => {
+      spyOn(testComponent.nzCarouselComponent, 'pre');
+      testComponent.nzArrows = true;
+      fixture.detectChanges();
+      const previous = carouselWrapper.nativeElement.querySelectorAll('.slick-arrow')[0];
+      previous!.click();
+      expect(testComponent.nzCarouselComponent.pre).toHaveBeenCalled();
+    });
+
     it('should call layout on component resize', fakeAsync(() => {
       testComponent.nzCarouselComponent.ngOnInit();
       const spy = spyOn(testComponent.nzCarouselComponent, 'layout');
@@ -449,6 +477,7 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
       [nzAutoPlay]="autoPlay"
       [nzAutoPlaySpeed]="autoPlaySpeed"
       [nzLoop]="loop"
+      [nzArrows]="nzArrows"
       (nzAfterChange)="afterChange($event)"
       (nzBeforeChange)="beforeChange($event)"
     >
@@ -472,6 +501,7 @@ export class NzTestCarouselBasicComponent {
   autoPlay = false;
   autoPlaySpeed = 3000;
   loop = true;
+  nzArrows = false;
   afterChange = jasmine.createSpy('afterChange callback');
   beforeChange = jasmine.createSpy('beforeChange callback');
 }

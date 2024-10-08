@@ -6,7 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -65,6 +65,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
       class="slick-initialized slick-slider"
       [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
     >
+      @if (nzArrows) {
+        <button
+          type="button"
+          aria-label="prev"
+          data-role="none"
+          class="slick-arrow slick-prev"
+          [ngStyle]="{ display: 'block' }"
+          [ngClass]="{ 'slick-disabled': activeIndex === 0 }"
+          (click)="pre()"
+        ></button>
+      }
       <div
         #slickList
         class="slick-list"
@@ -77,6 +88,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
           <ng-content></ng-content>
         </div>
       </div>
+      @if (nzArrows) {
+        <button
+          type="button"
+          aria-label="next"
+          data-role="none"
+          class="slick-arrow slick-next"
+          [ngStyle]="{ display: 'block' }"
+          [ngClass]="{ 'slick-disabled': activeIndex === carouselContents.length - 1 }"
+          (click)="next()"
+        ></button>
+      }
       <!-- Render dots. -->
       @if (nzDots) {
         <ul
@@ -107,7 +129,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     '[class.ant-carousel-vertical]': 'vertical',
     '[class.ant-carousel-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, NgStyle, NgClass],
   standalone: true
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
@@ -123,6 +145,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input({ transform: booleanAttribute }) @WithConfig() nzEnableSwipe: boolean = true;
   @Input({ transform: booleanAttribute }) @WithConfig() nzDots: boolean = true;
   @Input({ transform: booleanAttribute }) @WithConfig() nzAutoPlay: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzArrows: boolean = false;
   @Input({ transform: numberAttribute }) @WithConfig() nzAutoPlaySpeed: number = 3000;
   @Input({ transform: numberAttribute }) nzTransitionSpeed = 500;
   @Input() @WithConfig() nzLoop: boolean = true;

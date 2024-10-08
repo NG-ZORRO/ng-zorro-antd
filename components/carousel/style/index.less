@@ -112,66 +112,38 @@
     visibility: hidden;
   }
 
-  .slick-vertical .slick-slide {
-    display: block;
-    height: auto;
-  }
+  .slick-vertical {
+    .slick-slide {
+      display: block;
+      height: auto;
+    }
 
-  .slick-arrow.slick-hidden {
-    display: none;
-  }
+    .slick-prev {
+      inset-block-start: 8px;
+      inset-inline-start: 50%;
 
-  // Arrows
-  .slick-prev,
-  .slick-next {
-    position: absolute;
-    top: 50%;
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    padding: 0;
-    color: transparent;
-    font-size: 0;
-    line-height: 0;
-    background: transparent;
-    border: 0;
-    outline: none;
-    cursor: pointer;
-
-    &:hover,
-    &:focus {
-      color: transparent;
-      background: transparent;
-      outline: none;
-
-      &::before {
-        opacity: 1;
+      &::after {
+        transform: rotate(45deg);
       }
     }
 
-    &.slick-disabled::before {
-      opacity: 0.25;
+    .slick-next {
+      inset-block-start: auto;
+      inset-block-end: 8px;
+
+      &::after {
+        transform: rotate(-135deg);
+      }
+    }
+
+    .slick-prev,
+    .slick-next {
+      inset-inline-start: 50%;
+      margin-block-start: unset;
+      transform: translateX(-50%);
     }
   }
 
-  .slick-prev {
-    left: -25px;
-
-    &::before {
-      content: '←';
-    }
-  }
-
-  .slick-next {
-    right: -25px;
-
-    &::before {
-      content: '→';
-    }
-  }
-
-  // Dots
   .slick-dots {
     position: absolute;
     right: 0;
@@ -253,6 +225,65 @@
           opacity: 1;
         }
       }
+    }
+  }
+
+  .slick-prev {
+    inset-inline-start: 8px;
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  .slick-next {
+    inset-inline-end: 8px;
+
+    &::after {
+      transform: rotate(135deg);
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    color: #fff;
+    line-height: 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+
+    &.slick-disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &::after {
+      position: absolute;
+      top: calc((16px - calc(16px / 1.41421356)) / 2);
+      display: inline-block;
+      box-sizing: border-box;
+      width: calc(16px / 1.41421356);
+      height: calc(16px / 1.41421356);
+      border: 0 solid currentcolor;
+      border-radius: 1px;
+      content: '';
+      inset-inline-start: calc((16px - calc(16px / 1.41421356)) / 2);
+      border-inline-width: 2px 0;
+      border-block-width: 2px 0;
     }
   }
 }
