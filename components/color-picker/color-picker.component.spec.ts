@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick, discardPeriodicTasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -126,9 +126,9 @@ describe('nz-color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    expect(
-      overlayContainerElement.querySelector('.ant-color-picker-title-content')?.querySelector('span')?.innerText
-    ).toBe('Color Picker');
+    expect(overlayContainerElement.querySelector('.ant-color-picker-title-content')?.textContent?.trim()).toBe(
+      'Color Picker'
+    );
   }));
 
   it('color-picker nzFlipFlop', () => {
