@@ -3,15 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { startOfQuarter } from 'date-fns';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { isNonEmptyString, isTemplateRef, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
@@ -23,7 +24,7 @@ import { DateBodyRow, DateCell } from './interface';
   exportAs: 'quarterTable',
   templateUrl: 'abstract-table.html',
   standalone: true,
-  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault]
+  imports: [NgClass, NzStringTemplateOutletDirective]
 })
 export class QuarterTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 1;
@@ -90,9 +91,6 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
   }
 
   private addCellProperty(cell: DateCell, month: CandyDate): void {
-    cell.isTemplateRef = isTemplateRef(cell.cellRender);
-    cell.isNonEmptyString = isNonEmptyString(cell.cellRender);
-
     if (this.hasRangeValue()) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;

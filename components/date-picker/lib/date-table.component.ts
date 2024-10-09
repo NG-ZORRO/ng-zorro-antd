@@ -3,13 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgSwitch, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { isNonEmptyString, isTemplateRef, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
@@ -22,7 +23,7 @@ import { transCompatFormat } from './util';
   exportAs: 'dateTable',
   templateUrl: './abstract-table.html',
   standalone: true,
-  imports: [NgClass, NgSwitch, NgTemplateOutlet]
+  imports: [NgClass, NzStringTemplateOutletDirective]
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() override locale!: NzCalendarI18nInterface;
@@ -53,8 +54,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
-        onClick(): void {},
-        onMouseEnter(): void {}
+        onClick(): void { },
+        onMouseEnter(): void { }
       });
     }
     return weekDays;
@@ -116,8 +117,6 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   addCellProperty(cell: DateCell, date: CandyDate): void {
-    cell.isTemplateRef = isTemplateRef(cell.cellRender);
-    cell.isNonEmptyString =  isNonEmptyString(cell.cellRender);
     if (this.hasRangeValue() && !this.canSelectWeek) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;

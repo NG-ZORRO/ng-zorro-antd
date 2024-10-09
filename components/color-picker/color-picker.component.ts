@@ -23,8 +23,8 @@ import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
 
 import { NzColorBlockComponent } from './color-block.component';
@@ -43,7 +43,8 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
     NzPopoverDirective,
     NzColorBlockComponent,
     NzColorFormatComponent,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    NzStringTemplateOutletDirective
   ],
   template: `
     <div
@@ -82,12 +83,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
       @if (nzTitle || nzAllowClear) {
         <div class="ant-color-picker-title">
           <div class="ant-color-picker-title-content">
-            @if (isNzTitleTemplateRef) {
-              <ng-container *ngTemplateOutlet="$any(nzTitle)" />
-            }
-            @if (isNzTitleNonEmptyString) {
-              <span [innerHTML]="nzTitle"></span>
-            }
+            <ng-template [nzStringTemplateOutlet]="nzTitle">{{ nzTitle }}</ng-template>
           </div>
           @if (nzAllowClear) {
             <div class="ant-color-picker-clear" (click)="clearColorHandle()"></div>
@@ -136,8 +132,6 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  protected readonly isTemplateRef = isTemplateRef;
-  protected readonly isNonEmptyString = isNonEmptyString;
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
   blockColor: string = '';
@@ -234,13 +228,5 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get isNzTitleNonEmptyString(): boolean {
-    return isNonEmptyString(this.nzTitle);
-  }
-
-  get isNzTitleTemplateRef(): boolean {
-    return isTemplateRef(this.nzTitle);
   }
 }

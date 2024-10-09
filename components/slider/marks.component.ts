@@ -27,12 +27,9 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   exportAs: 'nzSliderMarks',
   template: `
     @for (attr of marks; track attr.value) {
-      <span
-        class="ant-slider-mark-text"
-        [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style!"
-        [innerHTML]="attr.label"
-      ></span>
+      <span class="ant-slider-mark-text" [class.ant-slider-mark-active]="attr.active" [ngStyle]="attr.style">
+        {{ attr.label }}
+      </span>
     }
   `,
   imports: [NgStyle],
