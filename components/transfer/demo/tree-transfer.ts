@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
-import { TransferChange } from 'ng-zorro-antd/transfer';
-import { NzTreeComponent } from 'ng-zorro-antd/tree';
+import { NzTransferModule, TransferChange } from 'ng-zorro-antd/transfer';
+import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-transfer-tree-transfer',
+  standalone: true,
+  imports: [NzTransferModule, NzTreeModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"
@@ -34,8 +36,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
         </nz-tree>
       </ng-template>
     </nz-transfer>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `
 })
 export class NzDemoTransferTreeTransferComponent {
   @ViewChild('tree', { static: true }) tree!: NzTreeComponent;
@@ -51,8 +52,7 @@ export class NzDemoTransferTreeTransferComponent {
 
   private generateTree(arr: NzTreeNodeOptions[]): NzTreeNodeOptions[] {
     const tree: NzTreeNodeOptions[] = [];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mappedArr: any = {};
+    const mappedArr: Record<string, NzTreeNodeOptions> = {};
     let arrElem: NzTreeNodeOptions;
     let mappedElem: NzTreeNodeOptions;
 
@@ -66,7 +66,7 @@ export class NzDemoTransferTreeTransferComponent {
       if (mappedArr.hasOwnProperty(id)) {
         mappedElem = mappedArr[id];
         if (mappedElem.parentid) {
-          mappedArr[mappedElem.parentid].children.push(mappedElem);
+          mappedArr[mappedElem.parentid].children!.push(mappedElem);
         } else {
           tree.push(mappedElem);
         }

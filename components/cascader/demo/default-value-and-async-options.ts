@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -45,12 +46,14 @@ const options = [
 ];
 
 @Component({
-  selector: 'nz-demo-cascader-default-value-and-asyn-options',
+  selector: 'nz-demo-cascader-default-value-and-async-options',
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [(ngModel)]="values" [nzOptions]="nzOptions" (ngModelChange)="onChanges($event)"></nz-cascader>
   `
 })
-export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {
+export class NzDemoCascaderDefaultValueAndAsyncOptionsComponent implements OnInit {
   nzOptions: NzCascaderOption[] | null = null;
   values: string[] = ['zhejiang', 'hangzhou', 'xihu'];
 
