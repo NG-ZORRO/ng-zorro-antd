@@ -134,13 +134,11 @@ export class NzModalService implements OnDestroy {
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
+      backdropClass: getValueWithConfig(config.nzMask, globalConfig.nzMask, true) ? MODAL_MASK_CLASS_NAME : '',
       positionStrategy: this.overlay.position().global(),
       disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
       direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
     });
-    if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
-      overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
-    }
 
     return this.overlay.create(overlayConfig);
   }
