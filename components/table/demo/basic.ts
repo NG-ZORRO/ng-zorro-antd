@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTableModule } from 'ng-zorro-antd/table';
 
 interface Person {
@@ -12,7 +13,7 @@ interface Person {
 @Component({
   selector: 'nz-demo-table-basic',
   standalone: true,
-  imports: [NzTableModule],
+  imports: [NzDividerModule, NzTableModule],
   template: `
     <nz-table #basicTable [nzData]="listOfData">
       <thead>
