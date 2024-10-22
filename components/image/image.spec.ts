@@ -132,15 +132,15 @@ describe('Placeholder', () => {
     debugElement = fixture.debugElement;
   });
 
-  it('should placeholder src work', fakeAsync(() => {
+  it('should placeholder src work', () => {
+    const image = debugElement.nativeElement.querySelector('img');
+    const spy = spyOnProperty(image, 'src', 'set').and.callThrough();
     context.src = SRC;
     context.placeholder = PLACEHOLDER;
-    const image = debugElement.nativeElement.querySelector('img');
     fixture.detectChanges();
-    tick(1000);
-    fixture.detectChanges();
-    expect(image.src).toBe(PLACEHOLDER);
-  }));
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(PLACEHOLDER);
+  });
 
   it('should hide placeholder when image loaded', fakeAsync(() => {
     context.src = QUICK_SRC;

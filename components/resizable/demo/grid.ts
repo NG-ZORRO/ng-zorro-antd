@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent, NzResizeHandleOption } from 'ng-zorro-antd/resizable';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-grid',
+  standalone: true,
+  imports: [NzGridModule, NzResizableModule],
   template: `
     <div nz-row>
       <div
