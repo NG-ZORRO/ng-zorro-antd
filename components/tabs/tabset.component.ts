@@ -8,7 +8,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { NgStyle } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -135,17 +135,32 @@ let nextId = 0;
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
       >
-        @for (tab of tabs; track tab; let i = $index) {
-          <div
-            role="tabpanel"
-            [id]="getTabContentId(i)"
-            [attr.aria-labelledby]="getTabContentId(i)"
-            nz-tab-body
-            [active]="nzSelectedIndex === i && !nzHideAll"
-            [content]="tab.content"
-            [forceRender]="tab.nzForceRender"
-            [animated]="tabPaneAnimated"
-          ></div>
+        @if (!nzHideAll) {
+          @for (tab of tabs; track tab; let i = $index) {
+            @if (tab.nzForceRender) {
+              <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+            } @else if (nzDestroyInactiveTabPane) {
+              @if (nzSelectedIndex === i) {
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              }
+            } @else {
+              @if (nzSelectedIndex === i || tab.hasBeenActive) {
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              }
+            }
+
+            <ng-template #tabpaneTmpl>
+              <div
+                role="tabpanel"
+                [id]="getTabContentId(i)"
+                [attr.aria-labelledby]="getTabContentId(i)"
+                nz-tab-body
+                [active]="nzSelectedIndex === i"
+                [content]="tab.content"
+                [animated]="tabPaneAnimated"
+              ></div>
+            </ng-template>
+          }
         }
       </div>
     </div>
@@ -168,6 +183,7 @@ let nextId = 0;
   imports: [
     NzTabNavBarComponent,
     NgStyle,
+    NgTemplateOutlet,
     NzTabNavItemDirective,
     A11yModule,
     NzOutletModule,
@@ -200,6 +216,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input({ transform: booleanAttribute }) nzHideAll = false;
   @Input({ transform: booleanAttribute }) nzLinkRouter = false;
   @Input({ transform: booleanAttribute }) nzLinkExact = true;
+  @Input({ transform: booleanAttribute }) nzDestroyInactiveTabPane = false;
 
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
   @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();
@@ -326,7 +343,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       // Changing these values after change detection has run
       // since the checked content may contain references to them.
       Promise.resolve().then(() => {
-        this.tabs.forEach((tab, index) => (tab.isActive = index === indexToSelect));
+        this.tabs.forEach((tab, index) => tab.setActive(index === indexToSelect));
 
         if (!isFirstRun) {
           this.nzSelectedIndexChange.emit(indexToSelect);

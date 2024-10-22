@@ -64,9 +64,11 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @ViewChild('contentTemplate', { static: true }) contentTemplate!: TemplateRef<NzSafeAny>;
 
   isActive: boolean = false;
+  hasBeenActive = false;
   position: number | null = null;
   origin: number | null = null;
   closestTabSet = inject(NZ_TAB_SET);
+
   readonly stateChanges = new Subject<void>();
 
   get content(): TemplateRef<NzSafeAny> {
@@ -86,5 +88,12 @@ export class NzTabComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.stateChanges.complete();
+  }
+
+  setActive(active: boolean): void {
+    this.isActive = active;
+    if (active) {
+      this.hasBeenActive = true;
+    }
   }
 }
