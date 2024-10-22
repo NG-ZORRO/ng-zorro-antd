@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTabsCanDeactivateFn, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-guard',
   standalone: true,
-  imports: [NzTabsModule],
+  imports: [NzTabsModule, NzModalModule],
   template: `
     <nz-tabset [nzCanDeactivate]="canDeactivate">
       @for (tab of tabs; track tab) {

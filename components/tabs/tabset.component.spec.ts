@@ -2,7 +2,7 @@ import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { AsyncPipe } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Router, RouterLink, RouterOutlet, Routes } from '@angular/router';
@@ -41,7 +41,7 @@ describe('NzTabSet', () => {
 
     it('should load content on first change detection pass', () => {
       fixture.detectChanges();
-      expect(element.querySelectorAll('.ant-tabs-tabpane')[1]!.textContent).toContain(`Content of Tab Pane 1`);
+      expect(element.querySelectorAll('.ant-tabs-tabpane')[0]!.textContent).toContain(`Content of Tab Pane 1`);
     });
 
     it('should change selected index on click', () => {
@@ -363,8 +363,8 @@ describe('NzTabSet', () => {
     });
 
     it('should set the correct content with template', () => {
-      const tabElement = fixture.debugElement.query(By.css(`.ant-tabs-tabpane:nth-of-type(2)`))!.nativeElement;
-      expect(tabElement.querySelector('.content')).not.toBeNull();
+      const tabElement: HTMLDivElement = fixture.debugElement.query(By.css(`.ant-tabs-tabpane-active`))!.nativeElement;
+      expect(tabElement.textContent).toContain('Template Content of Tab Pane 1');
     });
 
     it('should set the correct close icons with template', () => {
@@ -785,10 +785,10 @@ describe('NzTabSet', () => {
     )!.nativeElement;
     expect(tabElement.classList.contains('ant-tabs-tab-active')).toBe(true);
 
-    const tabContentElement = fixture.debugElement.query(
-      By.css(`.ant-tabs-tabpane:nth-of-type(${expectedIndex + 1})`)
+    const tabpaneElement: HTMLDivElement = fixture.debugElement.query(
+      By.css(`.ant-tabs-tabpane-active`)
     )!.nativeElement;
-    expect(tabContentElement.classList.contains('ant-tabs-tabpane-active')).toBe(true);
+    expect(tabpaneElement.id.endsWith(`tab-${expectedIndex}`)).toBeTrue();
   }
 
   describe('router', () => {
@@ -827,6 +827,51 @@ describe('NzTabSet', () => {
         expect((tabs.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
         expect(component.handleSelection).toHaveBeenCalledTimes(1);
       });
+    }));
+  });
+
+  describe('rendering', () => {
+    let fixture: ComponentFixture<SimpleTabsRenderingComponent>;
+    let element: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(SimpleTabsRenderingComponent);
+      element = fixture.nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should delay rendering and preserve DOM of tabpane', () => {
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
+      fixture.componentInstance.selectedIndex = 1;
+      fixture.detectChanges();
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(2);
+      fixture.componentInstance.selectedIndex = 2;
+      fixture.detectChanges();
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
+    });
+
+    it('should render inactive tab when forceRender is true', fakeAsync(() => {
+      fixture.componentInstance.forceRender = true;
+      fixture.detectChanges();
+      tick(300);
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
+    }));
+
+    it('should destroy inactive tab when destroyInactiveTabPane is true', fakeAsync(() => {
+      fixture.componentInstance.destroyInactiveTabPane = true;
+      fixture.detectChanges();
+      tick(300);
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
+
+      fixture.componentInstance.selectedIndex = 1;
+      fixture.detectChanges();
+      tick(300);
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
+
+      fixture.componentInstance.selectedIndex = 2;
+      fixture.detectChanges();
+      tick(300);
+      expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
     }));
   });
 });
@@ -879,6 +924,23 @@ class SimpleTabsTestComponent {
   handleAdd(): void {
     // noop
   }
+}
+
+@Component({
+  standalone: true,
+  imports: [NzTabsModule],
+  template: `
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="destroyInactiveTabPane">
+      <nz-tab nzTitle="Tab 0" [nzForceRender]="forceRender">Content of Tab Pane 0</nz-tab>
+      <nz-tab nzTitle="Tab 1" [nzForceRender]="forceRender">Content of Tab Pane 1</nz-tab>
+      <nz-tab nzTitle="Tab 2" [nzForceRender]="forceRender">Content of Tab Pane 2</nz-tab>
+    </nz-tabset>
+  `
+})
+class SimpleTabsRenderingComponent {
+  selectedIndex = 0;
+  forceRender = false;
+  destroyInactiveTabPane = false;
 }
 
 @Component({
@@ -975,7 +1037,7 @@ class DynamicTabsTestComponent {
         (nzSelectedIndexChange)="handleSelection($event)"
         [nzTabPosition]="position"
       >
-        @for (_tab of tabs; track _tab; let i = $index) {
+        @for (_tab of tabs; track i; let i = $index) {
           <nz-tab [nzTitle]="titleTemplate">
             <ng-template #titleTemplate let-visible="visible">Title in {{ visible ? 'tabs' : 'menu' }}</ng-template>
             Content of Tab Pane {{ i }}
