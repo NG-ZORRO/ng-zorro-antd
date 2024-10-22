@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+
 @Component({
   selector: 'nz-demo-popconfirm-custom-icon',
+  standalone: true,
+  imports: [NzIconModule, NzPopconfirmModule],
   template: `
     <a nz-popconfirm nzPopconfirmTitle="Are you sure?" [nzIcon]="iconTpl">Delete</a>
     <ng-template #iconTpl>
