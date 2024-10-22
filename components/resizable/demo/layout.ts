@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-layout',
+  standalone: true,
+  imports: [NzLayoutModule, NzResizableModule],
   template: `
     <nz-layout>
       <nz-header>Header</nz-header>
