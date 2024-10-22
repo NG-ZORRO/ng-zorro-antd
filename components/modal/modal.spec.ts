@@ -504,6 +504,32 @@ describe('NzModal', () => {
     flush();
   }));
 
+  it('nzMask work', fakeAsync(() => {
+    configService.set('modal', { nzMask: false });
+
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    expect(modalRef.getBackdropElement()?.classList)
+      .not.withContext('not has default cdk dark backdrop')
+      .toContain('cdk-overlay-dark-backdrop');
+
+    configService.set('modal', { nzMask: true });
+    fixture.detectChanges();
+
+    expect(modalRef.getBackdropElement()?.classList).toContain(
+      'ant-modal-mask',
+      'should add class when global config changed'
+    );
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
   it(
     'should not close when clicking on the modal wrap and ' + 'nzMaskClosable or nzMask is false',
     fakeAsync(() => {
