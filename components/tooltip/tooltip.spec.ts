@@ -5,7 +5,6 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
@@ -19,7 +18,7 @@ describe('nz-tooltip', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations()]
     });
     fixture = TestBed.createComponent(NzTooltipTestComponent);
     component = fixture.componentInstance;
@@ -319,10 +318,11 @@ describe('origin', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNoopAnimations()]
     });
     const fixture = TestBed.createComponent(NzTestTooltipTargetComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   it('should target work', () => {
@@ -334,8 +334,12 @@ describe('arrow', () => {
   let component: NzTestTooltipArrowComponent;
 
   beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
     const fixture = TestBed.createComponent(NzTestTooltipArrowComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   it('should support arrow pointing at center', () => {
