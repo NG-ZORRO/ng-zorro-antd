@@ -3,7 +3,6 @@ import { Component, DebugElement, OnInit, ViewChild, ViewEncapsulation } from '@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzTableComponent, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
@@ -299,6 +298,10 @@ interface BasicTestDataItem {
   expand?: boolean;
 }
 
+interface NzPageSizeChangeFn {
+  (pageSize: number): void;
+}
+
 @Component({
   standalone: true,
   imports: [NzTableModule],
@@ -354,9 +357,9 @@ interface BasicTestDataItem {
 export class NzTestTableBasicComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<BasicTestDataItem>;
   pageIndex = 1;
-  pageIndexChange = jasmine.createSpy<NzSafeAny>('pageIndex callback');
+  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageIndex callback');
   pageSize = 10;
-  pageSizeChange = jasmine.createSpy<NzSafeAny>('pageSize callback');
+  pageSizeChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
   dataSet: BasicTestDataItem[] = [];
   noResult = '';
   showSizeChanger = false;
@@ -492,7 +495,7 @@ export class NzTableSpecCrashComponent {
   data: Array<{ id: number; name: string }> = [];
   pageIndex = 1;
   pageSize = 10;
-  pageIndexChange = jasmine.createSpy<NzSafeAny>('pageSize callback');
+  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
 
   constructor() {
     setTimeout(() => {
