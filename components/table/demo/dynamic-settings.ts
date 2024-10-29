@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
-import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableSize } from 'ng-zorro-antd/table';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import {
+  NzTableLayout,
+  NzTableModule,
+  NzTablePaginationPosition,
+  NzTablePaginationType,
+  NzTableSize
+} from 'ng-zorro-antd/table';
 
 interface ItemData {
   name: string;
@@ -38,13 +48,17 @@ interface Setting {
 
 @Component({
   selector: 'nz-demo-table-dynamic-settings',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzDividerModule, NzFormModule, NzRadioModule, NzSwitchModule, NzTableModule],
   template: `
     <div class="components-table-demo-control-bar">
       <form nz-form nzLayout="inline" [formGroup]="settingForm">
-        @for (switch of listOfSwitch; track switch) {
+        @for (item of listOfSwitch; track item) {
           <nz-form-item>
-            <nz-form-label>{{ switch.name }}</nz-form-label>
-            <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>
+            <nz-form-label>{{ item.name }}</nz-form-label>
+            <nz-form-control>
+              <nz-switch [formControlName]="item.formControlName"></nz-switch>
+            </nz-form-control>
           </nz-form-item>
         }
         @for (radio of listOfRadio; track radio) {
@@ -215,7 +229,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
 
   refreshStatus(): void {
     const validData = this.displayData.filter(value => !value.disabled);
-    const allChecked = validData.length > 0 && validData.every(value => value.checked === true);
+    const allChecked = validData.length > 0 && validData.every(value => value.checked);
     const allUnChecked = validData.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = !allChecked && !allUnChecked;
@@ -231,7 +245,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   }
 
   generateData(): readonly ItemData[] {
-    const data = [];
+    const data: ItemData[] = [];
     for (let i = 1; i <= 100; i++) {
       data.push({
         name: 'John Brown',

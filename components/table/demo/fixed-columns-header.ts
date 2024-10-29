@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface ItemData {
   name: string;
   age: number;
@@ -8,6 +10,8 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-fixed-columns-header',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
       <thead>

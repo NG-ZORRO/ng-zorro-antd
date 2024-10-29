@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzTableComponent } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 export interface VirtualDataInterface {
   index: number;
@@ -13,6 +14,8 @@ export interface VirtualDataInterface {
 
 @Component({
   selector: 'nz-demo-table-virtual',
+  standalone: true,
+  imports: [NzButtonModule, NzTableModule],
   template: `
     <button nz-button (click)="scrollToIndex(200)">Scroll To Index 200</button>
     <br />
