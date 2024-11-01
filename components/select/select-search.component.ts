@@ -20,6 +20,8 @@ import {
 } from '@angular/core';
 import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
 
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+
 @Component({
   selector: 'nz-select-search',
   encapsulation: ViewEncapsulation.None,
@@ -68,7 +70,9 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.value = value;
     this.valueChange.next(value);
     if (this.mirrorSync) {
-      this.syncMirrorWidth();
+      reqAnimFrame(() => {
+        this.syncMirrorWidth();
+      });
     }
   }
 
@@ -121,7 +125,9 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     if (this.mirrorSync) {
-      this.syncMirrorWidth();
+      reqAnimFrame(() => {
+        this.syncMirrorWidth();
+      });
     }
     if (this.autofocus) {
       this.focus();
