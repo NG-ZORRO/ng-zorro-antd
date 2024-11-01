@@ -114,6 +114,16 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFTCOUNT + 1);
     });
 
+    it('should have correct disable state on moving buttons', () => {
+      const transferOperationButtons: DebugElement[] = dl.queryAll(By.css('.ant-transfer-operation > button'));
+      const transferToRightButton: HTMLElement = transferOperationButtons[1].nativeNode;
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(false);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
+    });
+
     it('should be custom filter option', () => {
       instance.nzFilterOption = (inputValue: string, item: NzSafeAny): boolean =>
         item.description.indexOf(inputValue) > -1;
