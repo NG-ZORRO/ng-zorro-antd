@@ -1,0 +1,19 @@
+.@{divider-prefix-cls} {
+  &-dotted {
+    background: none;
+    border-color: @divider-color;
+    border-style: dotted;
+    border-width: @border-width-base 0 0;
+  }
+
+  &-horizontal&-with-text&-dotted {
+    &::after,
+    &::before {
+      border-style: dotted none none;
+    }
+  }
+
+  &-vertical&-dotted {
+    border-width: 0 0 0 @border-width-base;
+  }
+}

@@ -72,6 +72,20 @@ describe('divider', () => {
       });
     });
   });
+
+  describe('#nzVariant', () => {
+    (['dashed', 'dotted'] as const).forEach(type => {
+      it(`with ${type}`, () => {
+        context.comp.nzVariant = type;
+        fixture.detectChanges();
+        expect(dl.query(By.css(`.ant-divider-${type}`)) != null).toBe(true);
+      });
+    });
+
+    it('should have solid as default value for nzVariant', () => {
+      expect(context.comp.nzVariant).toEqual('solid');
+    });
+  });
 });
 
 @Component({
