@@ -296,6 +296,7 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  nzSortDirections?: Array<string | null>;
 }
 
 export interface TabsConfig {

@@ -125,11 +125,11 @@ Table 组件同时具备了易用性和高度可定制性
 
 排序属性
 
-| 参数                    | 说明                                                             | 类型                                            | 默认值                           |
-|-----------------------|----------------------------------------------------------------|-----------------------------------------------|-------------------------------|
+| 参数                    | 说明                                                             | 类型                                            | 默认值                           | 全局配置 |
+|-----------------------|----------------------------------------------------------------|-----------------------------------------------|-------------------------------|------|
 | `[nzShowSort]`        | 是否显示排序                                                         | `boolean`                                     | -                             |
 | `[nzSortFn]`          | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction)，服务端排序时传入 true | `NzTableSortFn<T> \| boolean`                 | -                             |
-| `[nzSortDirections]`  | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null`                    | `Array<'ascend' \| 'descend' \| null>`        | `['ascend', 'descend', null]` |
+| `[nzSortDirections]`  | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null`                    | `Array<'ascend' \| 'descend' \| null>`        | `['ascend', 'descend', null]` | ✅    |
 | `[nzSortOrder]`       | 当前排序状态，可双向绑定                                                   | 'descend' \| 'ascend' \| null                 | null                          |
 | `(nzSortOrderChange)` | 排序状态改变回调                                                       | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
 
