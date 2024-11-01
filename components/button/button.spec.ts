@@ -165,7 +165,7 @@ describe('button', () => {
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
 
-    it('should icon only works correctly with any Comment', fakeAsync(() => {
+    it('should icon only works correctly with any comments', fakeAsync(() => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyWithCommentComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       fixture.detectChanges();
