@@ -382,7 +382,7 @@ export class TestButtonIconOnlyWithAnyTagComponent {}
   template: `
     <button nz-button>
       <i nz-icon nzType="down"></i>
-      <!-- Comment -->
+      <!-- comment -->
     </button>
   `
 })
