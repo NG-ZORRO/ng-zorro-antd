@@ -1,41 +1,63 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzSegmentedModule, NzSegmentedOption } from 'ng-zorro-antd/segmented';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-custom',
   standalone: true,
   imports: [NzAvatarModule, NzSegmentedModule],
   template: `
-    <nz-segmented [nzLabelTemplate]="templateRef" [nzOptions]="options"></nz-segmented>
-    <ng-template #temp let-index="index">
-      @switch (index) {
-        @case (0) {
-          <nz-avatar nzSrc="https://joeschmoe.io/api/v1/random"></nz-avatar>
+    <nz-segmented>
+      <label nz-segmented-item nzValue="user1">
+        <div [style.padding.px]="4">
+          <nz-avatar nzSrc="https://joeschmoe.io/api/v1/random" />
           <div>User 1</div>
-        }
-        @case (1) {
-          <nz-avatar nzText="K"></nz-avatar>
+        </div>
+      </label>
+      <label nz-segmented-item nzValue="user2">
+        <div [style.padding.px]="4">
+          <nz-avatar nzText="K" [style.background]="'#f56a00'" />
           <div>User 2</div>
-        }
-        @case (2) {
-          <nz-avatar nzIcon="user"></nz-avatar>
+        </div>
+      </label>
+      <label nz-segmented-item nzValue="user3">
+        <div [style.padding.px]="4">
+          <nz-avatar nzIcon="user" [style.background]="'#87d068'" />
           <div>User 3</div>
-        }
-      }
-    </ng-template>
+        </div>
+      </label>
+    </nz-segmented>
+
+    <br />
+    <br />
+
+    <nz-segmented>
+      <label nz-segmented-item nzValue="spring">
+        <div [style.padding.px]="4">
+          <div>Spring</div>
+          <div>Jan-Mar</div>
+        </div>
+      </label>
+      <label nz-segmented-item nzValue="summer">
+        <div [style.padding.px]="4">
+          <div>Summer</div>
+          <div>Apr-Jun</div>
+        </div>
+      </label>
+      <label nz-segmented-item nzValue="autumn">
+        <div [style.padding.px]="4">
+          <div>Autumn</div>
+          <div>Jul-Sept</div>
+        </div>
+      </label>
+      <label nz-segmented-item nzValue="winter">
+        <div [style.padding.px]="4">
+          <div>Winter</div>
+          <div>Oct-Dec</div>
+        </div>
+      </label>
+    </nz-segmented>
   `
 })
-export class NzDemoSegmentedCustomComponent {
-  @ViewChild('temp', { static: true, read: TemplateRef }) templateRef!: TemplateRef<{
-    $implicit: NzSegmentedOption;
-    index: number;
-  }>;
-
-  options = [
-    { label: 'user1', value: 'user1', useTemplate: true },
-    { label: 'user2', value: 'user2', useTemplate: true },
-    { label: 'user3', value: 'user3', useTemplate: true }
-  ];
-}
+export class NzDemoSegmentedCustomComponent {}

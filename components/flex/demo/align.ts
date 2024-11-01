@@ -20,12 +20,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       <nz-segmented [nzOptions]="alignSegment" [(ngModel)]="selectedLAlignment"></nz-segmented>
     </div>
 
-    <div
-      class="btn-wrappers"
-      nz-flex
-      [nzJustify]="justifySegment[selectedJustification]"
-      [nzAlign]="alignSegment[selectedLAlignment]"
-    >
+    <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification" [nzAlign]="selectedLAlignment">
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="primary">Primary</button>
@@ -59,6 +54,6 @@ export class NzDemoFlexAlignComponent {
     'space-evenly'
   ];
   public alignSegment: NzAlign[] = ['flex-start', 'center', 'flex-end'];
-  public selectedJustification = 0;
-  public selectedLAlignment = 0;
+  public selectedJustification: NzJustify = 'flex-start';
+  public selectedLAlignment: NzAlign = 'flex-start';
 }
