@@ -103,17 +103,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 
                     @if (nzTitle) {
                       <div class="ant-drawer-title">
-                        <ng-container *nzStringTemplateOutlet="nzTitle">
-                          <div [innerHTML]="nzTitle"></div>
-                        </ng-container>
+                        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
                       </div>
                     }
                   </div>
                   @if (nzExtra) {
                     <div class="ant-drawer-extra">
-                      <ng-container *nzStringTemplateOutlet="nzExtra">
-                        <div [innerHTML]="nzExtra"></div>
-                      </ng-container>
+                      <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
                     </div>
                   }
                 </div>
@@ -132,9 +128,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
               </div>
               @if (nzFooter) {
                 <div class="ant-drawer-footer">
-                  <ng-container *nzStringTemplateOutlet="nzFooter">
-                    <div [innerHTML]="nzFooter"></div>
-                  </ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
                 </div>
               }
             </div>

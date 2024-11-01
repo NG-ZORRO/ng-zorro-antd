@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DecadeCell } from './interface';
 
@@ -20,7 +21,7 @@ const MAX_COL = 3;
   exportAs: 'decadeTable',
   templateUrl: 'abstract-table.html',
   standalone: true,
-  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault]
+  imports: [NgClass, NzStringTemplateOutletDirective]
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {
   get startYear(): number {
@@ -64,8 +65,8 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
           isLowerThanStart: end < startYear,
           isBiggerThanEnd: start > endYear,
           classMap: {},
-          onClick(): void {},
-          onMouseEnter(): void {}
+          onClick(): void { },
+          onMouseEnter(): void { }
         };
 
         cell.classMap = this.getClassMap(cell);
