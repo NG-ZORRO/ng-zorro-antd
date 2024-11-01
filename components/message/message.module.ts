@@ -8,6 +8,9 @@ import { NgModule } from '@angular/core';
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageComponent } from './message.component';
 
+/**
+ * @deprecated This module is no longer needed, will be removed in v20, please remove its import.
+ */
 @NgModule({
   imports: [NzMessageContainerComponent, NzMessageComponent]
 })

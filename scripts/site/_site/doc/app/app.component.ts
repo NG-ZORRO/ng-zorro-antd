@@ -1,5 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
@@ -12,13 +12,13 @@ import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppService } from './app.service';
-import { ROUTER_LIST } from './router';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { SideComponent } from './side/side.component';
-import { FixedWidgetsComponent } from './fixed-widgets/fixed-widgets.component';
-import { NzNavBottomComponent } from './nav-bottom/nav-bottom.component';
 import { NzContributorsListComponent } from './contributors-list/contributors-list.component';
+import { FixedWidgetsComponent } from './fixed-widgets/fixed-widgets.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import { NzNavBottomComponent } from './nav-bottom/nav-bottom.component';
+import { ROUTER_LIST } from './router';
+import { SideComponent } from './side/side.component';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -27,7 +27,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
@@ -54,7 +53,6 @@ const defaultKeywords =
     NzMenuModule,
     NzIconModule,
     NzSelectModule,
-    NzMessageModule,
     NzPopoverModule,
     NzButtonModule,
     NzInputModule,
@@ -188,7 +186,7 @@ export class AppComponent implements OnInit {
     private meta: Meta,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   setPage(url: string): void {
     const match = url.match(/\/(\w+)/);
