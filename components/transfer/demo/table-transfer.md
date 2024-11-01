@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 8
 title:
   zh-CN: 表格穿梭框
   en-US: Table Transfer

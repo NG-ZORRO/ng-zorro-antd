@@ -24,8 +24,10 @@ import {
 import { Observable, fromEvent, merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
 import { NzTransferSearchComponent } from './transfer-search.component';
@@ -36,7 +38,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
   preserveWhitespaces: false,
   template: `
     <div class="ant-transfer-list-header">
-      @if (showSelectAll) {
+      @if (showSelectAll && !oneWay) {
         <label
           class="ant-transfer-list-checkbox"
           nz-checkbox
@@ -49,7 +51,11 @@ import { NzTransferSearchComponent } from './transfer-search.component';
       }
       <span class="ant-transfer-list-header-selected">
         <span>
-          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+          @if (!oneWay) {
+            {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+          } @else {
+            {{ stat.shownCount }}
+          }
           {{ validData.length > 1 ? itemsUnit : itemUnit }}
         </span>
       </span>
@@ -95,26 +101,46 @@ import { NzTransferSearchComponent } from './transfer-search.component';
           <ul class="ant-transfer-list-content">
             @for (item of validData; track item) {
               <li
-                (click)="onItemSelect(item)"
+                (click)="!oneWay ? onItemSelect(item) : null"
                 class="ant-transfer-list-content-item"
                 [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
               >
-                <label
-                  #checkboxes
-                  nz-checkbox
-                  [nzChecked]="item.checked"
-                  (nzCheckedChange)="onItemSelect(item)"
-                  [nzDisabled]="disabled || item.disabled"
-                >
+                @if (!oneWay) {
+                  <label
+                    #checkboxes
+                    nz-checkbox
+                    [nzChecked]="item.checked"
+                    (nzCheckedChange)="onItemSelect(item)"
+                    [nzDisabled]="disabled || item.disabled"
+                  >
+                    @if (!render) {
+                      {{ item.title }}
+                    } @else {
+                      <ng-template
+                        [ngTemplateOutlet]="render"
+                        [ngTemplateOutletContext]="{ $implicit: item }"
+                      ></ng-template>
+                    }
+                  </label>
+                } @else {
                   @if (!render) {
-                    {{ item.title }}
+                    <span class="ant-transfer-list-content-item-text">
+                      {{ item.title }}
+                    </span>
+                    <div
+                      class="ant-transfer-list-content-item-remove"
+                      [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+                      (click)="!(disabled || item.disabled) ? deleteItem(item) : null"
+                    >
+                      <span nz-icon nzType="delete" nzTheme="outline"></span>
+                    </div>
                   } @else {
                     <ng-template
                       [ngTemplateOutlet]="render"
                       [ngTemplateOutletContext]="{ $implicit: item }"
                     ></ng-template>
                   }
-                </label>
+                }
               </li>
             }
           </ul>
@@ -137,7 +163,15 @@ import { NzTransferSearchComponent } from './transfer-search.component';
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   },
-  imports: [NgClass, NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent],
+  imports: [
+    NgClass,
+    NzCheckboxModule,
+    NgTemplateOutlet,
+    NzEmptyModule,
+    NzTransferSearchComponent,
+    NzIconModule,
+    NzButtonModule
+  ],
   standalone: true
 })
 export class NzTransferListComponent implements AfterViewInit {
@@ -152,6 +186,7 @@ export class NzTransferListComponent implements AfterViewInit {
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
+  @Input() oneWay: boolean = false;
   @Input({ transform: booleanAttribute }) disabled: boolean = false;
   @Input({ transform: booleanAttribute }) showSearch?: boolean;
   @Input() searchPlaceholder?: string;
@@ -166,6 +201,7 @@ export class NzTransferListComponent implements AfterViewInit {
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
+  @Output() readonly moveToLeft: EventEmitter<void> = new EventEmitter();
 
   @ViewChild('headerCheckbox', { read: NzCheckboxComponent }) headerCheckbox?: NzCheckboxComponent;
 
@@ -238,6 +274,12 @@ export class NzTransferListComponent implements AfterViewInit {
 
   handleClear(): void {
     this.handleFilter('');
+  }
+
+  deleteItem(item: TransferItem): void {
+    item.checked = true;
+    this.handleSelect.emit(item);
+    this.moveToLeft.emit();
   }
 
   private matchFilter(text: string, item: TransferItem): boolean {
