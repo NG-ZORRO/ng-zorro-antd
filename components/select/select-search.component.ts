@@ -70,9 +70,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.value = value;
     this.valueChange.next(value);
     if (this.mirrorSync) {
-      reqAnimFrame(() => {
-        this.syncMirrorWidth();
-      });
+      this.syncMirrorWidth();
     }
   }
 
@@ -83,12 +81,14 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement!.nativeElement;
-    const hostDOM = this.elementRef.nativeElement;
-    const inputDOM = this.inputElement.nativeElement;
-    this.renderer.removeStyle(hostDOM, 'width');
-    this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
-    this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    reqAnimFrame(() => {
+      const mirrorDOM = this.mirrorElement!.nativeElement;
+      const hostDOM = this.elementRef.nativeElement;
+      const inputDOM = this.inputElement.nativeElement;
+      this.renderer.removeStyle(hostDOM, 'width');
+      this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
+      this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    });
   }
 
   focus(): void {
@@ -125,9 +125,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     if (this.mirrorSync) {
-      reqAnimFrame(() => {
-        this.syncMirrorWidth();
-      });
+      this.syncMirrorWidth();
     }
     if (this.autofocus) {
       this.focus();
