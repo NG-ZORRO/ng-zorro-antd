@@ -61,6 +61,8 @@
 /components/input-number/zh
 /components/layout/en
 /components/layout/zh
+/components/list/en
+/components/list/zh
 /components/mention/en
 /components/mention/zh
 /components/menu/en
@@ -81,6 +83,8 @@
 /components/popover/zh
 /components/progress/en
 /components/progress/zh
+/components/qr-code/en
+/components/qr-code/zh
 /components/radio/en
 /components/radio/zh
 /components/rate/en
@@ -89,6 +93,8 @@
 /components/result/zh
 /components/segmented/en
 /components/segmented/zh
+/components/select/en
+/components/select/zh
 /components/skeleton/en
 /components/skeleton/zh
 /components/slider/en
@@ -125,14 +131,14 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
-/components/qr-code/en
-/components/qr-code/zh
 /components/water-mark/en
 /components/water-mark/zh
 /components/color-picker/en
 /components/color-picker/zh
 /components/hash-code/en
 /components/hash-code/zh
+/components/float-button/en
+/components/float-button/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
