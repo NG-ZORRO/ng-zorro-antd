@@ -32,6 +32,7 @@ import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputDirective } from './input.directive';
@@ -47,10 +48,10 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
 @Component({
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',
-  preserveWhitespaces: false,
+  standalone: true,
+  imports: [NzInputGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzFormNoStatusService],
+  providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }],
   template: `
     @if (isAddOn) {
       <span class="ant-input-wrapper ant-input-group">
@@ -131,8 +132,8 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
   },
-  imports: [NzInputGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
-  standalone: true
+  hostDirectives: [NzSpaceCompactItemDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
@@ -147,6 +148,9 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) nzSearch = false;
+  /**
+   * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
+   */
   @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
   isSmall = false;
@@ -177,7 +181,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
-      this.listOfNzInputDirective.forEach(item => (item.nzSize = this.nzSize));
+      this.listOfNzInputDirective.forEach(item => item['size'].set(this.nzSize));
     }
   }
 
