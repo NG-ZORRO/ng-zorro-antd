@@ -20,6 +20,8 @@ import {
 } from '@angular/core';
 import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
 
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+
 @Component({
   selector: 'nz-select-search',
   encapsulation: ViewEncapsulation.None,
@@ -79,12 +81,14 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement!.nativeElement;
-    const hostDOM = this.elementRef.nativeElement;
-    const inputDOM = this.inputElement.nativeElement;
-    this.renderer.removeStyle(hostDOM, 'width');
-    this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
-    this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    reqAnimFrame(() => {
+      const mirrorDOM = this.mirrorElement!.nativeElement;
+      const hostDOM = this.elementRef.nativeElement;
+      const inputDOM = this.inputElement.nativeElement;
+      this.renderer.removeStyle(hostDOM, 'width');
+      this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
+      this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    });
   }
 
   focus(): void {
