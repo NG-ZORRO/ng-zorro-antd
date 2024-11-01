@@ -115,7 +115,9 @@ describe('transfer', () => {
     });
 
     it('should have correct disable state on moving buttons', () => {
-      const transferOperationButtons: DebugElement[] = dl.queryAll(By.css('.ant-transfer-operation > button'));
+      const transferOperationButtons: DebugElement[] = debugElement.queryAll(
+        By.css('.ant-transfer-operation > button')
+      );
       const transferToRightButton: HTMLElement = transferOperationButtons[1].nativeNode;
       expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
       pageObject.checkItem('left', 0);
