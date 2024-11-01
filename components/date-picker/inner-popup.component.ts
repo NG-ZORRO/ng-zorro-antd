@@ -154,6 +154,7 @@ import { PREFIX_CLASS } from './util';
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
                 [canSelectWeek]="panelMode === 'week'"
+                [format]="format"
                 (valueChange)="onSelectDate($event)"
                 (cellHover)="cellHover.emit($event)"
               />
@@ -198,6 +199,7 @@ export class InnerPopupComponent implements OnChanges {
   @Input() hoverValue!: CandyDate[]; // Range ONLY
   @Input() value!: CandyDate;
   @Input() partType!: RangePartType;
+  @Input() format?: string;
 
   @Output() readonly panelChange = new EventEmitter<NzPanelChangeType>();
   // TODO: name is not proper
