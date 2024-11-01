@@ -137,7 +137,7 @@ describe('avatar', () => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      context.comp.ngAfterViewInit();
+      context.comp['calcStringSize']();
       const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBeLessThan(1);
     }));
@@ -151,7 +151,7 @@ describe('avatar', () => {
         fixture.detectChanges();
         tick();
         avatarText = dl.nativeElement.querySelector('.ant-avatar-string')!;
-        context.comp.ngAfterViewInit();
+        context.comp['calcStringSize']();
         firstScale = getScaleFromCSSTransform(avatarText.style.transform);
       }));
 
@@ -237,7 +237,7 @@ describe('avatar', () => {
       fixture.detectChanges();
       flush();
       const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
-      context.comp.ngAfterViewInit();
+      context.comp['calcStringSize']();
       const scale = getScaleFromCSSTransform(textEl.style.transform);
       expect(scale).toBeLessThan(1);
       expect(textEl.style.lineHeight).toEqual(`${size}px`);
