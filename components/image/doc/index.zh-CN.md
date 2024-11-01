@@ -30,6 +30,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭预览。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean`   | `false` | ✅           |
 | nzDirection         | 文字方向                                                                                                 | `Direction` | `'ltr'` | ✅           |
 | nzScaleStep         | `1 + nzScaleStep` 为缩放放大的每步倍数                                                                   | `number`    | 0.5     | ✅           |
+| nzLoading           | 图片元素的加载属性。 参见 [HTMLImageElement.loading](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLImageElement/loading) | `eager \| lazy` | `eager` | -            |
 
 其他属性见 [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 

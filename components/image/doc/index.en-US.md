@@ -29,6 +29,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 | nzCloseOnNavigation | Whether to close the image preview when the user goes backwards/forwards in history. Note that this usually doesn't include clicking on links (unless the user is using the HashLocationStrategy). | `boolean`   | `false` | ✅            |
 | nzDirection         | Text directionality                                                                                                                                                                                | `Direction` | `'ltr'` | ✅            |
 | nzScaleStep         | `1 + nzScaleStep` is the step to increase or decrease the scale                                                                                                                                    | `number`    | 0.5     | ✅            |
+| nzLoading           | Image element's loading property. reference [loading property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/loading)                                                          | `eager \| lazy` | `eager` | -             |
 
 Other attributes [<img\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Attributes)
 
