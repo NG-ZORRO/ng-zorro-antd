@@ -60,7 +60,7 @@ export class NzFilterTriggerComponent implements OnInit {
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
 
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 

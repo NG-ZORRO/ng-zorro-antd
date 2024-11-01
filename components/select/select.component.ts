@@ -224,7 +224,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig<number>() nzOptionHeightPx = 32;
+  @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -236,7 +236,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()
-  @WithConfig<TemplateRef<NzSafeAny> | string | null>()
+  @WithConfig()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
@@ -248,7 +248,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
@@ -257,7 +257,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzOpen = false;
   @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
   @Input({ transform: booleanAttribute })

@@ -4,11 +4,11 @@
  */
 
 import { CdkTreeNodePadding } from '@angular/cdk/tree';
-import { Directive, Input, numberAttribute } from '@angular/core';
+import { Directive, forwardRef, Input, numberAttribute } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodePadding]',
-  providers: [{ provide: CdkTreeNodePadding, useExisting: NzTreeNodePaddingDirective }],
+  providers: [{ provide: CdkTreeNodePadding, useExisting: forwardRef(() => NzTreeNodePaddingDirective) }],
   standalone: true
 })
 export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {

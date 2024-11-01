@@ -13,7 +13,6 @@
     "declaration": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
     "target": "ES2022",
     "lib": [
       "es2020",
