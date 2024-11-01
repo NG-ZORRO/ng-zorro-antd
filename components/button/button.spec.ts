@@ -17,8 +17,8 @@ describe('button', () => {
 
   describe('className', () => {
     let fixture: ComponentFixture<TestButtonComponent>;
-    let buttonElement: HTMLButtonElement;
     let component: TestButtonComponent;
+    let buttonElement: HTMLButtonElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(TestButtonComponent);
