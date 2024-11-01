@@ -1,7 +1,13 @@
+import { NgStyle } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-vertical',
+  standalone: true,
+  imports: [NgStyle, FormsModule, NzSliderModule],
   template: `
     <div [ngStyle]="{ height: '300px' }">
       <div [ngStyle]="style">

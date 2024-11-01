@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-icon-slider',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzSliderModule],
   template: `
     <div class="icon-wrapper test-class">
       <span nz-icon nzType="frown" [class.icon-highlight]="preHighLight"></span>
@@ -13,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
     `
       .icon-wrapper {
         position: relative;
-        padding: 0px 30px;
+        padding: 0 30px;
       }
 
       [nz-icon] {
