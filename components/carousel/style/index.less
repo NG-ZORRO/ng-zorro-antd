@@ -117,61 +117,6 @@
     height: auto;
   }
 
-  .slick-arrow.slick-hidden {
-    display: none;
-  }
-
-  // Arrows
-  .slick-prev,
-  .slick-next {
-    position: absolute;
-    top: 50%;
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    padding: 0;
-    color: transparent;
-    font-size: 0;
-    line-height: 0;
-    background: transparent;
-    border: 0;
-    outline: none;
-    cursor: pointer;
-
-    &:hover,
-    &:focus {
-      color: transparent;
-      background: transparent;
-      outline: none;
-
-      &::before {
-        opacity: 1;
-      }
-    }
-
-    &.slick-disabled::before {
-      opacity: 0.25;
-    }
-  }
-
-  .slick-prev {
-    left: -25px;
-
-    &::before {
-      content: '←';
-    }
-  }
-
-  .slick-next {
-    right: -25px;
-
-    &::before {
-      content: '→';
-    }
-  }
-
-  // Dots
   .slick-dots {
     position: absolute;
     right: 0;

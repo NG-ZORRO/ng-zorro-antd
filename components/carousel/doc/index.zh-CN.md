@@ -32,6 +32,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 | `[nzEffect]`        | 动画效果函数，可取 `scrollx`, `fade`               | `'scrollx'\|'fade'`                          | `'scrollx'` | ✅           |
 | `[nzEnableSwipe]`   | 是否支持手势划动切换                               | `boolean`                                    | `true`      | ✅           |
 | `[nzLoop]`          | 是否支持循环                                       | `boolean`                                    | `true`      | ✅           |
+| `[nzArrows]`        | 是否显示箭头                                       | `boolean`                                    | `false`     | ✅           |
 | `(nzAfterChange)`   | 切换面板的回调                                     | `EventEmitter<number>`                       | -           |
 | `(nzBeforeChange)`  | 切换面板的回调                                     | `EventEmitter<{ from: number; to: number }>` | -           |
 

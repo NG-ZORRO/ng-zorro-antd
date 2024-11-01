@@ -157,6 +157,7 @@ export interface CardConfig {
 export interface CarouselConfig {
   nzAutoPlay?: boolean;
   nzAutoPlaySpeed?: boolean;
+  nzArrows?: boolean;
   nzDots?: boolean;
   nzEffect?: 'scrollx' | 'fade' | string;
   nzEnableSwipe?: boolean;
