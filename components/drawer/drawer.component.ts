@@ -472,6 +472,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
         .detachments()
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
+          this.close();
           this.disposeOverlay();
         });
     }
