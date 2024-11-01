@@ -7,13 +7,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   standalone: true,
   imports: [NzIconModule],
   template: `
-    <span nz-icon nzType="smile" nzTheme="twotone"></span>
-    <span nz-icon nzType="heart" nzTheme="twotone" nzTwotoneColor="#eb2f96"></span>
-    <span nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="#52c41a"></span>
+    <nz-icon nzType="smile" nzTheme="twotone" />
+    <nz-icon nzType="heart" nzTheme="twotone" nzTwotoneColor="#eb2f96" />
+    <nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="#52c41a" />
   `,
   styles: [
     `
-      [nz-icon] {
+      nz-icon {
         margin-right: 6px;
         font-size: 24px;
       }
