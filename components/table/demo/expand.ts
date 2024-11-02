@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-expand',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>

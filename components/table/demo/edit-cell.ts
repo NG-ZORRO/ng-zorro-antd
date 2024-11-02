@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 interface ItemData {
   id: string;
@@ -9,6 +15,8 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-edit-cell',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzInputModule, NzPopconfirmModule, NzTableModule],
   template: `
     <button nz-button (click)="addRow()" nzType="primary">Add</button>
     <br />
