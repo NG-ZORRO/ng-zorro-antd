@@ -4,11 +4,8 @@ import sdk from '@stackblitz/sdk';
 import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
-import appModuleTS from './files/app.module';
-import environmentTS from './files/environment';
+import appConfigTS from './files/app.config';
 import mainTS from './files/main';
-import nzModuleTS from './files/ng-zorro-antd.module';
-import polyfillTS from './files/polyfill';
 
 @Injectable({
   providedIn: 'root'
@@ -50,12 +47,9 @@ export class OnlineIdeService {
       files: {
         'angular.json': `${JSON.stringify(angularJSON, null, 2)}`,
         'src/index.html': `<${selector}>loading</${selector}>`,
-        'src/main.ts': mainTS,
+        'src/main.ts': mainTS(componentName),
         'src/app/app.component.ts': appComponentCode,
-        'src/polyfills.ts': polyfillTS,
-        'src/app/app.module.ts': appModuleTS(componentName),
-        'src/app/ng-zorro-antd.module.ts': nzModuleTS,
-        'environments/environment.ts': environmentTS,
+        'src/app/app.config.ts': appConfigTS,
         'src/styles.css': `/* Add application styles & imports to this file! */;`
       }
     });
