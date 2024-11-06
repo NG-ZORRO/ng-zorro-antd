@@ -15,7 +15,7 @@ export default {
             outputPath: 'dist/demo',
             index: 'src/index.html',
             main: 'src/main.ts',
-            polyfills: ['zone.js'],
+            polyfills: 'src/polyfills.ts',
             tsConfig: 'src/tsconfig.app.json',
             assets: [
               'src/favicon.ico',
@@ -37,6 +37,5 @@ export default {
         }
       }
     }
-  },
-  defaultProject: 'demo'
+  }
 };

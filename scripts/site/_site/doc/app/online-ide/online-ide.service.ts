@@ -50,7 +50,8 @@ export class OnlineIdeService {
         'src/main.ts': mainTS(componentName),
         'src/app/app.component.ts': appComponentCode,
         'src/app/app.config.ts': appConfigTS,
-        'src/styles.css': `/* Add application styles & imports to this file! */;`
+        'src/polyfills.ts': `import 'zone.js';`,
+        'src/styles.css': `/* Add application styles & imports to this file! */`
       }
     });
   }
