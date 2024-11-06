@@ -6,6 +6,9 @@ import { VERSION } from 'ng-zorro-antd/version';
 import angularJSON from './files/angular.json';
 import appConfigTS from './files/app.config';
 import mainTS from './files/main';
+import packageJSON from './files/package.json';
+import tsconfigJSON from './files/tsconfig.json';
+import tsconfigAppJSON  from './files/tsconfig.app.json';
 
 @Injectable({
   providedIn: 'root'
@@ -41,16 +44,16 @@ export class OnlineIdeService {
     sdk.openProject({
       title: 'NG-ZORRO',
       description: 'Ant Design of Angular',
-      tags: ['NG-ZORRO', 'ng-zorro-antd', 'Ant Design', 'Angular', 'ng'],
-      template: this.template,
-      dependencies: this.dependencies,
+      template: 'node',
       files: {
+        'package.json': packageJSON(VERSION.full, '^18.0.0'),
         'angular.json': `${JSON.stringify(angularJSON, null, 2)}`,
+        'tsconfig.json': `${JSON.stringify(tsconfigJSON, null, 2)}`,
+        'tsconfig.app.json': `${JSON.stringify(tsconfigAppJSON, null, 2)}`,
         'src/index.html': `<${selector}>loading</${selector}>`,
         'src/main.ts': mainTS(componentName),
         'src/app/app.component.ts': appComponentCode,
         'src/app/app.config.ts': appConfigTS,
-        'src/polyfills.ts': `import 'zone.js';`,
         'src/styles.css': `/* Add application styles & imports to this file! */`
       }
     });
