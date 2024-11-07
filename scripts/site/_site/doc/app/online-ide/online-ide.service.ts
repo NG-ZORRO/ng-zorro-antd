@@ -20,7 +20,7 @@ export class OnlineIdeService {
       description: 'Ant Design of Angular',
       template: 'node',
       files: {
-        'package.json': JSON.stringify(packageJSON(`^${VERSION.full}`, '^18.0.0'), null, 2),
+        'package.json': JSON.stringify(packageJSON(`^${VERSION.full}`, `^${VERSION.major}.0.0`), null, 2),
         'angular.json':  JSON.stringify(angularJSON, null, 2),
         'tsconfig.json':  JSON.stringify(tsconfigJSON, null, 2),
         'tsconfig.app.json': JSON.stringify(tsconfigAppJSON, null, 2),
