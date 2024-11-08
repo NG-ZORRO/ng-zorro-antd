@@ -377,7 +377,7 @@ export class NzCascaderService implements OnDestroy {
     this.activatedOptions = this.activatedOptions.splice(0, lastReserveIndex + 1);
   }
 
-  private dropBehindColumns(lastReserveIndex: number): void {
+  dropBehindColumns(lastReserveIndex: number): void {
     if (lastReserveIndex < this.columns.length - 1) {
       this.columns = this.columns.slice(0, lastReserveIndex + 1);
     }

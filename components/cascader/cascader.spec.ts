@@ -27,6 +27,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import {
   createFakeEvent,
   createMouseEvent,
+  dispatchFakeEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
@@ -755,12 +756,15 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(3);
+      expect(getAllColumns().length).toBe(1);
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
 
       itemEl4.click(); // 选中一个叶子
@@ -870,6 +874,44 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
 
+    it('should init menu when selecting cancel', fakeAsync(() => {
+      // cancel select by ESCAPE
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl1.click();
+      let itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      itemEl2.click();
+      let itemEl3 = getItemAtColumnAndRow(3, 1)!;
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.cascaderService.columns.length).toBe(1);
+
+      // cancel select by clicking outside
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl1.click();
+      itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      itemEl2.click();
+      itemEl3 = getItemAtColumnAndRow(3, 1)!;
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+      dispatchFakeEvent(document.body, 'click');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.cascaderService.columns.length).toBe(1);
+    }));
+
     it('should nzBackdrop works', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       fixture.detectChanges();
@@ -941,9 +983,9 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(3);
 
-      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
-      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      let itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      let itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
@@ -954,14 +996,17 @@ describe('cascader', () => {
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(itemEl3).toBeNull();
+      expect(getAllColumns().length).toBe(2);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(itemEl2).toBeNull();
+      expect(getAllColumns().length).toBe(1);
     }));
 
     it('should select option when press ENTER', fakeAsync(() => {
