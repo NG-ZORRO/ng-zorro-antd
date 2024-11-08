@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-{{importPart}}
+
+{{imports}}
+
 export const routes: Routes = [
-{{routingPart}}
+  {{routes}}
 ];
