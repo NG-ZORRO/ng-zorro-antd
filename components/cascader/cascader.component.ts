@@ -790,6 +790,10 @@ export class NzCascaderComponent
     this.blur();
     this.clearDelayMenuTimer();
     this.setMenuVisible(false);
+    // if select none, clear previous state
+    if (!this.hasValue) {
+      this.cascaderService.clear();
+    }
   }
 
   /**

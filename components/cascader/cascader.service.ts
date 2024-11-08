@@ -358,8 +358,8 @@ export class NzCascaderService implements OnDestroy {
     if (!arraysEqual(existingOptions, options)) {
       options.forEach(o => (o.parent = parent));
       this.columns[columnIndex] = options;
-      this.dropBehindColumns(columnIndex);
     }
+    this.dropBehindColumns(columnIndex);
   }
 
   /**
