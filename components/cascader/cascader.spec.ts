@@ -742,9 +742,9 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(getAllColumns().length).toBe(3);
 
-      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
-      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      let itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      let itemEl3 = getItemAtColumnAndRow(3, 1)!;
 
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
@@ -756,17 +756,17 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(1);
+      itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(itemEl2).toBeNull();
+      expect(itemEl3).toBeNull();
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
+      itemEl1.click();
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
-
       itemEl4.click(); // 选中一个叶子
       fixture.detectChanges();
       tick(300);
