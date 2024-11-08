@@ -23,8 +23,9 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 例如：
 
 ```typescript
-import {registerLocaleData} from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+
 registerLocaleData(zh);
 ```
 
@@ -60,6 +61,7 @@ registerLocaleData(zh);
 | `[nzBorderless]`         | 移除边框                                           | `boolean`                                                  | `false`                                                                                                 | -    |
 | `[nzInline]`             | 内联模式                                           | `boolean`                                                  | `false`                                                                                                 | -    |
 | `(nzOnOpenChange)`       | 弹出日历和关闭日历的回调                                   | `EventEmitter<boolean>`                                    | -                                                                                                       | -    |
+| `(nzOnPanelChange)`      | 改变模式或日期的回调                                     | `EventEmitter<NzPanelChangeType>`                          | -                                                                                                       | -    |
 
 ### 共同的方法
 

@@ -1,3 +1,26 @@
+# [18.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.1.1...18.2.0) (2024-11-07)
+
+
+### Bug Fixes
+
+* **i18n:** add missing translations to `nb_NO` ([#8712](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8712)) ([8c9bcd1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8c9bcd18867fca3778d42b844034a4d3370ebe3b))
+* **i18n:** add missing translations to `hu_HU` ([#8769](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8769)) ([9e21ae8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9e21ae8c3c771ff3bce98a11c37f5c81c62f3402))
+* **badge:** NG0955 warning in nz-badge-sup component ([#8858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8858)) ([cc52555](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cc5255587edae6731d38f39786c701679c50020b))
+* **select:** multiple select cause switch size flash when init ([#8851](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8851)) ([d28876c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d28876cdae5bb1b4df3fda66ebdf6248e43f5a36))
+* **carousel:** correctly switch slides in rtl mode ([#8705](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8705)) ([85f23a1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/85f23a1b768151a35637c054c7bf42cbf656268e))
+* **drawer:** emit `nzVisibleChange` when close on navigation ([#8850](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8850)) ([29827df](https://github.com/NG-ZORRO/ng-zorro-antd/commit/29827dfe2346badc5178da71884bb4c3264a695d))
+* **modal,drawer:** secondary overlays not scrolling inside ([#8804](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8804)) ([ed7951d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ed7951d2e95707c93e993dbb744382e6c9c7dee8))
+* **modal:** remove dark backdrop when `nzMask` is false ([#8798](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8798)) ([f2f04fe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f2f04fe8971b23aba9ec5807414afe5ab6f27fc7))
+* **transfer:** correctly set transfer button disable state ([#8824](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8824)) ([195ad26](https://github.com/NG-ZORRO/ng-zorro-antd/commit/195ad260a8259129517ee18a208853b9e32c132d))
+
+
+### Features
+
+* **datepicker:** send event emitter when panel mode change ([#8685](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8685)) ([6462a47](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6462a47538a4c7f00f180d82dc3567379277e4b3))
+* **tabs:** support `destroyInactiveTabPane` ([#8845](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8845)) ([0de6d62](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0de6d627cb9105d97b1aca827b1f89a8f3bdcec9))
+
+
+
 ## [18.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.1.0...18.1.1) (2024-08-20)
 
 
