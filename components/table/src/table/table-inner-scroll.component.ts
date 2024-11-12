@@ -22,11 +22,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTableSummaryFixedType } from '../table.types';
 import { NzTableContentComponent } from './table-content.component';
@@ -191,7 +192,9 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
         const scrollEvent$ = this.scroll$.pipe(
           startWith(null),
           delay(0),
-          switchMap(() => fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))),
+          switchMap(() =>
+            fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
+          ),
           takeUntil(this.destroy$)
         );
         const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));

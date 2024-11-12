@@ -26,12 +26,12 @@ import {
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { TimeHolder } from './time-holder';
@@ -548,13 +548,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
         this.scrollToTime();
         this.firstScrolled = true;
       });
-
-      fromEvent(this.elementRef.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(event => {
-          event.preventDefault();
-        });
     });
+
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(event => {
+        event.preventDefault();
+      });
   }
 
   ngOnDestroy(): void {

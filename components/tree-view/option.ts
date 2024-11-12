@@ -16,10 +16,10 @@ import {
   SimpleChanges,
   booleanAttribute
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTreeNodeComponent } from './node';
 
@@ -71,15 +71,13 @@ export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent<MouseEvent>(this.host.nativeElement, 'click')
-        .pipe(
-          filter(() => !this.nzDisabled && this.nzClick.observers.length > 0),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(event => {
-          this.ngZone.run(() => this.nzClick.emit(event));
-        })
-    );
+    fromEventOutsideAngular<MouseEvent>(this.host.nativeElement, 'click')
+      .pipe(
+        filter(() => !this.nzDisabled && this.nzClick.observers.length > 0),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => {
+        this.ngZone.run(() => this.nzClick.emit(event));
+      });
   }
 }

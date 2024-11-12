@@ -24,11 +24,12 @@ import {
   inject
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 
@@ -161,25 +162,23 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.preventDefault();
-          this.focus();
-          if (this.nzDisabled) {
-            return;
-          }
-          this.ngZone.run(() => {
-            this.innerCheckedChange(!this.nzChecked);
-            this.cdr.markForCheck();
-          });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        event.preventDefault();
+        this.focus();
+        if (this.nzDisabled) {
+          return;
+        }
+        this.ngZone.run(() => {
+          this.innerCheckedChange(!this.nzChecked);
+          this.cdr.markForCheck();
         });
+      });
 
-      fromEvent(this.inputElement.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.stopPropagation());
-    });
+    fromEventOutsideAngular(this.inputElement.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => event.stopPropagation());
   }
 
   ngAfterViewInit(): void {

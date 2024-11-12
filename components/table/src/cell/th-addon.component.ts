@@ -21,11 +21,12 @@ import {
   ViewEncapsulation,
   booleanAttribute
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTableFilterComponent } from '../addon/filter.component';
 import { NzTableSortersComponent } from '../addon/sorters.component';
@@ -148,20 +149,18 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.host.nativeElement, 'click')
-        .pipe(
-          filter(() => this.nzShowSort),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
-          this.ngZone.run(() => {
-            this.setSortOrder(nextOrder);
-            this.manualClickOrder$.next(this);
-          });
-        })
-    );
+    fromEventOutsideAngular(this.host.nativeElement, 'click')
+      .pipe(
+        filter(() => this.nzShowSort),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
+        this.ngZone.run(() => {
+          this.setSortOrder(nextOrder);
+          this.manualClickOrder$.next(this);
+        });
+      });
 
     this.sortOrderChange$.pipe(takeUntil(this.destroy$)).subscribe(order => {
       if (this.sortOrder !== order) {

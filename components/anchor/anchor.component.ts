@@ -15,7 +15,6 @@ import {
   EventEmitter,
   inject,
   Input,
-  NgZone,
   numberAttribute,
   OnChanges,
   OnDestroy,
@@ -25,14 +24,14 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NzDirectionVHType } from 'ng-zorro-antd/core/types';
-import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
 import { getOffsetTop } from './util';
@@ -129,7 +128,6 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     private scrollSrv: NzScrollService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    private zone: NgZone,
     private renderer: Renderer2
   ) {}
 
@@ -160,11 +158,10 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       return;
     }
     this.destroy$.next(true);
-    this.zone.runOutsideAngular(() => {
-      fromEvent(this.getContainer(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
-        .pipe(throttleTime(50), takeUntil(this.destroy$))
-        .subscribe(() => this.handleScroll());
-    });
+
+    fromEventOutsideAngular(this.getContainer(), 'scroll', passiveEventListenerOptions)
+      .pipe(throttleTime(50), takeUntil(this.destroy$))
+      .subscribe(() => this.handleScroll());
     // Browser would maintain the scrolling position when refreshing.
     // So we have to delay calculation in avoid of getting a incorrect result.
     this.handleScrollTimeoutID = setTimeout(() => this.handleScroll());

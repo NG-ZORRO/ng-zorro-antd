@@ -18,11 +18,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -94,22 +94,20 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (!this.disabled) {
-            this.ngZone.run(() => this.itemClick.emit(this.value));
-          }
-        });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.disabled) {
+          this.ngZone.run(() => this.itemClick.emit(this.value));
+        }
+      });
 
-      fromEvent(this.elementRef.nativeElement, 'mouseenter')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (!this.disabled) {
-            this.ngZone.run(() => this.itemHover.emit(this.value));
-          }
-        });
-    });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'mouseenter')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.disabled) {
+          this.ngZone.run(() => this.itemHover.emit(this.value));
+        }
+      });
   }
 }

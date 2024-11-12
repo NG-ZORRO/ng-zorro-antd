@@ -25,12 +25,13 @@ import {
   inject,
   numberAttribute
 } from '@angular/core';
-import { Subject, Subscription, fromEvent } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
@@ -82,16 +83,14 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     if (backTop) {
       this.backTopClickSubscription.unsubscribe();
 
-      this.backTopClickSubscription = this.zone.runOutsideAngular(() =>
-        fromEvent(backTop.nativeElement, 'click')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
-            if (this.nzClick.observers.length) {
-              this.zone.run(() => this.nzClick.emit(true));
-            }
-          })
-      );
+      this.backTopClickSubscription = fromEventOutsideAngular(backTop.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
+          if (this.nzClick.observers.length) {
+            this.zone.run(() => this.nzClick.emit(true));
+          }
+        });
     }
   }
 
@@ -139,11 +138,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.scrollListenerDestroy$.next(true);
     this.handleScroll();
-    this.zone.runOutsideAngular(() => {
-      fromEvent(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
-        .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
-        .subscribe(() => this.handleScroll());
-    });
+    fromEventOutsideAngular(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
+      .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
+      .subscribe(() => this.handleScroll());
   }
 
   ngOnDestroy(): void {

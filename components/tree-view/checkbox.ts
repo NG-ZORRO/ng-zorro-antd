@@ -15,10 +15,10 @@ import {
   Output,
   booleanAttribute
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tree-node-checkbox:not([builtin])',
@@ -48,17 +48,15 @@ export class NzTreeNodeCheckboxComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent<MouseEvent>(this.host.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((event: MouseEvent) => {
-          if (!this.nzDisabled && this.nzClick.observers.length) {
-            this.ngZone.run(() => {
-              this.nzClick.emit(event);
-              this.ref.markForCheck();
-            });
-          }
-        })
-    );
+    fromEventOutsideAngular<MouseEvent>(this.host.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: MouseEvent) => {
+        if (!this.nzDisabled && this.nzClick.observers.length) {
+          this.ngZone.run(() => {
+            this.nzClick.emit(event);
+            this.ref.markForCheck();
+          });
+        }
+      });
   }
 }

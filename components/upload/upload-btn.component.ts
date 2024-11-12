@@ -5,22 +5,13 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import {
-  Component,
-  ElementRef,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-  inject
-} from '@angular/core';
-import { Observable, Subject, Subscription, fromEvent, of } from 'rxjs';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Observable, Subject, Subscription, of } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
@@ -346,10 +337,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
 
   private http = inject(HttpClient, { optional: true });
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef
-  ) {
+  constructor(private elementRef: ElementRef) {
     if (!this.http) {
       throw new Error(
         `Not found 'HttpClient', You can configure 'HttpClient' with 'provideHttpClient()' in your root module.`
@@ -360,22 +348,20 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Caretaker note: `input[type=file].click()` will open a native OS file picker,
     // it doesn't require Angular to run `ApplicationRef.tick()`.
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => this.onClick());
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.onClick());
 
-      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (this.options.disabled) {
-            return;
-          }
-          if (event.key === 'Enter' || event.keyCode === ENTER) {
-            this.onClick();
-          }
-        });
-    });
+    fromEventOutsideAngular<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (this.options.disabled) {
+          return;
+        }
+        if (event.key === 'Enter' || event.keyCode === ENTER) {
+          this.onClick();
+        }
+      });
   }
 
   ngOnDestroy(): void {

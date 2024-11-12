@@ -20,7 +20,6 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
@@ -28,6 +27,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCollapseComponent } from './collapse.component';
@@ -122,19 +122,17 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.nzCollapseComponent.addPanel(this);
 
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.collapseHeader.nativeElement, 'click')
-        .pipe(
-          filter(() => !this.nzDisabled),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.nzCollapseComponent.click(this);
-            this.cdr.markForCheck();
-          });
-        })
-    );
+    fromEventOutsideAngular(this.collapseHeader.nativeElement, 'click')
+      .pipe(
+        filter(() => !this.nzDisabled),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => {
+          this.nzCollapseComponent.click(this);
+          this.cdr.markForCheck();
+        });
+      });
   }
 
   ngOnDestroy(): void {
