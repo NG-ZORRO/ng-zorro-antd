@@ -52,20 +52,13 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
       <color-palette>
         <div
           #transform
-          style="position: absolute; z-index: 1;"
+          class="ant-color-picker-transform"
           [style.left]="offsetValue.x + 'px'"
           [style.top]="offsetValue.y + 'px'"
         >
           <color-handler [color]="toRgbString()" />
         </div>
-        <div
-          class="ant-color-picker-saturation"
-          style="
-        background-image: linear-gradient(0deg, #000, transparent),
-          linear-gradient(90deg, #fff, hsla(0, 0%, 100%, 0));
-      "
-          [style.background-color]="toHsb()"
-        ></div>
+        <div class="ant-color-picker-saturation" [style.background-color]="toHsb()"></div>
       </color-palette>
     </div>
   `
