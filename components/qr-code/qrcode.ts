@@ -61,9 +61,11 @@ export function drawCanvas(
     iconImg.crossOrigin = 'anonymous';
     iconImg.width = iconSize * (canvas.width / size);
     iconImg.height = iconSize * (canvas.width / size);
-    iconImg.onload = () => {
+
+    const onLoad = (): void => {
+      cleanup();
       drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
-      drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
+      drawCanvasColor(ctx, value!, scale, formattedPadding, backgroundColor, color);
       const iconCoordinate = canvas.width / 2 - (iconSize * (canvas.width / size)) / 2;
 
       ctx.fillRect(iconCoordinate, iconCoordinate, iconSize * (canvas.width / size), iconSize * (canvas.width / size));
@@ -75,10 +77,20 @@ export function drawCanvas(
         iconSize * (canvas.width / size)
       );
     };
-    iconImg.onerror = () => {
+
+    const onError = (): void => {
+      cleanup();
       drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
       drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
     };
+
+    const cleanup = (): void => {
+      iconImg.removeEventListener('load', onLoad);
+      iconImg.removeEventListener('error', onError);
+    };
+
+    iconImg.addEventListener('load', onLoad);
+    iconImg.addEventListener('error', onError);
   }
 }
 
