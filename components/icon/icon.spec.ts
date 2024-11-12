@@ -13,40 +13,36 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
-import { NzIconService, NZ_ICONS } from './icon.service';
+import { NzIconService } from './icon.service';
 import { provideNzIcons, provideNzIconsPatch } from './provide-icons';
 
 describe('nz-icon', () => {
-  describe('basics', () => {
-    let testBed: ComponentBed<NzTestIconExtensionsComponent>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideNzIcons([
+          LeftOutline,
+          RightOutline,
+          QuestionOutline,
+          QuestionCircleOutline,
+          LoadingOutline,
+          QuestionCircleFill
+        ])
+      ]
+    });
+  });
+
+  describe('basic', () => {
     let testComponent: NzTestIconExtensionsComponent;
     let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestIconExtensionsComponent, {
-        imports: [NzIconModule],
-        providers: [
-          {
-            provide: NZ_ICONS,
-            useValue: [
-              LeftOutline,
-              RightOutline,
-              QuestionOutline,
-              QuestionCircleOutline,
-              LoadingOutline,
-              QuestionCircleFill
-            ]
-          }
-        ]
-      });
-      fixture = testBed.fixture;
-
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+      testComponent = fixture.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
 
@@ -107,69 +103,34 @@ describe('nz-icon', () => {
   });
 
   describe('custom', () => {
-    let testBed: ComponentBed<NzTestIconCustomComponent>;
     let fixture: ComponentFixture<NzTestIconCustomComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestIconCustomComponent, {
-        imports: [NzIconModule],
-        providers: [
-          {
-            provide: NZ_ICONS,
-            useValue: [
-              LeftOutline,
-              RightOutline,
-              QuestionOutline,
-              QuestionCircleOutline,
-              LoadingOutline,
-              QuestionCircleFill
-            ]
-          }
-        ]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestIconCustomComponent);
+      fixture.detectChanges();
     });
 
     it('should support custom svg element', () => {
-      fixture.detectChanges();
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-      const icon1 = icons[0];
-      expect(icon1.nativeElement.className).toContain('anticon');
-      expect(icon1.nativeElement.innerHTML).toContain('svg');
-      expect(icon1.nativeElement.innerHTML).toContain(
+      expect(icons[0].nativeElement.className).toContain('anticon');
+      expect(icons[0].nativeElement.innerHTML).toContain('svg');
+      expect(icons[0].nativeElement.innerHTML).toContain(
         'viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"'
       );
     });
   });
 
   describe('iconfont', () => {
-    let testBed: ComponentBed<NzTestIconIconfontComponent>;
     let fixture: ComponentFixture<NzTestIconIconfontComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestIconIconfontComponent, {
-        imports: [NzIconModule],
-        providers: [
-          {
-            provide: NZ_ICONS,
-            useValue: [
-              LeftOutline,
-              RightOutline,
-              QuestionOutline,
-              QuestionCircleOutline,
-              LoadingOutline,
-              QuestionCircleFill
-            ]
-          }
-        ]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestIconIconfontComponent);
+      fixture.detectChanges();
     });
 
     it('should support iconfont', waitForAsync(() => {
-      fixture.detectChanges();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
@@ -182,23 +143,12 @@ describe('nz-icon', () => {
   });
 
   describe('config service', () => {
-    let testBed: ComponentBed<NzTestIconExtensionsComponent>;
     let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
     let nzConfigService: NzConfigService;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestIconExtensionsComponent, {
-        imports: [NzIconModule],
-        providers: [
-          {
-            provide: NZ_ICONS,
-            useValue: [LeftOutline, RightOutline, QuestionOutline]
-          }
-        ]
-      });
-
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
       fixture.detectChanges();
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
@@ -217,17 +167,22 @@ describe('nz-icon', () => {
       expect(icons[0].componentInstance.iconService.twoToneColor.primaryColor).toBe('#1890ff');
     });
   });
+});
 
+describe('nz-icon injection', () => {
   describe('injection on multi places', () => {
-    let testBed: ComponentBed<NzTestIconMultiInjectionComponent>;
     let fixture: ComponentFixture<NzTestIconMultiInjectionComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestIconMultiInjectionComponent, {
-        imports: [NzIconModule.forRoot([HomeOutline]), ChildModule]
+      TestBed.configureTestingModule({
+        providers: [provideNzIcons([HomeOutline])]
       });
-      fixture = testBed.fixture;
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestIconMultiInjectionComponent);
+      fixture.detectChanges();
     });
 
     it('should support forRoot and forChild', () => {
@@ -238,15 +193,13 @@ describe('nz-icon', () => {
     });
   });
 
-  describe('[standalone] injection on multi places with provideNzIcon', () => {
+  describe('[standalone] injection on multi places', () => {
     let fixture: ComponentFixture<NzTestIconMultiInjectionStandaloneComponent>;
-    let icons: DebugElement[];
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [NzTestIconMultiInjectionStandaloneComponent],
         providers: [provideNzIcons([HomeOutline])]
-      }).compileComponents();
+      });
     });
 
     beforeEach(() => {
@@ -255,7 +208,7 @@ describe('nz-icon', () => {
     });
 
     it('should support forRoot and forChild', () => {
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      const icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
       expect(icons[0].nativeElement.classList.contains('anticon-home')).toBe(true);
       expect(icons[1].nativeElement.classList.contains('anticon-question')).toBe(true);
     });
@@ -263,8 +216,8 @@ describe('nz-icon', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
-  selector: 'nz-test-icon-extensions',
+  standalone: true,
+  imports: [NzIconModule],
   template: `
     <span nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></span>
     <span nz-icon [nzType]="'loading'" [nzTheme]="theme"></span>
@@ -272,7 +225,7 @@ describe('nz-icon', () => {
 })
 export class NzTestIconExtensionsComponent {
   type = 'question';
-  theme = 'outline';
+  theme: 'fill' | 'outline' | 'twotone' = 'outline';
   spin = true;
   rotate = 0;
 
@@ -280,6 +233,8 @@ export class NzTestIconExtensionsComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule],
   template: `
     <span nz-icon style="color: hotpink;">
       <svg>
@@ -293,10 +248,12 @@ export class NzTestIconExtensionsComponent {
 export class NzTestIconCustomComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule],
   template: `
-    <span nz-icon [nzIconfont]="'icon-tuichu'"></span>
-    <span nz-icon [nzIconfont]="'icon-facebook'"></span>
-    <span nz-icon [nzIconfont]="'icon-twitter'"></span>
+    <span nz-icon nzIconfont="icon-tuichu"></span>
+    <span nz-icon nzIconfont="icon-facebook"></span>
+    <span nz-icon nzIconfont="icon-twitter"></span>
   `
 })
 export class NzTestIconIconfontComponent {
@@ -308,13 +265,13 @@ export class NzTestIconIconfontComponent {
 }
 
 @NgModule({
-  imports: [NzIconModule.forChild([QuestionOutline])],
-  declarations: [NzTestIconExtensionsComponent],
-  exports: [NzTestIconExtensionsComponent]
+  imports: [NzIconModule.forChild([QuestionOutline])]
 })
 class ChildModule {}
 
 @Component({
+  standalone: true,
+  imports: [NzIconModule, ChildModule],
   template: `
     <span nz-icon nzType="home"></span>
     <span nz-icon nzType="question"></span>

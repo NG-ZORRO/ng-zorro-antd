@@ -22,7 +22,10 @@ interface FakeViewportScrollPosition {
   left: number;
 }
 
-/** @docs-private */
+/**
+ * @internal
+ * @deprecated Internal use only, do not use directly. Will be removed in v20
+ */
 export class FakeViewportRuler {
   getViewportRect(): FakeViewportRect {
     return {
