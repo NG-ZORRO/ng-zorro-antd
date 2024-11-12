@@ -192,5 +192,15 @@ export default {
     expired: 'QR code expired',
     refresh: 'Refresh',
     scanned: 'Scanned'
+  },
+  CheckList: {
+    checkList: 'Check List',
+    checkListFinish: 'You have successfully completed your to-do list!',
+    checkListClose: 'Close',
+    checkListFooter: 'No operating instructions required',
+    checkListCheck: 'Do you want to close the action list?',
+    ok: 'OK',
+    cancel: 'Cancel',
+    checkListCheckOther: 'No more action checklists needed'
   }
 };
