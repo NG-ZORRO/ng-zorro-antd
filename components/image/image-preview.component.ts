@@ -104,7 +104,7 @@ const NZ_DEFAULT_ROTATE = 0;
       (click)="maskClosable && $event.target === $event.currentTarget && onClose()"
     >
       <div class="ant-image-preview" role="dialog" aria-modal="true">
-        <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
         <div class="ant-image-preview-content">
           <div class="ant-image-preview-body">
             <div
@@ -133,7 +133,7 @@ const NZ_DEFAULT_ROTATE = 0;
             </div>
           </div>
         </div>
-        <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
       </div>
     </div>
   `,
