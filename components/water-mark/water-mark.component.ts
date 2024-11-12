@@ -261,7 +261,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
 
       if (this.nzImage) {
         const img = new Image();
-        img.onload = () => {
+
+        const onLoad = (): void => {
+          cleanup();
+
           ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
 
           /** Draw interleaved pictures after rotation */
@@ -270,7 +273,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
           ctx.drawImage(img, alternateDrawX, alternateDrawY, drawWidth, drawHeight);
           this.appendWatermark(canvas.toDataURL(), markWidth);
         };
-        img.onerror = () =>
+
+        const onError = (): void => {
+          cleanup();
+
           this.drawText(
             canvas,
             ctx,
@@ -284,6 +290,16 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
             alternateDrawY,
             markWidth
           );
+        };
+
+        const cleanup = (): void => {
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+        };
+
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+
         img.crossOrigin = 'anonymous';
         img.referrerPolicy = 'no-referrer';
         img.src = this.nzImage;
