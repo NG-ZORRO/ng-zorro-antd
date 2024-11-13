@@ -56,6 +56,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   mouseLeaveDelay?: number;
   overlayClassName?: string;
   overlayStyle?: NgStyleInterface;
+  overlayClickable?: boolean;
   cdkConnectedOverlayPush?: boolean;
   visibleChange = new EventEmitter<boolean>();
 
@@ -97,6 +98,10 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 
   protected get _overlayStyle(): NgStyleInterface | null {
     return this.overlayStyle || null;
+  }
+
+  protected get _overlayClickable(): boolean {
+    return this.overlayClickable ?? true;
   }
 
   private internalVisible = false;
@@ -272,6 +277,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
       mouseLeaveDelay: ['nzMouseLeaveDelay', () => this._mouseLeaveDelay],
       overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
       overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
+      overlayClickable: ['nzOverlayClickable', () => this._overlayClickable],
       arrowPointAtCenter: ['nzArrowPointAtCenter', () => this.arrowPointAtCenter],
       cdkConnectedOverlayPush: ['cdkConnectedOverlayPush', () => this.cdkConnectedOverlayPush],
       ...this.getProxyPropertyMap()
@@ -342,6 +348,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   nzArrowPointAtCenter: boolean = false;
   nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
+  nzOverlayClickable: boolean = true;
   nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
@@ -467,6 +474,9 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   }
 
   onClickOutside(event: MouseEvent): void {
+    if (!this.nzOverlayClickable) {
+      return;
+    }
     const target = _getEventTarget(event);
     if (!this.origin.nativeElement.contains(target) && this.nzTrigger !== null) {
       this.hide();

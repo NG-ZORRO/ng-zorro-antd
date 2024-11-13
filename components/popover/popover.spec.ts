@@ -104,6 +104,18 @@ describe('NzPopover', () => {
     waitingForTooltipToggling();
     expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
+
+  it('nzPopoverOverlayClickable: false is to prohibit hiding', fakeAsync(() => {
+    const triggerElement = component.hideTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).toContain('content-string');
+
+    dispatchMouseEvent(document.body, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).toContain('content-string');
+  }));
 });
 
 @Component({
@@ -123,6 +135,17 @@ describe('NzPopover', () => {
       [nzPopoverBackdrop]="true"
     ></a>
 
+    <a
+      #hideTemplate
+      nz-popover
+      nzPopoverContent="content-string"
+      nzPopoverTrigger="click"
+      [nzPopoverBackdrop]="true"
+      [nzPopoverOverlayClickable]="false"
+    >
+      Click
+    </a>
+
     <ng-template #templateTitle>title-template</ng-template>
 
     <ng-template #templateContent>content-template</ng-template>
@@ -140,6 +163,10 @@ export class NzPopoverTestComponent {
   @ViewChild('changePopover', { static: true }) changePopover!: ElementRef;
   @ViewChild('changePopover', { static: true, read: NzPopoverDirective })
   changePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  @ViewChild('hideTemplate', { static: false }) hideTemplate!: ElementRef;
+  @ViewChild('hideTemplate', { static: false, read: NzPopoverDirective })
+  hideTemplateDirective!: NzPopoverDirective;
 
   @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
 
