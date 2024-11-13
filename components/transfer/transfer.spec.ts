@@ -247,6 +247,13 @@ describe('transfer', () => {
         const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
         expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
       });
+
+      it('should be disabled check all when all options are disabled', () => {
+        instance.nzDataSource = [{ title: `content`, disabled: true }];
+        fixture.detectChanges();
+        const cls = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
+        expect(debugElement.queryAll(By.css(cls)).length).toBe(1);
+      });
     });
 
     it('#nzShowSelectAll', () => {
