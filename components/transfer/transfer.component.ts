@@ -245,10 +245,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);
-    let count = list.length;
-    if (list.every(i => i.disabled)) {
-      count = 0;
-    }
+    const count = list.filter(i => !i.disabled).length;
     this.updateOperationStatus(direction, count);
     this.nzSelectChange.emit({ direction, checked, list, item });
   }
