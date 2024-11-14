@@ -44,7 +44,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
           [nzChecked]="stat.checkAll"
           (nzCheckedChange)="onItemSelectAll($event)"
           [nzIndeterminate]="stat.checkHalf"
-          [nzDisabled]="stat.shownCount === 0 || disabled"
+          [nzDisabled]="stat.availableCount === 0 || disabled"
         ></label>
       }
       <span class="ant-transfer-list-header-selected">
@@ -175,11 +175,17 @@ export class NzTransferListComponent implements AfterViewInit {
     checkAll: false,
     checkHalf: false,
     checkCount: 0,
-    shownCount: 0
+    shownCount: 0,
+    availableCount: 0
   };
 
   get validData(): TransferItem[] {
     return this.dataSource.filter(w => !w.hide);
+  }
+
+  get availableData(): TransferItem[] {
+    // filter disabled data
+    return this.validData.filter(w => !w.disabled);
   }
 
   onItemSelect = (item: TransferItem): void => {
@@ -206,6 +212,7 @@ export class NzTransferListComponent implements AfterViewInit {
     const validCount = this.dataSource.filter(w => !w.disabled).length;
     this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
     this.stat.shownCount = this.validData.length;
+    this.stat.availableCount = this.availableData.length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
     // Note: this is done explicitly since the internal `nzChecked` value may not be updated in edge cases.
@@ -233,6 +240,7 @@ export class NzTransferListComponent implements AfterViewInit {
       item.hide = value.length > 0 && !this.matchFilter(value, item);
     });
     this.stat.shownCount = this.validData.length;
+    this.stat.availableCount = this.availableData.length;
     this.filterChange.emit({ direction: this.direction, value });
   }
 
