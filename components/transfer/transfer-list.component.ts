@@ -184,6 +184,7 @@ export class NzTransferListComponent implements AfterViewInit {
   }
 
   get availableData(): TransferItem[] {
+    // filter disabled data
     return this.validData.filter(w => !w.disabled);
   }
 
