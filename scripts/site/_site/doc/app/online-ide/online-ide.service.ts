@@ -30,6 +30,9 @@ export class OnlineIdeService {
         'src/app/app.config.ts': appConfigTS,
         'src/styles.css': `/* Add application styles & imports to this file! */`
       }
+    }, {
+      // open demo component by default
+      openFile: 'src/app/app.component.ts'
     });
   }
 }
