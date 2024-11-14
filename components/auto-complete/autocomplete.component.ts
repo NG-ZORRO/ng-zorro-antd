@@ -82,7 +82,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         [@.disabled]="!!noAnimation?.nzNoAnimation"
       >
         <div class="ant-select-dropdown-content-wrapper">
-          <div class="ant-select-dropdown-content-wrapper">
+          <div class="ant-select-dropdown-content">
             <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
           </div>
         </div>
