@@ -1,3 +1,18 @@
+## [18.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.2.0...18.2.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* **anchor:** fix `a` tag problem with `null` or `undefined` value if TemplateRef provided ([#8864](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8864)) ([41f6609](https://github.com/NG-ZORRO/ng-zorro-antd/commit/41f66095fdaee05d8bfdae13e8ec18a63cee1f2c))
+* **color-picker:** remove inline style (CSP compliant) ([#8874](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8874)) ([0264da9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0264da98babca9f14a2c69ccb019944aa4e9f88f))
+* **image:** remove inline style (CSP compliant) ([#8876](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8876)) ([63c8953](https://github.com/NG-ZORRO/ng-zorro-antd/commit/63c895329a78575654994b607fa822f5735166f4))
+* **qrcode:** remove event listeners once settled ([#8861](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8861)) ([40d466d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/40d466dab751c51b8cecb97dc974a1d17a7692e6))
+* **select:** remove inline style (CSP compliant) ([#8873](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8873)) ([9431d0d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9431d0d9e54c76271f7dc13c9833c29bf4e7dc13))
+* **transfer:** cancel selecting all should emit `nzSelectChange` event ([#8872](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8872)) ([5ff9821](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5ff98216002da5c9fc23a9d9c8bd4d3b68495d51))
+* **watermark:** cleanup event listeners once settled ([#8862](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8862)) ([decd477](https://github.com/NG-ZORRO/ng-zorro-antd/commit/decd4772bdbfeb1a1397c2b597882503ca5685ad))
+
+
+
 # [18.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.1.1...18.2.0) (2024-11-07)
 
 
