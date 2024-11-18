@@ -734,6 +734,7 @@ export class NzCascaderComponent
     const options = this.cascaderService.activatedOptions;
     if (options.length) {
       options.pop(); // Remove the last one
+      this.cascaderService.setOptionDeactivatedSinceColumn(options.length); // collapse menu
     }
   }
 
@@ -790,6 +791,10 @@ export class NzCascaderComponent
     this.blur();
     this.clearDelayMenuTimer();
     this.setMenuVisible(false);
+    // if select none, clear previous state
+    if (!this.hasValue && this.cascaderService.columns.length) {
+      this.cascaderService.dropBehindColumns(0);
+    }
   }
 
   /**
